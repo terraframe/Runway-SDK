@@ -34,7 +34,7 @@ import com.runwaysdk.util.Base64;
 public class AttributeBlob extends Attribute implements AttributeBlobIF
 {
   /**
-   * Generated id.
+   * Generated oid.
    */
   private static final long serialVersionUID = 702026100547730370L;
 
@@ -176,8 +176,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.getBlobAsBytes(table, columnName, id);
+      String oid = this.getContainingComponent().getOid();
+      return Database.getBlobAsBytes(table, columnName, oid);
     }
   }
 
@@ -215,8 +215,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.getBlobAsBytes(table, columnName, id, pos, length).clone();
+      String oid = this.getContainingComponent().getOid();
+      return Database.getBlobAsBytes(table, columnName, oid, pos, length).clone();
     }
   }
 
@@ -249,8 +249,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.setBlobAsBytes(table, columnName, id, bytes);
+      String oid = this.getContainingComponent().getOid();
+      return Database.setBlobAsBytes(table, columnName, oid, bytes);
     }
   }
 
@@ -342,8 +342,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.setBlobAsBytes(table, columnName, id, pos, bytes, offset, length);
+      String oid = this.getContainingComponent().getOid();
+      return Database.setBlobAsBytes(table, columnName, oid, pos, bytes, offset, length);
     }
 
   }
@@ -363,8 +363,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.getBlobSize(table, columnName, id);
+      String oid = this.getContainingComponent().getOid();
+      return Database.getBlobSize(table, columnName, oid);
     }
   }
 
@@ -451,8 +451,8 @@ public class AttributeBlob extends Attribute implements AttributeBlobIF
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      Database.truncateBlob(table, columnName, id, length);
+      String oid = this.getContainingComponent().getOid();
+      Database.truncateBlob(table, columnName, oid, length);
     }
   }
 }

@@ -47,10 +47,10 @@ public enum MdAttributeIndices implements com.runwaysdk.business.BusinessEnumera
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -65,11 +65,11 @@ public enum MdAttributeIndices implements com.runwaysdk.business.BusinessEnumera
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static MdAttributeIndices get(String id)
+  public static MdAttributeIndices get(String oid)
   {
     for (MdAttributeIndices e : MdAttributeIndices.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

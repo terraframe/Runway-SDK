@@ -41,9 +41,9 @@ public abstract class GreaterThanRuleBase extends com.runwaysdk.system.gis.mappi
     return CLASS;
   }
   
-  public static GreaterThanRule get(String id)
+  public static GreaterThanRule get(String oid)
   {
-    return (GreaterThanRule) com.runwaysdk.business.Business.get(id);
+    return (GreaterThanRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GreaterThanRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class GreaterThanRuleBase extends com.runwaysdk.system.gis.mappi
     return (GreaterThanRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GreaterThanRule lock(java.lang.String id)
+  public static GreaterThanRule lock(java.lang.String oid)
   {
-    GreaterThanRule _instance = GreaterThanRule.get(id);
+    GreaterThanRule _instance = GreaterThanRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GreaterThanRule unlock(java.lang.String id)
+  public static GreaterThanRule unlock(java.lang.String oid)
   {
-    GreaterThanRule _instance = GreaterThanRule.get(id);
+    GreaterThanRule _instance = GreaterThanRule.get(oid);
     _instance.unlock();
     
     return _instance;

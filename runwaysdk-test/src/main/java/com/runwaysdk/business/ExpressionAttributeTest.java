@@ -332,7 +332,7 @@ public class ExpressionAttributeTest
     ATTR_TIME_EXPR_KEY = mdAttributeTimeDAOexpr.getKey();
 
     MdWebForm mdWebForm = new MdWebForm();
-    mdWebForm.setFormMdClass(MdClass.get(mdBusinessDAO.getId()));
+    mdWebForm.setFormMdClass(MdClass.get(mdBusinessDAO.getOid()));
     mdWebForm.setFormName(TestFixConst.TEST_CLASS1 + "Form");
     mdWebForm.setTypeName(TestFixConst.TEST_CLASS1 + "Form");
     mdWebForm.setPackageName(TestFixConst.TEST_PACKAGE);
@@ -340,8 +340,8 @@ public class ExpressionAttributeTest
     WEB_FORM_KEY = mdWebForm.getKey();
 
     MdWebFloatDAO mdWebFloat = MdWebFloatDAO.newInstance();
-    mdWebFloat.setValue(MdWebFloat.DEFININGMDFORM, mdWebForm.getId());
-    mdWebFloat.setValue(MdWebPrimitive.DEFININGMDATTRIBUTE, mdAttributeFloatDAOexpr.getId());
+    mdWebFloat.setValue(MdWebFloat.DEFININGMDFORM, mdWebForm.getOid());
+    mdWebFloat.setValue(MdWebPrimitive.DEFININGMDATTRIBUTE, mdAttributeFloatDAOexpr.getOid());
     mdWebFloat.setValue(MdWebFloat.FIELDORDER, "1");
     mdWebFloat.setValue(MdWebFloat.FIELDNAME, ATTR_WEB_FLOAT);
     mdWebFloat.apply();
@@ -428,13 +428,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CHAR2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_CHAR_EXPR);
 
@@ -503,7 +503,7 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CHAR2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
@@ -543,13 +543,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_TEXT2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_TEXT_EXPR);
 
@@ -579,7 +579,7 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_TEXT2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
@@ -619,13 +619,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CLOB2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_CLOB_EXPR);
 
@@ -655,7 +655,7 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CLOB2, "Prime");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
@@ -695,7 +695,7 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CHAR2, "01234567890123");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
@@ -734,13 +734,13 @@ public class ExpressionAttributeTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(CLASS_TYPE);
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_BOOL_EXPR);
 
@@ -770,13 +770,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_BOOL2, MdAttributeBooleanInfo.FALSE);
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_BOOL_EXPR);
 
@@ -806,13 +806,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_BOOL2, MdAttributeBooleanInfo.FALSE);
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_BOOL_EXPR);
 
@@ -842,13 +842,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_BOOL2, MdAttributeBooleanInfo.FALSE);
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_BOOL_EXPR);
 
@@ -876,7 +876,7 @@ public class ExpressionAttributeTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(CLASS_TYPE);
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
@@ -911,13 +911,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_DATETIME1, "2005-06-15 09:00:00");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_DATETIME_EXPR);
 
@@ -980,13 +980,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_DATE1, "2005-06-15");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_DATE_EXPR);
 
@@ -1049,13 +1049,13 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_TIME1, "09:00:00");
     businessDAO.apply();
 
-    Business business = Business.get(businessDAO.getId());
+    Business business = Business.get(businessDAO.getOid());
 
     try
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_TIME_EXPR);
 
@@ -1122,7 +1122,7 @@ public class ExpressionAttributeTest
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_INT_EXPR);
 
@@ -1186,7 +1186,7 @@ public class ExpressionAttributeTest
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_LONG_EXPR);
 
@@ -1250,7 +1250,7 @@ public class ExpressionAttributeTest
 
     try
     {
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
       Assert.assertEquals(4.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)), 0);
 
       mdAttributeFloatDAOexpr = (MdAttributeFloatDAO) MdAttributeFloatDAO.getByKey(ATTR_FLOAT_EXPR_KEY).getBusinessDAO();
@@ -1258,7 +1258,7 @@ public class ExpressionAttributeTest
       mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue(ATTR_FLOAT1 + "-" + ATTR_FLOAT2);
       mdAttributeFloatDAOexpr.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
       Assert.assertEquals(0.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)), 0);
     }
     finally
@@ -1288,7 +1288,7 @@ public class ExpressionAttributeTest
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_FLOAT_EXPR);
 
@@ -1352,7 +1352,7 @@ public class ExpressionAttributeTest
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_DOUBLE_EXPR);
 
@@ -1417,7 +1417,7 @@ public class ExpressionAttributeTest
     {
       business.apply();
 
-      business = Business.get(business.getId());
+      business = Business.get(business.getOid());
 
       String expressionResult = business.getValue(ATTR_DECIMAL_EXPR);
 
@@ -1483,12 +1483,12 @@ public class ExpressionAttributeTest
     businessDAO.setValue(ATTR_CHAR2, "Prime");
     businessDAO.apply();
 
-    Business business1 = Business.get(businessDAO.getId());
+    Business business1 = Business.get(businessDAO.getOid());
     Business business2 = null;
     try
     {
       business1.apply();
-      business1 = Business.get(business1.getId());
+      business1 = Business.get(business1.getOid());
       String expressionResult = business1.getValue(ATTR_CHAR_EXPR);
       Assert.assertEquals("Optimus Prime", expressionResult);
 
@@ -1503,7 +1503,7 @@ public class ExpressionAttributeTest
       business2.setValue(ATTR_CHAR1, "Ultra");
       business2.setValue(ATTR_CHAR2, "Magnus");
       business2.apply();
-      business2 = Business.get(business2.getId());
+      business2 = Business.get(business2.getOid());
       expressionResult = business2.getValue(ATTR_CHAR_EXPR);
       Assert.assertEquals("Ultra Magnus", expressionResult);
 

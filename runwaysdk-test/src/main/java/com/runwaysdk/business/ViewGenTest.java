@@ -47,6 +47,6 @@ public class ViewGenTest extends SessionComponentGenTest
 
   protected String buildGetMethod()
   {
-    return "return (Collection) " + View.class.getName() + ".get(id);\n";
+    return "return (Collection) " + View.class.getName() + ".get(oid);\n";
   }
 }

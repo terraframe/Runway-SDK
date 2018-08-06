@@ -29,10 +29,10 @@ public interface ComponentInfo
   /**
    * Name of the attribute that specifies the ID.
    */
-  public static final String ID               = "id";
+  public static final String ID               = "oid";
 
   /**
-   * Name root of the id.  Denormalized for metadata loading performance.
+   * Name root of the oid.  Denormalized for metadata loading performance.
    */
   public static final String ROOT_ID          = "rootId";
 

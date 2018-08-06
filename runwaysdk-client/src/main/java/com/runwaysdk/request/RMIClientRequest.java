@@ -80,7 +80,7 @@ public class RMIClientRequest extends ClientRequest
   private static final long serialVersionUID = -3798463194753755412L;
 
   /**
-   * RemoteAdapter interface object to id server-side RMI implementation.
+   * RemoteAdapter interface object to oid server-side RMI implementation.
    */
   private RemoteAdapter     rmiAdapter       = null;
 
@@ -278,12 +278,12 @@ public class RMIClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#deleteBusiness(java.lang.String)
    */
-  public void delete(String id)
+  public void delete(String oid)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.delete(this.getSessionId(), id);
+      rmiAdapter.delete(this.getSessionId(), oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -302,13 +302,13 @@ public class RMIClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String)
    */
-  public MutableDTO get(String id)
+  public MutableDTO get(String oid)
   {
     this.clearNotifications();
     MutableDTO generic;
     try
     {
-      generic = rmiAdapter.get(this.getSessionId(), id);
+      generic = rmiAdapter.get(this.getSessionId(), oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -989,7 +989,7 @@ public class RMIClientRequest extends ClientRequest
     EntityDTO generic;
     try
     {
-      generic = rmiAdapter.lock(this.getSessionId(), elementDTO.getId());
+      generic = rmiAdapter.lock(this.getSessionId(), elementDTO.getOid());
     }
     catch (MessageExceptionDTO me)
     {
@@ -1016,7 +1016,7 @@ public class RMIClientRequest extends ClientRequest
     EntityDTO generic;
     try
     {
-      generic = rmiAdapter.unlock(this.getSessionId(), elementDTO.getId());
+      generic = rmiAdapter.unlock(this.getSessionId(), elementDTO.getOid());
     }
     catch (MessageExceptionDTO me)
     {
@@ -1083,13 +1083,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getChildren(String id, String relationshipType)
+  public List<? extends BusinessDTO> getChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
     try
     {
-      generics = rmiAdapter.getChildren(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getChildren(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1116,13 +1116,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getParents(String id, String relationshipType)
+  public List<? extends BusinessDTO> getParents(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
     try
     {
-      generics = rmiAdapter.getParents(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getParents(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1149,13 +1149,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getChildRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
     try
     {
-      generics = rmiAdapter.getChildRelationships(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getChildRelationships(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1182,13 +1182,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getParentRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
     try
     {
-      generics = rmiAdapter.getParentRelationships(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getParentRelationships(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1339,12 +1339,12 @@ public class RMIClientRequest extends ClientRequest
     return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  public void deleteChildren(String id, String relationshipType)
+  public void deleteChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.deleteChildren(this.getSessionId(), id, relationshipType);
+      rmiAdapter.deleteChildren(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1360,12 +1360,12 @@ public class RMIClientRequest extends ClientRequest
     }
   }
 
-  public void deleteParents(String id, String relationshipType)
+  public void deleteParents(String oid, String relationshipType)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.deleteParents(this.getSessionId(), id, relationshipType);
+      rmiAdapter.deleteParents(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {

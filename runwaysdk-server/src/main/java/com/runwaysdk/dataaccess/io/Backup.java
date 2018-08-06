@@ -211,7 +211,7 @@ public class Backup
           logger.debug("Backing up vault [" + vaultName + "] at location [" + vaultLocation + "].");
           
           FileIO.copyFolder(new File(vaultLocation), new File(backupVaultFileLocation + File.separator
-              + vault.getId() + File.separator));
+              + vault.getOid() + File.separator));
         }
         else
         {
@@ -391,7 +391,7 @@ public class Backup
    * InputStream inputStream = webFileDAOIF.getFile();
    * 
    * File thisBackupWebFileFile = new
-   * File(backupWebFileFileLocation+webFileDAOIF.getId());
+   * File(backupWebFileFileLocation+webFileDAOIF.getOid());
    * 
    * if (thisBackupWebFileFile != null && thisBackupWebFileFile.exists()) { try
    * { BufferedOutputStream outputStream = new BufferedOutputStream(new

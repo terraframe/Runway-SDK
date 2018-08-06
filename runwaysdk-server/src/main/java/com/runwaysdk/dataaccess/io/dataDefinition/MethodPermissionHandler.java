@@ -97,7 +97,7 @@ public class MethodPermissionHandler extends TagHandler implements TagHandlerIF,
     if (methodActor == null)
     {
       MethodActorDAO newActor = MethodActorDAO.newInstance();
-      newActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
+      newActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getOid());
       newActor.apply();
 
       methodActor = newActor;

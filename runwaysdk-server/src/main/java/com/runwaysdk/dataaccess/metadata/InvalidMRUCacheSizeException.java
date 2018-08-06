@@ -27,7 +27,7 @@ import com.runwaysdk.ServerExceptionMessageLocalizer;
 public class InvalidMRUCacheSizeException extends MetadataException
 {
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = 1L;
   

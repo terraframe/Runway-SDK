@@ -110,9 +110,9 @@ public abstract class MdFieldDAO extends MetadataDAO implements MdFieldDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdFieldDAOIF get(String id)
+  public static MdFieldDAOIF get(String oid)
   {
-    return (MdFieldDAOIF) BusinessDAO.get(id);
+    return (MdFieldDAOIF) BusinessDAO.get(oid);
   }
 
   public static String buildKey(String formKey, String fieldName)

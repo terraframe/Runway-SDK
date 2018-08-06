@@ -107,15 +107,15 @@ public class LocalizationTest
     lang = MdAttributeLocalCharacterDAO.newInstance();
     lang.setValue(MdAttributeLocalCharacterInfo.NAME, "lang");
     lang.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Language");
-    lang.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getId());
-    lang.setValue(MdAttributeLocalCharacterInfo.MD_STRUCT, struct.getId());
+    lang.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getOid());
+    lang.setValue(MdAttributeLocalCharacterInfo.MD_STRUCT, struct.getOid());
     lang.apply();
 
     formal = MdAttributeLocalTextDAO.newInstance();
     formal.setValue(MdAttributeLocalTextInfo.NAME, "formal");
     formal.setStructValue(MdAttributeLocalTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Formal Usage");
-    formal.setValue(MdAttributeLocalTextInfo.DEFINING_MD_CLASS, phrases.getId());
-    formal.setValue(MdAttributeLocalTextInfo.MD_STRUCT, struct.getId());
+    formal.setValue(MdAttributeLocalTextInfo.DEFINING_MD_CLASS, phrases.getOid());
+    formal.setValue(MdAttributeLocalTextInfo.MD_STRUCT, struct.getOid());
     formal.apply();
 
     BusinessDAO sorryDAO = BusinessDAO.newInstance(phrases.definesType());
@@ -150,7 +150,7 @@ public class LocalizationTest
       businessDAO1 = BusinessDAO.newInstance(phrases.definesType());
       businessDAO1.apply();
 
-      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getOid()).getBusinessDAO();
       lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       lang.apply();
 
@@ -210,7 +210,7 @@ public class LocalizationTest
         businessDAO4.delete();
       }
 
-      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+      lang = (MdAttributeLocalCharacterDAO) MdAttributeLocalCharacterDAO.get(lang.getOid()).getBusinessDAO();
       lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       lang.apply();
 
@@ -236,7 +236,7 @@ public class LocalizationTest
     MdAttributeLocalCharacterDAO hello = MdAttributeLocalCharacterDAO.newInstance();
     hello.setValue(MdAttributeLocalCharacterInfo.NAME, "hello");
     hello.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hello");
-    hello.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getId());
+    hello.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getOid());
     hello.apply();
 
     try
@@ -259,8 +259,8 @@ public class LocalizationTest
     MdAttributeLocalCharacterDAO goodbye = MdAttributeLocalCharacterDAO.newInstance();
     goodbye.setValue(MdAttributeLocalCharacterInfo.NAME, "goodbye");
     goodbye.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Goodbye");
-    goodbye.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getId());
-    goodbye.setValue(MdAttributeLocalCharacterInfo.MD_STRUCT, struct.getId());
+    goodbye.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, phrases.getOid());
+    goodbye.setValue(MdAttributeLocalCharacterInfo.MD_STRUCT, struct.getOid());
     goodbye.apply();
 
     try
@@ -584,7 +584,7 @@ public class LocalizationTest
     BusinessDAOQuery bq = qf.businessDAOQuery(phrases.definesType());
 
     vq.SELECT(bq.aLocalCharacter(lang.definesAttribute()).localize("localValue"));
-    vq.WHERE(bq.id().EQ(sorryId));
+    vq.WHERE(bq.oid().EQ(sorryId));
 
     OIterator<ValueObject> i = vq.getIterator();
     ValueObject valueObject = i.next();
@@ -798,7 +798,7 @@ public class LocalizationTest
     BusinessDAOQuery bq = qf.businessDAOQuery(phrases.definesType());
 
     vq.SELECT(bq.aLocalCharacter(lang.definesAttribute()).localize("localValue"));
-    vq.WHERE(bq.id().EQ(sorryId));
+    vq.WHERE(bq.oid().EQ(sorryId));
 
     OIterator<ValueObject> i = vq.getIterator();
     ValueObject valueObject = i.next();
@@ -828,7 +828,7 @@ public class LocalizationTest
     ValueQuery vq = new ValueQuery(qf);
     BusinessDAOQuery bq = qf.businessDAOQuery(phrases.definesType());
     vq.SELECT(bq.aLocalCharacter(lang.definesAttribute()).localize("localValue"));
-    vq.WHERE(bq.id().EQ(sorryId));
+    vq.WHERE(bq.oid().EQ(sorryId));
 
     OIterator<ValueObject> i = vq.getIterator();
     ValueObject valueObject = i.next();

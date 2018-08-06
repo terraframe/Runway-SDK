@@ -36,7 +36,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
   
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String JOB = "job";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   public com.runwaysdk.system.scheduler.ExecutableJobDTO getDownstreamJob()
@@ -64,7 +64,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
     else
     {
-      setValue(DOWNSTREAMJOB, value.getId());
+      setValue(DOWNSTREAMJOB, value.getOid());
     }
   }
   
@@ -150,7 +150,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
     else
     {
-      setValue(JOB, value.getId());
+      setValue(JOB, value.getOid());
     }
   }
   
@@ -219,10 +219,10 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void applyWithJob(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id, com.runwaysdk.system.scheduler.ExecutableJobDTO job)
+  public static final void applyWithJob(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid, com.runwaysdk.system.scheduler.ExecutableJobDTO job)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "com.runwaysdk.system.scheduler.ExecutableJob"};
-    Object[] _parameters = new Object[]{id, job};
+    Object[] _parameters = new Object[]{oid, job};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.JobViewDTO.CLASS, "applyWithJob", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -235,9 +235,9 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     return (com.runwaysdk.system.scheduler.JobViewDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static JobViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static JobViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (JobViewDTO) dto;
   }
@@ -255,7 +255,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

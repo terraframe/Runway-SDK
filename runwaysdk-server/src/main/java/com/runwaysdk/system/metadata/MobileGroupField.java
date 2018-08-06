@@ -29,7 +29,7 @@ public class MobileGroupField extends MobileGroupFieldBase
   
   public MobileGroupField(com.runwaysdk.system.metadata.MdMobileGroup parent, com.runwaysdk.system.metadata.MdMobileField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -105,7 +105,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     
     if (deleteChildren)
     {
-      String[] rels = TermUtil.getAllChildRelationships(this.getId());
+      String[] rels = TermUtil.getAllChildRelationships(this.getOid());
       for (String relationship : rels)
       {
         exhaustiveDelete(relationship);
@@ -113,7 +113,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     }
     else
     {
-      String[] rels = TermUtil.getAllChildRelationships(this.getId());
+      String[] rels = TermUtil.getAllChildRelationships(this.getOid());
       for (String relationship : rels)
       {
         this.getStrategyWithInstance().removeTerm(this, relationship);
@@ -179,26 +179,26 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
         List<String> parentIds = new ArrayList<String>();
         for (Term parent : parents)
         {
-          parentIds.add(parent.getId());
+          parentIds.add(parent.getOid());
         }
         
-        insertIntoTemp(current.getId(), parentIds, s.size());
+        insertIntoTemp(current.getOid(), parentIds, s.size());
       }
       else
       {
-        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'"));
+        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getOid() + "'"));
         Database.parseAndExecute(sql);
         
         // TODO: We can't do this with the standard deleteWhere because it causes:
         // A SQL DDL operation was performed in a transaction on table [RUNWAY_ALLPATHS_MULTIPARENT_TEMP] after a SQL DML operation had been perfromed on the same table.  DDL statements cannot be performed if DML statements have aleady been performed on the same table within the same transaction.
         // See ruway apps ticket 558 for more details.
-//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getId() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getId() + "'");
+//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_ID_COL + " = '" + current.getOid() + "'");
         
         strategy.removeTerm(current, relationship);
         if (s.size() != 0)
         {
           current.beforeDeleteTerm();
-          EntityDAO.get(current.getId()).getEntityDAO().delete();
+          EntityDAO.get(current.getOid()).getEntityDAO().delete();
         }
       }
     }
@@ -479,8 +479,8 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
 //          statefulStrat.apply();
 //        }
 //
-////        MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getId()).getBusinessDAO();
-////        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
+////        MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getOid()).getBusinessDAO();
+////        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getOid());
 ////        mdTermDAO.apply();
 //      }
 //    }
@@ -498,7 +498,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
 //    }
 //    catch (DataNotFoundException e) {
 //      BusinessDAO dao = BusinessDAO.newInstance(termType);
-//      Term root = (Term) Business.get(dao.getId());
+//      Term root = (Term) Business.get(dao.getOid());
 //      root.getDisplayLabel().setValue("ROOT");
 //      root.setKeyName(ROOT_KEY);
 //      root.apply();
@@ -625,9 +625,9 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     super.apply();
   }
   
-  public static Term get(String id)
+  public static Term get(String oid)
   {
-    return (Term) Business.get(id);
+    return (Term) Business.get(oid);
   }
 
   public static Term get(String definesType, String key)

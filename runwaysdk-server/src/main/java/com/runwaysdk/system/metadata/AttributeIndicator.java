@@ -29,7 +29,7 @@ public class AttributeIndicator extends AttributeIndicatorBase
   
   public AttributeIndicator(com.runwaysdk.system.metadata.MdAttributeIndicator parent, com.runwaysdk.system.metadata.IndicatorComposite child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

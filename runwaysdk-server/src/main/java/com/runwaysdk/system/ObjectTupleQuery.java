@@ -119,19 +119,19 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.ObjectTuple.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.ObjectTuple.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.ObjectTuple.ID, alias, displayLabel);
 
@@ -389,9 +389,9 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -445,13 +445,13 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.ObjectTuple objectTuple)
     {
       if(objectTuple == null) return this.EQ((java.lang.String)null);
-      return this.EQ(objectTuple.getId());
+      return this.EQ(objectTuple.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.ObjectTuple objectTuple)
     {
       if(objectTuple == null) return this.NE((java.lang.String)null);
-      return this.NE(objectTuple.getId());
+      return this.NE(objectTuple.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -505,19 +505,19 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.ObjectTuple.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.ObjectTuple.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.ObjectTuple.ID, alias, displayLabel);
 
@@ -728,9 +728,9 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -789,7 +789,7 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<objectTuple.length; i++)
       {
-        itemIdArray[i] = objectTuple[i].getId();
+        itemIdArray[i] = objectTuple[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -801,7 +801,7 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<objectTuple.length; i++)
       {
-        itemIdArray[i] = objectTuple[i].getId();
+        itemIdArray[i] = objectTuple[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -813,7 +813,7 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<objectTuple.length; i++)
       {
-        itemIdArray[i] = objectTuple[i].getId();
+        itemIdArray[i] = objectTuple[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -825,7 +825,7 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<objectTuple.length; i++)
       {
-        itemIdArray[i] = objectTuple[i].getId();
+        itemIdArray[i] = objectTuple[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -837,7 +837,7 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<objectTuple.length; i++)
       {
-        itemIdArray[i] = objectTuple[i].getId();
+        itemIdArray[i] = objectTuple[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -893,19 +893,19 @@ public  class ObjectTupleQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.ObjectTuple.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.ObjectTuple.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.ObjectTuple.ID, alias, displayLabel);
 

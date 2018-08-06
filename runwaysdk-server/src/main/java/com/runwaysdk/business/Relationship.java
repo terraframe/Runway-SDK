@@ -64,9 +64,9 @@ public class Relationship extends Element implements Serializable
    * Constructor for new instances of Realtionships.
    *
    * @param parentId
-   *          Database id of the parent
+   *          Database oid of the parent
    * @param childId
-   *          Database id of the child
+   *          Database oid of the child
    * @param type
    *          type the relationship
    */
@@ -82,9 +82,9 @@ public class Relationship extends Element implements Serializable
    * Constructor for generic instances of Realtionships. Should not be called by subclasses, as their java type may not correctly represent their DAO type.
    *
    * @param parentId
-   *          Database id of the parent
+   *          Database oid of the parent
    * @param childId
-   *          Database id of the child
+   *          Database oid of the child
    * @param type
    *          type the relationship
    */
@@ -109,7 +109,7 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Overwrites the parent id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
+   * Overwrites the parent oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
    * corruption.
    *
    * @param parentId
@@ -120,7 +120,7 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Overwrites the child id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
+   * Overwrites the child oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
    *
    * @param childId
    */
@@ -130,24 +130,24 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified id from the database. The returned Relationship is typesafe, meaning that its actual type is that specified by the
+   * Using reflection, get returns an object of the specified type with the specified oid from the database. The returned Relationship is typesafe, meaning that its actual type is that specified by the
    * type parameter.
    *
-   * @param id
+   * @param oid
    *          ID of the instance to get
-   * @return Typesafe Relationship representing the id in the database
+   * @return Typesafe Relationship representing the oid in the database
    */
-  public static Relationship get(String id)
+  public static Relationship get(String oid)
   {
     // An empty string likely indicates the value was never set in the database.
-    if (id == null || id.length() == 0)
+    if (oid == null || oid.length() == 0)
     {
-      String errMsg = "Object with id [" + id + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
+      String errMsg = "Object with oid [" + oid + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
 
-      throw new InvalidIdException(errMsg, id);
+      throw new InvalidIdException(errMsg, oid);
     }
 
-    Relationship reflected = instantiate(RelationshipDAO.get(id));
+    Relationship reflected = instantiate(RelationshipDAO.get(oid));
 
     return reflected;
   }
@@ -160,7 +160,7 @@ public class Relationship extends Element implements Serializable
    *          type of the instance to get
    * @param key
    *          key of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
   public static Relationship get(String type, String key)
   {
@@ -170,18 +170,18 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Relationship is not typesafe, meaning that its actual type just a
+   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Relationship is not typesafe, meaning that its actual type just a
    * Relationship.
    *
-   * @param id
+   * @param oid
    *          ID of the instance to get.
    * @param type
    *          type of the instance to get.
-   * @return Typesafe Relationship representing the id in the database.
+   * @return Typesafe Relationship representing the oid in the database.
    */
-  public static Relationship getRelationship(String id)
+  public static Relationship getRelationship(String oid)
   {
-    RelationshipDAOIF relationshipIF = RelationshipDAO.get(id);
+    RelationshipDAOIF relationshipIF = RelationshipDAO.get(oid);
     // Cast is OK, as the data access object cannot be modified unless the logged in user
     // has a lock on the object.
     return new Relationship((RelationshipDAO) relationshipIF);
@@ -290,9 +290,9 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Returns the id of the parent on this object.
+   * Returns the oid of the parent on this object.
    *
-   * @return id of the parent on this object.
+   * @return oid of the parent on this object.
    */
   public String getParentId()
   {
@@ -314,9 +314,9 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Returns the id of the child on this object.
+   * Returns the oid of the child on this object.
    *
-   * @return id of the child on this object.
+   * @return oid of the child on this object.
    */
   public String getChildId()
   {

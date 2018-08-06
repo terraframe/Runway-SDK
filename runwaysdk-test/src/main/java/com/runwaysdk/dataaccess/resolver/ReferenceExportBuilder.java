@@ -70,10 +70,10 @@ public class ReferenceExportBuilder extends ExportBuilder<Void>
     businessDAO.apply();
 
     BusinessDAO referenceDAO = BusinessDAO.newInstance(referenceBusiness.definesType());
-    referenceDAO.setValue("testReference", businessDAO.getId());
+    referenceDAO.setValue("testReference", businessDAO.getOid());
     referenceDAO.apply();
 
-    businessDAO.setValue("testReference", referenceDAO.getId());
+    businessDAO.setValue("testReference", referenceDAO.getOid());
     businessDAO.apply();
   }
 

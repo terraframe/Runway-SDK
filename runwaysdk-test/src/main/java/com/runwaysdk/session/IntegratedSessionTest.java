@@ -277,7 +277,7 @@ public class IntegratedSessionTest
     newUser2.apply();
 
     mdActor = TestFixtureFactory.createMdBusiness("TestUser");
-    mdActor.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS).getId());
+    mdActor.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS).getOid());
     mdActor.apply();
 
     newActor1 = (SingleActorDAO) BusinessDAO.newInstance(mdActor.definesType());
@@ -339,47 +339,47 @@ public class IntegratedSessionTest
     // Create a businessDAO of MdBusiness
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     businessDAO.apply();
 
     businessDAO2 = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO2.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     businessDAO2.apply();
 
     businessDAO3 = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO3.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    businessDAO3.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO3.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     businessDAO3.apply();
 
     businessDAO4 = BusinessDAO.newInstance(mdBusinessChild.definesType());
     businessDAO4.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    businessDAO4.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO4.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     businessDAO4.apply();
 
     businessDAO5 = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO5.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    businessDAO5.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO5.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     businessDAO5.apply();
 
     deleteObject1 = BusinessDAO.newInstance(mdBusiness.definesType());
     deleteObject1.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    deleteObject1.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    deleteObject1.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     deleteObject1.apply();
 
     deleteObject2 = BusinessDAO.newInstance(mdBusiness.definesType());
     deleteObject2.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    deleteObject2.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    deleteObject2.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     deleteObject2.apply();
 
     deleteObject3 = BusinessDAO.newInstance(mdBusiness.definesType());
     deleteObject3.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    deleteObject3.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    deleteObject3.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     deleteObject3.apply();
 
     deleteObject4 = BusinessDAO.newInstance(mdBusiness.definesType());
     deleteObject4.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
-    deleteObject4.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    deleteObject4.getAttribute(ElementInfo.OWNER).setValue(newUser1.getOid());
     deleteObject4.apply();
 
     // Create some enumeration attribute items.
@@ -401,7 +401,7 @@ public class IntegratedSessionTest
     enumItemObject.setValue(mdAttributeCharacter1.definesAttribute(), "Option 3");
     enumItemId3 = enumItemObject.apply();
 
-    relationshipDAO = RelationshipDAO.newInstance(businessDAO.getId(), businessDAO2.getId(), mdRelationship.definesType());
+    relationshipDAO = RelationshipDAO.newInstance(businessDAO.getOid(), businessDAO2.getOid(), mdRelationship.definesType());
     relationshipDAO.apply();
   }
 
@@ -547,7 +547,7 @@ public class IntegratedSessionTest
     {
       MutableDTO mutableDTO = Facade.get(sessionId, ElementInfo.ID_VALUE);
 
-      if (!mutableDTO.getId().equals(ElementInfo.ID_VALUE))
+      if (!mutableDTO.getOid().equals(ElementInfo.ID_VALUE))
       {
         Assert.fail("Failed to instantiate an object with read permission.");
       }
@@ -655,7 +655,7 @@ public class IntegratedSessionTest
       BusinessDTO child = Facade.newBusiness(systemSessionId, mdBusiness.definesType());
       parent = Facade.createBusiness(systemSessionId, child);
 
-      RelationshipDTO relationshipDTO = Facade.addChild(sessionId, parent.getId(), child.getId(), mdRelationship.definesType());
+      RelationshipDTO relationshipDTO = Facade.addChild(sessionId, parent.getOid(), child.getOid(), mdRelationship.definesType());
 
       if (!relationshipDTO.isReadable() || relationshipDTO.isWritable())
       {
@@ -695,7 +695,7 @@ public class IntegratedSessionTest
       BusinessDTO child = Facade.newBusiness(sessionId, mdBusiness.definesType());
       child = Facade.createBusiness(sessionId, child);
 
-      RelationshipDTO relationshipDTO = Facade.addChild(sessionId, parent.getId(), child.getId(), mdRelationship.definesType());
+      RelationshipDTO relationshipDTO = Facade.addChild(sessionId, parent.getOid(), child.getOid(), mdRelationship.definesType());
 
       if (!relationshipDTO.getType().equals(mdRelationship.definesType()))
       {
@@ -716,9 +716,9 @@ public class IntegratedSessionTest
   @Test
   public void testTypeCreatePermissions()
   {
-    newUser1.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -793,9 +793,9 @@ public class IntegratedSessionTest
   {
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    owner.grantPermission(Operation.CREATE, mdBusiness.getId());
-    owner.grantPermission(Operation.WRITE, mdBusiness.getId());
-    owner.grantPermission(Operation.DELETE, mdBusiness.getId());
+    owner.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    owner.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    owner.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -857,8 +857,8 @@ public class IntegratedSessionTest
   public void testValidChangLogin()
   {
     String sessionId = Facade.loginAnonymous(new Locale[] { CommonProperties.getDefaultLocale() });
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     try
     {
@@ -911,7 +911,7 @@ public class IntegratedSessionTest
   }
 
   /**
-   * Tests passing in an invalid session id.
+   * Tests passing in an invalid session oid.
    */
   @Request
   @Test
@@ -921,7 +921,7 @@ public class IntegratedSessionTest
     try
     {
       Facade.changeLogin(sessionId, username1, password1);
-      Assert.fail("An invalid session id was accepted.");
+      Assert.fail("An invalid session oid was accepted.");
     }
     catch (Throwable e)
     {
@@ -946,8 +946,8 @@ public class IntegratedSessionTest
   @Test
   public void testLock()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -966,7 +966,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void noLockTest(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     if (test.getLockedBy() != null)
     {
@@ -989,7 +989,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidUnlockTest(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     try
     {
       test.lock();
@@ -1008,11 +1008,11 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void validReleaseUserLockTest(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
-      test.releaseUserLock(newUser1.getId());
+      test.releaseUserLock(newUser1.getOid());
     }
     catch (ClientException e)
     {
@@ -1024,8 +1024,8 @@ public class IntegratedSessionTest
   @Test
   public void testWriteTypePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1042,7 +1042,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void writeTypePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
@@ -1059,8 +1059,8 @@ public class IntegratedSessionTest
   public static void testWriteInheritancePermissions()
   {
     // Give permissions to the super class
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1077,7 +1077,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void writeInheritancePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO4.getId());
+    Business test = Business.get(businessDAO4.getOid());
 
     try
     {
@@ -1095,8 +1095,8 @@ public class IntegratedSessionTest
   @Test
   public void testWriteStructTypePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1113,7 +1113,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void writeStructTypePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
@@ -1136,8 +1136,8 @@ public class IntegratedSessionTest
   @Test
   public void testValidStructTypePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeCharacter.getId());
+    newUser1.grantPermission(Operation.WRITE, mdStruct.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeCharacter.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1154,7 +1154,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void validStructTypePermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1176,8 +1176,8 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidStructTypePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1194,7 +1194,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void invalidStructTypePermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1218,8 +1218,8 @@ public class IntegratedSessionTest
   @Test
   public void testValidStructSetBlobPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeBlob.getId());
+    newUser1.grantPermission(Operation.WRITE, mdStruct.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeBlob.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1237,7 +1237,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void validStructSetBlobPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1259,8 +1259,8 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidStructSetBlobPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1278,7 +1278,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void invalidStructSetBlobPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1301,8 +1301,8 @@ public class IntegratedSessionTest
   @Test
   public void testValidStructAddEnumPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getId());
+    newUser1.grantPermission(Operation.WRITE, mdStruct.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1320,7 +1320,7 @@ public class IntegratedSessionTest
       @Request(RequestType.SESSION)
       protected void doIt(String sessionId)
       {
-        Struct test = Struct.get(structDAO.getId());
+        Struct test = Struct.get(structDAO.getOid());
         test.clearEnum(mdAttributeEnumeration.definesAttribute());
       }
     }.run();
@@ -1329,7 +1329,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void validStructAddEnumPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1351,8 +1351,8 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidStructAddEnumPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1370,7 +1370,7 @@ public class IntegratedSessionTest
       @Request(RequestType.SESSION)
       protected void doIt(String sessionId)
       {
-        Struct test = Struct.get(structDAO.getId());
+        Struct test = Struct.get(structDAO.getOid());
         test.clearEnum(mdAttributeEnumeration.definesAttribute());
       }
     }.run();
@@ -1379,7 +1379,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void invalidStructAddEnumPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1402,10 +1402,10 @@ public class IntegratedSessionTest
   @Test
   public void testValidStructClearAllPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getId());
+    newUser1.grantPermission(Operation.WRITE, mdStruct.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getOid());
 
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId2);
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId3);
@@ -1425,7 +1425,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void validStructClearAllPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1447,10 +1447,10 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidStructClearAllPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId2);
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId3);
@@ -1470,7 +1470,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void invalidStructClearAllPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1493,10 +1493,10 @@ public class IntegratedSessionTest
   @Test
   public void testValidStructRemoveItemPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdStruct.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getId());
+    newUser1.grantPermission(Operation.WRITE, mdStruct.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeEnumeration.getOid());
 
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -1514,7 +1514,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void validStructRemoveItemPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1536,10 +1536,10 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidStructRemoveItemPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
     test.addEnumItem(mdAttributeEnumeration.definesAttribute(), enumItemId1);
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -1557,7 +1557,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void invalidStructRemoveItemPermissions(String sessionId)
   {
-    Struct test = Struct.get(structDAO.getId());
+    Struct test = Struct.get(structDAO.getOid());
 
     try
     {
@@ -1575,8 +1575,8 @@ public class IntegratedSessionTest
   @Test
   public void testWriteStructOnStructPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1593,7 +1593,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void writeStructOnStructPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1616,7 +1616,7 @@ public class IntegratedSessionTest
   @Test
   public void testWriteStructOnStructPermissionsFail()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1633,7 +1633,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void writeStructOnStructPermissionsFail(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1657,8 +1657,8 @@ public class IntegratedSessionTest
   @Test
   public void testStructSetBlobOnStructPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1675,7 +1675,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structSetBlobOnStructPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1698,7 +1698,7 @@ public class IntegratedSessionTest
   @Test
   public void testStructSetBlobOnStructPermissionsFail()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1715,7 +1715,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structSetBlobOnStructPermissionsFail(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1739,8 +1739,8 @@ public class IntegratedSessionTest
   @Test
   public void testStructAddItemOnStructPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1757,7 +1757,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structAddItemOnStructPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1780,7 +1780,7 @@ public class IntegratedSessionTest
   @Test
   public void testStructAddItemOnStructPermissionsFail()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1797,7 +1797,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structAddItemOnStructPermissionsFail(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1821,10 +1821,10 @@ public class IntegratedSessionTest
   @Test
   public void testStructClearItemsOnStructPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     final Struct struct = test.getGenericStruct("testStruct");
 
     test.lock();
@@ -1849,7 +1849,7 @@ public class IntegratedSessionTest
       @Request(RequestType.SESSION)
       protected void doIt(String sessionId)
       {
-        Business test = Business.get(businessDAO.getId());
+        Business test = Business.get(businessDAO.getOid());
         Struct struct = test.getGenericStruct("testStruct");
 
         test.lock();
@@ -1863,7 +1863,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structClearItemsOnStructPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1886,9 +1886,9 @@ public class IntegratedSessionTest
   @Test
   public void testStructClearItemsOnStructPermissionsFail()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     final Struct struct = test.getGenericStruct("testStruct");
 
     test.lock();
@@ -1922,7 +1922,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structClearItemsOnStructPermissionsFail(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -1946,10 +1946,10 @@ public class IntegratedSessionTest
   @Test
   public void testStructRemoveItemOnStructPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeStruct.getOid());
 
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     final Struct struct = test.getGenericStruct("testStruct");
 
     test.lock();
@@ -1972,7 +1972,7 @@ public class IntegratedSessionTest
       @Request(RequestType.SESSION)
       protected void doIt(String sessionId)
       {
-        Business test = Business.get(businessDAO.getId());
+        Business test = Business.get(businessDAO.getOid());
         Struct struct = test.getGenericStruct("testStruct");
 
         test.lock();
@@ -1985,7 +1985,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structRemoveItemOnStructPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -2008,9 +2008,9 @@ public class IntegratedSessionTest
   @Test
   public void testStructRemoveItemOnStructPermissionsFail()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     final Struct struct = test.getGenericStruct("testStruct");
 
     test.lock();
@@ -2042,7 +2042,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   private static void structRemoveItemOnStructPermissionsFail(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
     Struct struct = test.getGenericStruct("testStruct");
 
     try
@@ -2062,7 +2062,7 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidWritePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2079,7 +2079,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidWritePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
@@ -2096,9 +2096,9 @@ public class IntegratedSessionTest
     }
     finally
     {
-      if (test.getValue(ElementInfo.LOCKED_BY).equals(newUser1.getId()))
+      if (test.getValue(ElementInfo.LOCKED_BY).equals(newUser1.getOid()))
       {
-        test.releaseUserLock(newUser1.getId());
+        test.releaseUserLock(newUser1.getOid());
       }
     }
   }
@@ -2107,7 +2107,7 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidWritePermissions2()
   {
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2124,7 +2124,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidWritePermissions2(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
@@ -2145,10 +2145,10 @@ public class IntegratedSessionTest
   @Test
   public void testTypeAddChildPermissions()
   {
-    newUser1.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
-    Business parent = Business.get(businessDAO.getId());
+    Business parent = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2165,7 +2165,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void typeAddChildPermissions(String sessionId, Business parent)
   {
-    Business child = Business.get(businessDAO2.getId());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship rel = null;
 
@@ -2186,7 +2186,7 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidTypeAddChildPermissions()
   {
-    Business parent = Business.get(businessDAO.getId());
+    Business parent = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2203,7 +2203,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidTypeAddChildPermissions(String sessionId, Business parent)
   {
-    Business child = Business.get(businessDAO2.getId());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship rel = null;
 
@@ -2226,11 +2226,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeWriteChildPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE_CHILD, mdRelationship.getId());
-    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE_CHILD, mdRelationship.getOid());
+    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getOid());
 
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     final Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
@@ -2239,7 +2239,7 @@ public class IntegratedSessionTest
 
     try
     {
-      typeWriteChildPermissions(sessionId, relationship.getId());
+      typeWriteChildPermissions(sessionId, relationship.getOid());
     }
     finally
     {
@@ -2278,10 +2278,10 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidWriteRelationshipPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getOid());
 
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     final Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
@@ -2290,7 +2290,7 @@ public class IntegratedSessionTest
 
     try
     {
-      invalidWriteRelationsPermissions(sessionId, relationship.getId());
+      invalidWriteRelationsPermissions(sessionId, relationship.getOid());
     }
     finally
     {
@@ -2329,11 +2329,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeWriteRelationshipPermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdRelationship.getId());
-    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdRelationship.getOid());
+    newUser1.grantPermission(Operation.WRITE, relMdAttribute.getOid());
 
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     final Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
@@ -2342,7 +2342,7 @@ public class IntegratedSessionTest
 
     try
     {
-      typeWriteRelationshipPermissions(sessionId, relationship.getId());
+      typeWriteRelationshipPermissions(sessionId, relationship.getOid());
     }
     finally
     {
@@ -2380,11 +2380,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteAllChildrenPermissions()
   {
-    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -2422,11 +2422,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteChildPermission()
   {
-    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -2461,11 +2461,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteAllChildrenPermissions_missingDeleteChild()
   {
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -2503,11 +2503,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteChildPermission_missingDeleteChild()
   {
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -2541,11 +2541,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteAllParentPermissions()
   {
-    newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2583,11 +2583,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteParentPermission()
   {
-    newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE_PARENT, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject2.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2622,11 +2622,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteAllParentsPermissions_missingParentChild()
   {
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2664,11 +2664,11 @@ public class IntegratedSessionTest
   @Test
   public void testTypeDeleteParentPermission_missingDeleteParent()
   {
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject1.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2702,11 +2702,11 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidTypeDeleteParentPermission_missingDelete()
   {
-    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    newUser1.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     // Create the relationship
-    final Business parent = Business.get(businessDAO.getId());
-    final Business child = Business.get(deleteObject2.getId());
+    final Business parent = Business.get(businessDAO.getOid());
+    final Business child = Business.get(deleteObject2.getOid());
 
     final Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2753,10 +2753,10 @@ public class IntegratedSessionTest
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
-    Business parent = Business.get(businessDAO.getId());
+    Business parent = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2773,7 +2773,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void ownerAddChildPermissions(String sessionId, Business parent)
   {
-    Business child = Business.get(businessDAO2.getId());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship rel = null;
 
@@ -2796,10 +2796,10 @@ public class IntegratedSessionTest
   {
     String relationshipId = null;
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.WRITE, relMdAttribute.getId());
-    role.grantPermission(Operation.DELETE, mdRelationship.getId());
+    role.grantPermission(Operation.WRITE, relMdAttribute.getOid());
+    role.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
-    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
     try
@@ -2811,8 +2811,8 @@ public class IntegratedSessionTest
       Facade.logout(sessionId);
     }
 
-    role.revokePermission(Operation.ADD_CHILD, mdRelationship.getId());
-    role.grantPermission(Operation.WRITE_CHILD, mdRelationship.getId());
+    role.revokePermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    role.grantPermission(Operation.WRITE_CHILD, mdRelationship.getOid());
 
     sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -2829,13 +2829,13 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static String ownerWriteChildPermissions_CreateRelationship(String sessionId)
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
 
-    return relationship.getId();
+    return relationship.getOid();
   }
 
   @Request(RequestType.SESSION)
@@ -2867,11 +2867,11 @@ public class IntegratedSessionTest
   @Test
   public void testOwnerWriteChildRelationshipPermissions()
   {
-    newUser2.grantPermission(Operation.CREATE, mdRelationship.getId());
+    newUser2.grantPermission(Operation.CREATE, mdRelationship.getOid());
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.WRITE_CHILD, mdRelationship.getId());
-    role.grantPermission(Operation.WRITE_CHILD, relMdAttribute.getId());
+    role.grantPermission(Operation.WRITE_CHILD, mdRelationship.getOid());
+    role.grantPermission(Operation.WRITE_CHILD, relMdAttribute.getOid());
     String relationshipId = null;
 
     // create the relationship with one user
@@ -2914,13 +2914,13 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static String typeWriteRelationshipPermissions_createRelationship(String sessionId)
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
 
-    return relationship.getId();
+    return relationship.getOid();
   }
 
   @Request(RequestType.SESSION)
@@ -2944,8 +2944,8 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidOwnerWriteChildPermissions()
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = parent.addChild(child, mdRelationship.definesType());
     relationship.apply();
@@ -2954,7 +2954,7 @@ public class IntegratedSessionTest
 
     try
     {
-      ownerInvalidWriteChildPermissions(sessionId, relationship.getId());
+      ownerInvalidWriteChildPermissions(sessionId, relationship.getOid());
     }
     finally
     {
@@ -2986,11 +2986,11 @@ public class IntegratedSessionTest
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    role.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(deleteObject2.getOid());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -3027,8 +3027,8 @@ public class IntegratedSessionTest
   {
 
     // Create the relationship
-    final Business parent = Business.get(businessDAO.getId());
-    final Business child = Business.get(deleteObject1.getId());
+    final Business parent = Business.get(businessDAO.getOid());
+    final Business child = Business.get(deleteObject1.getOid());
 
     final Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -3073,12 +3073,12 @@ public class IntegratedSessionTest
   @Test
   public void testAddChildPermissions2()
   {
-    newUser1.grantPermission(Operation.CREATE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.CREATE, mdRelationship.getOid());
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
     try
     {
-      Business parent = Business.get(businessDAO.getId());
+      Business parent = Business.get(businessDAO.getOid());
       addChildPermissions2(sessionId, parent);
     }
     finally
@@ -3090,7 +3090,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void addChildPermissions2(String sessionId, Business parent)
   {
-    Business child = Business.get(businessDAO2.getId());
+    Business child = Business.get(businessDAO2.getOid());
 
     try
     {
@@ -3108,10 +3108,10 @@ public class IntegratedSessionTest
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
-    newUser1.grantPermission(Operation.DELETE, mdRelationship.getId());
+    role.grantPermission(Operation.ADD_PARENT, mdRelationship.getOid());
+    newUser1.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
-    Business child = Business.get(businessDAO.getId());
+    Business child = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3128,7 +3128,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void ownerAddParentPermissions(String sessionId, Business child)
   {
-    Business parent = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO2.getOid());
     Relationship rel = null;
 
     try
@@ -3148,7 +3148,7 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidOwnerAddParentPermissions()
   {
-    Business child = Business.get(businessDAO.getId());
+    Business child = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3165,7 +3165,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidOwnerAddParentPermissions(String sessionId, Business child)
   {
-    Business parent = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO2.getOid());
     Relationship rel = null;
 
     try
@@ -3186,10 +3186,10 @@ public class IntegratedSessionTest
   {
     String relationshipId = null;
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.WRITE, relMdAttribute.getId());
-    role.grantPermission(Operation.DELETE, mdRelationship.getId());
+    role.grantPermission(Operation.WRITE, relMdAttribute.getOid());
+    role.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
-    role.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
+    role.grantPermission(Operation.ADD_PARENT, mdRelationship.getOid());
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
     try
@@ -3201,8 +3201,8 @@ public class IntegratedSessionTest
       Facade.logout(sessionId);
     }
 
-    role.revokePermission(Operation.ADD_PARENT, mdRelationship.getId());
-    role.grantPermission(Operation.WRITE_PARENT, mdRelationship.getId());
+    role.revokePermission(Operation.ADD_PARENT, mdRelationship.getOid());
+    role.grantPermission(Operation.WRITE_PARENT, mdRelationship.getOid());
 
     sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3219,13 +3219,13 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static String ownerWriteParentPermissions_CreateRelationship(String sessionId)
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = child.addParent(parent, mdRelationship.definesType());
     relationship.apply();
 
-    return relationship.getId();
+    return relationship.getOid();
   }
 
   @Request(RequestType.SESSION)
@@ -3257,12 +3257,12 @@ public class IntegratedSessionTest
   @Test
   public void testOwnerWriteParentRelationshipPermissions()
   {
-    newUser2.grantPermission(Operation.CREATE, mdRelationship.getId());
+    newUser2.grantPermission(Operation.CREATE, mdRelationship.getOid());
 
     String relationshipId = null;
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.WRITE_PARENT, mdRelationship.getId());
-    role.grantPermission(Operation.WRITE_PARENT, relMdAttribute.getId());
+    role.grantPermission(Operation.WRITE_PARENT, mdRelationship.getOid());
+    role.grantPermission(Operation.WRITE_PARENT, relMdAttribute.getOid());
 
     // create the relationship with one user
     String sessionId = Facade.login(username2, password2, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -3304,13 +3304,13 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static String typeWriteParentRelationshipPermissions_createRelationship(String sessionId)
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = child.addParent(parent, mdRelationship.definesType());
     relationship.apply();
 
-    return relationship.getId();
+    return relationship.getOid();
   }
 
   @Request(RequestType.SESSION)
@@ -3334,8 +3334,8 @@ public class IntegratedSessionTest
   @Test
   public void testInvalidOwnerWriteParentPermissions()
   {
-    Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO.getOid());
+    Business child = Business.get(businessDAO2.getOid());
 
     Relationship relationship = child.addParent(parent, mdRelationship.definesType());
     relationship.apply();
@@ -3344,7 +3344,7 @@ public class IntegratedSessionTest
 
     try
     {
-      ownerInvalidWriteParentPermissions(sessionId, relationship.getId());
+      ownerInvalidWriteParentPermissions(sessionId, relationship.getOid());
     }
     finally
     {
@@ -3376,11 +3376,11 @@ public class IntegratedSessionTest
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
+    role.grantPermission(Operation.DELETE_PARENT, mdRelationship.getOid());
 
     // Create the relationship
-    Business parent = Business.get(businessDAO2.getId());
-    Business child = Business.get(businessDAO.getId());
+    Business parent = Business.get(businessDAO2.getOid());
+    Business child = Business.get(businessDAO.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -3416,8 +3416,8 @@ public class IntegratedSessionTest
   public void testInvalidOwnerDeleteParentPermissions()
   {
     // Create the relationship
-    Business parent = Business.get(businessDAO2.getId());
-    Business child = Business.get(businessDAO.getId());
+    Business parent = Business.get(businessDAO2.getOid());
+    Business child = Business.get(businessDAO.getOid());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -3453,9 +3453,9 @@ public class IntegratedSessionTest
   @Test
   public void testAddParentPermissions2()
   {
-    newUser1.grantPermission(Operation.CREATE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.CREATE, mdRelationship.getOid());
 
-    Business child = Business.get(businessDAO.getId());
+    Business child = Business.get(businessDAO.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3472,7 +3472,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void addParentPermissions2(String sessionId, Business child)
   {
-    Business parent = Business.get(businessDAO2.getId());
+    Business parent = Business.get(businessDAO2.getOid());
 
     try
     {
@@ -3503,7 +3503,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidDeletePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO.getOid());
 
     try
     {
@@ -3519,8 +3519,8 @@ public class IntegratedSessionTest
 
   public static void testTypeDeletePermissions()
   {
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3537,7 +3537,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void typeDeletePermissions(String sessionId)
   {
-    Business test = Business.get(deleteObject1.getId());
+    Business test = Business.get(deleteObject1.getOid());
 
     try
     {
@@ -3554,8 +3554,8 @@ public class IntegratedSessionTest
   {
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    owner.grantPermission(Operation.WRITE, mdBusiness.getId());
-    owner.grantPermission(Operation.DELETE, mdBusiness.getId());
+    owner.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    owner.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3572,7 +3572,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void ownerDeletePermissions(String sessionId)
   {
-    Business test = Business.get(deleteObject3.getId());
+    Business test = Business.get(deleteObject3.getOid());
 
     try
     {
@@ -3587,7 +3587,7 @@ public class IntegratedSessionTest
 
   public static void testRelationshipPermission()
   {
-    newUser1.grantPermission(Operation.WRITE, mdRelationship.getId());
+    newUser1.grantPermission(Operation.WRITE, mdRelationship.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3604,7 +3604,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void relationshipPermissions(String sessionId)
   {
-    Relationship test = Relationship.get(relationshipDAO.getId());
+    Relationship test = Relationship.get(relationshipDAO.getOid());
 
     try
     {
@@ -3634,7 +3634,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void invalidRelationshipPermissions(String sessionId)
   {
-    Relationship test = Relationship.get(relationshipDAO.getId());
+    Relationship test = Relationship.get(relationshipDAO.getOid());
 
     try
     {
@@ -3657,9 +3657,9 @@ public class IntegratedSessionTest
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
 
-    newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttributeDimension.getId());
-    newUser1.grantPermission(Operation.READ, mdAttributeDimension.getId());
+    newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttributeDimension.getOid());
+    newUser1.grantPermission(Operation.READ, mdAttributeDimension.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -3677,7 +3677,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void attributeDimensionPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO4.getId());
+    Business test = Business.get(businessDAO4.getOid());
 
     try
     {
@@ -3699,10 +3699,10 @@ public class IntegratedSessionTest
   {
     MdClassDimensionDAOIF mdClassDimension = mdDimension.getMdClassDimension(mdBusiness);
 
-    newUser1.grantPermission(Operation.WRITE, mdClassDimension.getId());
-    newUser1.grantPermission(Operation.READ, mdClassDimension.getId());
-    newUser1.grantPermission(Operation.WRITE, mdAttribute.getId());
-    newUser1.grantPermission(Operation.READ, mdAttribute.getId());
+    newUser1.grantPermission(Operation.WRITE, mdClassDimension.getOid());
+    newUser1.grantPermission(Operation.READ, mdClassDimension.getOid());
+    newUser1.grantPermission(Operation.WRITE, mdAttribute.getOid());
+    newUser1.grantPermission(Operation.READ, mdAttribute.getOid());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -3724,7 +3724,7 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void classDimensionPermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO4.getId());
+    Business test = Business.get(businessDAO4.getOid());
 
     boolean value = Boolean.parseBoolean(test.getValue(mdAttribute.definesAttribute()));
 
@@ -3750,8 +3750,8 @@ public class IntegratedSessionTest
         subRole.addAscendant(superRole);
         subRole.assignMember(newUser1);
 
-        superRole.grantPermission(Operation.CREATE, mdBusiness.getId());
-        subRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
+        superRole.grantPermission(Operation.CREATE, mdBusiness.getOid());
+        subRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
 
         String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
         SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -3793,8 +3793,8 @@ public class IntegratedSessionTest
         subRole.addAscendant(superRole);
         subRole.assignMember(newUser1);
 
-        superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-        subRole.grantPermission(Operation.CREATE, mdBusiness.getId());
+        superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+        subRole.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
         String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
         SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -3823,8 +3823,8 @@ public class IntegratedSessionTest
   @Test
   public void testSingleActorPermissions()
   {
-    newActor1.grantPermission(Operation.WRITE, mdBusiness.getId());
-    newActor1.grantPermission(Operation.WRITE, mdAttribute.getId());
+    newActor1.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    newActor1.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
     String sessionId = SessionFacade.logIn(newActor1, new Locale[] { CommonProperties.getDefaultLocale() });
 

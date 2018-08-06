@@ -29,7 +29,7 @@ public class ClassHasDimension extends ClassHasDimensionBase
   
   public ClassHasDimension(com.runwaysdk.system.metadata.MdAttribute parent, com.runwaysdk.system.metadata.MdClassDimension child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

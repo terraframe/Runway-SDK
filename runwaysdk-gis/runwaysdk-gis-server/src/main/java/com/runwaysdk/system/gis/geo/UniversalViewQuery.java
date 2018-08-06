@@ -83,11 +83,11 @@ public class UniversalViewQuery extends com.runwaysdk.system.gis.geo.UniversalVi
       
       q.map(UniversalView.DISPLAYLABEL, universalQuery.getDisplayLabel().localize());
       q.map(UniversalView.DESCRIPTION, universalQuery.getDescription().localize());
-      q.map(UniversalView.UNIVERSAL, universalQuery.getId());
+      q.map(UniversalView.UNIVERSAL, universalQuery.getOid());
       
       // Because a Universal can have more than one allowed in parent it does
       // not make sense to return just one match.
-//      q.map(UniversalView.PARENTUNIVERSAL, universalQuery.getId());
+//      q.map(UniversalView.PARENTUNIVERSAL, universalQuery.getOid());
     }
 
     /**
@@ -99,7 +99,7 @@ public class UniversalViewQuery extends com.runwaysdk.system.gis.geo.UniversalVi
       
       if(ids.length > 0)
       {
-        q.WHERE(universalQuery.getId().IN(ids));
+        q.WHERE(universalQuery.getOid().IN(ids));
       }
     }
 

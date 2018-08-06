@@ -29,7 +29,7 @@ public class JobHistoryRecord extends JobHistoryRecordBase
   
   public JobHistoryRecord(com.runwaysdk.system.scheduler.ExecutableJob parent, com.runwaysdk.system.scheduler.JobHistory child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

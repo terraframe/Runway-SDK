@@ -58,7 +58,7 @@ public class EnumerationFacade
         {
           BusinessEnumeration enu = (BusinessEnumeration) clazz.getMethod("valueOf", String.class).invoke(null, enumName);
 
-          return Business.get(enu.getId());
+          return Business.get(enu.getOid());
         }
         catch (InvocationTargetException ite)
         {

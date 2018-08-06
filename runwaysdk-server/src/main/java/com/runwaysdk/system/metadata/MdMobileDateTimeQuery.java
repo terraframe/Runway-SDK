@@ -114,13 +114,13 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileDateTime mdMobileDateTime)
     {
       if(mdMobileDateTime == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileDateTime.getId());
+      return this.EQ(mdMobileDateTime.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileDateTime mdMobileDateTime)
     {
       if(mdMobileDateTime == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileDateTime.getId());
+      return this.NE(mdMobileDateTime.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
 
       for (int i=0; i<mdMobileDateTime.length; i++)
       {
-        itemIdArray[i] = mdMobileDateTime[i].getId();
+        itemIdArray[i] = mdMobileDateTime[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
 
       for (int i=0; i<mdMobileDateTime.length; i++)
       {
-        itemIdArray[i] = mdMobileDateTime[i].getId();
+        itemIdArray[i] = mdMobileDateTime[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
 
       for (int i=0; i<mdMobileDateTime.length; i++)
       {
-        itemIdArray[i] = mdMobileDateTime[i].getId();
+        itemIdArray[i] = mdMobileDateTime[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
 
       for (int i=0; i<mdMobileDateTime.length; i++)
       {
-        itemIdArray[i] = mdMobileDateTime[i].getId();
+        itemIdArray[i] = mdMobileDateTime[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileDateTimeQuery extends com.runwaysdk.system.metadata.MdMobi
 
       for (int i=0; i<mdMobileDateTime.length; i++)
       {
-        itemIdArray[i] = mdMobileDateTime[i].getId();
+        itemIdArray[i] = mdMobileDateTime[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

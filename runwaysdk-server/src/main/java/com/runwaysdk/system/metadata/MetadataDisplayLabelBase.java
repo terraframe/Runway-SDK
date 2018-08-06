@@ -12,7 +12,7 @@ public abstract class MetadataDisplayLabelBase extends com.runwaysdk.business.Lo
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MetadataDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 2099993645;
@@ -27,9 +27,9 @@ public abstract class MetadataDisplayLabelBase extends com.runwaysdk.business.Lo
     super(component, structName);
   }
   
-  public static MetadataDisplayLabel get(String id)
+  public static MetadataDisplayLabel get(String oid)
   {
-    return (MetadataDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (MetadataDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MetadataDisplayLabel getByKey(String key)
@@ -37,7 +37,7 @@ public abstract class MetadataDisplayLabelBase extends com.runwaysdk.business.Lo
     return (MetadataDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class MetadataDisplayLabelBase extends com.runwaysdk.business.Lo
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MetadataDisplayLabel.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

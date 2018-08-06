@@ -67,7 +67,7 @@ public abstract class RelationshipExportBuilder extends ExportBuilder<Relationsh
   @Transaction
   private RelationshipDAO inTransaction()
   {
-    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), relationshipType);
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), relationshipType);
 
     relationship.apply();
 

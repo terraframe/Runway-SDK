@@ -41,9 +41,9 @@ public abstract class MdWebMomentBase extends com.runwaysdk.system.metadata.MdWe
     return CLASS;
   }
   
-  public static MdWebMoment get(String id)
+  public static MdWebMoment get(String oid)
   {
-    return (MdWebMoment) com.runwaysdk.business.Business.get(id);
+    return (MdWebMoment) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebMoment getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebMomentBase extends com.runwaysdk.system.metadata.MdWe
     return (MdWebMoment) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebMoment lock(java.lang.String id)
+  public static MdWebMoment lock(java.lang.String oid)
   {
-    MdWebMoment _instance = MdWebMoment.get(id);
+    MdWebMoment _instance = MdWebMoment.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebMoment unlock(java.lang.String id)
+  public static MdWebMoment unlock(java.lang.String oid)
   {
-    MdWebMoment _instance = MdWebMoment.get(id);
+    MdWebMoment _instance = MdWebMoment.get(oid);
     _instance.unlock();
     
     return _instance;

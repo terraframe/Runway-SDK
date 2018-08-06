@@ -78,12 +78,12 @@ public class CacheAllBusinessDAOstrategy extends CacheAllStrategy
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  protected EntityDAOIF getFromFactory(String id)
+  protected EntityDAOIF getFromFactory(String oid)
   {
-    return BusinessDAOFactory.get(id);
+    return BusinessDAOFactory.get(oid);
   }
 
   /**

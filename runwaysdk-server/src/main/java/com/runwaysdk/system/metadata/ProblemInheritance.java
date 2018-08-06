@@ -29,7 +29,7 @@ public class ProblemInheritance extends ProblemInheritanceBase
   
   public ProblemInheritance(com.runwaysdk.system.metadata.MdProblem parent, com.runwaysdk.system.metadata.MdProblem child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

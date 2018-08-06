@@ -40,7 +40,7 @@ public class BasicJSONToViewDTO extends BasicJSONToSessionDTO
   }
 
   @Override
-  protected ViewDTO factoryMethod(String type, boolean newInstance, String id) throws JSONException
+  protected ViewDTO factoryMethod(String type, boolean newInstance, String oid) throws JSONException
   {
     ClientRequestIF request = getClientRequest();
 
@@ -50,7 +50,7 @@ public class BasicJSONToViewDTO extends BasicJSONToSessionDTO
     }
     else
     {
-      return (ViewDTO) request.get(id);
+      return (ViewDTO) request.get(oid);
     }
   }
 

@@ -71,7 +71,7 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -95,9 +95,9 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(UNIVERSAL).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO) dto;
   }
@@ -115,7 +115,7 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -128,10 +128,10 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -141,10 +141,10 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.UniversalSQLBuilderDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -48,16 +48,16 @@ public interface MdAttributeReferenceDAOIF extends MdAttributeRefDAOIF
   public MdBusinessDAOIF getReferenceMdBusinessDAO();
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    *
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedServerGetterRefId();
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    *
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedClientGetterRefId();
 

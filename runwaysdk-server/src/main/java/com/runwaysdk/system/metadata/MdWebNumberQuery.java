@@ -154,13 +154,13 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebNumber mdWebNumber)
     {
       if(mdWebNumber == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebNumber.getId());
+      return this.EQ(mdWebNumber.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebNumber mdWebNumber)
     {
       if(mdWebNumber == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebNumber.getId());
+      return this.NE(mdWebNumber.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getEndRange()
@@ -243,7 +243,7 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
 
       for (int i=0; i<mdWebNumber.length; i++)
       {
-        itemIdArray[i] = mdWebNumber[i].getId();
+        itemIdArray[i] = mdWebNumber[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
 
       for (int i=0; i<mdWebNumber.length; i++)
       {
-        itemIdArray[i] = mdWebNumber[i].getId();
+        itemIdArray[i] = mdWebNumber[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
 
       for (int i=0; i<mdWebNumber.length; i++)
       {
-        itemIdArray[i] = mdWebNumber[i].getId();
+        itemIdArray[i] = mdWebNumber[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
 
       for (int i=0; i<mdWebNumber.length; i++)
       {
-        itemIdArray[i] = mdWebNumber[i].getId();
+        itemIdArray[i] = mdWebNumber[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdWebNumberQuery extends com.runwaysdk.system.metadata.MdWebPrimit
 
       for (int i=0; i<mdWebNumber.length; i++)
       {
-        itemIdArray[i] = mdWebNumber[i].getId();
+        itemIdArray[i] = mdWebNumber[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

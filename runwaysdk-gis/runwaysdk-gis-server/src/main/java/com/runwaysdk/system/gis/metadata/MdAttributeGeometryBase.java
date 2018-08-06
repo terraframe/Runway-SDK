@@ -99,9 +99,9 @@ public abstract class MdAttributeGeometryBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static MdAttributeGeometry get(String id)
+  public static MdAttributeGeometry get(String oid)
   {
-    return (MdAttributeGeometry) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeGeometry) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeGeometry getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdAttributeGeometryBase extends com.runwaysdk.system.metad
     return (MdAttributeGeometry) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeGeometry lock(java.lang.String id)
+  public static MdAttributeGeometry lock(java.lang.String oid)
   {
-    MdAttributeGeometry _instance = MdAttributeGeometry.get(id);
+    MdAttributeGeometry _instance = MdAttributeGeometry.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeGeometry unlock(java.lang.String id)
+  public static MdAttributeGeometry unlock(java.lang.String oid)
   {
-    MdAttributeGeometry _instance = MdAttributeGeometry.get(id);
+    MdAttributeGeometry _instance = MdAttributeGeometry.get(oid);
     _instance.unlock();
     
     return _instance;

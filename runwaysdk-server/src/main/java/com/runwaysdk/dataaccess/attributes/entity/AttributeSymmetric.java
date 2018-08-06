@@ -174,7 +174,7 @@ public class AttributeSymmetric extends AttributeEncryption implements Attribute
    */
   public static String cipher(AttributeSymmetricIF attributeSymmetricIF, String value, int opmode)
   {
-    String alias = attributeSymmetricIF.getMdAttribute().getId();
+    String alias = attributeSymmetricIF.getMdAttribute().getOid();
 
     KeyStoreAccess access = KeyStoreAccess.getInstance();
     Cipher cipher = null;

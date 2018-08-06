@@ -52,7 +52,7 @@ public class XMLTransactionTags
   // Transaction Item Tag
   public static final String XML_TRANSACTION_ITEM_TAG               = "transactionItem";
 
-  public static final String XML_TRANSACTION_ITEM_ID_ATTR           = "id";
+  public static final String XML_TRANSACTION_ITEM_ID_ATTR           = "oid";
 
   public static final String XML_TRANSACTION_ITEM_SEQ_ATTR          = "seq";
 

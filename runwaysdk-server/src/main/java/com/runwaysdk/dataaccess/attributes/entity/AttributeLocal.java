@@ -188,7 +188,7 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
   protected String save(boolean validateRequired)
   {
     StructDAO structDAO = this.getStructDAO();
-    structDAO.setKey(structDAO.getId());
+    structDAO.setKey(structDAO.getOid());
     
     if (!this.isImport())
     {

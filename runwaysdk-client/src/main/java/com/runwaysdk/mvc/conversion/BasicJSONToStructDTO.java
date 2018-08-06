@@ -58,7 +58,7 @@ public class BasicJSONToStructDTO extends BasicJSONToEntityDTO
    * @param newInstance
    * @return StructDTO (not type safe)
    */
-  protected StructDTO factoryMethod(String type, boolean newInstance, String id) throws JSONException
+  protected StructDTO factoryMethod(String type, boolean newInstance, String oid) throws JSONException
   {
     ClientRequestIF request = getClientRequest();
 
@@ -68,7 +68,7 @@ public class BasicJSONToStructDTO extends BasicJSONToEntityDTO
     }
     else
     {
-      return (StructDTO) request.get(id);
+      return (StructDTO) request.get(oid);
     }
   }
 

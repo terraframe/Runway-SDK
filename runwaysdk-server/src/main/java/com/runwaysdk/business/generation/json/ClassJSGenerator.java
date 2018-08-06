@@ -43,7 +43,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
 {
 
   /**
-   * Constructor to set the session id and MdClassIF for javascript generation.
+   * Constructor to set the session oid and MdClassIF for javascript generation.
    * 
    * @param sessionId
    * @param mdClassIF
@@ -199,7 +199,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     setter.writeln(methodName + " : function(ref)");
     setter.openBracketLn();
     setter.writeln("var attributeDTO = this.getAttributeDTO('" + attributeName + "');");
-    setter.writeln("attributeDTO.setValue(" + JSON.RUNWAY_IS_OBJECT.getLabel() + "(ref) ? ref.getId() : ref);");
+    setter.writeln("attributeDTO.setValue(" + JSON.RUNWAY_IS_OBJECT.getLabel() + "(ref) ? ref.getOid() : ref);");
     setter.writeln("this.setModified(true);");
     setter.closeBracket();
 

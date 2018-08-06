@@ -99,9 +99,9 @@ public abstract class MdElementBase extends com.runwaysdk.system.metadata.MdEnti
     return CLASS;
   }
   
-  public static MdElement get(String id)
+  public static MdElement get(String oid)
   {
-    return (MdElement) com.runwaysdk.business.Business.get(id);
+    return (MdElement) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdElement getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdElementBase extends com.runwaysdk.system.metadata.MdEnti
     return (MdElement) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdElement lock(java.lang.String id)
+  public static MdElement lock(java.lang.String oid)
   {
-    MdElement _instance = MdElement.get(id);
+    MdElement _instance = MdElement.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdElement unlock(java.lang.String id)
+  public static MdElement unlock(java.lang.String oid)
   {
-    MdElement _instance = MdElement.get(id);
+    MdElement _instance = MdElement.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -75,7 +75,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
     else
     {
-      setValue(DISPLAYLABELATTRIBUTE, value.getId());
+      setValue(DISPLAYLABELATTRIBUTE, value.getOid());
     }
   }
   
@@ -124,7 +124,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
     else
     {
-      setValue(GEOMETRYATTRIBUTE, value.getId());
+      setValue(GEOMETRYATTRIBUTE, value.getOid());
     }
   }
   
@@ -148,7 +148,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(GEOMETRYATTRIBUTE).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.metadata.MdAttributeDTO getIdentifierAttribute()
+  public com.runwaysdk.system.metadata.MdAttributeDTO getOidentifierAttribute()
   {
     if(getValue(IDENTIFIERATTRIBUTE) == null || getValue(IDENTIFIERATTRIBUTE).trim().equals(""))
     {
@@ -160,12 +160,12 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
   }
   
-  public String getIdentifierAttributeId()
+  public String getOidentifierAttributeId()
   {
     return getValue(IDENTIFIERATTRIBUTE);
   }
   
-  public void setIdentifierAttribute(com.runwaysdk.system.metadata.MdAttributeDTO value)
+  public void setOidentifierAttribute(com.runwaysdk.system.metadata.MdAttributeDTO value)
   {
     if(value == null)
     {
@@ -173,7 +173,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
     else
     {
-      setValue(IDENTIFIERATTRIBUTE, value.getId());
+      setValue(IDENTIFIERATTRIBUTE, value.getOid());
     }
   }
   
@@ -192,7 +192,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     return isModified(IDENTIFIERATTRIBUTE);
   }
   
-  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getIdentifierAttributeMd()
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getOidentifierAttributeMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(IDENTIFIERATTRIBUTE).getAttributeMdDTO();
   }
@@ -222,7 +222,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
     else
     {
-      setValue(MULTIPOLYGONATTRIBUTE, value.getId());
+      setValue(MULTIPOLYGONATTRIBUTE, value.getOid());
     }
   }
   
@@ -271,7 +271,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     }
     else
     {
-      setValue(POINTATTRIBUTE, value.getId());
+      setValue(POINTATTRIBUTE, value.getOid());
     }
   }
   
@@ -295,9 +295,9 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(POINTATTRIBUTE).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO) dto;
   }
@@ -315,7 +315,7 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.GeoNodeGeometryQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -328,10 +328,10 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -341,10 +341,10 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoNodeGeometryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -63,7 +63,7 @@ public class TermDTO extends BusinessDTO
    */
   public TermDTO[] getAllAncestors(String[] relationshipTypes)
   {
-    return TermUtilDTO.getAllAncestors(this.getRequest(), this.getId(), relationshipTypes);
+    return TermUtilDTO.getAllAncestors(this.getRequest(), this.getOid(), relationshipTypes);
   }
   
   /**
@@ -74,7 +74,7 @@ public class TermDTO extends BusinessDTO
    */
   public TermAndRelDTO[] getDirectDescendants(String[] relationshipTypes)
   {
-    return TermUtilDTO.getDirectDescendants(this.getRequest(), this.getId(), relationshipTypes);
+    return TermUtilDTO.getDirectDescendants(this.getRequest(), this.getOid(), relationshipTypes);
   }
   
   /**
@@ -85,7 +85,7 @@ public class TermDTO extends BusinessDTO
    */
   public TermAndRelDTO[] getDirectAncestors(String[] relationshipTypes)
   {
-    return TermUtilDTO.getDirectAncestors(this.getRequest(), this.getId(), relationshipTypes);
+    return TermUtilDTO.getDirectAncestors(this.getRequest(), this.getOid(), relationshipTypes);
   }
   
   /**
@@ -96,7 +96,7 @@ public class TermDTO extends BusinessDTO
    */
   public TermDTO[] getAllDescendants(String[] relationshipTypes)
   {
-    return TermUtilDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipTypes);
+    return TermUtilDTO.getAllDescendants(this.getRequest(), this.getOid(), relationshipTypes);
   }
   
   public LocalStructDTO getDisplayLabel() {

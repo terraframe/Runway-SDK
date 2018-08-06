@@ -178,9 +178,9 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeCharacterDAOIF get(String id)
+  public static MdAttributeCharacterDAOIF get(String oid)
   {
-    return (MdAttributeCharacterDAOIF) BusinessDAO.get(id);
+    return (MdAttributeCharacterDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -225,7 +225,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     
     mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
     
-    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getId());
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getOid());
     
     return mdAttributeReferenceDAO;
   }
@@ -246,7 +246,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     
     mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
     
-    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getId());
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getOid());
     
     return mdAttributeReferenceDAO;
   }

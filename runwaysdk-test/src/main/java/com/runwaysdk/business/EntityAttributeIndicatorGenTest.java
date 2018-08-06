@@ -103,7 +103,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeInteger1.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger1.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger1.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger1.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger1.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger1.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger2 = MdAttributeIntegerDAO.newInstance();
@@ -112,7 +112,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeInteger2.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger2.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger2.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger2.apply();
 
     MdAttributeLongDAO mdAttributeLong1 = MdAttributeLongDAO.newInstance();
@@ -121,7 +121,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeLong1.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong1.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong1.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong1.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeLong1.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeLong1.apply();
 
     MdAttributeLongDAO mdAttributeLong2 = MdAttributeLongDAO.newInstance();
@@ -130,7 +130,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeLong2.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong2.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong2.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong2.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeLong2.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeLong2.apply();
 
     MdAttributeFloatDAO mdAttributeFloat1 = MdAttributeFloatDAO.newInstance();
@@ -141,7 +141,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeFloat1.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat1.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat1.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat1.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeFloat1.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeFloat1.apply();
 
     MdAttributeFloatDAO mdAttributeFloat2 = MdAttributeFloatDAO.newInstance();
@@ -152,7 +152,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat2.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat2.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeFloat2.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeFloat2.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble1 = MdAttributeDoubleDAO.newInstance();
@@ -163,7 +163,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeDouble1.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble1.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDouble1.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDouble1.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble2 = MdAttributeDoubleDAO.newInstance();
@@ -174,7 +174,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeDouble2.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble2.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDouble2.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDouble2.apply();
 
     MdAttributeDecimalDAO mdAttributeDecimal1 = MdAttributeDecimalDAO.newInstance();
@@ -185,7 +185,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeDecimal1.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal1.setValue(MdAttributeDecimalInfo.LENGTH, "13");
     mdAttributeDecimal1.setValue(MdAttributeDecimalInfo.DECIMAL, "3");
-    mdAttributeDecimal1.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDecimal1.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDecimal1.apply();
 
     MdAttributeDecimalDAO mdAttributeDecimal2 = MdAttributeDecimalDAO.newInstance();
@@ -196,7 +196,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.LENGTH, "13");
     mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.DECIMAL, "3");
-    mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDecimal2.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDecimal2.apply();
 
     MdAttributeBooleanDAO mdAttributeBoolean1 = MdAttributeBooleanDAO.newInstance();
@@ -207,7 +207,7 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeBoolean1.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, "");
     mdAttributeBoolean1.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean1.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean1.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean1.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean1.apply();
 
     MdAttributeBooleanDAO mdAttributeBoolean2 = MdAttributeBooleanDAO.newInstance();
@@ -218,24 +218,24 @@ public class EntityAttributeIndicatorGenTest
     mdAttributeBoolean2.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, "");
     mdAttributeBoolean2.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean2.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean2.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean2.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean2.apply();
 
     // Integer Indicator
     IndicatorPrimitiveDAO indicatorPrimitiveInteger1 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveInteger1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getId());
-    indicatorPrimitiveInteger1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveInteger1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getOid());
+    indicatorPrimitiveInteger1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     indicatorPrimitiveInteger1.apply();
 
     IndicatorPrimitiveDAO IndicatorPrimitiveInteger2 = IndicatorPrimitiveDAO.newInstance();
-    IndicatorPrimitiveInteger2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger2.getId());
-    IndicatorPrimitiveInteger2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    IndicatorPrimitiveInteger2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger2.getOid());
+    IndicatorPrimitiveInteger2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     IndicatorPrimitiveInteger2.apply();
 
     IndicatorCompositeDAO indicatorIntegerComposite = IndicatorCompositeDAO.newInstance();
-    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveInteger1.getId());
-    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getId());
-    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, IndicatorPrimitiveInteger2.getId());
+    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveInteger1.getOid());
+    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getOid());
+    indicatorIntegerComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, IndicatorPrimitiveInteger2.getOid());
     indicatorIntegerComposite.apply();
 
     MdAttributeIndicatorDAO mdAttrIntegerIndicator1 = MdAttributeIndicatorDAO.newInstance();
@@ -243,25 +243,25 @@ public class EntityAttributeIndicatorGenTest
     mdAttrIntegerIndicator1.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer Indicator");
     mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorIntegerComposite.getId());
-    mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorIntegerComposite.getOid());
+    mdAttrIntegerIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrIntegerIndicator1.apply();
 
     // Float Indicator
     IndicatorPrimitiveDAO indicatorPrimitiveFloat1 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat1.getId());
-    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat1.getOid());
+    indicatorPrimitiveFloat1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     indicatorPrimitiveFloat1.apply();
 
     IndicatorPrimitiveDAO indicatorPrimitiveFloat2 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat2.getId());
-    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeFloat2.getOid());
+    indicatorPrimitiveFloat2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     indicatorPrimitiveFloat2.apply();
 
     IndicatorCompositeDAO indicatorFloatComposite = IndicatorCompositeDAO.newInstance();
-    indicatorFloatComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveFloat1.getId());
-    indicatorFloatComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getId());
-    indicatorFloatComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveFloat2.getId());
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveFloat1.getOid());
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getOid());
+    indicatorFloatComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveFloat2.getOid());
     indicatorFloatComposite.apply();
 
     MdAttributeIndicatorDAO mdAttrFloatIndicator1 = MdAttributeIndicatorDAO.newInstance();
@@ -269,25 +269,25 @@ public class EntityAttributeIndicatorGenTest
     mdAttrFloatIndicator1.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Float Indicator");
     mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorFloatComposite.getId());
-    mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorFloatComposite.getOid());
+    mdAttrFloatIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloatIndicator1.apply();
 
     // Boolean Indicator
     IndicatorPrimitiveDAO indicatorPrimitiveBoolean1 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveBoolean1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeBoolean1.getId());
-    indicatorPrimitiveBoolean1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveBoolean1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeBoolean1.getOid());
+    indicatorPrimitiveBoolean1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     indicatorPrimitiveBoolean1.apply();
 
     IndicatorPrimitiveDAO indicatorPrimitiveBoolean2 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveBoolean2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeBoolean2.getId());
-    indicatorPrimitiveBoolean2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getId());
+    indicatorPrimitiveBoolean2.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeBoolean2.getOid());
+    indicatorPrimitiveBoolean2.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.SUM.getOid());
     indicatorPrimitiveBoolean2.apply();
 
     IndicatorCompositeDAO indicatorBooleanComposite = IndicatorCompositeDAO.newInstance();
-    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveBoolean1.getId());
-    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getId());
-    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveBoolean2.getId());
+    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.LEFT_OPERAND, indicatorPrimitiveBoolean1.getOid());
+    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.OPERATOR, IndicatorOperator.DIV.getOid());
+    indicatorBooleanComposite.setValue(IndicatorCompositeInfo.RIGHT_OPERAND, indicatorPrimitiveBoolean2.getOid());
     indicatorBooleanComposite.apply();
 
     MdAttributeIndicatorDAO mdAttrBooleanIndicator1 = MdAttributeIndicatorDAO.newInstance();
@@ -295,13 +295,13 @@ public class EntityAttributeIndicatorGenTest
     mdAttrBooleanIndicator1.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Boolean Indicator");
     mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorBooleanComposite.getId());
-    mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorBooleanComposite.getOid());
+    mdAttrBooleanIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrBooleanIndicator1.apply();
 
     IndicatorPrimitiveDAO indicatorPrimitiveCount1 = IndicatorPrimitiveDAO.newInstance();
-    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getId());
-    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.COUNT.getId());
+    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.MD_ATTRIBUTE_PRIMITIVE, mdAttributeInteger1.getOid());
+    indicatorPrimitiveCount1.setValue(IndicatorPrimitiveInfo.INDICATOR_FUNCTION, IndicatorAggregateFunction.COUNT.getOid());
     indicatorPrimitiveCount1.apply();
 
     MdAttributeIndicatorDAO mdAttrCountIndicator1 = MdAttributeIndicatorDAO.newInstance();
@@ -309,8 +309,8 @@ public class EntityAttributeIndicatorGenTest
     mdAttrCountIndicator1.setStructValue(MdAttributeIndicatorInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Count Indicator");
     mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorPrimitiveCount1.getId());
-    mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.INDICATOR_ELEMENT, indicatorPrimitiveCount1.getOid());
+    mdAttrCountIndicator1.setValue(MdAttributeIndicatorInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrCountIndicator1.apply();
 
     BusinessDAO bus1 = BusinessDAO.newInstance(testMdBusinessIF.definesType());

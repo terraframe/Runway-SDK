@@ -29,7 +29,7 @@ public class UniversalMultiTermAttributeRoot extends UniversalMultiTermAttribute
   
   public UniversalMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

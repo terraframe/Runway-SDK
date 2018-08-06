@@ -58,7 +58,7 @@ public class StructHandler extends XMLHandler
    *          ImportManager which provides communication between handlers for a
    *          single import
    * @param entity
-   *          The EntityDAO which defines the attribute-multiple id mapping
+   *          The EntityDAO which defines the attribute-multiple oid mapping
    * @param attributes
    *          The attributes of the instance tag
    * @param exceptionHandler

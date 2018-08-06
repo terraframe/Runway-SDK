@@ -463,8 +463,8 @@ public class GenerationUtil
    */
   public static boolean isDTOSpecialCase(MdAttributeDAOIF m)
   {
-    // don't create accessors for id or type because
-    // we don't want to override the native getId()/getType()
+    // don't create accessors for oid or type because
+    // we don't want to override the native getOid()/getType()
     // in EntityDTO
     if (m.definesAttribute().equals(EntityInfo.ID) || m.definesAttribute().equals(EntityInfo.TYPE))
     {
@@ -496,12 +496,12 @@ public class GenerationUtil
 
   public static MdParameterDAO getMdParameterId()
   {
-    MdParameterDAO id = MdParameterDAO.newInstance();
-    id.setValue(MdParameterInfo.TYPE, String.class.getName());
-    id.setValue(MdParameterInfo.NAME, "id");
-    id.setValue(MdParameterInfo.ORDER, "-99999999");
+    MdParameterDAO oid = MdParameterDAO.newInstance();
+    oid.setValue(MdParameterInfo.TYPE, String.class.getName());
+    oid.setValue(MdParameterInfo.NAME, "oid");
+    oid.setValue(MdParameterInfo.ORDER, "-99999999");
 
-    return id;
+    return oid;
   }
 
   /**

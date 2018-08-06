@@ -51,9 +51,9 @@ public abstract class EntityIndexBase extends com.runwaysdk.system.metadata.Meta
     return (com.runwaysdk.system.metadata.MdIndex) super.getChild();
   }
   
-  public static EntityIndex get(String id)
+  public static EntityIndex get(String oid)
   {
-    return (EntityIndex) com.runwaysdk.business.Relationship.get(id);
+    return (EntityIndex) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static EntityIndex getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class EntityIndexBase extends com.runwaysdk.system.metadata.Meta
     return (EntityIndex) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static EntityIndex lock(java.lang.String id)
+  public static EntityIndex lock(java.lang.String oid)
   {
-    EntityIndex _instance = EntityIndex.get(id);
+    EntityIndex _instance = EntityIndex.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EntityIndex unlock(java.lang.String id)
+  public static EntityIndex unlock(java.lang.String oid)
   {
-    EntityIndex _instance = EntityIndex.get(id);
+    EntityIndex _instance = EntityIndex.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -110,7 +110,7 @@ public class GeoEntity extends GeoEntityBase
       String generatedGeoId = null;
 
       // This check exists in case the user has manually created a geoentity
-      // with the same id as what we've generated.
+      // with the same oid as what we've generated.
       while (!unique)
       {
         generatedGeoId = ReadableIdGenerator.getNextId();
@@ -202,7 +202,7 @@ public class GeoEntity extends GeoEntityBase
 
     GeoEntityQuery geoEntityQ = new GeoEntityQuery(queryFactory);
 
-    valueQuery.SELECT(geoEntityQ.getId(GeoEntity.ID));
+    valueQuery.SELECT(geoEntityQ.getOid(GeoEntity.ID));
     valueQuery.WHERE(geoEntityQ.getGeoId().EQ(geoId));
 
     OIterator<? extends ValueObject> iterator = valueQuery.getIterator();
@@ -212,9 +212,9 @@ public class GeoEntity extends GeoEntityBase
       {
         ValueObject valueObject = iterator.next();
 
-        String id = valueObject.getValue(GeoEntity.ID);
+        String oid = valueObject.getValue(GeoEntity.ID);
 
-        return (GeoEntity) Business.get(id);
+        return (GeoEntity) Business.get(oid);
       }
       else
       {
@@ -305,10 +305,10 @@ public class GeoEntity extends GeoEntityBase
 
     GeoEntityView view = new GeoEntityView();
     view.setCanCreateChildren(canCreateChildren);
-    view.setGeoEntityId(child.getId());
+    view.setGeoEntityId(child.getOid());
     view.setUniversalDisplayLabel(child.getUniversal().getDisplayLabel().getValue());
     view.setGeoEntityDisplayLabel(child.getDisplayLabel().getValue());
-    view.setRelationshipId(rel.getId());
+    view.setRelationshipId(rel.getOid());
     view.setRelationshipType(relationshipType);
     return view;
   }
@@ -323,7 +323,7 @@ public class GeoEntity extends GeoEntityBase
   @Override
   public Relationship addLink(Term parent, String relationshipType)
   {
-    if (!parent.getId().equals(GeoEntity.getRoot().getId()))
+    if (!parent.getOid().equals(GeoEntity.getRoot().getOid()))
     {
       validateUniversal(this.getUniversal(), ( (GeoEntity) parent ).getUniversal());
     }
@@ -423,7 +423,7 @@ public class GeoEntity extends GeoEntityBase
     int i = 0;
     for (TermAndRel tnr : tnrs)
     {
-      GeoEntity geo = (GeoEntity) GeoEntity.get(tnr.getTerm().getId());
+      GeoEntity geo = (GeoEntity) GeoEntity.get(tnr.getTerm().getOid());
 
       // Calculate whether or not the GeoEntity can have children, which is true
       // iff it has universals
@@ -431,7 +431,7 @@ public class GeoEntity extends GeoEntityBase
 
       GeoEntityView view = new GeoEntityView();
       view.setCanCreateChildren(canCreate);
-      view.setGeoEntityId(geo.getId());
+      view.setGeoEntityId(geo.getOid());
       view.setUniversalDisplayLabel(geo.getUniversal().getDisplayLabel().getValue());
       view.setGeoEntityDisplayLabel(geo.getDisplayLabel().getValue());
       view.setRelationshipId(tnr.getRelationshipId());

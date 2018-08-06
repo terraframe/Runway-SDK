@@ -92,7 +92,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.transaction.ActionEnum.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.transaction.ActionEnum.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -152,13 +152,13 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.transaction.ActionMaster actionMaster)
     {
       if(actionMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(actionMaster.getId());
+      return this.EQ(actionMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.transaction.ActionMaster actionMaster)
     {
       if(actionMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(actionMaster.getId());
+      return this.NE(actionMaster.getOid());
     }
 
   }
@@ -220,7 +220,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionEnum.length; i++)
       {
-        enumIdArray[i] = actionEnum[i].getId();
+        enumIdArray[i] = actionEnum[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -232,7 +232,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionEnum.length; i++)
       {
-        enumIdArray[i] = actionEnum[i].getId();
+        enumIdArray[i] = actionEnum[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -244,7 +244,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionEnum.length; i++)
       {
-        enumIdArray[i] = actionEnum[i].getId();
+        enumIdArray[i] = actionEnum[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -256,7 +256,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionEnum.length; i++)
       {
-        enumIdArray[i] = actionEnum[i].getId();
+        enumIdArray[i] = actionEnum[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -268,7 +268,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionEnum.length; i++)
       {
-        enumIdArray[i] = actionEnum[i].getId();
+        enumIdArray[i] = actionEnum[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -312,7 +312,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionMaster.length; i++)
       {
-        itemIdArray[i] = actionMaster[i].getId();
+        itemIdArray[i] = actionMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -324,7 +324,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionMaster.length; i++)
       {
-        itemIdArray[i] = actionMaster[i].getId();
+        itemIdArray[i] = actionMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -336,7 +336,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionMaster.length; i++)
       {
-        itemIdArray[i] = actionMaster[i].getId();
+        itemIdArray[i] = actionMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -348,7 +348,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionMaster.length; i++)
       {
-        itemIdArray[i] = actionMaster[i].getId();
+        itemIdArray[i] = actionMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -360,7 +360,7 @@ public  class ActionMasterQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<actionMaster.length; i++)
       {
-        itemIdArray[i] = actionMaster[i].getId();
+        itemIdArray[i] = actionMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

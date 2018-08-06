@@ -48,7 +48,7 @@ public class GeoEntityProblem extends GeoEntityProblemBase
       String problemText = type.getDescription().replace("{0}", label);
 
       GeoEntityProblemView view = new GeoEntityProblemView();
-      view.setConcreteId(this.getId());
+      view.setConcreteId(this.getOid());
       view.setGeoId(this.getGeoEntityId());
       view.setProblem(problemText);
       view.setProblemName(type.getEnumName());

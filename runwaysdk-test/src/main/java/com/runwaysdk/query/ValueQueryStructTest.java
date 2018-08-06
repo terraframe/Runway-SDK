@@ -43,8 +43,8 @@ public class ValueQueryStructTest
    * qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
    * 
    * AttributeStruct aStruct = query.aStruct("queryStruct"); vQ.SELECT(aStruct,
-   * query.id("objectId"));
-   * vQ.WHERE(aStruct.EQ(QueryMasterSetup.mdStruct.getId()));
+   * query.oid("objectId"));
+   * vQ.WHERE(aStruct.EQ(QueryMasterSetup.mdStruct.getOid()));
    * 
    * i = vQ.getIterator();
    * 
@@ -53,7 +53,7 @@ public class ValueQueryStructTest
    * 
    * while (i.hasNext()) { if
    * (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.
-   * getId())) { Assert.
+   * getOid())) { Assert.
    * fail("One of the objects returned by the query had an Id not equal to testQueryObject1."
    * ); } }
    * 
@@ -82,7 +82,7 @@ public class ValueQueryStructTest
    * ValueQuery vQ = qf.valueQuery(); BusinessDAOQuery query =
    * qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
    * 
-   * vQ.SELECT(query.aStruct("queryStruct"), query.id("objectId"));
+   * vQ.SELECT(query.aStruct("queryStruct"), query.oid("objectId"));
    * vQ.WHERE(query.aStruct("queryStruct").NE(""));
    * 
    * i = vQ.getIterator();
@@ -92,7 +92,7 @@ public class ValueQueryStructTest
    * 
    * while (i.hasNext()) { if
    * (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.
-   * getId())) { Assert.
+   * getOid())) { Assert.
    * fail("One of the objects returned by the query had an Id not equal to testQueryObject1."
    * ); } }
    * 
@@ -100,7 +100,7 @@ public class ValueQueryStructTest
    * 
    * vQ.SELECT(query.aStruct("queryStruct"));
    * vQ.WHERE(query.aStruct("queryStruct").NE(QueryMasterSetup.
-   * childRefQueryObject.getId()));
+   * childRefQueryObject.getOid()));
    * 
    * i = vQ.getIterator();
    * 
@@ -119,9 +119,9 @@ public class ValueQueryStructTest
    * ValueQuery vQ = qf.valueQuery(); BusinessDAOQuery query =
    * qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
    * 
-   * vQ.SELECT(query.aStruct("queryStruct"), query.id("objectId"));
+   * vQ.SELECT(query.aStruct("queryStruct"), query.oid("objectId"));
    * vQ.WHERE(query.aStruct("queryStruct").IN(QueryMasterSetup.
-   * childRefQueryObject.getId(), QueryMasterSetup.childRefQueryObject2.getId(),
+   * childRefQueryObject.getOid(), QueryMasterSetup.childRefQueryObject2.getOid(),
    * ""));
    * 
    * i = vQ.getIterator();
@@ -131,7 +131,7 @@ public class ValueQueryStructTest
    * 
    * while (i.hasNext()) { if
    * (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.
-   * getId())) { Assert.
+   * getOid())) { Assert.
    * fail("One of the objects returned by the query had an Id not equal to testQueryObject1."
    * ); } }
    * 
@@ -139,7 +139,7 @@ public class ValueQueryStructTest
    * 
    * vQ.SELECT(query.aStruct("queryStruct"));
    * vQ.WHERE(query.aStruct("queryStruct").IN("purple monkey dishwasher",
-   * QueryMasterSetup.childRefQueryObject2.getId(), ""));
+   * QueryMasterSetup.childRefQueryObject2.getOid(), ""));
    * 
    * i = vQ.getIterator();
    * 
@@ -157,10 +157,10 @@ public class ValueQueryStructTest
    * ValueQuery vQ = qf.valueQuery(); BusinessDAOQuery query =
    * qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
    * 
-   * vQ.SELECT(query.aStruct("queryStruct"), query.id("objectId"));
+   * vQ.SELECT(query.aStruct("queryStruct"), query.oid("objectId"));
    * vQ.WHERE(query.aStruct("queryStruct").NI(QueryMasterSetup.
-   * childRefQueryObject2.getId(), QueryMasterSetup.testQueryObject1.getId(),
-   * QueryMasterSetup.relQueryObject1.getId()));
+   * childRefQueryObject2.getOid(), QueryMasterSetup.testQueryObject1.getOid(),
+   * QueryMasterSetup.relQueryObject1.getOid()));
    * 
    * i = vQ.getIterator();
    * 
@@ -169,7 +169,7 @@ public class ValueQueryStructTest
    * 
    * while (i.hasNext()) { if
    * (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.
-   * getId())) { Assert.
+   * getOid())) { Assert.
    * fail("One of the objects returned by the query had an Id not equal to testQueryObject1."
    * ); } }
    * 
@@ -177,8 +177,8 @@ public class ValueQueryStructTest
    * 
    * vQ.SELECT(query.aStruct("queryStruct"));
    * vQ.WHERE(query.aStruct("queryStruct").NI(QueryMasterSetup.
-   * childRefQueryObject.getId(), QueryMasterSetup.childRefQueryObject2.getId(),
-   * QueryMasterSetup.relQueryObject1.getId()));
+   * childRefQueryObject.getOid(), QueryMasterSetup.childRefQueryObject2.getOid(),
+   * QueryMasterSetup.relQueryObject1.getOid()));
    * 
    * i = vQ.getIterator();
    * 
@@ -201,7 +201,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsAll(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -213,7 +213,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -222,7 +222,7 @@ public class ValueQueryStructTest
       // perform a query that should NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsAll(QueryMasterSetup.californiaItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -257,7 +257,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -269,7 +269,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -313,7 +313,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").containsExactly(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -325,7 +325,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -369,7 +369,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").notContainsAll(QueryMasterSetup.coloradoItemId, QueryMasterSetup.kansasItemId));
 
       i = vQ.getIterator();
@@ -381,7 +381,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -425,7 +425,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aEnumeration("structQueryEnumeration").notContainsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.kansasItemId));
 
       i = vQ.getIterator();
@@ -437,7 +437,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -481,7 +481,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(true));
 
       i = vQ.getIterator();
@@ -493,7 +493,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -503,7 +503,7 @@ public class ValueQueryStructTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(false));
 
       i = vQ.getIterator();
@@ -538,7 +538,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
@@ -550,7 +550,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -560,7 +560,7 @@ public class ValueQueryStructTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(MdAttributeBooleanInfo.FALSE));
 
       i = vQ.getIterator();
@@ -599,7 +599,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").EQ(""));
 
       i = vQ.getIterator();
@@ -611,7 +611,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -621,7 +621,7 @@ public class ValueQueryStructTest
       // values
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").NE(""));
 
       i = vQ.getIterator();
@@ -659,7 +659,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").NE(false));
 
       i = vQ.getIterator();
@@ -671,7 +671,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -681,7 +681,7 @@ public class ValueQueryStructTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").NE(true));
 
       i = vQ.getIterator();
@@ -714,7 +714,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").NE(MdAttributeBooleanInfo.FALSE));
 
       OIterator<ValueObject> i = vQ.getIterator();
@@ -726,7 +726,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -736,7 +736,7 @@ public class ValueQueryStructTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aBoolean("structQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aBoolean("structQueryBoolean").NE(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
@@ -766,7 +766,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("basic character value"));
 
       i = vQ.getIterator();
@@ -778,7 +778,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -787,7 +787,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("wrong character value"));
 
       i = vQ.getIterator();
@@ -822,7 +822,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQi("BASIC CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -834,7 +834,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -843,7 +843,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQi("WRONG CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -878,7 +878,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").IN("wrong value 1", "basic character value", "wrong value 2"));
 
       i = vQ.getIterator();
@@ -890,7 +890,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -899,7 +899,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3", "BASIC CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -934,7 +934,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").INi("wrong value 1", "BASIC CHARACTER VALUE", "wrong value 2"));
 
       i = vQ.getIterator();
@@ -946,7 +946,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -955,7 +955,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       i = vQ.getIterator();
@@ -994,7 +994,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ(""));
 
       i = vQ.getIterator();
@@ -1006,7 +1006,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1015,7 +1015,7 @@ public class ValueQueryStructTest
       // perform another query that should find 3 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NE(""));
 
       i = vQ.getIterator();
@@ -1053,7 +1053,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").LIKE("%character%"));
 
       i = vQ.getIterator();
@@ -1065,7 +1065,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1074,7 +1074,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").LIKE("%character"));
 
       i = vQ.getIterator();
@@ -1109,7 +1109,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").LIKEi("%CHARACTER%"));
 
       i = vQ.getIterator();
@@ -1121,7 +1121,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1130,7 +1130,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aCharacter("structQueryCharacter").LIKEi("%CHARACTER"));
 
       i = vQ.getIterator();
@@ -1165,7 +1165,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NE("wrong character value"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1177,7 +1177,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1186,7 +1186,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NE("basic character value"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1221,7 +1221,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NEi("WRONG CHARACTER VALUE"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1233,7 +1233,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1242,7 +1242,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NEi("BASIC CHARACTER VALUE"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1277,7 +1277,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NI("wrong character value 1", "wrong character value 2", "wrong character value 3"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1289,7 +1289,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1298,7 +1298,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NI("wrong value", "basic character value", "wrong value 2"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1333,7 +1333,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NIi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1345,7 +1345,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1354,7 +1354,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NIi("WRONG VALUE", "BASIC CHARACTER VALUE", "WRONG VALUE 2"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1389,7 +1389,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NLIKE("%wrong%"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1401,7 +1401,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1410,7 +1410,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NLIKE("%character%"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1445,7 +1445,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NLIKEi("%WRONG%"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1457,7 +1457,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1466,7 +1466,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aCharacter("structQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aStruct("queryStruct").aCharacter("structQueryCharacter").NLIKEi("%CHARACTER%"), query.aStruct("queryStruct").aCharacter("structQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1502,7 +1502,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1514,7 +1514,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1525,7 +1525,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1560,7 +1560,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").EQ("2008-11-06"));
 
       i = vQ.getIterator();
@@ -1572,7 +1572,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1581,7 +1581,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").EQ("2006-05-05"));
 
       i = vQ.getIterator();
@@ -1617,7 +1617,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GT(date));
 
       i = vQ.getIterator();
@@ -1629,7 +1629,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1640,7 +1640,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GT(date));
 
       i = vQ.getIterator();
@@ -1675,7 +1675,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GT("2008-11-05"));
 
       i = vQ.getIterator();
@@ -1687,7 +1687,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1696,7 +1696,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GT("2008-11-07"));
 
       i = vQ.getIterator();
@@ -1732,7 +1732,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1744,7 +1744,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1755,7 +1755,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1767,7 +1767,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1778,7 +1778,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1813,7 +1813,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE("2008-11-06"));
 
       i = vQ.getIterator();
@@ -1825,7 +1825,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1834,7 +1834,7 @@ public class ValueQueryStructTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE("2008-11-05"));
 
       i = vQ.getIterator();
@@ -1846,7 +1846,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1855,7 +1855,7 @@ public class ValueQueryStructTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").GE("2008-11-07"));
 
       i = vQ.getIterator();
@@ -1894,7 +1894,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").EQ(""));
 
       i = vQ.getIterator();
@@ -1906,7 +1906,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1915,7 +1915,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").NE(""));
 
       i = vQ.getIterator();
@@ -1954,7 +1954,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LT(date));
 
       i = vQ.getIterator();
@@ -1966,7 +1966,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1977,7 +1977,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LT(date));
 
       i = vQ.getIterator();
@@ -2012,7 +2012,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LT("2008-11-07"));
 
       i = vQ.getIterator();
@@ -2024,7 +2024,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2033,7 +2033,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LT("2008-11-05"));
 
       i = vQ.getIterator();
@@ -2069,7 +2069,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2081,7 +2081,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2092,7 +2092,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2104,7 +2104,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2115,7 +2115,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2150,7 +2150,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE("2008-11-06"));
 
       i = vQ.getIterator();
@@ -2162,7 +2162,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2171,7 +2171,7 @@ public class ValueQueryStructTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE("2008-11-07"));
 
       i = vQ.getIterator();
@@ -2183,7 +2183,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2192,7 +2192,7 @@ public class ValueQueryStructTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").LE("2008-11-05"));
 
       i = vQ.getIterator();
@@ -2228,7 +2228,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").NE(date));
 
       i = vQ.getIterator();
@@ -2240,7 +2240,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2251,7 +2251,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").NE(date));
 
       i = vQ.getIterator();
@@ -2286,7 +2286,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").NE("2008-11-05"));
 
       i = vQ.getIterator();
@@ -2298,7 +2298,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2307,7 +2307,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDate("structQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDate("structQueryDate").NE("2008-11-06"));
 
       i = vQ.getIterator();
@@ -2343,7 +2343,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2355,7 +2355,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2366,7 +2366,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2401,7 +2401,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").EQ("2008-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2413,7 +2413,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2422,7 +2422,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").EQ("2008-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2458,7 +2458,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2470,7 +2470,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2481,7 +2481,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2516,7 +2516,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GT("2008-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2528,7 +2528,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2537,7 +2537,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GT("2008-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2573,7 +2573,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2585,7 +2585,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2596,7 +2596,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2608,7 +2608,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2619,7 +2619,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2654,7 +2654,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE("2008-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2666,7 +2666,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2675,7 +2675,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE("2008-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2687,7 +2687,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2696,7 +2696,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").GE("2008-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -2735,7 +2735,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").EQ(""));
 
       i = vQ.getIterator();
@@ -2747,7 +2747,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2756,7 +2756,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE(""));
 
       i = vQ.getIterator();
@@ -2795,7 +2795,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2807,7 +2807,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2818,7 +2818,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2853,7 +2853,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LT("2008-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -2865,7 +2865,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2874,7 +2874,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LT("2008-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2910,7 +2910,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2922,7 +2922,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2933,7 +2933,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2945,7 +2945,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2956,7 +2956,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2991,7 +2991,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE("2008-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -3003,7 +3003,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3012,7 +3012,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE("2008-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -3024,7 +3024,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3033,7 +3033,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").LE("2008-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -3069,7 +3069,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE(date));
 
       i = vQ.getIterator();
@@ -3081,7 +3081,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3092,7 +3092,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE(date), query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -3127,7 +3127,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE("2008-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -3139,7 +3139,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3148,7 +3148,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDateTime("structQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE("2008-11-06 12:00:00"), query.aStruct("queryStruct").aDateTime("structQueryDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -3183,7 +3183,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").EQ(new BigDecimal(300.5)));
 
       i = vQ.getIterator();
@@ -3195,7 +3195,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3204,7 +3204,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").EQ(new BigDecimal(301.5)));
 
       i = vQ.getIterator();
@@ -3239,7 +3239,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").EQ("300.5"));
 
       i = vQ.getIterator();
@@ -3251,7 +3251,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3260,7 +3260,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").EQ("301.5"));
 
       i = vQ.getIterator();
@@ -3295,7 +3295,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GT(new BigDecimal(300)));
 
       i = vQ.getIterator();
@@ -3307,7 +3307,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3316,7 +3316,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GT(new BigDecimal(301)));
 
       i = vQ.getIterator();
@@ -3351,7 +3351,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GT("300"));
 
       i = vQ.getIterator();
@@ -3363,7 +3363,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3372,7 +3372,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GT("301"));
 
       i = vQ.getIterator();
@@ -3407,7 +3407,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE(new BigDecimal(300.5)));
 
       i = vQ.getIterator();
@@ -3419,7 +3419,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3428,7 +3428,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE(new BigDecimal(300)));
 
       i = vQ.getIterator();
@@ -3440,7 +3440,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3449,7 +3449,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE(new BigDecimal(301)));
 
       i = vQ.getIterator();
@@ -3484,7 +3484,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE("300.5"));
 
       i = vQ.getIterator();
@@ -3496,7 +3496,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3505,7 +3505,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE("300"));
 
       i = vQ.getIterator();
@@ -3517,7 +3517,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3526,7 +3526,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").GE("301"));
 
       i = vQ.getIterator();
@@ -3565,7 +3565,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").EQ(""));
 
       i = vQ.getIterator();
@@ -3577,7 +3577,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3586,7 +3586,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").NE(""));
 
       i = vQ.getIterator();
@@ -3624,7 +3624,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LT(new BigDecimal(301)));
 
       i = vQ.getIterator();
@@ -3636,7 +3636,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3645,7 +3645,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LT(new BigDecimal(300)));
 
       i = vQ.getIterator();
@@ -3680,7 +3680,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LT("301"));
 
       i = vQ.getIterator();
@@ -3692,7 +3692,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3701,7 +3701,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LT("300"));
 
       i = vQ.getIterator();
@@ -3736,7 +3736,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE(new BigDecimal(300.5)));
 
       i = vQ.getIterator();
@@ -3748,7 +3748,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3757,7 +3757,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE(new BigDecimal(301)));
 
       i = vQ.getIterator();
@@ -3769,7 +3769,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3778,7 +3778,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE(new BigDecimal(99)));
 
       i = vQ.getIterator();
@@ -3813,7 +3813,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE("300.5"));
 
       i = vQ.getIterator();
@@ -3825,7 +3825,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3834,7 +3834,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE("301"));
 
       i = vQ.getIterator();
@@ -3846,7 +3846,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3855,7 +3855,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").LE("99"));
 
       i = vQ.getIterator();
@@ -3890,7 +3890,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").NE(new BigDecimal(301)));
 
       i = vQ.getIterator();
@@ -3902,7 +3902,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3911,7 +3911,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").NE(new BigDecimal(300.5)));
 
       i = vQ.getIterator();
@@ -3946,7 +3946,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").NE("301"));
 
       i = vQ.getIterator();
@@ -3958,7 +3958,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3967,7 +3967,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDecimal("structQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDecimal("structQueryDecimal").NE("300.5"));
 
       i = vQ.getIterator();
@@ -4002,7 +4002,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").EQ(300.5));
 
       i = vQ.getIterator();
@@ -4014,7 +4014,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4023,7 +4023,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").EQ(301.5));
 
       i = vQ.getIterator();
@@ -4058,7 +4058,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").EQ("300.5"));
 
       i = vQ.getIterator();
@@ -4070,7 +4070,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4079,7 +4079,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").EQ("301.5"));
 
       i = vQ.getIterator();
@@ -4114,7 +4114,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT(30.5));
 
       i = vQ.getIterator();
@@ -4126,7 +4126,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4135,7 +4135,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT(320.5));
 
       i = vQ.getIterator();
@@ -4170,7 +4170,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT("30.5"));
 
       i = vQ.getIterator();
@@ -4182,7 +4182,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4191,7 +4191,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GT("320.5"));
 
       i = vQ.getIterator();
@@ -4226,7 +4226,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE(300.5));
 
       i = vQ.getIterator();
@@ -4238,7 +4238,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4247,7 +4247,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE(30.5));
 
       i = vQ.getIterator();
@@ -4259,7 +4259,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4268,7 +4268,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE(320.5));
 
       i = vQ.getIterator();
@@ -4303,7 +4303,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE("300.5"));
 
       i = vQ.getIterator();
@@ -4315,7 +4315,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4324,7 +4324,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE("30.5"));
 
       i = vQ.getIterator();
@@ -4336,7 +4336,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4345,7 +4345,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").GE("320.5"));
 
       i = vQ.getIterator();
@@ -4384,7 +4384,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").EQ(""));
 
       i = vQ.getIterator();
@@ -4396,7 +4396,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4405,7 +4405,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE(""));
 
       i = vQ.getIterator();
@@ -4443,7 +4443,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT(320.5));
 
       i = vQ.getIterator();
@@ -4455,7 +4455,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4464,7 +4464,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT(30.5));
 
       i = vQ.getIterator();
@@ -4499,7 +4499,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT("320.5"));
 
       i = vQ.getIterator();
@@ -4511,7 +4511,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4520,7 +4520,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LT("30.5"));
 
       i = vQ.getIterator();
@@ -4555,7 +4555,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE(300.5));
 
       i = vQ.getIterator();
@@ -4567,7 +4567,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4576,7 +4576,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE(320.5));
 
       i = vQ.getIterator();
@@ -4588,7 +4588,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4597,7 +4597,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE(30.5));
 
       i = vQ.getIterator();
@@ -4632,7 +4632,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE("300.5"));
 
       i = vQ.getIterator();
@@ -4644,7 +4644,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4653,7 +4653,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE("320.5"));
 
       i = vQ.getIterator();
@@ -4665,7 +4665,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4674,7 +4674,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").LE("30.5"));
 
       i = vQ.getIterator();
@@ -4709,7 +4709,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE(301.5));
 
       i = vQ.getIterator();
@@ -4721,7 +4721,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4730,7 +4730,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE(300.5));
 
       i = vQ.getIterator();
@@ -4765,7 +4765,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE("301.5"));
 
       i = vQ.getIterator();
@@ -4777,7 +4777,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4786,7 +4786,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aDouble("structQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aDouble("structQueryDouble").NE("300.5"));
 
       i = vQ.getIterator();
@@ -4821,7 +4821,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float) 300.5));
 
       i = vQ.getIterator();
@@ -4833,7 +4833,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4842,7 +4842,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ((float) 301.5));
 
       i = vQ.getIterator();
@@ -4877,7 +4877,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ("300.5"));
 
       i = vQ.getIterator();
@@ -4889,7 +4889,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4898,7 +4898,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ("301.5"));
 
       i = vQ.getIterator();
@@ -4933,7 +4933,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float) 30.5));
 
       i = vQ.getIterator();
@@ -4945,7 +4945,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4954,7 +4954,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT((float) 321.5));
 
       i = vQ.getIterator();
@@ -4989,7 +4989,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT("30.5"));
 
       i = vQ.getIterator();
@@ -5001,7 +5001,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5010,7 +5010,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GT("321.5"));
 
       i = vQ.getIterator();
@@ -5045,7 +5045,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 300.5));
 
       i = vQ.getIterator();
@@ -5057,7 +5057,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5066,7 +5066,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 31.5));
 
       i = vQ.getIterator();
@@ -5078,7 +5078,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5087,7 +5087,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE((float) 321.5));
 
       i = vQ.getIterator();
@@ -5122,7 +5122,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE("300.5"));
 
       i = vQ.getIterator();
@@ -5134,7 +5134,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5143,7 +5143,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE("31.5"));
 
       i = vQ.getIterator();
@@ -5155,7 +5155,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5164,7 +5164,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").GE("321.5"));
 
       i = vQ.getIterator();
@@ -5203,7 +5203,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").EQ(""));
 
       i = vQ.getIterator();
@@ -5215,7 +5215,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5224,7 +5224,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE(""));
 
       i = vQ.getIterator();
@@ -5262,7 +5262,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float) 320.5));
 
       i = vQ.getIterator();
@@ -5274,7 +5274,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5283,7 +5283,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT((float) 31.5));
 
       i = vQ.getIterator();
@@ -5318,7 +5318,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT("320.5"));
 
       i = vQ.getIterator();
@@ -5330,7 +5330,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5339,7 +5339,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LT("31.5"));
 
       i = vQ.getIterator();
@@ -5374,7 +5374,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 300.5));
 
       i = vQ.getIterator();
@@ -5386,7 +5386,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5395,7 +5395,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 301.5));
 
       i = vQ.getIterator();
@@ -5407,7 +5407,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5416,7 +5416,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE((float) 31.5));
 
       i = vQ.getIterator();
@@ -5451,7 +5451,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE("300.5"));
 
       i = vQ.getIterator();
@@ -5463,7 +5463,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5472,7 +5472,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE("301.5"));
 
       i = vQ.getIterator();
@@ -5484,7 +5484,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5493,7 +5493,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").LE("31.5"));
 
       i = vQ.getIterator();
@@ -5528,7 +5528,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float) 310.5));
 
       i = vQ.getIterator();
@@ -5540,7 +5540,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5549,7 +5549,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE((float) 300.5));
 
       i = vQ.getIterator();
@@ -5584,7 +5584,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE("310.5"));
 
       i = vQ.getIterator();
@@ -5596,7 +5596,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5605,7 +5605,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aFloat("structQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aFloat("structQueryFloat").NE("300.5"));
 
       i = vQ.getIterator();
@@ -5640,7 +5640,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").EQ(300));
 
       i = vQ.getIterator();
@@ -5652,7 +5652,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5661,7 +5661,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").EQ(301));
 
       i = vQ.getIterator();
@@ -5696,7 +5696,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").EQ("300"));
 
       i = vQ.getIterator();
@@ -5708,7 +5708,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5717,7 +5717,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").EQ("301"));
 
       i = vQ.getIterator();
@@ -5752,7 +5752,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GT(30));
 
       i = vQ.getIterator();
@@ -5764,7 +5764,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5773,7 +5773,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GT(301));
 
       i = vQ.getIterator();
@@ -5808,7 +5808,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GT("30"));
 
       i = vQ.getIterator();
@@ -5820,7 +5820,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5829,7 +5829,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GT("301"));
 
       i = vQ.getIterator();
@@ -5864,7 +5864,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE(300));
 
       i = vQ.getIterator();
@@ -5876,7 +5876,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5885,7 +5885,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE(30));
 
       i = vQ.getIterator();
@@ -5897,7 +5897,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5906,7 +5906,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE(301));
 
       i = vQ.getIterator();
@@ -5941,7 +5941,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE("300"));
 
       i = vQ.getIterator();
@@ -5953,7 +5953,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5962,7 +5962,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE("30"));
 
       i = vQ.getIterator();
@@ -5974,7 +5974,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5983,7 +5983,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").GE("301"));
 
       i = vQ.getIterator();
@@ -6022,7 +6022,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").EQ(""));
 
       i = vQ.getIterator();
@@ -6034,7 +6034,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6043,7 +6043,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").NE(""));
 
       i = vQ.getIterator();
@@ -6081,7 +6081,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LT(301));
 
       i = vQ.getIterator();
@@ -6093,7 +6093,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6102,7 +6102,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LT(30));
 
       i = vQ.getIterator();
@@ -6137,7 +6137,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LT("301"));
 
       i = vQ.getIterator();
@@ -6149,7 +6149,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6158,7 +6158,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LT("30"));
 
       i = vQ.getIterator();
@@ -6193,7 +6193,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE(300));
 
       i = vQ.getIterator();
@@ -6205,7 +6205,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6214,7 +6214,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE(301));
 
       i = vQ.getIterator();
@@ -6226,7 +6226,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6235,7 +6235,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE(30));
 
       i = vQ.getIterator();
@@ -6270,7 +6270,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE("300"));
 
       i = vQ.getIterator();
@@ -6282,7 +6282,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6291,7 +6291,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE("301"));
 
       i = vQ.getIterator();
@@ -6303,7 +6303,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6312,7 +6312,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").LE("30"));
 
       i = vQ.getIterator();
@@ -6347,7 +6347,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").NE(301));
 
       i = vQ.getIterator();
@@ -6359,7 +6359,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6368,7 +6368,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").NE(300));
 
       i = vQ.getIterator();
@@ -6403,7 +6403,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").NE("301"));
 
       i = vQ.getIterator();
@@ -6415,7 +6415,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6424,7 +6424,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aInteger("structQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aInteger("structQueryInteger").NE("300"));
 
       i = vQ.getIterator();
@@ -6459,7 +6459,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long) 300));
 
       i = vQ.getIterator();
@@ -6471,7 +6471,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6480,7 +6480,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ((long) 301));
 
       i = vQ.getIterator();
@@ -6515,7 +6515,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ("300"));
 
       i = vQ.getIterator();
@@ -6527,7 +6527,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6536,7 +6536,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ("301"));
 
       i = vQ.getIterator();
@@ -6571,7 +6571,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long) 30));
 
       i = vQ.getIterator();
@@ -6583,7 +6583,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6592,7 +6592,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT((long) 301));
 
       i = vQ.getIterator();
@@ -6627,7 +6627,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT("30"));
 
       i = vQ.getIterator();
@@ -6639,7 +6639,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6648,7 +6648,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GT("301"));
 
       i = vQ.getIterator();
@@ -6683,7 +6683,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 300));
 
       i = vQ.getIterator();
@@ -6695,7 +6695,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6704,7 +6704,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 30));
 
       i = vQ.getIterator();
@@ -6716,7 +6716,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6725,7 +6725,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE((long) 301));
 
       i = vQ.getIterator();
@@ -6760,7 +6760,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE("300"));
 
       i = vQ.getIterator();
@@ -6772,7 +6772,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6781,7 +6781,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE("30"));
 
       i = vQ.getIterator();
@@ -6793,7 +6793,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6802,7 +6802,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").GE("301"));
 
       i = vQ.getIterator();
@@ -6841,7 +6841,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").EQ(""));
 
       i = vQ.getIterator();
@@ -6853,7 +6853,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6862,7 +6862,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE(""));
 
       i = vQ.getIterator();
@@ -6903,7 +6903,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long) 320));
 
       i = vQ.getIterator();
@@ -6915,7 +6915,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6924,7 +6924,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT((long) 30));
 
       i = vQ.getIterator();
@@ -6959,7 +6959,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT("320"));
 
       i = vQ.getIterator();
@@ -6971,7 +6971,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6980,7 +6980,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LT("30"));
 
       i = vQ.getIterator();
@@ -7015,7 +7015,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 300));
 
       i = vQ.getIterator();
@@ -7027,7 +7027,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7036,7 +7036,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 320));
 
       i = vQ.getIterator();
@@ -7048,7 +7048,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7057,7 +7057,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE((long) 30));
 
       i = vQ.getIterator();
@@ -7092,7 +7092,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE("300"));
 
       i = vQ.getIterator();
@@ -7104,7 +7104,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7113,7 +7113,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE("320"));
 
       i = vQ.getIterator();
@@ -7125,7 +7125,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7134,7 +7134,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").LE("30"));
 
       i = vQ.getIterator();
@@ -7169,7 +7169,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long) 30));
 
       i = vQ.getIterator();
@@ -7181,7 +7181,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7190,7 +7190,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE((long) 300));
 
       i = vQ.getIterator();
@@ -7225,7 +7225,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE("30"));
 
       i = vQ.getIterator();
@@ -7237,7 +7237,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7246,7 +7246,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aLong("structQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aLong("structQueryLong").NE("300"));
 
       i = vQ.getIterator();
@@ -7281,7 +7281,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").EQ("basic text value"));
 
       i = vQ.getIterator();
@@ -7293,7 +7293,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7302,7 +7302,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NE("basic text value"));
 
       i = vQ.getIterator();
@@ -7337,7 +7337,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").EQi("BASIC TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7349,7 +7349,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7358,7 +7358,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").EQi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7393,7 +7393,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").IN("BASIC text value", "basic text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7405,7 +7405,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7414,7 +7414,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").IN("BASIC text value", "BASIC TEXT value", "BASIC TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7449,7 +7449,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").INi("WRONG TEXT VALUE", "BASIC TEXT VALUE", "wrong TEXT value 2"));
 
       i = vQ.getIterator();
@@ -7461,7 +7461,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7470,7 +7470,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").INi("WRONG TEXT VALUE", "WRONG TEXT VALUE 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7509,7 +7509,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").EQ(""));
 
       i = vQ.getIterator();
@@ -7521,7 +7521,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7530,7 +7530,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NE(""));
 
       i = vQ.getIterator();
@@ -7568,7 +7568,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").LIKE("%text%"));
 
       i = vQ.getIterator();
@@ -7580,7 +7580,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7589,7 +7589,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").LIKE("%text"));
 
       i = vQ.getIterator();
@@ -7624,7 +7624,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").LIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -7636,7 +7636,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7645,7 +7645,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").LIKEi("%TEXT"));
 
       i = vQ.getIterator();
@@ -7680,7 +7680,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NE("wrong text value"));
 
       i = vQ.getIterator();
@@ -7692,7 +7692,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7701,7 +7701,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NE("basic text value"));
 
       i = vQ.getIterator();
@@ -7736,7 +7736,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NEi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7748,7 +7748,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7757,7 +7757,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NEi("BASIC TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7792,7 +7792,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NI("BASIC text value", "BASIC TEXT value", "BASIC TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7804,7 +7804,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7813,7 +7813,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NI("BASIC text value", "basic text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7848,7 +7848,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NIi("WRONG text value", "WRONG TEXT value 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7860,7 +7860,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7869,7 +7869,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NIi("BASIC text value", "BASIC TEXT VALUE", "BASIC TEXT value"));
 
       i = vQ.getIterator();
@@ -7904,7 +7904,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NLIKEi("%WRONG%"));
 
       i = vQ.getIterator();
@@ -7916,7 +7916,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7925,7 +7925,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aText("structQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aText("structQueryText").NLIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -7961,7 +7961,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").EQ(date));
 
       i = vQ.getIterator();
@@ -7973,7 +7973,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7984,7 +7984,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").EQ(date));
 
       i = vQ.getIterator();
@@ -8019,7 +8019,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").EQ("12:00:00"));
 
       i = vQ.getIterator();
@@ -8031,7 +8031,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8040,7 +8040,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").EQ("11:00:00"));
 
       i = vQ.getIterator();
@@ -8076,7 +8076,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GT(date));
 
       i = vQ.getIterator();
@@ -8088,7 +8088,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8099,7 +8099,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GT(date));
 
       i = vQ.getIterator();
@@ -8134,7 +8134,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GT("11:00:00"));
 
       i = vQ.getIterator();
@@ -8146,7 +8146,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8155,7 +8155,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GT("14:00:00"));
 
       i = vQ.getIterator();
@@ -8191,7 +8191,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8203,7 +8203,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8214,7 +8214,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8226,7 +8226,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8237,7 +8237,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8272,7 +8272,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8284,7 +8284,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8293,7 +8293,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8305,7 +8305,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8314,7 +8314,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").GE("14:00:00"));
 
       i = vQ.getIterator();
@@ -8352,7 +8352,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").EQ(""));
 
       i = vQ.getIterator();
@@ -8364,7 +8364,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8373,7 +8373,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").NE(""));
 
       i = vQ.getIterator();
@@ -8412,7 +8412,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LT(date));
 
       i = vQ.getIterator();
@@ -8424,7 +8424,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8435,7 +8435,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LT(date));
 
       i = vQ.getIterator();
@@ -8470,7 +8470,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LT("14:00:00"));
 
       i = vQ.getIterator();
@@ -8482,7 +8482,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8491,7 +8491,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LT("10:00:00"));
 
       i = vQ.getIterator();
@@ -8527,7 +8527,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8539,7 +8539,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8550,7 +8550,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8562,7 +8562,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8573,7 +8573,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8608,7 +8608,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8620,7 +8620,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8629,7 +8629,7 @@ public class ValueQueryStructTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE("14:00:00"));
 
       i = vQ.getIterator();
@@ -8641,7 +8641,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8650,7 +8650,7 @@ public class ValueQueryStructTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").LE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8686,7 +8686,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").NE(date));
 
       i = vQ.getIterator();
@@ -8698,7 +8698,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8709,7 +8709,7 @@ public class ValueQueryStructTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").NE(date));
 
       i = vQ.getIterator();
@@ -8744,7 +8744,7 @@ public class ValueQueryStructTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").NE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8756,7 +8756,7 @@ public class ValueQueryStructTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8765,7 +8765,7 @@ public class ValueQueryStructTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aStruct("queryStruct").aTime("structQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aStruct("queryStruct").aTime("structQueryTime").NE("12:00:00"));
 
       i = vQ.getIterator();

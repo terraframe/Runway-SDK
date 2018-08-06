@@ -145,7 +145,7 @@ public class GeoEntityTest
 
     try
     {
-      GeoEntity test = GeoEntity.get(entity.getId());
+      GeoEntity test = GeoEntity.get(entity.getOid());
 
       Assert.assertNotNull(test);
       Assert.assertEquals(entity.getGeoId(), test.getGeoId());
@@ -184,12 +184,12 @@ public class GeoEntityTest
         List<? extends GeoEntity> children = parent.getAllContains().getAll();
 
         Assert.assertEquals(1, children.size());
-        Assert.assertEquals(child.getId(), children.get(0).getId());
+        Assert.assertEquals(child.getOid(), children.get(0).getOid());
 
         List<? extends GeoEntity> parents = child.getAllLocatedIn().getAll();
 
         Assert.assertEquals(1, parents.size());
-        Assert.assertEquals(parent.getId(), parents.get(0).getId());
+        Assert.assertEquals(parent.getOid(), parents.get(0).getOid());
       }
       finally
       {
@@ -678,17 +678,17 @@ public class GeoEntityTest
 
       // Test 2) Move Denver under USA. We should then be able to move the City
       // Universal under USA and the enforcement check should pass.
-      TermUtil.addAndRemoveLink(gDenver.getId(), gColorado.getId(), LocatedIn.CLASS, gUSA.getId(), LocatedIn.CLASS);
-      TermUtil.addAndRemoveLink(uCity.getId(), uState.getId(), AllowedIn.CLASS, uUSA.getId(), AllowedIn.CLASS);
-      TermUtil.addAndRemoveLink(uCity.getId(), uUSA.getId(), AllowedIn.CLASS, uState.getId(), AllowedIn.CLASS); // Undo
+      TermUtil.addAndRemoveLink(gDenver.getOid(), gColorado.getOid(), LocatedIn.CLASS, gUSA.getOid(), LocatedIn.CLASS);
+      TermUtil.addAndRemoveLink(uCity.getOid(), uState.getOid(), AllowedIn.CLASS, uUSA.getOid(), AllowedIn.CLASS);
+      TermUtil.addAndRemoveLink(uCity.getOid(), uUSA.getOid(), AllowedIn.CLASS, uState.getOid(), AllowedIn.CLASS); // Undo
                                                                                                                 // it
-      TermUtil.addAndRemoveLink(gDenver.getId(), gUSA.getId(), LocatedIn.CLASS, gColorado.getId(), LocatedIn.CLASS); // Undo
+      TermUtil.addAndRemoveLink(gDenver.getOid(), gUSA.getOid(), LocatedIn.CLASS, gColorado.getOid(), LocatedIn.CLASS); // Undo
                                                                                                                      // it
 
       // Test 3) Moving the State Universal to Uganda should fail.
       try
       {
-        TermUtil.addAndRemoveLink(uState.getId(), uUSA.getId(), AllowedIn.CLASS, uUganda.getId(), AllowedIn.CLASS);
+        TermUtil.addAndRemoveLink(uState.getOid(), uUSA.getOid(), AllowedIn.CLASS, uUganda.getOid(), AllowedIn.CLASS);
         Assert.fail("An exception was not thrown on the 3rd removeLink test.");
       }
       catch (InvalidUniversalRemoveLinkException e)
@@ -699,7 +699,7 @@ public class GeoEntityTest
       // Test 4) Moving the City Universal to Uganda should fail.
       try
       {
-        TermUtil.addAndRemoveLink(uCity.getId(), uState.getId(), AllowedIn.CLASS, uUganda.getId(), AllowedIn.CLASS);
+        TermUtil.addAndRemoveLink(uCity.getOid(), uState.getOid(), AllowedIn.CLASS, uUganda.getOid(), AllowedIn.CLASS);
         Assert.fail("An exception was not thrown on the 4th removeLink test.");
       }
       catch (InvalidUniversalRemoveLinkException e)
@@ -723,8 +723,8 @@ public class GeoEntityTest
   private void assertLocatedIn(GeoEntity child, GeoEntity parent)
   {
     LocatedInQuery q = new LocatedInQuery(new QueryFactory());
-    q.WHERE(q.childId().EQ(child.getId()));
-    q.AND(q.parentId().EQ(parent.getId()));
+    q.WHERE(q.childId().EQ(child.getOid()));
+    q.AND(q.parentId().EQ(parent.getOid()));
 
     OIterator<? extends LocatedIn> iter = q.getIterator();
     try

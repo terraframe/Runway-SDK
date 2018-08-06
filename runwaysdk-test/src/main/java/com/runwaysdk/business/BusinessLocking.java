@@ -91,7 +91,7 @@ public class BusinessLocking
     integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     integerMdAttribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     integerMdAttribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdEntity.getId());
+    integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdEntity.getOid());
     integerMdAttribute.apply();
 
     // Create a new user
@@ -414,7 +414,7 @@ public class BusinessLocking
 
     instance.lock();
 
-    return instance.getId();
+    return instance.getOid();
   }
 
   /**
@@ -517,7 +517,7 @@ public class BusinessLocking
     Business instance = new Business(lockTestInfo.getType());
     instance.apply();
 
-    return instance.getId();
+    return instance.getOid();
   }
 
   @Request(RequestType.SESSION)

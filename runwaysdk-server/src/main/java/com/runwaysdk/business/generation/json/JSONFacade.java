@@ -333,7 +333,7 @@ public class JSONFacade
         String[] ids = new String[hierarchy.size()];
         for (int i = 0; i < hierarchy.size(); i++)
         {
-          ids[i] = hierarchy.get(i).getId();
+          ids[i] = hierarchy.get(i).getOid();
         }
 
         // FIXME optimize this
@@ -341,7 +341,7 @@ public class JSONFacade
         MdMethodQuery q = new MdMethodQuery(f);
         ValueQuery v = new ValueQuery(f);
 
-        v.SELECT(q.getId(MdMethodInfo.ID));
+        v.SELECT(q.getOid(MdMethodInfo.ID));
         v.WHERE(q.getMethodName().EQ(methodName));
         v.WHERE(q.getMdType().IN(ids)); // FIXME write tests for IN/NI on
                                         // AttributeReference

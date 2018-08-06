@@ -174,13 +174,13 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeSymmetric mdAttributeSymmetric)
     {
       if(mdAttributeSymmetric == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeSymmetric.getId());
+      return this.EQ(mdAttributeSymmetric.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeSymmetric mdAttributeSymmetric)
     {
       if(mdAttributeSymmetric == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeSymmetric.getId());
+      return this.NE(mdAttributeSymmetric.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getSecretKeySize()
@@ -277,7 +277,7 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeSymmetric.length; i++)
       {
-        itemIdArray[i] = mdAttributeSymmetric[i].getId();
+        itemIdArray[i] = mdAttributeSymmetric[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -289,7 +289,7 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeSymmetric.length; i++)
       {
-        itemIdArray[i] = mdAttributeSymmetric[i].getId();
+        itemIdArray[i] = mdAttributeSymmetric[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -301,7 +301,7 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeSymmetric.length; i++)
       {
-        itemIdArray[i] = mdAttributeSymmetric[i].getId();
+        itemIdArray[i] = mdAttributeSymmetric[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -313,7 +313,7 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeSymmetric.length; i++)
       {
-        itemIdArray[i] = mdAttributeSymmetric[i].getId();
+        itemIdArray[i] = mdAttributeSymmetric[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -325,7 +325,7 @@ public  class MdAttributeSymmetricQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeSymmetric.length; i++)
       {
-        itemIdArray[i] = mdAttributeSymmetric[i].getId();
+        itemIdArray[i] = mdAttributeSymmetric[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

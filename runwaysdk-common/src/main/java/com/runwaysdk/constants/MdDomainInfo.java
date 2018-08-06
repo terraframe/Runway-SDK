@@ -33,7 +33,7 @@ public interface MdDomainInfo extends MetadataInfo
   public static final String DISPLAY_LABEL   = "displayLabel";
   
   /**
-   * Name of the attribute that stores the id of the super class.
+   * Name of the attribute that stores the oid of the super class.
    */
   public static final String DOMAIN_NAME     = "domainName";
 }

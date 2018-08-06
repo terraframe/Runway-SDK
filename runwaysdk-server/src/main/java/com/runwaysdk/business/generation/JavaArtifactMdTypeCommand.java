@@ -238,16 +238,16 @@ public class JavaArtifactMdTypeCommand implements Command
   {
     try
     {
-      byte[] baseClass = Database.getMdTypeBaseClass(this.mdTypeIF.getId(), conn);
+      byte[] baseClass = Database.getMdTypeBaseClass(this.mdTypeIF.getOid(), conn);
       ClassManager.writeClasses(businessBaseClassDiretory, baseClass);
 
-      String baseSource = Database.getMdTypeBaseSource(this.mdTypeIF.getId(), conn);
+      String baseSource = Database.getMdTypeBaseSource(this.mdTypeIF.getOid(), conn);
       FileIO.write(businessBaseSourceFile, baseSource);
 
-      byte[] dtoClass = Database.getMdTypeDTOclass(this.mdTypeIF.getId(), conn);
+      byte[] dtoClass = Database.getMdTypeDTOclass(this.mdTypeIF.getOid(), conn);
       ClassManager.writeClasses(dtoBaseClassDirectory, dtoClass);
 
-      String dtoSource = Database.getMdTypeDTOsource(this.mdTypeIF.getId(), conn);
+      String dtoSource = Database.getMdTypeDTOsource(this.mdTypeIF.getOid(), conn);
       FileIO.write(dtoBaseSourceFile, dtoSource);
     }
     catch(IOException e)

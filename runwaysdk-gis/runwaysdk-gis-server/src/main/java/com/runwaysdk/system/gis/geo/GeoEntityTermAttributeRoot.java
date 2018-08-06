@@ -29,7 +29,7 @@ public class GeoEntityTermAttributeRoot extends GeoEntityTermAttributeRootBase
   
   public GeoEntityTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.GeoEntity child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

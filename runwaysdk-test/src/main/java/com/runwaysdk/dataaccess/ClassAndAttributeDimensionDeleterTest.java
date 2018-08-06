@@ -77,7 +77,7 @@ public class ClassAndAttributeDimensionDeleterTest
   @Test
   public void testDeleteMdClasses()
   {
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
 
     Assert.assertEquals(1, mdClass.getMdClassDimensions().size());
 
@@ -100,7 +100,7 @@ public class ClassAndAttributeDimensionDeleterTest
   @Test
   public void testDeleteMdAttributes()
   {
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
 
     Assert.assertEquals(1, mdAttribute.getMdAttributeDimensions().size());
 

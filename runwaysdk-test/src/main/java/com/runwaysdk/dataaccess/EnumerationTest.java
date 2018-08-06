@@ -182,7 +182,7 @@ public class EnumerationTest
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
 
@@ -196,7 +196,7 @@ public class EnumerationTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumerationIF = mdEnumeration;
@@ -208,9 +208,9 @@ public class EnumerationTest
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
@@ -219,7 +219,7 @@ public class EnumerationTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttributeInteger.apply();
 
     // Define the options for the enumeration
@@ -251,8 +251,8 @@ public class EnumerationTest
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     multiAttrMdID = mdAttrEnumMultiple.apply();
 
@@ -263,8 +263,8 @@ public class EnumerationTest
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     singleAttrMdID = mdAttrEnumSingle.apply();
 
@@ -284,8 +284,8 @@ public class EnumerationTest
     mdAttrEnumSingleBasic.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Single select state attribute");
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getId());
-    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getOid());
+    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumSingleBasic.apply();
 
@@ -294,8 +294,8 @@ public class EnumerationTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Struct");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttrStruct.apply();
     mdAttributeStructIF = mdAttrStruct;
   }
@@ -371,7 +371,7 @@ public class EnumerationTest
     voltronMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Voltron Lion Force");
     voltronMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    voltronMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    voltronMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     voltronMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.apply();
     voltronMdBusinessIF = voltronMdBusiness;
@@ -383,9 +383,9 @@ public class EnumerationTest
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Name");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, voltronMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, voltronMdBusiness.getOid());
     mdAttrChar.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(voltronClass.getType());
@@ -430,7 +430,7 @@ public class EnumerationTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, voltronMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, voltronMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     voltronMdEnumerationIF = mdEnumeration;
@@ -448,25 +448,25 @@ public class EnumerationTest
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(testObject.getType());
     businessDAO.addStructItem("someStruct", SINGLE, californiaItemId);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     try
     {
-      BusinessDAOIF entity = BusinessDAO.get(id);
+      BusinessDAOIF entity = BusinessDAO.get(oid);
       StructDAOIF structDAO = ( (AttributeStructIF) entity.getAttributeIF("someStruct") ).getStructDAO();
       AttributeEnumerationIF attrEnumIF = (AttributeEnumerationIF) structDAO.getAttributeIF(SINGLE);
 
       // Make sure the enumeration item can be dereferenced.
       BusinessDAOIF[] out = attrEnumIF.dereference();
       Assert.assertEquals("Unable to dereference an enumeration item on an attribute that belongs to a struct.", 1, out.length);
-      Assert.assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getId());
+      Assert.assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getOid());
 
       Set<String> cachedList = attrEnumIF.getCachedEnumItemIdSet();
       Assert.assertEquals("The size of the enumItem cache on an AttributeEnumeration is wrong.", 1, cachedList.size());
       Assert.assertEquals("The enumItem cache on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, cachedList.iterator().next());
 
       String cacheColumnName = ( (MdAttributeEnumerationDAOIF) attrEnumIF.getMdAttribute() ).getCacheColumnName();
-      String databaseCachedStates = Database.getEnumCacheFieldInTable(mdStructIF.getTableName(), cacheColumnName, structDAO.getId());
+      String databaseCachedStates = Database.getEnumCacheFieldInTable(mdStructIF.getTableName(), cacheColumnName, structDAO.getOid());
 
       Assert.assertEquals("The enumItem cache database column on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, databaseCachedStates);
     }
@@ -757,12 +757,12 @@ public class EnumerationTest
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
       mdAttrEnum.apply();
 
-      testObject = BusinessDAO.get(testObject.getId()).getBusinessDAO();
+      testObject = BusinessDAO.get(testObject.getOid()).getBusinessDAO();
 
       testObject.addItem("someTestStateEnum", californiaItemId);
       testObject.apply();
@@ -994,44 +994,44 @@ public class EnumerationTest
   {
     BusinessDAO testObjects[] = new BusinessDAO[4];
     String testIDs[] = new String[4];
-    List<String> setIds = new LinkedList<String>();
-    setIds.add(testObject.getAttribute(SINGLE).getValue());
-    setIds.add(testObject.getAttribute(MULTIPLE).getValue());
+    List<String> setOids = new LinkedList<String>();
+    setOids.add(testObject.getAttribute(SINGLE).getValue());
+    setOids.add(testObject.getAttribute(MULTIPLE).getValue());
 
     try
     {
       // Count the number of enumerated items in the test object
       int origEnumNum = 0;
 
-      for (String setId : setIds)
+      for (String setOid : setOids)
       {
-        Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setId).size();
+        Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setOid).size();
       }
 
       testObjects[0] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testIDs[0] = testObjects[0].apply();
-      setIds.add(testObjects[0].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[0].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[0].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[0].getAttribute(MULTIPLE).getValue());
 
       testObjects[1] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[1].addItem(MULTIPLE, californiaItemId);
       testIDs[1] = testObjects[1].apply();
-      setIds.add(testObjects[1].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[1].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[1].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[1].getAttribute(MULTIPLE).getValue());
 
       testObjects[2] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[2].removeItem(MULTIPLE, coloradoItemId);
       testObjects[2].addItem(MULTIPLE, connecticutItemId);
       testIDs[2] = testObjects[2].apply();
-      setIds.add(testObjects[2].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[2].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[2].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[2].getAttribute(MULTIPLE).getValue());
 
       testObjects[3] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[3].addItem(MULTIPLE, californiaItemId);
       testObjects[3].addItem(MULTIPLE, connecticutItemId);
       testIDs[3] = testObjects[3].apply();
-      setIds.add(testObjects[3].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[3].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[3].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[3].getAttribute(MULTIPLE).getValue());
 
       testObject = testObjects[0];
       checkEnumState(coloradoItemId);
@@ -1061,9 +1061,9 @@ public class EnumerationTest
       // Count the number of rows in the stateMdEnumerationIF table
       int count = 0;
 
-      for (String setId : setIds)
+      for (String setOid : setOids)
       {
-        count += Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setId).size();
+        count += Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setOid).size();
       }
 
       // We expect 4 entries in the link table - 1 for each object's instance of
@@ -1090,8 +1090,8 @@ public class EnumerationTest
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusinessIF.getId());
-        mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+        mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusinessIF.getOid());
+        mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
         multiAttrMdID = mdAttrEnum.apply();
       }
@@ -1124,10 +1124,10 @@ public class EnumerationTest
     mdAttrEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attriubte Enumeration");
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.addItem(MdAttributeEnumerationInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrEnum.addItem(MdAttributeEnumerationInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
 
     try
@@ -1160,13 +1160,13 @@ public class EnumerationTest
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1207,7 +1207,7 @@ public class EnumerationTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessTestIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessTestIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -1243,7 +1243,7 @@ public class EnumerationTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdEnumeration.apply();
@@ -1255,7 +1255,7 @@ public class EnumerationTest
     mdEnumeration2.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration2.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration2.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration2.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration2.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -1303,7 +1303,7 @@ public class EnumerationTest
       mdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
@@ -1345,7 +1345,7 @@ public class EnumerationTest
       mdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
@@ -1358,7 +1358,7 @@ public class EnumerationTest
       mdBusiness2.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test enum extending master list");
       mdBusiness2.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getId());
+      mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getOid());
       mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
@@ -1421,8 +1421,8 @@ public class EnumerationTest
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "");
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, voltronMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, voltronMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     String mdAttrEnumID = mdAttrEnum.apply();
 
@@ -1456,7 +1456,7 @@ public class EnumerationTest
   }
 
   /**
-   * Gets a new instance of the testObject and checks for the number and id of
+   * Gets a new instance of the testObject and checks for the number and oid of
    * each state passed in (varibale number of arguments).
    * 
    * @param states
@@ -1464,7 +1464,7 @@ public class EnumerationTest
    */
   private void checkNewInstance(String field, MdAttributeEnumerationDAO mdAttrEnum, String... states)
   {
-    BusinessDAOIF check = BusinessDAO.get(testObject.getId());
+    BusinessDAOIF check = BusinessDAO.get(testObject.getOid());
     AttributeEnumerationIF enumr = (AttributeEnumerationIF) check.getAttributeIF(field);
     Set<String> l = enumr.getCachedEnumItemIdSet();
 
@@ -1484,7 +1484,7 @@ public class EnumerationTest
     MdBusinessDAOIF mdBusinessIF = check.getMdBusinessDAO();
     String tableName = mdBusinessIF.getTableName();
     String cachedColumnName = mdAttrEnum.getCacheColumnName();
-    String databaseCachedStates = Database.getEnumCacheFieldInTable(tableName, cachedColumnName, testObject.getId());
+    String databaseCachedStates = Database.getEnumCacheFieldInTable(tableName, cachedColumnName, testObject.getOid());
 
     String[] databaseCachedStateArray = null;
 
@@ -1505,7 +1505,7 @@ public class EnumerationTest
   }
 
   /**
-   * Checks for the number and id of each state passed in (varibale number of
+   * Checks for the number and oid of each state passed in (varibale number of
    * arguments) directly against the database.
    * 
    * 

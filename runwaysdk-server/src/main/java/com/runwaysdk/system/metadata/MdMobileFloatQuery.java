@@ -114,13 +114,13 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileFloat mdMobileFloat)
     {
       if(mdMobileFloat == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileFloat.getId());
+      return this.EQ(mdMobileFloat.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileFloat mdMobileFloat)
     {
       if(mdMobileFloat == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileFloat.getId());
+      return this.NE(mdMobileFloat.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
 
       for (int i=0; i<mdMobileFloat.length; i++)
       {
-        itemIdArray[i] = mdMobileFloat[i].getId();
+        itemIdArray[i] = mdMobileFloat[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
 
       for (int i=0; i<mdMobileFloat.length; i++)
       {
-        itemIdArray[i] = mdMobileFloat[i].getId();
+        itemIdArray[i] = mdMobileFloat[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
 
       for (int i=0; i<mdMobileFloat.length; i++)
       {
-        itemIdArray[i] = mdMobileFloat[i].getId();
+        itemIdArray[i] = mdMobileFloat[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
 
       for (int i=0; i<mdMobileFloat.length; i++)
       {
-        itemIdArray[i] = mdMobileFloat[i].getId();
+        itemIdArray[i] = mdMobileFloat[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileFloatQuery extends com.runwaysdk.system.metadata.MdMobileD
 
       for (int i=0; i<mdMobileFloat.length; i++)
       {
-        itemIdArray[i] = mdMobileFloat[i].getId();
+        itemIdArray[i] = mdMobileFloat[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

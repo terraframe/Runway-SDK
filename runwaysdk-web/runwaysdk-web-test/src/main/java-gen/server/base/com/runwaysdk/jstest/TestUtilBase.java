@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestUtilBase extends com.runwaysdk.business.Util implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestUtil";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String UTILCHARACTER = "utilCharacter";
   public static java.lang.String UTILPHONE = "utilPhone";
   private com.runwaysdk.business.Struct utilPhone = null;
@@ -44,7 +44,7 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
     utilPhone = super.getStruct("utilPhone");
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -54,7 +54,7 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestUtil.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -140,7 +140,7 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
     }
     else
     {
-      setValue(UTILREFERENCEOBJECT, value.getId());
+      setValue(UTILREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -154,7 +154,7 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
   {
     if(value != null)
     {
-      addEnumItem(UTILSINGLESTATE, value.getId());
+      addEnumItem(UTILSINGLESTATE, value.getOid());
     }
   }
   
@@ -162,7 +162,7 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
   {
     if(value != null)
     {
-      removeEnumItem(UTILSINGLESTATE, value.getId());
+      removeEnumItem(UTILSINGLESTATE, value.getOid());
     }
   }
   
@@ -187,9 +187,9 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
     return CLASS;
   }
   
-  public static TestUtil get(String id)
+  public static TestUtil get(String oid)
   {
-    return (TestUtil) com.runwaysdk.business.Util.get(id);
+    return (TestUtil) com.runwaysdk.business.Util.get(oid);
   }
   
   public static java.lang.Integer doubleAnInt(java.lang.Integer num)
@@ -204,9 +204,9 @@ public abstract class TestUtilBase extends com.runwaysdk.business.Util implement
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final com.runwaysdk.jstest.TestUtil returnUtil(java.lang.String id, com.runwaysdk.jstest.TestUtil input)
+  public static final com.runwaysdk.jstest.TestUtil returnUtil(java.lang.String oid, com.runwaysdk.jstest.TestUtil input)
   {
-    TestUtil _instance = TestUtil.get(id);
+    TestUtil _instance = TestUtil.get(oid);
     return _instance.returnUtil(input);
   }
   

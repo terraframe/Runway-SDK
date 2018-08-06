@@ -179,7 +179,7 @@ public class RestResponseTest
 
     try
     {
-      RelationshipDTO relationship = request.addChild(dto.getId(), dto.getId(), mdRelationshipType);
+      RelationshipDTO relationship = request.addChild(dto.getOid(), dto.getOid(), mdRelationshipType);
 
       MockServletRequest req = new MockServletRequest();
       MockServletResponse resp = new MockServletResponse();
@@ -200,12 +200,12 @@ public class RestResponseTest
       JSONObject test = object.getJSONObject("relationship");
 
       Assert.assertEquals(mdRelationshipType, test.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getId(), test.get(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel()));
-      Assert.assertEquals(dto.getId(), test.get(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel()));
+      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel()));
+      Assert.assertEquals(dto.getOid(), test.get(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel()));
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 
@@ -245,7 +245,7 @@ public class RestResponseTest
 
     try
     {
-      RelationshipDTO relationship = request.addChild(dto.getId(), dto.getId(), mdRelationshipType);
+      RelationshipDTO relationship = request.addChild(dto.getOid(), dto.getOid(), mdRelationshipType);
 
       MockServletRequest req = new MockServletRequest();
       MockServletResponse resp = new MockServletResponse();
@@ -273,17 +273,17 @@ public class RestResponseTest
 
       Assert.assertEquals(testValue, parent.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(mdBusinessType, parent.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getId(), parent.get(EntityInfo.ID));
+      Assert.assertEquals(dto.getOid(), parent.get(EntityInfo.ID));
 
       JSONObject child = test.getJSONObject("child");
 
       Assert.assertEquals(testValue, child.get(TestFixConst.ATTRIBUTE_CHARACTER));
       Assert.assertEquals(mdBusinessType, child.get(EntityInfo.TYPE));
-      Assert.assertEquals(dto.getId(), child.get(EntityInfo.ID));
+      Assert.assertEquals(dto.getOid(), child.get(EntityInfo.ID));
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 }

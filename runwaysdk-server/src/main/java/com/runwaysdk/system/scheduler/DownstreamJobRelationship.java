@@ -29,7 +29,7 @@ public class DownstreamJobRelationship extends DownstreamJobRelationshipBase
   
   public DownstreamJobRelationship(com.runwaysdk.system.scheduler.ExecutableJob parent, com.runwaysdk.system.scheduler.ExecutableJob child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

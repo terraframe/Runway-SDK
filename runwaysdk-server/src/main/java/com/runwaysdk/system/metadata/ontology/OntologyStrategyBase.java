@@ -32,7 +32,7 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -130,23 +130,23 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public void setEntityDomain(java.lang.String id)
+  public void setEntityDomain(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(ENTITYDOMAIN, "");
     }
     else
     {
-      setValue(ENTITYDOMAIN, id);
+      setValue(ENTITYDOMAIN, oid);
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -156,7 +156,7 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.ontology.OntologyStrategy.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -298,19 +298,19 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
-  public void setOwner(java.lang.String id)
+  public void setOwner(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(OWNER, "");
     }
     else
     {
-      setValue(OWNER, id);
+      setValue(OWNER, oid);
     }
   }
   
@@ -356,7 +356,7 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
   {
     if(value != null)
     {
-      addEnumItem(STRATEGYSTATE, value.getId());
+      addEnumItem(STRATEGYSTATE, value.getOid());
     }
   }
   
@@ -364,7 +364,7 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
   {
     if(value != null)
     {
-      removeEnumItem(STRATEGYSTATE, value.getId());
+      removeEnumItem(STRATEGYSTATE, value.getOid());
     }
   }
   
@@ -433,9 +433,9 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     return CLASS;
   }
   
-  public static OntologyStrategy get(String id)
+  public static OntologyStrategy get(String oid)
   {
-    return (OntologyStrategy) com.runwaysdk.business.Business.get(id);
+    return (OntologyStrategy) com.runwaysdk.business.Business.get(oid);
   }
   
   public static OntologyStrategy getByKey(String key)
@@ -443,17 +443,17 @@ public abstract class OntologyStrategyBase extends com.runwaysdk.business.Busine
     return (OntologyStrategy) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static OntologyStrategy lock(java.lang.String id)
+  public static OntologyStrategy lock(java.lang.String oid)
   {
-    OntologyStrategy _instance = OntologyStrategy.get(id);
+    OntologyStrategy _instance = OntologyStrategy.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static OntologyStrategy unlock(java.lang.String id)
+  public static OntologyStrategy unlock(java.lang.String oid)
   {
-    OntologyStrategy _instance = OntologyStrategy.get(id);
+    OntologyStrategy _instance = OntologyStrategy.get(oid);
     _instance.unlock();
     
     return _instance;

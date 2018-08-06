@@ -613,8 +613,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
       String dtoClassColumn = MdTypeDAOIF.DTO_BASE_CLASS_COLUMN;
       String dtoSourceColumn = MdTypeDAOIF.DTO_BASE_SOURCE_COLUMN;
 
-      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
-      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
+      Database.updateClassAndSource(this.getOid(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
+      Database.updateClassAndSource(this.getOid(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
 
       // Only update the source. The blob attributes just point to the database
       // anyway.
@@ -630,7 +630,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     if (this.isNew())
     {
-      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getId()));
+      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getOid()));
     }
 
     if (!this.isNew() || this.isAppliedToDB())
@@ -652,9 +652,9 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     return super.save(validateRequired);
   }
 
-  public static MdTypeDAOIF get(String id)
+  public static MdTypeDAOIF get(String oid)
   {
-    return (MdTypeDAOIF) BusinessDAO.get(id);
+    return (MdTypeDAOIF) BusinessDAO.get(oid);
   }
 
   /**

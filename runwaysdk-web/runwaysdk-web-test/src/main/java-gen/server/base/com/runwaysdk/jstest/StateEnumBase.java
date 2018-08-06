@@ -155,9 +155,9 @@ public abstract class StateEnumBase extends com.runwaysdk.system.EnumerationMast
     return query;
   }
   
-  public static StateEnum get(String id)
+  public static StateEnum get(String oid)
   {
-    return (StateEnum) com.runwaysdk.business.Business.get(id);
+    return (StateEnum) com.runwaysdk.business.Business.get(oid);
   }
   
   public static StateEnum getByKey(String key)
@@ -170,17 +170,17 @@ public abstract class StateEnumBase extends com.runwaysdk.system.EnumerationMast
     return (StateEnum) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.jstest.StateEnum.CLASS ,enumName);
   }
   
-  public static StateEnum lock(java.lang.String id)
+  public static StateEnum lock(java.lang.String oid)
   {
-    StateEnum _instance = StateEnum.get(id);
+    StateEnum _instance = StateEnum.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static StateEnum unlock(java.lang.String id)
+  public static StateEnum unlock(java.lang.String oid)
   {
-    StateEnum _instance = StateEnum.get(id);
+    StateEnum _instance = StateEnum.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -86,7 +86,7 @@ public class Synonym extends SynonymBase implements OntologyEntryIF
     SynonymRelationship rel = geo.addSynonym(synonym);
     rel.apply();
 
-    return new TermAndRel(synonym, SynonymRelationship.CLASS, rel.getId());
+    return new TermAndRel(synonym, SynonymRelationship.CLASS, rel.getOid());
   }
 
   public static Term getRoot()

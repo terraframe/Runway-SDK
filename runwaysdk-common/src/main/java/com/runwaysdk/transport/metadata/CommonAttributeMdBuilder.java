@@ -49,9 +49,9 @@ public class CommonAttributeMdBuilder
   private boolean immutable;
 
   /**
-   * The id of the attribute metadata;
+   * The oid of the attribute metadata;
    */
-  private String id;
+  private String oid;
 
   /**
    * The flag denoting if the attribute is a system attribute.
@@ -83,7 +83,7 @@ public class CommonAttributeMdBuilder
     this.description = source.getDescription();
     this.required = source.isRequired();
     this.immutable = source.isImmutable();
-    this.id = source.getId();
+    this.oid = source.getOid();
     this.system = source.isSystem();
     this.name = source.getName();
     this.generateAccessor = source.getGenerateAccessor();
@@ -101,7 +101,7 @@ public class CommonAttributeMdBuilder
     dest.setDescription(description);
     dest.setRequired(required);
     dest.setImmutable(immutable);
-    dest.setId(id);
+    dest.setOid(oid);
     dest.setSystem(system);
     dest.setName(name);
     dest.setGenerateAccessor(generateAccessor);

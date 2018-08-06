@@ -51,9 +51,9 @@ public abstract class ExceptionInheritanceBase extends com.runwaysdk.system.meta
     return (com.runwaysdk.system.metadata.MdException) super.getChild();
   }
   
-  public static ExceptionInheritance get(String id)
+  public static ExceptionInheritance get(String oid)
   {
-    return (ExceptionInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (ExceptionInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ExceptionInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ExceptionInheritanceBase extends com.runwaysdk.system.meta
     return (ExceptionInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ExceptionInheritance lock(java.lang.String id)
+  public static ExceptionInheritance lock(java.lang.String oid)
   {
-    ExceptionInheritance _instance = ExceptionInheritance.get(id);
+    ExceptionInheritance _instance = ExceptionInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ExceptionInheritance unlock(java.lang.String id)
+  public static ExceptionInheritance unlock(java.lang.String oid)
   {
-    ExceptionInheritance _instance = ExceptionInheritance.get(id);
+    ExceptionInheritance _instance = ExceptionInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

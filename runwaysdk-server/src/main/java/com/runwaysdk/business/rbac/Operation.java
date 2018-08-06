@@ -132,7 +132,7 @@ public enum Operation implements Serializable {
    */
   EXECUTE("JS20070723000000000000000000156600000000000000000000000000000536");
 
-  private String id;
+  private String oid;
 
   private String negationId;
 
@@ -140,25 +140,25 @@ public enum Operation implements Serializable {
   
   private Boolean isDeny;
 
-  private Operation(String id)
+  private Operation(String oid)
   {
-    this.id = id;
+    this.oid = oid;
     this.negationId = null;
     this.isDeny = false;
     this.mdBusinessId = "0000000000000000000000000000053600000000000000000000000000000001";
   }
 
-  private Operation(String id, String negationId, boolean isDeny)
+  private Operation(String oid, String negationId, boolean isDeny)
   {
-    this(id);
+    this(oid);
 
     this.negationId = negationId;
     this.isDeny = isDeny;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   public String getNegationId()
@@ -174,7 +174,7 @@ public enum Operation implements Serializable {
      
      for(Operation operation : operations)
      {
-       if(operation.getId().equals(negationId))
+       if(operation.getOid().equals(negationId))
        {
          return operation;
        }
@@ -193,7 +193,7 @@ public enum Operation implements Serializable {
   {
     if (this.negationId != null && o1.getNegationId() != null)
     {
-      return this.getNegationId().equals(o1.getId()) || this.getId().equals(o1.getNegationId());
+      return this.getNegationId().equals(o1.getOid()) || this.getOid().equals(o1.getNegationId());
     }
 
     return false;

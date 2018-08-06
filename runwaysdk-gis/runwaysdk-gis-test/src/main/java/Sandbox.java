@@ -55,7 +55,7 @@ public class Sandbox
       System.out.println("Regenerating " + mtq.getTypeName());
 
       MdType mdt = it.next();
-      GenerationManager.generate(MdTypeDAO.get(mdt.getId()));
+      GenerationManager.generate(MdTypeDAO.get(mdt.getOid()));
     }
 
     System.out.println("Ending");
@@ -91,14 +91,14 @@ public class Sandbox
   // universalName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Name");
   // universalName.setValue(MdAttributeCharacterInfo.INDEX_TYPE,
-  // IndexTypes.UNIQUE_INDEX.getId());
+  // IndexTypes.UNIQUE_INDEX.getOid());
   // universalName.setValue(MdAttributeCharacterInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // universalName.setValue(MdAttributeCharacterInfo.IMMUTABLE,
   // MdAttributeBooleanInfo.FALSE);
   // universalName.setValue(MdAttributeCharacterInfo.SIZE, "100");
   // universalName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS,
-  // universal.getId());
+  // universal.getOid());
   // universalName.apply();
   //
   // MdAttributeLocalCharacterDAO displayLabel =
@@ -109,7 +109,7 @@ public class Sandbox
   // displayLabel.setStructValue(MdAttributeStructInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Display label");
   // displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS,
-  // universal.getId());
+  // universal.getOid());
   // displayLabel.setValue(MdAttributeLocalCharacterInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // displayLabel.apply();
@@ -122,7 +122,7 @@ public class Sandbox
   // description.setStructValue(MdAttributeStructInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
   // description.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS,
-  // universal.getId());
+  // universal.getOid());
   // description.setValue(MdAttributeLocalCharacterInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // description.apply();
@@ -132,18 +132,18 @@ public class Sandbox
   // allowedIn.setValue(MdTreeInfo.PACKAGE, PACKAGE);
   // allowedIn.setStructValue(MdTreeInfo.DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Allowed In");
-  // allowedIn.setValue(MdTreeInfo.PARENT_MD_BUSINESS, universal.getId());
+  // allowedIn.setValue(MdTreeInfo.PARENT_MD_BUSINESS, universal.getOid());
   // allowedIn.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
   // allowedIn.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Universal");
-  // allowedIn.setValue(MdTreeInfo.CHILD_MD_BUSINESS, universal.getId());
+  // allowedIn.setValue(MdTreeInfo.CHILD_MD_BUSINESS, universal.getOid());
   // allowedIn.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
   // allowedIn.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Universal");
   // allowedIn.setValue(MdTreeInfo.PARENT_METHOD, "AllowedIn");
   // allowedIn.setValue(MdTreeInfo.CHILD_METHOD, "Contains");
   // allowedIn.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE,
-  // AssociationType.TREE.getId());
+  // AssociationType.TREE.getOid());
   // allowedIn.setGenerateMdController(false);
   // allowedIn.apply();
   //
@@ -165,14 +165,14 @@ public class Sandbox
   // geoId.setStructValue(MdAttributeCharacterInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Id");
   // geoId.setValue(MdAttributeCharacterInfo.INDEX_TYPE,
-  // IndexTypes.UNIQUE_INDEX.getId());
+  // IndexTypes.UNIQUE_INDEX.getOid());
   // geoId.setValue(MdAttributeCharacterInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // geoId.setValue(MdAttributeCharacterInfo.IMMUTABLE,
   // MdAttributeBooleanInfo.FALSE);
   // geoId.setValue(MdAttributeCharacterInfo.SIZE, "50");
   // geoId.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS,
-  // geoEntity.getId());
+  // geoEntity.getOid());
   // geoId.apply();
   //
   // MdAttributeTextDAO wtk = MdAttributeTextDAO.newInstance();
@@ -181,10 +181,10 @@ public class Sandbox
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "WTK");
   // wtk.setStructValue(MdAttributeTextInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "The WKT string of the geometry");
-  // wtk.setValue(MdAttributeTextInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+  // wtk.setValue(MdAttributeTextInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
   // wtk.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
   // wtk.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-  // wtk.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, geoEntity.getId());
+  // wtk.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, geoEntity.getOid());
   // wtk.apply();
   //
   // MdAttributeReferenceDAO universalAttribute =
@@ -195,15 +195,15 @@ public class Sandbox
   // universalAttribute.setStructValue(MdAttributeReferenceInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Universal");
   // universalAttribute.setValue(MdAttributeReferenceInfo.INDEX_TYPE,
-  // IndexTypes.NO_INDEX.getId());
+  // IndexTypes.NO_INDEX.getOid());
   // universalAttribute.setValue(MdAttributeReferenceInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // universalAttribute.setValue(MdAttributeReferenceInfo.IMMUTABLE,
   // MdAttributeBooleanInfo.TRUE);
   // universalAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,
-  // geoEntity.getId());
+  // geoEntity.getOid());
   // universalAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS,
-  // universal.getId());
+  // universal.getOid());
   // universalAttribute.apply();
   //
   // MdAttributeLocalCharacterDAO entityName =
@@ -214,7 +214,7 @@ public class Sandbox
   // entityName.setStructValue(MdAttributeStructInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Localized name of the geo entity");
   // entityName.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS,
-  // geoEntity.getId());
+  // geoEntity.getOid());
   // entityName.setValue(MdAttributeLocalCharacterInfo.REQUIRED,
   // MdAttributeBooleanInfo.TRUE);
   // entityName.apply();
@@ -226,13 +226,13 @@ public class Sandbox
   // geoPoint.setStructValue(MdAttributePointInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Point");
   // geoPoint.setValue(MdAttributePointInfo.INDEX_TYPE,
-  // IndexTypes.NO_INDEX.getId());
+  // IndexTypes.NO_INDEX.getOid());
   // geoPoint.setValue(MdAttributePointInfo.REQUIRED,
   // MdAttributeBooleanInfo.FALSE);
   // geoPoint.setValue(MdAttributePointInfo.IMMUTABLE,
   // MdAttributeBooleanInfo.FALSE);
   // geoPoint.setValue(MdAttributePointInfo.DEFINING_MD_CLASS,
-  // geoEntity.getId());
+  // geoEntity.getOid());
   // geoPoint.setValue(MdAttributePointInfo.SRID, "4326");
   // geoPoint.setValue(MdAttributePointInfo.DIMENSION, "2");
   // geoPoint.apply();
@@ -246,13 +246,13 @@ public class Sandbox
   // geoMultiPolygon.setStructValue(MdAttributeMultiPolygonInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Multi Polygon");
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.INDEX_TYPE,
-  // IndexTypes.NO_INDEX.getId());
+  // IndexTypes.NO_INDEX.getOid());
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.REQUIRED,
   // MdAttributeBooleanInfo.FALSE);
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.IMMUTABLE,
   // MdAttributeBooleanInfo.FALSE);
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS,
-  // geoEntity.getId());
+  // geoEntity.getOid());
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.SRID, "4326");
   // geoMultiPolygon.setValue(MdAttributeMultiPolygonInfo.DIMENSION, "2");
   // geoMultiPolygon.apply();
@@ -262,18 +262,18 @@ public class Sandbox
   // locatedIn.setValue(MdTreeInfo.PACKAGE, PACKAGE);
   // locatedIn.setStructValue(MdTreeInfo.DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Located In");
-  // locatedIn.setValue(MdTreeInfo.PARENT_MD_BUSINESS, geoEntity.getId());
+  // locatedIn.setValue(MdTreeInfo.PARENT_MD_BUSINESS, geoEntity.getOid());
   // locatedIn.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
   // locatedIn.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent geo entity");
-  // locatedIn.setValue(MdTreeInfo.CHILD_MD_BUSINESS, geoEntity.getId());
+  // locatedIn.setValue(MdTreeInfo.CHILD_MD_BUSINESS, geoEntity.getOid());
   // locatedIn.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
   // locatedIn.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Child geo entity");
   // locatedIn.setValue(MdTreeInfo.PARENT_METHOD, "LocatedIn");
   // locatedIn.setValue(MdTreeInfo.CHILD_METHOD, "Contains");
   // locatedIn.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE,
-  // AssociationType.TREE.getId());
+  // AssociationType.TREE.getOid());
   // locatedIn.setGenerateMdController(false);
   // locatedIn.apply();
   //
@@ -292,7 +292,7 @@ public class Sandbox
   // rootEntity.setValue(ComponentInfo.KEY, "ROOT");
   // rootEntity.setStructValue("entityName",
   // MdAttributeLocalCharacterInfo.DEFAULT_LOCALE, "Root");
-  // rootEntity.setValue("universal", rootUniversal.getId());
+  // rootEntity.setValue("universal", rootUniversal.getOid());
   // rootEntity.apply();
   // }
   //

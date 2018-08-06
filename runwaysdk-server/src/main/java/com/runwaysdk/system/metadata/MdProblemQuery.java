@@ -438,13 +438,13 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdProblem mdProblem)
     {
       if(mdProblem == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdProblem.getId());
+      return this.EQ(mdProblem.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdProblem mdProblem)
     {
       if(mdProblem == null) return this.NE((java.lang.String)null);
-      return this.NE(mdProblem.getId());
+      return this.NE(mdProblem.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdProblemQuery.MdProblemQueryReferenceIF getSuperMdProblem()
@@ -753,7 +753,7 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdProblem.length; i++)
       {
-        itemIdArray[i] = mdProblem[i].getId();
+        itemIdArray[i] = mdProblem[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -765,7 +765,7 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdProblem.length; i++)
       {
-        itemIdArray[i] = mdProblem[i].getId();
+        itemIdArray[i] = mdProblem[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -777,7 +777,7 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdProblem.length; i++)
       {
-        itemIdArray[i] = mdProblem[i].getId();
+        itemIdArray[i] = mdProblem[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -789,7 +789,7 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdProblem.length; i++)
       {
-        itemIdArray[i] = mdProblem[i].getId();
+        itemIdArray[i] = mdProblem[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -801,7 +801,7 @@ public  class MdProblemQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdProblem.length; i++)
       {
-        itemIdArray[i] = mdProblem[i].getId();
+        itemIdArray[i] = mdProblem[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -83,9 +83,9 @@ public abstract class MdAttributeTimeDTOBase extends com.runwaysdk.system.metada
     return (com.runwaysdk.transport.metadata.AttributeTimeMdDTO) getAttributeDTO(DEFAULTVALUE).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdAttributeTimeDTO) dto;
   }
@@ -103,7 +103,7 @@ public abstract class MdAttributeTimeDTOBase extends com.runwaysdk.system.metada
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeTimeQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -116,10 +116,10 @@ public abstract class MdAttributeTimeDTOBase extends com.runwaysdk.system.metada
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeTimeDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeTimeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -129,10 +129,10 @@ public abstract class MdAttributeTimeDTOBase extends com.runwaysdk.system.metada
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeTimeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeTimeDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeTimeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

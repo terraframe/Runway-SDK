@@ -29,7 +29,7 @@ public class HasPrimitiveRule extends HasPrimitiveRuleBase
   
   public HasPrimitiveRule(com.runwaysdk.system.gis.mapping.CompositeRule parent, com.runwaysdk.system.gis.mapping.PrimitiveRule child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

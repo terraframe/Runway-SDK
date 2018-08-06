@@ -26,7 +26,7 @@ import com.runwaysdk.ServerExceptionMessageLocalizer;
  * An UnexpectedTypeException is thrown when a getter method is called but the
  * object it finds is not of the expected type. For example, calling
  * {@link com.runwaysdk.dataaccess.cache.ObjectCache#getRelationshipDAO(String)}
- * with the id of a Data Object will throw this exception.
+ * with the oid of a Data Object will throw this exception.
  * 
  * @author Eric Grunzke
  */

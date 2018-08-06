@@ -175,7 +175,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeStruct(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeStruct(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else
@@ -188,7 +188,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeLocalCharacter(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeLocalCharacter(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else
@@ -201,7 +201,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeLocalText(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeLocalText(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else

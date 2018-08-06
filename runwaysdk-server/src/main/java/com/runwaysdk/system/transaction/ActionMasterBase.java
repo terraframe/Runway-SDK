@@ -41,9 +41,9 @@ public abstract class ActionMasterBase extends com.runwaysdk.system.EnumerationM
     return CLASS;
   }
   
-  public static ActionMaster get(String id)
+  public static ActionMaster get(String oid)
   {
-    return (ActionMaster) com.runwaysdk.business.Business.get(id);
+    return (ActionMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ActionMaster getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class ActionMasterBase extends com.runwaysdk.system.EnumerationM
     return (ActionMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.transaction.ActionMaster.CLASS ,enumName);
   }
   
-  public static ActionMaster lock(java.lang.String id)
+  public static ActionMaster lock(java.lang.String oid)
   {
-    ActionMaster _instance = ActionMaster.get(id);
+    ActionMaster _instance = ActionMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ActionMaster unlock(java.lang.String id)
+  public static ActionMaster unlock(java.lang.String oid)
   {
-    ActionMaster _instance = ActionMaster.get(id);
+    ActionMaster _instance = ActionMaster.get(oid);
     _instance.unlock();
     
     return _instance;

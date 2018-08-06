@@ -109,13 +109,13 @@ public class TransactionItemDAO extends BusinessDAO implements TransactionItemDA
    */
   public void setTransactionRecordDAOIF(TransactionRecordDAOIF transactionRecordDAOIF)
   {
-    ( (AttributeReference) this.getAttribute(TransactionItemInfo.TRANSACTION_RECORD) ).setValue(transactionRecordDAOIF.getId());
+    ( (AttributeReference) this.getAttribute(TransactionItemInfo.TRANSACTION_RECORD) ).setValue(transactionRecordDAOIF.getOid());
   }
 
   /**
-   * Returns the id of the component.
+   * Returns the oid of the component.
    * 
-   * @return id of the component.
+   * @return oid of the component.
    */
   public String getComponentId()
   {
@@ -155,7 +155,7 @@ public class TransactionItemDAO extends BusinessDAO implements TransactionItemDA
   }
 
   /**
-   * Sets the id of the component.
+   * Sets the oid of the component.
    * 
    * @param componentId
    */
@@ -225,7 +225,7 @@ public class TransactionItemDAO extends BusinessDAO implements TransactionItemDA
    */
   public void setItemAction(ActionEnumDAO actionEnumDAO)
   {
-    ( (AttributeEnumeration) this.getAttribute(TransactionItemInfo.ITEM_ACTION) ).setValue(actionEnumDAO.getId());
+    ( (AttributeEnumeration) this.getAttribute(TransactionItemInfo.ITEM_ACTION) ).setValue(actionEnumDAO.getOid());
   }
   
   public Boolean getIgnoreSequenceNumber()
@@ -296,7 +296,7 @@ public class TransactionItemDAO extends BusinessDAO implements TransactionItemDA
     MdEntityDAOIF mdEntityDAOIF = this.getMdClassDAO();
 
     List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-    PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityDAOIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, this.getId());
+    PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityDAOIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, this.getOid());
     preparedStatementList.add(preparedStmt);
     Database.executeStatementBatch(preparedStatementList);
   }

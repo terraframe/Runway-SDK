@@ -51,9 +51,9 @@ public abstract class EnumerationAttributeItemBase extends com.runwaysdk.system.
     return (com.runwaysdk.system.EnumerationMaster) super.getChild();
   }
   
-  public static EnumerationAttributeItem get(String id)
+  public static EnumerationAttributeItem get(String oid)
   {
-    return (EnumerationAttributeItem) com.runwaysdk.business.Relationship.get(id);
+    return (EnumerationAttributeItem) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static EnumerationAttributeItem getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class EnumerationAttributeItemBase extends com.runwaysdk.system.
     return (EnumerationAttributeItem) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static EnumerationAttributeItem lock(java.lang.String id)
+  public static EnumerationAttributeItem lock(java.lang.String oid)
   {
-    EnumerationAttributeItem _instance = EnumerationAttributeItem.get(id);
+    EnumerationAttributeItem _instance = EnumerationAttributeItem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EnumerationAttributeItem unlock(java.lang.String id)
+  public static EnumerationAttributeItem unlock(java.lang.String oid)
   {
-    EnumerationAttributeItem _instance = EnumerationAttributeItem.get(id);
+    EnumerationAttributeItem _instance = EnumerationAttributeItem.get(oid);
     _instance.unlock();
     
     return _instance;

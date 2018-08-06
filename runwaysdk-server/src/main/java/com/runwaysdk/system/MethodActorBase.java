@@ -73,7 +73,7 @@ public abstract class MethodActorBase extends com.runwaysdk.system.SingleActor
     }
     else
     {
-      setValue(MDMETHOD, value.getId());
+      setValue(MDMETHOD, value.getOid());
     }
   }
   
@@ -125,9 +125,9 @@ public abstract class MethodActorBase extends com.runwaysdk.system.SingleActor
     }
   }
   
-  public static MethodActor get(String id)
+  public static MethodActor get(String oid)
   {
-    return (MethodActor) com.runwaysdk.business.Business.get(id);
+    return (MethodActor) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MethodActor getByKey(String key)
@@ -135,17 +135,17 @@ public abstract class MethodActorBase extends com.runwaysdk.system.SingleActor
     return (MethodActor) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MethodActor lock(java.lang.String id)
+  public static MethodActor lock(java.lang.String oid)
   {
-    MethodActor _instance = MethodActor.get(id);
+    MethodActor _instance = MethodActor.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MethodActor unlock(java.lang.String id)
+  public static MethodActor unlock(java.lang.String oid)
   {
-    MethodActor _instance = MethodActor.get(id);
+    MethodActor _instance = MethodActor.get(oid);
     _instance.unlock();
     
     return _instance;

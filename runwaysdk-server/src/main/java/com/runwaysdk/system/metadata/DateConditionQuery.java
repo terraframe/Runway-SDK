@@ -214,13 +214,13 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.DateCondition dateCondition)
     {
       if(dateCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(dateCondition.getId());
+      return this.EQ(dateCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.DateCondition dateCondition)
     {
       if(dateCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(dateCondition.getId());
+      return this.NE(dateCondition.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdFieldQuery.MdFieldQueryReferenceIF getDefiningMdField()
@@ -351,7 +351,7 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<dateCondition.length; i++)
       {
-        itemIdArray[i] = dateCondition[i].getId();
+        itemIdArray[i] = dateCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -363,7 +363,7 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<dateCondition.length; i++)
       {
-        itemIdArray[i] = dateCondition[i].getId();
+        itemIdArray[i] = dateCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -375,7 +375,7 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<dateCondition.length; i++)
       {
-        itemIdArray[i] = dateCondition[i].getId();
+        itemIdArray[i] = dateCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -387,7 +387,7 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<dateCondition.length; i++)
       {
-        itemIdArray[i] = dateCondition[i].getId();
+        itemIdArray[i] = dateCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -399,7 +399,7 @@ public  class DateConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<dateCondition.length; i++)
       {
-        itemIdArray[i] = dateCondition[i].getId();
+        itemIdArray[i] = dateCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

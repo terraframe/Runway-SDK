@@ -99,9 +99,9 @@ public abstract class MdWebNumberBase extends com.runwaysdk.system.metadata.MdWe
     return CLASS;
   }
   
-  public static MdWebNumber get(String id)
+  public static MdWebNumber get(String oid)
   {
-    return (MdWebNumber) com.runwaysdk.business.Business.get(id);
+    return (MdWebNumber) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebNumber getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdWebNumberBase extends com.runwaysdk.system.metadata.MdWe
     return (MdWebNumber) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebNumber lock(java.lang.String id)
+  public static MdWebNumber lock(java.lang.String oid)
   {
-    MdWebNumber _instance = MdWebNumber.get(id);
+    MdWebNumber _instance = MdWebNumber.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebNumber unlock(java.lang.String id)
+  public static MdWebNumber unlock(java.lang.String oid)
   {
-    MdWebNumber _instance = MdWebNumber.get(id);
+    MdWebNumber _instance = MdWebNumber.get(oid);
     _instance.unlock();
     
     return _instance;

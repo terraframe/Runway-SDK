@@ -205,10 +205,10 @@ public class TransientAttributeTest
     someTree.setValue(MdTreeInfo.PACKAGE, someTreeInfo.getPackageName());
     someTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some tree Relationship");
     someTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceMdBusiness.getId());
+    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceMdBusiness.getOid());
     someTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     someTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 1");
-    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusiness.getId());
+    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusiness.getOid());
     someTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     someTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     someTree.setValue(MdTreeInfo.PARENT_METHOD, "someParentAccessor");
@@ -225,8 +225,8 @@ public class TransientAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "homePhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -236,8 +236,8 @@ public class TransientAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "workPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -247,8 +247,8 @@ public class TransientAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "cellPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -258,7 +258,7 @@ public class TransientAttributeTest
     mdAttributeText.setValue(MdAttributeTextInfo.DEFAULT_VALUE, "");
     mdAttributeText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeText.setValue(MdAttributeTextInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeText.apply();
     definitions.add(mdAttributeText);
 
@@ -268,7 +268,7 @@ public class TransientAttributeTest
     mdAttributeClob.setValue(MdAttributeClobInfo.DEFAULT_VALUE, "");
     mdAttributeClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeClob.apply();
     definitions.add(mdAttributeClob);
 
@@ -280,7 +280,7 @@ public class TransientAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "I wish I was a reference field!");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     // Add attributes to the test type
@@ -290,9 +290,9 @@ public class TransientAttributeTest
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -305,7 +305,7 @@ public class TransientAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -313,9 +313,9 @@ public class TransientAttributeTest
     mdAttributeBlob.setValue(MdAttributeBlobInfo.NAME, "testBlob");
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some blob");
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeBlob.apply();
     definitions.add(mdAttributeBlob);
 
@@ -326,7 +326,7 @@ public class TransientAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity dog");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -337,7 +337,7 @@ public class TransientAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -347,7 +347,7 @@ public class TransientAttributeTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeInteger.apply();
     definitions.add(mdAttributeInteger);
 
@@ -357,7 +357,7 @@ public class TransientAttributeTest
     mdAttributeLong.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeLong.apply();
     definitions.add(mdAttributeLong);
 
@@ -369,7 +369,7 @@ public class TransientAttributeTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -384,7 +384,7 @@ public class TransientAttributeTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -396,7 +396,7 @@ public class TransientAttributeTest
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.LENGTH, "13");
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "3");
-    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDecimal.apply();
     definitions.add(mdAttributeDecimal);
 
@@ -408,7 +408,7 @@ public class TransientAttributeTest
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDouble.apply();
     definitions.add(mdAttributeDouble);
 
@@ -418,7 +418,7 @@ public class TransientAttributeTest
     mdAttributeTime.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     mdAttributeTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTime.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeTime.apply();
     definitions.add(mdAttributeTime);
 
@@ -428,7 +428,7 @@ public class TransientAttributeTest
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDate.setValue(MdAttributeDateInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDate.apply();
     definitions.add(mdAttributeDate);
 
@@ -438,7 +438,7 @@ public class TransientAttributeTest
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFAULT_VALUE, "");
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDateTime.apply();
     definitions.add(mdAttributeDateTime);
 
@@ -448,8 +448,8 @@ public class TransientAttributeTest
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
 
@@ -460,7 +460,7 @@ public class TransientAttributeTest
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeBoolean.apply();
     definitions.add(mdAttributeBoolean);
 
@@ -472,7 +472,7 @@ public class TransientAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -487,7 +487,7 @@ public class TransientAttributeTest
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
     stateEnumerationMdBusiness = stateEnumMdBusiness;
@@ -500,7 +500,7 @@ public class TransientAttributeTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumerationMdBusiness.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumerationMdBusiness.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumeration = mdEnumeration;
@@ -512,9 +512,9 @@ public class TransientAttributeTest
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     MdAttributeIntegerDAO enumMdAttributeInteger = MdAttributeIntegerDAO.newInstance();
@@ -523,7 +523,7 @@ public class TransientAttributeTest
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     enumMdAttributeInteger.apply();
 
     // Define the options for the enumeration
@@ -554,8 +554,8 @@ public class TransientAttributeTest
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getId());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getOid());
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumMultiple.apply();
     // definitions.add(mdAttrEnumMultiple);
@@ -567,8 +567,8 @@ public class TransientAttributeTest
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getId());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getOid());
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumSingle.apply();
     // definitions.add(mdAttrEnumMultiple);
@@ -623,7 +623,7 @@ public class TransientAttributeTest
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeCharacter.apply();
 
       Assert.fail("Able to add an attribute to a type that already has an attribute defined with that same name");
@@ -656,7 +656,7 @@ public class TransientAttributeTest
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdClassIF.getId());
+        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdClassIF.getOid());
         mdAttributeCharacter.apply();
 
         Assert.fail("Able to add an attribute to a type where the parent type already has an attribute defined with that same name");
@@ -681,7 +681,7 @@ public class TransientAttributeTest
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdClassIF.getId());
+        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdClassIF.getOid());
         mdAttributeCharacter.apply();
 
         Assert.fail("Able to add an attribute to a type where a child type already has an attribute defined with that same name");
@@ -1799,7 +1799,7 @@ public class TransientAttributeTest
 
     try
     {
-      transientDAO.setValue("testReference", reference.getId());
+      transientDAO.setValue("testReference", reference.getOid());
       Assert.assertTrue(transientDAO.getAttributeIF("testReference") instanceof AttributeReference);
     }
     catch (DataAccessException e)
@@ -1824,7 +1824,7 @@ public class TransientAttributeTest
 
     try
     {
-      transientDAO.setValue("testReference", badReference.getId());
+      transientDAO.setValue("testReference", badReference.getOid());
       transientDAO.getAttributeIF("testReference");
       Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
@@ -1850,11 +1850,11 @@ public class TransientAttributeTest
 
     try
     {
-      transientDAO.setValue("testReference", reference.getId());
+      transientDAO.setValue("testReference", reference.getOid());
       transientDAO.apply();
       AttributeReference fo = (AttributeReference) transientDAO.getAttributeIF("testReference");
-      Assert.assertEquals(reference.getId(), transientDAO.getAttributeIF("testReference").getValue());
-      Assert.assertEquals(reference.getId(), fo.dereference().getId());
+      Assert.assertEquals(reference.getOid(), transientDAO.getAttributeIF("testReference").getValue());
+      Assert.assertEquals(reference.getOid(), fo.dereference().getOid());
       Assert.assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
     }
     catch (DataAccessException e)
@@ -1936,7 +1936,7 @@ public class TransientAttributeTest
       other.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       other.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       other.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      other.setValue(MdViewInfo.SUPER_MD_VIEW, attributeMdView.getId());
+      other.setValue(MdViewInfo.SUPER_MD_VIEW, attributeMdView.getOid());
       other.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       other.apply();
 
@@ -1950,7 +1950,7 @@ public class TransientAttributeTest
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getOid());
       float1DO.apply();
 
       // if we hit the line below, then our check failed
@@ -1991,7 +1991,7 @@ public class TransientAttributeTest
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       float1DO.apply();
 
       Assert.fail("An attribute identifier length is too long, but was accepted by the system.");
@@ -2024,8 +2024,8 @@ public class TransientAttributeTest
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeReference.apply();
 
       Assert.fail("A reference was incorrectly able to reference a relationship.");
@@ -2055,8 +2055,8 @@ public class TransientAttributeTest
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceDAO.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceDAO.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeReference.apply();
 
       Assert.fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
@@ -2605,7 +2605,7 @@ public class TransientAttributeTest
   }
 
   /**
-   * Gets a new instance of the transientDAO and checks for the number and id of
+   * Gets a new instance of the transientDAO and checks for the number and oid of
    * each state passed in (varibale number of arguments).
    * 
    * @param states

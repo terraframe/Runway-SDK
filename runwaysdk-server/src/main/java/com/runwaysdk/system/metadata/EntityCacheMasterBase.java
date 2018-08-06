@@ -87,9 +87,9 @@ public abstract class EntityCacheMasterBase extends com.runwaysdk.system.Enumera
     return CLASS;
   }
   
-  public static EntityCacheMaster get(String id)
+  public static EntityCacheMaster get(String oid)
   {
-    return (EntityCacheMaster) com.runwaysdk.business.Business.get(id);
+    return (EntityCacheMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static EntityCacheMaster getByKey(String key)
@@ -102,17 +102,17 @@ public abstract class EntityCacheMasterBase extends com.runwaysdk.system.Enumera
     return (EntityCacheMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.EntityCacheMaster.CLASS ,enumName);
   }
   
-  public static EntityCacheMaster lock(java.lang.String id)
+  public static EntityCacheMaster lock(java.lang.String oid)
   {
-    EntityCacheMaster _instance = EntityCacheMaster.get(id);
+    EntityCacheMaster _instance = EntityCacheMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EntityCacheMaster unlock(java.lang.String id)
+  public static EntityCacheMaster unlock(java.lang.String oid)
   {
-    EntityCacheMaster _instance = EntityCacheMaster.get(id);
+    EntityCacheMaster _instance = EntityCacheMaster.get(oid);
     _instance.unlock();
     
     return _instance;

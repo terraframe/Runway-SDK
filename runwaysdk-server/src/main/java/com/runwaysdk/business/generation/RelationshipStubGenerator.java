@@ -46,7 +46,7 @@ public class RelationshipStubGenerator extends EntityStubGenerator
 
     getWriter().writeLine("public " + typeName + '(' + parentClass + " parent, " + childClass + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("this(parent.getId(), child.getId());");
+    getWriter().writeLine("this(parent.getOid(), child.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

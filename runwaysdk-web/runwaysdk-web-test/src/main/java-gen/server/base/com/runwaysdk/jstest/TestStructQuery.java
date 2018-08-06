@@ -56,19 +56,19 @@ private static final long serialVersionUID = 1502549407;
   {
     return com.runwaysdk.jstest.TestStruct.CLASS;
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.TestStruct.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.TestStruct.ID, alias, displayLabel);
 
@@ -156,9 +156,9 @@ private static final long serialVersionUID = 1502549407;
   public interface TestStructQueryStructIF extends com.runwaysdk.query.SelectableStruct, com.runwaysdk.generation.loader.
   {
 
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -185,19 +185,19 @@ private static final long serialVersionUID = 49443491;
 
   }
 
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.TestStruct.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.TestStruct.ID, alias, displayLabel);
 

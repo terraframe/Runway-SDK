@@ -998,13 +998,13 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeConcrete mdAttributeConcrete)
     {
       if(mdAttributeConcrete == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeConcrete.getId());
+      return this.EQ(mdAttributeConcrete.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeConcrete mdAttributeConcrete)
     {
       if(mdAttributeConcrete == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeConcrete.getId());
+      return this.NE(mdAttributeConcrete.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getAttributeName()
@@ -1801,7 +1801,7 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeConcrete.length; i++)
       {
-        itemIdArray[i] = mdAttributeConcrete[i].getId();
+        itemIdArray[i] = mdAttributeConcrete[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1813,7 +1813,7 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeConcrete.length; i++)
       {
-        itemIdArray[i] = mdAttributeConcrete[i].getId();
+        itemIdArray[i] = mdAttributeConcrete[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1825,7 +1825,7 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeConcrete.length; i++)
       {
-        itemIdArray[i] = mdAttributeConcrete[i].getId();
+        itemIdArray[i] = mdAttributeConcrete[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1837,7 +1837,7 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeConcrete.length; i++)
       {
-        itemIdArray[i] = mdAttributeConcrete[i].getId();
+        itemIdArray[i] = mdAttributeConcrete[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1849,7 +1849,7 @@ public  class MdAttributeConcreteQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeConcrete.length; i++)
       {
-        itemIdArray[i] = mdAttributeConcrete[i].getId();
+        itemIdArray[i] = mdAttributeConcrete[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

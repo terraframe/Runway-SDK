@@ -69,7 +69,7 @@ public class EntityGenerator
     refMdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,      "I wish I was a reference field!");
     refMdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     refMdAttributeCharacter.setValue(MdAttributeCharacterIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    refMdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, referenceMdBusiness.getId());
+    refMdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, referenceMdBusiness.getOid());
     refMdAttributeCharacter.apply();
 
     // Create the TEST class.
@@ -81,7 +81,7 @@ public class EntityGenerator
     testMdBusiness.setValue(MdBusinessIF.DESCRIPTION,            "Temporary JUnit Test Type");
     testMdBusiness.setValue(MdBusinessIF.EXTENDABLE,             MdAttributeBooleanIF.TRUE);
     testMdBusiness.setValue(MdBusinessIF.ABSTRACT,               MdAttributeBooleanIF.FALSE);
-    testMdBusiness.setValue(MdBusinessIF.CACHE_ALGORITHM, EntityCache.NOTHING.getId());
+    testMdBusiness.setValue(MdBusinessIF.CACHE_ALGORITHM, EntityCache.NOTHING.getOid());
     testMdBusiness.apply();
 
     // Add atributes to the test type
@@ -91,9 +91,9 @@ public class EntityGenerator
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,       "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,       "Yo diggity");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.TRUE);
-    mdAttributeCharacter.addItem(MdAttributeCharacterIF.INDEX_TYPE,           IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.addItem(MdAttributeCharacterIF.INDEX_TYPE,           IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     mdAttributeCharacter = MdAttributeCharacter.newInstance();
@@ -103,7 +103,7 @@ public class EntityGenerator
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,       "Yo diggity dog");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     mdAttributeCharacter = MdAttributeCharacter.newInstance();
@@ -113,7 +113,7 @@ public class EntityGenerator
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,       "");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  testMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     MdAttributeText mdAttributeText = MdAttributeText.newInstance();
@@ -122,7 +122,7 @@ public class EntityGenerator
     mdAttributeText.setValue(MdAttributeTextIF.DEFAULT_VALUE,       "");
     mdAttributeText.setValue(MdAttributeTextIF.REQUIRED,            MdAttributeBooleanIF.FALSE);
     mdAttributeText.setValue(MdAttributeTextIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttributeText.setValue(MdAttributeTextIF.DEFINING_MD_ENTITY,  testMdBusiness.getId());
+    mdAttributeText.setValue(MdAttributeTextIF.DEFINING_MD_ENTITY,  testMdBusiness.getOid());
     mdAttributeText.apply();
 
     MdAttributeInteger mdAttributeInteger = MdAttributeInteger.newInstance();
@@ -131,7 +131,7 @@ public class EntityGenerator
     mdAttributeInteger.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeInteger.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeInteger.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeInteger.apply();
 
     MdAttributeLong mdAttributeLong = MdAttributeLong.newInstance();
@@ -140,7 +140,7 @@ public class EntityGenerator
     mdAttributeLong.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeLong.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeLong.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeLong.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeLong.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeLong.apply();
 
     MdAttributeFloat mdAttributeFloat = MdAttributeFloat.newInstance();
@@ -151,7 +151,7 @@ public class EntityGenerator
     mdAttributeFloat.setValue(MdAttributeDecIF.REMOVE,             MdAttributeBooleanIF.TRUE);
     mdAttributeFloat.setValue(MdAttributeDecIF.LENGTH,             "10");
     mdAttributeFloat.setValue(MdAttributeDecIF.DECIMAL,            "2");
-    mdAttributeFloat.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeFloat.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeFloat.apply();
 
     MdAttributeDecimal mdAttributeDecimal = MdAttributeDecimal.newInstance();
@@ -162,7 +162,7 @@ public class EntityGenerator
     mdAttributeDecimal.setValue(MdAttributeDecIF.REMOVE,             MdAttributeBooleanIF.TRUE);
     mdAttributeDecimal.setValue(MdAttributeDecIF.LENGTH,             "13");
     mdAttributeDecimal.setValue(MdAttributeDecIF.DECIMAL,            "3");
-    mdAttributeDecimal.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeDecimal.apply();
 
     MdAttributeDouble mdAttributeDouble = MdAttributeDouble.newInstance();
@@ -173,7 +173,7 @@ public class EntityGenerator
     mdAttributeDouble.setValue(MdAttributeDecIF.REMOVE,             MdAttributeBooleanIF.TRUE);
     mdAttributeDouble.setValue(MdAttributeDecIF.LENGTH,             "16");
     mdAttributeDouble.setValue(MdAttributeDecIF.DECIMAL,            "4");
-    mdAttributeDouble.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeDouble.setValue(MdAttributeDecIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeDouble.apply();
 
     MdAttributeTime mdAttributeTime = MdAttributeTime.newInstance();
@@ -182,7 +182,7 @@ public class EntityGenerator
     mdAttributeTime.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeTime.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeTime.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeTime.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeTime.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeTime.apply();
 
     MdAttributeDate mdAttributeDate = MdAttributeDate.newInstance();
@@ -191,7 +191,7 @@ public class EntityGenerator
     mdAttributeDate.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeDate.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeDate.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeDate.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeDate.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeDate.apply();
 
     MdAttributeDateTime mdAttributeDateTime = MdAttributeDateTime.newInstance();
@@ -200,7 +200,7 @@ public class EntityGenerator
     mdAttributeDateTime.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeDateTime.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeDateTime.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeDateTime.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeDateTime.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeDateTime.apply();
 
     MdAttributeBoolean mdAttributeBoolean = MdAttributeBoolean.newInstance();
@@ -208,7 +208,7 @@ public class EntityGenerator
     mdAttributeBoolean.setValue(MdAttributeIF.DISPLAY_LABEL,      "Our first Boolean");
     mdAttributeBoolean.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeBoolean.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeBoolean.setValue(MdAttributeIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeBoolean.apply();
 
     mdAttributeCharacter = MdAttributeCharacter.newInstance();
@@ -219,7 +219,7 @@ public class EntityGenerator
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REMOVE,             MdAttributeBooleanIF.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.IMMUTABLE,          MdAttributeBooleanIF.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     MdAttributeReference mdAttributeReference = MdAttributeReference.newInstance();
@@ -228,8 +228,8 @@ public class EntityGenerator
     mdAttributeReference.setValue(MdAttributeReferenceIF.DEFAULT_VALUE,      "");
     mdAttributeReference.setValue(MdAttributeReferenceIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceIF.REF_MD_CLASS,       referenceMdBusiness.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceIF.REF_MD_CLASS,       referenceMdBusiness.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
     mdAttributeReference.apply();
 
     String stateClassTypeName = "US_State";
@@ -249,7 +249,7 @@ public class EntityGenerator
     stateEnumMdBusiness.setValue(MdBusinessIF.DESCRIPTION,      "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessIF.EXTENDABLE,       MdAttributeBooleanIF.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessIF.ABSTRACT,         MdAttributeBooleanIF.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessIF.SUPER_MD_ENTITY,  EnumerationAttributeMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessIF.SUPER_MD_ENTITY,  EnumerationAttributeMdBusinessIF.getOid());
     stateEnumMdBusiness.apply();
 
     // Instantiate an md_enumeration to define State
@@ -260,7 +260,7 @@ public class EntityGenerator
     stateMdEnumeration.setValue(MdEnumerationIF.DESCRIPTION,         "Test");
     stateMdEnumeration.setValue(MdEnumerationIF.REMOVE,              MdAttributeBooleanIF.TRUE);
     stateMdEnumeration.setValue(MdEnumerationIF.INCLUDE_ALL,         MdAttributeBooleanIF.TRUE);
-    stateMdEnumeration.setValue(MdEnumerationIF.ATTRIBUTE_MD_CLASS,  stateEnumMdBusiness.getId());
+    stateMdEnumeration.setValue(MdEnumerationIF.ATTRIBUTE_MD_CLASS,  stateEnumMdBusiness.getOid());
     stateMdEnumeration.apply();
 
     // Define attributes on the enumeration
@@ -270,9 +270,9 @@ public class EntityGenerator
     mdAttrChar.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,      "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,      "");
     mdAttrChar.setValue(MdAttributeCharacterIF.REQUIRED,           MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.INDEX_TYPE,         IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.INDEX_TYPE,         IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     mdAttrChar = MdAttributeCharacter.newInstance();
@@ -281,9 +281,9 @@ public class EntityGenerator
     mdAttrChar.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,      "State Name");
     mdAttrChar.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,      "");
     mdAttrChar.setValue(MdAttributeCharacterIF.REQUIRED,           MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.INDEX_TYPE,         IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.INDEX_TYPE,         IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     mdAttributeInteger = MdAttributeInteger.newInstance();
@@ -292,7 +292,7 @@ public class EntityGenerator
     mdAttributeInteger.setValue(MdAttributeIF.DEFAULT_VALUE,      "");
     mdAttributeInteger.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeInteger.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIF.DEFINING_MD_ENTITY, stateEnumMdBusiness.getOid());
     mdAttributeInteger.apply();
 
     // Define the options for the enumeration
@@ -320,8 +320,8 @@ public class EntityGenerator
     mdAttrEnum.setValue(MdAttributeEnumerationIF.DISPLAY_LABEL,      "Multiple select state attribute");
     mdAttrEnum.setValue(MdAttributeEnumerationIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationIF.MD_ENUMERATION,     stateMdEnumeration.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationIF.MD_ENUMERATION,     stateMdEnumeration.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationIF.SELECT_MULTIPLE, MdAttributeBooleanIF.TRUE);
     String multiAttrMdID = mdAttrEnum.apply();
 
@@ -331,8 +331,8 @@ public class EntityGenerator
     mdAttrEnum.setValue(MdAttributeEnumerationIF.DISPLAY_LABEL,      "Single select state attribute");
     mdAttrEnum.setValue(MdAttributeEnumerationIF.REQUIRED,           MdAttributeBooleanIF.TRUE);
     mdAttrEnum.setValue(MdAttributeEnumerationIF.REMOVE,             MdAttributeBooleanIF.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationIF.MD_ENUMERATION,     stateMdEnumeration.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationIF.MD_ENUMERATION,     stateMdEnumeration.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationIF.SELECT_MULTIPLE,    MdAttributeBooleanIF.FALSE);
     String singleAttrMdID = mdAttrEnum.apply();
 
@@ -351,7 +351,7 @@ public class EntityGenerator
     mdAttrChar.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,       "Street Name");
     mdAttrChar.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  newStructMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  newStructMdBusiness.getOid());
     mdAttrChar.setValue(MdAttributeCharacterIF.SIZE,                "32");
     mdAttrChar.apply();
 
@@ -360,7 +360,7 @@ public class EntityGenerator
     mdAttrChar.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,       "House Number");
     mdAttrChar.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterIF.REMOVE,              MdAttributeBooleanIF.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  newStructMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterIF.DEFINING_MD_ENTITY,  newStructMdBusiness.getOid());
     mdAttrChar.setValue(MdAttributeCharacterIF.SIZE,                "8");
     mdAttrChar.apply();
 
@@ -369,8 +369,8 @@ public class EntityGenerator
     mdAttrStruct.setValue(MdAttributeStructIF.DISPLAY_LABEL,     "Address");
     mdAttrStruct.setValue(MdAttributeStructIF.REQUIRED,          MdAttributeBooleanIF.FALSE);
     mdAttrStruct.setValue(MdAttributeStructIF.REMOVE,            MdAttributeBooleanIF.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructIF.DEFINING_MD_ENTITY, testMdBusiness.getId());
-    mdAttrStruct.setValue(MdAttributeStructIF.REF_MD_CLASS_BASIC, newStructMdBusiness.getId());
+    mdAttrStruct.setValue(MdAttributeStructIF.DEFINING_MD_ENTITY, testMdBusiness.getOid());
+    mdAttrStruct.setValue(MdAttributeStructIF.REF_MD_CLASS_BASIC, newStructMdBusiness.getOid());
     mdAttrStruct.apply();
 
     generate(MasterTestSetup.REFERENCE_CLASS.getType(), 5);

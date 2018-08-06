@@ -109,7 +109,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.VisibilityModifier.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -128,7 +128,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.VisibilityModifier.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -172,13 +172,13 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.VisibilityModifierMaster visibilityModifierMaster)
     {
       if(visibilityModifierMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(visibilityModifierMaster.getId());
+      return this.EQ(visibilityModifierMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.VisibilityModifierMaster visibilityModifierMaster)
     {
       if(visibilityModifierMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(visibilityModifierMaster.getId());
+      return this.NE(visibilityModifierMaster.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getJavaValue()
@@ -277,7 +277,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifier.length; i++)
       {
-        enumIdArray[i] = visibilityModifier[i].getId();
+        enumIdArray[i] = visibilityModifier[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -289,7 +289,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifier.length; i++)
       {
-        enumIdArray[i] = visibilityModifier[i].getId();
+        enumIdArray[i] = visibilityModifier[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -301,7 +301,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifier.length; i++)
       {
-        enumIdArray[i] = visibilityModifier[i].getId();
+        enumIdArray[i] = visibilityModifier[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -313,7 +313,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifier.length; i++)
       {
-        enumIdArray[i] = visibilityModifier[i].getId();
+        enumIdArray[i] = visibilityModifier[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -325,7 +325,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifier.length; i++)
       {
-        enumIdArray[i] = visibilityModifier[i].getId();
+        enumIdArray[i] = visibilityModifier[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -372,7 +372,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifierMaster.length; i++)
       {
-        itemIdArray[i] = visibilityModifierMaster[i].getId();
+        itemIdArray[i] = visibilityModifierMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -384,7 +384,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifierMaster.length; i++)
       {
-        itemIdArray[i] = visibilityModifierMaster[i].getId();
+        itemIdArray[i] = visibilityModifierMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -396,7 +396,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifierMaster.length; i++)
       {
-        itemIdArray[i] = visibilityModifierMaster[i].getId();
+        itemIdArray[i] = visibilityModifierMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -408,7 +408,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifierMaster.length; i++)
       {
-        itemIdArray[i] = visibilityModifierMaster[i].getId();
+        itemIdArray[i] = visibilityModifierMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -420,7 +420,7 @@ public  class VisibilityModifierMasterQuery extends com.runwaysdk.system.Enumera
 
       for (int i=0; i<visibilityModifierMaster.length; i++)
       {
-        itemIdArray[i] = visibilityModifierMaster[i].getId();
+        itemIdArray[i] = visibilityModifierMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

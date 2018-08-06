@@ -38,7 +38,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
   public static java.lang.String HOMEPHONE = "homePhone";
   private com.runwaysdk.business.Struct homePhone = null;
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -173,7 +173,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -193,7 +193,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     return mdClassIF.definesAttribute(HOMEPHONE);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -203,7 +203,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestClass.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -319,7 +319,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
   {
     if(value != null)
     {
-      addEnumItem(MULTIPLESTATE, value.getId());
+      addEnumItem(MULTIPLESTATE, value.getOid());
     }
   }
   
@@ -327,7 +327,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
   {
     if(value != null)
     {
-      removeEnumItem(MULTIPLESTATE, value.getId());
+      removeEnumItem(MULTIPLESTATE, value.getOid());
     }
   }
   
@@ -383,7 +383,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -413,7 +413,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
   {
     if(value != null)
     {
-      addEnumItem(SINGLESTATE, value.getId());
+      addEnumItem(SINGLESTATE, value.getOid());
     }
   }
   
@@ -421,7 +421,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
   {
     if(value != null)
     {
-      removeEnumItem(SINGLESTATE, value.getId());
+      removeEnumItem(SINGLESTATE, value.getOid());
     }
   }
   
@@ -801,7 +801,7 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     }
     else
     {
-      setValue(TESTREFERENCEOBJECT, value.getId());
+      setValue(TESTREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -961,9 +961,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.Befriends>) getRelationshipsWithChild(refClass, com.runwaysdk.jstest.Befriends.CLASS);
   }
   
-  public static TestClass get(String id)
+  public static TestClass get(String oid)
   {
-    return (TestClass) com.runwaysdk.business.Business.get(id);
+    return (TestClass) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TestClass getByKey(String key)
@@ -977,9 +977,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final java.lang.Boolean compareIntegers(java.lang.String id, java.lang.Integer num1, java.lang.Integer num2)
+  public static final java.lang.Boolean compareIntegers(java.lang.String oid, java.lang.Integer num1, java.lang.Integer num2)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.compareIntegers(num1, num2);
   }
   
@@ -989,9 +989,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final com.runwaysdk.jstest.TestClass[] createInstances(java.lang.String id, java.lang.Integer num)
+  public static final com.runwaysdk.jstest.TestClass[] createInstances(java.lang.String oid, java.lang.Integer num)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.createInstances(num);
   }
   
@@ -1007,9 +1007,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceException(java.lang.String id)
+  public static final void instanceForceException(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceException();
   }
   
@@ -1019,9 +1019,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceException1(java.lang.String id)
+  public static final void instanceForceException1(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceException1();
   }
   
@@ -1031,9 +1031,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceException2(java.lang.String id)
+  public static final void instanceForceException2(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceException2();
   }
   
@@ -1043,9 +1043,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceException3(java.lang.String id)
+  public static final void instanceForceException3(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceException3();
   }
   
@@ -1055,9 +1055,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final java.lang.Integer instanceForceInformation(java.lang.String id)
+  public static final java.lang.Integer instanceForceInformation(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.instanceForceInformation();
   }
   
@@ -1067,9 +1067,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final java.lang.Integer instanceForceMultipleInformations(java.lang.String id)
+  public static final java.lang.Integer instanceForceMultipleInformations(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.instanceForceMultipleInformations();
   }
   
@@ -1079,9 +1079,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceMultipleProblems(java.lang.String id)
+  public static final void instanceForceMultipleProblems(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceMultipleProblems();
   }
   
@@ -1091,9 +1091,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final java.lang.Integer instanceForceMultipleWarnings(java.lang.String id)
+  public static final java.lang.Integer instanceForceMultipleWarnings(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.instanceForceMultipleWarnings();
   }
   
@@ -1103,9 +1103,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceProblem(java.lang.String id)
+  public static final void instanceForceProblem(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceProblem();
   }
   
@@ -1115,9 +1115,9 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final java.lang.Integer instanceForceWarning(java.lang.String id)
+  public static final java.lang.Integer instanceForceWarning(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     return _instance.instanceForceWarning();
   }
   
@@ -1127,23 +1127,23 @@ public abstract class TestClassBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void instanceForceWarningVoid(java.lang.String id)
+  public static final void instanceForceWarningVoid(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.instanceForceWarningVoid();
   }
   
-  public static TestClass lock(java.lang.String id)
+  public static TestClass lock(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TestClass unlock(java.lang.String id)
+  public static TestClass unlock(java.lang.String oid)
   {
-    TestClass _instance = TestClass.get(id);
+    TestClass _instance = TestClass.get(oid);
     _instance.unlock();
     
     return _instance;

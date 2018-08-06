@@ -39,7 +39,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -169,7 +169,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -205,7 +205,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF)mdClassIF.definesAttribute(HISTORYINFORMATION);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -215,7 +215,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -357,7 +357,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -459,7 +459,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   {
     if(value != null)
     {
-      addEnumItem(STATUS, value.getId());
+      addEnumItem(STATUS, value.getOid());
     }
   }
   
@@ -467,7 +467,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   {
     if(value != null)
     {
-      removeEnumItem(STATUS, value.getId());
+      removeEnumItem(STATUS, value.getOid());
     }
   }
   
@@ -564,9 +564,9 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.scheduler.JobHistoryRecord>) getRelationshipsWithParent(executableJob, com.runwaysdk.system.scheduler.JobHistoryRecord.CLASS);
   }
   
-  public static JobHistory get(String id)
+  public static JobHistory get(String oid)
   {
-    return (JobHistory) com.runwaysdk.business.Business.get(id);
+    return (JobHistory) com.runwaysdk.business.Business.get(oid);
   }
   
   public static JobHistory getByKey(String key)
@@ -580,17 +580,17 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static JobHistory lock(java.lang.String id)
+  public static JobHistory lock(java.lang.String oid)
   {
-    JobHistory _instance = JobHistory.get(id);
+    JobHistory _instance = JobHistory.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static JobHistory unlock(java.lang.String id)
+  public static JobHistory unlock(java.lang.String oid)
   {
-    JobHistory _instance = JobHistory.get(id);
+    JobHistory _instance = JobHistory.get(oid);
     _instance.unlock();
     
     return _instance;

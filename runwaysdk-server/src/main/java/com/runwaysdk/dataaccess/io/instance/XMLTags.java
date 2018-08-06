@@ -48,6 +48,6 @@ public interface XMLTags
   /**
    *   Attributes of the enum_instance tag, see PrototypeMetaData.xsd for full description
    */
-  public static final String ID_TAG                   = "id";
+  public static final String ID_TAG                   = "oid";
 
 }

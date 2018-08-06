@@ -60,9 +60,9 @@ public class SimpleAttributeEnumeration extends SimpleAttribute
   {
     List<EnumerationItemDAOIF> list = new LinkedList<EnumerationItemDAOIF>();
 
-    for (String id : items)
+    for (String oid : items)
     {
-      EnumerationItemDAOIF item = (EnumerationItemDAOIF) PersistanceFacade.get(id);
+      EnumerationItemDAOIF item = (EnumerationItemDAOIF) PersistanceFacade.get(oid);
 
       list.add(item);
     }

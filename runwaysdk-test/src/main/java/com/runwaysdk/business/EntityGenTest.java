@@ -302,7 +302,7 @@ public class EntityGenTest
     suitEnum.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitEnum.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitEnum.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
+    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getOid());
     suitEnum.apply();
 
     struct = MdStructDAO.newInstance();
@@ -314,8 +314,8 @@ public class EntityGenTest
     MdAttributeEnumerationDAO structEnumeration = MdAttributeEnumerationDAO.newInstance();
     structEnumeration.setValue(MdAttributeEnumerationInfo.NAME, "structEnumeration");
     structEnumeration.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Enumeration");
-    structEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, struct.getId());
-    structEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getId());
+    structEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, struct.getOid());
+    structEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getOid());
     structEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     structEnumeration.apply();
 
@@ -325,14 +325,14 @@ public class EntityGenTest
     enumBlob.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Pic Desc");
     enumBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumBlob.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    enumBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getId());
+    enumBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getOid());
     enumBlob.apply();
 
     MdAttributeStructDAO enumStruct = MdAttributeStructDAO.newInstance();
     enumStruct.setValue(MdAttributeStructInfo.NAME, "enumStruct");
     enumStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct on an Enum");
-    enumStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, suitMaster.getId());
-    enumStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+    enumStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, suitMaster.getOid());
+    enumStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getOid());
     enumStruct.apply();
 
     structCharacter = MdAttributeCharacterDAO.newInstance();
@@ -342,7 +342,7 @@ public class EntityGenTest
     structCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     structCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     structCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    structCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, struct.getId());
+    structCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, struct.getOid());
     structCharacter.apply();
 
     MdAttributeBooleanDAO structBoolean = MdAttributeBooleanDAO.newInstance();
@@ -350,7 +350,7 @@ public class EntityGenTest
     structBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     structBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     structBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Boolean");
-    structBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, struct.getId());
+    structBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, struct.getOid());
     structBoolean.apply();
 
     BusinessDAO enum_item = BusinessDAO.newInstance(suitMaster.definesType());
@@ -395,7 +395,7 @@ public class EntityGenTest
     MdAttributeIntegerDAO referenceInt = MdAttributeIntegerDAO.newInstance();
     referenceInt.setValue(MdAttributeIntegerInfo.NAME, "referenceInt");
     referenceInt.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Integer");
-    referenceInt.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, reference.getId());
+    referenceInt.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, reference.getOid());
     referenceInt.apply();
 
     collection = MdBusinessDAO.newInstance();
@@ -413,7 +413,7 @@ public class EntityGenTest
     collectionSub.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     collectionSub.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes");
     collectionSub.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes Description");
-    collectionSub.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, collection.getId());
+    collectionSub.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, collection.getOid());
     collectionSub.apply();
 
     collectionBlob = MdAttributeBlobDAO.newInstance();
@@ -422,7 +422,7 @@ public class EntityGenTest
     collectionBlob.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Blob desc");
     collectionBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionBlob.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionBlob.apply();
 
     collectionBoolean = MdAttributeBooleanDAO.newInstance();
@@ -433,7 +433,7 @@ public class EntityGenTest
     collectionBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     collectionBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionBoolean.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionBoolean.apply();
 
     collectionCharacter = MdAttributeCharacterDAO.newInstance();
@@ -445,14 +445,14 @@ public class EntityGenTest
     collectionCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    collectionCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionCharacter.apply();
 
     collectionDecimal = MdAttributeDecimalDAO.newInstance();
     collectionDecimal.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     collectionDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     collectionDecimal.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
-    collectionDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDecimal.setValue(MdAttributeDecimalInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDecimal.setValue(MdAttributeDecimalInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionDecimal.setValue(MdAttributeDecimalInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -468,7 +468,7 @@ public class EntityGenTest
     collectionDouble.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
     collectionDouble.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDouble.setValue(MdAttributeDoubleInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
@@ -483,15 +483,15 @@ public class EntityGenTest
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
-    collectionEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getId());
-    collectionEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getId());
+    collectionEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getOid());
+    collectionEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getOid());
     collectionEnumeration.apply();
 
     collectionFloat = MdAttributeFloatDAO.newInstance();
     collectionFloat.setValue(MdAttributeFloatInfo.NAME, "aFloat");
     collectionFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     collectionFloat.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
-    collectionFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionFloat.setValue(MdAttributeFloatInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionFloat.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -507,8 +507,8 @@ public class EntityGenTest
     collectionHash.setValue(MdAttributeHashInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionHash.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hashed Attributed");
     collectionHash.setStructValue(MdAttributeHashInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hash Desc");
-    collectionHash.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
-    collectionHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionHash.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
+    collectionHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionHash.apply();
 
     collectionInteger = MdAttributeIntegerDAO.newInstance();
@@ -520,14 +520,14 @@ public class EntityGenTest
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    collectionInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionInteger.apply();
 
     collectionLong = MdAttributeLongDAO.newInstance();
     collectionLong.setValue(MdAttributeLongInfo.NAME, "aLong");
     collectionLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
     collectionLong.setStructValue(MdAttributeLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long Desc");
-    collectionLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionLong.setValue(MdAttributeLongInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionLong.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -541,7 +541,7 @@ public class EntityGenTest
     collectionLocalChar.setValue(MdAttributeLocalCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionLocalChar.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Local Character");
     collectionLocalChar.setStructValue(MdAttributeLocalCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Local Character Desc");
-    collectionLocalChar.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionLocalChar.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionLocalChar.apply();
 
     // collectionLocalChar.addDefaultLocale();
@@ -552,7 +552,7 @@ public class EntityGenTest
     collectionLocalText.setValue(MdAttributeLocalTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionLocalText.setStructValue(MdAttributeLocalTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Local Text");
     collectionLocalText.setStructValue(MdAttributeLocalTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Local Text Desc");
-    collectionLocalText.setValue(MdAttributeLocalTextInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionLocalText.setValue(MdAttributeLocalTextInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionLocalText.apply();
 
     // collectionLocalText.addDefaultLocale();
@@ -563,7 +563,7 @@ public class EntityGenTest
     collectionDate.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date Desc");
     collectionDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDate.setValue(MdAttributeDateInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDate.apply();
 
     collectionDateTime = MdAttributeDateTimeDAO.newInstance();
@@ -572,7 +572,7 @@ public class EntityGenTest
     collectionDateTime.setStructValue(MdAttributeDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime Desc");
     collectionDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDateTime.setValue(MdAttributeDateTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDateTime.apply();
 
     collectionTime = MdAttributeTimeDAO.newInstance();
@@ -581,34 +581,34 @@ public class EntityGenTest
     collectionTime.setStructValue(MdAttributeTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time Desc");
     collectionTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionTime.setValue(MdAttributeTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionTime.apply();
 
     collectionReference = MdAttributeReferenceDAO.newInstance();
     collectionReference.setValue(MdAttributeReferenceInfo.NAME, "aReference");
     collectionReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     collectionReference.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference Desc");
-    collectionReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionReference.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getId());
+    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getOid());
     collectionReference.apply();
 
     collectionTerm = MdAttributeTermDAO.newInstance();
     collectionTerm.setValue(MdAttributeTermInfo.NAME, "aTerm");
     collectionTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term");
     collectionTerm.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term Desc");
-    collectionTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionTerm.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionTerm.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, term.getId());
+    collectionTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, term.getOid());
     collectionTerm.apply();
 
     collectionFile = MdAttributeFileDAO.newInstance();
     collectionFile.setValue(MdAttributeFileInfo.NAME, "aFile");
     collectionFile.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File");
     collectionFile.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File Desc");
-    collectionFile.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionFile.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionFile.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionFile.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionFile.apply();
@@ -616,20 +616,20 @@ public class EntityGenTest
     collectionStruct = MdAttributeStructDAO.newInstance();
     collectionStruct.setValue(MdAttributeStructInfo.NAME, "aStruct");
     collectionStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
-    collectionStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionStruct.setStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Desc");
     collectionStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionStruct.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+    collectionStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getOid());
     collectionStruct.apply();
 
     collectionSymmetric = MdAttributeSymmetricDAO.newInstance();
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.NAME, "aSym");
     collectionSymmetric.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Attribute");
     collectionSymmetric.setStructValue(MdAttributeSymmetricInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Desc");
-    collectionSymmetric.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
+    collectionSymmetric.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
-    collectionSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionSymmetric.apply();
@@ -640,7 +640,7 @@ public class EntityGenTest
     collectionText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionText.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionText.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text Desc");
-    collectionText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionText.apply();
 
     collectionClob = MdAttributeClobDAO.newInstance();
@@ -649,17 +649,17 @@ public class EntityGenTest
     collectionClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionClob.setValue(MdAttributeClobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionClob.setStructValue(MdAttributeClobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob Desc");
-    collectionClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionClob.apply();
 
     mdRelationship = MdRelationshipDAO.newInstance();
     mdRelationship.setValue(MdRelationshipInfo.NAME, "ARelationship");
     mdRelationship.setValue(MdRelationshipInfo.PACKAGE, pack);
     mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Relationship");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, collection.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, collection.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "RelParent");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, reference.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, reference.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "RelChild");
     mdRelationship.apply();
@@ -694,11 +694,11 @@ public class EntityGenTest
   public void testInstance() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
-    Business business = Business.get(id);
+    Business business = Business.get(oid);
 
-    if (!id.equals(business.getId()))
+    if (!oid.equals(business.getOid()))
     {
       Assert.fail("An applied instance did not match the retrieved instance.");
     }
@@ -743,7 +743,7 @@ public class EntityGenTest
     MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
     topSpeed.setValue(MdAttributeIntegerInfo.NAME, "topSpeed");
     topSpeed.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "120");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, car.getId());
+    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, car.getOid());
     topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "The Top Speed");
     topSpeed.apply();
 
@@ -772,7 +772,7 @@ public class EntityGenTest
   @Test
   public void testDelete()
   {
-    MdBusinessDAO.get(car.getId()).getBusinessDAO().delete();
+    MdBusinessDAO.get(car.getOid()).getBusinessDAO().delete();
 
     if (MdBusinessDAO.isDefined(pack + ".Car"))
       Assert.fail("Car was not deleted!");
@@ -793,8 +793,8 @@ public class EntityGenTest
     collectionClass.getMethod("setABlob", byte[].class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAOIF = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAOIF = BusinessDAO.get(oid);
     byte[] out = businessDAOIF.getBlob("aBlob");
 
     if (in.length != out.length)
@@ -814,11 +814,11 @@ public class EntityGenTest
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setBlob("aBlob", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
 
     if (in.length != out.length)
@@ -842,8 +842,8 @@ public class EntityGenTest
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     boolean out = Boolean.parseBoolean(businessDAO.getValue("aBoolean"));
 
     if (in != out)
@@ -859,11 +859,11 @@ public class EntityGenTest
     boolean in = false;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", Boolean.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
     if (in != out)
@@ -878,11 +878,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
@@ -907,8 +907,8 @@ public class EntityGenTest
     collectionClass.getMethod("setACharacter", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aCharacter");
 
     if (!in.equals(out))
@@ -924,11 +924,11 @@ public class EntityGenTest
     String in = "RunwaySDK";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aCharacter", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
 
     if (!in.equals(out))
@@ -949,8 +949,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAOIF = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAOIF = BusinessDAO.get(oid);
 
     BigDecimal out = new BigDecimal(businessDAOIF.getValue("aDecimal"));
 
@@ -967,11 +967,11 @@ public class EntityGenTest
     double in = 987654.321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", Double.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
 
     if (in != out)
@@ -986,11 +986,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Double out = (Double) collectionClass.getMethod("getADecimal").invoke(object);
 
@@ -1015,8 +1015,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADouble", Double.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
     if (in != out)
@@ -1032,11 +1032,11 @@ public class EntityGenTest
     double in = 98765.4321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", Double.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
     if (in != out)
@@ -1051,11 +1051,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
@@ -1080,8 +1080,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAFloat", Float.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
     if (in != out)
@@ -1097,11 +1097,11 @@ public class EntityGenTest
     float in = 987.654321F;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", Float.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
     if (in != out)
@@ -1116,11 +1116,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
@@ -1149,8 +1149,8 @@ public class EntityGenTest
     digest.update(in.getBytes());
     String hash = Base64.encodeToString(digest.digest(), false);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aHash");
 
     if (!hash.equals(out))
@@ -1166,11 +1166,11 @@ public class EntityGenTest
     String in = "For breakfast, I had some Pringles, and some fudge-striped cook-ays";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aHash", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     boolean out = (Boolean) collectionClass.getMethod("aHashEquals", String.class).invoke(object, "For breakfast, I had some Pringles, and some fudge-striped cook-ays");
 
     if (!out)
@@ -1190,8 +1190,8 @@ public class EntityGenTest
     collectionClass.getMethod("setASym", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aSym");
 
     if (!in.equals(out))
@@ -1207,11 +1207,11 @@ public class EntityGenTest
     String in = "You'll find that they're quite stationary";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aSym", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
 
     if (!in.equals(out))
@@ -1231,8 +1231,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     int out = Integer.parseInt(businessDAO.getValue("anInteger"));
 
     if (in != out)
@@ -1248,11 +1248,11 @@ public class EntityGenTest
     int in = 9876;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", Integer.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
     if (in != out)
@@ -1267,11 +1267,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Integer out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
@@ -1296,8 +1296,8 @@ public class EntityGenTest
     collectionClass.getMethod("setALong", Long.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     long out = Long.parseLong(businessDAO.getValue("aLong"));
 
     if (in != out)
@@ -1313,11 +1313,11 @@ public class EntityGenTest
     long in = 987654321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", Long.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
     if (in != out)
@@ -1340,8 +1340,8 @@ public class EntityGenTest
 
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     if (!in.equals(out))
@@ -1359,11 +1359,11 @@ public class EntityGenTest
     String in = Long.toString(987654321);
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Struct struct = (Struct) collectionClass.getMethod("getALocalCharacter").invoke(object);
     String out = struct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
@@ -1390,8 +1390,8 @@ public class EntityGenTest
 
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     if (!in.equals(out))
@@ -1409,11 +1409,11 @@ public class EntityGenTest
     String in = Long.toString(987654321);
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Struct struct = (Struct) collectionClass.getMethod("getALocalText").invoke(object);
     String out = struct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
@@ -1432,11 +1432,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
@@ -1462,8 +1462,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADate", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aDate"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1481,11 +1481,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1500,11 +1500,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
@@ -1530,8 +1530,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADateTime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aDateTime"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1549,11 +1549,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1568,11 +1568,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
@@ -1598,8 +1598,8 @@ public class EntityGenTest
     collectionClass.getMethod("setATime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aTime"));
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1617,11 +1617,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     if (!sdf.format(in).equals(sdf.format(out)))
@@ -1636,11 +1636,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
 
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
@@ -1665,8 +1665,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAText", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aText");
 
     if (!in.equals(out))
@@ -1686,8 +1686,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAClob", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aClob");
 
     if (!in.equals(out))
@@ -1703,11 +1703,11 @@ public class EntityGenTest
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aText", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
     if (!in.equals(out))
@@ -1723,11 +1723,11 @@ public class EntityGenTest
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aClob", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
 
     if (!in.equals(out))
@@ -1749,8 +1749,8 @@ public class EntityGenTest
     structClass.getMethod("setStructCharacter", String.class).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aStruct", "structCharacter");
 
     if (!in.equals(out))
@@ -1766,13 +1766,13 @@ public class EntityGenTest
     String in = "Smethie wuz Here!!!!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
     String out = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
@@ -1797,13 +1797,13 @@ public class EntityGenTest
     structClass.getMethod("addStructEnumeration", enumClass).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     StructDAO structDAO = ( (AttributeStructIF) businessDAO.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
     Assert.assertEquals(1, enums.length);
-    Assert.assertEquals(heartsId, enums[0].getId());
+    Assert.assertEquals(heartsId, enums[0].getOid());
   }
 
   @Request
@@ -1816,18 +1816,18 @@ public class EntityGenTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", input);
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
     List<?> out = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
 
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
-    String outId = (String) head.getClass().getMethod("getId").invoke(head);
+    String outId = (String) head.getClass().getMethod("getOid").invoke(head);
     String structChar = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
     Assert.assertEquals(input, structChar);
@@ -1850,8 +1850,8 @@ public class EntityGenTest
     structClass.getMethod("setStructBoolean", Boolean.class).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     boolean out = Boolean.parseBoolean(businessDAO.getStructValue("aStruct", "structBoolean"));
 
     if (in != out)
@@ -1867,13 +1867,13 @@ public class EntityGenTest
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     boolean out = (Boolean) structClass.getMethod("getStructBoolean").invoke(struct);
@@ -1898,11 +1898,11 @@ public class EntityGenTest
     collectionClass.getMethod("setAReference", referenceClass).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
 
-    if (!in.getId().equalsIgnoreCase(out.getId()))
+    if (!in.getOid().equalsIgnoreCase(out.getOid()))
       Assert.fail("Stored and Retrieved References are different.");
   }
 
@@ -1919,14 +1919,14 @@ public class EntityGenTest
     Class<?> collectionClass = loader.loadClass(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
 
-    collectionClass.getMethod("setAReferenceId", String.class).invoke(object, in.getId());
+    collectionClass.getMethod("setAReferenceId", String.class).invoke(object, in.getOid());
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
 
-    if (!in.getId().equalsIgnoreCase(out.getId()))
+    if (!in.getOid().equalsIgnoreCase(out.getOid()))
       Assert.fail("Stored and Retrieved References are different.");
   }
 
@@ -1940,14 +1940,14 @@ public class EntityGenTest
     in.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    businessDAO.setValue("aReference", in.getId());
-    String id = businessDAO.apply();
+    businessDAO.setValue("aReference", in.getOid());
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
-    Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    Object object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     Business out = (Business) collectionClass.getMethod("getAReference").invoke(object);
 
-    if (!in.getId().equalsIgnoreCase(out.getId()))
+    if (!in.getOid().equalsIgnoreCase(out.getOid()))
       Assert.fail("Stored and Retrieved References are different.");
   }
 
@@ -1962,11 +1962,11 @@ public class EntityGenTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
     businessDAO.addItem("anEnum", in2);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO businessDTO = (BusinessDTO) get.invoke(null, clientRequestIF, id);
+    BusinessDTO businessDTO = (BusinessDTO) get.invoke(null, clientRequestIF, oid);
 
     String method = "getAnEnum" + TypeGeneratorInfo.ATTRIBUTE_ENUMERATION_ENUM_NAMES_SUFFIX;
     List<String> enumNames = (List<String>) collectionClass.getMethod(method).invoke(businessDTO);
@@ -2098,8 +2098,8 @@ public class EntityGenTest
     collectionClass.getMethod("addAnEnum", enumClass).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Set<String> ids = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
     if (ids.size() != 1)
       Assert.fail("Expected 1 enum value, found " + ids.size());
@@ -2119,13 +2119,13 @@ public class EntityGenTest
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
-    Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    Object object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     List<?> out = (List<?>) collectionClass.getMethod("getAnEnum").invoke(object);
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
-    String outId = (String) head.getClass().getMethod("getId").invoke(head);
+    String outId = (String) head.getClass().getMethod("getOid").invoke(head);
 
     if (!in.equalsIgnoreCase(outId))
       Assert.fail("Stored and Retrieved enums have different values.");
@@ -2140,18 +2140,18 @@ public class EntityGenTest
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Class<?> enumClass = loader.loadClass(suitEnum.definesType());
 
     Object hearts = enumClass.getDeclaredField(heartName).get(null);
 
-    Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    Object object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     collectionClass.getMethod("removeAnEnum", enumClass).invoke(object, hearts);
     collectionClass.getMethod("apply").invoke(object);
 
-    businessDAO = BusinessDAO.get(id).getBusinessDAO();
+    businessDAO = BusinessDAO.get(oid).getBusinessDAO();
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
     if (out.size() != 0)
@@ -2167,14 +2167,14 @@ public class EntityGenTest
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
-    Object object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    Object object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     collectionClass.getMethod("clearAnEnum").invoke(object);
     collectionClass.getMethod("apply").invoke(object);
 
-    businessDAO = BusinessDAO.get(id).getBusinessDAO();
+    businessDAO = BusinessDAO.get(oid).getBusinessDAO();
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
     if (out.size() != 0)
@@ -2197,12 +2197,12 @@ public class EntityGenTest
 
     Relationship rel = (Relationship) collectionClass.getMethod("addRelChild", referenceClass).invoke(mom, kid);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(mom.getId()))
+    if (!oracle.getParentId().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(kid.getId()))
+    if (!oracle.getChildId().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -2241,10 +2241,10 @@ public class EntityGenTest
     Method createChild = relationshipClass.getMethod("apply");
     createChild.invoke(instance);
 
-    RelationshipDAOIF oracle = RelationshipDAO.get(instance.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(instance.getOid());
 
-    Assert.assertEquals(oracle.getParentId(), mom.getId());
-    Assert.assertEquals(oracle.getChildId(), kid.getId());
+    Assert.assertEquals(oracle.getParentId(), mom.getOid());
+    Assert.assertEquals(oracle.getChildId(), kid.getOid());
   }
 
   @Request
@@ -2263,12 +2263,12 @@ public class EntityGenTest
 
     Relationship rel = (Relationship) referenceClass.getMethod("addRelParent", collectionClass).invoke(kid, mom);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(mom.getId()))
+    if (!oracle.getParentId().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(kid.getId()))
+    if (!oracle.getChildId().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -2284,17 +2284,17 @@ public class EntityGenTest
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType());
+    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType());
     rel.apply();
 
-    Business businessMom = Business.get(mom.getId());
+    Business businessMom = Business.get(mom.getOid());
 
     List<Business> list = ( (OIterator<Business>) collectionClass.getMethod("getAllRelChild").invoke(businessMom) ).getAll();
     if (list.size() != 1)
       Assert.fail("Expected getAllChildren to return 1, found " + list.size());
     Business oracle = list.iterator().next();
 
-    if (!oracle.getId().equals(kid.getId()))
+    if (!oracle.getOid().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in getAllChildren");
   }
 
@@ -2310,17 +2310,17 @@ public class EntityGenTest
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType());
+    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType());
     rel.apply();
 
-    Business businessKid = Business.get(kid.getId());
+    Business businessKid = Business.get(kid.getOid());
 
     List<Business> list = ( (OIterator<Business>) referenceClass.getMethod("getAllRelParent").invoke(businessKid) ).getAll();
     if (list.size() != 1)
       Assert.fail("Expected getAllPrents to return 1, found " + list.size());
     Business oracle = list.iterator().next();
 
-    if (!oracle.getId().equals(mom.getId()))
+    if (!oracle.getOid().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in getAllParents");
   }
 
@@ -2339,11 +2339,11 @@ public class EntityGenTest
     kid.apply();
     BusinessDAO kid2 = BusinessDAO.newInstance(reference.definesType());
     kid2.apply();
-    RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType()).apply();
-    RelationshipDAO.newInstance(mom.getId(), kid2.getId(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid2.getOid(), mdRelationship.definesType()).apply();
 
-    Business businessMom = Business.get(mom.getId());
-    Business businessKid = Business.get(kid.getId());
+    Business businessMom = Business.get(mom.getOid());
+    Business businessKid = Business.get(kid.getOid());
     collectionClass.getMethod("removeRelChild", referenceClass).invoke(businessMom, businessKid);
 
     List<RelationshipDAOIF> list = mom.getChildren(mdRelationship.definesType());
@@ -2351,10 +2351,10 @@ public class EntityGenTest
       Assert.fail("RemoveAllChilren expected 1 child, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
-    if (!rel.getParentId().equals(mom.getId()))
+    if (!rel.getParentId().equals(mom.getOid()))
       Assert.fail("Unexpected parent after removeAllChildren.");
 
-    if (!rel.getChildId().equals(kid2.getId()))
+    if (!rel.getChildId().equals(kid2.getOid()))
       Assert.fail("Unexpected child after removeAllChildren.");
 
   }
@@ -2374,11 +2374,11 @@ public class EntityGenTest
     dad.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType()).apply();
-    RelationshipDAO.newInstance(dad.getId(), kid.getId(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(dad.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
 
-    Business businessMom = Business.get(mom.getId());
-    Business businessKid = Business.get(kid.getId());
+    Business businessMom = Business.get(mom.getOid());
+    Business businessKid = Business.get(kid.getOid());
     referenceClass.getMethod("removeRelParent", collectionClass).invoke(businessKid, businessMom);
 
     List<RelationshipDAOIF> list = kid.getParents(mdRelationship.definesType());
@@ -2386,12 +2386,12 @@ public class EntityGenTest
       Assert.fail("RemoveAllParents expected 1 parent, found " + list.size());
 
     RelationshipDAOIF rel = list.get(0);
-    if (!rel.getParentId().equals(dad.getId()))
+    if (!rel.getParentId().equals(dad.getOid()))
     {
       Assert.fail("Unexpected parent after removeAllParents.");
     }
 
-    if (!rel.getChildId().equals(kid.getId()))
+    if (!rel.getChildId().equals(kid.getOid()))
     {
       Assert.fail("Unexpected child after removeAllParents.");
     }
@@ -2417,8 +2417,8 @@ public class EntityGenTest
     structClass.getMethod("setStructCharacter", String.class).invoke(struct, in);
     structClass.getMethod("apply").invoke(struct);
 
-    String id = (String) structClass.getMethod("getId").invoke(struct);
-    StructDAOIF structDAO = StructDAO.get(id);
+    String oid = (String) structClass.getMethod("getOid").invoke(struct);
+    StructDAOIF structDAO = StructDAO.get(oid);
     String out = structDAO.getValue("structCharacter");
 
     if (!in.equals(out))
@@ -2442,19 +2442,19 @@ public class EntityGenTest
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionType);
     Class<?> structClass = loader.loadClass(struct.definesType());
 
     Method get = collectionClass.getMethod("get", String.class);
-    Object object = get.invoke(null, id);
+    Object object = get.invoke(null, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     structClass.getMethod("setStructBoolean", Boolean.class).invoke(struct, !in);
     structClass.getMethod("apply").invoke(struct);
 
-    BusinessDAOIF businessDAOIF = BusinessDAO.get(id);
+    BusinessDAOIF businessDAOIF = BusinessDAO.get(oid);
 
     boolean out = Boolean.parseBoolean(businessDAOIF.getStructValue("aStruct", "structBoolean"));
 
@@ -2496,10 +2496,10 @@ public class EntityGenTest
     Method createParent = relationshipClass.getMethod("apply");
     createParent.invoke(instance);
 
-    RelationshipDAOIF oracle = RelationshipDAO.get(instance.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(instance.getOid());
 
-    Assert.assertEquals(oracle.getParentId(), mom.getId());
-    Assert.assertEquals(oracle.getChildId(), kid.getId());
+    Assert.assertEquals(oracle.getParentId(), mom.getOid());
+    Assert.assertEquals(oracle.getChildId(), kid.getOid());
   }
 
   @Request
@@ -2509,18 +2509,18 @@ public class EntityGenTest
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     collectionClass.getMethod("lock").invoke(object);
     collectionClass.getMethod("delete").invoke(object);
 
     try
     {
-      BusinessDAO.get(id);
+      BusinessDAO.get(oid);
 
       Assert.fail("Delete businessDTO did not delete the entity");
     }
@@ -2539,11 +2539,11 @@ public class EntityGenTest
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setBlob("aBlob", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
 
@@ -2569,11 +2569,11 @@ public class EntityGenTest
     boolean in = false;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", Boolean.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
     Assert.assertEquals(in, out);
@@ -2587,11 +2587,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aBoolean", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
@@ -2607,11 +2607,11 @@ public class EntityGenTest
     String in = "RunwaySDK";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aCharacter", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
 
@@ -2628,13 +2628,13 @@ public class EntityGenTest
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType());
+    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType());
     rel.apply();
 
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> relationshipClass = loader.loadClass(relationshipDTO);
     Method get = relationshipClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, rel.getId());
+    Object object = get.invoke(null, clientRequestIF, rel.getOid());
 
     Method getChild = relationshipClass.getMethod("getChild");
     BusinessDTO child = (BusinessDTO) getChild.invoke(object);
@@ -2642,7 +2642,7 @@ public class EntityGenTest
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> referenceClass = loader.loadClass(referenceDTO);
     Assert.assertTrue(referenceClass.isInstance(child));
-    Assert.assertEquals(kid.getId(), child.getId());
+    Assert.assertEquals(kid.getOid(), child.getOid());
   }
 
   @Request
@@ -2651,14 +2651,14 @@ public class EntityGenTest
   {
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
-    mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    mdRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
 
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
-    if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
-      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       updateRelationship.apply();
     }
     try
@@ -2679,13 +2679,13 @@ public class EntityGenTest
       BusinessDTO oracle = list.get(0);
 
       Assert.assertTrue(oracle.getType().equals(reference.definesType()));
-      Assert.assertEquals(oracle.getId(), kidId);
+      Assert.assertEquals(oracle.getOid(), kidId);
     }
     finally
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
         updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
         updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
         updateRelationship.apply();
@@ -2699,14 +2699,14 @@ public class EntityGenTest
   {
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
-    mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    mdRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
 
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
-    if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
+    if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getOid()))
     {
-      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       updateRelationship.apply();
     }
     try
@@ -2727,13 +2727,13 @@ public class EntityGenTest
       BusinessDTO oracle = list.get(0);
 
       Assert.assertTrue(oracle.getType().equals(reference.definesType()));
-      Assert.assertEquals(oracle.getId(), kidId);
+      Assert.assertEquals(oracle.getOid(), kidId);
     }
     finally
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
         updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
         updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
         updateRelationship.apply();
@@ -2791,7 +2791,7 @@ public class EntityGenTest
     // Make sure the accessor method is there
     collectionDTOclass.getMethod("getACharacter").invoke(object);
 
-    collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     collectionCharacter.apply();
 
     loader = GeneratedLoader.isolatedClassLoader();
@@ -2826,7 +2826,7 @@ public class EntityGenTest
     }
     finally
     {
-      collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       collectionCharacter.apply();
 
       loader = GeneratedLoader.isolatedClassLoader();
@@ -2867,7 +2867,7 @@ public class EntityGenTest
     // Make sure the accessor method is there
     collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
 
-    collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     collectionCharacter.apply();
 
     loader = GeneratedLoader.isolatedClassLoader();
@@ -2899,7 +2899,7 @@ public class EntityGenTest
     }
     finally
     {
-      collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       collectionCharacter.apply();
 
       loader = GeneratedLoader.isolatedClassLoader();
@@ -2972,9 +2972,9 @@ public class EntityGenTest
     referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
 
     // Change to PROTECTED Visibility
-    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
     updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
-    updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     updateRelationship.apply();
 
     loader = GeneratedLoader.isolatedClassLoader();
@@ -3013,9 +3013,9 @@ public class EntityGenTest
     finally
     {
       // Change to PUBLIC Visibility
-      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
-      updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       updateRelationship.apply();
 
       loader = GeneratedLoader.isolatedClassLoader();
@@ -3099,9 +3099,9 @@ public class EntityGenTest
     referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
 
     // Change to PROTECTED Visibility
-    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
     updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
-    updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     updateRelationship.apply();
     loader = GeneratedLoader.isolatedClassLoader();
 
@@ -3257,9 +3257,9 @@ public class EntityGenTest
     finally
     {
       // Change to PUBLIC Visibility
-      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
-      updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       updateRelationship.apply();
 
       loader = GeneratedLoader.createClassLoader();
@@ -3324,11 +3324,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
@@ -3345,11 +3345,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDate", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
@@ -3367,11 +3367,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
@@ -3386,11 +3386,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDateTime", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
@@ -3406,11 +3406,11 @@ public class EntityGenTest
     double in = 987654.321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", Double.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     double out = ( (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object) ).doubleValue();
 
@@ -3425,11 +3425,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDecimal", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Double out = (Double) collectionClass.getMethod("getADecimal").invoke(object);
 
@@ -3445,11 +3445,11 @@ public class EntityGenTest
     double in = 98765.4321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", Double.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
@@ -3464,11 +3464,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aDouble", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
@@ -3484,11 +3484,11 @@ public class EntityGenTest
     String in = heartsId;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     List<?> enums = (List<?>) collectionClass.getMethod("getAnEnum").invoke(object);
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
@@ -3506,11 +3506,11 @@ public class EntityGenTest
     float in = 987.654321F;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", Float.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
@@ -3525,11 +3525,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aFloat", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
@@ -3545,11 +3545,11 @@ public class EntityGenTest
     int in = 9876;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", Integer.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
@@ -3564,11 +3564,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("anInteger", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Integer out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
@@ -3584,11 +3584,11 @@ public class EntityGenTest
     long in = 987654321;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", Long.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
@@ -3603,11 +3603,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aLong", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Float out = (Float) collectionClass.getMethod("getALong").invoke(object);
 
@@ -3624,20 +3624,20 @@ public class EntityGenTest
     mom.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType());
+    RelationshipDAO rel = RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType());
     rel.apply();
 
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> relationshipClass = loader.loadClass(relationshipDTO);
     Method get = relationshipClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, rel.getId());
+    Object object = get.invoke(null, clientRequestIF, rel.getOid());
 
     Method getParent = relationshipClass.getMethod("getParent");
     BusinessDTO parent = (BusinessDTO) getParent.invoke(object);
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Assert.assertTrue(collectionClass.isInstance(parent));
-    Assert.assertEquals(mom.getId(), parent.getId());
+    Assert.assertEquals(mom.getOid(), parent.getOid());
   }
 
   @Request
@@ -3647,9 +3647,9 @@ public class EntityGenTest
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
     {
-      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       updateRelationship.apply();
     }
 
@@ -3674,13 +3674,13 @@ public class EntityGenTest
       BusinessDTO oracle = list.get(0);
 
       Assert.assertTrue(oracle.getType().equals(collection.definesType()));
-      Assert.assertEquals(oracle.getId(), momId);
+      Assert.assertEquals(oracle.getOid(), momId);
     }
     finally
     {
-      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       updateRelationship.apply();
     }
   }
@@ -3692,10 +3692,10 @@ public class EntityGenTest
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
-    if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
-      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       updateRelationship.apply();
     }
     try
@@ -3719,13 +3719,13 @@ public class EntityGenTest
       BusinessDTO oracle = list.get(0);
 
       Assert.assertTrue(oracle.getType().equals(collection.definesType()));
-      Assert.assertEquals(oracle.getId(), momId);
+      Assert.assertEquals(oracle.getOid(), momId);
     }
     finally
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getOid()).getBusinessDAO();
         updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
         updateRelationship.apply();
       }
@@ -3773,15 +3773,15 @@ public class EntityGenTest
     in.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
-    businessDAO.setValue("aReference", in.getId());
-    String id = businessDAO.apply();
+    businessDAO.setValue("aReference", in.getOid());
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     BusinessDTO out = (BusinessDTO) collectionClass.getMethod("getAReference").invoke(object);
 
-    Assert.assertEquals(in.getId(), out.getId());
+    Assert.assertEquals(in.getOid(), out.getOid());
   }
 
   @Request
@@ -3793,14 +3793,14 @@ public class EntityGenTest
     boolean in = true;
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     boolean out = (Boolean) structClass.getMethod("getStructBoolean").invoke(struct);
@@ -3817,14 +3817,14 @@ public class EntityGenTest
     String in = "Smethie wuz Here!!!!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
     String out = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
@@ -3841,14 +3841,14 @@ public class EntityGenTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aStruct", "structCharacter", input);
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Class<?> structClass = loader.loadClass(standaloneDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     Object struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     List<?> enums = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
@@ -3870,11 +3870,11 @@ public class EntityGenTest
     String in = "You'll find that they're quite stationary";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aSym", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
 
@@ -3892,11 +3892,11 @@ public class EntityGenTest
     String in = "Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aText", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
     Assert.assertEquals(in, out);
@@ -3911,11 +3911,11 @@ public class EntityGenTest
     String in = "CLOB: Blood alone moves the wheels of history! Have you ever asked yourselves in an hour of meditation, which everyone finds during the day, how long we have been striving for greatness? Not only the years we've been at war ... the war of work. But from the moment, as a child, and we realized that the world could be conquered. It has been a lifetime struggle, a never-ending fight, I say to you. And you will understand that it is a privilege to fight! We are warriors! Salesmen of Northeastern Pennsylvania, I ask you, once more rise and be worthy of this historical hour!";
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aClob", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     String out = (String) collectionClass.getMethod("getAClob").invoke(object);
 
     Assert.assertEquals(in, out);
@@ -3932,11 +3932,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     Assert.assertEquals(sdf.format(in), sdf.format(out));
@@ -3950,11 +3950,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", "");
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
@@ -3970,13 +3970,13 @@ public class EntityGenTest
   // cook-ays";
   // BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
   // businessDAO.setValue("aHash", in);
-  // String id = businessDAO.apply();
+  // String oid = businessDAO.apply();
   //
   // Class<?> collectionClass = loader.loadClass(collectionDTO);
   // Method getInstance = collectionClass.getMethod("getInstance", String.class,
   // ClientRequestIF.class,
   // String.class);
-  // Object object = getInstance.invoke(null, sessionId, ClientRequest, id);
+  // Object object = getInstance.invoke(null, sessionId, ClientRequest, oid);
   //
   // String hash = businessDAO.getValue("aHash");
   // String out = (String) collectionClass.getMethod("getAHash").invoke(object);
@@ -3995,11 +3995,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     boolean out = (Boolean) collectionClass.getMethod("isATimeReadable").invoke(object);
 
     Assert.assertTrue(out);
@@ -4016,11 +4016,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setValue("aTime", sdf.format(in));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
     boolean out = (Boolean) collectionClass.getMethod("isATimeWritable").invoke(object);
 
     Assert.assertTrue(out);
@@ -4039,12 +4039,12 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.addItem("anEnum", in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Object hearts = enumClass.getDeclaredField(heartName).get(null);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     // Lock the object
     collectionClass.getMethod("lock").invoke(object);
@@ -4053,7 +4053,7 @@ public class EntityGenTest
     collectionClass.getMethod("removeAnEnum", enumClass).invoke(object, hearts);
     object = collectionClass.getMethod("apply").invoke(object);
 
-    businessDAO = BusinessDAO.get(id).getBusinessDAO();
+    businessDAO = BusinessDAO.get(oid).getBusinessDAO();
     Set<String> out = ( (AttributeEnumerationIF) businessDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
     Assert.assertEquals(0, out.size());
@@ -4073,15 +4073,15 @@ public class EntityGenTest
     kid.apply();
     BusinessDAO kid2 = BusinessDAO.newInstance(reference.definesType());
     kid2.apply();
-    RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType()).apply();
-    RelationshipDAO.newInstance(mom.getId(), kid2.getId(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid2.getOid(), mdRelationship.definesType()).apply();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object businessMom = get.invoke(null, clientRequestIF, mom.getId());
+    Object businessMom = get.invoke(null, clientRequestIF, mom.getOid());
 
     collectionClass.getMethod("removeAllRelChild").invoke(businessMom);
 
-    List<RelationshipDAOIF> list = BusinessDAO.get(mom.getId()).getChildren(mdRelationship.definesType());
+    List<RelationshipDAOIF> list = BusinessDAO.get(mom.getOid()).getChildren(mdRelationship.definesType());
 
     Assert.assertEquals(0, list.size());
   }
@@ -4100,18 +4100,18 @@ public class EntityGenTest
     dad.apply();
     BusinessDAO kid = BusinessDAO.newInstance(reference.definesType());
     kid.apply();
-    RelationshipDAO.newInstance(mom.getId(), kid.getId(), mdRelationship.definesType()).apply();
-    RelationshipDAO.newInstance(dad.getId(), kid.getId(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(mom.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
+    RelationshipDAO.newInstance(dad.getOid(), kid.getOid(), mdRelationship.definesType()).apply();
 
-    List<RelationshipDAOIF> list = BusinessDAO.get(kid.getId()).getParents(mdRelationship.definesType());
+    List<RelationshipDAOIF> list = BusinessDAO.get(kid.getOid()).getParents(mdRelationship.definesType());
     Assert.assertEquals(2, list.size());
 
     Method get = referenceClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object businessKid = get.invoke(null, clientRequestIF, kid.getId());
+    Object businessKid = get.invoke(null, clientRequestIF, kid.getOid());
 
     referenceClass.getMethod("removeAllRelParent").invoke(businessKid);
 
-    list = BusinessDAO.get(kid.getId()).getParents(mdRelationship.definesType());
+    list = BusinessDAO.get(kid.getOid()).getParents(mdRelationship.definesType());
     Assert.assertEquals(0, list.size());
   }
 
@@ -4130,8 +4130,8 @@ public class EntityGenTest
     collectionClass.getMethod("setABlob", byte[].class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     byte[] out = businessDAO.getBlob("aBlob");
 
     Assert.assertEquals(in.length, out.length);
@@ -4154,8 +4154,8 @@ public class EntityGenTest
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     boolean out = Boolean.parseBoolean(businessDAO.getValue("aBoolean"));
 
     Assert.assertEquals(in, out);
@@ -4175,8 +4175,8 @@ public class EntityGenTest
     collectionClass.getMethod("setACharacter", String.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aCharacter");
 
     Assert.assertEquals(in, out);
@@ -4198,8 +4198,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADate", Date.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aDate"));
 
     Assert.assertEquals(sdf.format(in), sdf.format(out));
@@ -4221,8 +4221,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADateTime", Date.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aDateTime"));
 
     Assert.assertEquals(sdf.format(in), sdf.format(out));
@@ -4243,8 +4243,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
 
     BigDecimal out = new BigDecimal(businessDAO.getValue("aDecimal"));
 
@@ -4267,8 +4267,8 @@ public class EntityGenTest
     collectionClass.getMethod("setADouble", Double.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
     Assert.assertEquals(in, out, 0);
@@ -4289,8 +4289,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAFloat", Float.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
     Assert.assertEquals(in, out, 0);
@@ -4315,8 +4315,8 @@ public class EntityGenTest
     digest.update(in.getBytes());
     String hash = Base64.encodeToString(digest.digest(), false);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aHash");
 
     Assert.assertEquals(hash, out);
@@ -4337,8 +4337,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     int out = Integer.parseInt(businessDAO.getValue("anInteger"));
 
     Assert.assertEquals(in, out);
@@ -4359,8 +4359,8 @@ public class EntityGenTest
     collectionClass.getMethod("setALong", Long.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     long out = Long.parseLong(businessDAO.getValue("aLong"));
 
     Assert.assertEquals(in, out);
@@ -4382,8 +4382,8 @@ public class EntityGenTest
 
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     Assert.assertEquals(in, out);
@@ -4405,8 +4405,8 @@ public class EntityGenTest
 
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     Assert.assertEquals(in, out);
@@ -4422,11 +4422,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     StructDTO struct = (StructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
     String out = struct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
@@ -4444,11 +4444,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     LocalStructDTO localStructDTO = (LocalStructDTO) collectionClass.getMethod("getALocalCharacter").invoke(object);
     String out = localStructDTO.getValue();
@@ -4472,8 +4472,8 @@ public class EntityGenTest
     localStruct.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     Assert.assertEquals(in, out);
@@ -4495,8 +4495,8 @@ public class EntityGenTest
     localStruct.setValue(in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE);
 
     Assert.assertEquals(in, out);
@@ -4512,11 +4512,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     LocalStructDTO localStruct = (LocalStructDTO) collectionClass.getMethod("getALocalText").invoke(object);
     String out = localStruct.getValue();
@@ -4534,11 +4534,11 @@ public class EntityGenTest
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(collectionType);
     businessDAO.setStructValue("aLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, in);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     LocalStructDTO localStruct = (LocalStructDTO) collectionClass.getMethod("getALocalText").invoke(object);
     String out = localStruct.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
@@ -4566,11 +4566,11 @@ public class EntityGenTest
     collectionClass.getMethod("setAReference", referenceClass).invoke(object, ref);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     BusinessDAOIF out = ( (AttributeReferenceIF) businessDAO.getAttributeIF("aReference") ).dereference();
 
-    Assert.assertEquals(ref.getId(), out.getId());
+    Assert.assertEquals(ref.getOid(), out.getOid());
   }
 
   @Request
@@ -4584,7 +4584,7 @@ public class EntityGenTest
     struct.setValue("structBoolean", in);
     object.apply();
 
-    BusinessDAOIF businessDAO = BusinessDAO.get(object.getId());
+    BusinessDAOIF businessDAO = BusinessDAO.get(object.getOid());
     String out = businessDAO.getStructValue("aStruct", "structBoolean");
 
     Assert.assertEquals(in, out);
@@ -4605,7 +4605,7 @@ public class EntityGenTest
 
     clientRequestIF.createBusiness(object);
 
-    BusinessDAOIF businessDAO = BusinessDAO.get(object.getId());
+    BusinessDAOIF businessDAO = BusinessDAO.get(object.getOid());
     String out = businessDAO.getStructValue("aStruct", "structBoolean");
 
     Assert.assertEquals(in, out);
@@ -4642,9 +4642,9 @@ public class EntityGenTest
 
     structClass.getMethod("apply").invoke(struct);
 
-    String id = (String) structClass.getMethod("getId").invoke(struct);
+    String oid = (String) structClass.getMethod("getOid").invoke(struct);
 
-    StructDAOIF structDAO = StructDAO.get(id);
+    StructDAOIF structDAO = StructDAO.get(oid);
     boolean bOut = Boolean.parseBoolean(structDAO.getValue("structBoolean"));
     String cOut = structDAO.getValue("structCharacter");
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttributeIF("structEnumeration") ).dereference();
@@ -4689,9 +4689,9 @@ public class EntityGenTest
 
     structClass.getMethod("apply").invoke(struct);
 
-    String id = (String) structClass.getMethod("getId").invoke(struct);
+    String oid = (String) structClass.getMethod("getOid").invoke(struct);
 
-    StructDAOIF structDAO = StructDAO.get(id);
+    StructDAOIF structDAO = StructDAO.get(oid);
     boolean bOut = Boolean.parseBoolean(structDAO.getValue("structBoolean"));
     String cOut = structDAO.getValue("structCharacter");
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttributeIF("structEnumeration") ).dereference();
@@ -4729,8 +4729,8 @@ public class EntityGenTest
     structClass.getMethod("setStructBoolean", Boolean.class).invoke(struct, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     boolean out = Boolean.parseBoolean(businessDAO.getStructValue("aStruct", "structBoolean"));
 
     Assert.assertEquals(in, out);
@@ -4757,8 +4757,8 @@ public class EntityGenTest
     structClass.getMethod("setStructCharacter", String.class).invoke(struct, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getStructValue("aStruct", "structCharacter");
 
     Assert.assertEquals(in, out);
@@ -4791,8 +4791,8 @@ public class EntityGenTest
 
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     StructDAO structDAO = ( (AttributeStructIF) businessDAO.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
     List<String> enumNames = new LinkedList<String>();
@@ -4822,8 +4822,8 @@ public class EntityGenTest
     collectionClass.getMethod("setASym", String.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aSym");
 
     Assert.assertEquals(in, out);
@@ -4844,8 +4844,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAText", String.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aText");
 
     Assert.assertEquals(in, out);
@@ -4866,8 +4866,8 @@ public class EntityGenTest
     collectionClass.getMethod("setAClob", String.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aClob");
 
     Assert.assertEquals(in, out);
@@ -4889,8 +4889,8 @@ public class EntityGenTest
     collectionClass.getMethod("setATime", Date.class).invoke(object, in);
     createDTO.invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    BusinessDAOIF businessDAO = BusinessDAO.get(id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     Date out = sdf.parse(businessDAO.getValue("aTime"));
 
     Assert.assertEquals(sdf.format(in), sdf.format(out));
@@ -4905,9 +4905,9 @@ public class EntityGenTest
     businessDAO.setValue("aLong", "142");
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(false));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
-    BusinessDTO dto = (BusinessDTO) clientRequestIF.get(id);
+    BusinessDTO dto = (BusinessDTO) clientRequestIF.get(oid);
     clientRequestIF.lock(dto);
 
     AttributeStructDTO struct = ComponentDTOFacade.getAttributeStructDTO(dto, "aStruct");
@@ -4916,12 +4916,12 @@ public class EntityGenTest
     clientRequestIF.update(dto);
 
     // Check that the BusinessDAO was updated
-    BusinessDAOIF obj = BusinessDAO.get(id);
+    BusinessDAOIF obj = BusinessDAO.get(oid);
     StructDAO structDAO = ( (AttributeStructIF) obj.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
     Assert.assertEquals(1, enums.length);
-    Assert.assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(clubsId, enums[0].getOid());
   }
 
   @Request
@@ -4938,7 +4938,7 @@ public class EntityGenTest
     businessDAO.setValue("aLong", "142");
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(false));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     String suitDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     String standaloneDTO = struct.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -4950,7 +4950,7 @@ public class EntityGenTest
     EnumerationDTOIF clubs = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, clubName);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, clientRequestIF, id);
+    Object object = get.invoke(null, clientRequestIF, oid);
 
     // Lock the BusinessDAO
     collectionClass.getMethod("lock").invoke(object);
@@ -4968,14 +4968,14 @@ public class EntityGenTest
     updateDTO.invoke(object);
 
     // Check that the BusinessDAO was updated
-    BusinessDAOIF obj = BusinessDAO.get(id);
+    BusinessDAOIF obj = BusinessDAO.get(oid);
     StructDAO structDAO = ( (AttributeStructIF) obj.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
     String outBoolean = obj.getStructValue("aStruct", "structBoolean");
     String outLong = obj.getValue("aLong");
 
     Assert.assertEquals(1, enums.length);
-    Assert.assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(clubsId, enums[0].getOid());
     Assert.assertEquals(Long.toString(longIn), outLong);
     Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
 
@@ -5001,12 +5001,12 @@ public class EntityGenTest
     businessDAO.setValue("aLong", "142");
     businessDAO.addStructItem("aStruct", "structEnumeration", heartsId);
     businessDAO.setStructValue("aStruct", "structBoolean", Boolean.toString(false));
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequestIF, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequestIF, oid);
 
     // Lock the BusinessDAO
     collectionClass.getMethod("lock").invoke(object);
@@ -5024,14 +5024,14 @@ public class EntityGenTest
     updateDTO.invoke(object);
 
     // Check that the BusinessDAO was updated
-    BusinessDAOIF obj = BusinessDAO.get(id);
+    BusinessDAOIF obj = BusinessDAO.get(oid);
     StructDAO structDAO = ( (AttributeStructIF) obj.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
     String outBoolean = obj.getStructValue("aStruct", "structBoolean");
     String outLong = obj.getValue("aLong");
 
     Assert.assertEquals(1, enums.length);
-    Assert.assertEquals(clubsId, enums[0].getId());
+    Assert.assertEquals(clubsId, enums[0].getOid());
     Assert.assertEquals(Long.toString(longIn), outLong);
     Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
   }
@@ -5054,7 +5054,7 @@ public class EntityGenTest
     collectionClass.getMethod("apply").invoke(object);
     Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
     Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
-    Assert.assertEquals(collection.getId(), object.getMd().getId());
+    Assert.assertEquals(collection.getOid(), object.getMd().getOid());
   }
 
   @Request
@@ -5379,7 +5379,7 @@ public class EntityGenTest
     Assert.assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
     Assert.assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
     Assert.assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
-    Assert.assertEquals(mdAttribute.getId(), mdDTO.getId());
+    Assert.assertEquals(mdAttribute.getOid(), mdDTO.getOid());
     Assert.assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
     Assert.assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
 

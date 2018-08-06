@@ -102,7 +102,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   /**
    * Build the select clause for this query, including all attributes required
    * to instantiate instances of this object.
-   * @param mdAttributeIDMap Key: MdAttribute.getId() Value: MdAttributeIF
+   * @param mdAttributeIDMap Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF,  Set<Join> tableJoinSet2,
@@ -213,11 +213,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.childId(), abstractObjectQuery.id());
+      return new ValueJoinConditionEq(this.childId(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.childId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionEq(this.childId(), abstractObjectQuery.oid());
     }
   }
 
@@ -231,11 +231,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
   }
 
@@ -249,11 +249,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.childId(), abstractObjectQuery.id());
+      return new ValueJoinConditionNotEq(this.childId(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.childId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionNotEq(this.childId(), abstractObjectQuery.oid());
     }
   }
 
@@ -267,11 +267,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
   }
 
@@ -285,11 +285,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.parentId(), abstractObjectQuery.id());
+      return new ValueJoinConditionEq(this.parentId(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.parentId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionEq(this.parentId(), abstractObjectQuery.oid());
     }
   }
 
@@ -303,11 +303,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
   }
 
@@ -321,11 +321,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.parentId(), abstractObjectQuery.id());
+      return new ValueJoinConditionNotEq(this.parentId(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.parentId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionNotEq(this.parentId(), abstractObjectQuery.oid());
     }
   }
 
@@ -339,11 +339,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getOid());
     }
   }
 }

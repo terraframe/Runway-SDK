@@ -32,7 +32,7 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,11 +129,11 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -143,7 +143,7 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.RefClass.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -285,7 +285,7 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -405,9 +405,9 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.Befriends>) getRelationshipsWithParent(testClass, com.runwaysdk.jstest.Befriends.CLASS);
   }
   
-  public static RefClass get(String id)
+  public static RefClass get(String oid)
   {
-    return (RefClass) com.runwaysdk.business.Business.get(id);
+    return (RefClass) com.runwaysdk.business.Business.get(oid);
   }
   
   public static RefClass getByKey(String key)
@@ -415,17 +415,17 @@ public abstract class RefClassBase extends com.runwaysdk.business.Business imple
     return (RefClass) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static RefClass lock(java.lang.String id)
+  public static RefClass lock(java.lang.String oid)
   {
-    RefClass _instance = RefClass.get(id);
+    RefClass _instance = RefClass.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static RefClass unlock(java.lang.String id)
+  public static RefClass unlock(java.lang.String oid)
   {
-    RefClass _instance = RefClass.get(id);
+    RefClass _instance = RefClass.get(oid);
     _instance.unlock();
     
     return _instance;

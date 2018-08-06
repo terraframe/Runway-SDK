@@ -75,7 +75,7 @@ import com.runwaysdk.transport.metadata.TypeMd;
 public abstract class ClassToQueryDTO
 {
   /**
-   * The session id requesting the QueryDTO
+   * The session oid requesting the QueryDTO
    */
   private String   sessionId;
 
@@ -122,7 +122,7 @@ public abstract class ClassToQueryDTO
   }
 
   /**
-   * Returns the session id that is requesting the conversion.
+   * Returns the session oid that is requesting the conversion.
    *
    * @return
    */
@@ -261,7 +261,7 @@ public abstract class ClassToQueryDTO
 
       String structType = mdAttributeStructIF.getMdStructDAOIF().definesType();
 
-      TypeMd typeMd = new TypeMd(mdAttributeStructIF.getDisplayLabel(Session.getCurrentLocale()), mdAttributeStructIF.getDescription(Session.getCurrentLocale()), mdAttributeStructIF.getId(), true);
+      TypeMd typeMd = new TypeMd(mdAttributeStructIF.getDisplayLabel(Session.getCurrentLocale()), mdAttributeStructIF.getDescription(Session.getCurrentLocale()), mdAttributeStructIF.getOid(), true);
 
       StructDTO structDTO = ComponentDTOFacade.buildStructDTO(null, structType, attributeDTOmap, typeMd);
 

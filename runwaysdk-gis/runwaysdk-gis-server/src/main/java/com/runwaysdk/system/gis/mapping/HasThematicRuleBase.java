@@ -32,7 +32,7 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,11 +128,11 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -142,7 +142,7 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.HasThematicRule.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -284,7 +284,7 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
     return (com.runwaysdk.system.gis.mapping.ThematicRule) super.getChild();
   }
   
-  public static HasThematicRule get(String id)
+  public static HasThematicRule get(String oid)
   {
-    return (HasThematicRule) com.runwaysdk.business.Relationship.get(id);
+    return (HasThematicRule) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static HasThematicRule getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class HasThematicRuleBase extends com.runwaysdk.business.Relatio
     return (HasThematicRule) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static HasThematicRule lock(java.lang.String id)
+  public static HasThematicRule lock(java.lang.String oid)
   {
-    HasThematicRule _instance = HasThematicRule.get(id);
+    HasThematicRule _instance = HasThematicRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static HasThematicRule unlock(java.lang.String id)
+  public static HasThematicRule unlock(java.lang.String oid)
   {
-    HasThematicRule _instance = HasThematicRule.get(id);
+    HasThematicRule _instance = HasThematicRule.get(oid);
     _instance.unlock();
     
     return _instance;

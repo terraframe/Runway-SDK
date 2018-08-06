@@ -51,10 +51,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO);
-    String id = sessionDTO.getId();
+    String oid = sessionDTO.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
@@ -77,15 +77,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", input + "3");
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", input);
     sessionClass.getMethod("apply").invoke(sessionDTO2);
-    String id2 = sessionDTO2.getId();
+    String id2 = sessionDTO2.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     Object output = sessionClass.getMethod("testMethod", sessionClass).invoke(object, object2);
@@ -106,15 +106,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO2);
-    String id2 = sessionDTO2.getId();
+    String id2 = sessionDTO2.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(sessionClass, 1);
@@ -144,14 +144,14 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO2);
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     Object array = Array.newInstance(sessionClass, 0);
 
@@ -177,15 +177,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDAO2 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDAO2.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDAO2);
-    String id2 = sessionDAO2.getId();
+    String id2 = sessionDAO2.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(sessionClass, 1);
@@ -223,15 +223,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(sessionDTO2);
-    String id2 = sessionDTO2.getId();
+    String id2 = sessionDTO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     Object output = bagClass.getMethod("testMethod", sessionClass).invoke(object, object2);
@@ -253,15 +253,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(sessionDTO2);
-    String id2 = sessionDTO2.getId();
+    String id2 = sessionDTO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     Class<?> arrayClass = Array.newInstance(sessionClass, 0).getClass();
@@ -309,7 +309,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     BusinessDTO colBusDTO = (BusinessDTO) stateClass.getMethod("item", ClientRequestIF.class).invoke(enumerationDTOIF, clientRequest);
 
-    Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getId(), colBusDTO.getId());
+    Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getOid(), colBusDTO.getOid());
 
     Assert.assertEquals("item method on the enum returned an object of the wrong class.", states.definesType() + "DTO", colBusDTO.getClass().getName());
 
@@ -345,15 +345,15 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", input + "3");
     collectionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     SessionDTO sessionDTO2 = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO2.setValue("aLong", input);
     collectionClass.getMethod("apply").invoke(sessionDTO2);
-    String id2 = sessionDTO2.getId();
+    String id2 = sessionDTO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
     SessionDTO object2 = (SessionDTO) get.invoke(null, clientRequest, id2);
 
     object.setValue("aDouble", "46");
@@ -392,10 +392,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
@@ -428,10 +428,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", "142");
     collectionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, id);
+    SessionDTO object = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     collectionClass.getMethod("poopNothing").invoke(object);
 
@@ -490,9 +490,9 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionDTO1.setValue("aLong", longInput);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
-    SessionDTO output = (SessionDTO) sessionClass.getMethod("sortNumbers", ClientRequestIF.class, String.class, array.getClass(), Boolean.class).invoke(null, clientRequest, id, array, bool);
+    SessionDTO output = (SessionDTO) sessionClass.getMethod("sortNumbers", ClientRequestIF.class, String.class, array.getClass(), Boolean.class).invoke(null, clientRequest, oid, array, bool);
 
     Assert.assertTrue(sessionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
@@ -508,10 +508,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, id);
+    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     String someCharValue = "Some Char Value";
 
@@ -520,13 +520,13 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     utilClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
     utilClass.getMethod("apply").invoke(input);
-    String inputId = (String) utilClass.getMethod("getId").invoke(input);
+    String inputId = (String) utilClass.getMethod("getOid").invoke(input);
 
     Object output = sessionClass.getMethod("getUtil", utilClass).invoke(sessionDTO1, input);
 
     String someCharValue2 = (String) utilClass.getMethod("getACharacter").invoke(input);
 
-    String outputId = (String) utilClass.getMethod("getId").invoke(output);
+    String outputId = (String) utilClass.getMethod("getOid").invoke(output);
 
     Assert.assertEquals(inputId, outputId);
 
@@ -545,10 +545,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, id);
+    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     String someCharValue = "Some Char Value";
 
@@ -557,13 +557,13 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     viewClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
     viewClass.getMethod("apply").invoke(input);
-    String inputId = (String) viewClass.getMethod("getId").invoke(input);
+    String inputId = (String) viewClass.getMethod("getOid").invoke(input);
 
     Object output = sessionClass.getMethod("getView", viewClass).invoke(sessionDTO1, input);
 
     String someCharValue2 = (String) viewClass.getMethod("getACharacter").invoke(input);
 
-    String outputId = (String) viewClass.getMethod("getId").invoke(output);
+    String outputId = (String) viewClass.getMethod("getOid").invoke(output);
 
     Assert.assertEquals(inputId, outputId);
 
@@ -582,10 +582,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO sessionDTO1 = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(sessionDTO1);
-    String id = sessionDTO1.getId();
+    String oid = sessionDTO1.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, id);
+    sessionDTO1 = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     Class<?> utilClass = LoaderDecorator.load(utilParamDTO);
     UtilDTO[] array = (UtilDTO[]) Array.newInstance(utilClass, 5);
@@ -631,10 +631,10 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     SessionDTO businessDTO = (SessionDTO) sessionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     sessionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = sessionClass.getMethod("get", ClientRequestIF.class, String.class);
-    businessDTO = (SessionDTO) get.invoke(null, clientRequest, id);
+    businessDTO = (SessionDTO) get.invoke(null, clientRequest, oid);
 
     Class<?> viewClass = LoaderDecorator.load(viewParamDTO);
     ViewDTO[] array = (ViewDTO[]) Array.newInstance(viewClass, 5);

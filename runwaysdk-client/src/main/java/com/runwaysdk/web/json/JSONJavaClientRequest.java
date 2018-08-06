@@ -153,7 +153,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String lock(String sessionId, String id)
+  public String lock(String sessionId, String oid)
   {
     String returnJson;
 
@@ -162,7 +162,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod("lock", String.class, String.class).
-        invoke(null, sessionId, id);
+        invoke(null, sessionId, oid);
     }
     catch (Throwable e)
     {
@@ -172,7 +172,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String unlock(String sessionId, String id)
+  public String unlock(String sessionId, String oid)
   {
     String returnJson;
 
@@ -181,7 +181,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod("unlock", String.class, String.class).
-        invoke(null, sessionId, id);
+        invoke(null, sessionId, oid);
     }
     catch (Throwable e)
     {
@@ -267,7 +267,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String delete(String sessionId, String id)
+  public String delete(String sessionId, String oid)
   {
     String returnJson;
 
@@ -276,7 +276,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod("delete", String.class, String.class).
-        invoke(null, sessionId, id);
+        invoke(null, sessionId, oid);
     }
     catch (Throwable e)
     {
@@ -286,7 +286,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String get(String sessionId, String id)
+  public String get(String sessionId, String oid)
   {
     String returnJson;
 
@@ -295,7 +295,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod(CommonGenerationUtil.GET, String.class, String.class).
-        invoke(null, sessionId, id);
+        invoke(null, sessionId, oid);
     }
     catch (Throwable e)
     {
@@ -903,7 +903,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String deleteChildren(String sessionId, String id, String relationshipType)
+  public String deleteChildren(String sessionId, String oid, String relationshipType)
   {
     String returnJson;
 
@@ -912,7 +912,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod("deleteChildren", String.class, String.class, String.class).
-        invoke(null, sessionId, id, relationshipType);
+        invoke(null, sessionId, oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -922,7 +922,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
-  public String deleteParents(String sessionId, String id, String relationshipType)
+  public String deleteParents(String sessionId, String oid, String relationshipType)
   {
     String returnJson;
 
@@ -931,7 +931,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod("deleteParents", String.class, String.class, String.class).
-        invoke(null, sessionId, id, relationshipType);
+        invoke(null, sessionId, oid, relationshipType);
     }
     catch (Throwable e)
     {

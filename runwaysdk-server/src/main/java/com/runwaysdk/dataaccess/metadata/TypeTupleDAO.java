@@ -149,9 +149,9 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static TypeTupleDAOIF get(String id)
+  public static TypeTupleDAOIF get(String oid)
   {
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
     TypeTupleDAOIF attributeObject = (TypeTupleDAOIF) entityDAO;
 
     return attributeObject;
@@ -171,8 +171,8 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    * Finds a TypeTuple with the given StateMasterIF-MetaData pairing.
    * If the pairing does not exist then returns a null value.
    *
-   * @param metadataId The id of the MetaData on the pairing
-   * @param stateMasterId The id of the StateMasterIF of the pairing
+   * @param metadataId The oid of the MetaData on the pairing
+   * @param stateMasterId The oid of the StateMasterIF of the pairing
    * @return The TypeTuple which represents the pairing or a null value.
    */
   public static TypeTupleDAOIF findTuple(String metadataId, String stateMasterId)
@@ -234,7 +234,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
 
       if (! ( metadata instanceof MdRelationshipDAO || metadata instanceof MdAttributeConcreteDAOIF ))
       {
-        String msg = "Invalid value [" + metadata.getId() + "].  The attribute [" + TypeTupleDAOIF.METADATA + "] must reference a ["
+        String msg = "Invalid value [" + metadata.getOid() + "].  The attribute [" + TypeTupleDAOIF.METADATA + "] must reference a ["
             + MdAttributeConcreteInfo.CLASS + "] or a [" + MdRelationshipInfo.CLASS + "]";
 
         throw new TupleDefinitionException(msg, this);

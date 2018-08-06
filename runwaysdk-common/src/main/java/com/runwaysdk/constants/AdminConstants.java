@@ -203,7 +203,7 @@ public enum AdminConstants
   public static final String WINDOW_CONTENT_CLASS = "winContent";
   
   /**
-   * The content div id suffix.
+   * The content div oid suffix.
    */
   public static final String WINDOW_CONTENT_SUFFIX = "_winContent";
   
@@ -213,32 +213,32 @@ public enum AdminConstants
   public static final String WINDOW_DRAG_CLASS = "winDrag";
   
   /**
-   * The id suffix for the div that contains the draggable area.
+   * The oid suffix for the div that contains the draggable area.
    */
   public static final String WINDOW_DRAG_SUFFIX = "_winDrag";
 
   /**
-   * Suffix appended to the id of a new instance (the id is the type).
+   * Suffix appended to the oid of a new instance (the oid is the type).
    */
   public static final String NEW_INSTANCE_SUFFIX = "_newInstance";
   
   /**
-   * The suffix for a div (used as the div id)
+   * The suffix for a div (used as the div oid)
    */
   public static final String DIV_SUFFIX = "_div";
   
   /**
-   * The table id suffix that holds instances in view all mode.
+   * The table oid suffix that holds instances in view all mode.
    */
   public static final String TABLE_SUFFIX = "_table";
   
   /**
-   * The id suffix to denote a div that is for searching for a reference.
+   * The oid suffix to denote a div that is for searching for a reference.
    */
   public static final String OPEN_REFERENCE_SEARCH_DIV_SUFFIX = "_openReferenceSearch";
   
   /**
-   * The id suffix to denote a div that contains reference search results.
+   * The oid suffix to denote a div that contains reference search results.
    */
   public static final String REFERENCE_SEARCH_DIV_SUFFIX = "_referenceSearch";
   
@@ -255,12 +255,12 @@ public enum AdminConstants
   public static final String ADVANCED_SEARCH_ID_SUFFIX = "_advancedSearch";
   
   /**
-   * The hidden field name that stores the id of the object that will reference a reference object.
+   * The hidden field name that stores the oid of the object that will reference a reference object.
    */
   public static final String REFERENCING_OBJECT_ID = "referencingObjectId";
   
   /**
-   * The hidden field name that stores the id of the input whose value is the reference object's id.
+   * The hidden field name that stores the oid of the input whose value is the reference object's oid.
    */
   public static final String REFERENCING_HIDDEN_REF_ID = "referencingHiddenRefId";
   
@@ -303,29 +303,29 @@ public enum AdminConstants
   public static final String LINK_CLASS = "link";
   
   /**
-   * The url query parameter that specifies the file id for a file download.
+   * The url query parameter that specifies the file oid for a file download.
    */
-  public static final String FILE_DOWNLOAD_ID = "id";
+  public static final String FILE_DOWNLOAD_ID = "oid";
   
   /**
-   * The name of the servlet request attribute that specifies the file id of
+   * The name of the servlet request attribute that specifies the file oid of
    * an uploaded file.
    */
   public static final String SERVLET_ATTRIBUTE_FILE_ID = AdminConstants.class.getName()+".file_id";
   
   /**
-   * The name of the sevlet request attribute that specifies the id of the element
-   * that contains the id of the uploaded file (the back reference).
+   * The name of the sevlet request attribute that specifies the oid of the element
+   * that contains the oid of the uploaded file (the back reference).
    */
   public static final String SERVLET_ATTRIBUTE_FILE_REFERENCE = AdminConstants.class.getName()+".file_attribiteFileReference";
   
   /**
-   * The id suffix for an upload dialog div.
+   * The oid suffix for an upload dialog div.
    */
   public static final String UPLOAD_DIALOG_SUFFIX = "_uploadDialog";
   
   /**
-   * The id suffix for a div that is used to anchor Grid objects.
+   * The oid suffix for a div that is used to anchor Grid objects.
    */
   public static final String GRID_ANCHOR_DIV_SUFFIX = "_gridAnchor";
   
@@ -366,13 +366,13 @@ public enum AdminConstants
   
   /**
    * A property added to the javascript vault object whose value
-   * is the id of the input that contains the vault file id from the uploaded file.
+   * is the oid of the input that contains the vault file oid from the uploaded file.
    */
   public static final String VAULT_FILE_FIELD_ID_PROPERTY = "fileFieldId";
   
   /**
    * A property added to the javascript vault object whose value
-   * contains the id of the dialog div that contains the upload component.
+   * contains the oid of the dialog div that contains the upload component.
    */
   public static final String VAULT_DIALOG_ID = "dialogId";
   
@@ -399,7 +399,7 @@ public enum AdminConstants
   public static final String RELATIONSHIPS_TAB = "Relationships";
   
   /**
-   * The id suffix of the div that contains the field to select a relationship type.
+   * The oid suffix of the div that contains the field to select a relationship type.
    */
   public static final String RELATIONSHIPS_SELECT_DIV_SUFFIX = "_relationshipSelectDiv";
   
@@ -425,27 +425,27 @@ public enum AdminConstants
   public static final String STATE_TRANSITION_CLASS = "stateTransition";
   
   /**
-   * The suffix for the div id that contains the node search results.
+   * The suffix for the div oid that contains the node search results.
    */
   public static final String NODE_SEARCH_SUFFIX = "_nodeSearch";
   
   /**
-   * The suffix for the div id that contains the child search results.
+   * The suffix for the div oid that contains the child search results.
    */
   public static final String CHILD_SEARCH_SUFFIX = "_childSearch";
   
   /**
-   * The suffix for the div id that contains the parent search results.
+   * The suffix for the div oid that contains the parent search results.
    */
   public static final String PARENT_SEARCH_SUFFIX = "_parentSearch";
   
   /**
-   * The suffix for the div id that contains the search dialog for a relationship node.
+   * The suffix for the div oid that contains the search dialog for a relationship node.
    */
   public static final String OPEN_NODE_SEARCH_SUFFIX = "_openNodeSearch";
   
   /**
-   * The id suffix of the div that wraps relationship information.
+   * The oid suffix of the div that wraps relationship information.
    */
   public static final String RELATIONSHIPS_WRAPPER_SUFFIX = "_relationshipsWrapper";
   
@@ -455,13 +455,13 @@ public enum AdminConstants
   public static final String RELATIONSHIPS_WRAPPER_DIV_CLASS = "relationshipsWrapper";
   
   /**
-   * The id suffix of the div that contains a dialog to search for all instances of a type.
+   * The oid suffix of the div that contains a dialog to search for all instances of a type.
    */
   public static final String VIEW_ALL_SEARCH_SUFFIX = "_viewAllSearch";
   
   /**
-   * The id delimiter to separate the base row id from the component div id.
-   * (When combined, forms the unique row id).
+   * The oid delimiter to separate the base row oid from the component div oid.
+   * (When combined, forms the unique row oid).
    */
   public static final String GRID_ROW_ID_DELIM = "-";
   
@@ -504,7 +504,7 @@ public enum AdminConstants
   
   /**
    * A basic delimiter that is used by many things to 
-   * offer a namespace or seperation of values in a unique id.
+   * offer a namespace or seperation of values in a unique oid.
    */
   public static final String DELIM = "-";
   
@@ -527,7 +527,7 @@ public enum AdminConstants
   public static final String SEARCH_TABBAR_CLASS = "searchTabbar";
   
   /**
-   * The id suffix whose div contains the search tabbar for searching on a type.
+   * The oid suffix whose div contains the search tabbar for searching on a type.
    */
   public static final String SEARCH_TABBAR_SUFFIX = "_searchTabbar";
   
@@ -537,12 +537,12 @@ public enum AdminConstants
   public static final String SEARCH_TABBAR_HANDLE_CLASS = "searchTabbarHandle";
   
   /**
-   * The id suffix of the element that toggles the search tabbar open/close.
+   * The oid suffix of the element that toggles the search tabbar open/close.
    */
   public static final String SEARCH_TABBAR_HANDLE_SUFFIX = "_searchTabbarHandle";
   
   /**
-   * The id suffix of the div that contains  content (i.e., a Grid
+   * The oid suffix of the div that contains  content (i.e., a Grid
    * in a CollectionDiv).
    */
   public static final String _DIV_SUFFIX = "_Div";
@@ -576,7 +576,7 @@ public enum AdminConstants
   public static final String REQUIRED_CLASS = "required";
   
   /**
-   * The id suffix of the field that contains the groovy query.
+   * The oid suffix of the field that contains the groovy query.
    */
   public static final String GROOVY_FIELD_SUFFIX = "_groovyField";
   
@@ -602,7 +602,7 @@ public enum AdminConstants
   public static final String ATTRIBUTE_TIME_FIELD_CLASS = "timeField";
   
   /**
-   * The id suffix of the grid cell that contains an attribute text.
+   * The oid suffix of the grid cell that contains an attribute text.
    */
   public static final String GRID_TEXT_SUFFIX = "_gridText";
   

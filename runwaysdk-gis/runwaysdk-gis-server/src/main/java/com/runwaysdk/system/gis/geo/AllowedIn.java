@@ -29,7 +29,7 @@ public class AllowedIn extends AllowedInBase
   
   public AllowedIn(com.runwaysdk.system.gis.geo.Universal parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   @Override

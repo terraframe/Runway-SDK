@@ -84,27 +84,27 @@ public class MdTableQueryTest
     testQueryObject1.setValue("queryInteger", "200");
     testQueryObject1.apply();
 
-    testObjectIdList.add(testQueryObject1.getId());
+    testObjectIdList.add(testQueryObject1.getOid());
 
     BusinessDAO testQueryObject2 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
     testQueryObject2.setValue("queryBoolean", MdAttributeBooleanInfo.FALSE);
     testQueryObject2.setValue("queryInteger", "150");
     testQueryObject2.apply();
 
-    testObjectIdList.add(testQueryObject2.getId());
+    testObjectIdList.add(testQueryObject2.getOid());
 
     BusinessDAO testQueryObject3 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
     testQueryObject3.setValue("queryBoolean", MdAttributeBooleanInfo.FALSE);
     testQueryObject3.setValue("queryInteger", "250");
     testQueryObject3.apply();
 
-    testObjectIdList.add(testQueryObject3.getId());
+    testObjectIdList.add(testQueryObject3.getOid());
 
     BusinessDAO testQueryObject4 = BusinessDAO.newInstance(QueryMasterSetup.childMdBusiness.definesType());
     testQueryObject4.setValue("queryDate", "");
     testQueryObject4.apply();
 
-    testObjectIdList.add(testQueryObject4.getId());
+    testObjectIdList.add(testQueryObject4.getOid());
 
     objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
@@ -192,9 +192,9 @@ public class MdTableQueryTest
     MdTableDAO mdTableChildRef = MdTableDAO.getMdTableDAO(childRefTableQueryInfo.getType()).getBusinessDAO();
     mdTableChildRef.delete();
 
-    for (String id : testObjectIdList)
+    for (String oid : testObjectIdList)
     {
-      BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+      BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
       testQueryObject.delete();
     }
   }
@@ -517,16 +517,16 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (!testQueryObject.getValue("queryCharacter").equals(""))
           expected++;
       }
-      for (String id : MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childRefQueryInfo.getType()))
+      for (String oid : MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childRefQueryInfo.getType()))
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (!testQueryObject.getValue("refQueryCharacter").equals(""))
           expected++;
@@ -1308,9 +1308,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("true"))
           expected++;
@@ -1341,9 +1341,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("false"))
           expected++;
@@ -1395,9 +1395,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("true"))
           expected++;
@@ -1428,9 +1428,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("false"))
           expected++;
@@ -1486,9 +1486,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals(""))
           expected++;
@@ -1515,9 +1515,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (!testQueryObject.getValue("queryBoolean").equals(""))
           expected++;
@@ -1572,9 +1572,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("true"))
           expected++;
@@ -1605,9 +1605,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("false"))
           expected++;
@@ -1657,9 +1657,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("false"))
           expected++;
@@ -1690,9 +1690,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryBoolean").equals("true"))
           expected++;
@@ -1747,9 +1747,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -1801,9 +1801,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -1833,9 +1833,9 @@ public class MdTableQueryTest
 
       expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("wrong character value"))
           expected++;
@@ -1887,9 +1887,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -1951,9 +1951,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -2015,9 +2015,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -2076,7 +2076,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("childObjId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("childObjId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2101,9 +2101,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (!testQueryObject.getValue("queryCharacter").equals(""))
           expected++;
@@ -2158,9 +2158,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -2222,9 +2222,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryCharacter").equals("some character value"))
           expected++;
@@ -2284,9 +2284,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (!value.equals("wrong character value"))
@@ -2337,9 +2337,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (!value.equals("wrong character value"))
@@ -2390,9 +2390,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (! ( value.equals("wrong 1") || value.equals("wrong 2") || value.equals("wrong 3") ))
@@ -2443,9 +2443,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (! ( value.equals("wrong 1") || value.equals("wrong 2") || value.equals("wrong 3") ))
@@ -2496,9 +2496,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (!value.equals("some character value"))
@@ -2549,9 +2549,9 @@ public class MdTableQueryTest
 
       List<String> objectList = MdBusinessDAO.getEntityIdsDB(QueryMasterSetup.childQueryInfo.getType());
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         String value = testQueryObject.getValue("queryCharacter");
         if (!value.equals("some character value"))
@@ -2598,7 +2598,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2656,7 +2656,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2713,7 +2713,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2771,7 +2771,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2828,7 +2828,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2851,7 +2851,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2909,7 +2909,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2930,7 +2930,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2999,9 +2999,9 @@ public class MdTableQueryTest
 
       int expected = 0;
 
-      for (String id : objectList)
+      for (String oid : objectList)
       {
-        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO testQueryObject = BusinessDAO.get(oid).getBusinessDAO();
 
         if (testQueryObject.getValue("queryDate").equals(""))
           expected++;
@@ -3063,7 +3063,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3121,7 +3121,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3178,7 +3178,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3201,7 +3201,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3259,7 +3259,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3280,7 +3280,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3337,7 +3337,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3395,7 +3395,7 @@ public class MdTableQueryTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }

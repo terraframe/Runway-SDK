@@ -112,7 +112,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       {
         try
         {
-          EntityDAO.getIdFromKey(object.getType(), object.getKey());
+          EntityDAO.getOidFromKey(object.getType(), object.getKey());
         }
         catch (DataNotFoundException e)
         {
@@ -143,7 +143,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
     String dataParentId = "";
     try
     {
-      dataParentId = EntityDAO.getIdFromKey(parentType, parentKey);
+      dataParentId = EntityDAO.getOidFromKey(parentType, parentKey);
     }
     catch (DataNotFoundException e)
     {
@@ -155,14 +155,14 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
 
     if (dataParentId.equals(""))
     {
-      dataParentId = EntityDAO.getIdFromKey(parentType, parentKey);
+      dataParentId = EntityDAO.getOidFromKey(parentType, parentKey);
     }
 
     // Get the database ID of a XML child key
     String dataChildId = "";
     try
     {
-      dataChildId = EntityDAO.getIdFromKey(childType, childKey);
+      dataChildId = EntityDAO.getOidFromKey(childType, childKey);
     }
     catch (DataNotFoundException e)
     {
@@ -174,7 +174,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
 
     if (dataChildId.equals(""))
     {
-      dataChildId = EntityDAO.getIdFromKey(childType, childKey);
+      dataChildId = EntityDAO.getOidFromKey(childType, childKey);
     }
 
     // Ensure that the class being referenced has already been defined

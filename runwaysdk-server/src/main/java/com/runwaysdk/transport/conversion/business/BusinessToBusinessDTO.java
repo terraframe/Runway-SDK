@@ -149,7 +149,7 @@ public class BusinessToBusinessDTO extends ElementToElementDTO
     
     for (BusinessEnumeration businessEnumeration : busEnumArray)
     {
-      Business entity = Business.get(businessEnumeration.getId());
+      Business entity = Business.get(businessEnumeration.getOid());
       businessDTOList.add((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, entity, true));
     }
 

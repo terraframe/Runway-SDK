@@ -51,9 +51,9 @@ public abstract class RelationshipInheritanceBase extends com.runwaysdk.system.m
     return (com.runwaysdk.system.metadata.MdRelationship) super.getChild();
   }
   
-  public static RelationshipInheritance get(String id)
+  public static RelationshipInheritance get(String oid)
   {
-    return (RelationshipInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (RelationshipInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static RelationshipInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class RelationshipInheritanceBase extends com.runwaysdk.system.m
     return (RelationshipInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static RelationshipInheritance lock(java.lang.String id)
+  public static RelationshipInheritance lock(java.lang.String oid)
   {
-    RelationshipInheritance _instance = RelationshipInheritance.get(id);
+    RelationshipInheritance _instance = RelationshipInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static RelationshipInheritance unlock(java.lang.String id)
+  public static RelationshipInheritance unlock(java.lang.String oid)
   {
-    RelationshipInheritance _instance = RelationshipInheritance.get(id);
+    RelationshipInheritance _instance = RelationshipInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

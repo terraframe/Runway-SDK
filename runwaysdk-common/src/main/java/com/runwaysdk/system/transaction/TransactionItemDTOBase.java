@@ -51,7 +51,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
   public static java.lang.String ITEMACTION = "itemAction";
   public static java.lang.String KEYNAME = "keyName";
@@ -226,7 +226,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -479,7 +479,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -627,9 +627,9 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     return (com.runwaysdk.transport.metadata.AttributeClobMdDTO) getAttributeDTO(XMLRECORD).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.transaction.TransactionItemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.transaction.TransactionItemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.transaction.TransactionItemDTO) dto;
   }
@@ -647,7 +647,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.transaction.TransactionItemQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -660,10 +660,10 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.transaction.TransactionItemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.transaction.TransactionItemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.transaction.TransactionItemDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.transaction.TransactionItemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -673,10 +673,10 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.transaction.TransactionItemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.transaction.TransactionItemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.transaction.TransactionItemDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.transaction.TransactionItemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

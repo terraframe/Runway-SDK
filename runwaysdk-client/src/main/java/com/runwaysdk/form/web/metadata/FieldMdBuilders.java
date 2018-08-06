@@ -54,7 +54,7 @@ public class FieldMdBuilders
      */
     protected void init(MdWebFieldDTO mdField, WebFieldMd md)
     {
-      md.setId(mdField.getId());
+      md.setOid(mdField.getOid());
       md.setDefiningMdForm(mdField.getDefiningMdFormId());
       md.setDisplayLabel(mdField.getDisplayLabel().getValue());
       md.setDescription(mdField.getDescription().getValue());

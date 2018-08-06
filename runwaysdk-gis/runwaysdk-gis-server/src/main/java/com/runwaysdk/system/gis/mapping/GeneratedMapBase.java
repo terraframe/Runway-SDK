@@ -32,7 +32,7 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -133,11 +133,11 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -147,7 +147,7 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.GeneratedMap.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -333,7 +333,7 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -418,9 +418,9 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.mapping.HasLayer>) getRelationshipsWithChild(layer, com.runwaysdk.system.gis.mapping.HasLayer.CLASS);
   }
   
-  public static GeneratedMap get(String id)
+  public static GeneratedMap get(String oid)
   {
-    return (GeneratedMap) com.runwaysdk.business.Business.get(id);
+    return (GeneratedMap) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeneratedMap getByKey(String key)
@@ -434,17 +434,17 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static GeneratedMap lock(java.lang.String id)
+  public static GeneratedMap lock(java.lang.String oid)
   {
-    GeneratedMap _instance = GeneratedMap.get(id);
+    GeneratedMap _instance = GeneratedMap.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeneratedMap unlock(java.lang.String id)
+  public static GeneratedMap unlock(java.lang.String oid)
   {
-    GeneratedMap _instance = GeneratedMap.get(id);
+    GeneratedMap _instance = GeneratedMap.get(oid);
     _instance.unlock();
     
     return _instance;

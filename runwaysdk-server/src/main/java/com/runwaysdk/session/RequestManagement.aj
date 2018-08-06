@@ -94,9 +94,9 @@ public aspect RequestManagement extends AbstractRequestManagement
 
       this.getRequestState().setSession(SessionFacade.getSessionForRequest(_sessionId));
 
-      SessionFacade.renewSession(this.getRequestState().getSession().getId());
+      SessionFacade.renewSession(this.getRequestState().getSession().getOid());
 
-      Object returnObject = proceed(this.getRequestState().getSession().getId());
+      Object returnObject = proceed(this.getRequestState().getSession().getOid());
 
       if (messageList.size() > 0)
       {
@@ -110,14 +110,14 @@ public aspect RequestManagement extends AbstractRequestManagement
 
           if (message instanceof Warning)
           {
-            WarningToWarningDTO converter = new WarningToWarningDTO(this.getRequestState().getSession().getId(), (Warning) message, false);
+            WarningToWarningDTO converter = new WarningToWarningDTO(this.getRequestState().getSession().getOid(), (Warning) message, false);
             WarningDTO warningDTO = converter.populate();
             warningDTOList.add(warningDTO);
             messageDTOList.add(warningDTO);
           }
           else if (message instanceof Information)
           {
-            InformationToInformationDTO converter = new InformationToInformationDTO(this.getRequestState().getSession().getId(), (Information) message, false);
+            InformationToInformationDTO converter = new InformationToInformationDTO(this.getRequestState().getSession().getOid(), (Information) message, false);
             InformationDTO informationDTO = converter.populate();
             informationDTOList.add(informationDTO);
             messageDTOList.add(informationDTO);
@@ -195,7 +195,7 @@ public aspect RequestManagement extends AbstractRequestManagement
     {
       AttributeNotification attributeNotification = (AttributeNotification) ex;
       // if a new instance has problems associated with it, restore the original
-      // id that was sent to the server
+      // oid that was sent to the server
       // from a client.
       if (this.idMap.containsKey(attributeNotification.getComponentId()))
       {
@@ -208,7 +208,7 @@ public aspect RequestManagement extends AbstractRequestManagement
       SmartException smartException = (SmartException) ex;
       BusinessFacade.setSmartExceptionLocale(smartException, locale);
 
-      SmartExceptionToExceptionDTO converter = new SmartExceptionToExceptionDTO(this.getRequestState().getSession().getId(), smartException, false);
+      SmartExceptionToExceptionDTO converter = new SmartExceptionToExceptionDTO(this.getRequestState().getSession().getOid(), smartException, false);
       ExceptionDTO exceptionDTO = converter.populate();
 
       returnEx = ComponentDTOFacade.newSmartExceptionDTO(exceptionDTO);
@@ -224,7 +224,7 @@ public aspect RequestManagement extends AbstractRequestManagement
         {
           AttributeNotification attributeNotification = (AttributeNotification) problemIF;
           // if a new instance has problems associated with it, restore the
-          // original id that was sent to the server
+          // original oid that was sent to the server
           // from a client.
           if (this.idMap.containsKey(attributeNotification.getComponentId()))
           {
@@ -238,7 +238,7 @@ public aspect RequestManagement extends AbstractRequestManagement
 
         if (problemIF instanceof Problem)
         {
-          ProblemToProblemDTO converter = new ProblemToProblemDTO(this.getRequestState().getSession().getId(), (Problem) problemIF, false);
+          ProblemToProblemDTO converter = new ProblemToProblemDTO(this.getRequestState().getSession().getOid(), (Problem) problemIF, false);
           problemDTOIF = converter.populate();
         }
         else
@@ -327,7 +327,7 @@ public aspect RequestManagement extends AbstractRequestManagement
         ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
         if (this.getRequestState().getSession().closeOnEndOfRequest())
         {
-          SessionFacade.closeSession(this.getRequestState().getSession().getId());
+          SessionFacade.closeSession(this.getRequestState().getSession().getOid());
 
         }
         
@@ -353,7 +353,7 @@ public aspect RequestManagement extends AbstractRequestManagement
       if (this.getRequestState().getSession() != null)
       {
         ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
-        SessionFacade.endOfRequest(this.getRequestState().getSession().getId());
+        SessionFacade.endOfRequest(this.getRequestState().getSession().getOid());
         
       }
 

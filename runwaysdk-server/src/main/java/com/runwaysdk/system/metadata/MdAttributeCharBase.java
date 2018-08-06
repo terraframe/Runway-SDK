@@ -41,9 +41,9 @@ public abstract class MdAttributeCharBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeChar get(String id)
+  public static MdAttributeChar get(String oid)
   {
-    return (MdAttributeChar) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeChar) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeChar getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeCharBase extends com.runwaysdk.system.metadata.
     return (MdAttributeChar) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeChar lock(java.lang.String id)
+  public static MdAttributeChar lock(java.lang.String oid)
   {
-    MdAttributeChar _instance = MdAttributeChar.get(id);
+    MdAttributeChar _instance = MdAttributeChar.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeChar unlock(java.lang.String id)
+  public static MdAttributeChar unlock(java.lang.String oid)
   {
-    MdAttributeChar _instance = MdAttributeChar.get(id);
+    MdAttributeChar _instance = MdAttributeChar.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -114,13 +114,13 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebDecimal mdWebDecimal)
     {
       if(mdWebDecimal == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebDecimal.getId());
+      return this.EQ(mdWebDecimal.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebDecimal mdWebDecimal)
     {
       if(mdWebDecimal == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebDecimal.getId());
+      return this.NE(mdWebDecimal.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
 
       for (int i=0; i<mdWebDecimal.length; i++)
       {
-        itemIdArray[i] = mdWebDecimal[i].getId();
+        itemIdArray[i] = mdWebDecimal[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
 
       for (int i=0; i<mdWebDecimal.length; i++)
       {
-        itemIdArray[i] = mdWebDecimal[i].getId();
+        itemIdArray[i] = mdWebDecimal[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
 
       for (int i=0; i<mdWebDecimal.length; i++)
       {
-        itemIdArray[i] = mdWebDecimal[i].getId();
+        itemIdArray[i] = mdWebDecimal[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
 
       for (int i=0; i<mdWebDecimal.length; i++)
       {
-        itemIdArray[i] = mdWebDecimal[i].getId();
+        itemIdArray[i] = mdWebDecimal[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebDecimalQuery extends com.runwaysdk.system.metadata.MdWebDecQu
 
       for (int i=0; i<mdWebDecimal.length; i++)
       {
-        itemIdArray[i] = mdWebDecimal[i].getId();
+        itemIdArray[i] = mdWebDecimal[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

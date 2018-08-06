@@ -99,9 +99,9 @@ public abstract class MdMobileNumberBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdMobileNumber get(String id)
+  public static MdMobileNumber get(String oid)
   {
-    return (MdMobileNumber) com.runwaysdk.business.Business.get(id);
+    return (MdMobileNumber) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileNumber getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdMobileNumberBase extends com.runwaysdk.system.metadata.M
     return (MdMobileNumber) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileNumber lock(java.lang.String id)
+  public static MdMobileNumber lock(java.lang.String oid)
   {
-    MdMobileNumber _instance = MdMobileNumber.get(id);
+    MdMobileNumber _instance = MdMobileNumber.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileNumber unlock(java.lang.String id)
+  public static MdMobileNumber unlock(java.lang.String oid)
   {
-    MdMobileNumber _instance = MdMobileNumber.get(id);
+    MdMobileNumber _instance = MdMobileNumber.get(oid);
     _instance.unlock();
     
     return _instance;

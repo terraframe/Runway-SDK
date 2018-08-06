@@ -154,13 +154,13 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTermRelationship mdTermRelationship)
     {
       if(mdTermRelationship == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdTermRelationship.getId());
+      return this.EQ(mdTermRelationship.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdTermRelationship mdTermRelationship)
     {
       if(mdTermRelationship == null) return this.NE((java.lang.String)null);
-      return this.NE(mdTermRelationship.getId());
+      return this.NE(mdTermRelationship.getOid());
     }
 
   public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType()
@@ -237,7 +237,7 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
 
       for (int i=0; i<mdTermRelationship.length; i++)
       {
-        itemIdArray[i] = mdTermRelationship[i].getId();
+        itemIdArray[i] = mdTermRelationship[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
 
       for (int i=0; i<mdTermRelationship.length; i++)
       {
-        itemIdArray[i] = mdTermRelationship[i].getId();
+        itemIdArray[i] = mdTermRelationship[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
 
       for (int i=0; i<mdTermRelationship.length; i++)
       {
-        itemIdArray[i] = mdTermRelationship[i].getId();
+        itemIdArray[i] = mdTermRelationship[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
 
       for (int i=0; i<mdTermRelationship.length; i++)
       {
-        itemIdArray[i] = mdTermRelationship[i].getId();
+        itemIdArray[i] = mdTermRelationship[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
 
       for (int i=0; i<mdTermRelationship.length; i++)
       {
-        itemIdArray[i] = mdTermRelationship[i].getId();
+        itemIdArray[i] = mdTermRelationship[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

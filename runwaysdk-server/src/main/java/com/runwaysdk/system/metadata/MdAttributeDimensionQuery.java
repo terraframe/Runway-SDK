@@ -224,13 +224,13 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeDimension mdAttributeDimension)
     {
       if(mdAttributeDimension == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeDimension.getId());
+      return this.EQ(mdAttributeDimension.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeDimension mdAttributeDimension)
     {
       if(mdAttributeDimension == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeDimension.getId());
+      return this.NE(mdAttributeDimension.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getDefaultValue()
@@ -371,7 +371,7 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
 
       for (int i=0; i<mdAttributeDimension.length; i++)
       {
-        itemIdArray[i] = mdAttributeDimension[i].getId();
+        itemIdArray[i] = mdAttributeDimension[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -383,7 +383,7 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
 
       for (int i=0; i<mdAttributeDimension.length; i++)
       {
-        itemIdArray[i] = mdAttributeDimension[i].getId();
+        itemIdArray[i] = mdAttributeDimension[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -395,7 +395,7 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
 
       for (int i=0; i<mdAttributeDimension.length; i++)
       {
-        itemIdArray[i] = mdAttributeDimension[i].getId();
+        itemIdArray[i] = mdAttributeDimension[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -407,7 +407,7 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
 
       for (int i=0; i<mdAttributeDimension.length; i++)
       {
-        itemIdArray[i] = mdAttributeDimension[i].getId();
+        itemIdArray[i] = mdAttributeDimension[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -419,7 +419,7 @@ public  class MdAttributeDimensionQuery extends com.runwaysdk.system.metadata.Me
 
       for (int i=0; i<mdAttributeDimension.length; i++)
       {
-        itemIdArray[i] = mdAttributeDimension[i].getId();
+        itemIdArray[i] = mdAttributeDimension[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

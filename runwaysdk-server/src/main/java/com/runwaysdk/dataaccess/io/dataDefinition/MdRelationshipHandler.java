@@ -70,7 +70,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       }
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(parentType);
-      mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusinessIF.getId());
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusinessIF.getOid());
       ImportManager.setLocalizedValue(mdRelationship, MdRelationshipInfo.PARENT_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
       ImportManager.setValue(mdRelationship, MdRelationshipInfo.PARENT_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
       ImportManager.setValue(mdRelationship, MdRelationshipInfo.PARENT_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
@@ -107,7 +107,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(childType);
 
-      mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusinessIF.getId());
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusinessIF.getOid());
       ImportManager.setLocalizedValue(mdRelationship, MdRelationshipInfo.CHILD_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
       ImportManager.setValue(mdRelationship, MdRelationshipInfo.CHILD_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
       ImportManager.setValue(mdRelationship, MdRelationshipInfo.CHILD_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
@@ -272,7 +272,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       }
 
       MdRelationshipDAOIF superMdRelationship = MdRelationshipDAO.getMdRelationshipDAO(extend);
-      mdRelationshipDAO.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, superMdRelationship.getId());
+      mdRelationshipDAO.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, superMdRelationship.getOid());
     }
     else
     {
@@ -287,12 +287,12 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       // Change to an everything caching algorithm
       if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
       {
-        mdRelationshipDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        mdRelationshipDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       // Change to a nonthing caching algorithm
       else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
       {
-        mdRelationshipDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        mdRelationshipDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
     }
 
@@ -311,15 +311,15 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       {
         if (associationType.equals(XMLTags.RELATIONSHIP_OPTION))
         {
-          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
         }
         else if (associationType.equals(XMLTags.TREE_OPTION))
         {
-          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getOid());
         }
         else if (associationType.equals(XMLTags.GRAPH_OPTION))
         {
-          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getOid());
         }
       }
     }
@@ -339,7 +339,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
     {
       mdRelationshipDAO.apply();
 
-      this.getManager().addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
+      this.getManager().addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getOid());
     }
 
     // Make sure the name has not already been defined

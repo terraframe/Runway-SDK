@@ -79,7 +79,7 @@ public abstract class ComponentObject extends ComponentPropertyHolder implements
   }
 
   @Override
-  public String getId()
+  public String getOid()
   {
     return this.getValue(EntityInfo.ID);
   }

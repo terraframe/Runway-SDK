@@ -56,9 +56,9 @@ public abstract class WebGroupFieldDTOBase extends com.runwaysdk.system.metadata
     return com.runwaysdk.system.metadata.MdWebFieldDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.metadata.WebGroupFieldDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.WebGroupFieldDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.WebGroupFieldDTO) dto;
   }
@@ -88,7 +88,7 @@ public abstract class WebGroupFieldDTOBase extends com.runwaysdk.system.metadata
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.WebGroupFieldQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -101,10 +101,10 @@ public abstract class WebGroupFieldDTOBase extends com.runwaysdk.system.metadata
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.WebGroupFieldDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.WebGroupFieldDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.WebGroupFieldDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -114,10 +114,10 @@ public abstract class WebGroupFieldDTOBase extends com.runwaysdk.system.metadata
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.WebGroupFieldDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.WebGroupFieldDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.WebGroupFieldDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

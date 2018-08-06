@@ -34,7 +34,7 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
   public static java.lang.String COMPONENTID = "componentId";
   public static java.lang.String DEFININGTYPE = "definingType";
   public static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = -1390556224;
   
   public AttributeNotificationProblemBase()
@@ -187,7 +187,7 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -197,7 +197,7 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -216,7 +216,7 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     message = replace(message, "{componentId}", this.getComponentId());
     message = replace(message, "{definingType}", this.getDefiningType());
     message = replace(message, "{definingTypeDisplayLabel}", this.getDefiningTypeDisplayLabel());
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

@@ -50,8 +50,8 @@ import com.runwaysdk.util.DTOConversionUtilInfo;
  * The mobile adapter is used in Runway's mobile space (Android, JME) and sits
  * inbetween the Facade and the mobile adapters (AndroidAdapter, AdapterMe). The
  * mobile adapter's sole purpose, currently, is to convert runway's globally
- * unique id strings into more compact local ids and to convert session ids to
- * and from mobile ids. These local ids are unique to a given mobile id. Mobile
+ * unique oid strings into more compact local ids and to convert session ids to
+ * and from mobile ids. These local ids are unique to a given mobile oid. Mobile
  * ids exist outside of the scope of a session and can be used to uniquely
  * identify a given mobile device. Mobile ids usually are the phone number of
  * the mobile device, but they could easily also be a MAC address or some
@@ -129,23 +129,23 @@ public class MobileAdapter
    * @see com.runwaysdk.request.RemoteAdapter#delete(java.lang.String,
    *      java.lang.String)
    */
-  public static void delete(String mobileId, String id)
+  public static void delete(String mobileId, String oid)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    Facade.delete(sessionId, id);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    Facade.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#get(java.lang.String)
    */
-  public static MutableDTO get(String mobileId, String id)
+  public static MutableDTO get(String mobileId, String oid)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    return (MutableDTO) convertToLocalId(mobileId, Facade.get(sessionId, id));
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    return (MutableDTO) convertToLocalId(mobileId, Facade.get(sessionId, oid));
   }
 
   /**
@@ -428,24 +428,24 @@ public class MobileAdapter
    * @see com.runwaysdk.request.RemoteAdapter#lock(java.lang.String,
    *      java.lang.String)
    */
-  public static ElementDTO lock(String mobileId, String id)
+  public static ElementDTO lock(String mobileId, String oid)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    return (ElementDTO) convertToLocalId(mobileId, Facade.lock(sessionId, id));
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    return (ElementDTO) convertToLocalId(mobileId, Facade.lock(sessionId, oid));
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#unlock(java.lang.String,
    *      java.lang.String)
    */
-  public static ElementDTO unlock(String mobileId, String id)
+  public static ElementDTO unlock(String mobileId, String oid)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    return (ElementDTO) convertToLocalId(mobileId, Facade.unlock(sessionId, id));
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    return (ElementDTO) convertToLocalId(mobileId, Facade.unlock(sessionId, oid));
   }
 
   /**
@@ -479,12 +479,12 @@ public class MobileAdapter
    * java.lang.String, java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public static List<BusinessDTO> getChildren(String mobileId, String id, String relationshipType)
+  public static List<BusinessDTO> getChildren(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    List<BusinessDTO> list = Facade.getChildren(sessionId, id, relationshipType);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    List<BusinessDTO> list = Facade.getChildren(sessionId, oid, relationshipType);
     return (List<BusinessDTO>) convertListToLocalId(mobileId, list);
   }
 
@@ -495,13 +495,13 @@ public class MobileAdapter
    * java.lang.String, java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public static List<BusinessDTO> getParents(String mobileId, String id, String relationshipType)
+  public static List<BusinessDTO> getParents(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
 
-    List<BusinessDTO> list = Facade.getParents(sessionId, id, relationshipType);
+    List<BusinessDTO> list = Facade.getParents(sessionId, oid, relationshipType);
     return (List<BusinessDTO>) convertListToLocalId(mobileId, list);
   }
 
@@ -512,12 +512,12 @@ public class MobileAdapter
    * .String, java.lang.String, java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public static List<RelationshipDTO> getChildRelationships(String mobileId, String id, String relationshipType)
+  public static List<RelationshipDTO> getChildRelationships(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    List<RelationshipDTO> list = Facade.getChildRelationships(sessionId, id, relationshipType);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    List<RelationshipDTO> list = Facade.getChildRelationships(sessionId, oid, relationshipType);
     return (List<RelationshipDTO>) convertListToLocalId(mobileId, list);
   }
 
@@ -528,12 +528,12 @@ public class MobileAdapter
    * .String, java.lang.String, java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public static List<RelationshipDTO> getParentRelationships(String mobileId, String id, String relationshipType)
+  public static List<RelationshipDTO> getParentRelationships(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    List<RelationshipDTO> list = Facade.getParentRelationships(sessionId, id, relationshipType);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    List<RelationshipDTO> list = Facade.getParentRelationships(sessionId, oid, relationshipType);
     return (List<RelationshipDTO>) convertListToLocalId(mobileId, list);
   }
 
@@ -607,12 +607,12 @@ public class MobileAdapter
    * @see com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String,
    * java.lang.String, java.lang.String)
    */
-  public static void deleteChildren(String mobileId, String id, String relationshipType)
+  public static void deleteChildren(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    Facade.deleteChildren(sessionId, id, relationshipType);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    Facade.deleteChildren(sessionId, oid, relationshipType);
   }
 
   /*
@@ -621,12 +621,12 @@ public class MobileAdapter
    * @see com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String,
    * java.lang.String, java.lang.String)
    */
-  public static void deleteParents(String mobileId, String id, String relationshipType)
+  public static void deleteParents(String mobileId, String oid, String relationshipType)
   {
 
     String sessionId = convertMobileIdToSessionId(mobileId);
-    id = idConverter.getGlobalIdFromLocalId(mobileId, id);
-    Facade.deleteParents(sessionId, id, relationshipType);
+    oid = idConverter.getGlobalIdFromLocalId(mobileId, oid);
+    Facade.deleteParents(sessionId, oid, relationshipType);
   }
 
   /*
@@ -1002,8 +1002,8 @@ public class MobileAdapter
    * @param globalId
    * @return
    */
-  public static String getGlobalId(String mobileId, String id)
+  public static String getGlobalId(String mobileId, String oid)
   {
-    return idConverter.getGlobalIdFromLocalId(mobileId, id);
+    return idConverter.getGlobalIdFromLocalId(mobileId, oid);
   }
 }

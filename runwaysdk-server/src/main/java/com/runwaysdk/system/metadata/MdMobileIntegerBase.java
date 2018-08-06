@@ -41,9 +41,9 @@ public abstract class MdMobileIntegerBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdMobileInteger get(String id)
+  public static MdMobileInteger get(String oid)
   {
-    return (MdMobileInteger) com.runwaysdk.business.Business.get(id);
+    return (MdMobileInteger) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileInteger getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileIntegerBase extends com.runwaysdk.system.metadata.
     return (MdMobileInteger) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileInteger lock(java.lang.String id)
+  public static MdMobileInteger lock(java.lang.String oid)
   {
-    MdMobileInteger _instance = MdMobileInteger.get(id);
+    MdMobileInteger _instance = MdMobileInteger.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileInteger unlock(java.lang.String id)
+  public static MdMobileInteger unlock(java.lang.String oid)
   {
-    MdMobileInteger _instance = MdMobileInteger.get(id);
+    MdMobileInteger _instance = MdMobileInteger.get(oid);
     _instance.unlock();
     
     return _instance;

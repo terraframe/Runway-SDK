@@ -25,14 +25,14 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 public class RelationshipObject extends ElementObject
 {
   /**
-   * id of the parent BusinessDAO in the relationship. <br/>
+   * oid of the parent BusinessDAO in the relationship. <br/>
    * <b>invariant </b> parenRef != null <br/>
    * <b>invariant </b> !parenRef.trim().equals("") <br/>
    */
   private String parentId;
 
   /**
-   * id of the child BusinessDAO in the relationship. <br/>
+   * oid of the child BusinessDAO in the relationship. <br/>
    * <b>invariant </b> childId != null <br/>
    * <b>invariant </b> !childId().equals("") <br/>
    */
@@ -64,7 +64,7 @@ public class RelationshipObject extends ElementObject
       return PersistanceFacade.newInstance(parentId, childId, this.getType());
     }
 
-    return PersistanceFacade.get(this.getId()).getEntityDAO();
+    return PersistanceFacade.get(this.getOid()).getEntityDAO();
   }
 
   public static RelationshipObject newInstance(String parentId, String childId, String type)

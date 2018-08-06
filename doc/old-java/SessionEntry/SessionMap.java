@@ -11,7 +11,7 @@ public class SessionMap extends SessionMapBase implements com.runwaysdk.generati
   
   public SessionMap(com.runwaysdk.geodashboard.SessionEntry parent, com.runwaysdk.geodashboard.gis.persist.DashboardMap child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
 
   

@@ -101,7 +101,7 @@ public class UploadApplet extends JApplet
   private String jsonInfo;
 
   /**
-   * Session id of the user running the applet
+   * Session oid of the user running the applet
    */
   private String              sessionId;
 

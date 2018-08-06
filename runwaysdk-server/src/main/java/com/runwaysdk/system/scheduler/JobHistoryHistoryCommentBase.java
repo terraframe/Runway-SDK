@@ -12,7 +12,7 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryHistoryComment";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1615306242;
@@ -27,9 +27,9 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
     super(component, structName);
   }
   
-  public static JobHistoryHistoryComment get(String id)
+  public static JobHistoryHistoryComment get(String oid)
   {
-    return (JobHistoryHistoryComment) com.runwaysdk.business.Struct.get(id);
+    return (JobHistoryHistoryComment) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static JobHistoryHistoryComment getByKey(String key)
@@ -37,7 +37,7 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
     return (JobHistoryHistoryComment) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class JobHistoryHistoryCommentBase extends com.runwaysdk.busines
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

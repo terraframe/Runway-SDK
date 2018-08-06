@@ -118,7 +118,7 @@ public class SessionMasterTestSetup
       childMdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "First ever defined view.");
       childMdView.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       childMdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      childMdView.setValue(MdViewInfo.SUPER_MD_VIEW, parentMdView.getId());
+      childMdView.setValue(MdViewInfo.SUPER_MD_VIEW, parentMdView.getOid());
       childMdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       childMdView.apply();
 

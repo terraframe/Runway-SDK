@@ -49,7 +49,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String EXPORTSEQUENCE = "exportSequence";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -355,7 +355,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -429,9 +429,9 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.transaction.TransactionRecordDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.transaction.TransactionRecordDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.transaction.TransactionRecordDTO) dto;
   }
@@ -449,7 +449,7 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.transaction.TransactionRecordQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -462,10 +462,10 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.transaction.TransactionRecordDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.transaction.TransactionRecordDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.transaction.TransactionRecordDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.transaction.TransactionRecordDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -475,10 +475,10 @@ public abstract class TransactionRecordDTOBase extends com.runwaysdk.business.Bu
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.transaction.TransactionRecordDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.transaction.TransactionRecordDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.transaction.TransactionRecordDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.transaction.TransactionRecordDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

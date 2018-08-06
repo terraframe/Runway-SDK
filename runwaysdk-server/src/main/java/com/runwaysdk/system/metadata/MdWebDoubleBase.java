@@ -41,9 +41,9 @@ public abstract class MdWebDoubleBase extends com.runwaysdk.system.metadata.MdWe
     return CLASS;
   }
   
-  public static MdWebDouble get(String id)
+  public static MdWebDouble get(String oid)
   {
-    return (MdWebDouble) com.runwaysdk.business.Business.get(id);
+    return (MdWebDouble) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebDouble getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebDoubleBase extends com.runwaysdk.system.metadata.MdWe
     return (MdWebDouble) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebDouble lock(java.lang.String id)
+  public static MdWebDouble lock(java.lang.String oid)
   {
-    MdWebDouble _instance = MdWebDouble.get(id);
+    MdWebDouble _instance = MdWebDouble.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebDouble unlock(java.lang.String id)
+  public static MdWebDouble unlock(java.lang.String oid)
   {
-    MdWebDouble _instance = MdWebDouble.get(id);
+    MdWebDouble _instance = MdWebDouble.get(oid);
     _instance.unlock();
     
     return _instance;

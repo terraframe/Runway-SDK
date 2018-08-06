@@ -112,7 +112,7 @@ public class NewEntityIdStringCache
    */
   synchronized protected void recordNewlyCreatedNonCachedEntity(EntityDAOIF entityDAOIF)
   {
-    this.recordNewlyCreatedNonCachedEntity(entityDAOIF.getId());
+    this.recordNewlyCreatedNonCachedEntity(entityDAOIF.getOid());
   }
   
   /**
@@ -141,11 +141,11 @@ public class NewEntityIdStringCache
   }
   
   /**
-   * Returns true if the given id is from a newly created {@link EntityDAO} who's type 
+   * Returns true if the given oid is from a newly created {@link EntityDAO} who's type 
    * is not cached.
    * 
    * @param entityDAOid
-   * @return true if the given id is from a newly created {@link EntityDAO} who's type 
+   * @return true if the given oid is from a newly created {@link EntityDAO} who's type 
    * is not cached.
    */
   synchronized protected boolean isNewUncachedEntity(String entityDAOid)
@@ -165,7 +165,7 @@ public class NewEntityIdStringCache
   
   
   /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
    * @param oldId
    * @param entityDAO
@@ -178,12 +178,12 @@ public class NewEntityIdStringCache
     if (this.newEntityIdStringFileCache != null)
     {
       this.newEntityIdStringFileCache.remove(oldId);
-      this.newEntityIdStringFileCache.put(entityDAO.getId(), "");
+      this.newEntityIdStringFileCache.put(entityDAO.getOid(), "");
     }
     else
     {
       this.newEntityIdStringSet.remove(oldId);
-      this.newEntityIdStringSet.add(entityDAO.getId());
+      this.newEntityIdStringSet.add(entityDAO.getOid());
     }    
   }
   
@@ -210,7 +210,7 @@ public class NewEntityIdStringCache
    * 
    * @return Returns an iterator of all IDs in the collection that stores all IDs in memory. 
    */
-  synchronized protected Iterator<String> getIds()
+  synchronized protected Iterator<String> getOids()
   {
     if (this.newEntityIdStringFileCache != null)
     {

@@ -119,7 +119,7 @@ public class MethodTest
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO.apply();
 
-    business1 = Business.getBusiness(businessDAO.getId());
+    business1 = Business.getBusiness(businessDAO.getOid());
 
     mdMethod2 = TestFixtureFactory.createMdMethod(mdBusiness, "checkout2");
     mdMethod2.apply();
@@ -168,7 +168,7 @@ public class MethodTest
   public void testCheckAccess()
   {
     // Grant permissions to the user on the md class
-    methodActor.grantPermission(Operation.DELETE, mdBusiness.getId());
+    methodActor.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Check various access of the user
     boolean access = MethodFacade.checkAccess(mdMethod, Operation.DELETE, business1);
@@ -212,10 +212,10 @@ public class MethodTest
   @Test
   public void testRelationshipPermission()
   {
-    methodActor.grantPermission(Operation.ADD_CHILD, mdTree.getId());
+    methodActor.grantPermission(Operation.ADD_CHILD, mdTree.getOid());
 
-    Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getId()));
-    Assert.assertTrue(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_CHILD, business1, mdTree.getId()));
+    Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getOid()));
+    Assert.assertTrue(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_CHILD, business1, mdTree.getOid()));
   }
 
   /**
@@ -227,13 +227,13 @@ public class MethodTest
   public void testReloadPermissions()
   {
     // Grant permissions to the user on the md class
-    methodActor.grantPermission(Operation.DELETE, mdBusiness.getId());
+    methodActor.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     Assert.assertEquals(true, MethodFacade.checkAccess(mdMethod, Operation.DELETE, business1));
     Assert.assertEquals(false, MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
 
     // Grant permissions to the user on the md class
-    methodActor.grantPermission(Operation.WRITE, mdBusiness.getId());
+    methodActor.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     Assert.assertEquals(true, MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
   }
@@ -253,13 +253,13 @@ public class MethodTest
       // Grant permissions to the user on the md class
       role.assignMember(methodActor);
 
-      methodActor.grantPermission(Operation.DELETE, mdBusiness.getId());
+      methodActor.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
       Assert.assertEquals(true, MethodFacade.checkAccess(mdMethod, Operation.DELETE, business1));
       Assert.assertEquals(false, MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
 
       // Grant permissions to the user on the md class
-      role.grantPermission(Operation.WRITE, mdBusiness.getId());
+      role.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
       Assert.assertEquals(true, MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
     }
@@ -282,14 +282,14 @@ public class MethodTest
   {
     Assert.assertFalse(MethodFacade.checkAccess(mdMethod, Operation.WRITE, business1));
     Assert.assertFalse(MethodFacade.checkAttributeAccess(mdMethod, Operation.WRITE, business1, mdAttribute));
-    Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getId()));
+    Assert.assertFalse(MethodFacade.checkRelationshipAccess(mdMethod, Operation.ADD_PARENT, business1, mdTree.getOid()));
   }
 
   @Request
   @Test
   public void testExecutePermissions()
   {
-    methodActor.grantPermission(Operation.EXECUTE, mdMethod2.getId());
+    methodActor.grantPermission(Operation.EXECUTE, mdMethod2.getOid());
 
     Assert.assertEquals(true, MethodFacade.checkExecuteAccess(mdMethod, mdMethod2));
   }

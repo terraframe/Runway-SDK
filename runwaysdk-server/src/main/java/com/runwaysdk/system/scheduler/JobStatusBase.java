@@ -41,9 +41,9 @@ public abstract class JobStatusBase extends com.runwaysdk.system.EnumerationMast
     return CLASS;
   }
   
-  public static JobStatus get(String id)
+  public static JobStatus get(String oid)
   {
-    return (JobStatus) com.runwaysdk.business.Business.get(id);
+    return (JobStatus) com.runwaysdk.business.Business.get(oid);
   }
   
   public static JobStatus getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class JobStatusBase extends com.runwaysdk.system.EnumerationMast
     return (JobStatus) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.scheduler.JobStatus.CLASS ,enumName);
   }
   
-  public static JobStatus lock(java.lang.String id)
+  public static JobStatus lock(java.lang.String oid)
   {
-    JobStatus _instance = JobStatus.get(id);
+    JobStatus _instance = JobStatus.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static JobStatus unlock(java.lang.String id)
+  public static JobStatus unlock(java.lang.String oid)
   {
-    JobStatus _instance = JobStatus.get(id);
+    JobStatus _instance = JobStatus.get(oid);
     _instance.unlock();
     
     return _instance;

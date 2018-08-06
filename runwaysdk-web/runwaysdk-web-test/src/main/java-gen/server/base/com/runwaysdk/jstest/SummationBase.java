@@ -32,7 +32,7 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,11 +128,11 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -142,7 +142,7 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.Summation.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -284,7 +284,7 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -348,9 +348,9 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
     return query;
   }
   
-  public static Summation get(String id)
+  public static Summation get(String oid)
   {
-    return (Summation) com.runwaysdk.business.Business.get(id);
+    return (Summation) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Summation getByKey(String key)
@@ -418,17 +418,17 @@ public abstract class SummationBase extends com.runwaysdk.business.Business impl
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static Summation lock(java.lang.String id)
+  public static Summation lock(java.lang.String oid)
   {
-    Summation _instance = Summation.get(id);
+    Summation _instance = Summation.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Summation unlock(java.lang.String id)
+  public static Summation unlock(java.lang.String oid)
   {
-    Summation _instance = Summation.get(id);
+    Summation _instance = Summation.get(oid);
     _instance.unlock();
     
     return _instance;

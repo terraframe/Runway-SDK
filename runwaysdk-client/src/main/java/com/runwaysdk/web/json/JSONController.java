@@ -116,18 +116,18 @@ public class JSONController
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
    *      java.lang.String)
    */
-  public static String delete(String sessionId, String id)
+  public static String delete(String sessionId, String oid)
   {
-    return jsonClientRequestIF.delete(sessionId, id);
+    return jsonClientRequestIF.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String,
    *      java.lang.String)
    */
-  public static String get(String sessionId, String id)
+  public static String get(String sessionId, String oid)
   {
-    return jsonClientRequestIF.get(sessionId, id);
+    return jsonClientRequestIF.get(sessionId, oid);
   }
 
   /**
@@ -314,18 +314,18 @@ public class JSONController
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
    *      java.lang.String)
    */
-  public static String lock(String sessionId, String id)
+  public static String lock(String sessionId, String oid)
   {
-    return jsonClientRequestIF.lock(sessionId, id);
+    return jsonClientRequestIF.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
    *      java.lang.String)
    */
-  public static String unlock(String sessionId, String id)
+  public static String unlock(String sessionId, String oid)
   {
-    return jsonClientRequestIF.unlock(sessionId, id);
+    return jsonClientRequestIF.unlock(sessionId, oid);
   }
 
   /**

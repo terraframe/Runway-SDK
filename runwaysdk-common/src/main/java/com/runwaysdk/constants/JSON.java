@@ -102,7 +102,7 @@ public enum JSON {
 
   // ENUM_DTO(RUNWAY_DTO.getLabel()+".EnumDTO"),
 
-  ENUM_DTO_ID("id"),
+  ENUM_DTO_ID("oid"),
 
   ENUM_DTO_TYPE("enumType"),
 
@@ -128,7 +128,7 @@ public enum JSON {
 
   TYPE_MD_DESCRIPTION("description"),
 
-  TYPE_MD_ID("id"),
+  TYPE_MD_ID("oid"),
 
   /*------------------ RelationshipMd -------------*/
 
@@ -145,7 +145,7 @@ public enum JSON {
   /**
      * 
      */
-  ENTITY_DTO_ID("id"),
+  ENTITY_DTO_ID("oid"),
 
   /**
      * 
@@ -268,7 +268,7 @@ public enum JSON {
 
   ATTRIBUTE_METADATA_REQUIRED("required"),
 
-  ATTRIBUTE_METADATA_ID("id"),
+  ATTRIBUTE_METADATA_ID("oid"),
 
   ATTRIBUTE_METADATA_NAME("name"),
 
@@ -315,7 +315,7 @@ public enum JSON {
 
   STRUCT_METADATA_DEFINING_MDSTRUCT("definingMdStruct"),
 
-  STRUCT_ID("id"),
+  STRUCT_ID("oid"),
 
   /*------------------- Attribute Character ----*/
 

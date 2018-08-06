@@ -29,7 +29,7 @@ public class ClassAttributeConcrete extends ClassAttributeConcreteBase
   
   public ClassAttributeConcrete(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

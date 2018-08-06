@@ -191,7 +191,7 @@ public class InvokeMethodTestBase
     mdAttributeLong = MdAttributeLongDAO.newInstance();
     mdAttributeLong.setValue(MdAttributeLongInfo.NAME, "aLong2");
     mdAttributeLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long 2");
-    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getId());
+    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getOid());
     mdAttributeLong.apply();
 
     // Create a new user who has no permissions
@@ -201,10 +201,10 @@ public class InvokeMethodTestBase
     newUser.apply();
 
     // Grant read and write permissions to the new user
-    clientRequest.grantTypePermission(newUser.getId(), collection.getId(), Operation.READ.name());
-    clientRequest.grantTypePermission(newUser.getId(), collection.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(newUser.getOid(), collection.getOid(), Operation.READ.name());
+    clientRequest.grantTypePermission(newUser.getOid(), collection.getOid(), Operation.WRITE.name());
 
-    addAttributes(collection.getId());
+    addAttributes(collection.getOid());
 
     mdUtil = MdUtilDAO.newInstance();
     mdUtil.setValue(MdUtilInfo.NAME, "Util");
@@ -217,7 +217,7 @@ public class InvokeMethodTestBase
     utilCharacter.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     utilCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     utilCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    utilCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdUtil.getId());
+    utilCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdUtil.getOid());
     utilCharacter.apply();
 
     mdView = MdViewDAO.newInstance();
@@ -230,7 +230,7 @@ public class InvokeMethodTestBase
     mdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdView.apply();
 
-    addAttributes(mdView.getId());
+    addAttributes(mdView.getOid());
 
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, getViewQueryStub());
     mdView.apply();
@@ -240,7 +240,7 @@ public class InvokeMethodTestBase
     bag.setValue(MdBusinessInfo.PACKAGE, pack);
     bag.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     bag.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Bag");
-    bag.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, collection.getId());
+    bag.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, collection.getOid());
     bag.apply();
 
     reference = MdRelationshipDAO.newInstance();
@@ -250,11 +250,11 @@ public class InvokeMethodTestBase
     reference.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference");
     reference.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     reference.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection1");
-    reference.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, collection.getId());
+    reference.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, collection.getOid());
     reference.setValue(MdRelationshipInfo.PARENT_METHOD, "collection1");
     reference.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     reference.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection2");
-    reference.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, collection.getId());
+    reference.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, collection.getOid());
     reference.setValue(MdRelationshipInfo.CHILD_METHOD, "collection2");
     reference.apply();
 
@@ -265,13 +265,13 @@ public class InvokeMethodTestBase
     states.setValue(MdBusinessInfo.PACKAGE, pack);
     states.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     states.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes");
-    states.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMaster.getId());
+    states.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMaster.getOid());
     states.apply();
 
     stateEnum = MdEnumerationDAO.newInstance();
     stateEnum.setValue(MdEnumerationInfo.NAME, "AllStates");
     stateEnum.setValue(MdEnumerationInfo.PACKAGE, pack);
-    stateEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, states.getId());
+    stateEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, states.getOid());
     stateEnum.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All States");
     stateEnum.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     stateEnum.apply();
@@ -280,14 +280,14 @@ public class InvokeMethodTestBase
     mdMethod0.setValue(MdMethodInfo.RETURN_TYPE, collectionType);
     mdMethod0.setValue(MdMethodInfo.NAME, "modifyNoPersist");
     mdMethod0.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Modify No Persist");
-    mdMethod0.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod0.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod0.apply();
 
     MdParameterDAO noPersistParam = MdParameterDAO.newInstance();
     noPersistParam.setValue(MdParameterInfo.TYPE, collectionType);
     noPersistParam.setValue(MdParameterInfo.NAME, "collection");
     noPersistParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection Parameter");
-    noPersistParam.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod0.getId());
+    noPersistParam.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod0.getOid());
     noPersistParam.setValue(MdParameterInfo.ORDER, "0");
     noPersistParam.apply();
 
@@ -295,14 +295,14 @@ public class InvokeMethodTestBase
     mdMethod1.setValue(MdMethodInfo.RETURN_TYPE, collectionType);
     mdMethod1.setValue(MdMethodInfo.NAME, "sortNumbers");
     mdMethod1.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Number");
-    mdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod1.apply();
 
     MdParameterDAO mdParameter = MdParameterDAO.newInstance();
     mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.Boolean");
     mdParameter.setValue(MdParameterInfo.NAME, "ascending");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ascending Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "1");
     mdParameter.apply();
 
@@ -310,7 +310,7 @@ public class InvokeMethodTestBase
     mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Long" + "[]");
     mdParameter2.setValue(MdParameterInfo.NAME, "numbers");
     mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Numbers Parameter");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getId());
+    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getOid());
     mdParameter2.setValue(MdParameterInfo.ORDER, "0");
     mdParameter2.apply();
 
@@ -318,21 +318,21 @@ public class InvokeMethodTestBase
     mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod2.setValue(MdMethodInfo.NAME, "poopNothing");
     mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Poop Nothing");
-    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod2.apply();
 
     mdMethod3 = MdMethodDAO.newInstance();
     mdMethod3.setValue(MdMethodInfo.RETURN_TYPE, collectionType + "[]");
     mdMethod3.setValue(MdMethodInfo.NAME, "sortCollections");
     mdMethod3.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Collections");
-    mdMethod3.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod3.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod3.apply();
 
     MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
     mdParameter3.setValue(MdParameterInfo.TYPE, collectionType + "[]");
     mdParameter3.setValue(MdParameterInfo.NAME, "collections");
     mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collections Parameter");
-    mdParameter3.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getId());
+    mdParameter3.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getOid());
     mdParameter3.setValue(MdParameterInfo.ORDER, "0");
     mdParameter3.apply();
 
@@ -340,7 +340,7 @@ public class InvokeMethodTestBase
     mdParameter5.setValue(MdParameterInfo.TYPE, "java.lang.String");
     mdParameter5.setValue(MdParameterInfo.NAME, "collectionName");
     mdParameter5.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection Name Parameter");
-    mdParameter5.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getId());
+    mdParameter5.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getOid());
     mdParameter5.setValue(MdParameterInfo.ORDER, "1");
     mdParameter5.apply();
 
@@ -348,14 +348,14 @@ public class InvokeMethodTestBase
     mdMethod4.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod4.setValue(MdMethodInfo.NAME, "testMethod");
     mdMethod4.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
-    mdMethod4.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod4.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod4.apply();
 
     MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
     mdParameter4.setValue(MdParameterInfo.TYPE, collectionType);
     mdParameter4.setValue(MdParameterInfo.NAME, "collection");
     mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection Parameter");
-    mdParameter4.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod4.getId());
+    mdParameter4.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod4.getOid());
     mdParameter4.setValue(MdParameterInfo.ORDER, "0");
     mdParameter4.apply();
 
@@ -363,14 +363,14 @@ public class InvokeMethodTestBase
     mdMethod5.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.String[][]");
     mdMethod5.setValue(MdMethodInfo.NAME, "testMultiArray");
     mdMethod5.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
-    mdMethod5.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod5.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod5.apply();
 
     MdParameterDAO mdParameter6 = MdParameterDAO.newInstance();
     mdParameter6.setValue(MdParameterInfo.TYPE, collectionType + "[][][][]");
     mdParameter6.setValue(MdParameterInfo.NAME, "collection4");
     mdParameter6.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Collection Parameter");
-    mdParameter6.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod5.getId());
+    mdParameter6.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod5.getOid());
     mdParameter6.setValue(MdParameterInfo.ORDER, "0");
     mdParameter6.apply();
 
@@ -378,14 +378,14 @@ public class InvokeMethodTestBase
     mdMethod6.setValue(MdMethodInfo.RETURN_TYPE, referenceType + "[]");
     mdMethod6.setValue(MdMethodInfo.NAME, "getReferences");
     mdMethod6.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reference");
-    mdMethod6.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod6.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod6.apply();
 
     MdParameterDAO mdParameter7 = MdParameterDAO.newInstance();
     mdParameter7.setValue(MdParameterInfo.TYPE, referenceType);
     mdParameter7.setValue(MdParameterInfo.NAME, "reference");
     mdParameter7.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Parameter");
-    mdParameter7.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod6.getId());
+    mdParameter7.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod6.getOid());
     mdParameter7.setValue(MdParameterInfo.ORDER, "0");
     mdParameter7.apply();
 
@@ -393,7 +393,7 @@ public class InvokeMethodTestBase
     mdMethod7.setValue(MdMethodInfo.RETURN_TYPE, stateType + "[]");
     mdMethod7.setValue(MdMethodInfo.NAME, "getStates");
     mdMethod7.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test States");
-    mdMethod7.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod7.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod7.apply();
 
     // method that takes in an array of AllStates enums and returns them.
@@ -402,14 +402,14 @@ public class InvokeMethodTestBase
     returnStates.setValue(MdMethodInfo.RETURN_TYPE, pack + ".AllStates[]");
     returnStates.setValue(MdMethodInfo.NAME, "returnStates");
     returnStates.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Return states");
-    returnStates.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    returnStates.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     returnStates.apply();
 
     MdParameterDAO param = MdParameterDAO.newInstance();
     param.setValue(MdParameterInfo.TYPE, pack + ".AllStates[]");
     param.setValue(MdParameterInfo.NAME, "states");
     param.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "States Parameter");
-    param.setValue(MdParameterInfo.ENCLOSING_METADATA, returnStates.getId());
+    param.setValue(MdParameterInfo.ENCLOSING_METADATA, returnStates.getOid());
     param.setValue(MdParameterInfo.ORDER, "0");
     param.apply();
 
@@ -417,7 +417,7 @@ public class InvokeMethodTestBase
     mdParameter9.setValue(MdParameterInfo.TYPE, stateType);
     mdParameter9.setValue(MdParameterInfo.NAME, "state");
     mdParameter9.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Parameter");
-    mdParameter9.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod7.getId());
+    mdParameter9.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod7.getOid());
     mdParameter9.setValue(MdParameterInfo.ORDER, "0");
     mdParameter9.apply();
 
@@ -425,7 +425,7 @@ public class InvokeMethodTestBase
     mdMethod8.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.Integer[]");
     mdMethod8.setValue(MdMethodInfo.NAME, "sortIntegers");
     mdMethod8.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Integers");
-    mdMethod8.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod8.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod8.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod8.apply();
 
@@ -433,7 +433,7 @@ public class InvokeMethodTestBase
     mdParameter10.setValue(MdParameterInfo.TYPE, "java.lang.Integer[]");
     mdParameter10.setValue(MdParameterInfo.NAME, "integers");
     mdParameter10.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integers Parameter");
-    mdParameter10.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod8.getId());
+    mdParameter10.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod8.getOid());
     mdParameter10.setValue(MdParameterInfo.ORDER, "0");
     mdParameter10.apply();
 
@@ -441,7 +441,7 @@ public class InvokeMethodTestBase
     mdMethod9.setValue(MdMethodInfo.RETURN_TYPE, "java.util.Date[]");
     mdMethod9.setValue(MdMethodInfo.NAME, "getDates");
     mdMethod9.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Dates");
-    mdMethod9.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod9.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod9.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod9.apply();
 
@@ -449,7 +449,7 @@ public class InvokeMethodTestBase
     mdParameter11.setValue(MdParameterInfo.TYPE, "java.util.Date");
     mdParameter11.setValue(MdParameterInfo.NAME, "date");
     mdParameter11.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Parameter");
-    mdParameter11.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod9.getId());
+    mdParameter11.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod9.getOid());
     mdParameter11.setValue(MdParameterInfo.ORDER, "0");
     mdParameter11.apply();
 
@@ -457,7 +457,7 @@ public class InvokeMethodTestBase
     mdMethod10.setValue(MdMethodInfo.RETURN_TYPE, utilType);
     mdMethod10.setValue(MdMethodInfo.NAME, "getUtil");
     mdMethod10.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Util Object");
-    mdMethod10.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod10.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod10.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod10.apply();
 
@@ -465,7 +465,7 @@ public class InvokeMethodTestBase
     mdParameter12.setValue(MdParameterInfo.TYPE, utilType);
     mdParameter12.setValue(MdParameterInfo.NAME, "util");
     mdParameter12.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Util Object");
-    mdParameter12.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod10.getId());
+    mdParameter12.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod10.getOid());
     mdParameter12.setValue(MdParameterInfo.ORDER, "0");
     mdParameter12.apply();
 
@@ -473,7 +473,7 @@ public class InvokeMethodTestBase
     mdMethod11.setValue(MdMethodInfo.RETURN_TYPE, viewType);
     mdMethod11.setValue(MdMethodInfo.NAME, "getView");
     mdMethod11.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get View Object");
-    mdMethod11.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod11.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod11.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod11.apply();
 
@@ -481,7 +481,7 @@ public class InvokeMethodTestBase
     mdParameter13.setValue(MdParameterInfo.TYPE, viewType);
     mdParameter13.setValue(MdParameterInfo.NAME, "view");
     mdParameter13.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View Object");
-    mdParameter13.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod11.getId());
+    mdParameter13.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod11.getOid());
     mdParameter13.setValue(MdParameterInfo.ORDER, "0");
     mdParameter13.apply();
 
@@ -489,7 +489,7 @@ public class InvokeMethodTestBase
     mdMethod12.setValue(MdMethodInfo.RETURN_TYPE, utilType + "[]");
     mdMethod12.setValue(MdMethodInfo.NAME, "utilArray");
     mdMethod12.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Util Object Array");
-    mdMethod12.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod12.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod12.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod12.apply();
 
@@ -497,7 +497,7 @@ public class InvokeMethodTestBase
     mdParameter14.setValue(MdParameterInfo.TYPE, utilType + "[]");
     mdParameter14.setValue(MdParameterInfo.NAME, "utilArray");
     mdParameter14.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Util Object Array");
-    mdParameter14.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod12.getId());
+    mdParameter14.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod12.getOid());
     mdParameter14.setValue(MdParameterInfo.ORDER, "0");
     mdParameter14.apply();
 
@@ -505,7 +505,7 @@ public class InvokeMethodTestBase
     mdMethod13.setValue(MdMethodInfo.RETURN_TYPE, viewType + "[]");
     mdMethod13.setValue(MdMethodInfo.NAME, "viewArray");
     mdMethod13.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get View Object Array");
-    mdMethod13.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod13.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod13.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod13.apply();
 
@@ -513,7 +513,7 @@ public class InvokeMethodTestBase
     mdParameter15.setValue(MdParameterInfo.TYPE, viewType + "[]");
     mdParameter15.setValue(MdParameterInfo.NAME, "viewArray");
     mdParameter15.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View Object Array");
-    mdParameter15.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod13.getId());
+    mdParameter15.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod13.getOid());
     mdParameter15.setValue(MdParameterInfo.ORDER, "0");
     mdParameter15.apply();
 
@@ -521,7 +521,7 @@ public class InvokeMethodTestBase
     mdMethod14.setValue(MdMethodInfo.RETURN_TYPE, collectionQueryClass);
     mdMethod14.setValue(MdMethodInfo.NAME, "getCollectionQuery");
     mdMethod14.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a collection query");
-    mdMethod14.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod14.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod14.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod14.apply();
 
@@ -529,7 +529,7 @@ public class InvokeMethodTestBase
     mdMethod15.setValue(MdMethodInfo.RETURN_TYPE, collectionQueryClass);
     mdMethod15.setValue(MdMethodInfo.NAME, "getCollectionQueryRestrictRows");
     mdMethod15.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a collection query");
-    mdMethod15.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod15.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod15.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod15.apply();
 
@@ -537,7 +537,7 @@ public class InvokeMethodTestBase
     mdMethod16.setValue(MdMethodInfo.RETURN_TYPE, viewQueryClass);
     mdMethod16.setValue(MdMethodInfo.NAME, "getViewQuery");
     mdMethod16.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a view query");
-    mdMethod16.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod16.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod16.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod16.apply();
 
@@ -545,7 +545,7 @@ public class InvokeMethodTestBase
     mdMethod17.setValue(MdMethodInfo.RETURN_TYPE, viewQueryClass);
     mdMethod17.setValue(MdMethodInfo.NAME, "getViewQueryRestrictRows");
     mdMethod17.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a view query");
-    mdMethod17.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod17.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod17.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod17.apply();
 
@@ -553,7 +553,7 @@ public class InvokeMethodTestBase
     mdMethod18.setValue(MdMethodInfo.RETURN_TYPE, Integer.class.getName());
     mdMethod18.setValue(MdMethodInfo.NAME, "getCollectionObjectCount");
     mdMethod18.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Returns the number of collections");
-    mdMethod18.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod18.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod18.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod18.apply();
 
@@ -561,7 +561,7 @@ public class InvokeMethodTestBase
     mdMethod19.setValue(MdMethodInfo.RETURN_TYPE, collectionType);
     mdMethod19.setValue(MdMethodInfo.NAME, "methodActorRead");
     mdMethod19.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tests the read permissions on a method actor.");
-    mdMethod19.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod19.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod19.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod19.apply();
 
@@ -569,21 +569,21 @@ public class InvokeMethodTestBase
     mdMethod20.setValue(MdMethodInfo.RETURN_TYPE, GeneratedComponentQuery.class.getName());
     mdMethod20.setValue(MdMethodInfo.NAME, "getBusinessQuery");
     mdMethod20.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a generic business query");
-    mdMethod20.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod20.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethod20.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod20.apply();
 
-    clientRequest.grantMethodPermission(newUser.getId(), mdMethod19.getId(), Operation.EXECUTE.name());
+    clientRequest.grantMethodPermission(newUser.getOid(), mdMethod19.getOid(), Operation.EXECUTE.name());
 
     methodActor = MethodActorDAO.newInstance();
-    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod19.getId());
+    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod19.getOid());
     methodActor.apply();
 
     mdMethodReturnByte = MdMethodDAO.newInstance();
     mdMethodReturnByte.setValue(MdMethodInfo.RETURN_TYPE, Byte.class.getName() + "[]");
     mdMethodReturnByte.setValue(MdMethodInfo.NAME, "getExcelFile");
     mdMethodReturnByte.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Returns a byte array that contains an Excel file.");
-    mdMethodReturnByte.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethodReturnByte.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethodReturnByte.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethodReturnByte.apply();
 
@@ -591,7 +591,7 @@ public class InvokeMethodTestBase
     mdMethodReturnStream.setValue(MdMethodInfo.RETURN_TYPE, InputStream.class.getName());
     mdMethodReturnStream.setValue(MdMethodInfo.NAME, "getFileStream");
     mdMethodReturnStream.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Returns an input stream contains an Excel file.");
-    mdMethodReturnStream.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethodReturnStream.setValue(MdMethodInfo.REF_MD_TYPE, collection.getOid());
     mdMethodReturnStream.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethodReturnStream.apply();
   }
@@ -613,7 +613,7 @@ public class InvokeMethodTestBase
     aCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClassId);
     aCharacter.apply();
 
-    if (collection.getId().equals(mdClassId))
+    if (collection.getOid().equals(mdClassId))
     {
       collectionMdAttributeCharacterDTO = aCharacter;
     }

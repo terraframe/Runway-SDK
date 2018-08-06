@@ -39,7 +39,7 @@ public class DeleteConflictResolver extends ConflictAdapter
       public void run()
       {
         EntityDAO entityDAO = conflict.getEntityDAO();
-        EntityDAO referenceDAO = strategy.get(reference.getId()).getEntityDAO();
+        EntityDAO referenceDAO = strategy.get(reference.getOid()).getEntityDAO();
 
         strategy.delete(referenceDAO);
         strategy.delete(entityDAO);

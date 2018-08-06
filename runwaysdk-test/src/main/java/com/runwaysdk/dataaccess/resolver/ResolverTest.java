@@ -128,7 +128,7 @@ public class ResolverTest
     protected Void doIt()
     {
       business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue("testReference", referenceBusiness.getId());
+      business.setValue("testReference", referenceBusiness.getOid());
       business.apply();
 
       return null;
@@ -334,11 +334,11 @@ public class ResolverTest
       // Delete all roles
       List<String> ids = RoleDAO.getEntityIdsDB(Roles.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          RoleDAO.get(id).getBusinessDAO().delete();
+          RoleDAO.get(oid).getBusinessDAO().delete();
         }
       }
     }
@@ -359,7 +359,7 @@ public class ResolverTest
 
     final List<UserDAO> users = new UserExportBuilder().generate(COWBELL_SITE, first);
 
-    String ownerId = users.get(0).getId();
+    String ownerId = users.get(0).getOid();
 
     final UserDAO reference = new SingleUserExportBuilder(users, first, ownerId).generate(DOORMAN_SITE, second);
     new DeleteExportBuilder(users, first, ownerId).generate(DOORWAY_SITE, third);
@@ -374,18 +374,18 @@ public class ResolverTest
       // Test basic delete resolver
       new TransactionImportManager(third.getAbsolutePath(), new DeleteConflictResolver(reference)).importTransactions();
 
-      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(users.get(0).getId()));
-      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(reference.getId()));
+      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(users.get(0).getOid()));
+      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(reference.getOid()));
     }
     finally
     {
       List<String> ids = UserDAO.getEntityIdsDB(UserInfo.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          UserDAO user = UserDAO.get(id).getBusinessDAO();
+          UserDAO user = UserDAO.get(oid).getBusinessDAO();
           user.delete();
         }
       }
@@ -526,7 +526,7 @@ public class ResolverTest
 
       try
       {
-        RelationshipDAO.get(relationship.getId());
+        RelationshipDAO.get(relationship.getOid());
 
         Assert.fail("Relationship was imported even though it didn't have a parent");
       }
@@ -591,7 +591,7 @@ public class ResolverTest
 
       try
       {
-        RelationshipDAO.get(relationship.getId());
+        RelationshipDAO.get(relationship.getOid());
 
         Assert.fail("Relationship was imported even though it didn't have a child");
       }
@@ -635,7 +635,7 @@ public class ResolverTest
         @Override
         public void resolve(ImportConflict conflict)
         {
-          EntityDAO local = strategy.get(business.getId()).getEntityDAO();
+          EntityDAO local = strategy.get(business.getOid()).getEntityDAO();
           local.setValue(attributeName, updateValue);
 
           strategy.apply(local);
@@ -643,7 +643,7 @@ public class ResolverTest
         }
       }).importTransactions();
 
-      BusinessDAOIF test = BusinessDAO.get(business.getId());
+      BusinessDAOIF test = BusinessDAO.get(business.getOid());
 
       Assert.assertNotNull(test);
       Assert.assertEquals(updateValue, test.getValue(attributeName));
@@ -681,9 +681,9 @@ public class ResolverTest
 
       Assert.assertEquals(ids.size(), actualIds.size());
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        Assert.assertTrue(actualIds.contains(id));
+        Assert.assertTrue(actualIds.contains(oid));
       }
     }
     finally

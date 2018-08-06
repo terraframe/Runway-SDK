@@ -335,7 +335,7 @@ public class XMLImporter
       Element relationship = (Element) relationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(relationship, "id"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(relationship, "oid"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
 
     }
 
@@ -346,7 +346,7 @@ public class XMLImporter
       Element entityIndex = (Element) entityIndexRelationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(entityIndex, "id"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(entityIndex, "oid"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
 
     }
 
@@ -538,7 +538,7 @@ public class XMLImporter
   {
     // Create the table
     NodeList attributes = object.getElementsByTagName("attribute");
-    String id = null;
+    String oid = null;
     String entity_name = null;
     String package_name = null;
     String table_name = null;
@@ -551,7 +551,7 @@ public class XMLImporter
       Element attribute = (Element) attributes.item(i);
       if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.ID))
       {
-        id = getValueFromChildTag(attribute, "value");
+        oid = getValueFromChildTag(attribute, "value");
       }
       else if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.NAME))
       {
@@ -582,7 +582,7 @@ public class XMLImporter
       {
         isAbstract = getValueFromChildTag(attribute, "value");
       }
-      if (entity_name != null && package_name != null && table_name != null && isAbstract != null && index1_name != null && index2_name != null && id != null)
+      if (entity_name != null && package_name != null && table_name != null && isAbstract != null && index1_name != null && index2_name != null && oid != null)
       {
         break;
       }
@@ -610,7 +610,7 @@ public class XMLImporter
     }
     else if (metaDataType.equals(MdEnumerationInfo.CLASS))
     {
-      Database.createEnumerationTable(table_name, id);
+      Database.createEnumerationTable(table_name, oid);
     }
 
     String type = package_name + "." + entity_name;
@@ -686,13 +686,13 @@ public class XMLImporter
     Element cacheIndexType = (Element) mdAttribute.getElementsByTagName(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE).item(0);
     String index_id = getValueFromChildTag(cacheIndexType, MdEnumerationInfo.ITEM_ID);
 
-    if (index_id.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS))
+    if (index_id.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
       Database.addUniqueIndex(table, columnName, indexName);
     }
-    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
+    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getOid()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
@@ -702,15 +702,15 @@ public class XMLImporter
 
   /**
    * 
-   * @param id
+   * @param oid
    * @param type
    * @param attributes
    * @param parentId
    * @param childId
    */
-  private void insert(String id, String type, Element attributes, String parentId, String childId)
+  private void insert(String oid, String type, Element attributes, String parentId, String childId)
   {
-    validateId(id);
+    validateId(oid);
 
     List<List<Element>> attributeLists = new LinkedList<List<Element>>();
 
@@ -754,7 +754,7 @@ public class XMLImporter
 
       fields.add(EntityDAOIF.ID_COLUMN);
       prepSmtVars.add("?");
-      values.add(id);
+      values.add(oid);
       attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
       columnNameList.add(fields);
@@ -868,12 +868,12 @@ public class XMLImporter
     Database.executeStatementBatch(preparedStatementList);
   }
 
-  private void validateId(String id)
+  private void validateId(String oid)
   {
-    Matcher matcher = idPattern.matcher(id);
+    Matcher matcher = idPattern.matcher(oid);
     if (!matcher.matches())
     {
-      String msg = "The id [" + id + "] is invalid";
+      String msg = "The oid [" + oid + "] is invalid";
       throw new XMLException(msg);
     }
   }
@@ -888,7 +888,7 @@ public class XMLImporter
     List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
 
     String entityType = getValueFromChildTag(mdAttribute, EntityInfo.TYPE);
-    String id = null;
+    String oid = null;
 
     EnityInfo classInfo = inheritanceMap.get(entityType);
 
@@ -907,10 +907,10 @@ public class XMLImporter
       List<String> attributeTypes = new LinkedList<String>();
 
       fields.add(EntityDAOIF.ID_COLUMN);
-      id = getValueFromChildTag(mdAttribute, EntityInfo.ID);
-      validateId(id);
+      oid = getValueFromChildTag(mdAttribute, EntityInfo.ID);
+      validateId(oid);
       prepSmtVars.add("?");
-      values.add(id);
+      values.add(oid);
       attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
       fieldList.add(fields);

@@ -35,7 +35,7 @@ public interface StructDAOIF extends EntityDAOIF
   public MdStructDAOIF getMdStructDAO();
 
   /**
-   * Returns a copy of the given StructDAO instance, with a new id and mastered at the current site.
+   * Returns a copy of the given StructDAO instance, with a new oid and mastered at the current site.
    * The state of the object is new and has not been applied to the database.
    *
    * @return a copy of the given StructDAO instance

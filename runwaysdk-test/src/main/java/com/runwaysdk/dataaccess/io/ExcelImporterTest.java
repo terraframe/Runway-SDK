@@ -568,13 +568,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -647,13 +647,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -712,13 +712,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -791,13 +791,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -870,13 +870,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -935,13 +935,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "24");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1007,13 +1007,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "34");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1070,13 +1070,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1154,13 +1154,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1216,13 +1216,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1296,13 +1296,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1360,13 +1360,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "11.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1440,13 +1440,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "11");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1506,13 +1506,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "22");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1586,13 +1586,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "23");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1656,13 +1656,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -1748,13 +1748,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -1817,13 +1817,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1897,13 +1897,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1962,13 +1962,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2042,13 +2042,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2113,13 +2113,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2205,13 +2205,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2275,13 +2275,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2355,13 +2355,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2420,13 +2420,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2500,13 +2500,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2570,13 +2570,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2661,13 +2661,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2731,13 +2731,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2811,13 +2811,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2868,13 +2868,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2940,13 +2940,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3003,13 +3003,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3087,13 +3087,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3149,13 +3149,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "12.12");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3221,13 +3221,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "3.4");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3278,13 +3278,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3350,13 +3350,13 @@ public class ExcelImporterTest
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3413,13 +3413,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3497,13 +3497,13 @@ public class ExcelImporterTest
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-02-05");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try

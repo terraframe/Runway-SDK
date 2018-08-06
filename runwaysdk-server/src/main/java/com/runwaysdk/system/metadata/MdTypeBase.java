@@ -363,9 +363,9 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     }
   }
   
-  public static MdType get(String id)
+  public static MdType get(String oid)
   {
-    return (MdType) com.runwaysdk.business.Business.get(id);
+    return (MdType) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdType getByKey(String key)
@@ -373,17 +373,17 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     return (MdType) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdType lock(java.lang.String id)
+  public static MdType lock(java.lang.String oid)
   {
-    MdType _instance = MdType.get(id);
+    MdType _instance = MdType.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdType unlock(java.lang.String id)
+  public static MdType unlock(java.lang.String oid)
   {
-    MdType _instance = MdType.get(id);
+    MdType _instance = MdType.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -48,7 +48,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   {
     if(value != null)
     {
-      addEnumItem(CACHEALGORITHM, value.getId());
+      addEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -56,7 +56,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   {
     if(value != null)
     {
-      removeEnumItem(CACHEALGORITHM, value.getId());
+      removeEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -112,7 +112,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
     else
     {
-      setValue(SUPERMDBUSINESS, value.getId());
+      setValue(SUPERMDBUSINESS, value.getOid());
     }
   }
   
@@ -250,9 +250,9 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
   }
   
-  public static MdBusiness get(String id)
+  public static MdBusiness get(String oid)
   {
-    return (MdBusiness) com.runwaysdk.business.Business.get(id);
+    return (MdBusiness) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdBusiness getByKey(String key)
@@ -260,17 +260,17 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     return (MdBusiness) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdBusiness lock(java.lang.String id)
+  public static MdBusiness lock(java.lang.String oid)
   {
-    MdBusiness _instance = MdBusiness.get(id);
+    MdBusiness _instance = MdBusiness.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdBusiness unlock(java.lang.String id)
+  public static MdBusiness unlock(java.lang.String oid)
   {
-    MdBusiness _instance = MdBusiness.get(id);
+    MdBusiness _instance = MdBusiness.get(oid);
     _instance.unlock();
     
     return _instance;

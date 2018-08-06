@@ -51,9 +51,9 @@ public abstract class InformationInheritanceBase extends com.runwaysdk.system.me
     return (com.runwaysdk.system.metadata.MdInformation) super.getChild();
   }
   
-  public static InformationInheritance get(String id)
+  public static InformationInheritance get(String oid)
   {
-    return (InformationInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (InformationInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static InformationInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class InformationInheritanceBase extends com.runwaysdk.system.me
     return (InformationInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static InformationInheritance lock(java.lang.String id)
+  public static InformationInheritance lock(java.lang.String oid)
   {
-    InformationInheritance _instance = InformationInheritance.get(id);
+    InformationInheritance _instance = InformationInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static InformationInheritance unlock(java.lang.String id)
+  public static InformationInheritance unlock(java.lang.String oid)
   {
-    InformationInheritance _instance = InformationInheritance.get(id);
+    InformationInheritance _instance = InformationInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

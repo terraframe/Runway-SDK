@@ -306,7 +306,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     List<BusinessDAOIF> businessDAOlist = this.getAllEnumItems();
     for (BusinessDAOIF businessDAOIF : businessDAOlist)
     {
-      if (businessDAOIF.getId().equals(enumItemId))
+      if (businessDAOIF.getOid().equals(enumItemId))
       {
         return true;
       }
@@ -334,7 +334,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       QueryFactory queryFactory = new QueryFactory();
       BusinessDAOQuery mdEnumQuery = queryFactory.businessDAOQuery(MdEnumerationInfo.CLASS);
 
-      mdEnumQuery.WHERE(mdEnumQuery.aCharacter(MdEnumerationInfo.NAME).EQ(this.getTypeName()).AND(mdEnumQuery.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(mdMasterClassId)).AND(mdEnumQuery.id().NE(this.getId())));
+      mdEnumQuery.WHERE(mdEnumQuery.aCharacter(MdEnumerationInfo.NAME).EQ(this.getTypeName()).AND(mdEnumQuery.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(mdMasterClassId)).AND(mdEnumQuery.oid().NE(this.getOid())));
 
       OIterator<BusinessDAOIF> mdEnumIterator = mdEnumQuery.getIterator();
 
@@ -402,7 +402,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    */
   public void addEnumItem(EnumerationItemDAO enumerationItem)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(enumerationItem.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+    RelationshipDAO newChildRelDAO = this.addChild(enumerationItem.getOid(), RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
     newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItem));
     newChildRelDAO.save(true);
   }
@@ -410,22 +410,22 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   /**
    * Adds the given enumeration item to this enumeration.
    * 
-   * @param id
-   *          id of the enumerationItem item to add.
+   * @param oid
+   *          oid of the enumerationItem item to add.
    */
   @Transaction
-  public void addEnumItem(String id)
+  public void addEnumItem(String oid)
   {
-    EnumerationItemDAOIF enumerationItemDAOIF = EnumerationItemDAO.get(id);
-    RelationshipDAO newChildRelDAO = this.addChild(id, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+    EnumerationItemDAOIF enumerationItemDAOIF = EnumerationItemDAO.get(oid);
+    RelationshipDAO newChildRelDAO = this.addChild(oid, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
     newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));
     newChildRelDAO.save(true);
   }
 
   @Transaction
-  public void removeEnumItem(String id)
+  public void removeEnumItem(String oid)
   {
-    List<RelationshipDAOIF> children = this.getChildren(id, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+    List<RelationshipDAOIF> children = this.getChildren(oid, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
 
     RelationshipDAO relationshipDAO = children.get(0).getRelationshipDAO();
     relationshipDAO.delete();
@@ -442,13 +442,13 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     }
   }
 
-  public boolean containsEnumItem(String id)
+  public boolean containsEnumItem(String oid)
   {
     List<RelationshipDAOIF> children = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
 
     for (RelationshipDAOIF relationshipDAO : children)
     {
-      if (id.equals(relationshipDAO.getChildId()))
+      if (oid.equals(relationshipDAO.getChildId()))
       {
         return true;
       }
@@ -481,7 +481,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    */
   public String save(boolean validateRequired)
   {
-    String id = new String("");
+    String oid = new String("");
 
     this.validate();
 
@@ -502,7 +502,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       }
     }
 
-    id = super.save(validateRequired);
+    oid = super.save(validateRequired);
 
     // Do not create new relationships if this has already been applied to the
     // database.
@@ -514,7 +514,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       {
         MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
 
-        RelationshipDAO newChildRelDAO = this.addParent(masterMdBusinessIF.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
+        RelationshipDAO newChildRelDAO = this.addParent(masterMdBusinessIF.getOid(), RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
         newChildRelDAO.setKey(this.getKey());
         newChildRelDAO.save(true);
 
@@ -527,7 +527,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         // // Get a list of all existing enumerated items
         // for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
         // {
-        // enumeratedIds.add(enumeratedItem.getId());
+        // enumeratedIds.add(enumeratedItem.getOid());
         // }
         //
         // for (String instanceId : referenceIds)
@@ -550,7 +550,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
       if (!oldAppliedToDBValue)
       {
-        Database.createEnumerationTable(this.getTableName(), id);
+        Database.createEnumerationTable(this.getTableName(), oid);
       }
     }
     else
@@ -587,7 +587,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       // Get a list of all existing enumerated items
       for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
       {
-        enumeratedIds.add(enumeratedItem.getId());
+        enumeratedIds.add(enumeratedItem.getOid());
       }
 
       for (String instanceId : referenceIds)
@@ -604,7 +604,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -621,7 +621,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     // Drop all MdAttributeEnumerations that use this MdEnumeration
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttrEnumQuery = queryFactory.businessDAOQuery(MdAttributeEnumerationInfo.CLASS);
-    mdAttrEnumQuery.WHERE(mdAttrEnumQuery.aReference(MdAttributeEnumerationInfo.MD_ENUMERATION).EQ(this.getId()));
+    mdAttrEnumQuery.WHERE(mdAttrEnumQuery.aReference(MdAttributeEnumerationInfo.MD_ENUMERATION).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> mdAttrEnumIterator = mdAttrEnumQuery.getIterator();
     while (mdAttrEnumIterator.hasNext())
@@ -635,7 +635,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
     super.delete(businessContext);
 
-    Database.dropEnumerationTable(this.getTableName(), this.getId());
+    Database.dropEnumerationTable(this.getTableName(), this.getOid());
   }
 
   /*
@@ -876,9 +876,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdEnumerationDAOIF get(String id)
+  public static MdEnumerationDAOIF get(String oid)
   {
-    return (MdEnumerationDAOIF) BusinessDAO.get(id);
+    return (MdEnumerationDAOIF) BusinessDAO.get(oid);
   }
 
   /**

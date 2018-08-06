@@ -249,7 +249,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     // If this enumeration is required, ensure that at least one random item is
     // selected
     if (this.isRequired())
-      object.addItem(this.definesAttribute(), items.get(EntityGenerator.getRandom().nextInt(items.size())).getId());
+      object.addItem(this.definesAttribute(), items.get(EntityGenerator.getRandom().nextInt(items.size())).getOid());
 
     // If this is single select, we've already made a selection
     if (!selectMultiple())
@@ -259,7 +259,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     // selected
     for (BusinessDAOIF item : items)
       if (EntityGenerator.getRandom().nextBoolean())
-        object.addItem(this.definesAttribute(), item.getId());
+        object.addItem(this.definesAttribute(), item.getOid());
   }
 
   /**
@@ -411,9 +411,9 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MdAttributeEnumerationDAOIF get(String id)
+  public static MdAttributeEnumerationDAOIF get(String oid)
   {
-    return (MdAttributeEnumerationDAOIF) BusinessDAO.get(id);
+    return (MdAttributeEnumerationDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

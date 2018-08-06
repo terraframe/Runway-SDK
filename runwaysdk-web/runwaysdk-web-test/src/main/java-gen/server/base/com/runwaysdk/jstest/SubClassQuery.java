@@ -136,13 +136,13 @@ private static final long serialVersionUID = -978449862;
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.jstest.SubClass subClass)
     {
       if(subClass == null) return this.EQ((java.lang.String)null);
-      return this.EQ(subClass.getId());
+      return this.EQ(subClass.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.jstest.SubClass subClass)
     {
       if(subClass == null) return this.NE((java.lang.String)null);
-      return this.NE(subClass.getId());
+      return this.NE(subClass.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getSubCharacter()

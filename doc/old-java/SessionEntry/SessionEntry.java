@@ -38,7 +38,7 @@ public class SessionEntry extends SessionEntryBase implements com.runwaysdk.gene
   }
 
   /**
-   * The key is simply the session id, which should always be unique regardless.
+   * The key is simply the session oid, which should always be unique regardless.
    */
   @Override
   protected final String buildKey()
@@ -182,7 +182,7 @@ public class SessionEntry extends SessionEntryBase implements com.runwaysdk.gene
   {
     try
     {
-      aquireLock(user.getId());
+      aquireLock(user.getOid());
 
       QueryFactory f = new QueryFactory();
       SessionEntryQuery q = new SessionEntryQuery(f);
@@ -205,7 +205,7 @@ public class SessionEntry extends SessionEntryBase implements com.runwaysdk.gene
     }
     finally
     {
-      releaseUnlock(user.getId());
+      releaseUnlock(user.getOid());
     }
 
   }
@@ -217,7 +217,7 @@ public class SessionEntry extends SessionEntryBase implements com.runwaysdk.gene
    */
   public static SessionEntry get()
   {
-    return get(GeodashboardUser.getCurrentUser(), Session.getCurrentSession().getId());
+    return get(GeodashboardUser.getCurrentUser(), Session.getCurrentSession().getOid());
   }
 
   /**
@@ -264,9 +264,9 @@ public class SessionEntry extends SessionEntryBase implements com.runwaysdk.gene
   public static DashboardMap createMapForSession()
   {
     SessionIF session = Session.getCurrentSession();
-    String sessionId = session.getId();
+    String sessionId = session.getOid();
 
-    Users user = Users.get(session.getUser().getId());
+    Users user = Users.get(session.getUser().getOid());
 
     // Create a SessionEntry and link it to the map.
     SessionEntry entry = get(user, sessionId);

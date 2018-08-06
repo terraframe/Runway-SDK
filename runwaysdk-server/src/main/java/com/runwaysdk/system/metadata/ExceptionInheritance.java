@@ -29,7 +29,7 @@ public class ExceptionInheritance extends ExceptionInheritanceBase
   
   public ExceptionInheritance(com.runwaysdk.system.metadata.MdException parent, com.runwaysdk.system.metadata.MdException child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

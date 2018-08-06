@@ -609,11 +609,11 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getId()
+   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getOid()
    */
-  public String getId()
+  public String getOid()
   {
-    return this.mdAttributeConcreteIF.getId();
+    return this.mdAttributeConcreteIF.getOid();
   }
 
   /**
@@ -721,7 +721,7 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   public String getPermissionKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDimensionDAOIF getMdAttributeDimension(MdDimensionDAOIF mdDimension)

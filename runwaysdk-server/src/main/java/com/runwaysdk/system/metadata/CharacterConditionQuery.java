@@ -214,13 +214,13 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.CharacterCondition characterCondition)
     {
       if(characterCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(characterCondition.getId());
+      return this.EQ(characterCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.CharacterCondition characterCondition)
     {
       if(characterCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(characterCondition.getId());
+      return this.NE(characterCondition.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdFieldQuery.MdFieldQueryReferenceIF getDefiningMdField()
@@ -351,7 +351,7 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
 
       for (int i=0; i<characterCondition.length; i++)
       {
-        itemIdArray[i] = characterCondition[i].getId();
+        itemIdArray[i] = characterCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -363,7 +363,7 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
 
       for (int i=0; i<characterCondition.length; i++)
       {
-        itemIdArray[i] = characterCondition[i].getId();
+        itemIdArray[i] = characterCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -375,7 +375,7 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
 
       for (int i=0; i<characterCondition.length; i++)
       {
-        itemIdArray[i] = characterCondition[i].getId();
+        itemIdArray[i] = characterCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -387,7 +387,7 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
 
       for (int i=0; i<characterCondition.length; i++)
       {
-        itemIdArray[i] = characterCondition[i].getId();
+        itemIdArray[i] = characterCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -399,7 +399,7 @@ public  class CharacterConditionQuery extends com.runwaysdk.system.metadata.Fiel
 
       for (int i=0; i<characterCondition.length; i++)
       {
-        itemIdArray[i] = characterCondition[i].getId();
+        itemIdArray[i] = characterCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

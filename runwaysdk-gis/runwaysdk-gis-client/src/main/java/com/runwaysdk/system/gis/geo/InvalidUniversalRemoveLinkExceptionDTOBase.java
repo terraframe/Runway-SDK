@@ -71,7 +71,7 @@ public abstract class InvalidUniversalRemoveLinkExceptionDTOBase extends com.run
   
   public static java.lang.String CHILDUNI = "childUni";
   public static java.lang.String GEOENTITIES = "geoEntities";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String PARENTUNI = "parentUni";
   public String getChildUni()
   {
@@ -194,7 +194,7 @@ public abstract class InvalidUniversalRemoveLinkExceptionDTOBase extends com.run
     
     template = template.replace("{childUni}", this.getChildUni().toString());
     template = template.replace("{geoEntities}", this.getGeoEntities().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{parentUni}", this.getParentUni().toString());
     
     return template;

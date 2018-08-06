@@ -24,23 +24,23 @@ import com.runwaysdk.business.BusinessQuery;
 public interface SelectableReference extends Selectable
 {
   /**
-   * Returns an attribute character statement object representing the object's id attribute.
+   * Returns an attribute character statement object representing the object's oid attribute.
    * @param attributeName name of the attribute.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter id();
+  public AttributeCharacter oid();
 
 
   // Equals
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id);
+  public BasicCondition EQ(String oid);
   
   /**
-   * Compares the id to an array of ids for
+   * Compares the oid to an array of ids for
    * equality.
    * 
    * @param statementArray
@@ -49,7 +49,7 @@ public interface SelectableReference extends Selectable
   public BasicCondition IN(String ... ids);
   
   /**
-   * Comopares the id to an array of ids for inequality.
+   * Comopares the oid to an array of ids for inequality.
    * 
    * @param ids
    * @return
@@ -129,11 +129,11 @@ public interface SelectableReference extends Selectable
 
   // Not Equals
   /**
-   * Compares the id of a component for non equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for non equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition NE(String id);
+  public BasicCondition NE(String oid);
 
   /**
    * Character Not Equals.

@@ -41,8 +41,8 @@ public abstract class ElementBaseGenerator extends EntityBaseGenerator
   {    
     List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
     Type returnType = new Type(this.getSubClassName());
-    MdParameterDAO id = GenerationUtil.getMdParameterId();
-    list.add(0, id);
+    MdParameterDAO oid = GenerationUtil.getMdParameterId();
+    list.add(0, oid);
 
     //Write the lock method
     addStaticMethod("lock", returnType, list);
@@ -64,7 +64,7 @@ public abstract class ElementBaseGenerator extends EntityBaseGenerator
     
     getWriter().writeLine("public " + modifier + returnType.getType() + " " + methodName + "(" + parameters + ")" + throwsStatement);
     getWriter().openBracket();
-    getWriter().writeLine(this.getSubClassName() + " _instance = " + this.getSubClassName() + ".get(id);");
+    getWriter().writeLine(this.getSubClassName() + " _instance = " + this.getSubClassName() + ".get(oid);");
     getWriter().writeLine("_instance." + methodName + "(" + parameterNames + ");");
     getWriter().writeLine("");
     getWriter().writeLine("return _instance;");

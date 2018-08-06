@@ -71,7 +71,7 @@ public class HardCodedMetadataIterator
     
       Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
-      String id = this.resultSet.getString(EntityDAOIF.ID_COLUMN).toString();
+      String oid = this.resultSet.getString(EntityDAOIF.ID_COLUMN).toString();
 
       if (this.relationshipAttributesHackMap != null)
       {
@@ -79,7 +79,7 @@ public class HardCodedMetadataIterator
         relHackMap.put(RelationshipInfo.PARENT_ID, this.resultSet.getString(RelationshipDAOIF.PARENT_ID_COLUMN).toString());
         relHackMap.put(RelationshipInfo.CHILD_ID, this.resultSet.getString(RelationshipDAOIF.CHILD_ID_COLUMN).toString());
 
-        this.relationshipAttributesHackMap.put(id, relHackMap);
+        this.relationshipAttributesHackMap.put(oid, relHackMap);
       }
 
       Map<String, Map<String, String>> mdAttributeInfoMap = DefaultMdEntityInfo.getAttributeMapForType(this.type);
@@ -122,7 +122,7 @@ public class HardCodedMetadataIterator
         }
       }
 
-      tupleMap.put(id, attributeMap);
+      tupleMap.put(oid, attributeMap);
     }
     catch (SQLException sqlEx1)
     {

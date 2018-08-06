@@ -300,32 +300,32 @@ public class InstanceImportTest
       businessDAO1.setValue("testInteger", "17");
       businessDAO1.setValue("testText", "This is gonna get much worse.");
       businessDAO1.setValue("testClob", "This is gonna get much worse part 2, Electric Boogaloo.");
-      businessDAO1.addItem("testEnumeration", enumObject.getId());
+      businessDAO1.addItem("testEnumeration", enumObject.getOid());
       businessDAO1.apply();
 
       BusinessDAO businessDAO2 = BusinessDAO.newInstance(mdBusiness2.definesType());
       businessDAO2.apply();
 
-      RelationshipDAO relationshipDAO1 = RelationshipDAO.newInstance(businessDAO2.getId(), businessDAO1.getId(), mdRelationship.definesType());
+      RelationshipDAO relationshipDAO1 = RelationshipDAO.newInstance(businessDAO2.getOid(), businessDAO1.getOid(), mdRelationship.definesType());
       relationshipDAO1.setValue("testChar", "Hello World!!!");
       relationshipDAO1.apply();
 
       TransactionExportManager.export(new LinkedList<String>(), CommonProperties.getTransactionXMLschemaLocation(), "testExport", EXPROT_TEST_DIR, new TransactionEventChangeListener());
 
-      mdEnumeration = MdEnumerationDAO.get(mdEnumeration.getId()).getBusinessDAO();
+      mdEnumeration = MdEnumerationDAO.get(mdEnumeration.getOid()).getBusinessDAO();
 
-      Map<String, Object> newUserA = loadAttributes(EntityDAO.get(newUser.getId()).getAttributeArrayIF());
-      Map<String, Object> mdEnumerationA = loadAttributes(EntityDAO.get(mdEnumeration.getId()).getAttributeArrayIF());
-      Map<String, Object> mdBusinessA = loadAttributes(MdBusinessDAO.get(mdBusiness.getId()).getAttributeArrayIF());
-      Map<String, Object> mdBusinessA2 = loadAttributes(MdBusinessDAO.get(mdBusiness2.getId()).getAttributeArrayIF());
-      Map<String, Object> mdRelationshipA = loadAttributes(MdRelationshipDAO.get(mdRelationship.getId()).getAttributeArrayIF());
-      Map<String, Object> businessDAO1A = loadAttributes(EntityDAO.get(businessDAO1.getId()).getAttributeArrayIF());
-      Map<String, Object> businessDAO2A = loadAttributes(EntityDAO.get(businessDAO2.getId()).getAttributeArrayIF());
-      Map<String, Object> relationshipA = loadAttributes(EntityDAO.get(relationshipDAO1.getId()).getAttributeArrayIF());
+      Map<String, Object> newUserA = loadAttributes(EntityDAO.get(newUser.getOid()).getAttributeArrayIF());
+      Map<String, Object> mdEnumerationA = loadAttributes(EntityDAO.get(mdEnumeration.getOid()).getAttributeArrayIF());
+      Map<String, Object> mdBusinessA = loadAttributes(MdBusinessDAO.get(mdBusiness.getOid()).getAttributeArrayIF());
+      Map<String, Object> mdBusinessA2 = loadAttributes(MdBusinessDAO.get(mdBusiness2.getOid()).getAttributeArrayIF());
+      Map<String, Object> mdRelationshipA = loadAttributes(MdRelationshipDAO.get(mdRelationship.getOid()).getAttributeArrayIF());
+      Map<String, Object> businessDAO1A = loadAttributes(EntityDAO.get(businessDAO1.getOid()).getAttributeArrayIF());
+      Map<String, Object> businessDAO2A = loadAttributes(EntityDAO.get(businessDAO2.getOid()).getAttributeArrayIF());
+      Map<String, Object> relationshipA = loadAttributes(EntityDAO.get(relationshipDAO1.getOid()).getAttributeArrayIF());
 
-      String d1id = businessDAO1.getId();
-      String d2id = businessDAO2.getId();
-      String r1id = relationshipDAO1.getId();
+      String d1id = businessDAO1.getOid();
+      String d2id = businessDAO2.getOid();
+      String r1id = relationshipDAO1.getOid();
 
       if (cleanupData)
       {
@@ -380,7 +380,7 @@ public class InstanceImportTest
     mdBusinessEnum.apply();
 
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessEnum.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessEnum.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.NAME, "AllValues");
     mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, "test.enumeration");
     mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllValues");
@@ -393,14 +393,14 @@ public class InstanceImportTest
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Blob");
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Blob");
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeBlob.setValue(MdAttributeBlobInfo.NAME, "testBlob");
     mdAttributeBlob.apply();
 
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -409,7 +409,7 @@ public class InstanceImportTest
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttributeBoolean.apply();
 
-    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeDecimal.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Decimal");
     mdAttributeDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Decimal");
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -421,7 +421,7 @@ public class InstanceImportTest
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "2");
     mdAttributeDecimal.apply();
 
-    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeDouble.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Double");
     mdAttributeDouble.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Double");
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -433,7 +433,7 @@ public class InstanceImportTest
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "2");
     mdAttributeDouble.apply();
 
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeFloat.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Float");
     mdAttributeFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Float");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -445,7 +445,7 @@ public class InstanceImportTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "2");
     mdAttributeFloat.apply();
 
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Integer");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -455,27 +455,27 @@ public class InstanceImportTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.apply();
 
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeText.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Text");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Text");
     mdAttributeText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "testText");
     mdAttributeText.apply();
 
-    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeClob.setStructValue(MdAttributeClobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Clob");
     mdAttributeClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Clob");
     mdAttributeClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeClob.setValue(MdAttributeClobInfo.NAME, "testClob");
     mdAttributeClob.apply();
 
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DESCRIPTION, "Test Enumeration");
     mdAttributeEnumeration.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Enumeration");
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.NAME, "testEnumeration");
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
     mdAttributeEnumeration.apply();
 
     mdBusiness2.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
@@ -489,16 +489,16 @@ public class InstanceImportTest
     mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Relationship 1");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class 1");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "Class1");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class 2");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness2.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness2.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "Class2");
     mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
 
-    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdRelationship.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, "testChar");
@@ -538,7 +538,7 @@ public class InstanceImportTest
   //
   // InstanceImporter.runImport(new File(INSTANCE_SET), SCHEMA_LOCATION);
   //
-  // BusinessDAOIF d = BusinessDAO.get(businessDAO1.getId());
+  // BusinessDAOIF d = BusinessDAO.get(businessDAO1.getOid());
   //
   // Assert.assertEquals(seq, d.getSequence());
   // Assert.assertEquals("secondValue", d.getValue("testChar"));
@@ -557,7 +557,7 @@ public class InstanceImportTest
   // MdAttributeCharacterDAO mdAttribute =
   // MdAttributeCharacterDAO.newInstance();
   // mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS,
-  // mdBusiness.getId());
+  // mdBusiness.getOid());
   // mdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION,
   // MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
   // mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,
@@ -579,8 +579,8 @@ public class InstanceImportTest
   // InstanceImporter.runImport(new File(SEQUENCE_TEST1), SCHEMA_LOCATION);
   // InstanceImporter.runImport(new File(SEQUENCE_TEST2), SCHEMA_LOCATION);
   //
-  // String id = EntityDAO.getEntityIdsDB(CLASS).get(0);
-  // BusinessDAOIF businessDAO = BusinessDAO.get(id);
+  // String oid = EntityDAO.getEntityIdsDB(CLASS).get(0);
+  // BusinessDAOIF businessDAO = BusinessDAO.get(oid);
   //
   // Assert.assertEquals(21975, businessDAO.getSequence());
   // Assert.assertEquals("secondValue",
@@ -596,8 +596,8 @@ public class InstanceImportTest
   // InstanceImporter.runImport(new File(SEQUENCE_TEST1), SCHEMA_LOCATION);
   // InstanceImporter.runImport(new File(SEQUENCE_TEST3), SCHEMA_LOCATION);
   //
-  // String id = EntityDAO.getEntityIdsDB(CLASS).get(0);
-  // BusinessDAOIF businessDAO = BusinessDAO.get(id);
+  // String oid = EntityDAO.getEntityIdsDB(CLASS).get(0);
+  // BusinessDAOIF businessDAO = BusinessDAO.get(oid);
   //
   // Assert.assertEquals(21974, businessDAO.getSequence());
   // Assert.assertEquals("firstValue",
@@ -612,8 +612,8 @@ public class InstanceImportTest
   // {
   // InstanceImporter.runImport(new File(UNKNOWN_REFERENCE), SCHEMA_LOCATION);
   //
-  // String id = EntityDAO.getEntityIdsDB(CLASS).get(0);
-  // BusinessDAOIF businessDAO = BusinessDAO.get(id);
+  // String oid = EntityDAO.getEntityIdsDB(CLASS).get(0);
+  // BusinessDAOIF businessDAO = BusinessDAO.get(oid);
   //
   // // The reference does not exist in the database
   // Assert.assertEquals("8przkwyitd0aysugzn0p1fpyin4uq2m26vox54re7owwda4ivvx5yybva0n2a15n",
@@ -631,20 +631,20 @@ public class InstanceImportTest
   // ddlCreateTestState(mdBusiness, mdState);
   //
   // StateMasterDAO state1 = mdState.addState("Start_State",
-  // StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
+  // StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getOid());
   // String stateId = state1.apply();
   //
   // StateMasterDAO state2 = mdState.addState("End_State",
-  // StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
+  // StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getOid());
   // state2.apply();
   //
   // RelationshipDAO transition = mdState.addTransition("GoTran",
-  // state1.getId(), state2.getId());
+  // state1.getOid(), state2.getOid());
   // transition.apply();
   //
   // BusinessDAO businessDAO =
   // BusinessDAO.newInstance(mdBusiness.definesType());
-  // String id = businessDAO.apply();
+  // String oid = businessDAO.apply();
   // businessDAO.promote("GoTran");
   //
   // Assert.assertEquals(state2, businessDAO.currentState());
@@ -658,7 +658,7 @@ public class InstanceImportTest
   //
   // InstanceImporter.runImport(new File(INSTANCE_SET), SCHEMA_LOCATION);
   //
-  // BusinessDAOIF data = BusinessDAO.get(id);
+  // BusinessDAOIF data = BusinessDAO.get(oid);
   // BusinessDAOIF state = BusinessDAO.get(stateId);
   //
   // Assert.assertEquals(state2, data.currentState());
@@ -699,8 +699,8 @@ public class InstanceImportTest
   // BusinessDAO businessDAO =
   // BusinessDAO.newInstance(mdBusiness.definesType());
   // businessDAO.addStructItem("testStruct", "testEnumeration",
-  // enumObject.getId());
-  // String id = businessDAO.apply();
+  // enumObject.getOid());
+  // String oid = businessDAO.apply();
   // // Heads up: change
   // // FileInstanceExporter.export(INSTANCE_SET, SCHEMA_LOCATION.toString(),
   // // mdBusinessEnum.getSequence(), false);
@@ -720,7 +720,7 @@ public class InstanceImportTest
   // .getAttributeArrayIF(), mdEnumerationA));
   // Assert.assertTrue(checkAttributes(MdBusinessDAO.getMdElementDAO(CLASS).getAttributeArrayIF(),
   // mdBusinessA));
-  // Assert.assertTrue(checkAttributes(BusinessDAO.get(id).getAttributeArrayIF(),
+  // Assert.assertTrue(checkAttributes(BusinessDAO.get(oid).getAttributeArrayIF(),
   // businessDAO1A));
   //
   // // Clean up
@@ -741,7 +741,7 @@ public class InstanceImportTest
     mdBusinessEnum.apply();
 
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessEnum.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessEnum.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.NAME, "AllValues");
     mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, "test.enumeration");
     mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllValues");
@@ -752,13 +752,13 @@ public class InstanceImportTest
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Basic 1");
     mdStruct.apply();
 
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getId());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getOid());
     mdAttributeEnumeration.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Enumeration");
     mdAttributeEnumeration.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Enumeration");
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.NAME, "testEnumeration");
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
     mdAttributeEnumeration.apply();
 
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.xmlclasses");
@@ -766,12 +766,12 @@ public class InstanceImportTest
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Importer Class 1");
     mdBusiness.apply();
 
-    mdAttributeStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeStruct.setStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Struct");
     mdAttributeStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Struct");
     mdAttributeStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeStruct.setValue(MdAttributeStructInfo.NAME, "testStruct");
-    mdAttributeStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttributeStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttributeStruct.apply();
   }
 
@@ -807,7 +807,7 @@ public class InstanceImportTest
 
         for (BusinessDAOIF businessDAO : enu.dereference())
         {
-          if (!list.contains(businessDAO.getId()))
+          if (!list.contains(businessDAO.getOid()))
           {
             return false;
           }
@@ -872,7 +872,7 @@ public class InstanceImportTest
 
         for (BusinessDAOIF businessDAO : enu.dereference())
         {
-          list.add(businessDAO.getId());
+          list.add(businessDAO.getOid());
         }
 
         hashMap.put(enu.getName(), list);
@@ -959,7 +959,7 @@ public class InstanceImportTest
     mdCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
     mdCharacter.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
     mdCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_CHARACTER);
-    mdCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdCharacter.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -989,15 +989,15 @@ public class InstanceImportTest
     MdAttributeReferenceDAO mdReference = MdAttributeReferenceDAO.newInstance();
     mdReference.setValue(MdAttributeReferenceInfo.NAME, "testRef");
     mdReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testRef");
-    mdReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-    mdReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusiness.getId());
+    mdReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+    mdReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusiness.getOid());
     mdReference.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO.apply();
 
     BusinessDAO businessDAO2 = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO2.setValue("testRef", businessDAO.getId());
+    businessDAO2.setValue("testRef", businessDAO.getOid());
     businessDAO2.apply();
     // Heads up: change
     // FileInstanceExporter.export(UNKNOWN_REFERENCE,

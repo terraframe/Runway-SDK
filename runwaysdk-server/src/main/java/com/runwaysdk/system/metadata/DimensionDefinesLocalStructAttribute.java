@@ -29,7 +29,7 @@ public class DimensionDefinesLocalStructAttribute extends DimensionDefinesLocalS
   
   public DimensionDefinesLocalStructAttribute(com.runwaysdk.system.metadata.MdDimension parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

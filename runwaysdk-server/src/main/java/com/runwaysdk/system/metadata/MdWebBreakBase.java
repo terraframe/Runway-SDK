@@ -41,9 +41,9 @@ public abstract class MdWebBreakBase extends com.runwaysdk.system.metadata.MdWeb
     return CLASS;
   }
   
-  public static MdWebBreak get(String id)
+  public static MdWebBreak get(String oid)
   {
-    return (MdWebBreak) com.runwaysdk.business.Business.get(id);
+    return (MdWebBreak) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebBreak getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebBreakBase extends com.runwaysdk.system.metadata.MdWeb
     return (MdWebBreak) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebBreak lock(java.lang.String id)
+  public static MdWebBreak lock(java.lang.String oid)
   {
-    MdWebBreak _instance = MdWebBreak.get(id);
+    MdWebBreak _instance = MdWebBreak.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebBreak unlock(java.lang.String id)
+  public static MdWebBreak unlock(java.lang.String oid)
   {
-    MdWebBreak _instance = MdWebBreak.get(id);
+    MdWebBreak _instance = MdWebBreak.get(oid);
     _instance.unlock();
     
     return _instance;

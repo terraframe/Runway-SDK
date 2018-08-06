@@ -35,19 +35,19 @@ public class UniversalView extends UniversalViewBase
   
   public String toString()
   {
-    String template = "[%s] - Type [%s] with id [%s].";
+    String template = "[%s] - Type [%s] with oid [%s].";
     Object [] args = new Object[]{this.getClassDisplayLabel(), this.getDisplayLabel(), this.getUniversalId()};
     return String.format(template, args);
   };
   
   /**
-   * Returns a UniversalView representing the Universal with the given id.
-   * @param id
+   * Returns a UniversalView representing the Universal with the given oid.
+   * @param oid
    * @return
    */
-  public static UniversalView getUniversalView(String id)
+  public static UniversalView getUniversalView(String oid)
   {
-    return getUniversalViews(id)[0];
+    return getUniversalViews(oid)[0];
   }
   
   /**
@@ -90,7 +90,7 @@ public class UniversalView extends UniversalViewBase
     
     if(!equals && obj instanceof Universal)
     {
-      equals = ((Universal) obj).getId().equals(this.getUniversalId());
+      equals = ((Universal) obj).getOid().equals(this.getUniversalId());
     }
     
     return equals;

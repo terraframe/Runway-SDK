@@ -194,7 +194,7 @@ public abstract class DTOToJSON
       String description = mdDTO.getDescription();
       boolean required = mdDTO.isRequired();
       boolean immutable = mdDTO.isImmutable();
-      String id = mdDTO.getId();
+      String oid = mdDTO.getOid();
       boolean system = mdDTO.isSystem();
       String name = mdDTO.getName();
 
@@ -210,8 +210,8 @@ public abstract class DTOToJSON
       // immutable
       metadata.put(JSON.ATTRIBUTE_METADATA_IMMUTABLE.getLabel(), immutable);
 
-      // id
-      metadata.put(JSON.ATTRIBUTE_METADATA_ID.getLabel(), id);
+      // oid
+      metadata.put(JSON.ATTRIBUTE_METADATA_ID.getLabel(), oid);
 
       // name
       metadata.put(JSON.ATTRIBUTE_METADATA_NAME.getLabel(), name);

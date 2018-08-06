@@ -176,9 +176,9 @@ public abstract class MdDimensionBase extends com.runwaysdk.system.metadata.Meta
     }
   }
   
-  public static MdDimension get(String id)
+  public static MdDimension get(String oid)
   {
-    return (MdDimension) com.runwaysdk.business.Business.get(id);
+    return (MdDimension) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdDimension getByKey(String key)
@@ -186,17 +186,17 @@ public abstract class MdDimensionBase extends com.runwaysdk.system.metadata.Meta
     return (MdDimension) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdDimension lock(java.lang.String id)
+  public static MdDimension lock(java.lang.String oid)
   {
-    MdDimension _instance = MdDimension.get(id);
+    MdDimension _instance = MdDimension.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdDimension unlock(java.lang.String id)
+  public static MdDimension unlock(java.lang.String oid)
   {
-    MdDimension _instance = MdDimension.get(id);
+    MdDimension _instance = MdDimension.get(oid);
     _instance.unlock();
     
     return _instance;

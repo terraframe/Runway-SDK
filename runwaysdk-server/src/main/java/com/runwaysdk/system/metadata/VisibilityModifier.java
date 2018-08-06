@@ -51,10 +51,10 @@ public enum VisibilityModifier implements com.runwaysdk.business.BusinessEnumera
     return enumeration.getJavaValue();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -69,11 +69,11 @@ public enum VisibilityModifier implements com.runwaysdk.business.BusinessEnumera
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static VisibilityModifier get(String id)
+  public static VisibilityModifier get(String oid)
   {
     for (VisibilityModifier e : VisibilityModifier.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

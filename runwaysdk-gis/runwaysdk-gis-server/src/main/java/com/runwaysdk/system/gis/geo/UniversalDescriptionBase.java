@@ -30,7 +30,7 @@ public abstract class UniversalDescriptionBase extends com.runwaysdk.business.Lo
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalDescription";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 1671435948;
@@ -45,9 +45,9 @@ public abstract class UniversalDescriptionBase extends com.runwaysdk.business.Lo
     super(component, structName);
   }
   
-  public static UniversalDescription get(String id)
+  public static UniversalDescription get(String oid)
   {
-    return (UniversalDescription) com.runwaysdk.business.Struct.get(id);
+    return (UniversalDescription) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static UniversalDescription getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class UniversalDescriptionBase extends com.runwaysdk.business.Lo
     return (UniversalDescription) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class UniversalDescriptionBase extends com.runwaysdk.business.Lo
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.UniversalDescription.CLASS);
     return mdClassIF.definesAttribute(ID);

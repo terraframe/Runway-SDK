@@ -384,13 +384,13 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.IndicatorComposite indicatorComposite)
     {
       if(indicatorComposite == null) return this.EQ((java.lang.String)null);
-      return this.EQ(indicatorComposite.getId());
+      return this.EQ(indicatorComposite.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.IndicatorComposite indicatorComposite)
     {
       if(indicatorComposite == null) return this.NE((java.lang.String)null);
-      return this.NE(indicatorComposite.getId());
+      return this.NE(indicatorComposite.getOid());
     }
 
   public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getLeftOperand()
@@ -661,7 +661,7 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorComposite.length; i++)
       {
-        itemIdArray[i] = indicatorComposite[i].getId();
+        itemIdArray[i] = indicatorComposite[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -673,7 +673,7 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorComposite.length; i++)
       {
-        itemIdArray[i] = indicatorComposite[i].getId();
+        itemIdArray[i] = indicatorComposite[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -685,7 +685,7 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorComposite.length; i++)
       {
-        itemIdArray[i] = indicatorComposite[i].getId();
+        itemIdArray[i] = indicatorComposite[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -697,7 +697,7 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorComposite.length; i++)
       {
-        itemIdArray[i] = indicatorComposite[i].getId();
+        itemIdArray[i] = indicatorComposite[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -709,7 +709,7 @@ public  class IndicatorCompositeQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorComposite.length; i++)
       {
-        itemIdArray[i] = indicatorComposite[i].getId();
+        itemIdArray[i] = indicatorComposite[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

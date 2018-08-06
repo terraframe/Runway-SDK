@@ -138,20 +138,20 @@ public interface SessionIF
   public boolean closeOnEndOfRequest();
 
   /**
-   * Returns the Mutable object with the given id that has been stored in this
+   * Returns the Mutable object with the given oid that has been stored in this
    * session. If the object does not exist, it returns null.
    * 
-   * @param id
+   * @param oid
    *          .
-   * @return Mutable object with the given id that has been stored in this
+   * @return Mutable object with the given oid that has been stored in this
    *         session or null if no object exists.
    */
-  public Mutable get(String id);
+  public Mutable get(String oid);
 
   /**
-   * @return The id of the session
+   * @return The oid of the session
    */
-  public String getId();
+  public String getOid();
 
   /**
    * @return locale used by this session.

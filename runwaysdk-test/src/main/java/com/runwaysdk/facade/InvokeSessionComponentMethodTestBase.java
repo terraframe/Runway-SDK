@@ -149,20 +149,20 @@ public class InvokeSessionComponentMethodTestBase
     aBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
     aBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     aBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
-    aBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdSessionDTO.getId());
+    aBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdSessionDTO.getOid());
     aBoolean.apply();
 
     MdAttributeCharacterDAO aCharacter = MdAttributeCharacterDAO.newInstance();
     aCharacter.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     aCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     aCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    aCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdSessionDTO.getId());
+    aCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdSessionDTO.getOid());
     aCharacter.apply();
 
     MdAttributeDoubleDAO aDouble = MdAttributeDoubleDAO.newInstance();
     aDouble.setValue(MdAttributeDoubleInfo.NAME, "aDouble");
     aDouble.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
-    aDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdSessionDTO.getId());
+    aDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdSessionDTO.getOid());
     aDouble.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     aDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
     aDouble.apply();
@@ -170,7 +170,7 @@ public class InvokeSessionComponentMethodTestBase
     MdAttributeLongDAO aLong = MdAttributeLongDAO.newInstance();
     aLong.setValue(MdAttributeLongInfo.NAME, "aLong");
     aLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
-    aLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdSessionDTO.getId());
+    aLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdSessionDTO.getOid());
     aLong.apply();
 
     mdUtilParam = MdUtilDAO.newInstance();
@@ -184,7 +184,7 @@ public class InvokeSessionComponentMethodTestBase
     utilCharacter.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     utilCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     utilCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    utilCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdUtilParam.getId());
+    utilCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdUtilParam.getOid());
     utilCharacter.apply();
 
     mdViewParam = MdViewDAO.newInstance();
@@ -198,14 +198,14 @@ public class InvokeSessionComponentMethodTestBase
     viewCharacter.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     viewCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     viewCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    viewCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdViewParam.getId());
+    viewCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdViewParam.getOid());
     viewCharacter.apply();
 
     bag.setValue(MdSessionInfo.NAME, bagTypeName);
     bag.setValue(MdSessionInfo.PACKAGE, pack);
     bag.setValue(MdSessionInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     bag.setStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Bag");
-    bag.setValue(superClassField, mdSessionDTO.getId());
+    bag.setValue(superClassField, mdSessionDTO.getOid());
     bag.apply();
 
     MdBusinessDAOIF enumMaster = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
@@ -215,13 +215,13 @@ public class InvokeSessionComponentMethodTestBase
     states.setValue(MdBusinessInfo.PACKAGE, pack);
     states.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     states.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes");
-    states.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMaster.getId());
+    states.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMaster.getOid());
     states.apply();
 
     stateEnum = MdEnumerationDAO.newInstance();
     stateEnum.setValue(MdEnumerationInfo.NAME, stateTypeName);
     stateEnum.setValue(MdEnumerationInfo.PACKAGE, pack);
-    stateEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, states.getId());
+    stateEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, states.getOid());
     stateEnum.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All States");
     stateEnum.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     stateEnum.apply();
@@ -230,14 +230,14 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod1.setValue(MdMethodInfo.RETURN_TYPE, sessionType);
     mdMethod1.setValue(MdMethodInfo.NAME, "sortNumbers");
     mdMethod1.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Number");
-    mdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod1.apply();
 
     MdParameterDAO mdParameter = MdParameterDAO.newInstance();
     mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.Boolean");
     mdParameter.setValue(MdParameterInfo.NAME, "ascending");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ascending Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "1");
     mdParameter.apply();
 
@@ -245,7 +245,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter2.setValue(MdParameterInfo.TYPE, "java.lang.Long" + "[]");
     mdParameter2.setValue(MdParameterInfo.NAME, "numbers");
     mdParameter2.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Numbers Parameter");
-    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getId());
+    mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod1.getOid());
     mdParameter2.setValue(MdParameterInfo.ORDER, "0");
     mdParameter2.apply();
 
@@ -253,21 +253,21 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod2.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod2.setValue(MdMethodInfo.NAME, "poopNothing");
     mdMethod2.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Poop Nothing");
-    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod2.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod2.apply();
 
     mdMethod3 = MdMethodDAO.newInstance();
     mdMethod3.setValue(MdMethodInfo.RETURN_TYPE, sessionType + "[]");
     mdMethod3.setValue(MdMethodInfo.NAME, "sortSessions");
     mdMethod3.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Sessions");
-    mdMethod3.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod3.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod3.apply();
 
     MdParameterDAO mdParameter3 = MdParameterDAO.newInstance();
     mdParameter3.setValue(MdParameterInfo.TYPE, sessionType + "[]");
     mdParameter3.setValue(MdParameterInfo.NAME, "sessions");
     mdParameter3.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sessions Parameter");
-    mdParameter3.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getId());
+    mdParameter3.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getOid());
     mdParameter3.setValue(MdParameterInfo.ORDER, "0");
     mdParameter3.apply();
 
@@ -275,7 +275,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter5.setValue(MdParameterInfo.TYPE, "java.lang.String");
     mdParameter5.setValue(MdParameterInfo.NAME, "sessionName");
     mdParameter5.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Session Name Parameter");
-    mdParameter5.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getId());
+    mdParameter5.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod3.getOid());
     mdParameter5.setValue(MdParameterInfo.ORDER, "1");
     mdParameter5.apply();
 
@@ -283,14 +283,14 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod4.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod4.setValue(MdMethodInfo.NAME, "testMethod");
     mdMethod4.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
-    mdMethod4.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod4.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod4.apply();
 
     MdParameterDAO mdParameter4 = MdParameterDAO.newInstance();
     mdParameter4.setValue(MdParameterInfo.TYPE, sessionType);
     mdParameter4.setValue(MdParameterInfo.NAME, "mdSessionDTO");
     mdParameter4.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Session Parameter");
-    mdParameter4.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod4.getId());
+    mdParameter4.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod4.getOid());
     mdParameter4.setValue(MdParameterInfo.ORDER, "0");
     mdParameter4.apply();
 
@@ -298,14 +298,14 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod5.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.String[][]");
     mdMethod5.setValue(MdMethodInfo.NAME, "testMultiArray");
     mdMethod5.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
-    mdMethod5.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod5.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod5.apply();
 
     MdParameterDAO mdParameter6 = MdParameterDAO.newInstance();
     mdParameter6.setValue(MdParameterInfo.TYPE, sessionType + "[][][][]");
     mdParameter6.setValue(MdParameterInfo.NAME, "session4");
     mdParameter6.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Session Parameter");
-    mdParameter6.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod5.getId());
+    mdParameter6.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod5.getOid());
     mdParameter6.setValue(MdParameterInfo.ORDER, "0");
     mdParameter6.apply();
 
@@ -313,14 +313,14 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod7.setValue(MdMethodInfo.RETURN_TYPE, stateType + "[]");
     mdMethod7.setValue(MdMethodInfo.NAME, "getStates");
     mdMethod7.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test States");
-    mdMethod7.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod7.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod7.apply();
 
     MdParameterDAO mdParameter9 = MdParameterDAO.newInstance();
     mdParameter9.setValue(MdParameterInfo.TYPE, stateType);
     mdParameter9.setValue(MdParameterInfo.NAME, "state");
     mdParameter9.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Parameter");
-    mdParameter9.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod7.getId());
+    mdParameter9.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod7.getOid());
     mdParameter9.setValue(MdParameterInfo.ORDER, "0");
     mdParameter9.apply();
 
@@ -328,7 +328,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod8.setValue(MdMethodInfo.RETURN_TYPE, "java.lang.Integer[]");
     mdMethod8.setValue(MdMethodInfo.NAME, "sortIntegers");
     mdMethod8.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Integers");
-    mdMethod8.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod8.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod8.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod8.apply();
 
@@ -336,7 +336,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter10.setValue(MdParameterInfo.TYPE, "java.lang.Integer[]");
     mdParameter10.setValue(MdParameterInfo.NAME, "integers");
     mdParameter10.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integers Parameter");
-    mdParameter10.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod8.getId());
+    mdParameter10.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod8.getOid());
     mdParameter10.setValue(MdParameterInfo.ORDER, "0");
     mdParameter10.apply();
 
@@ -344,7 +344,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod9.setValue(MdMethodInfo.RETURN_TYPE, "java.util.Date[]");
     mdMethod9.setValue(MdMethodInfo.NAME, "getDates");
     mdMethod9.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Dates");
-    mdMethod9.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod9.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod9.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     mdMethod9.apply();
 
@@ -352,7 +352,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter11.setValue(MdParameterInfo.TYPE, "java.util.Date");
     mdParameter11.setValue(MdParameterInfo.NAME, "date");
     mdParameter11.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Parameter");
-    mdParameter11.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod9.getId());
+    mdParameter11.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod9.getOid());
     mdParameter11.setValue(MdParameterInfo.ORDER, "0");
     mdParameter11.apply();
 
@@ -360,7 +360,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod10.setValue(MdMethodInfo.RETURN_TYPE, utilParamType);
     mdMethod10.setValue(MdMethodInfo.NAME, "getUtil");
     mdMethod10.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Util Object");
-    mdMethod10.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod10.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod10.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod10.apply();
 
@@ -368,7 +368,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter12.setValue(MdParameterInfo.TYPE, utilParamType);
     mdParameter12.setValue(MdParameterInfo.NAME, "util");
     mdParameter12.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Util Object");
-    mdParameter12.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod10.getId());
+    mdParameter12.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod10.getOid());
     mdParameter12.setValue(MdParameterInfo.ORDER, "0");
     mdParameter12.apply();
 
@@ -376,7 +376,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod11.setValue(MdMethodInfo.RETURN_TYPE, viewParamType);
     mdMethod11.setValue(MdMethodInfo.NAME, "getView");
     mdMethod11.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get View Object");
-    mdMethod11.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod11.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod11.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod11.apply();
 
@@ -384,7 +384,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter13.setValue(MdParameterInfo.TYPE, viewParamType);
     mdParameter13.setValue(MdParameterInfo.NAME, "view");
     mdParameter13.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View Object");
-    mdParameter13.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod11.getId());
+    mdParameter13.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod11.getOid());
     mdParameter13.setValue(MdParameterInfo.ORDER, "0");
     mdParameter13.apply();
 
@@ -392,7 +392,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod12.setValue(MdMethodInfo.RETURN_TYPE, utilParamType + "[]");
     mdMethod12.setValue(MdMethodInfo.NAME, "utilArray");
     mdMethod12.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get Util Object Array");
-    mdMethod12.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod12.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod12.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod12.apply();
 
@@ -400,7 +400,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter14.setValue(MdParameterInfo.TYPE, utilParamType + "[]");
     mdParameter14.setValue(MdParameterInfo.NAME, "utilArray");
     mdParameter14.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Util Object Array");
-    mdParameter14.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod12.getId());
+    mdParameter14.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod12.getOid());
     mdParameter14.setValue(MdParameterInfo.ORDER, "0");
     mdParameter14.apply();
 
@@ -408,7 +408,7 @@ public class InvokeSessionComponentMethodTestBase
     mdMethod13.setValue(MdMethodInfo.RETURN_TYPE, viewParamType + "[]");
     mdMethod13.setValue(MdMethodInfo.NAME, "viewArray");
     mdMethod13.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get View Object Array");
-    mdMethod13.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getId());
+    mdMethod13.setValue(MdMethodInfo.REF_MD_TYPE, mdSessionDTO.getOid());
     mdMethod13.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
     mdMethod13.apply();
 
@@ -416,7 +416,7 @@ public class InvokeSessionComponentMethodTestBase
     mdParameter15.setValue(MdParameterInfo.TYPE, viewParamType + "[]");
     mdParameter15.setValue(MdParameterInfo.NAME, "viewArray");
     mdParameter15.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "View Object Array");
-    mdParameter15.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod13.getId());
+    mdParameter15.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod13.getOid());
     mdParameter15.setValue(MdParameterInfo.ORDER, "0");
     mdParameter15.apply();
 
@@ -454,7 +454,7 @@ public class InvokeSessionComponentMethodTestBase
 
   private static String getMethodStub()
   {
-    String[] sessionStubSource = { "package " + pack + ";", "public class " + sessionTypeName + " extends " + sessionTypeName + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public " + sessionTypeName + "()", "  {", "    super();", "  }", "  public static " + sessionTypeName + " get(String id)", "  {", getterMethodImplementation, "  }", "  public void testMethod(" + sessionType + " session)", "  {", "     if(session instanceof " + bagType + ")", "     {", "       this.setALong(session.getALong() + 10L);", "     }", "     else", "     {", "       this.setALong(session.getALong());", "     }", "     this.apply();", "  }", "  public " + sessionType + " sortNumbers(Long[] numbers, Boolean ascending)", "  {", "     " + sessionType + " session = new " + sessionType + "();",
+    String[] sessionStubSource = { "package " + pack + ";", "public class " + sessionTypeName + " extends " + sessionTypeName + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public " + sessionTypeName + "()", "  {", "    super();", "  }", "  public static " + sessionTypeName + " get(String oid)", "  {", getterMethodImplementation, "  }", "  public void testMethod(" + sessionType + " session)", "  {", "     if(session instanceof " + bagType + ")", "     {", "       this.setALong(session.getALong() + 10L);", "     }", "     else", "     {", "       this.setALong(session.getALong());", "     }", "     this.apply();", "  }", "  public " + sessionType + " sortNumbers(Long[] numbers, Boolean ascending)", "  {", "     " + sessionType + " session = new " + sessionType + "();",
         "     if(numbers.length > 0)", "     {", "       session.setALong(numbers[0]);", "     }", "     session.setABoolean(ascending);", "     return session;", "  }", "  public " + sessionType + "[] sortSessions(" + sessionType + "[] sessions, String sessionName)", "  {", "     " + sessionType + "[] out = new " + sessionType + "[sessions.length];", "     for(int i = 0; i < sessions.length; i++)", "     {", "       out[i] = new " + sessionType + "();", "       out[i].setACharacter(sessionName);", "       out[i].setALong(sessions[i].getALong());", "     }", "     return out;", "  }", "  public java.lang.String[][] testMultiArray(" + sessionType + "[][][][] session4)", "  {", "    String[][] output = new String[2][];",
         "    output[0] = new String[]{\"Yo my nizzle\", \"Leroy Im witha or against ya.\"};", "    output[1] = new String[]{session4.getClass().getName(), session4.getClass().getSimpleName()};",
 

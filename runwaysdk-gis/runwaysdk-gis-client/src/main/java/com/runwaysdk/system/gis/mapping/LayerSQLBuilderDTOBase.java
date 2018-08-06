@@ -50,7 +50,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
   public static java.lang.String DISPLAYATTRIBUTE = "displayAttribute";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMATTRIBUTE = "geomAttribute";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -147,7 +147,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(DISPLAYATTRIBUTE, value.getId());
+      setValue(DISPLAYATTRIBUTE, value.getOid());
     }
   }
   
@@ -196,7 +196,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -245,7 +245,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(GEOMATTRIBUTE, value.getId());
+      setValue(GEOMATTRIBUTE, value.getOid());
     }
   }
   
@@ -430,7 +430,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -541,9 +541,9 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(VIEWNAME).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO) dto;
   }
@@ -561,7 +561,7 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -574,10 +574,10 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -587,10 +587,10 @@ public abstract class LayerSQLBuilderDTOBase extends com.runwaysdk.business.Busi
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.LayerSQLBuilderDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

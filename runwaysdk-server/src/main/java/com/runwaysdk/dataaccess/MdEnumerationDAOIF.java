@@ -102,10 +102,10 @@ public interface MdEnumerationDAOIF extends MdTypeDAOIF
 
   /**
    * Adds the given enumeration item to this enumeration.
-   * @param id id of the enumerationItem item to add.
+   * @param oid oid of the enumerationItem item to add.
    */
   @Transaction
-  public void addEnumItem(String id);
+  public void addEnumItem(String oid);
 
   /**
    *Returns the MdBusinessIF that defines the master list of

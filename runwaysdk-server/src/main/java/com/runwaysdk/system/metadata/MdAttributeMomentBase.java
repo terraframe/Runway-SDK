@@ -41,9 +41,9 @@ public abstract class MdAttributeMomentBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdAttributeMoment get(String id)
+  public static MdAttributeMoment get(String oid)
   {
-    return (MdAttributeMoment) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeMoment) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeMoment getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeMomentBase extends com.runwaysdk.system.metadat
     return (MdAttributeMoment) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeMoment lock(java.lang.String id)
+  public static MdAttributeMoment lock(java.lang.String oid)
   {
-    MdAttributeMoment _instance = MdAttributeMoment.get(id);
+    MdAttributeMoment _instance = MdAttributeMoment.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeMoment unlock(java.lang.String id)
+  public static MdAttributeMoment unlock(java.lang.String oid)
   {
-    MdAttributeMoment _instance = MdAttributeMoment.get(id);
+    MdAttributeMoment _instance = MdAttributeMoment.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -79,7 +79,7 @@ public abstract class UsersBase extends com.runwaysdk.system.SingleActor
   {
     if(value != null)
     {
-      addEnumItem(LOCALE, value.getId());
+      addEnumItem(LOCALE, value.getOid());
     }
   }
   
@@ -87,7 +87,7 @@ public abstract class UsersBase extends com.runwaysdk.system.SingleActor
   {
     if(value != null)
     {
-      removeEnumItem(LOCALE, value.getId());
+      removeEnumItem(LOCALE, value.getOid());
     }
   }
   
@@ -196,9 +196,9 @@ public abstract class UsersBase extends com.runwaysdk.system.SingleActor
     return CLASS;
   }
   
-  public static Users get(String id)
+  public static Users get(String oid)
   {
-    return (Users) com.runwaysdk.business.Business.get(id);
+    return (Users) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Users getByKey(String key)
@@ -206,17 +206,17 @@ public abstract class UsersBase extends com.runwaysdk.system.SingleActor
     return (Users) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Users lock(java.lang.String id)
+  public static Users lock(java.lang.String oid)
   {
-    Users _instance = Users.get(id);
+    Users _instance = Users.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Users unlock(java.lang.String id)
+  public static Users unlock(java.lang.String oid)
   {
-    Users _instance = Users.get(id);
+    Users _instance = Users.get(oid);
     _instance.unlock();
     
     return _instance;

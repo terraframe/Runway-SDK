@@ -29,7 +29,7 @@ public class MdMethodMethodActor extends MdMethodMethodActorBase
   
   public MdMethodMethodActor(com.runwaysdk.system.metadata.MdMethod parent, com.runwaysdk.system.MethodActor child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

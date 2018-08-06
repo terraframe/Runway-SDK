@@ -94,7 +94,7 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     }
     else
     {
-      setValue(METADATA, value.getId());
+      setValue(METADATA, value.getOid());
     }
   }
   
@@ -103,9 +103,9 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     return CLASS;
   }
   
-  public static TypeTuple get(String id)
+  public static TypeTuple get(String oid)
   {
-    return (TypeTuple) com.runwaysdk.business.Business.get(id);
+    return (TypeTuple) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TypeTuple getByKey(String key)
@@ -113,17 +113,17 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     return (TypeTuple) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static TypeTuple lock(java.lang.String id)
+  public static TypeTuple lock(java.lang.String oid)
   {
-    TypeTuple _instance = TypeTuple.get(id);
+    TypeTuple _instance = TypeTuple.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TypeTuple unlock(java.lang.String id)
+  public static TypeTuple unlock(java.lang.String oid)
   {
-    TypeTuple _instance = TypeTuple.get(id);
+    TypeTuple _instance = TypeTuple.get(oid);
     _instance.unlock();
     
     return _instance;

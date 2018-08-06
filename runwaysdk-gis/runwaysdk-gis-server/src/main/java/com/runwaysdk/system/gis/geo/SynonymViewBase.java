@@ -30,7 +30,7 @@ public abstract class SynonymViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.SynonymView";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String RELATIONSHIPID = "relationshipId";
   public static java.lang.String SYNONYMID = "synonymId";
   private static final long serialVersionUID = 607740690;
@@ -68,7 +68,7 @@ public abstract class SynonymViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -78,7 +78,7 @@ public abstract class SynonymViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.SynonymView.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -145,9 +145,9 @@ public abstract class SynonymViewBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static SynonymView get(String id)
+  public static SynonymView get(String oid)
   {
-    return (SynonymView) com.runwaysdk.business.View.get(id);
+    return (SynonymView) com.runwaysdk.business.View.get(oid);
   }
   
   public String toString()

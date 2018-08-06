@@ -181,7 +181,7 @@ private static final long serialVersionUID = 1484185528;
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.jstest.States.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -200,7 +200,7 @@ private static final long serialVersionUID = 1484185528;
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.jstest.States.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -254,13 +254,13 @@ private static final long serialVersionUID = 958103002;
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.jstest.StateEnum stateEnum)
     {
       if(stateEnum == null) return this.EQ((java.lang.String)null);
-      return this.EQ(stateEnum.getId());
+      return this.EQ(stateEnum.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.jstest.StateEnum stateEnum)
     {
       if(stateEnum == null) return this.NE((java.lang.String)null);
-      return this.NE(stateEnum.getId());
+      return this.NE(stateEnum.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getEnumInt()
@@ -499,7 +499,7 @@ private static final long serialVersionUID = -1949877784;
 
       for (int i=0; i<states.length; i++)
       {
-        enumIdArray[i] = states[i].getId();
+        enumIdArray[i] = states[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -511,7 +511,7 @@ private static final long serialVersionUID = -1949877784;
 
       for (int i=0; i<states.length; i++)
       {
-        enumIdArray[i] = states[i].getId();
+        enumIdArray[i] = states[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -523,7 +523,7 @@ private static final long serialVersionUID = -1949877784;
 
       for (int i=0; i<states.length; i++)
       {
-        enumIdArray[i] = states[i].getId();
+        enumIdArray[i] = states[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -535,7 +535,7 @@ private static final long serialVersionUID = -1949877784;
 
       for (int i=0; i<states.length; i++)
       {
-        enumIdArray[i] = states[i].getId();
+        enumIdArray[i] = states[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -547,7 +547,7 @@ private static final long serialVersionUID = -1949877784;
 
       for (int i=0; i<states.length; i++)
       {
-        enumIdArray[i] = states[i].getId();
+        enumIdArray[i] = states[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);

@@ -32,7 +32,7 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,11 +129,11 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -143,7 +143,7 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -285,7 +285,7 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -387,9 +387,9 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
     return (com.runwaysdk.jstest.business.ontology.Alphabet) super.getChild();
   }
   
-  public static AlphabetAttributeRoot get(String id)
+  public static AlphabetAttributeRoot get(String oid)
   {
-    return (AlphabetAttributeRoot) com.runwaysdk.business.Relationship.get(id);
+    return (AlphabetAttributeRoot) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static AlphabetAttributeRoot getByKey(String key)
@@ -397,17 +397,17 @@ public abstract class AlphabetAttributeRootBase extends com.runwaysdk.business.R
     return (AlphabetAttributeRoot) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static AlphabetAttributeRoot lock(java.lang.String id)
+  public static AlphabetAttributeRoot lock(java.lang.String oid)
   {
-    AlphabetAttributeRoot _instance = AlphabetAttributeRoot.get(id);
+    AlphabetAttributeRoot _instance = AlphabetAttributeRoot.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AlphabetAttributeRoot unlock(java.lang.String id)
+  public static AlphabetAttributeRoot unlock(java.lang.String oid)
   {
-    AlphabetAttributeRoot _instance = AlphabetAttributeRoot.get(id);
+    AlphabetAttributeRoot _instance = AlphabetAttributeRoot.get(oid);
     _instance.unlock();
     
     return _instance;

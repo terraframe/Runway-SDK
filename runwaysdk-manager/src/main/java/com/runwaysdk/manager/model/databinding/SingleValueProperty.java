@@ -63,9 +63,9 @@ public class SingleValueProperty extends SimpleValueProperty
         for (EnumerationItemDAOIF item : items)
         {
           String itemLabel = item.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, Localizer.DEFAULT_LOCALE);
-          String id = item.getId();
+          String oid = item.getOid();
 
-          set.add(new LabelValuePair(itemLabel, id));
+          set.add(new LabelValuePair(itemLabel, oid));
         }
 
         if (!set.isEmpty())

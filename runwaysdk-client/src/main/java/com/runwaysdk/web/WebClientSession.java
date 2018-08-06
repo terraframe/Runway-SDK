@@ -74,7 +74,7 @@ public class WebClientSession extends ClientSession implements HttpSessionBindin
   }
 
   /**
-   * Connects to an existing session with the given session id.
+   * Connects to an existing session with the given session oid.
    *
    * @param sessionId
    */
@@ -84,7 +84,7 @@ public class WebClientSession extends ClientSession implements HttpSessionBindin
   }
 
   /**
-   * Connects to an existing session with the given session id.
+   * Connects to an existing session with the given session oid.
    *
    * @param sessionId
    */
@@ -94,7 +94,7 @@ public class WebClientSession extends ClientSession implements HttpSessionBindin
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point with the given label.
+   * Connects to an existing session with the given session oid at the end point with the given label.
    *
    * @param connectionLabel
    * @param sessionId
@@ -105,7 +105,7 @@ public class WebClientSession extends ClientSession implements HttpSessionBindin
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point with the given label.
+   * Connects to an existing session with the given session oid at the end point with the given label.
    *
    * @param label
    * @param sessionId

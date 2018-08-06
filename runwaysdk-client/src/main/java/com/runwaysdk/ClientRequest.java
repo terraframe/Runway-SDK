@@ -252,12 +252,12 @@ public abstract class ClientRequest implements ClientRequestIF
 
   /**
    * Returns a list of all AttributeNotifications that pertain to the attribute
-   * from the component with the given id from the last request.
+   * from the component with the given oid from the last request.
    *
    * @param componentId
    * @param attributeName
    * @return list of all AttributeNotifications that pertain to the attribute
-   *         from the component with the given id from the last request.
+   *         from the component with the given oid from the last request.
    */
   public List<AttributeNotificationDTO> getAttributeNotifications(String componentId, String attributeName)
   {
@@ -266,11 +266,11 @@ public abstract class ClientRequest implements ClientRequestIF
 
   /**
    * Returns a list of all AttributeNotifications that pertain to any attribute
-   * from the component with the given id from the last request.
+   * from the component with the given oid from the last request.
    *
    * @param componentId
    * @return list of all AttributeNotifications that pertain to the attribute
-   *         from the component with the given id from the last request.
+   *         from the component with the given oid from the last request.
    */
   public List<AttributeNotificationDTO> getAttributeNotifications(String componentId)
   {
@@ -366,8 +366,8 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Returns the session id used by the clientRequest to connect to the back-end.
-   * @return session id used by the clientRequest to connect to the back-end.
+   * Returns the session oid used by the clientRequest to connect to the back-end.
+   * @return session oid used by the clientRequest to connect to the back-end.
    */
   public String getSessionId()
   {
@@ -417,7 +417,7 @@ public abstract class ClientRequest implements ClientRequestIF
    * Creates a session with the public user.
    *
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   protected abstract String loginAnonymous(Locale[] locales);
 
@@ -426,7 +426,7 @@ public abstract class ClientRequest implements ClientRequestIF
    *
    * @param dimension
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   protected abstract String loginAnonymous(String dimension, Locale[] locales);
 
@@ -436,14 +436,14 @@ public abstract class ClientRequest implements ClientRequestIF
    * @param username
    * @param password
    * @param locales
-   * @return A String representing the user's session id.
+   * @return A String representing the user's session oid.
    */
   protected abstract String login(String username, String password, Locale[] locales);
 
   /**
    * Sets the dimension of an existing Session.
    *
-   * @param sessionId The id of the Session.
+   * @param sessionId The oid of the Session.
    * @param dimensionKey key of a MdDimension.
    */
   protected abstract void setDimension(String sessionId, String dimensionKey);
@@ -455,7 +455,7 @@ public abstract class ClientRequest implements ClientRequestIF
    * @param password
    * @param dimensionKey
    * @param locales
-   * @return A String representing the user's session id.
+   * @return A String representing the user's session oid.
    */
   protected abstract String login(String username, String password, String dimensionKey, Locale[] locales);
 
@@ -469,7 +469,7 @@ public abstract class ClientRequest implements ClientRequestIF
   protected abstract void changeLogin(String username, String password);
 
   /**
-   * Logs a user out with the specified session id.
+   * Logs a user out with the specified session oid.
    *
    */
   protected abstract void logout();
@@ -531,11 +531,11 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Returns the clientRequest for a session with the given id.
+   * Returns the clientRequest for a session with the given oid.
    *
    * @param clientSession
    * @param sessionId
-   * @return clientRequest for a session with the given id.
+   * @return clientRequest for a session with the given oid.
    */
   protected static ClientRequestIF getRequest(ClientSession clientSession, String sessionId)
   {
@@ -722,7 +722,7 @@ public abstract class ClientRequest implements ClientRequestIF
       try
       {
         // Get it directly from the server and try to store it in the cache
-        InputStream stream = this.getSecureFileFromServer(fileDTO.getId());
+        InputStream stream = this.getSecureFileFromServer(fileDTO.getOid());
         cache.setFile(dir, fileName, stream);
 
         return cache.getFile(dir, fileName);
@@ -731,7 +731,7 @@ public abstract class ClientRequest implements ClientRequestIF
       {
         // Storing it in the cache failed: try to return a direct stream from
         // the server
-        return this.getSecureFileFromServer(fileDTO.getId());
+        return this.getSecureFileFromServer(fileDTO.getOid());
       }
     }
   }

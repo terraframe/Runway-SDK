@@ -119,19 +119,19 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.transaction.ImportLog.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.ImportLog.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.ImportLog.ID, alias, displayLabel);
 
@@ -396,9 +396,9 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -455,13 +455,13 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.transaction.ImportLog importLog)
     {
       if(importLog == null) return this.EQ((java.lang.String)null);
-      return this.EQ(importLog.getId());
+      return this.EQ(importLog.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.transaction.ImportLog importLog)
     {
       if(importLog == null) return this.NE((java.lang.String)null);
-      return this.NE(importLog.getId());
+      return this.NE(importLog.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -515,19 +515,19 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.transaction.ImportLog.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.ImportLog.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.ImportLog.ID, alias, displayLabel);
 
@@ -751,9 +751,9 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -815,7 +815,7 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<importLog.length; i++)
       {
-        itemIdArray[i] = importLog[i].getId();
+        itemIdArray[i] = importLog[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -827,7 +827,7 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<importLog.length; i++)
       {
-        itemIdArray[i] = importLog[i].getId();
+        itemIdArray[i] = importLog[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -839,7 +839,7 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<importLog.length; i++)
       {
-        itemIdArray[i] = importLog[i].getId();
+        itemIdArray[i] = importLog[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -851,7 +851,7 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<importLog.length; i++)
       {
-        itemIdArray[i] = importLog[i].getId();
+        itemIdArray[i] = importLog[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -863,7 +863,7 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<importLog.length; i++)
       {
-        itemIdArray[i] = importLog[i].getId();
+        itemIdArray[i] = importLog[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -919,19 +919,19 @@ public  class ImportLogQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.transaction.ImportLog.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.ImportLog.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.ImportLog.ID, alias, displayLabel);
 

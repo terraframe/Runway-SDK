@@ -71,7 +71,7 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
 
       System.out.println("Invoking delete on a Term");
 
-      Term testRoot = Term.get(util.testRoot.getId());
+      Term testRoot = Term.get(util.testRoot.getOid());
 
       long pre = System.nanoTime();
       testRoot.delete();
@@ -80,8 +80,8 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
       System.out.println("deleting a term took: " + elapsed + " seconds");
 
       util.validateAllpaths();
-      Term.get(util.f.getId()).delete(); // F exists outside the delRoot
-      Term.get(util.spacer.getId()).delete(); // Spacer exists outside the
+      Term.get(util.f.getOid()).delete(); // F exists outside the delRoot
+      Term.get(util.spacer.getOid()).delete(); // Spacer exists outside the
                                               // delRoot
       util.ensureNoTestDataExists();
     }
@@ -130,8 +130,8 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
       util.createTestData();
       util.validateAllpaths();
 
-      Term delRoot = Term.get(util.testRoot.getId());
-      Term b = Term.get(util.b.getId());
+      Term delRoot = Term.get(util.testRoot.getOid());
+      Term b = Term.get(util.b.getOid());
 
       b.removeLink(delRoot, mdTermRelationship.definesType());
       util.validateAllpaths();
@@ -155,9 +155,9 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
       util.createTestData();
       util.validateAllpaths();
 
-      Term a = Term.get(util.a.getId());
-      Term b = Term.get(util.b.getId());
-      Term delRoot = Term.get(util.testRoot.getId());
+      Term a = Term.get(util.a.getOid());
+      Term b = Term.get(util.b.getOid());
+      Term delRoot = Term.get(util.testRoot.getOid());
 
       b.removeLink(delRoot, mdTermRelationship.definesType());
       b.addLink(a, mdTermRelationship.definesType());

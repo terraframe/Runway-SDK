@@ -545,14 +545,14 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     // Write add multi Item
     getWriter().writeLine("public void add" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " itemDTO)");
     getWriter().openBracket();
-    getWriter().writeLine("this.addMultiItem(" + attributeConstant + ", itemDTO.getId());");
+    getWriter().writeLine("this.addMultiItem(" + attributeConstant + ", itemDTO.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     // Write remove multi item
     getWriter().writeLine("public void remove" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " itemDTO)");
     getWriter().openBracket();
-    getWriter().writeLine("this.removeMultiItem(" + attributeConstant + ", itemDTO.getId());");
+    getWriter().writeLine("this.removeMultiItem(" + attributeConstant + ", itemDTO.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
@@ -612,7 +612,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    // Generate an accessor that returns the reference id
+    // Generate an accessor that returns the reference oid
     String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
     String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.ID).javaType(false);
     getWriter().writeLine("public " + getRefIdReturnType + " get" + refAttributeIdName + "()");
@@ -644,7 +644,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
 
     getWriter().writeLine("else");
     getWriter().openBracket();
-    getWriter().writeLine("setValue(" + attributeConstant + ", value.getId());");
+    getWriter().writeLine("setValue(" + attributeConstant + ", value.getOid());");
     getWriter().closeBracket();
 
     getWriter().closeBracket();
@@ -798,12 +798,12 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       writeMdMethod(typeCLASSconstant, list, methodName, returnType, mdMethod.isStatic(), true);
 
       // Write the static form of the instance method which
-      // additionally requires the id of instance
+      // additionally requires the oid of instance
       if (!mdMethod.isStatic())
       {
-        MdParameterDAO id = GenerationUtil.getMdParameterId();
-        id.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
-        list.add(0, id);
+        MdParameterDAO oid = GenerationUtil.getMdParameterId();
+        oid.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getOid());
+        list.add(0, oid);
 
         writeMdMethod(typeCLASSconstant, list, methodName, returnType, true, true);
       }

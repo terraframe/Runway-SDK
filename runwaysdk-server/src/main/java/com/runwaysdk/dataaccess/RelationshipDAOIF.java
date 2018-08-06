@@ -31,13 +31,13 @@ public interface RelationshipDAOIF extends ElementDAOIF
   public static final String CHILD_ID_COLUMN                            = "child_id";
   
   /**
-   * Returns the id of the parent BusinessDAO in this relationship.
+   * Returns the oid of the parent BusinessDAO in this relationship.
    *
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    *
-   * @return id of the parent BusinessDAO in this relationship
+   * @return oid of the parent BusinessDAO in this relationship
    */
   public String getParentId();
 
@@ -53,13 +53,13 @@ public interface RelationshipDAOIF extends ElementDAOIF
   public BusinessDAOIF getParent();
 
   /**
-   * Returns the id of the child BusinessDAO in this relationship.
+   * Returns the oid of the child BusinessDAO in this relationship.
    *
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    *
-   * @return id of the child BusinessDAO in this relationship
+   * @return oid of the child BusinessDAO in this relationship
    */
   public String getChildId();
   
@@ -98,7 +98,7 @@ public interface RelationshipDAOIF extends ElementDAOIF
   public RelationshipDAO getRelationshipDAO();
 
   /**
-   * Returns a copy of the given RelationshipDAO instance, with a new id and mastered at the current site.
+   * Returns a copy of the given RelationshipDAO instance, with a new oid and mastered at the current site.
    * The state of the object is new and has not been applied to the database.
    *
    * @return a copy of the given RelationshipDAO instance

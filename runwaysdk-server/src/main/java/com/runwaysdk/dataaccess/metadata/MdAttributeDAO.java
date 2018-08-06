@@ -170,7 +170,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     boolean first = this.isNew() && !this.isAppliedToDB() && !this.isImport();
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     // Add columns to the local struct classes
     if (first)
@@ -214,7 +214,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
       }
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -267,9 +267,9 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
     }
   }
 
-  public static MdAttributeDAOIF get(String id)
+  public static MdAttributeDAOIF get(String oid)
   {
-    return (MdAttributeDAOIF) BusinessDAO.get(id);
+    return (MdAttributeDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -312,7 +312,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
     // not been initialized
     for (MdAttributeDimensionCache mdAttributeDimensionCache : this.getMdAttributeDimensionMap().values())
     {
-      list.add(MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId()));
+      list.add(MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getOid()));
     }
 
     return list;
@@ -346,16 +346,16 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     // A dimension has been defined, but the local attribute dimension map has
     // not been initialized
-    MdAttributeDimensionCache mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getId());
+    MdAttributeDimensionCache mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getOid());
 
     if (mdAttributeDimensionCache != null)
     {
-      mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+      mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getOid());
       if (mdAttributeDimensionDAOIF == null)
       {
         this.initializeMdAttributeDimensionMap();
-        mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getId());
-        mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+        mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getOid());
+        mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getOid());
       }
     }
 
@@ -367,9 +367,9 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
    */
   private void initializeMdAttributeDimensionMap()
   {   
-    // Calling this.getId() will potentially refresh the state object which will 
+    // Calling this.getOid() will potentially refresh the state object which will 
     // make the mdAttributeDimensionMap below null
-    ResultSet resultSet = Database.getMdAttributeDimensionFields(this.getId());
+    ResultSet resultSet = Database.getMdAttributeDimensionFields(this.getOid());
 
     this.mdAttributeDimensionMap = new HashMap<String, MdAttributeDimensionCache>();
     
@@ -545,7 +545,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
   /**
    * Remove the cached information for an <code>MdAttributeDimensionDAOIF</code>
-   * associated with the dimension of the given id.
+   * associated with the dimension of the given oid.
    * 
    * @param _mdDimensionId
    */
@@ -561,7 +561,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
      */
     private static final long serialVersionUID = 603568053768026277L;
 
-    private String            id;
+    private String            oid;
 
     private boolean           required;
 
@@ -569,14 +569,14 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     private MdAttributeDimensionCache(String _mdAttributeDimensionId, boolean _required, String _defaultValue)
     {
-      this.id = _mdAttributeDimensionId;
+      this.oid = _mdAttributeDimensionId;
       this.required = _required;
       this.defaultValue = _defaultValue;
     }
 
-    public String getId()
+    public String getOid()
     {
-      return this.id;
+      return this.oid;
     }
 
     public boolean isRequired()
@@ -591,7 +591,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     public MdAttributeDimensionCache clone()
     {
-      return new MdAttributeDimensionCache(this.getId(), this.isRequired(), this.getDefaultValue());
+      return new MdAttributeDimensionCache(this.getOid(), this.isRequired(), this.getDefaultValue());
     }
 
   }

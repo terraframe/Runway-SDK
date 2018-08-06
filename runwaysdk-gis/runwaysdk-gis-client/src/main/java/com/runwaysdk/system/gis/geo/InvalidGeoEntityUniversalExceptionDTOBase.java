@@ -70,7 +70,7 @@ public abstract class InvalidGeoEntityUniversalExceptionDTOBase extends com.runw
   }
   
   public static java.lang.String CHILDUNIVERSAL = "childUniversal";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   public String getChildUniversal()
   {
@@ -155,7 +155,7 @@ public abstract class InvalidGeoEntityUniversalExceptionDTOBase extends com.runw
     java.lang.String template = super.getMessage();
     
     template = template.replace("{childUniversal}", this.getChildUniversal().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{parentUniversal}", this.getParentUniversal().toString());
     
     return template;

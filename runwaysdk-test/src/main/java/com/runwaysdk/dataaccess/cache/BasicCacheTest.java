@@ -62,7 +62,7 @@ public class BasicCacheTest
 
     MdAttributeIntegerDAO topSpeed = MdAttributeIntegerDAO.newInstance();
     topSpeed.setValue(MdAttributeIntegerInfo.NAME, "testInt");
-    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMD.getId());
+    topSpeed.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMD.getOid());
     topSpeed.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test int");
     topSpeed.apply();
   }
@@ -91,7 +91,7 @@ public class BasicCacheTest
     for (int i = 0; i < testNum; ++i)
     {
       BusinessDAO p = generateDAO("p" + i, i);
-      ids[i] = p.getId();
+      ids[i] = p.getOid();
       tds.putEntityDAOIFintoCache(p);
       javaId[i] = System.identityHashCode(p);
     }
@@ -99,7 +99,7 @@ public class BasicCacheTest
     for (int i = testNum - 1; i >= 0; --i)
     {
       BusinessDAO p = (BusinessDAO) tds.getEntityDAOIFfromCache(ids[i]);
-      Assert.assertEquals(ids[i], p.getId());
+      Assert.assertEquals(ids[i], p.getOid());
       Assert.assertEquals(String.valueOf(i), p.getAttribute("testInt").getValue());
       // Assert.assertEquals(System.identityHashCode(p), javaId[i]);
     }

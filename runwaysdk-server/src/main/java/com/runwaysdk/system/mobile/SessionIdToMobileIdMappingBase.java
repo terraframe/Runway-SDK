@@ -32,7 +32,7 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -130,11 +130,11 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -144,7 +144,7 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.mobile.SessionIdToMobileIdMapping.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -314,7 +314,7 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -399,9 +399,9 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
     return CLASS;
   }
   
-  public static SessionIdToMobileIdMapping get(String id)
+  public static SessionIdToMobileIdMapping get(String oid)
   {
-    return (SessionIdToMobileIdMapping) com.runwaysdk.business.Business.get(id);
+    return (SessionIdToMobileIdMapping) com.runwaysdk.business.Business.get(oid);
   }
   
   public static SessionIdToMobileIdMapping getByKey(String key)
@@ -409,17 +409,17 @@ public abstract class SessionIdToMobileIdMappingBase extends com.runwaysdk.busin
     return (SessionIdToMobileIdMapping) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static SessionIdToMobileIdMapping lock(java.lang.String id)
+  public static SessionIdToMobileIdMapping lock(java.lang.String oid)
   {
-    SessionIdToMobileIdMapping _instance = SessionIdToMobileIdMapping.get(id);
+    SessionIdToMobileIdMapping _instance = SessionIdToMobileIdMapping.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static SessionIdToMobileIdMapping unlock(java.lang.String id)
+  public static SessionIdToMobileIdMapping unlock(java.lang.String oid)
   {
-    SessionIdToMobileIdMapping _instance = SessionIdToMobileIdMapping.get(id);
+    SessionIdToMobileIdMapping _instance = SessionIdToMobileIdMapping.get(oid);
     _instance.unlock();
     
     return _instance;

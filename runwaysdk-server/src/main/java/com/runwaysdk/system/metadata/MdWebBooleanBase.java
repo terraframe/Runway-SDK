@@ -70,9 +70,9 @@ public abstract class MdWebBooleanBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static MdWebBoolean get(String id)
+  public static MdWebBoolean get(String oid)
   {
-    return (MdWebBoolean) com.runwaysdk.business.Business.get(id);
+    return (MdWebBoolean) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebBoolean getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdWebBooleanBase extends com.runwaysdk.system.metadata.MdW
     return (MdWebBoolean) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebBoolean lock(java.lang.String id)
+  public static MdWebBoolean lock(java.lang.String oid)
   {
-    MdWebBoolean _instance = MdWebBoolean.get(id);
+    MdWebBoolean _instance = MdWebBoolean.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebBoolean unlock(java.lang.String id)
+  public static MdWebBoolean unlock(java.lang.String oid)
   {
-    MdWebBoolean _instance = MdWebBoolean.get(id);
+    MdWebBoolean _instance = MdWebBoolean.get(oid);
     _instance.unlock();
     
     return _instance;

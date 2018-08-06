@@ -51,9 +51,9 @@ public abstract class ViewInheritanceBase extends com.runwaysdk.system.metadata.
     return (com.runwaysdk.system.metadata.MdView) super.getChild();
   }
   
-  public static ViewInheritance get(String id)
+  public static ViewInheritance get(String oid)
   {
-    return (ViewInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (ViewInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ViewInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ViewInheritanceBase extends com.runwaysdk.system.metadata.
     return (ViewInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ViewInheritance lock(java.lang.String id)
+  public static ViewInheritance lock(java.lang.String oid)
   {
-    ViewInheritance _instance = ViewInheritance.get(id);
+    ViewInheritance _instance = ViewInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ViewInheritance unlock(java.lang.String id)
+  public static ViewInheritance unlock(java.lang.String oid)
   {
-    ViewInheritance _instance = ViewInheritance.get(id);
+    ViewInheritance _instance = ViewInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

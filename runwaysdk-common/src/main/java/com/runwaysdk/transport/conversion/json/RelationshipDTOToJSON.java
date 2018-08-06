@@ -76,7 +76,7 @@ public class RelationshipDTOToJSON extends ElementDTOToJSON
     JSONObject typeMd = new JSONObject();
     typeMd.put(JSON.TYPE_MD_DISPLAY_LABEL.getLabel(), relationshipDTO.getMd().getDisplayLabel());
     typeMd.put(JSON.TYPE_MD_DESCRIPTION.getLabel(), relationshipDTO.getMd().getDescription());
-    typeMd.put(JSON.TYPE_MD_ID.getLabel(), relationshipDTO.getMd().getId());
+    typeMd.put(JSON.TYPE_MD_ID.getLabel(), relationshipDTO.getMd().getOid());
     typeMd.put(JSON.RELATIONSHIP_MD_PARENT_MD_BUSINESS.getLabel(), relationshipDTO.getMd().getParentMdBusiness());
     typeMd.put(JSON.RELATIONSHIP_MD_CHILD_MD_BUSINESS.getLabel(), relationshipDTO.getMd().getChildMdBusiness());
 

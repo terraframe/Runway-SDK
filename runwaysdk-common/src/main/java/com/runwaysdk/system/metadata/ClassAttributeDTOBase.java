@@ -56,9 +56,9 @@ public abstract class ClassAttributeDTOBase extends com.runwaysdk.system.metadat
     return com.runwaysdk.system.metadata.MdAttributeDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.ClassAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.ClassAttributeDTO) dto;
   }
@@ -88,7 +88,7 @@ public abstract class ClassAttributeDTOBase extends com.runwaysdk.system.metadat
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.ClassAttributeQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -101,10 +101,10 @@ public abstract class ClassAttributeDTOBase extends com.runwaysdk.system.metadat
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.ClassAttributeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.ClassAttributeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -114,10 +114,10 @@ public abstract class ClassAttributeDTOBase extends com.runwaysdk.system.metadat
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.ClassAttributeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.ClassAttributeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

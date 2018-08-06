@@ -78,7 +78,7 @@ public class MdAttributeCharacter_E extends MdAttributeConcrete_E
   protected void createDbColumn(String tableName)
   {
     // physically add the column to the database, but only if the attribute is not an
-    // id field, as that is done when the defining table is created
+    // oid field, as that is done when the defining table is created
     if (this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.ID))
     {
       return;

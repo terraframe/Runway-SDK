@@ -99,9 +99,9 @@ public abstract class MdAttributeDecBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdAttributeDec get(String id)
+  public static MdAttributeDec get(String oid)
   {
-    return (MdAttributeDec) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeDec) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeDec getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdAttributeDecBase extends com.runwaysdk.system.metadata.M
     return (MdAttributeDec) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeDec lock(java.lang.String id)
+  public static MdAttributeDec lock(java.lang.String oid)
   {
-    MdAttributeDec _instance = MdAttributeDec.get(id);
+    MdAttributeDec _instance = MdAttributeDec.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeDec unlock(java.lang.String id)
+  public static MdAttributeDec unlock(java.lang.String oid)
   {
-    MdAttributeDec _instance = MdAttributeDec.get(id);
+    MdAttributeDec _instance = MdAttributeDec.get(oid);
     _instance.unlock();
     
     return _instance;

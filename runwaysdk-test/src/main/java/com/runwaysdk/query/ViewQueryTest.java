@@ -68,7 +68,7 @@ public class ViewQueryTest
     someTestQueryObject.setValue("queryFloat", "400.5");
     someTestQueryObject.setValue("queryDecimal", "400.5");
     someTestQueryObject.setValue("queryDouble", "400.5");
-    someTestQueryObject.setValue("reference", someChildRefQueryObject.getId());
+    someTestQueryObject.setValue("reference", someChildRefQueryObject.getOid());
     someTestQueryObject.apply();
 
     try

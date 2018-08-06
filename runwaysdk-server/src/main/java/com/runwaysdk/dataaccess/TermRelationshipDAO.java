@@ -63,11 +63,11 @@ public class TermRelationshipDAO extends RelationshipDAO implements TermRelation
       AttributeEnumerationIF associationType = (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE);
       Set<String> items = associationType.getEnumItemIdList();
 
-      if (items.contains(AssociationType.GRAPH.getId()))
+      if (items.contains(AssociationType.GRAPH.getOid()))
       {
         GraphDAO.validateGraph(this);
       }
-      else if (items.contains(AssociationType.TREE.getId()))
+      else if (items.contains(AssociationType.TREE.getOid()))
       {
         RelationshipDAOFactory.recursiveLinkCheck(this.getParentId(), this.getChildId(), this.getMdRelationshipDAO().definesType());
       }

@@ -115,7 +115,7 @@ public class Grant
       tuple = newTuple;
     }
 
-    actor.grantPermission(operationList, tuple.getId());
+    actor.grantPermission(operationList, tuple.getOid());
   }
 
   /**
@@ -123,9 +123,9 @@ public class Grant
    *
    * @pre: get(metadataId)instanceof MetaData
    * @param actorId of the actor to receive the given operation permissions.
-   * @param metadataId The id of the metadata.
-   * @param operationIds id of operation to grant.
-   * @param session id.
+   * @param metadataId The oid of the metadata.
+   * @param operationIds oid of operation to grant.
+   * @param session oid.
    */
   @Request(RequestType.SESSION)
   protected static void grantMetaDataPermission(String sessionId, String actorId, String metadataId, String... operationIds)
@@ -148,9 +148,9 @@ public class Grant
    *
    * @pre: get(metadataId)instanceof MetaData
    * @param actorId of the actor to revoke the given operation permissions.
-   * @param mdTypeId The id of the type.
-   * @param session id.
-   * @param operationId id of operation to revoke.
+   * @param mdTypeId The oid of the type.
+   * @param session oid.
+   * @param operationId oid of operation to revoke.
    */
   @Request(RequestType.SESSION)
   protected static void revokeMetaDataPermission(String sessionId, String actorId, String metadataId, String... operationIds)
@@ -207,7 +207,7 @@ public class Grant
 
     if(tuple != null)
     {
-      actor.revokePermission(OperationManager.getOperations(operationIds), tuple.getId());
+      actor.revokePermission(OperationManager.getOperations(operationIds), tuple.getOid());
 
       //If there does not exist anymore permissions involving the tuple
       //then remove it from the database

@@ -134,13 +134,13 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTable mdTable)
     {
       if(mdTable == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdTable.getId());
+      return this.EQ(mdTable.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdTable mdTable)
     {
       if(mdTable == null) return this.NE((java.lang.String)null);
-      return this.NE(mdTable.getId());
+      return this.NE(mdTable.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getTableName()
@@ -203,7 +203,7 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
 
       for (int i=0; i<mdTable.length; i++)
       {
-        itemIdArray[i] = mdTable[i].getId();
+        itemIdArray[i] = mdTable[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
 
       for (int i=0; i<mdTable.length; i++)
       {
-        itemIdArray[i] = mdTable[i].getId();
+        itemIdArray[i] = mdTable[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
 
       for (int i=0; i<mdTable.length; i++)
       {
-        itemIdArray[i] = mdTable[i].getId();
+        itemIdArray[i] = mdTable[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
 
       for (int i=0; i<mdTable.length; i++)
       {
-        itemIdArray[i] = mdTable[i].getId();
+        itemIdArray[i] = mdTable[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdTableQuery extends com.runwaysdk.system.metadata.MdClassQuery
 
       for (int i=0; i<mdTable.length; i++)
       {
-        itemIdArray[i] = mdTable[i].getId();
+        itemIdArray[i] = mdTable[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

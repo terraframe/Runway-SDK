@@ -114,13 +114,13 @@ public  class OrRuleQuery extends com.runwaysdk.system.gis.mapping.CompositeRule
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.OrRule orRule)
     {
       if(orRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(orRule.getId());
+      return this.EQ(orRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.OrRule orRule)
     {
       if(orRule == null) return this.NE((java.lang.String)null);
-      return this.NE(orRule.getId());
+      return this.NE(orRule.getOid());
     }
 
   }

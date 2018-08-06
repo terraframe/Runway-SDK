@@ -39,7 +39,7 @@ public class MdReferenceExportBuilder extends ExportBuilder<MdBusinessDAO[]>
     mdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, "true");
     mdAttributeCharacter.apply();
 

@@ -53,10 +53,10 @@ public enum RelationshipCache implements com.runwaysdk.business.BusinessEnumerat
     return enumeration.getDescription();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -71,11 +71,11 @@ public enum RelationshipCache implements com.runwaysdk.business.BusinessEnumerat
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static RelationshipCache get(String id)
+  public static RelationshipCache get(String oid)
   {
     for (RelationshipCache e : RelationshipCache.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

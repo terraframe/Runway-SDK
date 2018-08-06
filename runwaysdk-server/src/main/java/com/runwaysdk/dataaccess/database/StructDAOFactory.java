@@ -65,12 +65,12 @@ public class StructDAOFactory
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  public static StructDAOIF get(String id)
+  public static StructDAOIF get(String oid)
   {
-    StructDAOQuery structDAOQuery = StructDAOQuery.getObjectInstance(id);
+    StructDAOQuery structDAOQuery = StructDAOQuery.getObjectInstance(oid);
     List<StructDAO> structDAOList = queryStructDAOs(structDAOQuery);
 
     // If the BusinessDAO list is null, then a BusinessDAO with the given ID does not exist.
@@ -86,9 +86,9 @@ public class StructDAOFactory
 
   /**
    * Returns a StructDAO of the given type with the given key in the database. This
-   * method does the same thing as get(String id), but is faster. If you
-   * know the type of the id, use this method. Otherwise use the
-   * get(String id) method.
+   * method does the same thing as get(String oid), but is faster. If you
+   * know the type of the oid, use this method. Otherwise use the
+   * get(String oid) method.
    *
    * <br/><b>Precondition:</b> key != null
    * <br/><b>Precondition:</b> !key.trim().equals("")
@@ -210,7 +210,7 @@ public class StructDAOFactory
    * Builds a StructDAO from a row from the given resultset.
    * @param type
    * @param columnInfoMap         contains information about attributes used in the query
-   * @param definedTableClassMap  sort of a hack.  It is a map where the key is the id of an MdAttribute and the value is the
+   * @param definedTableClassMap  sort of a hack.  It is a map where the key is the oid of an MdAttribute and the value is the
    *                              MdEntity that defines the attribute.  This is used to improve performance.
    * @param MdAttributeIFList     contains MdAttribute objects for the attributes used in this query
    * @param resultSet             ResultSet object from a query.
@@ -278,7 +278,7 @@ public class StructDAOFactory
     newStructDAO.setTypeName(mdStructIF.definesType());
 
     // This used to be in EntityDAO.save(), but has been moved here to help with distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(),mdEntityIF.getId());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(),mdEntityIF.getOid());
     newStructDAO.getAttribute(EntityInfo.ID).setValue(newId);
 
     return newStructDAO;

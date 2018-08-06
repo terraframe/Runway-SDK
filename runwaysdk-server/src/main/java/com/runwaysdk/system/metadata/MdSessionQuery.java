@@ -114,13 +114,13 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdSession mdSession)
     {
       if(mdSession == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdSession.getId());
+      return this.EQ(mdSession.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdSession mdSession)
     {
       if(mdSession == null) return this.NE((java.lang.String)null);
-      return this.NE(mdSession.getId());
+      return this.NE(mdSession.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
 
       for (int i=0; i<mdSession.length; i++)
       {
-        itemIdArray[i] = mdSession[i].getId();
+        itemIdArray[i] = mdSession[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
 
       for (int i=0; i<mdSession.length; i++)
       {
-        itemIdArray[i] = mdSession[i].getId();
+        itemIdArray[i] = mdSession[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
 
       for (int i=0; i<mdSession.length; i++)
       {
-        itemIdArray[i] = mdSession[i].getId();
+        itemIdArray[i] = mdSession[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
 
       for (int i=0; i<mdSession.length; i++)
       {
-        itemIdArray[i] = mdSession[i].getId();
+        itemIdArray[i] = mdSession[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdSessionQuery extends com.runwaysdk.system.metadata.MdTransientQu
 
       for (int i=0; i<mdSession.length; i++)
       {
-        itemIdArray[i] = mdSession[i].getId();
+        itemIdArray[i] = mdSession[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

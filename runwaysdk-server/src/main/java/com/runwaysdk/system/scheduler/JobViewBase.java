@@ -31,7 +31,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String JOB = "job";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   private static final long serialVersionUID = 795436464;
@@ -77,7 +77,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(DOWNSTREAMJOB, value.getId());
+      setValue(DOWNSTREAMJOB, value.getOid());
     }
   }
   
@@ -109,7 +109,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -119,7 +119,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobView.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -161,7 +161,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(JOB, value.getId());
+      setValue(JOB, value.getOid());
     }
   }
   
@@ -198,9 +198,9 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static JobView get(String id)
+  public static JobView get(String oid)
   {
-    return (JobView) com.runwaysdk.business.View.get(id);
+    return (JobView) com.runwaysdk.business.View.get(oid);
   }
   
   public void applyWithJob(com.runwaysdk.system.scheduler.ExecutableJob job)
@@ -209,9 +209,9 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void applyWithJob(java.lang.String id, com.runwaysdk.system.scheduler.ExecutableJob job)
+  public static final void applyWithJob(java.lang.String oid, com.runwaysdk.system.scheduler.ExecutableJob job)
   {
-    JobView _instance = JobView.get(id);
+    JobView _instance = JobView.get(oid);
     _instance.applyWithJob(job);
   }
   

@@ -222,7 +222,7 @@ public abstract class SessionComponentGenTest
     suitEnum.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitEnum.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitEnum.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
+    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getOid());
     suitEnum.apply();
 
     struct = MdStructDAO.newInstance();
@@ -234,8 +234,8 @@ public abstract class SessionComponentGenTest
     MdAttributeEnumerationDAO structEnumeration = MdAttributeEnumerationDAO.newInstance();
     structEnumeration.setValue(MdAttributeEnumerationInfo.NAME, "structEnumeration");
     structEnumeration.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Enumeration");
-    structEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, struct.getId());
-    structEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getId());
+    structEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, struct.getOid());
+    structEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getOid());
     structEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     structEnumeration.apply();
 
@@ -245,14 +245,14 @@ public abstract class SessionComponentGenTest
     enumBlob.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Pic Desc");
     enumBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumBlob.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    enumBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getId());
+    enumBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getOid());
     enumBlob.apply();
 
     MdAttributeStructDAO enumStruct = MdAttributeStructDAO.newInstance();
     enumStruct.setValue(MdAttributeStructInfo.NAME, "enumStruct");
     enumStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct on an Enum");
-    enumStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, suitMaster.getId());
-    enumStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+    enumStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, suitMaster.getOid());
+    enumStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getOid());
     enumStruct.apply();
 
     structCharacter = MdAttributeCharacterDAO.newInstance();
@@ -262,7 +262,7 @@ public abstract class SessionComponentGenTest
     structCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     structCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     structCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    structCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, struct.getId());
+    structCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, struct.getOid());
     structCharacter.apply();
 
     MdAttributeBooleanDAO structBoolean = MdAttributeBooleanDAO.newInstance();
@@ -270,7 +270,7 @@ public abstract class SessionComponentGenTest
     structBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Boolean");
     structBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     structBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
-    structBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, struct.getId());
+    structBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, struct.getOid());
     structBoolean.apply();
 
     BusinessDAO enum_item = BusinessDAO.newInstance(suitMaster.definesType());
@@ -307,7 +307,7 @@ public abstract class SessionComponentGenTest
     MdAttributeIntegerDAO referenceInt = MdAttributeIntegerDAO.newInstance();
     referenceInt.setValue(MdAttributeIntegerInfo.NAME, "referenceInt");
     referenceInt.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Integer");
-    referenceInt.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, reference.getId());
+    referenceInt.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, reference.getOid());
     referenceInt.apply();
 
     collection.setValue(MdSessionInfo.NAME, "Collection");
@@ -323,7 +323,7 @@ public abstract class SessionComponentGenTest
     collectionSub.setValue(MdSessionInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     collectionSub.setStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes");
     collectionSub.setStructValue(MdSessionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "All Attributes Description");
-    collectionSub.setValue(superMdSessionAttributeNameHack, collection.getId());
+    collectionSub.setValue(superMdSessionAttributeNameHack, collection.getOid());
     collectionSub.apply();
 
     collectionBlob = MdAttributeBlobDAO.newInstance();
@@ -332,7 +332,7 @@ public abstract class SessionComponentGenTest
     collectionBlob.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Blob desc");
     collectionBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionBlob.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionBlob.apply();
 
     collectionBoolean = MdAttributeBooleanDAO.newInstance();
@@ -343,7 +343,7 @@ public abstract class SessionComponentGenTest
     collectionBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     collectionBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionBoolean.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionBoolean.apply();
 
     collectionCharacter = MdAttributeCharacterDAO.newInstance();
@@ -355,14 +355,14 @@ public abstract class SessionComponentGenTest
     collectionCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    collectionCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionCharacter.apply();
 
     collectionDecimal = MdAttributeDecimalDAO.newInstance();
     collectionDecimal.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     collectionDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     collectionDecimal.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
-    collectionDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDecimal.setValue(MdAttributeDecimalInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDecimal.setValue(MdAttributeDecimalInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionDecimal.setValue(MdAttributeDecimalInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -378,7 +378,7 @@ public abstract class SessionComponentGenTest
     collectionDouble.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
     collectionDouble.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDouble.setValue(MdAttributeDoubleInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     collectionDouble.setValue(MdAttributeDoubleInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
@@ -393,15 +393,15 @@ public abstract class SessionComponentGenTest
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
-    collectionEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getId());
-    collectionEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getId());
+    collectionEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getOid());
+    collectionEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getOid());
     collectionEnumeration.apply();
 
     collectionFloat = MdAttributeFloatDAO.newInstance();
     collectionFloat.setValue(MdAttributeFloatInfo.NAME, "aFloat");
     collectionFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     collectionFloat.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
-    collectionFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionFloat.setValue(MdAttributeFloatInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionFloat.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -417,8 +417,8 @@ public abstract class SessionComponentGenTest
     collectionHash.setValue(MdAttributeHashInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionHash.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hashed Attributed");
     collectionHash.setStructValue(MdAttributeHashInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hash Desc");
-    collectionHash.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
-    collectionHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionHash.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
+    collectionHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionHash.apply();
 
     collectionInteger = MdAttributeIntegerDAO.newInstance();
@@ -430,14 +430,14 @@ public abstract class SessionComponentGenTest
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     collectionInteger.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    collectionInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionInteger.apply();
 
     collectionLong = MdAttributeLongDAO.newInstance();
     collectionLong.setValue(MdAttributeLongInfo.NAME, "aLong");
     collectionLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
     collectionLong.setStructValue(MdAttributeLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long Desc");
-    collectionLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionLong.setValue(MdAttributeLongInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionLong.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -451,7 +451,7 @@ public abstract class SessionComponentGenTest
     collectionDate.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date Desc");
     collectionDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDate.setValue(MdAttributeDateInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDate.apply();
 
     collectionDateTime = MdAttributeDateTimeDAO.newInstance();
@@ -460,7 +460,7 @@ public abstract class SessionComponentGenTest
     collectionDateTime.setStructValue(MdAttributeDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime Desc");
     collectionDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionDateTime.setValue(MdAttributeDateTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionDateTime.apply();
 
     collectionTime = MdAttributeTimeDAO.newInstance();
@@ -469,24 +469,24 @@ public abstract class SessionComponentGenTest
     collectionTime.setStructValue(MdAttributeTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time Desc");
     collectionTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionTime.setValue(MdAttributeTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionTime.apply();
 
     collectionReference = MdAttributeReferenceDAO.newInstance();
     collectionReference.setValue(MdAttributeReferenceInfo.NAME, "aReference");
     collectionReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     collectionReference.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference Desc");
-    collectionReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionReference.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getId());
+    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getOid());
     collectionReference.apply();
 
     collectionFile = MdAttributeFileDAO.newInstance();
     collectionFile.setValue(MdAttributeFileInfo.NAME, "aFile");
     collectionFile.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File");
     collectionFile.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File Desc");
-    collectionFile.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionFile.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionFile.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionFile.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionFile.apply();
@@ -494,20 +494,20 @@ public abstract class SessionComponentGenTest
     collectionStruct = MdAttributeStructDAO.newInstance();
     collectionStruct.setValue(MdAttributeStructInfo.NAME, "aStruct");
     collectionStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
-    collectionStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionStruct.setStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Desc");
     collectionStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionStruct.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+    collectionStruct.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getOid());
     collectionStruct.apply();
 
     collectionSymmetric = MdAttributeSymmetricDAO.newInstance();
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.NAME, "aSym");
     collectionSymmetric.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Attribute");
     collectionSymmetric.setStructValue(MdAttributeSymmetricInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Desc");
-    collectionSymmetric.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
+    collectionSymmetric.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
-    collectionSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionSymmetric.setValue(MdAttributeSymmetricInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionSymmetric.apply();
@@ -518,7 +518,7 @@ public abstract class SessionComponentGenTest
     collectionText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionText.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionText.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text Desc");
-    collectionText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionText.apply();
 
     collectionClob = MdAttributeClobDAO.newInstance();
@@ -527,7 +527,7 @@ public abstract class SessionComponentGenTest
     collectionClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionClob.setValue(MdAttributeClobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionClob.setStructValue(MdAttributeClobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob Desc");
-    collectionClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionClob.apply();
 
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -584,11 +584,11 @@ public abstract class SessionComponentGenTest
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
-    SessionComponent sessionComponent = SessionComponent.get(id);
+    SessionComponent sessionComponent = SessionComponent.get(oid);
 
-    if (!id.equals(sessionComponent.getId()))
+    if (!oid.equals(sessionComponent.getOid()))
     {
       Assert.fail("An applied instance did not match the retrieved instance.");
     }
@@ -623,10 +623,10 @@ public abstract class SessionComponentGenTest
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     collectionClass.getMethod("setABlob", byte[].class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     byte[] out = (byte[]) collectionClass.getMethod("getABlob").invoke(object);
 
     try
@@ -664,10 +664,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
     try
@@ -698,10 +698,10 @@ public abstract class SessionComponentGenTest
     Boolean nullObject = null;
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, nullObject);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Boolean out = (Boolean) collectionClass.getMethod("getABoolean").invoke(object);
 
@@ -734,10 +734,10 @@ public abstract class SessionComponentGenTest
     String in = "Mr. Sparkle";
     collectionClass.getMethod("setACharacter", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getACharacter").invoke(object);
 
     try
@@ -770,10 +770,10 @@ public abstract class SessionComponentGenTest
 
     collectionClass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     BigDecimal out = (BigDecimal) collectionClass.getMethod("getADecimal").invoke(object);
 
     try
@@ -806,11 +806,11 @@ public abstract class SessionComponentGenTest
 
     collectionClass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     collectionClass = LoaderDecorator.load(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Double out = (Double) collectionClass.getMethod("getADecimal").invoke(object);
 
@@ -843,10 +843,10 @@ public abstract class SessionComponentGenTest
     double in = 123456.789;
     collectionClass.getMethod("setADouble", Double.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
     try
@@ -878,10 +878,10 @@ public abstract class SessionComponentGenTest
     Double in = null;
     collectionClass.getMethod("setADouble", Double.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Double out = (Double) collectionClass.getMethod("getADouble").invoke(object);
 
@@ -914,10 +914,10 @@ public abstract class SessionComponentGenTest
     float in = 123456.789F;
     collectionClass.getMethod("setAFloat", Float.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
     try
@@ -949,10 +949,10 @@ public abstract class SessionComponentGenTest
     Float in = null;
     collectionClass.getMethod("setAFloat", Float.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
@@ -989,9 +989,9 @@ public abstract class SessionComponentGenTest
     MessageDigest digest = MessageDigest.getInstance("MD5", new Sun());
     digest.update(in.getBytes());
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     boolean out = (Boolean) collectionClass.getMethod("aHashEquals", String.class).invoke(object, "For breakfast, I had some Pringles, and some fudge-striped cook-ays");
 
     try
@@ -1023,10 +1023,10 @@ public abstract class SessionComponentGenTest
     String in = "My rims never spin - to the contrary";
     collectionClass.getMethod("setASym", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getASym").invoke(object);
 
     try
@@ -1058,10 +1058,10 @@ public abstract class SessionComponentGenTest
     int in = 1234;
     collectionClass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     int out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
     try
@@ -1093,10 +1093,10 @@ public abstract class SessionComponentGenTest
     Integer in = null;
     collectionClass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Integer out = (Integer) collectionClass.getMethod("getAnInteger").invoke(object);
 
@@ -1129,11 +1129,11 @@ public abstract class SessionComponentGenTest
     long in = 123456789;
     collectionClass.getMethod("setALong", Long.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     collectionClass = LoaderDecorator.load(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
     try
@@ -1165,10 +1165,10 @@ public abstract class SessionComponentGenTest
     Long in = null;
     collectionClass.getMethod("setALong", Long.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Long out = (Long) collectionClass.getMethod("getALong").invoke(object);
 
@@ -1202,10 +1202,10 @@ public abstract class SessionComponentGenTest
     Date in = new Date(System.currentTimeMillis());
     collectionClass.getMethod("setADate", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
     try
@@ -1237,10 +1237,10 @@ public abstract class SessionComponentGenTest
     Date in = null;
     collectionClass.getMethod("setADate", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Date out = (Date) collectionClass.getMethod("getADate").invoke(object);
 
@@ -1275,9 +1275,9 @@ public abstract class SessionComponentGenTest
     collectionClass.getMethod("setADateTime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
     try
@@ -1309,10 +1309,10 @@ public abstract class SessionComponentGenTest
     Date in = null;
     collectionClass.getMethod("setADateTime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getADateTime").invoke(object);
 
     try
@@ -1345,10 +1345,10 @@ public abstract class SessionComponentGenTest
     Date in = new Date(System.currentTimeMillis());
     collectionClass.getMethod("setATime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     try
@@ -1380,10 +1380,10 @@ public abstract class SessionComponentGenTest
     Date in = null;
     collectionClass.getMethod("setATime", Date.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
 
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
@@ -1416,10 +1416,10 @@ public abstract class SessionComponentGenTest
     String in = "But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
     collectionClass.getMethod("setAText", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
     try
@@ -1456,15 +1456,15 @@ public abstract class SessionComponentGenTest
     structClass.getMethod("addStructEnumeration", enumClass).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
-    SessionComponent sessionComponent = SessionComponent.get(id);
+    SessionComponent sessionComponent = SessionComponent.get(oid);
     TransientDAO transientDAO = sessionComponent.getTransientDAO();
     StructDAO structDAO = ( (AttributeStructIF) transientDAO.getAttributeIF("aStruct") ).getStructDAO();
     BusinessDAOIF[] enums = ( (AttributeEnumerationIF) structDAO.getAttribute("structEnumeration") ).dereference();
 
     Assert.assertEquals(1, enums.length);
-    Assert.assertEquals(heartsId, enums[0].getId());
+    Assert.assertEquals(heartsId, enums[0].getOid());
   }
 
   @Request
@@ -1490,15 +1490,15 @@ public abstract class SessionComponentGenTest
     structClass.getMethod("setStructCharacter", String.class).invoke(struct, input);
     structClass.getMethod("addStructEnumeration", enumClass).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     struct = collectionClass.getMethod("getAStruct").invoke(object);
     List<?> out = (List<?>) structClass.getMethod("getStructEnumeration").invoke(struct);
 
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
-    String outId = (String) head.getClass().getMethod("getId").invoke(head);
+    String outId = (String) head.getClass().getMethod("getOid").invoke(head);
     String structChar = (String) structClass.getMethod("getStructCharacter").invoke(struct);
 
     try
@@ -1532,9 +1532,9 @@ public abstract class SessionComponentGenTest
     structClass.getMethod("setStructBoolean", Boolean.class).invoke(struct, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
     Method get = collectionClass.getMethod("get", String.class);
-    object = get.invoke(null, id);
+    object = get.invoke(null, oid);
     struct = collectionClass.getMethod("getAStruct").invoke(object);
 
     boolean out = (Boolean) structClass.getMethod("getStructBoolean").invoke(struct);
@@ -1572,13 +1572,13 @@ public abstract class SessionComponentGenTest
     collectionClass.getMethod("setAReference", referenceClass).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     Business out = (Business) collectionClass.getMethod("getAReference").invoke(object);
 
     try
     {
-      if (!in.getId().equalsIgnoreCase(out.getId()))
+      if (!in.getOid().equalsIgnoreCase(out.getOid()))
       {
         Assert.fail("Stored and Retrieved References are different.");
       }
@@ -1610,8 +1610,8 @@ public abstract class SessionComponentGenTest
     collectionClass.getMethod("addAnEnum", enumClass).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
-    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, id);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, oid);
 
     TransientDAO transientDAO = object.getTransientDAO();
 
@@ -1650,17 +1650,17 @@ public abstract class SessionComponentGenTest
     Class<?> enumClass = LoaderDecorator.load(suitEnum.definesType());
 
     Object in = enumClass.getDeclaredField(heartName).get(null);
-    String inId = (String) enumClass.getMethod("getId").invoke(in);
+    String inId = (String) enumClass.getMethod("getOid").invoke(in);
 
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("addAnEnum", enumClass).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
-    object = collectionClass.getMethod("get", String.class).invoke(null, id);
+    object = collectionClass.getMethod("get", String.class).invoke(null, oid);
     List<BusinessEnumeration> out = (List<BusinessEnumeration>) collectionClass.getMethod("getAnEnum").invoke(object);
     BusinessEnumeration head = (BusinessEnumeration) out.get(0);
-    String outId = (String) head.getClass().getMethod("getId").invoke(head);
+    String outId = (String) head.getClass().getMethod("getOid").invoke(head);
 
     try
     {
@@ -1693,13 +1693,13 @@ public abstract class SessionComponentGenTest
     SessionComponent object = (SessionComponent) collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("addAnEnum", enumClass).invoke(object, hearts);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
-    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, id);
+    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, oid);
     collectionClass.getMethod("removeAnEnum", enumClass).invoke(object, hearts);
     collectionClass.getMethod("apply").invoke(object);
 
-    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, id);
+    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, oid);
     TransientDAO transientDAO = object.getTransientDAO();
     Set<String> out = ( (AttributeEnumerationIF) transientDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
@@ -1734,12 +1734,12 @@ public abstract class SessionComponentGenTest
     SessionComponent object = (SessionComponent) collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("addAnEnum", enumClass).invoke(object, hearts);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     collectionClass.getMethod("clearAnEnum").invoke(object);
     collectionClass.getMethod("apply").invoke(object);
 
-    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, id);
+    object = (SessionComponent) collectionClass.getMethod("get", String.class).invoke(null, oid);
     TransientDAO transientDAO = object.getTransientDAO();
     Set<String> out = ( (AttributeEnumerationIF) transientDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
 
@@ -1769,17 +1769,17 @@ public abstract class SessionComponentGenTest
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClassDTO = LoaderDecorator.load(collectionDTO);
     Method get = collectionClassDTO.getMethod("get", ClientRequestIF.class, String.class);
-    Object objectDTO = get.invoke(null, _clientReaqest, id);
+    Object objectDTO = get.invoke(null, _clientReaqest, oid);
 
     collectionClassDTO.getMethod("delete").invoke(objectDTO);
 
     try
     {
-      object = collectionClass.getMethod("get", String.class).invoke(null, id);
+      object = collectionClass.getMethod("get", String.class).invoke(null, oid);
 
       Assert.fail("Delete businessDTO did not delete the entity");
     }
@@ -1813,11 +1813,11 @@ public abstract class SessionComponentGenTest
     byte[] in = { 0, 1, 1, 2, 3, 5, 8 };
     collectionClass.getMethod("setABlob", byte[].class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    Object objectDTO = get.invoke(null, _clientReaqest, id);
+    Object objectDTO = get.invoke(null, _clientReaqest, oid);
 
     byte[] out = (byte[]) collectionDTOclass.getMethod("getABlob").invoke(objectDTO);
 
@@ -1862,11 +1862,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    Object objectDTO = get.invoke(null, _clientReaqest, id);
+    Object objectDTO = get.invoke(null, _clientReaqest, oid);
     boolean out = (Boolean) collectionDTOclass.getMethod("getABoolean").invoke(objectDTO);
 
     try
@@ -1894,11 +1894,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("setABoolean", Boolean.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    Object objectDTO = get.invoke(null, _clientReaqest, id);
+    Object objectDTO = get.invoke(null, _clientReaqest, oid);
     Boolean out = (Boolean) collectionDTOclass.getMethod("getABoolean").invoke(objectDTO);
 
     try
@@ -1926,11 +1926,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionClass.getConstructor().newInstance();
     collectionClass.getMethod("setACharacter", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
-    String id = (String) collectionClass.getMethod("getId").invoke(object);
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
 
     Class<?> collectionDTOclass = LoaderDecorator.load(collectionDTO);
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    Object objectDTO = get.invoke(null, _clientReaqest, id);
+    Object objectDTO = get.invoke(null, _clientReaqest, oid);
 
     String out = (String) collectionDTOclass.getMethod("getACharacter").invoke(objectDTO);
 
@@ -1971,7 +1971,7 @@ public abstract class SessionComponentGenTest
     // Make sure the accessor method is there
     collectionDTOclass.getMethod("getACharacter").invoke(object);
 
-    collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     collectionCharacter.apply();
 
     loader = GeneratedLoader.isolatedClassLoader();
@@ -2006,7 +2006,7 @@ public abstract class SessionComponentGenTest
     }
     finally
     {
-      collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      collectionCharacter.addItem(MdAttributeConcreteInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       collectionCharacter.apply();
 
       loader = GeneratedLoader.isolatedClassLoader();
@@ -2052,7 +2052,7 @@ public abstract class SessionComponentGenTest
     // Make sure the accessor method is there
     collectionDTOclass.getMethod("setACharacter", String.class).invoke(object, "123");
 
-    collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PROTECTED.getOid());
     collectionCharacter.apply();
     
     loader = GeneratedLoader.isolatedClassLoader();
@@ -2084,7 +2084,7 @@ public abstract class SessionComponentGenTest
     }
     finally
     {
-      collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      collectionCharacter.addItem(MdAttributeConcreteInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
       collectionCharacter.apply();
 
       loader = GeneratedLoader.isolatedClassLoader();
@@ -2114,10 +2114,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADate", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Date out = (Date) collectionDTOclass.getMethod("getADate").invoke(object);
 
@@ -2143,10 +2143,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADate", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Date out = (Date) collectionDTOclass.getMethod("getADate").invoke(object);
 
@@ -2170,10 +2170,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADateTime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Date out = (Date) collectionDTOclass.getMethod("getADateTime").invoke(object);
 
@@ -2199,10 +2199,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADateTime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Date out = (Date) collectionDTOclass.getMethod("getADateTime").invoke(object);
 
@@ -2225,10 +2225,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     BigDecimal out = ( (BigDecimal) collectionDTOclass.getMethod("getADecimal").invoke(object) );
 
@@ -2251,10 +2251,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADecimal", BigDecimal.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     BigDecimal out = ( (BigDecimal) collectionDTOclass.getMethod("getADecimal").invoke(object) );
 
@@ -2277,10 +2277,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADouble", Double.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     double out = (Double) collectionDTOclass.getMethod("getADouble").invoke(object);
 
@@ -2303,10 +2303,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setADouble", Double.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Double out = (Double) collectionDTOclass.getMethod("getADouble").invoke(object);
 
@@ -2329,10 +2329,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAFloat", Float.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     float out = (Float) collectionDTOclass.getMethod("getAFloat").invoke(object);
 
@@ -2355,10 +2355,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAFloat", Float.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Float out = (Float) collectionDTOclass.getMethod("getAFloat").invoke(object);
 
@@ -2381,10 +2381,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     int out = (Integer) collectionDTOclass.getMethod("getAnInteger").invoke(object);
 
@@ -2407,10 +2407,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAnInteger", Integer.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Integer out = (Integer) collectionDTOclass.getMethod("getAnInteger").invoke(object);
 
@@ -2433,10 +2433,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setALong", Long.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     long out = (Long) collectionDTOclass.getMethod("getALong").invoke(object);
 
@@ -2459,10 +2459,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setALong", Long.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     Long out = (Long) collectionDTOclass.getMethod("getALong").invoke(object);
 
@@ -2489,15 +2489,15 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAReference", referenceClass).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     BusinessDTO out = (BusinessDTO) collectionDTOclass.getMethod("getAReference").invoke(object);
 
     try
     {
-      Assert.assertEquals(in.getId(), out.getId());
+      Assert.assertEquals(in.getOid(), out.getOid());
     }
     finally
     {
@@ -2516,10 +2516,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setASym", String.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     String out = (String) collectionDTOclass.getMethod("getASym").invoke(object);
 
@@ -2545,11 +2545,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setAText", String.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     String out = (String) collectionClass.getMethod("getAText").invoke(object);
 
     try
@@ -2572,11 +2572,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setATime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
@@ -2601,11 +2601,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setATime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     Date out = (Date) collectionClass.getMethod("getATime").invoke(object);
 
     try
@@ -2628,11 +2628,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setATime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     boolean out = (Boolean) collectionClass.getMethod("isATimeReadable").invoke(object);
 
     try
@@ -2655,11 +2655,11 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("setATime", Date.class).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
     boolean out = (Boolean) collectionClass.getMethod("isATimeWritable").invoke(object);
 
     try
@@ -2684,10 +2684,10 @@ public abstract class SessionComponentGenTest
     Object object = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("addAnEnum", enumDTOclass).invoke(object, in);
     collectionDTOclass.getMethod("apply").invoke(object);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(object);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(object);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    object = get.invoke(null, _clientReaqest, id);
+    object = get.invoke(null, _clientReaqest, oid);
 
     List<?> enums = (List<?>) collectionDTOclass.getMethod("getAnEnum").invoke(object);
     EnumerationDTOIF head = (EnumerationDTOIF) enums.get(0);
@@ -2721,10 +2721,10 @@ public abstract class SessionComponentGenTest
     Object objectDTO = collectionDTOclass.getConstructor(ClientRequestIF.class).newInstance(_clientReaqest);
     collectionDTOclass.getMethod("addAnEnum", enumDTOclass).invoke(objectDTO, in);
     collectionDTOclass.getMethod("apply").invoke(objectDTO);
-    String id = (String) collectionDTOclass.getMethod("getId").invoke(objectDTO);
+    String oid = (String) collectionDTOclass.getMethod("getOid").invoke(objectDTO);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    objectDTO = get.invoke(null, _clientReaqest, id);
+    objectDTO = get.invoke(null, _clientReaqest, oid);
 
     // Remove the enum item
     collectionDTOclass.getMethod("removeAnEnum", enumDTOclass).invoke(objectDTO, in);
@@ -2732,7 +2732,7 @@ public abstract class SessionComponentGenTest
 
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     get = collectionClass.getMethod("get", String.class);
-    SessionComponent object = (SessionComponent) get.invoke(null, id);
+    SessionComponent object = (SessionComponent) get.invoke(null, oid);
 
     TransientDAO transientDAO = object.getTransientDAO();
     Set<String> out = ( (AttributeEnumerationIF) transientDAO.getAttributeIF("anEnum") ).getCachedEnumItemIdSet();
@@ -2766,7 +2766,7 @@ public abstract class SessionComponentGenTest
 
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    object = (SessionComponent) get.invoke(null, object.getId());
+    object = (SessionComponent) get.invoke(null, object.getOid());
 
     TransientDAO transientDAO = object.getTransientDAO();
     String out = transientDAO.getStructValue("aStruct", "structBoolean");
@@ -2803,7 +2803,7 @@ public abstract class SessionComponentGenTest
 
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    SessionComponent object = (SessionComponent) get.invoke(null, objectDTO.getId());
+    SessionComponent object = (SessionComponent) get.invoke(null, objectDTO.getOid());
 
     TransientDAO transientDAO = object.getTransientDAO();
     String out = transientDAO.getStructValue("aStruct", "structBoolean");
@@ -2835,7 +2835,7 @@ public abstract class SessionComponentGenTest
     _struct.setValue("structBoolean", Boolean.toString(false));
     object.apply();
 
-    SessionDTO dto = (SessionDTO) _clientReaqest.get(object.getId());
+    SessionDTO dto = (SessionDTO) _clientReaqest.get(object.getOid());
 
     AttributeStructDTO structDTO = ComponentDTOFacade.getAttributeStructDTO(dto, "aStruct");
     structDTO.addEnumItem("structEnumeration", clubName);
@@ -2845,7 +2845,7 @@ public abstract class SessionComponentGenTest
     // Check that the TransientDAO was updated
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     Method get = collectionClass.getMethod("get", String.class);
-    object = (SessionComponent) get.invoke(null, object.getId());
+    object = (SessionComponent) get.invoke(null, object.getOid());
 
     TransientDAO transientDAO = object.getTransientDAO();
     StructDAO structDAO = ( (AttributeStructIF) transientDAO.getAttributeIF("aStruct") ).getStructDAO();
@@ -2854,7 +2854,7 @@ public abstract class SessionComponentGenTest
     try
     {
       Assert.assertEquals(1, enums.length);
-      Assert.assertEquals(clubsId, enums[0].getId());
+      Assert.assertEquals(clubsId, enums[0].getOid());
     }
     finally
     {
@@ -2892,7 +2892,7 @@ public abstract class SessionComponentGenTest
     EnumerationDTOIF clubs = (EnumerationDTOIF) enumClass.getMethod("valueOf", String.class).invoke(null, clubName);
 
     Method get = collectionDTOclass.getMethod("get", ClientRequestIF.class, String.class);
-    Object object = get.invoke(null, _clientReaqest, sessionComponent.getId());
+    Object object = get.invoke(null, _clientReaqest, sessionComponent.getOid());
 
     Object struct = collectionDTOclass.getMethod("getAStruct").invoke(object);
 
@@ -2909,7 +2909,7 @@ public abstract class SessionComponentGenTest
     // Check that the BusinessDAO was updated
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
     get = collectionClass.getMethod("get", String.class);
-    sessionComponent = (SessionComponent) get.invoke(null, sessionComponent.getId());
+    sessionComponent = (SessionComponent) get.invoke(null, sessionComponent.getOid());
 
     TransientDAO transientDAO = sessionComponent.getTransientDAO();
 
@@ -2921,7 +2921,7 @@ public abstract class SessionComponentGenTest
     try
     {
       Assert.assertEquals(1, enums.length);
-      Assert.assertEquals(clubsId, enums[0].getId());
+      Assert.assertEquals(clubsId, enums[0].getOid());
       Assert.assertEquals(Long.toString(longIn), outLong);
       Assert.assertEquals(Boolean.toString(booleanIn), outBoolean);
     }
@@ -2949,7 +2949,7 @@ public abstract class SessionComponentGenTest
     collectionClass.getMethod("apply").invoke(object);
     Assert.assertEquals(collection.getDisplayLabel(CommonProperties.getDefaultLocale()), object.getMd().getDisplayLabel());
     Assert.assertEquals(collection.getDescription(CommonProperties.getDefaultLocale()), object.getMd().getDescription());
-    Assert.assertEquals(collection.getId(), object.getMd().getId());
+    Assert.assertEquals(collection.getOid(), object.getMd().getOid());
   }
 
   @Request
@@ -3217,7 +3217,7 @@ public abstract class SessionComponentGenTest
     Assert.assertEquals(mdAttribute.getDescription(CommonProperties.getDefaultLocale()), mdDTO.getDescription());
     Assert.assertEquals(mdAttribute.isImmutable(), mdDTO.isImmutable());
     Assert.assertEquals(mdAttribute.isRequired(), mdDTO.isRequired());
-    Assert.assertEquals(mdAttribute.getId(), mdDTO.getId());
+    Assert.assertEquals(mdAttribute.getOid(), mdDTO.getOid());
     Assert.assertEquals(mdAttribute.isSystem(), mdDTO.isSystem());
     Assert.assertEquals(mdAttribute.definesAttribute(), mdDTO.getName());
 

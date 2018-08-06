@@ -50,7 +50,7 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String HOMEPHONE = "homePhone";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -189,7 +189,7 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -445,7 +445,7 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -995,7 +995,7 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      setValue(TESTREFERENCEOBJECT, value.getId());
+      setValue(TESTREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -1163,10 +1163,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Boolean) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final java.lang.Boolean compareIntegers(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id, java.lang.Integer num1, java.lang.Integer num2)
+  public static final java.lang.Boolean compareIntegers(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid, java.lang.Integer num1, java.lang.Integer num2)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.Integer", "java.lang.Integer"};
-    Object[] _parameters = new Object[]{id, num1, num2};
+    Object[] _parameters = new Object[]{oid, num1, num2};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "compareIntegers", _declaredTypes);
     return (java.lang.Boolean) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1179,10 +1179,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (com.runwaysdk.jstest.TestClassDTO[]) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final com.runwaysdk.jstest.TestClassDTO[] createInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id, java.lang.Integer num)
+  public static final com.runwaysdk.jstest.TestClassDTO[] createInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid, java.lang.Integer num)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.Integer"};
-    Object[] _parameters = new Object[]{id, num};
+    Object[] _parameters = new Object[]{oid, num};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "createInstances", _declaredTypes);
     return (com.runwaysdk.jstest.TestClassDTO[]) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1203,10 +1203,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceException(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceException(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceException", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1219,10 +1219,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceException1(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceException1(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceException1", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1235,10 +1235,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceException2(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceException2(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceException2", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1251,10 +1251,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceException3(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceException3(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceException3", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1267,10 +1267,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Integer) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final java.lang.Integer instanceForceInformation(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final java.lang.Integer instanceForceInformation(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceInformation", _declaredTypes);
     return (java.lang.Integer) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1283,10 +1283,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Integer) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final java.lang.Integer instanceForceMultipleInformations(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final java.lang.Integer instanceForceMultipleInformations(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceMultipleInformations", _declaredTypes);
     return (java.lang.Integer) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1299,10 +1299,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceMultipleProblems(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceMultipleProblems(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceMultipleProblems", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1315,10 +1315,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Integer) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final java.lang.Integer instanceForceMultipleWarnings(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final java.lang.Integer instanceForceMultipleWarnings(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceMultipleWarnings", _declaredTypes);
     return (java.lang.Integer) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1331,10 +1331,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceProblem(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceProblem(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceProblem", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1347,10 +1347,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Integer) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final java.lang.Integer instanceForceWarning(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final java.lang.Integer instanceForceWarning(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceWarning", _declaredTypes);
     return (java.lang.Integer) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1363,10 +1363,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void instanceForceWarningVoid(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final void instanceForceWarningVoid(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "instanceForceWarningVoid", _declaredTypes);
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1374,60 +1374,60 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.jstest.RefClassDTO> getAllRefClass()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.RefClassDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.RefClassDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.RefClassDTO> getAllRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.jstest.RefClassDTO> getAllRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.RefClassDTO>) clientRequestIF.getChildren(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.RefClassDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllRefClassRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllRefClassRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllRefClassRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   public com.runwaysdk.jstest.BefriendsDTO addRefClass(com.runwaysdk.jstest.RefClassDTO child)
   {
-    return (com.runwaysdk.jstest.BefriendsDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (com.runwaysdk.jstest.BefriendsDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static com.runwaysdk.jstest.BefriendsDTO addRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.jstest.RefClassDTO child)
+  public static com.runwaysdk.jstest.BefriendsDTO addRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.jstest.RefClassDTO child)
   {
-    return (com.runwaysdk.jstest.BefriendsDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (com.runwaysdk.jstest.BefriendsDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   public void removeRefClass(com.runwaysdk.jstest.BefriendsDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.jstest.BefriendsDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllRefClass()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static void removeAllRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllRefClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static com.runwaysdk.jstest.TestClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.jstest.TestClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.jstest.TestClassDTO) dto;
   }
@@ -1445,7 +1445,7 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.TestClassQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -1458,10 +1458,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.jstest.TestClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.TestClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.jstest.TestClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -1471,10 +1471,10 @@ public abstract class TestClassDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.jstest.TestClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.TestClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestClassDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.jstest.TestClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -145,13 +145,13 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   // Equals
   /**
    * Returns an attribute character statement object representing the object's
-   * id attribute.
+   * oid attribute.
    * 
    * @param attributeName
    *          name of the attribute.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter id()
+  public AttributeCharacter oid()
   {
     String attributeName = EntityInfo.ID;
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
@@ -169,7 +169,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition EQ(BusinessDAOQuery businessDAOquery)
   {
-    Attribute attribute = businessDAOquery.id();
+    Attribute attribute = businessDAOquery.oid();
 
     return this.refEqCondition(attribute);
   }
@@ -182,7 +182,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition EQ(BusinessQuery businessQuery)
   {
-    Attribute attribute = businessQuery.id();
+    Attribute attribute = businessQuery.oid();
 
     return this.refEqCondition(attribute);
   }
@@ -195,7 +195,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition EQ(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar) genBusinessQuery.getId();
+    AttributeChar attribute = (AttributeChar) genBusinessQuery.getOid();
 
     return this.refEqCondition(attribute);
   }
@@ -230,15 +230,15 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Compares the id of a component for equality.
+   * Compares the oid of a component for equality.
    * 
-   * @param id
-   *          id of the object to compare.
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id)
+  public BasicCondition EQ(String oid)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(id);
+    StatementPrimitive statementPrimitive = this.formatAndValidate(oid);
     return new BasicConditionEq(this, statementPrimitive, false);
   }
 
@@ -251,7 +251,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public BasicCondition EQ(ComponentIF component)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(component.getId());
+    StatementPrimitive statementPrimitive = this.formatAndValidate(component.getOid());
     return new BasicConditionEq(this, statementPrimitive, false);
   }
 
@@ -288,7 +288,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition NE(BusinessDAOQuery businessDAOquery)
   {
-    Attribute attribute = businessDAOquery.id();
+    Attribute attribute = businessDAOquery.oid();
 
     return this.refNotEqCondition(attribute);
   }
@@ -301,7 +301,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition NE(BusinessQuery businessQuery)
   {
-    Attribute attribute = businessQuery.id();
+    Attribute attribute = businessQuery.oid();
 
     return this.refNotEqCondition(attribute);
   }
@@ -314,7 +314,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition NE(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar) genBusinessQuery.getId();
+    AttributeChar attribute = (AttributeChar) genBusinessQuery.getOid();
 
     return this.refNotEqCondition(attribute);
   }
@@ -336,15 +336,15 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Compares the id of a component for non equality.
+   * Compares the oid of a component for non equality.
    * 
-   * @param id
-   *          id of the object to compare.
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition NE(String id)
+  public BasicCondition NE(String oid)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(id);
+    StatementPrimitive statementPrimitive = this.formatAndValidate(oid);
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }
 
@@ -357,7 +357,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public BasicCondition NE(ComponentIF component)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(component.getId());
+    StatementPrimitive statementPrimitive = this.formatAndValidate(component.getOid());
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }
 
@@ -1651,11 +1651,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
     }
   }
 
@@ -1670,7 +1670,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isParentIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
   }
 
   /**
@@ -1687,11 +1687,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
     }
   }
 
@@ -1706,7 +1706,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isNotParentIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.parentId());
   }
 
   /**
@@ -1723,11 +1723,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
     }
   }
 
@@ -1742,7 +1742,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isParentIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
   }
 
   /**
@@ -1759,11 +1759,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
     }
   }
 
@@ -1778,7 +1778,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isNotParentIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.parentId());
   }
 
   /**
@@ -1795,11 +1795,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
     }
   }
 
@@ -1814,7 +1814,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isChildIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
   }
 
   /**
@@ -1831,11 +1831,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
     }
   }
 
@@ -1850,7 +1850,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isNotChildIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), abstractRelationshipQuery.childId());
   }
 
   /**
@@ -1867,11 +1867,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
     }
   }
 
@@ -1886,7 +1886,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isChildIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
   }
 
   /**
@@ -1903,11 +1903,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
     }
   }
 
@@ -1922,7 +1922,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition isNotChildIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.oid(), generatedRelationshipQuery.childId());
   }
 
   public static interface PluginIF
@@ -1937,8 +1937,8 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     StatementPrimitive[] tempStatementArray = new StatementPrimitive[ids.length];
     for (int i = 0; i < ids.length; i++)
     {
-      String id = ids[i];
-      if (id == null)
+      String oid = ids[i];
+      if (oid == null)
       {
         String error = "Parameter may not be null";
         throw new QueryException(error);

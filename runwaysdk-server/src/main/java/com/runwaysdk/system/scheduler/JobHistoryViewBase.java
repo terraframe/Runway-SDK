@@ -41,7 +41,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
@@ -195,7 +195,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return mdClassIF.definesAttribute(HISTORYINFORMATION);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -205,7 +205,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -249,7 +249,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      addEnumItem(JOBOPERATION, value.getId());
+      addEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -257,7 +257,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      removeEnumItem(JOBOPERATION, value.getId());
+      removeEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -399,7 +399,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      addEnumItem(STATUS, value.getId());
+      addEnumItem(STATUS, value.getOid());
     }
   }
   
@@ -407,7 +407,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      removeEnumItem(STATUS, value.getId());
+      removeEnumItem(STATUS, value.getOid());
     }
   }
   
@@ -544,9 +544,9 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static JobHistoryView get(String id)
+  public static JobHistoryView get(String oid)
   {
-    return (JobHistoryView) com.runwaysdk.business.View.get(id);
+    return (JobHistoryView) com.runwaysdk.business.View.get(oid);
   }
   
   public static com.runwaysdk.system.scheduler.JobHistoryViewQuery getJobHistories(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber)

@@ -117,11 +117,11 @@ public abstract class MutableDTOToMutable
     this.mutable = component;
     this.sessionId = sessionId;
 
-    // Map the id of the new instance to the id that will be used should this
+    // Map the oid of the new instance to the oid that will be used should this
     // new instance be applied.
     if (mutableDTO.isNewInstance())
     {
-      Session.mapNewInstanceTempId(this.mutableDTO.getId(), this.mutable.getId());
+      Session.mapNewInstanceTempId(this.mutableDTO.getOid(), this.mutable.getOid());
     }
 
     // check for type-safety
@@ -228,14 +228,14 @@ public abstract class MutableDTOToMutable
 
   protected void setAttributeReference(MdAttributeDAOIF mdAttributeIF)
   {
-    // just set the id since DTO's don't hold the actual references
+    // just set the oid since DTO's don't hold the actual references
     String attributeName = mdAttributeIF.definesAttribute();
     this.mutable.setValue(attributeName, mutableDTO.getValue(attributeName));
   }
 
   protected void setAttributeMultiReference(MdAttributeDAOIF mdAttributeIF)
   {
-    // just set the id since DTO's don't hold the actual references
+    // just set the oid since DTO's don't hold the actual references
     String attributeName = mdAttributeIF.definesAttribute();
 
     List<String> itemIds = mutableDTO.getMultiItems(attributeName);
@@ -358,7 +358,7 @@ public abstract class MutableDTOToMutable
           for (String enumName : enumNames)
           {
             EnumerationItemDAO enumerationItem = EnumerationItemDAO.getEnumeration(masterType, enumName);
-            struct.addEnumItem(name, enumerationItem.getId());
+            struct.addEnumItem(name, enumerationItem.getOid());
           }
         }
         else if (!structAttribute.isSystem())
@@ -458,7 +458,7 @@ public abstract class MutableDTOToMutable
       // Loop through all set enumeration items.
       for (int i = 0; i < names.size(); i++)
       {
-        mutable.addEnumItem(attributeName, EnumerationItemDAO.getEnumeration(masterListType, names.get(i)).getId());
+        mutable.addEnumItem(attributeName, EnumerationItemDAO.getEnumeration(masterListType, names.get(i)).getOid());
       }
     }
   }
@@ -770,7 +770,7 @@ public abstract class MutableDTOToMutable
       {
         component = BusinessFacade.newSessionComponent(mutableDTO.getType());
         TransientDAO transientDAO = (TransientDAO) BusinessFacade.getTransientDAO( ( (SessionComponent) component ));
-        transientDAO.setProblemNotificationId(mutableDTO.getId());
+        transientDAO.setProblemNotificationId(mutableDTO.getOid());
       }
     }
     else
@@ -785,23 +785,23 @@ public abstract class MutableDTOToMutable
         // ViewDTO.
         try
         {
-          component = View.get(mutableDTO.getId());
+          component = View.get(mutableDTO.getOid());
         }
         catch (DataNotFoundException e)
         {
           component = BusinessFacade.newSessionComponent(mutableDTO.getType());
           TransientDAO transientDAO = (TransientDAO) BusinessFacade.getTransientDAO( ( (SessionComponent) component ));
-          transientDAO.setProblemNotificationId(mutableDTO.getId());
+          transientDAO.setProblemNotificationId(mutableDTO.getOid());
         }
       }
       else if (mutableDTO instanceof UtilDTO)
       {
-        component = Util.get(mutableDTO.getId());
+        component = Util.get(mutableDTO.getOid());
       }
       // Assume entity
       else
       {
-        component = BusinessFacade.getEntity(mutableDTO.getId());
+        component = BusinessFacade.getEntity(mutableDTO.getOid());
         // Obtain an application lock on the object. This will give the Entity a
         // new cloned copy of its EntityDAO,
         // rather than one that might be reference to one in the global cache.
@@ -812,7 +812,7 @@ public abstract class MutableDTOToMutable
           SessionIF session = Session.getCurrentSession();
           if (session != null)
           {
-            if (element.getValue(ElementInfo.LOCKED_BY).equals(session.getUser().getId()))
+            if (element.getValue(ElementInfo.LOCKED_BY).equals(session.getUser().getOid()))
             {
               element.appLock();
             }

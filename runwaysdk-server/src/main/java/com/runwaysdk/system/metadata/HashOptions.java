@@ -51,10 +51,10 @@ public enum HashOptions implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getMessageDigest();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -69,11 +69,11 @@ public enum HashOptions implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static HashOptions get(String id)
+  public static HashOptions get(String oid)
   {
     for (HashOptions e : HashOptions.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

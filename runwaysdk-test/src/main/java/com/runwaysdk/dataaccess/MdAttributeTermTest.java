@@ -80,13 +80,13 @@ public class MdAttributeTermTest
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         try
         {
-          MdAttributeTermDAOIF result = MdAttributeTermDAO.get(mdAttributeTerm.getId());
+          MdAttributeTermDAOIF result = MdAttributeTermDAO.get(mdAttributeTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeTermInfo.NAME), mdAttributeTerm.getValue(MdAttributeTermInfo.NAME));
@@ -129,8 +129,8 @@ public class MdAttributeTermTest
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdReference.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdReference.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         TestFixtureFactory.delete(mdAttributeTerm);
@@ -175,8 +175,8 @@ public class MdAttributeTermTest
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         mdAttributeTerm.addAttributeRoot(term, true);
@@ -184,7 +184,7 @@ public class MdAttributeTermTest
         List<RelationshipDAOIF> roots = mdAttributeTerm.getAllAttributeRoots();
 
         Assert.assertEquals(1, roots.size());
-        Assert.assertEquals(term.getId(), roots.get(0).getChildId());
+        Assert.assertEquals(term.getOid(), roots.get(0).getChildId());
       }
       finally
       {

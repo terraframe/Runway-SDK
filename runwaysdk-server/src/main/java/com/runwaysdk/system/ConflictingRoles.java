@@ -29,7 +29,7 @@ public class ConflictingRoles extends ConflictingRolesBase
   
   public ConflictingRoles(com.runwaysdk.system.Roles parent, com.runwaysdk.system.SDuty child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

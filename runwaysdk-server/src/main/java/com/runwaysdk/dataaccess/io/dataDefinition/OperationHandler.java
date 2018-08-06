@@ -78,7 +78,7 @@ public class OperationHandler extends TagHandler implements TagHandlerIF, Handle
     return (PermissionAction) context.getObject("action");
   }
 
-  protected void setPermission(Operation operation, String id, TagContext context)
+  protected void setPermission(Operation operation, String oid, TagContext context)
   {
     List<ActorDAO> actors = this.getActors(context);
     PermissionAction action = this.getAction(context);
@@ -87,11 +87,11 @@ public class OperationHandler extends TagHandler implements TagHandlerIF, Handle
     {
       if (action.equals(PermissionAction.GRANT))
       {
-        actor.grantPermission(operation, id);
+        actor.grantPermission(operation, oid);
       }
       else if (action.equals(PermissionAction.REVOKE))
       {
-        actor.revokePermission(operation, id);
+        actor.revokePermission(operation, oid);
       }
     }
   }
@@ -103,41 +103,41 @@ public class OperationHandler extends TagHandler implements TagHandlerIF, Handle
 
     if (operationName.equals(XMLTags.ALL))
     {
-      this.setPermission(Operation.CREATE, metadata.getId(), context);
-      this.setPermission(Operation.DELETE, metadata.getId(), context);
-      this.setPermission(Operation.READ, metadata.getId(), context);
-      this.setPermission(Operation.READ_ALL, metadata.getId(), context);
-      this.setPermission(Operation.WRITE, metadata.getId(), context);
-      this.setPermission(Operation.WRITE_ALL, metadata.getId(), context);
+      this.setPermission(Operation.CREATE, metadata.getOid(), context);
+      this.setPermission(Operation.DELETE, metadata.getOid(), context);
+      this.setPermission(Operation.READ, metadata.getOid(), context);
+      this.setPermission(Operation.READ_ALL, metadata.getOid(), context);
+      this.setPermission(Operation.WRITE, metadata.getOid(), context);
+      this.setPermission(Operation.WRITE_ALL, metadata.getOid(), context);
 
       if (mdClass instanceof MdRelationshipDAOIF)
       {
-        this.setPermission(Operation.ADD_CHILD, metadata.getId(), context);
-        this.setPermission(Operation.ADD_PARENT, metadata.getId(), context);
+        this.setPermission(Operation.ADD_CHILD, metadata.getOid(), context);
+        this.setPermission(Operation.ADD_PARENT, metadata.getOid(), context);
 
-        this.setPermission(Operation.DELETE_CHILD, metadata.getId(), context);
-        this.setPermission(Operation.DELETE_PARENT, metadata.getId(), context);
+        this.setPermission(Operation.DELETE_CHILD, metadata.getOid(), context);
+        this.setPermission(Operation.DELETE_PARENT, metadata.getOid(), context);
 
-        this.setPermission(Operation.READ_CHILD, metadata.getId(), context);
-        this.setPermission(Operation.READ_PARENT, metadata.getId(), context);
+        this.setPermission(Operation.READ_CHILD, metadata.getOid(), context);
+        this.setPermission(Operation.READ_PARENT, metadata.getOid(), context);
 
-        this.setPermission(Operation.WRITE_CHILD, metadata.getId(), context);
-        this.setPermission(Operation.WRITE_PARENT, metadata.getId(), context);
+        this.setPermission(Operation.WRITE_CHILD, metadata.getOid(), context);
+        this.setPermission(Operation.WRITE_PARENT, metadata.getOid(), context);
       }
     }
     else if (operationName.equals(XMLTags.READ_ALL_ATTRIBUTES))
     {
-      this.setPermission(Operation.READ_ALL, metadata.getId(), context);
+      this.setPermission(Operation.READ_ALL, metadata.getOid(), context);
     }
     else if (operationName.equals(XMLTags.WRITE_ALL_ATTRIBUTES))
     {
-      this.setPermission(Operation.WRITE_ALL, metadata.getId(), context);
+      this.setPermission(Operation.WRITE_ALL, metadata.getOid(), context);
     }
     else
     {
       Operation operation = Operation.valueOf(operationName);
 
-      this.setPermission(operation, metadata.getId(), context);
+      this.setPermission(operation, metadata.getOid(), context);
     }
   }
 }

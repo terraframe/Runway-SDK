@@ -354,9 +354,9 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MdAttributeMultiReferenceDAOIF get(String id)
+  public static MdAttributeMultiReferenceDAOIF get(String oid)
   {
-    return (MdAttributeMultiReferenceDAOIF) BusinessDAO.get(id);
+    return (MdAttributeMultiReferenceDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -371,7 +371,7 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   @Override
   public AttributeMdSession getAttributeMdSession()
   {
-    AttributeMultiReferenceMdSession attrSes = new AttributeMultiReferenceMdSession(this.getReferenceMdBusinessDAO().getId(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
+    AttributeMultiReferenceMdSession attrSes = new AttributeMultiReferenceMdSession(this.getReferenceMdBusinessDAO().getOid(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
     super.populateAttributeMdSession(attrSes);
 
     return attrSes;

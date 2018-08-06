@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestInformationBase extends com.runwaysdk.business.Information implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestInformation";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String INFOCHAR = "infoChar";
   public static java.lang.String INFOINT = "infoInt";
   private static final long serialVersionUID = 1801282653;
@@ -39,7 +39,7 @@ public abstract class TestInformationBase extends com.runwaysdk.business.Informa
     super();
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -49,7 +49,7 @@ public abstract class TestInformationBase extends com.runwaysdk.business.Informa
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestInformation.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -119,7 +119,7 @@ public abstract class TestInformationBase extends com.runwaysdk.business.Informa
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{infoChar}", this.getInfoChar());
     message = replace(message, "{infoInt}", this.getInfoInt());
     return message;

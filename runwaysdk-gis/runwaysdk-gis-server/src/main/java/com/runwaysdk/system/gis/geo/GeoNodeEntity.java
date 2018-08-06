@@ -32,15 +32,15 @@ public class GeoNodeEntity extends GeoNodeEntityBase
   }
 
   @Override
-  public MdAttribute getIdentifierAttribute()
+  public MdAttribute getOidentifierAttribute()
   {
-    return MdAttribute.get(GeoEntity.getGeoIdMd().getId());
+    return MdAttribute.get(GeoEntity.getGeoIdMd().getOid());
   }
 
   @Override
   public MdAttribute getDisplayLabelAttribute()
   {
-    return MdAttribute.get(GeoEntity.getDisplayLabelMd().getId());
+    return MdAttribute.get(GeoEntity.getDisplayLabelMd().getOid());
   }
 
   @Override
@@ -52,13 +52,13 @@ public class GeoNodeEntity extends GeoNodeEntityBase
   @Override
   public MdAttributeMultiPolygon getMultiPolygonAttribute()
   {
-    return MdAttributeMultiPolygon.get(GeoEntity.getGeoMultiPolygonMd().getId());
+    return MdAttributeMultiPolygon.get(GeoEntity.getGeoMultiPolygonMd().getOid());
   }
 
   @Override
   public MdAttributePoint getPointAttribute()
   {
-    return MdAttributePoint.get(GeoEntity.getGeoPointMd().getId());
+    return MdAttributePoint.get(GeoEntity.getGeoPointMd().getOid());
   }
 
 }

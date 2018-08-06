@@ -348,7 +348,7 @@ public class ExportVisitor extends MarkupVisitor
     }
     else if (component instanceof Relationship)
     {
-      visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getId()));
+      visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getOid()));
     }
     else if (component instanceof BusinessDAOIF)
     {
@@ -356,7 +356,7 @@ public class ExportVisitor extends MarkupVisitor
     }
     else if (component instanceof Business)
     {
-      visitObject((BusinessDAOIF) EntityDAO.get(component.getId()));
+      visitObject((BusinessDAOIF) EntityDAO.get(component.getOid()));
     }
     else
     {
@@ -1601,13 +1601,13 @@ public class ExportVisitor extends MarkupVisitor
     }
 
     // Get the cache alogrithm
-    String indexType = ( (AttributeEnumerationIF) mdBusinessIF.getAttributeIF(MdBusinessInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdBusinessIF.getAttributeIF(MdBusinessInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
-    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
+    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.NOTHING_ENUMERATION);
     }
@@ -1825,13 +1825,13 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> parameters = getMdEntityParameters(mdStruct);
 
     // Get the cache alogrithm
-    String indexType = ( (AttributeEnumerationIF) mdStruct.getAttributeIF(MdStructInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdStruct.getAttributeIF(MdStructInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
-    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
+    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.NOTHING_ENUMERATION);
     }
@@ -1851,9 +1851,9 @@ public class ExportVisitor extends MarkupVisitor
 
     String unqiue = mdIndex.getValue(MdIndexInfo.UNIQUE);
     String active = mdIndex.getValue(MdIndexInfo.ACTIVE);
-    String id = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
+    String oid = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
     String label = mdIndex.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-    MdElementDAOIF mdEntity = MdElementDAO.get(id);
+    MdElementDAOIF mdEntity = MdElementDAO.get(oid);
 
     attributes.put(XMLTags.INDEX_ACTIVE_ATTRIBUTE, active);
     attributes.put(XMLTags.INDEX_UNIQUE_ATTRIBUTE, unqiue);
@@ -1943,13 +1943,13 @@ public class ExportVisitor extends MarkupVisitor
       parameters.put(XMLTags.COLUMN_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.COLUMN_NAME));
       parameters.put(XMLTags.REMOVE_ATTRIBUTE, mdAttributeIF.getValue(MetadataInfo.REMOVE));
 
-      String indexType = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE) ).dereference()[0].getId();
+      String indexType = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE) ).dereference()[0].getOid();
 
-      if (indexType.equals(IndexTypes.UNIQUE_INDEX.getId()))
+      if (indexType.equals(IndexTypes.UNIQUE_INDEX.getOid()))
       {
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.UNIQUE_INDEX_ENUMERATION);
       }
-      else if (indexType.equals(IndexTypes.NON_UNIQUE_INDEX.getId()))
+      else if (indexType.equals(IndexTypes.NON_UNIQUE_INDEX.getOid()))
       {
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.NON_UNIQUE_INDEX_ENUMERATION);
       }
@@ -1958,9 +1958,9 @@ public class ExportVisitor extends MarkupVisitor
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.NO_INDEX_ENUMERATION);
       }
 
-      String getterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY) ).dereference()[0].getId();
+      String getterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY) ).dereference()[0].getOid();
 
-      if (getterVisibility.equals(VisibilityModifier.PUBLIC.getId()))
+      if (getterVisibility.equals(VisibilityModifier.PUBLIC.getOid()))
       {
         parameters.put(XMLTags.GETTER_VISIBILITY_ATTRIBUTE, XMLTags.PUBLIC_VISIBILITY_ENUMERATION);
       }
@@ -1969,9 +1969,9 @@ public class ExportVisitor extends MarkupVisitor
         parameters.put(XMLTags.GETTER_VISIBILITY_ATTRIBUTE, XMLTags.PROTECTED_VISIBILITY_ENUMERATION);
       }
 
-      String setterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY) ).dereference()[0].getId();
+      String setterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY) ).dereference()[0].getOid();
 
-      if (setterVisibility.equals(VisibilityModifier.PUBLIC.getId()))
+      if (setterVisibility.equals(VisibilityModifier.PUBLIC.getOid()))
       {
         parameters.put(XMLTags.SETTER_VISIBILITY_ATTRIBUTE, XMLTags.PUBLIC_VISIBILITY_ENUMERATION);
       }
@@ -2364,9 +2364,9 @@ public class ExportVisitor extends MarkupVisitor
     parameters.put(XMLTags.COMPOSITION_ATTRIBUTE, mdRelationship.getValue(MdRelationshipInfo.COMPOSITION));
 
     // Set the cache algorithm
-    String indexType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdRelationshipInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdRelationshipInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
@@ -2378,17 +2378,17 @@ public class ExportVisitor extends MarkupVisitor
     if (mdRelationship instanceof MdTermRelationshipDAOIF)
     {
       // Set the association type
-      String associationType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+      String associationType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getOid();
 
-      if (associationType.equals(AssociationType.RELATIONSHIP.getId()))
+      if (associationType.equals(AssociationType.RELATIONSHIP.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.RELATIONSHIP_OPTION);
       }
-      else if (associationType.equals(AssociationType.TREE.getId()))
+      else if (associationType.equals(AssociationType.TREE.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.TREE_OPTION);
       }
-      else if (associationType.equals(AssociationType.GRAPH.getId()))
+      else if (associationType.equals(AssociationType.GRAPH.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.GRAPH_OPTION);
       }

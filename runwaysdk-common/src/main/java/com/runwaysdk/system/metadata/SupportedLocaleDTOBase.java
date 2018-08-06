@@ -83,9 +83,9 @@ public abstract class SupportedLocaleDTOBase extends com.runwaysdk.system.Enumer
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(LOCALELABEL).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.SupportedLocaleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.SupportedLocaleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.SupportedLocaleDTO) dto;
   }
@@ -103,7 +103,7 @@ public abstract class SupportedLocaleDTOBase extends com.runwaysdk.system.Enumer
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.SupportedLocaleQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -116,10 +116,10 @@ public abstract class SupportedLocaleDTOBase extends com.runwaysdk.system.Enumer
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.SupportedLocaleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.SupportedLocaleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.SupportedLocaleDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.SupportedLocaleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -129,10 +129,10 @@ public abstract class SupportedLocaleDTOBase extends com.runwaysdk.system.Enumer
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.SupportedLocaleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.SupportedLocaleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.SupportedLocaleDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.SupportedLocaleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

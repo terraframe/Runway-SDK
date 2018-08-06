@@ -29,7 +29,7 @@ public class Sequential extends SequentialBase implements com.runwaysdk.generati
   
   public Sequential(com.runwaysdk.jstest.business.ontology.Alphabet parent, com.runwaysdk.jstest.business.ontology.Alphabet child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

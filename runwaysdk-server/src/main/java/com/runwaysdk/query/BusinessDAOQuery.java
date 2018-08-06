@@ -47,15 +47,15 @@ public class BusinessDAOQuery extends AbstractObjectQuery
   }
 
   /**
-   * Creates a query object with the criteria set to fetch an object with the given id.
-   * @param id ID of the BusinessDAO
-   * @return query object with the criteria set to fetch an object with the given id.
+   * Creates a query object with the criteria set to fetch an object with the given oid.
+   * @param oid ID of the BusinessDAO
+   * @return query object with the criteria set to fetch an object with the given oid.
    */
-  public static BusinessDAOQuery getObjectInstance(String id)
+  public static BusinessDAOQuery getObjectInstance(String oid)
   {
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     BusinessDAOQuery businessDAOquery = new QueryFactory().businessDAOQuery(mdClassIF.definesType());
-    businessDAOquery.WHERE(businessDAOquery.aCharacter(EntityInfo.ID).EQ(id));
+    businessDAOquery.WHERE(businessDAOquery.aCharacter(EntityInfo.ID).EQ(oid));
     businessDAOquery.instanceQuery = true;
 
     return businessDAOquery;

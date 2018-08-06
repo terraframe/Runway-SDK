@@ -174,13 +174,13 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeFloat mdAttributeFloat)
     {
       if(mdAttributeFloat == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeFloat.getId());
+      return this.EQ(mdAttributeFloat.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeFloat mdAttributeFloat)
     {
       if(mdAttributeFloat == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeFloat.getId());
+      return this.NE(mdAttributeFloat.getOid());
     }
 
   public com.runwaysdk.query.SelectableFloat getDefaultValue()
@@ -283,7 +283,7 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
 
       for (int i=0; i<mdAttributeFloat.length; i++)
       {
-        itemIdArray[i] = mdAttributeFloat[i].getId();
+        itemIdArray[i] = mdAttributeFloat[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -295,7 +295,7 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
 
       for (int i=0; i<mdAttributeFloat.length; i++)
       {
-        itemIdArray[i] = mdAttributeFloat[i].getId();
+        itemIdArray[i] = mdAttributeFloat[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -307,7 +307,7 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
 
       for (int i=0; i<mdAttributeFloat.length; i++)
       {
-        itemIdArray[i] = mdAttributeFloat[i].getId();
+        itemIdArray[i] = mdAttributeFloat[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -319,7 +319,7 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
 
       for (int i=0; i<mdAttributeFloat.length; i++)
       {
-        itemIdArray[i] = mdAttributeFloat[i].getId();
+        itemIdArray[i] = mdAttributeFloat[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -331,7 +331,7 @@ public  class MdAttributeFloatQuery extends com.runwaysdk.system.metadata.MdAttr
 
       for (int i=0; i<mdAttributeFloat.length; i++)
       {
-        itemIdArray[i] = mdAttributeFloat[i].getId();
+        itemIdArray[i] = mdAttributeFloat[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

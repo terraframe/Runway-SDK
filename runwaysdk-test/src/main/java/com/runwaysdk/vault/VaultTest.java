@@ -97,10 +97,10 @@ public class VaultTest
   @AfterClass
   public static void classTearDown()
   {
-    vault1 = (VaultDAO) VaultDAO.get(vault1.getId()).getBusinessDAO();
+    vault1 = (VaultDAO) VaultDAO.get(vault1.getOid()).getBusinessDAO();
     vault1.delete();
 
-    vault2 = (VaultDAO) VaultDAO.get(vault2.getId()).getBusinessDAO();
+    vault2 = (VaultDAO) VaultDAO.get(vault2.getOid()).getBusinessDAO();
     vault2.delete();
   }
 
@@ -115,14 +115,14 @@ public class VaultTest
   {
     if (file != null && file.isAppliedToDB())
     {
-      file = VaultFileDAO.get(file.getId()).getBusinessDAO();
+      file = VaultFileDAO.get(file.getOid()).getBusinessDAO();
       file.delete();
       file = null;
     }
 
     if (file2 != null && file2.isAppliedToDB())
     {
-      file2 = VaultFileDAO.get(file2.getId()).getBusinessDAO();
+      file2 = VaultFileDAO.get(file2.getOid()).getBusinessDAO();
       file2.delete();
       file2 = null;
     }
@@ -310,7 +310,7 @@ public class VaultTest
     file2.putFile(testFile);
 
     // Ensure the files are in separate vaults
-    Assert.assertTrue(!file.getVaultReference().equals(file2.getId()));
+    Assert.assertTrue(!file.getVaultReference().equals(file2.getOid()));
 
     // Ensure that both files are equals in the different vaults
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
@@ -491,7 +491,7 @@ public class VaultTest
       file2 = null;
     }
 
-    VaultFileDAO tFile = VaultFileDAO.get(file.getId()).getBusinessDAO();
+    VaultFileDAO tFile = VaultFileDAO.get(file.getOid()).getBusinessDAO();
 
     // Ensure the the file in the existing vault is untouched.
     String path = tFile.filePath() + tFile.getVaultFileName();

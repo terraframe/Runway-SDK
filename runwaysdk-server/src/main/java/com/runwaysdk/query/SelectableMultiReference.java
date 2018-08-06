@@ -42,18 +42,18 @@ package com.runwaysdk.query;
 public interface SelectableMultiReference extends Selectable
 {
   /**
-   * Compares the id of a component for equality.
+   * Compares the oid of a component for equality.
    * 
-   * @param id
-   *          id of the object to compare.
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id);
+  public BasicCondition EQ(String oid);
 
   // Any
   /**
    * Checks if the enumeration attribute contains a mapping with one of the
-   * enumeration items with the given id.
+   * enumeration items with the given oid.
    * 
    * @param itemIds
    *          ID of an enumeration.
@@ -64,7 +64,7 @@ public interface SelectableMultiReference extends Selectable
   // Not Any
   /**
    * Checks if the enumeration attribute does not contain a mapping with one of
-   * the enumeration items with the given id.
+   * the enumeration items with the given oid.
    * 
    * @param itemIds
    *          ID of an enumeration.
@@ -75,7 +75,7 @@ public interface SelectableMultiReference extends Selectable
   // All
   /**
    * Checks if the enumeration attribute contains a mapping with all of the
-   * enumeration items with the given id.
+   * enumeration items with the given oid.
    * 
    * @param itemIds
    *          ID of an enumeration.
@@ -86,7 +86,7 @@ public interface SelectableMultiReference extends Selectable
   // NOT All
   /**
    * Checks if the enumeration attribute does not contain a mapping with all of
-   * the enumeration items with the given id.
+   * the enumeration items with the given oid.
    * 
    * @param itemIds
    *          ID of an enumeration.
@@ -97,7 +97,7 @@ public interface SelectableMultiReference extends Selectable
   // Exactly
   /**
    * Checks if the enumeration attribute contains a mapping with exactly the
-   * given set of the enumeration items with the given id.
+   * given set of the enumeration items with the given oid.
    * 
    * @param itemIds
    *          ID of an enumeration.

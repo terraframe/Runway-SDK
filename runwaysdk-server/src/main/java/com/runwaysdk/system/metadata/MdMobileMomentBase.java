@@ -41,9 +41,9 @@ public abstract class MdMobileMomentBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdMobileMoment get(String id)
+  public static MdMobileMoment get(String oid)
   {
-    return (MdMobileMoment) com.runwaysdk.business.Business.get(id);
+    return (MdMobileMoment) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileMoment getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileMomentBase extends com.runwaysdk.system.metadata.M
     return (MdMobileMoment) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileMoment lock(java.lang.String id)
+  public static MdMobileMoment lock(java.lang.String oid)
   {
-    MdMobileMoment _instance = MdMobileMoment.get(id);
+    MdMobileMoment _instance = MdMobileMoment.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileMoment unlock(java.lang.String id)
+  public static MdMobileMoment unlock(java.lang.String oid)
   {
-    MdMobileMoment _instance = MdMobileMoment.get(id);
+    MdMobileMoment _instance = MdMobileMoment.get(oid);
     _instance.unlock();
     
     return _instance;

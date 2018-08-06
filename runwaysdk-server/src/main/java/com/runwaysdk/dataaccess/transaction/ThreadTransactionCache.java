@@ -56,7 +56,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   private TransactionCache transactionCache;
   
   /**
-   * Key: {@link EntityDAO} id. Value: {@link EntityDAO}
+   * Key: {@link EntityDAO} oid. Value: {@link EntityDAO}
    */
   protected Map<String, EntityDAO> transactionObjectCache;
 
@@ -163,7 +163,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
 
 
   /**
-   * Returns child relationships for the object with the given id in the transaction.
+   * Returns child relationships for the object with the given oid in the transaction.
    * 
    * @param relationshipList relationships returned from the global source.
    * @param businessDAOid
@@ -176,7 +176,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     return super.getChildren(this.getTransactionCache().getChildren(relationshipList, businessDAOid, relationshipType), businessDAOid, relationshipType);
   }
   /**
-   * Returns parent relationships for the object with the given id in the transaction.
+   * Returns parent relationships for the object with the given oid in the transaction.
    * 
    * @param relationshipList relationships returned from the global source.
    * @param businessDAOid
@@ -222,7 +222,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
   @Override
-  public EntityDAOIF getEntityDAO(String id)
+  public EntityDAOIF getEntityDAO(String oid)
   {
     EntityDAOIF entityDAOIF = null;
     
@@ -230,7 +230,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     try
     {
       // 1) Check to see if the object's type has been modified in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(oid); 
       boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
       
       // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
@@ -250,24 +250,24 @@ public class ThreadTransactionCache extends AbstractTransactionCache
         if (!mdEntityDAOIF.isNotCached())
         {
           // 4.1) fetch the object from the transaction
-          TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(oid);
           if (transactionCacheItem != null)
           {
-            entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+            entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(oid);
           }
           
           // 4.2) If it is not in the transaction cache, fetch it from the main thread
           if (entityDAOIF == null)
           {
-            entityDAOIF = this.getTransactionCache().getEntityDAO(id);
+            entityDAOIF = this.getTransactionCache().getEntityDAO(oid);
           }   
         }
         else // (mdEntityDAOIF.isNotCached())
         {
           // 5) If the object is not cached, 
-          if (this.isNewUncachedEntity(id))
+          if (this.isNewUncachedEntity(oid))
           {
-            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
             ((EntityDAO)entityDAOIF).setIsNew(true);
           }
         }
@@ -285,13 +285,13 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
    */
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    EntityDAOIF entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+    EntityDAOIF entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(oid);
     
     if (entityDAOIF == null)
     {
-      entityDAOIF = this.getTransactionCache().getEntityDAOIFfromCache(id);
+      entityDAOIF = this.getTransactionCache().getEntityDAOIFfromCache(oid);
     }
 
     return entityDAOIF;
@@ -308,7 +308,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
-      this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
+      this.transactionObjectCache.put(entityDAO.getOid(), entityDAO);
     }
     finally
     {
@@ -317,7 +317,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
       
   /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
    * @param oldId
    * @param entityDAO
@@ -330,7 +330,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     {
       super.changeEntityIdInCache(oldId, entityDAO);
       
-      this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
+      this.transactionObjectCache.put(entityDAO.getOid(), entityDAO);
       this.transactionObjectCache.remove(oldId);
     }
     finally

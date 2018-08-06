@@ -226,7 +226,7 @@ public class MessageTest
     title.setValue(MdAttributeCharacterInfo.NAME, "bookTitle");
     title.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Book Title");
     title.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    title.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, exception.getId());
+    title.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, exception.getOid());
     title.apply();
 
     problem1 = MdProblemDAO.newInstance();
@@ -240,7 +240,7 @@ public class MessageTest
     MdAttributeIntegerDAO checkedOutBooks = MdAttributeIntegerDAO.newInstance();
     checkedOutBooks.setValue(MdAttributeIntegerInfo.NAME, "checkedOutBooks");
     checkedOutBooks.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Number of Checked Out Books");
-    checkedOutBooks.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, problem1.getId());
+    checkedOutBooks.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, problem1.getOid());
     checkedOutBooks.apply();
 
     problem2 = MdProblemDAO.newInstance();
@@ -261,48 +261,48 @@ public class MessageTest
     viewTitle.setValue(MdAttributeCharacterInfo.NAME, "bookTitle");
     viewTitle.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Name");
     viewTitle.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    viewTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    viewTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     viewTitle.apply();
 
     MdAttributeCharacterDAO attributeName = MdAttributeCharacterDAO.newInstance();
     attributeName.setValue(MdAttributeCharacterInfo.NAME, "attributeName");
     attributeName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Name");
     attributeName.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    attributeName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    attributeName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     attributeName.apply();
 
     MdAttributeCharacterDAO displayLabel = MdAttributeCharacterDAO.newInstance();
     displayLabel.setValue(MdAttributeCharacterInfo.NAME, "attributeDisplayLabel");
     displayLabel.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     displayLabel.setValue(MdAttributeCharacterInfo.SIZE, "128");
-    displayLabel.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    displayLabel.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     displayLabel.apply();
 
     MdAttributeCharacterDAO definingType = MdAttributeCharacterDAO.newInstance();
     definingType.setValue(MdAttributeCharacterInfo.NAME, "definingType");
     definingType.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Containing Type");
     definingType.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
-    definingType.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    definingType.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     definingType.apply();
 
     MdAttributeCharacterDAO definingTypeDisplayLabel = MdAttributeCharacterDAO.newInstance();
     definingTypeDisplayLabel.setValue(MdAttributeCharacterInfo.NAME, "definingTypeDisplayLabel");
     definingTypeDisplayLabel.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Containing Type Display Label");
     definingTypeDisplayLabel.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
-    definingTypeDisplayLabel.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    definingTypeDisplayLabel.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     definingTypeDisplayLabel.apply();
 
     MdAttributeCharacterDAO componentId = MdAttributeCharacterDAO.newInstance();
     componentId.setValue(MdAttributeCharacterInfo.NAME, "componentId");
     componentId.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Component Id");
     componentId.setValue(MdAttributeCharacterInfo.SIZE, Database.DATABASE_ID_SIZE);
-    componentId.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getId());
+    componentId.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeProblem1.getOid());
     componentId.apply();
 
     MdAttributeIntegerDAO outstandingFees = MdAttributeIntegerDAO.newInstance();
     outstandingFees.setValue(MdAttributeIntegerInfo.NAME, "totalOutstandingFees");
     outstandingFees.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Total Outstanding Fees");
-    outstandingFees.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, problem2.getId());
+    outstandingFees.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, problem2.getOid());
     outstandingFees.apply();
 
     warning1 = MdWarningDAO.newInstance();
@@ -316,7 +316,7 @@ public class MessageTest
     maxAllowedBooks.setValue(MdAttributeIntegerInfo.NAME, "maxAllowedBooks");
     maxAllowedBooks.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Maximum Allowed Books");
     maxAllowedBooks.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    maxAllowedBooks.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, warning1.getId());
+    maxAllowedBooks.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, warning1.getOid());
     maxAllowedBooks.apply();
 
     information1 = MdInformationDAO.newInstance();
@@ -330,7 +330,7 @@ public class MessageTest
     recommendationTitle.setValue(MdAttributeCharacterInfo.NAME, "title");
     recommendationTitle.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Book Title");
     recommendationTitle.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    recommendationTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, information1.getId());
+    recommendationTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, information1.getOid());
     recommendationTitle.apply();
 
     mdBusinessBook = MdBusinessDAO.newInstance();
@@ -345,7 +345,7 @@ public class MessageTest
     mdAttributeTitle.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Book Title");
     mdAttributeTitle.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeTitle.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusinessBook.getId());
+    mdAttributeTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusinessBook.getOid());
     mdAttributeTitle.apply();
 
     mdViewBook = MdViewDAO.newInstance();
@@ -360,105 +360,105 @@ public class MessageTest
     mdAttributeViewTitle.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Book View Title");
     mdAttributeViewTitle.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeViewTitle.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeViewTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdViewBook.getId());
+    mdAttributeViewTitle.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdViewBook.getOid());
     mdAttributeViewTitle.apply();
 
     exceptionMdMethod = MdMethodDAO.newInstance();
     exceptionMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     exceptionMdMethod.setValue(MdMethodInfo.NAME, "exceptionMethod");
     exceptionMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Exception Method");
-    exceptionMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    exceptionMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     exceptionMdMethod.apply();
 
     problemMdMethod = MdMethodDAO.newInstance();
     problemMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     problemMdMethod.setValue(MdMethodInfo.NAME, "problemMethod");
     problemMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Problem Method");
-    problemMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    problemMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     problemMdMethod.apply();
 
     warningMdMethod1 = MdMethodDAO.newInstance();
     warningMdMethod1.setValue(MdMethodInfo.RETURN_TYPE, bookType);
     warningMdMethod1.setValue(MdMethodInfo.NAME, "warningMethod");
     warningMdMethod1.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method");
-    warningMdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    warningMdMethod1.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     warningMdMethod1.apply();
 
     warningMdMethodReturnArrayObjects = MdMethodDAO.newInstance();
     warningMdMethodReturnArrayObjects.setValue(MdMethodInfo.RETURN_TYPE, bookType + "[]");
     warningMdMethodReturnArrayObjects.setValue(MdMethodInfo.NAME, "warningMethodReturnArrayObjects");
     warningMdMethodReturnArrayObjects.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method With Array of Return Objects");
-    warningMdMethodReturnArrayObjects.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    warningMdMethodReturnArrayObjects.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     warningMdMethodReturnArrayObjects.apply();
 
     warningMdMethodReturnQueryObject = MdMethodDAO.newInstance();
     warningMdMethodReturnQueryObject.setValue(MdMethodInfo.RETURN_TYPE, bookQueryType);
     warningMdMethodReturnQueryObject.setValue(MdMethodInfo.NAME, "warningMdMethodReturnQueryObject");
     warningMdMethodReturnQueryObject.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method With Return Query Object");
-    warningMdMethodReturnQueryObject.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    warningMdMethodReturnQueryObject.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     warningMdMethodReturnQueryObject.apply();
 
     warningMdMethodReturnInt = MdMethodDAO.newInstance();
     warningMdMethodReturnInt.setValue(MdMethodInfo.RETURN_TYPE, Integer.class.getName());
     warningMdMethodReturnInt.setValue(MdMethodInfo.NAME, "warningMdMethodReturnInt");
     warningMdMethodReturnInt.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method With Return Integer");
-    warningMdMethodReturnInt.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    warningMdMethodReturnInt.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     warningMdMethodReturnInt.apply();
 
     warningMdMethodReturnIntArray = MdMethodDAO.newInstance();
     warningMdMethodReturnIntArray.setValue(MdMethodInfo.RETURN_TYPE, Integer.class.getName() + "[]");
     warningMdMethodReturnIntArray.setValue(MdMethodInfo.NAME, "warningMdMethodReturnIntArray");
     warningMdMethodReturnIntArray.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method With Return Integer Array");
-    warningMdMethodReturnIntArray.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    warningMdMethodReturnIntArray.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     warningMdMethodReturnIntArray.apply();
 
     multipleMessagesMdMethod = MdMethodDAO.newInstance();
     multipleMessagesMdMethod.setValue(MdMethodInfo.RETURN_TYPE, pack + ".Book");
     multipleMessagesMdMethod.setValue(MdMethodInfo.NAME, "multipleMessagesMethod");
     multipleMessagesMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Warning Method");
-    multipleMessagesMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    multipleMessagesMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     multipleMessagesMdMethod.apply();
 
     informationMdMethod = MdMethodDAO.newInstance();
     informationMdMethod.setValue(MdMethodInfo.RETURN_TYPE, pack + ".Book");
     informationMdMethod.setValue(MdMethodInfo.NAME, "informationMethod");
     informationMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Information Method");
-    informationMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    informationMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     informationMdMethod.apply();
 
     skipIfProblemsMethod = MdMethodDAO.newInstance();
     skipIfProblemsMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     skipIfProblemsMethod.setValue(MdMethodInfo.NAME, "skipIfProblemsMethod");
     skipIfProblemsMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Method should be skipped if problems exist in the transaction.");
-    skipIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    skipIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     skipIfProblemsMethod.apply();
 
     noSkipIfProblemsMethod = MdMethodDAO.newInstance();
     noSkipIfProblemsMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     noSkipIfProblemsMethod.setValue(MdMethodInfo.NAME, "noSkipIfProblemsMethod");
     noSkipIfProblemsMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Method should not be skipped if problems exist in the transaction.");
-    noSkipIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    noSkipIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     noSkipIfProblemsMethod.apply();
 
     abortIfProblemsMethod = MdMethodDAO.newInstance();
     abortIfProblemsMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     abortIfProblemsMethod.setValue(MdMethodInfo.NAME, "abortIfProblemsMethod");
     abortIfProblemsMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Transaction should be aborted if a problem occured and a method has the abort annotation.");
-    abortIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    abortIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     abortIfProblemsMethod.apply();
 
     noAbortIfProblemsMethod = MdMethodDAO.newInstance();
     noAbortIfProblemsMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     noAbortIfProblemsMethod.setValue(MdMethodInfo.NAME, "noAbortIfProblemsMethod");
     noAbortIfProblemsMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Transaction should not be aborted if a problem occured and a method does not have the abort annotation.");
-    noAbortIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    noAbortIfProblemsMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     noAbortIfProblemsMethod.apply();
 
     excelProblemMethod = MdMethodDAO.newInstance();
     excelProblemMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     excelProblemMethod.setValue(MdMethodInfo.NAME, "excelProblemMethod");
     excelProblemMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Throws an ExcelProblem to test the translation to DTO.");
-    excelProblemMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getId());
+    excelProblemMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusinessBook.getOid());
     excelProblemMethod.apply();
 
     List<? extends MdAttributeConcreteDAOIF> mdAttributeDTOList = mdBusinessBook.definesAttributes();
@@ -484,7 +484,7 @@ public class MessageTest
     attributeProblem1.setValue(MdClassInfo.DTO_STUB_SOURCE, "package test.bookstore;\n" + "\n" + "\n" + "public class InvalidTitleAttributeProblemDTO extends InvalidTitleAttributeProblemDTOBase implements \n" + " " + AttributeNotificationDTO.class.getName() + " \n" + "{\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF)\n" + "  {\n" + "    super(clientRequestIF);\n" + "  }\n" + "\n" + "  public InvalidTitleAttributeProblemDTO(" + ClientRequestIF.class.getName() + " clientRequestIF, " + java.util.Locale.class.getName() + " locale)\n" + "  {\n" + "    super(clientRequestIF, locale);\n" + "  }\n" + "}\n");
     attributeProblem1.apply();
 
-    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase \n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName() + "(book1, \"title\", this, \"viewTitle\");\n" + "\n" + "    InvalidTitleAttributeProblem attributeProblem1 = new InvalidTitleAttributeProblem(\"Attribute Problem Developer Message\");\n" + "    attributeProblem1.setBookTitle(\"Chicky Monkey\");\n" + "    attributeProblem1.setComponentId(book1.getId());\n"
+    mdViewBook.setValue(MdClassInfo.STUB_SOURCE, "package test.bookstore;\n" + "\n" + "public class BookView extends BookViewBase \n" + "{\n" + "  public BookView()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + bookType + " book1 = new " + bookType + "();\n" + "\n" + "    " + AttributeNotificationMap.class.getName() + " attrNotification = \n" + "      new " + AttributeNotificationMap.class.getName() + "(book1, \"title\", this, \"viewTitle\");\n" + "\n" + "    InvalidTitleAttributeProblem attributeProblem1 = new InvalidTitleAttributeProblem(\"Attribute Problem Developer Message\");\n" + "    attributeProblem1.setBookTitle(\"Chicky Monkey\");\n" + "    attributeProblem1.setComponentId(book1.getOid());\n"
         + "    attributeProblem1.setDefiningType(\"" + bookType + "\");\n" + "    attributeProblem1.setDefiningTypeDisplayLabel(\"A Book\");\n" + "    attributeProblem1.setAttributeName(\"title\");\n" + "    attributeProblem1.setAttributeDisplayLabel(\"Book Title\");\n" + "    attributeProblem1.apply();\n" + "    attributeProblem1.throwIt();\n" + "  }\n" + "}\n");
     mdViewBook.apply();
 
@@ -581,7 +581,7 @@ public class MessageTest
         Assert.fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + e.getClass().getName() + "]");
       }
 
-      List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getId(), "title");
+      List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getOid(), "title");
 
       Assert.assertTrue("List of attribute notifications is null", notificationList != null);
 
@@ -623,7 +623,7 @@ public class MessageTest
           Assert.fail("Exception expected was [" + ProblemExceptionDTO.class.getName() + "] but instead was [" + te.getClass().getName() + "]");
         }
 
-        List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getId(), "viewTitle");
+        List<AttributeNotificationDTO> notificationList = clientRequest.getAttributeNotifications(instance.getOid(), "viewTitle");
 
         Assert.assertTrue("List of attribute notifications is null", notificationList != null);
 
@@ -697,7 +697,7 @@ public class MessageTest
       {
         systemSession = this.createSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, Locale.GERMAN);
         clientRequest = getRequest(systemSession);
-        instance = (BusinessDTO) clientRequest.get(instance.getId());
+        instance = (BusinessDTO) clientRequest.get(instance.getOid());
         instance = (BusinessDTO) bookClass.getMethod("warningMethod").invoke(instance);
         messageList = clientRequest.getMessages();
         messageDTO = messageList.get(0);
@@ -719,7 +719,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -774,14 +774,14 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
 
       if (bookArray != null)
       {
         for (BusinessDTO bookDTO : bookArray)
         {
-          clientRequest.delete(bookDTO.getId());
+          clientRequest.delete(bookDTO.getOid());
         }
       }
     }
@@ -844,12 +844,12 @@ public class MessageTest
     {
       if (instance1 != null)
       {
-        clientRequest.delete(instance1.getId());
+        clientRequest.delete(instance1.getOid());
       }
 
       if (instance2 != null)
       {
-        clientRequest.delete(instance2.getId());
+        clientRequest.delete(instance2.getOid());
       }
     }
   }
@@ -900,7 +900,7 @@ public class MessageTest
     {
       if (instance1 != null)
       {
-        clientRequest.delete(instance1.getId());
+        clientRequest.delete(instance1.getOid());
       }
     }
   }
@@ -955,7 +955,7 @@ public class MessageTest
     {
       if (instance1 != null)
       {
-        clientRequest.delete(instance1.getId());
+        clientRequest.delete(instance1.getOid());
       }
     }
   }
@@ -1003,7 +1003,7 @@ public class MessageTest
       {
         systemSession = this.createSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, Locale.GERMAN);
         clientRequest = getRequest(systemSession);
-        instance = (BusinessDTO) clientRequest.get(instance.getId());
+        instance = (BusinessDTO) clientRequest.get(instance.getOid());
         instance = (BusinessDTO) bookClass.getMethod("informationMethod").invoke(instance);
         messageList = clientRequest.getMessages();
         messageDTO = messageList.get(0);
@@ -1025,7 +1025,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1097,7 +1097,7 @@ public class MessageTest
       {
         systemSession = this.createSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, Locale.GERMAN);
         clientRequest = getRequest(systemSession);
-        instance = (BusinessDTO) clientRequest.get(instance.getId());
+        instance = (BusinessDTO) clientRequest.get(instance.getOid());
         instance = (BusinessDTO) bookClass.getMethod("multipleMessagesMethod").invoke(instance);
 
         messageList = clientRequest.getMessages();
@@ -1131,7 +1131,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1192,7 +1192,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1253,7 +1253,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1319,7 +1319,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1380,7 +1380,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1497,7 +1497,7 @@ public class MessageTest
     {
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
   }
@@ -1578,12 +1578,12 @@ public class MessageTest
     BusinessDTO instance = null;
     try
     {
-      clientRequest.assignMember(newUser.getId(), RoleDAOIF.DEVELOPER_ROLE);
-      clientRequest.grantTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.CREATE.name());
-      clientRequest.grantTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.WRITE.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.WRITE.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.READ.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeLockedBy.getId(), Operation.READ.name());
+      clientRequest.assignMember(newUser.getOid(), RoleDAOIF.DEVELOPER_ROLE);
+      clientRequest.grantTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.CREATE.name());
+      clientRequest.grantTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.READ.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeLockedBy.getOid(), Operation.READ.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -1688,15 +1688,15 @@ public class MessageTest
 
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
 
-      clientRequest.revokeTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeLockedBy.getId(), Operation.READ.name());
-      clientRequest.removeMember(newUser.getId(), RoleDAOIF.DEVELOPER_ROLE);
+      clientRequest.revokeTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeLockedBy.getOid(), Operation.READ.name());
+      clientRequest.removeMember(newUser.getOid(), RoleDAOIF.DEVELOPER_ROLE);
     }
 
     Assert.assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());
@@ -1723,11 +1723,11 @@ public class MessageTest
     BusinessDTO instance = null;
     try
     {
-      clientRequest.grantTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.CREATE.name());
-      clientRequest.grantTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.WRITE.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.WRITE.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.READ.name());
-      clientRequest.grantAttributePermission(newUser.getId(), mdAttributeLockedBy.getId(), Operation.READ.name());
+      clientRequest.grantTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.CREATE.name());
+      clientRequest.grantTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.READ.name());
+      clientRequest.grantAttributePermission(newUser.getOid(), mdAttributeLockedBy.getOid(), Operation.READ.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -1831,14 +1831,14 @@ public class MessageTest
 
       if (instance != null)
       {
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
 
-      clientRequest.revokeTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(newUser.getId(), mdBusinessBook.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeTitle.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(newUser.getId(), mdAttributeLockedBy.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(newUser.getOid(), mdBusinessBook.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeTitle.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(newUser.getOid(), mdAttributeLockedBy.getOid(), Operation.READ.name());
     }
 
     Assert.assertEquals("Wrong number of problems was generated.", 2, problemDTOList.size());

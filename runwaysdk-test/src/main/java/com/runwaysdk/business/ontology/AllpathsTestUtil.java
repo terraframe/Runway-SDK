@@ -212,7 +212,7 @@ public class AllpathsTestUtil
       Term t = (Term) it.next();
       if (t.getDisplayLabel().getValue().contains(TEST_DATA_IDENTIFIER))
       {
-        TestFixtureFactory.delete(EntityDAO.get(t.getId()));
+        TestFixtureFactory.delete(EntityDAO.get(t.getOid()));
       }
     }
 
@@ -228,7 +228,7 @@ public class AllpathsTestUtil
   public void validateAllpaths()
   {
     Stack<Term> s = new Stack<Term>();
-    s.push(Term.get(root.getId()));
+    s.push(Term.get(root.getOid()));
 
     while (!s.empty())
     {
@@ -283,7 +283,7 @@ public class AllpathsTestUtil
 
         ancestors.addAll(validateParentAllpaths(child, parentOfParent));
 
-        ancestors.add(parentOfParent.getId());
+        ancestors.add(parentOfParent.getOid());
       }
     }
     finally
@@ -303,8 +303,8 @@ public class AllpathsTestUtil
       DatabaseAllPathsStrategy apStrat = (DatabaseAllPathsStrategy) strategy;
 
       BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths().definesType());
-      apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getId()));
-      apq.AND(apq.get(DatabaseAllPathsStrategy.PARENT_TERM_ATTR).EQ(parent.getId()));
+      apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getOid()));
+      apq.AND(apq.get(DatabaseAllPathsStrategy.PARENT_TERM_ATTR).EQ(parent.getOid()));
       OIterator<? extends Business> it = apq.getIterator();
       if (!it.hasNext())
       {
@@ -331,7 +331,7 @@ public class AllpathsTestUtil
       DatabaseAllPathsStrategy apStrat = (DatabaseAllPathsStrategy) strategy;
 
       BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths().definesType());
-      apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getId()));
+      apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getOid()));
       Assert.assertEquals("Number of allpaths entries for child [" + child.getDisplayLabel().getValue() + "] is incorrect.", num, apq.getCount());
     }
     else
@@ -379,11 +379,11 @@ public class AllpathsTestUtil
   // "parent_dl.default_locale as parent\n" +
   // "from\n" +
   // "alphabet_all_paths_table ap\n" +
-  // "inner join alphabet child on ap.child_term = child.id\n" +
-  // "inner join alphabet_display_label child_dl on child_dl.id =
+  // "inner join alphabet child on ap.child_term = child.oid\n" +
+  // "inner join alphabet_display_label child_dl on child_dl.oid =
   // child.display_label\n" +
-  // "inner join alphabet parent on ap.parent_term = parent.id\n" +
-  // "inner join alphabet_display_label parent_dl on parent_dl.id =
+  // "inner join alphabet parent on ap.parent_term = parent.oid\n" +
+  // "inner join alphabet_display_label parent_dl on parent_dl.oid =
   // parent.display_label\n" +
   // "where\n" +
   // "child_dl.default_locale = 'AllpathsTest I'");

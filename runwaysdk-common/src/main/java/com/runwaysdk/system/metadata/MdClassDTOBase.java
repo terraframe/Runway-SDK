@@ -214,276 +214,276 @@ public abstract class MdClassDTOBase extends com.runwaysdk.system.metadata.MdTyp
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO> getAllAttribute()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO> getAllAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO> getAllAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO> getAllAttributeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO> getAllAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO> getAllAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassAttributeDTO addAttribute(com.runwaysdk.system.metadata.MdAttributeDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeDTO addAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeDTO child)
+  public static com.runwaysdk.system.metadata.ClassAttributeDTO addAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   public void removeAttribute(com.runwaysdk.system.metadata.ClassAttributeDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassAttributeDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllAttribute()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
-  public static void removeAllAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ClassAttributeDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO> getAllConcreteAttribute()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO> getAllConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO> getAllConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO> getAllConcreteAttributeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO> getAllConcreteAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO> getAllConcreteAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeConcreteDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassAttributeConcreteDTO addConcreteAttribute(com.runwaysdk.system.metadata.MdAttributeConcreteDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeConcreteDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeConcreteDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeConcreteDTO addConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeConcreteDTO child)
+  public static com.runwaysdk.system.metadata.ClassAttributeConcreteDTO addConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeConcreteDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeConcreteDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeConcreteDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   public void removeConcreteAttribute(com.runwaysdk.system.metadata.ClassAttributeConcreteDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllConcreteAttribute()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
-  public static void removeAllConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllConcreteAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ClassAttributeConcreteDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO> getAllMdClassDimensions()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO> getAllMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO> getAllMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDimensionDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO> getAllMdClassDimensionsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO> getAllMdClassDimensionsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO> getAllMdClassDimensionsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassHasDimensionDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassHasDimensionDTO addMdClassDimensions(com.runwaysdk.system.metadata.MdClassDimensionDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassHasDimensionDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassHasDimensionDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassHasDimensionDTO addMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdClassDimensionDTO child)
+  public static com.runwaysdk.system.metadata.ClassHasDimensionDTO addMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdClassDimensionDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassHasDimensionDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassHasDimensionDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   public void removeMdClassDimensions(com.runwaysdk.system.metadata.ClassHasDimensionDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassHasDimensionDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllMdClassDimensions()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
-  public static void removeAllMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllMdClassDimensions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ClassHasDimensionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllSubEntity()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllSubEntityRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllSubEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllSubEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassInheritanceDTO addSubEntity(com.runwaysdk.system.metadata.MdClassDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassInheritanceDTO addSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdClassDTO child)
+  public static com.runwaysdk.system.metadata.ClassInheritanceDTO addSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdClassDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   public void removeSubEntity(com.runwaysdk.system.metadata.ClassInheritanceDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassInheritanceDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllSubEntity()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
-  public static void removeAllSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSubEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllInheritsFromEntity()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO> getAllInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdClassDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllInheritsFromEntityRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllInheritsFromEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO> getAllInheritsFromEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassInheritanceDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassInheritanceDTO addInheritsFromEntity(com.runwaysdk.system.metadata.MdClassDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassInheritanceDTO addInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdClassDTO parent)
+  public static com.runwaysdk.system.metadata.ClassInheritanceDTO addInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdClassDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassInheritanceDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
   public void removeInheritsFromEntity(com.runwaysdk.system.metadata.ClassInheritanceDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassInheritanceDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllInheritsFromEntity()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
-  public static void removeAllInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllInheritsFromEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.ClassInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdClassDTO) dto;
   }
@@ -501,7 +501,7 @@ public abstract class MdClassDTOBase extends com.runwaysdk.system.metadata.MdTyp
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdClassQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -514,10 +514,10 @@ public abstract class MdClassDTOBase extends com.runwaysdk.system.metadata.MdTyp
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdClassDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -527,10 +527,10 @@ public abstract class MdClassDTOBase extends com.runwaysdk.system.metadata.MdTyp
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdClassDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

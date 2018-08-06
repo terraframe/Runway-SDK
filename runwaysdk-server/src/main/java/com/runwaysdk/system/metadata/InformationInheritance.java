@@ -29,7 +29,7 @@ public class InformationInheritance extends InformationInheritanceBase
   
   public InformationInheritance(com.runwaysdk.system.metadata.MdInformation parent, com.runwaysdk.system.metadata.MdInformation child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -47,10 +47,10 @@ public enum AllEntryEnumeration implements com.runwaysdk.business.BusinessEnumer
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -65,11 +65,11 @@ public enum AllEntryEnumeration implements com.runwaysdk.business.BusinessEnumer
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static AllEntryEnumeration get(String id)
+  public static AllEntryEnumeration get(String oid)
   {
     for (AllEntryEnumeration e : AllEntryEnumeration.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

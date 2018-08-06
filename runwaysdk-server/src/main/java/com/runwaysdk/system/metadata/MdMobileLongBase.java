@@ -41,9 +41,9 @@ public abstract class MdMobileLongBase extends com.runwaysdk.system.metadata.MdM
     return CLASS;
   }
   
-  public static MdMobileLong get(String id)
+  public static MdMobileLong get(String oid)
   {
-    return (MdMobileLong) com.runwaysdk.business.Business.get(id);
+    return (MdMobileLong) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileLong getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileLongBase extends com.runwaysdk.system.metadata.MdM
     return (MdMobileLong) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileLong lock(java.lang.String id)
+  public static MdMobileLong lock(java.lang.String oid)
   {
-    MdMobileLong _instance = MdMobileLong.get(id);
+    MdMobileLong _instance = MdMobileLong.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileLong unlock(java.lang.String id)
+  public static MdMobileLong unlock(java.lang.String oid)
   {
-    MdMobileLong _instance = MdMobileLong.get(id);
+    MdMobileLong _instance = MdMobileLong.get(oid);
     _instance.unlock();
     
     return _instance;

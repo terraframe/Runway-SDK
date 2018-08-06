@@ -36,7 +36,7 @@ import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedEntityDAOinfo;
 public class Memorystore implements ObjectStore
 {
   /**
-   * Key:{@link EntityDAOIF} id Value: {@link CachedEntityDAOinfo}
+   * Key:{@link EntityDAOIF} oid Value: {@link CachedEntityDAOinfo}
    */
   Map<String, CachedEntityDAOinfo> entityMap;
 
@@ -85,7 +85,7 @@ public class Memorystore implements ObjectStore
   }
   
   /**
-   * Returns true if the cache contains the provided key (entity id).
+   * Returns true if the cache contains the provided key (entity oid).
    */
   public boolean containsKey(String key)
   {
@@ -104,17 +104,17 @@ public class Memorystore implements ObjectStore
 
   /**
    * Returns a list of parent relationships of the given type from the cache for
-   * a {@link BusinessDAOIF} with the given id.
+   * a {@link BusinessDAOIF} with the given oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
-  public List<RelationshipDAOIF> getParentRelationshipsFromCache(String id, String relationshipType)
+  public List<RelationshipDAOIF> getParentRelationshipsFromCache(String oid, String relationshipType)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(id);
+      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(oid);
 
       if (cachedEntityDAOinfo == null)
       {
@@ -130,18 +130,18 @@ public class Memorystore implements ObjectStore
 
   /**
    * Returns a list of child relationships of the given type from the cache for
-   * a {@link BusinessDAOIF} with the given id.
+   * a {@link BusinessDAOIF} with the given oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * 
    * @return
    */
-  public List<RelationshipDAOIF> getChildRelationshipsFromCache(String id, String relationshipType)
+  public List<RelationshipDAOIF> getChildRelationshipsFromCache(String oid, String relationshipType)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(id);
+      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(oid);
 
       if (cachedEntityDAOinfo == null)
       {
@@ -179,7 +179,7 @@ public class Memorystore implements ObjectStore
   }
   
   /**
-   * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
+   * Updates the stored oid if it has changed for the {@link RelationshipDAOIF} to the 
    * parent and child relationships of the parent and child objects in the cache.
    * 
    * @param hasIdChanged
@@ -219,9 +219,9 @@ public class Memorystore implements ObjectStore
   }
   
   /**
-   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   * Updates the changed oid for the given {@link EntityDAOIF} in the cache.
    * 
-   * <br/><b>Precondition:</b> Calling method has checked whether the id has changed.
+   * <br/><b>Precondition:</b> Calling method has checked whether the oid has changed.
    * 
    * @param oldEntityId
    * @param entityDAOIF
@@ -230,7 +230,7 @@ public class Memorystore implements ObjectStore
   {
     synchronized (oldEntityId)
     {      
-      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, oldEntityId, entityDAOIF.getId(), entityDAOIF);
+      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, oldEntityId, entityDAOIF.getOid(), entityDAOIF);
       
       if (cachedEntityDAOinfo != null)
       {    
@@ -282,7 +282,7 @@ public class Memorystore implements ObjectStore
 
   /**
    * Removes all parent relationships of the given type for the
-   * {@link BusinessDAOIF} with the given id.
+   * {@link BusinessDAOIF} with the given oid.
    * 
    * @param childId
    * @param relationshipType
@@ -340,7 +340,7 @@ public class Memorystore implements ObjectStore
 
   /**
    * Removes all child relationships of the given type for the
-   * {@link BusinessDAOIF} with the given id.
+   * {@link BusinessDAOIF} with the given oid.
    * 
    * @param parentId
    * @param relationshipType
@@ -365,18 +365,18 @@ public class Memorystore implements ObjectStore
   }
 
   /**
-   * Returns the {@link EntityDAOIF} from the cache with the given id or null if
-   * the object with the given id is not in the cache.
+   * Returns the {@link EntityDAOIF} from the cache with the given oid or null if
+   * the object with the given oid is not in the cache.
    * 
-   * @param id
-   * @return {@link EntityDAOIF} from the cache with the given id or null if the
-   *         object with the given id is not in the cache.
+   * @param oid
+   * @return {@link EntityDAOIF} from the cache with the given oid or null if the
+   *         object with the given oid is not in the cache.
    */
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(id);
+      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(oid);
 
       if (cachedEntityDAOinfo == null)
       {
@@ -397,9 +397,9 @@ public class Memorystore implements ObjectStore
    */
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
   {
-    synchronized (entityDAOIF.getId())
+    synchronized (entityDAOIF.getOid())
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
+      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getOid(), entityDAOIF);
       cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
     }
   }
@@ -412,18 +412,18 @@ public class Memorystore implements ObjectStore
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeEntityDAOIFfromCache(String id, boolean deletedObject)
+  public void removeEntityDAOIFfromCache(String oid, boolean deletedObject)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(id);
+      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(oid);
 
       if (cachedEntityDAOinfo != null)
       {
         cachedEntityDAOinfo.removeEntityDAOIF();
         if (cachedEntityDAOinfo.removeFromGlobalCache())
         {
-          this.removeFromEntityMap(id);
+          this.removeFromEntityMap(oid);
         }
       }
       // else do nothing
@@ -537,9 +537,9 @@ public class Memorystore implements ObjectStore
     return cachedEntityDAOinfo;
   }
   
-  private void removeFromEntityMap(String id)
+  private void removeFromEntityMap(String oid)
   {
-    this.entityMap.remove(id);
+    this.entityMap.remove(oid);
   }
 
   @Override

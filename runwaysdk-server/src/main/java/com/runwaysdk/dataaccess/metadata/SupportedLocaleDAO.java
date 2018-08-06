@@ -64,9 +64,9 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static SupportedLocaleDAOIF get(String id)
+  public static SupportedLocaleDAOIF get(String oid)
   {
-    return (SupportedLocaleDAOIF) BusinessDAO.get(id);
+    return (SupportedLocaleDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -80,9 +80,9 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
       List<String> ids = getMdAttributeLocalIds();
       List<MdDimensionDAOIF> dimensionList = MdDimensionDAO.getAllMdDimensions();
       
-      for (String id : ids)
+      for (String oid : ids)
       {
-        MdAttributeLocalDAO mdAttributeLocal = MdAttributeLocalDAO.get(id).getBusinessDAO();
+        MdAttributeLocalDAO mdAttributeLocal = MdAttributeLocalDAO.get(oid).getBusinessDAO();
         mdAttributeLocal.addLocale(locale);
 
         for (MdDimensionDAOIF mdDimensionDAOIF : dimensionList)
@@ -109,19 +109,19 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
 
     Set<String> deletedObjectIds = new HashSet<String>();
     
-    for (String id : ids)
+    for (String oid : ids)
     {
-      MdAttributeLocalDAOIF mdAttributeLocalDAOIF = MdAttributeLocalDAO.get(id);
+      MdAttributeLocalDAOIF mdAttributeLocalDAOIF = MdAttributeLocalDAO.get(oid);
       
       MdStructDAOIF mdStructDAOIF = mdAttributeLocalDAOIF.getMdStructDAOIF();
 
       MdAttributeDAOIF localeMdAttributeDAOIF = mdStructDAOIF.definesAttribute(enumName);
       // Localized attributes can used the same struct. The attribute may have been deleted.
-      if (localeMdAttributeDAOIF != null && !deletedObjectIds.contains(localeMdAttributeDAOIF.getId()))
+      if (localeMdAttributeDAOIF != null && !deletedObjectIds.contains(localeMdAttributeDAOIF.getOid()))
       {
         MdAttributeDAO localeMdAttributeDAO = (MdAttributeDAO)localeMdAttributeDAOIF.getBusinessDAO();
         localeMdAttributeDAO.delete(businessContext);
-        deletedObjectIds.add(localeMdAttributeDAO.getId());
+        deletedObjectIds.add(localeMdAttributeDAO.getOid());
       }
 
       // Delete all dimension locale attributes
@@ -131,11 +131,11 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
         String dimensionLocaleName = mdDimensionDAOIF.getLocaleAttributeName(enumName);
         MdAttributeDAOIF dimensionLocaleMdAttributeDAOIF = mdStructDAOIF.definesAttribute(dimensionLocaleName);
         // Localized attributes can used the same struct. The attribute may have been deleted.
-        if (dimensionLocaleMdAttributeDAOIF != null && !deletedObjectIds.contains(dimensionLocaleMdAttributeDAOIF.getId()) )
+        if (dimensionLocaleMdAttributeDAOIF != null && !deletedObjectIds.contains(dimensionLocaleMdAttributeDAOIF.getOid()) )
         {
           MdAttributeDAO dimensionLocaleMdAttributeDAO = (MdAttributeDAO)dimensionLocaleMdAttributeDAOIF.getBusinessDAO();
           dimensionLocaleMdAttributeDAO.delete(businessContext);
-          deletedObjectIds.add(dimensionLocaleMdAttributeDAO.getId());
+          deletedObjectIds.add(dimensionLocaleMdAttributeDAO.getOid());
         }
       }
     }

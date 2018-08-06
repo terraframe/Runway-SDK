@@ -41,9 +41,9 @@ public abstract class MdAttributeMultiLineStringBase extends com.runwaysdk.syste
     return CLASS;
   }
   
-  public static MdAttributeMultiLineString get(String id)
+  public static MdAttributeMultiLineString get(String oid)
   {
-    return (MdAttributeMultiLineString) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeMultiLineString) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeMultiLineString getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeMultiLineStringBase extends com.runwaysdk.syste
     return (MdAttributeMultiLineString) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeMultiLineString lock(java.lang.String id)
+  public static MdAttributeMultiLineString lock(java.lang.String oid)
   {
-    MdAttributeMultiLineString _instance = MdAttributeMultiLineString.get(id);
+    MdAttributeMultiLineString _instance = MdAttributeMultiLineString.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeMultiLineString unlock(java.lang.String id)
+  public static MdAttributeMultiLineString unlock(java.lang.String oid)
   {
-    MdAttributeMultiLineString _instance = MdAttributeMultiLineString.get(id);
+    MdAttributeMultiLineString _instance = MdAttributeMultiLineString.get(oid);
     _instance.unlock();
     
     return _instance;

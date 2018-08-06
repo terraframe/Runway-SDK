@@ -72,7 +72,7 @@ import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.util.IdParser;
 
 /**
- * Captures the session id and executes authentication.
+ * Captures the session oid and executes authentication.
  */
 privileged public abstract aspect AbstractRequestManagement percflow(topLevelSession())
 {
@@ -256,13 +256,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
      ) && args(_sessionId, ..);
 
   // these objects should be unlocked at the end of the session request
-  protected pointcut setAppLock(String id)
-    : (execution (* com.runwaysdk.dataaccess.transaction.LockObject.recordAppLock(String)) && args(id))
+  protected pointcut setAppLock(String oid)
+    : (execution (* com.runwaysdk.dataaccess.transaction.LockObject.recordAppLock(String)) && args(oid))
   && cflow(topLevelSession());
 
-  before(String id) :  setAppLock(id)
+  before(String oid) :  setAppLock(oid)
   {
-    setAppLocksSet.add(id);
+    setAppLocksSet.add(oid);
   }
 
   protected pointcut throwProblem(ProblemIF problemIF)
@@ -456,7 +456,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     if (!access)
     {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getId() + "]";
+      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
       throw new DomainErrorException(errorMsg);
     }
   }
@@ -474,18 +474,18 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   private void checkMethodExecutePermission_INSTANCE(SingleActorDAOIF userIF, Mutable mutable, MdMethodDAOIF mdMethodToExecute)
   {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mutable, mdMethodToExecute);
+    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mutable, mdMethodToExecute);
 
     if (!access)
     {
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getId() + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
       throw new ExecuteInstancePermissionException(errorMsg, mutable, mdMethodToExecute, userIF);
     }
   }
 
   private void checkMethodExecutePermission_STATIC(SingleActorDAOIF userIF, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodToExecute)
   {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mdMethodToExecute);
+    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mdMethodToExecute);
 
     if (!access)
     {
@@ -593,7 +593,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         if (!entityDAO.isImport() && entityDAO.hasAttribute(ElementInfo.OWNER)
             && ( entityDAO.getAttributeIF(ElementInfo.OWNER).getValue().trim().equals("") ))
         {
-          entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getId());
+          entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getOid());
         }
 
         if (this.mdMethodIFStack.size() > 0)
@@ -623,7 +623,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       {
 
         if (this.mdMethodIFStack.size() > 0 && entity.hasAttribute(ElementInfo.LOCKED_BY)
-            && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getId()))
+            && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getOid()))
         {
           MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
           MethodActorDAOIF methodActorIF = MethodFacade.getMethodActorIF(mdMethodIF);
@@ -634,7 +634,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
             if (!entityDAO.isImport() &&
                 (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
             {
-              entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getId());
+              entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getOid());
             }
           }
         }
@@ -643,7 +643,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
           if (!entityDAO.isImport() &&
               (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
           {
-            entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getId());
+            entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getOid());
           }
         }
       }
@@ -790,19 +790,19 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       // IMPORTANT: If the method does not have access check if the user has permissions.
       if(!access)
       {
-        access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, mutable, mdAttribute);
+        access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
       }
 
       if (!access)
       {
         String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute ["
-            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with id [" + mutable.getId() + "]";
+            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with oid [" + mutable.getOid() + "]";
         throw new DomainErrorException(errorMsg);
       }
     }
     else
     {
-      boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, mutable, mdAttribute);
+      boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
 
       if (!access)
       {
@@ -837,13 +837,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
         if (!access)
         {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "] with id [" + struct.getId() + "]";
+          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "] with oid [" + struct.getOid() + "]";
           throw new DomainErrorException(errorMsg);
         }
       }
       else
       {
-        boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, struct, mdAttribute);
+        boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, struct, mdAttribute);
 
         if (!access)
         {
@@ -872,7 +872,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
         if (!access && !checkUserDeletePermissions(mutable, userIF))
         {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to delete [" + mutable.getType() + "] instance with id [" + mutable.getId() + "].";
+          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to delete [" + mutable.getType() + "] instance with oid [" + mutable.getOid() + "].";
           throw new DomainErrorException(errorMsg);
         }
       }
@@ -896,24 +896,24 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     {
       Element element = (Element) mutable;
 
-      ( LockObject.getLockObject() ).appLock(mutable.getId());
+      ( LockObject.getLockObject() ).appLock(mutable.getOid());
 
-      element.setDataEntity( ( EntityDAO.get(element.getId()).getEntityDAO() ));
+      element.setDataEntity( ( EntityDAO.get(element.getOid()).getEntityDAO() ));
 
       String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
 
       // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getId()) && !lockedBy.trim().equals(""))
+      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
       {
         // Release the lock on this object
-        ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
         String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object in order to delete it.";
         throw new LockException(err, element, "ExistingLockException");
       }
     }
 
-    return SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.DELETE, mutable);
+    return SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.DELETE, mutable);
   }
 
   // Check permission for adding a child to an object
@@ -925,7 +925,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddChildObject(parentBusiness, childBusiness.getId(), relationshipType);
+      this.checkAddChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
     }
   }
 
@@ -962,7 +962,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -973,7 +973,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1021,7 +1021,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, childBusiness.getId(), relationshipType);
+      this.checkRemoveChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
     }
   }
 
@@ -1046,11 +1046,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    * @param parentBusiness
    *          object that the child object is removed from.
    * @param childId
-   *          id to the child object.
+   *          oid to the child object.
    * @param relationshipType
    *          name of the relationship type.
    * @param relationshipId
-   *          id to the relationship.
+   *          oid to the relationship.
    */
   private void checkRemoveChildObject(Business parentBusiness, String childId, String relationshipType)
   {
@@ -1061,7 +1061,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1073,7 +1073,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1095,7 +1095,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddParentObject(childBusiness, parentBusiness.getId(), relationshipType);
+      this.checkAddParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
     }
   }
 
@@ -1119,7 +1119,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    * @param childBusiness
    *          object that the parent object is added to.
    * @param parentId
-   *          id to the child object.
+   *          oid to the child object.
    * @param relationship
    *          type of relationship involved.
    */
@@ -1132,7 +1132,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1142,7 +1142,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1190,7 +1190,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      checkRemoveParentObject(childBusiness, parentBusiness.getId(), relationshipType);
+      checkRemoveParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
     }
   }
 
@@ -1229,7 +1229,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1239,7 +1239,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1267,7 +1267,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
 
     // If a thread has a lock on it, it could be an application or a user lock.
-    Thread threadThatLocksObject = ( LockObject.getLockObject() ).getThreadForAppLock(element.getId());
+    Thread threadThatLocksObject = ( LockObject.getLockObject() ).getThreadForAppLock(element.getOid());
 
     if (threadThatLocksObject != null)
     {
@@ -1278,11 +1278,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       }
       else
       {
-        String err = "You must obtain an application lock before modifying an object. " + "Another thread has a lock on the object with id [" + element.getId() + "].";
+        String err = "You must obtain an application lock before modifying an object. " + "Another thread has a lock on the object with oid [" + element.getOid() + "].";
         throw new LockException(err);
       }
     }
-    ( LockObject.getLockObject() ).appLock(element.getId());
+    ( LockObject.getLockObject() ).appLock(element.getOid());
 
     SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
@@ -1291,23 +1291,23 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     {
       String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
       // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getId()) && !lockedBy.trim().equals(""))
+      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
       {
-        ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
-        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with id [" + element.getId() + "] in order to modify it. " + "It is currently locked by someone else.";
+        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. " + "It is currently locked by someone else.";
         throw new LockException(err, element, "ExistingLockException");
       }
       // User has a user lock
-      else if (lockedBy.equals(userIF.getId()))
+      else if (lockedBy.equals(userIF.getOid()))
       {
         return;
       }
     }
 
-    ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+    ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
-    String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with id [" + element.getId() + "] in order to modify it. ";
+    String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. ";
     throw new LockException(err, element, "NeedLockException");
   }
 
@@ -1318,7 +1318,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityCreatePermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.CREATE, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.CREATE, entity);
 
     if (!access)
     {
@@ -1353,7 +1353,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityReadPermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.READ, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.READ, entity);
 
     if (!access)
     {
@@ -1388,7 +1388,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityWritePermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.WRITE, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity);
 
     if (!access)
     {
@@ -1409,9 +1409,9 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.WRITE, entity);
 
-    if (!access && !SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.WRITE, entity))
+    if (!access && !SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity))
     {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to write to [" + entity.getType() + "] instance with id [" + entity.getId() + "].";
+      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to write to [" + entity.getType() + "] instance with oid [" + entity.getOid() + "].";
       throw new DomainErrorException(errorMsg);
     }
   }

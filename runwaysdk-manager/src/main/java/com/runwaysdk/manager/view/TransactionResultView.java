@@ -89,7 +89,7 @@ public class TransactionResultView extends ViewPart implements IViewPart
 
         ComponentIF component = (ComponentIF) selection.getFirstElement();
 
-        final IComponentObject record = EntityObject.get(component.getId());
+        final IComponentObject record = EntityObject.get(component.getOid());
         final Display display = viewer.getTable().getDisplay();
 
         manager.openTab(new IViewStrategy()
@@ -106,7 +106,7 @@ public class TransactionResultView extends ViewPart implements IViewPart
 
           public String getKey()
           {
-            return record.getId();
+            return record.getOid();
           }
 
           @Override

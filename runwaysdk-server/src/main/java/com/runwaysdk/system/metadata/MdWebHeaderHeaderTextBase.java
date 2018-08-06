@@ -12,7 +12,7 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebHeaderHeaderText";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 1840821490;
@@ -27,9 +27,9 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
     super(component, structName);
   }
   
-  public static MdWebHeaderHeaderText get(String id)
+  public static MdWebHeaderHeaderText get(String oid)
   {
-    return (MdWebHeaderHeaderText) com.runwaysdk.business.Struct.get(id);
+    return (MdWebHeaderHeaderText) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdWebHeaderHeaderText getByKey(String key)
@@ -37,7 +37,7 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
     return (MdWebHeaderHeaderText) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class MdWebHeaderHeaderTextBase extends com.runwaysdk.business.L
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebHeaderHeaderText.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

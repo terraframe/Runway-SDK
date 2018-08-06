@@ -49,7 +49,7 @@ public class RMIInvokeUtilDTOMethodTest extends InvokeUtilDTOMethodTest
     bag = MdUtilDAO.newInstance();
 
     superClassField = MdUtilInfo.SUPER_MD_UTIL;
-    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(id);";
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(oid);";
     
     modelSetup();
   }

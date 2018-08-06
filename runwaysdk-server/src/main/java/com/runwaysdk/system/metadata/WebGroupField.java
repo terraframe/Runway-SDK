@@ -29,7 +29,7 @@ public class WebGroupField extends WebGroupFieldBase
   
   public WebGroupField(com.runwaysdk.system.metadata.MdWebGroup parent, com.runwaysdk.system.metadata.MdWebField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

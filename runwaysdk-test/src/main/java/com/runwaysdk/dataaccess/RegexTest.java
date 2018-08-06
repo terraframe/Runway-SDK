@@ -300,7 +300,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -309,7 +309,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -318,7 +318,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -327,7 +327,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
     }
     catch (DataAccessException e)
@@ -374,7 +374,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -383,7 +383,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -392,7 +392,7 @@ public class RegexTest
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
     }
     catch (DataAccessException e)

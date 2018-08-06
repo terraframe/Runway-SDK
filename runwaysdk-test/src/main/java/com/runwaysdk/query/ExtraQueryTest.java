@@ -52,7 +52,7 @@ public class ExtraQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -110,8 +110,8 @@ public class ExtraQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -160,7 +160,7 @@ public class ExtraQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -218,8 +218,8 @@ public class ExtraQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }

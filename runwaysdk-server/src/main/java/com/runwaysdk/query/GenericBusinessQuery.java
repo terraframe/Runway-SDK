@@ -56,17 +56,17 @@ public class GenericBusinessQuery extends GeneratedBusinessQuery
     return this.mdBusiness.definesType();
   }
 
-  public SelectableChar getId()
+  public SelectableChar getOid()
   {
-    return this.getId(null);
+    return this.getOid(null);
   }
 
-  public SelectableChar getId(String alias)
+  public SelectableChar getOid(String alias)
   {
     return (SelectableChar) this.getComponentQuery().get(BusinessInfo.ID, alias, null);
   }
 
-  public SelectableChar getId(String alias, String displayLabel)
+  public SelectableChar getOid(String alias, String displayLabel)
   {
     return (SelectableChar) this.getComponentQuery().get(BusinessInfo.ID, alias, displayLabel);
   }

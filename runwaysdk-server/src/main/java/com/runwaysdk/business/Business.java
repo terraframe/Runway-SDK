@@ -105,24 +105,24 @@ public class Business extends Element
 
   /**
    * Using reflection, get returns an object of the specified type with the
-   * specified id from the database. The returned Business is typesafe, meaning
+   * specified oid from the database. The returned Business is typesafe, meaning
    * that its actual type is that specified by the type parameter.
    * 
-   * @param id
+   * @param oid
    *          ID of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
-  public static Business get(String id)
+  public static Business get(String oid)
   {
     // An empty string likely indicates the value was never set in the database.
-    if (id == null || id.length() == 0)
+    if (oid == null || oid.length() == 0)
     {
-      String errMsg = "Object with id [" + id + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
+      String errMsg = "Object with oid [" + oid + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
 
-      throw new InvalidIdException(errMsg, id);
+      throw new InvalidIdException(errMsg, oid);
     }
 
-    Business reflected = instantiate(BusinessDAO.get(id));
+    Business reflected = instantiate(BusinessDAO.get(oid));
 
     return reflected;
   }
@@ -136,7 +136,7 @@ public class Business extends Element
    *          type of the instance to get
    * @param key
    *          key of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
   public static Business get(String type, String key)
   {
@@ -164,20 +164,20 @@ public class Business extends Element
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the
+   * Returns an object of the specified type with the specified oid from the
    * database without using reflection. The returned Business is not typesafe,
    * meaning that its actual type just a Business.
    * 
-   * @param id
+   * @param oid
    *          ID of the instance to get.
-   * @return Typesafe Business representing the id in the database.
+   * @return Typesafe Business representing the oid in the database.
    */
-  public static Business getBusiness(String id)
+  public static Business getBusiness(String oid)
   {
     // Cast is OK, as the data access object cannot be modified unless the
     // logged in user
     // has a lock on the object.
-    BusinessDAOIF object = BusinessDAO.get(id);
+    BusinessDAOIF object = BusinessDAO.get(oid);
     return new Business((BusinessDAO) object);
   }
 
@@ -284,10 +284,10 @@ public class Business extends Element
       for (RelationshipDAOIF relationship : businessDAO().getParents(type))
       {
         BusinessDAOIF parentBusinessDAOIF = relationship.getParent();
-        if (!map.containsKey(parentBusinessDAOIF.getId()))
+        if (!map.containsKey(parentBusinessDAOIF.getOid()))
         {
           Business business = instantiate(parentBusinessDAOIF);
-          map.put(parentBusinessDAOIF.getId(), business);
+          map.put(parentBusinessDAOIF.getOid(), business);
           arrayList.add(business);
         }
       }
@@ -299,7 +299,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getId()));
+      rq.WHERE(rq.childId().EQ(this.getOid()));
 
       // Now fetch the child objects
       BusinessQuery bq = queryFactory.businessQuery(mdRelationshipIF.getParentMdBusiness().definesType());
@@ -338,7 +338,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getId()));
+      rq.WHERE(rq.childId().EQ(this.getOid()));
 
       return rq.getIterator();
     }
@@ -361,7 +361,7 @@ public class Business extends Element
     if (mdRelationshipIF.cacheAllInstances())
     {
       ArrayList<Relationship> arrayList = new ArrayList<Relationship>();
-      for (RelationshipDAOIF relationshipDAOIF : businessDAO().getParents(parent.getId(), type))
+      for (RelationshipDAOIF relationshipDAOIF : businessDAO().getParents(parent.getOid(), type))
       {
         Relationship relationship = Relationship.instantiate(relationshipDAOIF);
         arrayList.add(relationship);
@@ -374,7 +374,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.childId().EQ(this.getId()).AND(rq.parentId().EQ(parent.getId())));
+      rq.WHERE(rq.childId().EQ(this.getOid()).AND(rq.parentId().EQ(parent.getOid())));
 
       return rq.getIterator();
     }
@@ -398,10 +398,10 @@ public class Business extends Element
       for (RelationshipDAOIF relationship : businessDAO().getChildren(type))
       {
         BusinessDAOIF childBusinessDAOIF = relationship.getChild();
-        if (!map.containsKey(childBusinessDAOIF.getId()))
+        if (!map.containsKey(childBusinessDAOIF.getOid()))
         {
           Business business = instantiate(childBusinessDAOIF);
-          map.put(childBusinessDAOIF.getId(), business);
+          map.put(childBusinessDAOIF.getOid(), business);
           arrayList.add(business);
         }
       }
@@ -413,7 +413,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getId()));
+      rq.WHERE(rq.parentId().EQ(this.getOid()));
 
       // Now fetch the child objects
       BusinessQuery bq = queryFactory.businessQuery(mdRelationshipIF.getChildMdBusiness().definesType());
@@ -452,7 +452,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getId()));
+      rq.WHERE(rq.parentId().EQ(this.getOid()));
 
       return rq.getIterator();
     }
@@ -475,7 +475,7 @@ public class Business extends Element
     if (mdRelationshipIF.cacheAllInstances())
     {
       ArrayList<Relationship> arrayList = new ArrayList<Relationship>();
-      for (RelationshipDAOIF relationshipDAOIF : businessDAO().getChildren(child.getId(), type))
+      for (RelationshipDAOIF relationshipDAOIF : businessDAO().getChildren(child.getOid(), type))
       {
         Relationship relationship = Relationship.instantiate(relationshipDAOIF);
         arrayList.add(relationship);
@@ -488,7 +488,7 @@ public class Business extends Element
 
       // Get the relationships where this object is the parent
       RelationshipQuery rq = queryFactory.relationshipQuery(type);
-      rq.WHERE(rq.parentId().EQ(this.getId()).AND(rq.childId().EQ(child.getId())));
+      rq.WHERE(rq.parentId().EQ(this.getOid()).AND(rq.childId().EQ(child.getOid())));
 
       return rq.getIterator();
     }
@@ -507,7 +507,7 @@ public class Business extends Element
    */
   public Relationship addParent(Business parent, String relationshipType)
   {
-    return this.addParent(parent.getId(), relationshipType);
+    return this.addParent(parent.getOid(), relationshipType);
   }
 
   /**
@@ -515,7 +515,7 @@ public class Business extends Element
    * given type with the given parent and <b>this</b> as the child.
    * 
    * @param root
-   *          id of the Parent of <b>this</b> in the new relationship
+   *          oid of the Parent of <b>this</b> in the new relationship
    * @param relationshipType
    *          type of the desired relationship
    * @return The newly created Relationship
@@ -530,11 +530,11 @@ public class Business extends Element
       {
         Class<?> clazz = LoaderDecorator.load(relationshipType);
         Constructor<?> con = clazz.getConstructor(String.class, String.class);
-        return (Relationship) con.newInstance(parentId, this.getId());
+        return (Relationship) con.newInstance(parentId, this.getOid());
       }
       else
       {
-        return new Relationship(parentId, this.getId(), relationshipType);
+        return new Relationship(parentId, this.getOid(), relationshipType);
       }
     }
     catch (Exception e)
@@ -562,7 +562,7 @@ public class Business extends Element
    * of the given object as a parent of <b>this</b> object.
    * 
    * @param parentId
-   *          id of the Parent of <b>this</b> to be removed.
+   *          oid of the Parent of <b>this</b> to be removed.
    * @param relationshipType
    *          type of the desired relationship
    */
@@ -578,11 +578,11 @@ public class Business extends Element
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br>
-   * <b>Precondition:</b> id to relationship object must represent the a parent
+   * <b>Precondition:</b> oid to relationship object must represent the a parent
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a parent relationship.
+   *          oid to a parent relationship.
    */
   public void removeParent(String relationshipId)
   {
@@ -618,7 +618,7 @@ public class Business extends Element
    */
   public Relationship addChild(Business child, String relationshipType)
   {
-    return this.addChild(child.getId(), relationshipType);
+    return this.addChild(child.getOid(), relationshipType);
   }
 
   /**
@@ -626,7 +626,7 @@ public class Business extends Element
    * given type with the given child and <b>this</b> as the parent.
    * 
    * @param childId
-   *          id of the Child of <b>this</b> in the new relationship
+   *          oid of the Child of <b>this</b> in the new relationship
    * @param relationshipType
    *          type of the desired relationship
    * @return The newly created Relationship.
@@ -641,11 +641,11 @@ public class Business extends Element
       {
         Class<?> clazz = LoaderDecorator.load(relationshipType);
         Constructor<?> con = clazz.getConstructor(String.class, String.class);
-        return (Relationship) con.newInstance(this.getId(), childId);
+        return (Relationship) con.newInstance(this.getOid(), childId);
       }
       else
       {
-        return new Relationship(this.getId(), childId, relationshipType);
+        return new Relationship(this.getOid(), childId, relationshipType);
       }
     }
     catch (Exception e)
@@ -673,7 +673,7 @@ public class Business extends Element
    * of this object as a child of <b>this</b> object.
    * 
    * @param childId
-   *          id of the child of <b>this</b> to be removed.
+   *          oid of the child of <b>this</b> to be removed.
    * @param relationshipType
    *          type of the desired relationship
    */
@@ -693,7 +693,7 @@ public class Business extends Element
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a child relationship.
+   *          oid to a child relationship.
    */
   public void removeChild(String relationshipId)
   {

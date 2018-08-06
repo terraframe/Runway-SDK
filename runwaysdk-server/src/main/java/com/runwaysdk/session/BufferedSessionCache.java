@@ -73,8 +73,8 @@ public class BufferedSessionCache extends CompositeSessionCache
   @Override
   protected void addSession(Session session)
   {
-    if(!secondCache.containsSession(session.getId()) &&
-       !firstCache.containsSession(session.getId()))
+    if(!secondCache.containsSession(session.getOid()) &&
+       !firstCache.containsSession(session.getOid()))
     {      
       firstCache.addSession(session);
     }

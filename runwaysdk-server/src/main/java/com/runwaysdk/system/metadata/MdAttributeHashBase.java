@@ -47,7 +47,7 @@ public abstract class MdAttributeHashBase extends com.runwaysdk.system.metadata.
   {
     if(value != null)
     {
-      addEnumItem(HASHMETHOD, value.getId());
+      addEnumItem(HASHMETHOD, value.getOid());
     }
   }
   
@@ -55,7 +55,7 @@ public abstract class MdAttributeHashBase extends com.runwaysdk.system.metadata.
   {
     if(value != null)
     {
-      removeEnumItem(HASHMETHOD, value.getId());
+      removeEnumItem(HASHMETHOD, value.getOid());
     }
   }
   
@@ -80,9 +80,9 @@ public abstract class MdAttributeHashBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeHash get(String id)
+  public static MdAttributeHash get(String oid)
   {
-    return (MdAttributeHash) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeHash) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeHash getByKey(String key)
@@ -90,17 +90,17 @@ public abstract class MdAttributeHashBase extends com.runwaysdk.system.metadata.
     return (MdAttributeHash) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeHash lock(java.lang.String id)
+  public static MdAttributeHash lock(java.lang.String oid)
   {
-    MdAttributeHash _instance = MdAttributeHash.get(id);
+    MdAttributeHash _instance = MdAttributeHash.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeHash unlock(java.lang.String id)
+  public static MdAttributeHash unlock(java.lang.String oid)
   {
-    MdAttributeHash _instance = MdAttributeHash.get(id);
+    MdAttributeHash _instance = MdAttributeHash.get(oid);
     _instance.unlock();
     
     return _instance;

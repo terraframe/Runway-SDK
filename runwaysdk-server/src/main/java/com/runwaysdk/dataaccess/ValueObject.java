@@ -33,7 +33,7 @@ public class ValueObject extends ComponentDAO
    */
   private static final long serialVersionUID = -3912917173993182938L;
 
-  private String id;
+  private String oid;
 
   /**
    * Map of Attribute objects the component has. They are of a name-value pair relation.
@@ -57,11 +57,11 @@ public class ValueObject extends ComponentDAO
    * @param attributeMap
    * @param transientType
    */
-  public ValueObject(Map<String, Attribute> attributeMap, String transientType, String id)
+  public ValueObject(Map<String, Attribute> attributeMap, String transientType, String oid)
   {
     super(transientType);
     this.attributeMap = attributeMap;
-    this.id = id;
+    this.oid = oid;
     this.linkAttributes();
   }
 
@@ -117,11 +117,11 @@ public class ValueObject extends ComponentDAO
    * Returns the Id used for AttributeProblems (not messages).  New instances that fail will have a
    * different ID on the client.
    *
-   * @return problem notification id.
+   * @return problem notification oid.
    */
   public String getProblemNotificationId()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   /**
@@ -133,9 +133,9 @@ public class ValueObject extends ComponentDAO
    *
    * @return The ID of this Component.
    */
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   /**

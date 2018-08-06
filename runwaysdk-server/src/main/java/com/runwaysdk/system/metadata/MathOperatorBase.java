@@ -70,9 +70,9 @@ public abstract class MathOperatorBase extends com.runwaysdk.system.EnumerationM
     return CLASS;
   }
   
-  public static MathOperator get(String id)
+  public static MathOperator get(String oid)
   {
-    return (MathOperator) com.runwaysdk.business.Business.get(id);
+    return (MathOperator) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MathOperator getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class MathOperatorBase extends com.runwaysdk.system.EnumerationM
     return (MathOperator) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.MathOperator.CLASS ,enumName);
   }
   
-  public static MathOperator lock(java.lang.String id)
+  public static MathOperator lock(java.lang.String oid)
   {
-    MathOperator _instance = MathOperator.get(id);
+    MathOperator _instance = MathOperator.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MathOperator unlock(java.lang.String id)
+  public static MathOperator unlock(java.lang.String oid)
   {
-    MathOperator _instance = MathOperator.get(id);
+    MathOperator _instance = MathOperator.get(oid);
     _instance.unlock();
     
     return _instance;

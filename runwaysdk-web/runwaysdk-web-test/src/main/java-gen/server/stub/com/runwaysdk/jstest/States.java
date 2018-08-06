@@ -71,10 +71,10 @@ public enum States implements com.runwaysdk.business.BusinessEnumeration, com.ru
     return enumeration.getStatePhone();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -89,11 +89,11 @@ public enum States implements com.runwaysdk.business.BusinessEnumeration, com.ru
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static States get(String id)
+  public static States get(String oid)
   {
     for (States e : States.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

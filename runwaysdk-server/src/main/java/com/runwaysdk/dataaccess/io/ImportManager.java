@@ -73,7 +73,7 @@ public class ImportManager
    */
   private enum State {
     /**
-     * State for importing keyName to pusedo id references
+     * State for importing keyName to pusedo oid references
      */
     EXISTING,
 
@@ -104,7 +104,7 @@ public class ImportManager
   }
 
   /**
-   * A mapping between puesdo and real id values for instances
+   * A mapping between puesdo and real oid values for instances
    */
   private HashMap<String, String>                    idMapping;
 
@@ -114,7 +114,7 @@ public class ImportManager
   private Set<String>                                importedTypes;
 
   /**
-   * A collection of the id which have been imported
+   * A collection of the oid which have been imported
    */
   private Set<String>                                importedObjects;
 
@@ -167,24 +167,24 @@ public class ImportManager
   }
 
   /**
-   * Adds a mapping between a typeand the database id to the mapping collection
+   * Adds a mapping between a typeand the database oid to the mapping collection
    * 
    * @param puesdo
-   *          The xml id
-   * @param id
-   *          The core id
+   *          The xml oid
+   * @param oid
+   *          The core oid
    */
-  public void addMapping(String type, String id)
+  public void addMapping(String type, String oid)
   {
-    this.idMapping.put(type, id);
+    this.idMapping.put(type, oid);
   }
 
   /**
-   * @param id
+   * @param oid
    */
-  public void addImportedObject(String id)
+  public void addImportedObject(String oid)
   {
-    this.importedObjects.add(id);
+    this.importedObjects.add(oid);
   }
 
   /**
@@ -224,10 +224,10 @@ public class ImportManager
   }
 
   /**
-   * Adds a puesdo id to the list of id currently on which a search is being performed.
+   * Adds a puesdo oid to the list of oid currently on which a search is being performed.
    * 
-   * @param id
-   *          The id
+   * @param oid
+   *          The oid
    * @param cause
    *          TODO
    */
@@ -237,7 +237,7 @@ public class ImportManager
   }
 
   /**
-   * Removes the top pusedo id from the search list
+   * Removes the top pusedo oid from the search list
    */
   public void removeSearchId()
   {
@@ -248,10 +248,10 @@ public class ImportManager
   }
 
   /**
-   * Validates that an pusedo xml id is valid for searching. Will throw an exception if the id is already in the list of ids under search.
+   * Validates that an pusedo xml oid is valid for searching. Will throw an exception if the oid is already in the list of ids under search.
    * 
    * @param criteria
-   *          A pusedo xml id
+   *          A pusedo xml oid
    */
   public void validateSearch(SearchCriteriaIF criteria)
   {

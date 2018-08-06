@@ -31,19 +31,19 @@ import com.runwaysdk.transport.metadata.RelationshipTypeMd;
 public class RelationshipDTO extends ElementDTO
 {
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = -1045931690869189494L;
 
   public final static String CLASS = RelationshipDTOInfo.CLASS;
 
   /**
-   * The id of the child in this relationship.
+   * The oid of the child in this relationship.
    */
   private String            childId;
 
   /**
-   * The id of the parent in this relationship.
+   * The oid of the parent in this relationship.
    */
   private String            parentId;
 
@@ -132,7 +132,7 @@ public class RelationshipDTO extends ElementDTO
   }
 
   /**
-   * Sets the parent id (for internal use only).
+   * Sets the parent oid (for internal use only).
    *
    * @param parentId
    */
@@ -142,7 +142,7 @@ public class RelationshipDTO extends ElementDTO
   }
 
   /**
-   * Sets the child id (for internal use only).
+   * Sets the child oid (for internal use only).
    * @param childId
    */
   void setChildId(String childId)

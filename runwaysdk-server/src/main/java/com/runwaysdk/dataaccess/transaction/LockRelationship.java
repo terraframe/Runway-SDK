@@ -53,8 +53,8 @@ public class LockRelationship
    * Tries to attain a relationship lock on both the parent and the child objects.
    * Goes to sleep if either object is locked.
    *
-   * @param id of the parent object in a relationship.
-   * @param id of the child object in a relationship.
+   * @param oid of the parent object in a relationship.
+   * @param oid of the child object in a relationship.
    */
   public void relLock(String parentId, String childId)
   {
@@ -86,7 +86,7 @@ public class LockRelationship
     }
 
 
-    // block if the id is in the lockedIDsMap
+    // block if the oid is in the lockedIDsMap
     if ( (!LockObject.isLockedByThread(this.lockedIDsMap.get(parentId))) &&
          (!LockObject.isLockedByThread(this.lockedIDsMap.get(childId)))  )
     {
@@ -120,8 +120,8 @@ public class LockRelationship
   /**
    * Releases a relationship lock on the objects with the given ids, but only if the
    * current thread is the thread that holds the lock.
-   * @param parentId id of the parent object in the relationship.
-   * @param childId id of the child object in the relationship.
+   * @param parentId oid of the parent object in the relationship.
+   * @param childId oid of the child object in the relationship.
    */
   public synchronized void releaseRelLock(String parentId, String childId)
   {
@@ -147,12 +147,12 @@ public class LockRelationship
 
     while(setIterator.hasNext())
     {
-      String id = (String)setIterator.next();
+      String oid = (String)setIterator.next();
 
-      if(this.lockedIDsMap.containsKey(id) &&
-          (LockObject.isLockedByThread(this.lockedIDsMap.get(id))))
+      if(this.lockedIDsMap.containsKey(oid) &&
+          (LockObject.isLockedByThread(this.lockedIDsMap.get(oid))))
       {
-        this.lockedIDsMap.remove(id);
+        this.lockedIDsMap.remove(oid);
       }
     }
 

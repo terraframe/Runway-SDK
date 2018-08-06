@@ -30,7 +30,7 @@ public abstract class AlphabetDisplayLabelBase extends com.runwaysdk.business.Lo
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -830399315;
@@ -45,9 +45,9 @@ public abstract class AlphabetDisplayLabelBase extends com.runwaysdk.business.Lo
     super(component, structName);
   }
   
-  public static AlphabetDisplayLabel get(String id)
+  public static AlphabetDisplayLabel get(String oid)
   {
-    return (AlphabetDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (AlphabetDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static AlphabetDisplayLabel getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class AlphabetDisplayLabelBase extends com.runwaysdk.business.Lo
     return (AlphabetDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class AlphabetDisplayLabelBase extends com.runwaysdk.business.Lo
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel.CLASS);
     return mdClassIF.definesAttribute(ID);

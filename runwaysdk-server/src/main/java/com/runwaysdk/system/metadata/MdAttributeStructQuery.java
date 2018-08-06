@@ -154,13 +154,13 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeStruct mdAttributeStruct)
     {
       if(mdAttributeStruct == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeStruct.getId());
+      return this.EQ(mdAttributeStruct.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeStruct mdAttributeStruct)
     {
       if(mdAttributeStruct == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeStruct.getId());
+      return this.NE(mdAttributeStruct.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct()
@@ -237,7 +237,7 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeStruct.length; i++)
       {
-        itemIdArray[i] = mdAttributeStruct[i].getId();
+        itemIdArray[i] = mdAttributeStruct[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeStruct.length; i++)
       {
-        itemIdArray[i] = mdAttributeStruct[i].getId();
+        itemIdArray[i] = mdAttributeStruct[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeStruct.length; i++)
       {
-        itemIdArray[i] = mdAttributeStruct[i].getId();
+        itemIdArray[i] = mdAttributeStruct[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeStruct.length; i++)
       {
-        itemIdArray[i] = mdAttributeStruct[i].getId();
+        itemIdArray[i] = mdAttributeStruct[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeStruct.length; i++)
       {
-        itemIdArray[i] = mdAttributeStruct[i].getId();
+        itemIdArray[i] = mdAttributeStruct[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -117,9 +117,9 @@ public class MdAttributeMultiPolygonDAO extends MdAttributeGeometryDAO implement
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeMultiPolygonDAOIF get(String id)
+  public static MdAttributeMultiPolygonDAOIF get(String oid)
   {
-    return (MdAttributeMultiPolygonDAOIF) BusinessDAO.get(id);
+    return (MdAttributeMultiPolygonDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

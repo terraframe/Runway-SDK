@@ -54,19 +54,19 @@ public  class JobHistoryHistoryInformationQuery extends com.runwaysdk.query.Gene
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.DEFAULTLOCALE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.ID, alias, displayLabel);
 
@@ -139,9 +139,9 @@ public  class JobHistoryHistoryInformationQuery extends com.runwaysdk.query.Gene
     public com.runwaysdk.query.SelectableChar getDefaultLocale();
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias);
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -180,19 +180,19 @@ public  class JobHistoryHistoryInformationQuery extends com.runwaysdk.query.Gene
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.DEFAULTLOCALE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.ID, alias, displayLabel);
 

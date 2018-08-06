@@ -45,7 +45,7 @@ public class TransientDAOFactory
    * 
    * @param attributeMap
    * @param type
-   * @param id
+   * @param oid
    * @return
    */
   public static TransientDAO factoryMethod(Map<String, Attribute> attributeMap, String type)
@@ -90,7 +90,7 @@ public class TransientDAOFactory
       attributeMap.putAll(TransientDAOFactory.createRecordsForTransient(superMdTransientIF));
     }
 
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdTransientIF.getId());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdTransientIF.getOid());
 
     // Create the transientDAO
     TransientDAO newTransientDAO = factoryMethod(attributeMap, mdTransientIF.definesType());
@@ -138,12 +138,12 @@ public class TransientDAOFactory
       // assign a default value (if any) as defined in the meta data
       String attrDefaultValue = mdAttributeIF.getAttributeInstanceDefaultValue();
 
-      // New enumeration attributes need a unique id so they can map to the
+      // New enumeration attributes need a unique oid so they can map to the
       // MdEnumerationIF.getDatabaseTableName() table
       if (mdAttributeConcreteIF instanceof MdAttributeEnumerationDAOIF)
       {
-        String setId = ServerIDGenerator.nextID();
-        attribute = AttributeFactory.createAttribute(mdAttributeConcreteIF.getType(), mdAttributeIF.getKey(), attrName, mdTransientDAOIF.definesType(), setId);
+        String setOid = ServerIDGenerator.nextID();
+        attribute = AttributeFactory.createAttribute(mdAttributeConcreteIF.getType(), mdAttributeIF.getKey(), attrName, mdTransientDAOIF.definesType(), setOid);
 
         if (!attrDefaultValue.equals(""))
         {
@@ -152,8 +152,8 @@ public class TransientDAOFactory
       }
       else if (mdAttributeConcreteIF instanceof MdAttributeMultiReferenceDAOIF)
       {
-        String setId = ServerIDGenerator.nextID();
-        attribute = AttributeFactory.createAttribute(mdAttributeConcreteIF.getType(), mdAttributeIF.getKey(), attrName, mdTransientDAOIF.definesType(), setId);
+        String setOid = ServerIDGenerator.nextID();
+        attribute = AttributeFactory.createAttribute(mdAttributeConcreteIF.getType(), mdAttributeIF.getKey(), attrName, mdTransientDAOIF.definesType(), setOid);
 
         if (!attrDefaultValue.equals(""))
         {

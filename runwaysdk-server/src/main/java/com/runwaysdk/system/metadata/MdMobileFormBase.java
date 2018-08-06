@@ -69,9 +69,9 @@ public abstract class MdMobileFormBase extends com.runwaysdk.system.metadata.MdF
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MobileFormField>) getRelationshipsWithChild(mdMobileField, com.runwaysdk.system.metadata.MobileFormField.CLASS);
   }
   
-  public static MdMobileForm get(String id)
+  public static MdMobileForm get(String oid)
   {
-    return (MdMobileForm) com.runwaysdk.business.Business.get(id);
+    return (MdMobileForm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileForm getByKey(String key)
@@ -79,17 +79,17 @@ public abstract class MdMobileFormBase extends com.runwaysdk.system.metadata.MdF
     return (MdMobileForm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileForm lock(java.lang.String id)
+  public static MdMobileForm lock(java.lang.String oid)
   {
-    MdMobileForm _instance = MdMobileForm.get(id);
+    MdMobileForm _instance = MdMobileForm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileForm unlock(java.lang.String id)
+  public static MdMobileForm unlock(java.lang.String oid)
   {
-    MdMobileForm _instance = MdMobileForm.get(id);
+    MdMobileForm _instance = MdMobileForm.get(oid);
     _instance.unlock();
     
     return _instance;

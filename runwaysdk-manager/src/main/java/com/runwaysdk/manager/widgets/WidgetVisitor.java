@@ -269,9 +269,9 @@ public class WidgetVisitor implements MdAttributeDAOVisitor
       for (BusinessDAOIF item : items)
       {
         String itemLabel = item.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, Localizer.DEFAULT_LOCALE);
-        String id = item.getId();
+        String oid = item.getOid();
 
-        list.add(new LabelValuePair(itemLabel, id));
+        list.add(new LabelValuePair(itemLabel, oid));
       }
 
       final ComboViewer combo = new ComboViewer(composite, SWT.READ_ONLY);

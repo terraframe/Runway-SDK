@@ -29,7 +29,7 @@ public class TypeMethod extends TypeMethodBase
   
   public TypeMethod(com.runwaysdk.system.metadata.MdType parent, com.runwaysdk.system.metadata.MdMethod child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

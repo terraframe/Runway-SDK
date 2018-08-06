@@ -34,13 +34,13 @@ public class DeleteExportBuilder extends ExportBuilder<Void>
 
   private File          file;
 
-  private String        id;
+  private String        oid;
 
-  public DeleteExportBuilder(List<UserDAO> list, File file, String id)
+  public DeleteExportBuilder(List<UserDAO> list, File file, String oid)
   {
     this.list = list;
     this.file = file;
-    this.id = id;
+    this.oid = oid;
   }
 
   @Override
@@ -55,7 +55,7 @@ public class DeleteExportBuilder extends ExportBuilder<Void>
   protected Void doIt()
   {
 
-    UserDAO.get(id).getBusinessDAO().delete();
+    UserDAO.get(oid).getBusinessDAO().delete();
 
     return null;
   }

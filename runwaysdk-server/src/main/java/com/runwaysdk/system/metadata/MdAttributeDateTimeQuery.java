@@ -134,13 +134,13 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeDateTime mdAttributeDateTime)
     {
       if(mdAttributeDateTime == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeDateTime.getId());
+      return this.EQ(mdAttributeDateTime.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeDateTime mdAttributeDateTime)
     {
       if(mdAttributeDateTime == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeDateTime.getId());
+      return this.NE(mdAttributeDateTime.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getDefaultValue()
@@ -203,7 +203,7 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeDateTime.length; i++)
       {
-        itemIdArray[i] = mdAttributeDateTime[i].getId();
+        itemIdArray[i] = mdAttributeDateTime[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeDateTime.length; i++)
       {
-        itemIdArray[i] = mdAttributeDateTime[i].getId();
+        itemIdArray[i] = mdAttributeDateTime[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeDateTime.length; i++)
       {
-        itemIdArray[i] = mdAttributeDateTime[i].getId();
+        itemIdArray[i] = mdAttributeDateTime[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeDateTime.length; i++)
       {
-        itemIdArray[i] = mdAttributeDateTime[i].getId();
+        itemIdArray[i] = mdAttributeDateTime[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdAttributeDateTimeQuery extends com.runwaysdk.system.metadata.MdA
 
       for (int i=0; i<mdAttributeDateTime.length; i++)
       {
-        itemIdArray[i] = mdAttributeDateTime[i].getId();
+        itemIdArray[i] = mdAttributeDateTime[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

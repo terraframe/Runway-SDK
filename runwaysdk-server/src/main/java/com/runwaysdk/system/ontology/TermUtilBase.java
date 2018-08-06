@@ -29,7 +29,7 @@ package com.runwaysdk.system.ontology;
 public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = -946656427;
   
   public TermUtilBase()
@@ -37,7 +37,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     super();
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.TermUtil.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -58,9 +58,9 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return CLASS;
   }
   
-  public static TermUtil get(String id)
+  public static TermUtil get(String oid)
   {
-    return (TermUtil) com.runwaysdk.business.Util.get(id);
+    return (TermUtil) com.runwaysdk.business.Util.get(oid);
   }
   
   public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)

@@ -77,9 +77,9 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static IndicatorCompositeDAOIF get(String id)
+  public static IndicatorCompositeDAOIF get(String oid)
   {
-    return (IndicatorCompositeDAOIF) BusinessDAO.get(id);
+    return (IndicatorCompositeDAOIF) BusinessDAO.get(oid);
   }
 
   /**

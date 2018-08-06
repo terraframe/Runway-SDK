@@ -114,13 +114,13 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileGeo mdMobileGeo)
     {
       if(mdMobileGeo == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileGeo.getId());
+      return this.EQ(mdMobileGeo.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileGeo mdMobileGeo)
     {
       if(mdMobileGeo == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileGeo.getId());
+      return this.NE(mdMobileGeo.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
 
       for (int i=0; i<mdMobileGeo.length; i++)
       {
-        itemIdArray[i] = mdMobileGeo[i].getId();
+        itemIdArray[i] = mdMobileGeo[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
 
       for (int i=0; i<mdMobileGeo.length; i++)
       {
-        itemIdArray[i] = mdMobileGeo[i].getId();
+        itemIdArray[i] = mdMobileGeo[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
 
       for (int i=0; i<mdMobileGeo.length; i++)
       {
-        itemIdArray[i] = mdMobileGeo[i].getId();
+        itemIdArray[i] = mdMobileGeo[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
 
       for (int i=0; i<mdMobileGeo.length; i++)
       {
-        itemIdArray[i] = mdMobileGeo[i].getId();
+        itemIdArray[i] = mdMobileGeo[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileGeoQuery extends com.runwaysdk.system.metadata.MdMobileAtt
 
       for (int i=0; i<mdMobileGeo.length; i++)
       {
-        itemIdArray[i] = mdMobileGeo[i].getId();
+        itemIdArray[i] = mdMobileGeo[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

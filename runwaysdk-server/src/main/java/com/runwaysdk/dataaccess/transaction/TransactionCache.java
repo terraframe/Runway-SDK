@@ -248,7 +248,7 @@ public class TransactionCache extends AbstractTransactionCache
     
     if (threadTransactionCache.newEntityIdStringCache != null)
     {
-      Iterator<String> entryIterator = threadTransactionCache.newEntityIdStringCache.getIds();
+      Iterator<String> entryIterator = threadTransactionCache.newEntityIdStringCache.getOids();
       while (entryIterator.hasNext())
       {
         String entry = entryIterator.next();
@@ -262,7 +262,7 @@ public class TransactionCache extends AbstractTransactionCache
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
-  public EntityDAOIF getEntityDAO(String id)
+  public EntityDAOIF getEntityDAO(String oid)
   {
     EntityDAOIF entityDAOIF = null;
 
@@ -270,7 +270,7 @@ public class TransactionCache extends AbstractTransactionCache
     try
     {
       // 1) Check to see if the object's type has been modified in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(oid); 
       boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
       
       // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
@@ -290,24 +290,24 @@ public class TransactionCache extends AbstractTransactionCache
         if (!mdEntityDAOIF.isNotCached())
         {
           // 4.1) fetch the object from the transaction
-          TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(oid);
           if (transactionCacheItem != null)
           {
-            entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+            entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(oid);
           }
           
           // 4.2) If it is not in the transaction cache, fetch it from the global cache
           if (entityDAOIF == null)
           {
-            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
           }
         }
         else // (mdEntityDAOIF.isNotCached())
         {
           // 5) If the object is not cached, 
-          if (this.isNewUncachedEntity(id))
+          if (this.isNewUncachedEntity(oid))
           {
-            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
             ((EntityDAO)entityDAOIF).setIsNew(true);
           }
         }
@@ -325,9 +325,9 @@ public class TransactionCache extends AbstractTransactionCache
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
    */
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    return (EntityDAOIF) this.cache.getEntityDAOIFfromCache(id);
+    return (EntityDAOIF) this.cache.getEntityDAOIFfromCache(oid);
   }
   
   /**
@@ -350,7 +350,7 @@ public class TransactionCache extends AbstractTransactionCache
   }
 
   /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
    * @param oldId
    * @param entityDAO
@@ -647,7 +647,7 @@ public class TransactionCache extends AbstractTransactionCache
         {          
           entityDAO.setCommitState();
 
-          entityDAO.setOldId(this.getOriginalId(entityDAO.getId()));
+          entityDAO.setOldId(this.getOriginalId(entityDAO.getOid()));
           
           ObjectCache.updateCache(entityDAO);
         }

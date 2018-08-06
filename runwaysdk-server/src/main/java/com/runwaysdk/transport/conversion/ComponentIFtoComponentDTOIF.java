@@ -787,7 +787,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       if (item instanceof Business)
       {
-        attributeMultiReferenceDTO.addItem( ( (Business) item ).getId());
+        attributeMultiReferenceDTO.addItem( ( (Business) item ).getOid());
       }
       else
       {
@@ -868,7 +868,7 @@ public abstract class ComponentIFtoComponentDTOIF
       Locale locale = Session.getCurrentLocale();
 
       MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(struct.getType());
-      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getId(), mdStructIF.isGenerateSource()));
+      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getOid(), mdStructIF.isGenerateSource()));
       attributeStructDTO.setStructDTO(structDTO);
     }
 
@@ -882,8 +882,8 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean readable = hasAttributeReadAccess(mdAttributeIF);
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
-    // DTOs only hold the reference id, not the object itself. Don't
-    // invoke the type-safe getter because we only need the id.
+    // DTOs only hold the reference oid, not the object itself. Don't
+    // invoke the type-safe getter because we only need the oid.
     String value = this.getComponentIF().getValue(attributeName);
 
     AttributeReferenceDTO attributeReferenceDTO = (AttributeReferenceDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
@@ -902,8 +902,8 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean readable = hasAttributeReadAccess(mdAttributeIF);
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
-    // DTOs only hold the Term id, not the object itself. Don't
-    // invoke the type-safe getter because we only need the id.
+    // DTOs only hold the Term oid, not the object itself. Don't
+    // invoke the type-safe getter because we only need the oid.
     String value = this.getComponentIF().getValue(attributeName);
 
     AttributeTermDTO attributeTermDTO = (AttributeTermDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);

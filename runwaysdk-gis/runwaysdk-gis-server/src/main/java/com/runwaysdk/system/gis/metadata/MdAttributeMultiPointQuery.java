@@ -115,12 +115,12 @@ private static final long serialVersionUID = -5200227;
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.metadata.MdAttributeMultiPoint mdAttributeMultiPoint)
     {
-      return this.EQ(mdAttributeMultiPoint.getId());
+      return this.EQ(mdAttributeMultiPoint.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.metadata.MdAttributeMultiPoint mdAttributeMultiPoint)
     {
-      return this.NE(mdAttributeMultiPoint.getId());
+      return this.NE(mdAttributeMultiPoint.getOid());
     }
 
   }

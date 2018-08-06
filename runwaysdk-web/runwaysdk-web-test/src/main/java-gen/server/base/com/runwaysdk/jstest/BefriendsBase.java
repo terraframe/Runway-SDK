@@ -32,7 +32,7 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,11 +129,11 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -143,7 +143,7 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.Befriends.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -285,7 +285,7 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -387,9 +387,9 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
     return (com.runwaysdk.jstest.RefClass) super.getChild();
   }
   
-  public static Befriends get(String id)
+  public static Befriends get(String oid)
   {
-    return (Befriends) com.runwaysdk.business.Relationship.get(id);
+    return (Befriends) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static Befriends getByKey(String key)
@@ -397,17 +397,17 @@ public abstract class BefriendsBase extends com.runwaysdk.business.Relationship 
     return (Befriends) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static Befriends lock(java.lang.String id)
+  public static Befriends lock(java.lang.String oid)
   {
-    Befriends _instance = Befriends.get(id);
+    Befriends _instance = Befriends.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Befriends unlock(java.lang.String id)
+  public static Befriends unlock(java.lang.String oid)
   {
-    Befriends _instance = Befriends.get(id);
+    Befriends _instance = Befriends.get(oid);
     _instance.unlock();
     
     return _instance;

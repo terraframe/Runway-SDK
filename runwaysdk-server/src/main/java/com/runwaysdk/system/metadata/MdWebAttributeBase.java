@@ -75,7 +75,7 @@ public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(DEFININGMDATTRIBUTE, value.getId());
+      setValue(DEFININGMDATTRIBUTE, value.getOid());
     }
   }
   
@@ -140,9 +140,9 @@ public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdWebAttribute get(String id)
+  public static MdWebAttribute get(String oid)
   {
-    return (MdWebAttribute) com.runwaysdk.business.Business.get(id);
+    return (MdWebAttribute) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebAttribute getByKey(String key)
@@ -150,17 +150,17 @@ public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.M
     return (MdWebAttribute) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebAttribute lock(java.lang.String id)
+  public static MdWebAttribute lock(java.lang.String oid)
   {
-    MdWebAttribute _instance = MdWebAttribute.get(id);
+    MdWebAttribute _instance = MdWebAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebAttribute unlock(java.lang.String id)
+  public static MdWebAttribute unlock(java.lang.String oid)
   {
-    MdWebAttribute _instance = MdWebAttribute.get(id);
+    MdWebAttribute _instance = MdWebAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

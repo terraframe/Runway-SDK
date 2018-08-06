@@ -174,13 +174,13 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeDecimal mdAttributeDecimal)
     {
       if(mdAttributeDecimal == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeDecimal.getId());
+      return this.EQ(mdAttributeDecimal.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeDecimal mdAttributeDecimal)
     {
       if(mdAttributeDecimal == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeDecimal.getId());
+      return this.NE(mdAttributeDecimal.getOid());
     }
 
   public com.runwaysdk.query.SelectableDecimal getDefaultValue()
@@ -283,7 +283,7 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeDecimal.length; i++)
       {
-        itemIdArray[i] = mdAttributeDecimal[i].getId();
+        itemIdArray[i] = mdAttributeDecimal[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -295,7 +295,7 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeDecimal.length; i++)
       {
-        itemIdArray[i] = mdAttributeDecimal[i].getId();
+        itemIdArray[i] = mdAttributeDecimal[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -307,7 +307,7 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeDecimal.length; i++)
       {
-        itemIdArray[i] = mdAttributeDecimal[i].getId();
+        itemIdArray[i] = mdAttributeDecimal[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -319,7 +319,7 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeDecimal.length; i++)
       {
-        itemIdArray[i] = mdAttributeDecimal[i].getId();
+        itemIdArray[i] = mdAttributeDecimal[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -331,7 +331,7 @@ public  class MdAttributeDecimalQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeDecimal.length; i++)
       {
-        itemIdArray[i] = mdAttributeDecimal[i].getId();
+        itemIdArray[i] = mdAttributeDecimal[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

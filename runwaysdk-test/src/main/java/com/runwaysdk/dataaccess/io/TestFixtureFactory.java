@@ -283,7 +283,7 @@ public class TestFixtureFactory
   public static MethodActorDAO createMethodActor(MdMethodDAO mdMethod)
   {
     MethodActorDAO methodActor = MethodActorDAO.newInstance();
-    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
+    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getOid());
 
     return methodActor;
   }
@@ -298,7 +298,7 @@ public class TestFixtureFactory
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
 
     mdMethod.setValue(MdMethodInfo.NAME, methodName);
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdClass.getId());
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdClass.getOid());
     mdMethod.setValue(MdMethodInfo.RETURN_TYPE, TestFixConst.TEST_METHOD_RETURN_TYPE);
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, methodName);
     mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, methodName);
@@ -382,7 +382,7 @@ public class TestFixtureFactory
 
     if (superMdBusiness != null)
     {
-      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdBusiness.getId());
+      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdBusiness.getOid());
     }
 
     return mdBusiness;
@@ -478,7 +478,7 @@ public class TestFixtureFactory
   public static MdIndexDAO createMdIndex(MdBusinessDAO mdBusiness)
   {
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     return mdIndex;
@@ -558,7 +558,7 @@ public class TestFixtureFactory
     mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeratin Filter Test");
     mdEnumeration.setValue(MdEnumerationInfo.NAME, "Filter1");
     mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusiness.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusiness.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
 
     return mdEnumeration;
@@ -587,11 +587,11 @@ public class TestFixtureFactory
     mdRelationship.setStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdRelationship Test");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Set Test");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, TestFixConst.TEST_CLASS2);
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Set Test");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, child.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, child.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, TestFixConst.TEST_CLASS1);
 
     return mdRelationship;
@@ -604,7 +604,7 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Set Test");
     mdAttribute.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -624,10 +624,10 @@ public class TestFixtureFactory
     MdAttributeCharacterDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_DEFAULT_LOCALE);
-    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, TestFixConst.ATTRIBUTE_SIZE);
-    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClass.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -642,8 +642,8 @@ public class TestFixtureFactory
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
-    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdLocalStruct.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdLocalStruct.getOid());
 
     return mdAttribute;
   }
@@ -658,7 +658,7 @@ public class TestFixtureFactory
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -668,7 +668,7 @@ public class TestFixtureFactory
     MdAttributeLocalTextDAO mdAttribute = MdAttributeLocalTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, "testLocalText");
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Text Test");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -678,8 +678,8 @@ public class TestFixtureFactory
     MdAttributeLocalTextDAO mdAttribute = MdAttributeLocalTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, "testLocalText");
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Text Test");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
-    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdLocalStruct.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdLocalStruct.getOid());
 
     return mdAttribute;
   }
@@ -690,8 +690,8 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeEnumerationInfo.NAME, "testEnumeration");
     mdAttribute.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration Set Test");
     mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
-    mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
+    mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -701,12 +701,12 @@ public class TestFixtureFactory
     MdAttributeBlobDAO mdAttribute = MdAttributeBlobDAO.newInstance();
     mdAttribute.setValue(MdAttributeBlobInfo.NAME, "testBlob");
     mdAttribute.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Blob Set Test");
-    mdAttribute.setValue(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttribute.setValue(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttribute.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Blob Test");
-    mdAttribute.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -714,8 +714,8 @@ public class TestFixtureFactory
   public static MdAttributeDimensionDAO addDimensionAttribute(MdDimensionDAO mdDimension, MdAttributeDAO mdAttribute)
   {
     MdAttributeDimensionDAO mdAttributeDimension = MdAttributeDimensionDAO.newInstance();
-    mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
-    mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFINING_MD_DIMENSION, mdDimension.getId());
+    mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getOid());
+    mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFINING_MD_DIMENSION, mdDimension.getOid());
 
     return mdAttributeDimension;
   }
@@ -725,12 +725,12 @@ public class TestFixtureFactory
     MdAttributeFileDAO mdAttribute = MdAttributeFileDAO.newInstance();
     mdAttribute.setValue(MdAttributeFileInfo.NAME, "testFile");
     mdAttribute.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "File Set Test");
-    mdAttribute.setValue(MdAttributeFileInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttribute.setValue(MdAttributeFileInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttribute.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeFileInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "File Test");
-    mdAttribute.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -755,11 +755,11 @@ public class TestFixtureFactory
     MdAttributeDateDAO mdAttribute = MdAttributeDateDAO.newInstance();
     mdAttribute.setValue(MdAttributeDateInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Set Test");
-    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, indexType.getId());
+    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, indexType.getOid());
     mdAttribute.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "2006-02-11");
     mdAttribute.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Test");
-    mdAttribute.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdClass.getId());
+    mdAttribute.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -774,8 +774,8 @@ public class TestFixtureFactory
     MdAttributeDateTimeDAO mdAttribute = MdAttributeDateTimeDAO.newInstance();
     mdAttribute.setValue(MdAttributeDateTimeInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "dateTime Set Test");
-    mdAttribute.setValue(MdAttributeDateTimeInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-    mdAttribute.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClass.getId());
+    mdAttribute.setValue(MdAttributeDateTimeInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
+    mdAttribute.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -793,7 +793,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeDecimalInfo.LENGTH, TestFixConst.TEST_SESSION_LIMIT);
     mdAttribute.setValue(MdAttributeDecimalInfo.DECIMAL, "2");
     mdAttribute.setValue(MdAttributeDecimalInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -811,7 +811,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeDoubleInfo.LENGTH, "9");
     mdAttribute.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
     mdAttribute.setValue(MdAttributeDoubleInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -830,7 +830,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeFloatInfo.DECIMAL, "2");
     mdAttribute.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdClass.getId());
+    mdAttribute.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -851,8 +851,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -862,8 +862,8 @@ public class TestFixtureFactory
     MdAttributeTermDAO mdAttribute = MdAttributeTermDAO.newInstance();
     mdAttribute.setValue(MdAttributeTermInfo.NAME, "testTerm");
     mdAttribute.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttribute.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termEntity.getId());
-    mdAttribute.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termEntity.getOid());
+    mdAttribute.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -873,8 +873,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference2");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference2 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -884,8 +884,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference3");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference3 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -895,8 +895,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference4");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference4 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -906,8 +906,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference5");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference5 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -917,8 +917,8 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference6");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference6 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -935,7 +935,7 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Set Test");
     mdAttribute.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -951,7 +951,7 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeLongInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Set Test");
     mdAttribute.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -966,7 +966,7 @@ public class TestFixtureFactory
     MdAttributeTextDAO mdAttribute = MdAttributeTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Set Test");
-    mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     return mdAttribute;
   }
 
@@ -980,7 +980,7 @@ public class TestFixtureFactory
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clob Set Test");
-    mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -995,7 +995,7 @@ public class TestFixtureFactory
     MdAttributeTimeDAO mdAttribute = MdAttributeTimeDAO.newInstance();
     mdAttribute.setValue(MdAttributeTimeInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Set Test");
-    mdAttribute.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -1010,8 +1010,8 @@ public class TestFixtureFactory
     MdAttributeStructDAO mdAttribute = MdAttributeStructDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Set Test");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
-    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
 
     return mdAttribute;
   }
@@ -1022,8 +1022,8 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeSymmetricInfo.NAME, "testSymmetric");
     mdAttribute.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Symmetric TEST");
     mdAttribute.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
-    mdAttribute.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
-    mdAttribute.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
+    mdAttribute.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -1033,8 +1033,8 @@ public class TestFixtureFactory
     MdAttributeHashDAO mdAttribute = MdAttributeHashDAO.newInstance();
     mdAttribute.setValue(MdAttributeHashInfo.NAME, "testHash");
     mdAttribute.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hash Test");
-    mdAttribute.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
-    mdAttribute.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
+    mdAttribute.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -1043,15 +1043,15 @@ public class TestFixtureFactory
   {
     MdAttributeVirtualDAO virtual = MdAttributeVirtualDAO.newInstance();
     virtual.setValue(MdAttributeVirtualInfo.NAME, "testVirtual");
-    virtual.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, concrete.getId());
-    virtual.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdView.getId());
+    virtual.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, concrete.getOid());
+    virtual.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdView.getOid());
 
     return virtual;
   }
 
   public static String getMdBusinessStub()
   {
-    String source = "package test.xmlclasses;" + "public class Class1 extends Class1Base \n" + "{\n" + "  public Class1()\n" + "  {\n" + "    super();\n" + "  }\n" + "  public static Class1 get(String id)\n" + "  {\n" + "    return (Class1) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}";
+    String source = "package test.xmlclasses;" + "public class Class1 extends Class1Base \n" + "{\n" + "  public Class1()\n" + "  {\n" + "    super();\n" + "  }\n" + "  public static Class1 get(String oid)\n" + "  {\n" + "    return (Class1) " + Business.class.getName() + ".get(oid);\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}";
 
     return source;
   }
@@ -1059,7 +1059,7 @@ public class TestFixtureFactory
   public static String getMdBusinessDTOStub()
   {
     String source = "package test.xmlclasses;\n" + "public class Class1DTO extends Class1DTOBase \n" + "{\n" + "  public static final long serialVersionUID = 1205173531292L;\n" + "  public Class1DTO(" + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(clientRequest);\n" + "  }\n" + "  /**\n" + "  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.\n" + "  * \n" + "  * @param businessDTO The BusinessDTO to duplicate\n" + "  * @param clientRequest The clientRequest this DTO should use to communicate with the server.\n" + "  */\n" + "  protected Class1DTO(" + BusinessDTO.class.getName() + " businessDTO, " + ClientRequestIF.class.getName() + " clientRequest)\n" + "  {\n" + "    super(businessDTO, clientRequest);\n"
-        + "  }\n" + "  public static Class1DTO get(" + ClientRequestIF.class.getName() + " clientRequest, String id)\n" + "  {\n" + "    " + EntityDTO.class.getName() + " dto = (" + EntityDTO.class.getName() + ")clientRequest.get(id);\n" + "    return (Class1DTO) dto;\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}\n";
+        + "  }\n" + "  public static Class1DTO get(" + ClientRequestIF.class.getName() + " clientRequest, String oid)\n" + "  {\n" + "    " + EntityDTO.class.getName() + " dto = (" + EntityDTO.class.getName() + ")clientRequest.get(oid);\n" + "    return (Class1DTO) dto;\n" + "  }\n" + "  public void tempMethod()\n" + "  {\n" + "    return;\n" + "  }\n" + "}\n";
 
     return source;
   }
@@ -1077,7 +1077,7 @@ public class TestFixtureFactory
 
     if (mdMethod != null)
     {
-      mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
+      mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getOid());
     }
 
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, name);
@@ -1104,7 +1104,7 @@ public class TestFixtureFactory
     {
       try
       {
-        EntityDAO.get(component.getId()).getEntityDAO().delete();
+        EntityDAO.get(component.getOid()).getEntityDAO().delete();
       }
       catch (DataNotFoundException dataNotFoundException)
       {
@@ -1124,12 +1124,12 @@ public class TestFixtureFactory
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
 
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, parent.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, parent.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent");
 
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, child.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, child.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test child class");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild");
@@ -1166,7 +1166,7 @@ public class TestFixtureFactory
     mdWebForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test WebForm");
     mdWebForm.setStructValue(MdWebFormInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test WebForm");
     mdWebForm.setValue(MdWebFormInfo.FORM_NAME, "TestWebForm");
-    mdWebForm.setValue(MdWebFormInfo.FORM_MD_CLASS, mdBusiness.getId());
+    mdWebForm.setValue(MdWebFormInfo.FORM_MD_CLASS, mdBusiness.getOid());
 
     return mdWebForm;
   }
@@ -1179,8 +1179,8 @@ public class TestFixtureFactory
     mdWebCharacter.setValue(MdWebCharacterInfo.FIELD_ORDER, "0");
     mdWebCharacter.setValue(MdWebCharacterInfo.DISPLAY_LENGTH, "50");
     mdWebCharacter.setValue(MdWebCharacterInfo.MAX_LENGTH, "200");
-    mdWebCharacter.setValue(MdWebCharacterInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebCharacter.setValue(MdWebCharacterInfo.DEFINING_MD_ATTRIBUTE, mdAttributeCharacter.getId());
+    mdWebCharacter.setValue(MdWebCharacterInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebCharacter.setValue(MdWebCharacterInfo.DEFINING_MD_ATTRIBUTE, mdAttributeCharacter.getOid());
     mdWebCharacter.setStructValue(MdWebCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character Field");
     mdWebCharacter.setStructValue(MdWebCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character Field");
 
@@ -1192,8 +1192,8 @@ public class TestFixtureFactory
     MdWebBooleanDAO mdWebBoolean = MdWebBooleanDAO.newInstance();
     mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_NAME, "booleanField");
     mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "1");
-    mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_ATTRIBUTE, mdAttributeBoolean.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_ATTRIBUTE, mdAttributeBoolean.getOid());
     mdWebBoolean.setValue(MdWebBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);
     mdWebBoolean.setStructValue(MdWebBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Field");
     mdWebBoolean.setStructValue(MdWebBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Field");
@@ -1206,8 +1206,8 @@ public class TestFixtureFactory
     MdWebIntegerDAO mdWebInteger = MdWebIntegerDAO.newInstance();
     mdWebInteger.setValue(MdWebIntegerInfo.FIELD_NAME, "integerField");
     mdWebInteger.setValue(MdWebIntegerInfo.FIELD_ORDER, "2");
-    mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_ATTRIBUTE, mdAttributeInteger.getId());
+    mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_ATTRIBUTE, mdAttributeInteger.getOid());
     mdWebInteger.setValue(MdWebIntegerInfo.STARTRANGE, "10");
     mdWebInteger.setValue(MdWebIntegerInfo.ENDRANGE, "20");
     mdWebInteger.setStructValue(MdWebIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Field");
@@ -1221,7 +1221,7 @@ public class TestFixtureFactory
     MdWebLongDAO mdWebLong = MdWebLongDAO.newInstance();
     mdWebLong.setValue(MdWebLongInfo.FIELD_NAME, "longField");
     mdWebLong.setValue(MdWebLongInfo.FIELD_ORDER, "3");
-    mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_ATTRIBUTE, mdAttributeLong.getId());
+    mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_ATTRIBUTE, mdAttributeLong.getOid());
     mdWebLong.setStructValue(MdWebLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setStructValue(MdWebLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setValue(MdWebLongInfo.STARTRANGE, "5");
@@ -1229,7 +1229,7 @@ public class TestFixtureFactory
 
     if (mdWebForm != null)
     {
-      mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_FORM, mdWebForm.getId());
+      mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_FORM, mdWebForm.getOid());
     }
 
     return mdWebLong;
@@ -1248,8 +1248,8 @@ public class TestFixtureFactory
     MdWebFloatDAO mdWebFloat = MdWebFloatDAO.newInstance();
     mdWebFloat.setValue(MdWebFloatInfo.FIELD_NAME, "floatField");
     mdWebFloat.setValue(MdWebFloatInfo.FIELD_ORDER, "4");
-    mdWebFloat.setValue(MdWebFloatInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebFloat.setValue(MdWebFloatInfo.DEFINING_MD_ATTRIBUTE, mdAttributeFloat.getId());
+    mdWebFloat.setValue(MdWebFloatInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebFloat.setValue(MdWebFloatInfo.DEFINING_MD_ATTRIBUTE, mdAttributeFloat.getOid());
     mdWebFloat.setStructValue(MdWebFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Field");
     mdWebFloat.setStructValue(MdWebFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Field");
     mdWebFloat.setValue(MdWebFloatInfo.STARTRANGE, "5");
@@ -1266,8 +1266,8 @@ public class TestFixtureFactory
     MdWebDecimalDAO mdWebDecimal = MdWebDecimalDAO.newInstance();
     mdWebDecimal.setValue(MdWebDecimalInfo.FIELD_NAME, fieldName);
     mdWebDecimal.setValue(MdWebDecimalInfo.FIELD_ORDER, "5");
-    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDecimal.getId());
+    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDecimal.getOid());
     mdWebDecimal.setStructValue(MdWebDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Field");
     mdWebDecimal.setStructValue(MdWebDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Field");
     mdWebDecimal.setValue(MdWebDecimalInfo.STARTRANGE, "5");
@@ -1284,8 +1284,8 @@ public class TestFixtureFactory
     MdWebDoubleDAO mdWebDouble = MdWebDoubleDAO.newInstance();
     mdWebDouble.setValue(MdWebDoubleInfo.FIELD_NAME, fieldName);
     mdWebDouble.setValue(MdWebDoubleInfo.FIELD_ORDER, "5");
-    mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDouble.getId());
+    mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDouble.getOid());
     mdWebDouble.setStructValue(MdWebDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Field");
     mdWebDouble.setStructValue(MdWebDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Field");
     mdWebDouble.setValue(MdWebDoubleInfo.STARTRANGE, "5");
@@ -1301,8 +1301,8 @@ public class TestFixtureFactory
     MdWebSingleTermGridDAO mdWebSingleTermGrid = MdWebSingleTermGridDAO.newInstance();
     mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.FIELD_NAME, "gridField");
     mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.FIELD_ORDER, "6");
-    mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebSingleTermGrid.setValue(MdWebSingleTermGridInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getOid());
     mdWebSingleTermGrid.setStructValue(MdWebSingleTermGridInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTermGrid Field");
     mdWebSingleTermGrid.setStructValue(MdWebSingleTermGridInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTermGrid Field");
 
@@ -1314,8 +1314,8 @@ public class TestFixtureFactory
     MdWebDateDAO mdWebDate = MdWebDateDAO.newInstance();
     mdWebDate.setValue(MdWebDateInfo.FIELD_NAME, "dateField");
     mdWebDate.setValue(MdWebDateInfo.FIELD_ORDER, "7");
-    mdWebDate.setValue(MdWebDateInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebDate.setValue(MdWebDateInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDate.getId());
+    mdWebDate.setValue(MdWebDateInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebDate.setValue(MdWebDateInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDate.getOid());
     mdWebDate.setStructValue(MdWebDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setStructValue(MdWebDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setValue(MdWebDateInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1334,8 +1334,8 @@ public class TestFixtureFactory
     MdWebDateTimeDAO mdWebDateTime = MdWebDateTimeDAO.newInstance();
     mdWebDateTime.setValue(MdWebDateTimeInfo.FIELD_NAME, "dateTimeField");
     mdWebDateTime.setValue(MdWebDateTimeInfo.FIELD_ORDER, "7");
-    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDateTime.getId());
+    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDateTime.getOid());
     mdWebDateTime.setStructValue(MdWebDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "DateTime Field");
     mdWebDateTime.setStructValue(MdWebDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "DateTime Field");
     mdWebDateTime.setValue(MdWebDateTimeInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1348,8 +1348,8 @@ public class TestFixtureFactory
     MdWebTimeDAO mdWebTime = MdWebTimeDAO.newInstance();
     mdWebTime.setValue(MdWebTimeInfo.FIELD_NAME, "timeField");
     mdWebTime.setValue(MdWebTimeInfo.FIELD_ORDER, "7");
-    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeTime.getId());
+    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeTime.getOid());
     mdWebTime.setStructValue(MdWebTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Field");
     mdWebTime.setStructValue(MdWebTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Field");
     mdWebTime.setValue(MdWebTimeInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1362,8 +1362,8 @@ public class TestFixtureFactory
     MdWebTextDAO mdWebText = MdWebTextDAO.newInstance();
     mdWebText.setValue(MdWebTextInfo.FIELD_NAME, "textField");
     mdWebText.setValue(MdWebTextInfo.FIELD_ORDER, "7");
-    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_ATTRIBUTE, mdAttributeText.getId());
+    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_ATTRIBUTE, mdAttributeText.getOid());
     mdWebText.setStructValue(MdWebTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Field");
     mdWebText.setStructValue(MdWebTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Field");
     mdWebText.setValue(MdWebTextInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1378,7 +1378,7 @@ public class TestFixtureFactory
     MdWebBreakDAO mdWebBreak = MdWebBreakDAO.newInstance();
     mdWebBreak.setValue(MdWebBreakInfo.FIELD_NAME, "breakField");
     mdWebBreak.setValue(MdWebBreakInfo.FIELD_ORDER, "7");
-    mdWebBreak.setValue(MdWebBreakInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebBreak.setValue(MdWebBreakInfo.DEFINING_MD_FORM, mdForm.getOid());
     mdWebBreak.setStructValue(MdWebBreakInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Break Field");
     mdWebBreak.setStructValue(MdWebBreakInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Break Field");
 
@@ -1390,7 +1390,7 @@ public class TestFixtureFactory
     MdWebHeaderDAO mdWebHeader = MdWebHeaderDAO.newInstance();
     mdWebHeader.setValue(MdWebHeaderInfo.FIELD_NAME, "headerField");
     mdWebHeader.setValue(MdWebHeaderInfo.FIELD_ORDER, "7");
-    mdWebHeader.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebHeader.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, mdForm.getOid());
     mdWebHeader.setStructValue(MdWebHeaderInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Field");
     mdWebHeader.setStructValue(MdWebHeaderInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Field");
 
@@ -1402,7 +1402,7 @@ public class TestFixtureFactory
     MdWebCommentDAO mdWebComment = MdWebCommentDAO.newInstance();
     mdWebComment.setValue(MdWebCommentInfo.FIELD_NAME, "commentField");
     mdWebComment.setValue(MdWebCommentInfo.FIELD_ORDER, "7");
-    mdWebComment.setValue(MdWebCommentInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebComment.setValue(MdWebCommentInfo.DEFINING_MD_FORM, mdForm.getOid());
     mdWebComment.setStructValue(MdWebCommentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Field");
     mdWebComment.setStructValue(MdWebCommentInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Field");
     mdWebComment.setValue(MdWebCommentInfo.COMMENT_TEXT, "This is a comment text.");
@@ -1415,8 +1415,8 @@ public class TestFixtureFactory
     MdWebGeoDAO mdWebGeo = MdWebGeoDAO.newInstance();
     mdWebGeo.setValue(MdWebGeoInfo.FIELD_NAME, "geoField");
     mdWebGeo.setValue(MdWebGeoInfo.FIELD_ORDER, "7");
-    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getOid());
     mdWebGeo.setStructValue(MdWebGeoInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Field");
     mdWebGeo.setStructValue(MdWebGeoInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Field");
     mdWebGeo.setValue(MdWebGeoInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1429,8 +1429,8 @@ public class TestFixtureFactory
     MdWebMultipleTermDAO mdWebMultipleTerm = MdWebMultipleTermDAO.newInstance();
     mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.FIELD_NAME, "multiTermField");
     mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.FIELD_ORDER, "7");
-    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_FORM, mdForm.getId());
-    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_FORM, mdForm.getOid());
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getOid());
     mdWebMultipleTerm.setStructValue(MdWebMultipleTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultipleTerm Field");
     mdWebMultipleTerm.setStructValue(MdWebMultipleTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultipleTerm Field");
     mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
@@ -1441,7 +1441,7 @@ public class TestFixtureFactory
   public static DoubleConditionDAO createDoubleCondition(String operation, String value, MdFieldDAO definingField)
   {
     DoubleConditionDAO doubleCondition = DoubleConditionDAO.newInstance();
-    String definingFieldId = definingField.getId();
+    String definingFieldId = definingField.getOid();
 
     doubleCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, definingFieldId);
     doubleCondition.setValue(DoubleConditionInfo.OPERATION, operation);
@@ -1452,7 +1452,7 @@ public class TestFixtureFactory
   public static CharacterConditionDAO createCharacterCondition(String operation, String value, MdFieldDAO definingField)
   {
     CharacterConditionDAO characterCondition = CharacterConditionDAO.newInstance();
-    String definingFieldId = definingField.getId();
+    String definingFieldId = definingField.getOid();
 
     characterCondition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, definingFieldId);
     characterCondition.setValue(CharacterConditionInfo.OPERATION, operation);
@@ -1497,7 +1497,7 @@ public class TestFixtureFactory
     MdWebGroupDAO mdWebGroup = MdWebGroupDAO.newInstance();
     mdWebGroup.setValue(MdWebGroupInfo.FIELD_NAME, fieldName);
     mdWebGroup.setValue(MdWebGroupInfo.FIELD_ORDER, "-1");
-    mdWebGroup.setValue(MdWebGroupInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebGroup.setValue(MdWebGroupInfo.DEFINING_MD_FORM, mdForm.getOid());
     mdWebGroup.setStructValue(MdWebGroupInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group Field");
     mdWebGroup.setStructValue(MdWebGroupInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group Field");
 
@@ -1514,8 +1514,8 @@ public class TestFixtureFactory
     MdWebReferenceDAO mdWebReference = MdWebReferenceDAO.newInstance();
     mdWebReference.setValue(MdWebReferenceInfo.FIELD_NAME, "referenceField");
     mdWebReference.setValue(MdWebReferenceInfo.FIELD_ORDER, "9");
-    mdWebReference.setValue(MdWebReferenceInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebReference.setValue(MdWebReferenceInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebReference.setValue(MdWebReferenceInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebReference.setValue(MdWebReferenceInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getOid());
     mdWebReference.setStructValue(MdWebReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Field");
     mdWebReference.setStructValue(MdWebReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Field");
 
@@ -1527,8 +1527,8 @@ public class TestFixtureFactory
     MdWebSingleTermDAO mdWebSingleTerm = MdWebSingleTermDAO.newInstance();
     mdWebSingleTerm.setValue(MdWebSingleTermInfo.FIELD_NAME, "referenceField");
     mdWebSingleTerm.setValue(MdWebSingleTermInfo.FIELD_ORDER, "9");
-    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_FORM, mdWebForm.getId());
-    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_ATTRIBUTE, definingMdAttribute.getId());
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_FORM, mdWebForm.getOid());
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_ATTRIBUTE, definingMdAttribute.getOid());
     mdWebSingleTerm.setStructValue(MdWebSingleTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTerm Field");
     mdWebSingleTerm.setStructValue(MdWebSingleTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTerm Field");
 
@@ -1568,7 +1568,7 @@ public class TestFixtureFactory
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
 
     return mdTerm;
   }
@@ -1583,15 +1583,15 @@ public class TestFixtureFactory
     mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
     mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getOid());
 
     return mdTermRelationship;
   }
@@ -1606,8 +1606,8 @@ public class TestFixtureFactory
     MdAttributeMultiReferenceDAO mdAttributeMultiReference = MdAttributeMultiReferenceDAO.newInstance();
     mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
     mdAttributeMultiReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getOid());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
 
     return mdAttributeMultiReference;
   }
@@ -1622,8 +1622,8 @@ public class TestFixtureFactory
     MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
     mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
     mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, referenceMdTerm.getId());
-    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, referenceMdTerm.getOid());
+    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
 
     return mdAttributeMultiTerm;
   }
@@ -1638,8 +1638,8 @@ public class TestFixtureFactory
 
     DateConditionDAO condition = DateConditionDAO.newInstance();
     condition.setValue(DateConditionInfo.VALUE, "2006-11-11");
-    condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
-    condition.addItem(DateConditionInfo.OPERATION, item.getId());
+    condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
+    condition.addItem(DateConditionInfo.OPERATION, item.getOid());
 
     return condition;
   }
@@ -1654,8 +1654,8 @@ public class TestFixtureFactory
 
     CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
     condition.setValue(CharacterConditionInfo.VALUE, "2006-11-11");
-    condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
-    condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+    condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
+    condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
 
     return condition;
   }
@@ -1670,8 +1670,8 @@ public class TestFixtureFactory
 
     LongConditionDAO condition = LongConditionDAO.newInstance();
     condition.setValue(LongConditionInfo.VALUE, "20");
-    condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
-    condition.addItem(LongConditionInfo.OPERATION, item.getId());
+    condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
+    condition.addItem(LongConditionInfo.OPERATION, item.getOid());
 
     return condition;
   }
@@ -1686,8 +1686,8 @@ public class TestFixtureFactory
 
     DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
     condition.setValue(DoubleConditionInfo.VALUE, "12.6");
-    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
 
     return condition;
   }
@@ -1699,8 +1699,8 @@ public class TestFixtureFactory
   public static AndFieldConditionDAO addAndCondition(FieldConditionDAO firstCondition, FieldConditionDAO secondCondition)
   {
     AndFieldConditionDAO condition = AndFieldConditionDAO.newInstance();
-    condition.setValue(AndFieldConditionInfo.FIRST_CONDITION, firstCondition.getId());
-    condition.setValue(AndFieldConditionInfo.SECOND_CONDITION, secondCondition.getId());
+    condition.setValue(AndFieldConditionInfo.FIRST_CONDITION, firstCondition.getOid());
+    condition.setValue(AndFieldConditionInfo.SECOND_CONDITION, secondCondition.getOid());
 
     return condition;
   }

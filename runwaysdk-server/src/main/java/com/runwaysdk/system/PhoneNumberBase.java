@@ -31,7 +31,7 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
   public final static String CLASS = "com.runwaysdk.system.PhoneNumber";
   public static java.lang.String AREACODE = "areaCode";
   public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String PREFIX = "prefix";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -48,9 +48,9 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     super(component, structName);
   }
   
-  public static PhoneNumber get(String id)
+  public static PhoneNumber get(String oid)
   {
-    return (PhoneNumber) com.runwaysdk.business.Struct.get(id);
+    return (PhoneNumber) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static PhoneNumber getByKey(String key)
@@ -114,7 +114,7 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -124,7 +124,7 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
     return mdClassIF.definesAttribute(ID);

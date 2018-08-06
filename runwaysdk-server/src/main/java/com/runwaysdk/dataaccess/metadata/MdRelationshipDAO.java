@@ -633,9 +633,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
 
     for(MdAttributeConcreteDAOIF attribute:attributes)
     {
-      String attributeName = attribute.getId();
+      String attributeName = attribute.getOid();
 
-      //Check if the id of the attribute equals the sort attribute
+      //Check if the oid of the attribute equals the sort attribute
       if(attributeName.equals(sortOrder))
       {
         valid = true;
@@ -662,9 +662,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
       this.getAttribute(MdRelationshipDAOIF.INDEX2_NAME).setValue(generateIndexName());
     }
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
-    return id;
+    return oid;
   }
 
   /**
@@ -1106,9 +1106,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdRelationshipDAOIF get(String id)
+  public static MdRelationshipDAOIF get(String oid)
   {
-    return (MdRelationshipDAOIF) BusinessDAO.get(id);
+    return (MdRelationshipDAOIF) BusinessDAO.get(oid);
   }
 
   /**

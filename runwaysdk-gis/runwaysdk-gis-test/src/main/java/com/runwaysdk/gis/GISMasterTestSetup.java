@@ -145,7 +145,7 @@ public class GISMasterTestSetup
       testClassMdBusinessDAO.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       testClassMdBusinessDAO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testClassMdBusinessDAO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testClassMdBusinessDAO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      testClassMdBusinessDAO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       testClassMdBusinessDAO.apply();
 
       mdAttributePointDAO = MdAttributePointDAO.newInstance();
@@ -158,7 +158,7 @@ public class GISMasterTestSetup
       mdAttributePointDAO.setValue(MdAttributePointInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributePointDAO.setValue(MdAttributePointInfo.SRID, "4326");
       // mdAttributePointDAO.setValue(MdAttributePointInfo.DIMENSION, "2");
-      mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributePointDAO.apply();
 
       mdAttributeLineStringDAO = MdAttributeLineStringDAO.newInstance();
@@ -172,7 +172,7 @@ public class GISMasterTestSetup
       mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.SRID, "4326");
       // mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DIMENSION,
       // "2");
-      mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributeLineStringDAO.apply();
 
       mdAttributePolygonDAO = MdAttributePolygonDAO.newInstance();
@@ -185,7 +185,7 @@ public class GISMasterTestSetup
       mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.SRID, "4326");
       // mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DIMENSION, "2");
-      mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributePolygonDAO.apply();
 
       mdAttributeMultiPointDAO = MdAttributeMultiPointDAO.newInstance();
@@ -199,7 +199,7 @@ public class GISMasterTestSetup
       mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.SRID, "4326");
       // mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DIMENSION,
       // "2");
-      mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributeMultiPointDAO.apply();
 
       mdAttributeMultiLineStringDAO = MdAttributeMultiLineStringDAO.newInstance();
@@ -213,7 +213,7 @@ public class GISMasterTestSetup
       mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.SRID, "4326");
       // mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DIMENSION,
       // "2");
-      mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributeMultiLineStringDAO.apply();
 
       mdAttributeMultiPolygonDAO = MdAttributeMultiPolygonDAO.newInstance();
@@ -227,7 +227,7 @@ public class GISMasterTestSetup
       mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.SRID, "4326");
       // mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DIMENSION,
       // "2");
-      mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getId());
+      mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributeMultiPolygonDAO.apply();
 
       testClassMdViewDAO = MdViewDAO.newInstance();
@@ -250,7 +250,7 @@ public class GISMasterTestSetup
       viewMdAttributePointDAO.setValue(MdAttributePointInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       viewMdAttributePointDAO.setValue(MdAttributePointInfo.SRID, "4326");
       // viewMdAttributePointDAO.setValue(MdAttributePointInfo.DIMENSION, "2");
-      viewMdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributePointDAO.apply();
 
       viewMdAttributeLineStringDAO = MdAttributeLineStringDAO.newInstance();
@@ -264,7 +264,7 @@ public class GISMasterTestSetup
       viewMdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.SRID, "4326");
       // viewMdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DIMENSION,
       // "2");
-      viewMdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributeLineStringDAO.apply();
 
       viewMdAttributePolygonDAO = MdAttributePolygonDAO.newInstance();
@@ -278,7 +278,7 @@ public class GISMasterTestSetup
       viewMdAttributePolygonDAO.setValue(MdAttributePolygonInfo.SRID, "4326");
       // viewMdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DIMENSION,
       // "2");
-      viewMdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributePolygonDAO.apply();
 
       viewMdAttributeMultiPointDAO = MdAttributeMultiPointDAO.newInstance();
@@ -292,7 +292,7 @@ public class GISMasterTestSetup
       viewMdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.SRID, "4326");
       // viewMdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DIMENSION,
       // "2");
-      viewMdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributeMultiPointDAO.apply();
 
       viewMdAttributeMultiLineStringDAO = MdAttributeMultiLineStringDAO.newInstance();
@@ -306,7 +306,7 @@ public class GISMasterTestSetup
       viewMdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.SRID, "4326");
       // viewMdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DIMENSION,
       // "2");
-      viewMdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributeMultiLineStringDAO.apply();
 
       viewMdAttributeMultiPolygonDAO = MdAttributeMultiPolygonDAO.newInstance();
@@ -320,7 +320,7 @@ public class GISMasterTestSetup
       viewMdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.SRID, "4326");
       // viewMdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DIMENSION,
       // "2");
-      viewMdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getId());
+      viewMdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdViewDAO.getOid());
       viewMdAttributeMultiPolygonDAO.apply();
 
       testVirtualMdViewDAO = MdViewDAO.newInstance();
@@ -334,33 +334,33 @@ public class GISMasterTestSetup
       testVirtualMdViewDAO.apply();
 
       virtualMdAttributePointDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributePointDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributePointDAO.getId());
-      virtualMdAttributePointDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributePointDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributePointDAO.getOid());
+      virtualMdAttributePointDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributePointDAO.apply();
 
       virtualMdAttributeLineStringDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributeLineStringDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeLineStringDAO.getId());
-      virtualMdAttributeLineStringDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributeLineStringDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeLineStringDAO.getOid());
+      virtualMdAttributeLineStringDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributeLineStringDAO.apply();
 
       virtualMdAttributePolygonDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributePolygonDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributePolygonDAO.getId());
-      virtualMdAttributePolygonDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributePolygonDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributePolygonDAO.getOid());
+      virtualMdAttributePolygonDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributePolygonDAO.apply();
 
       virtualMdAttributeMultiPointDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributeMultiPointDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiPointDAO.getId());
-      virtualMdAttributeMultiPointDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributeMultiPointDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiPointDAO.getOid());
+      virtualMdAttributeMultiPointDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributeMultiPointDAO.apply();
 
       virtualMdAttributeMultiLineStringDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributeMultiLineStringDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiLineStringDAO.getId());
-      virtualMdAttributeMultiLineStringDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributeMultiLineStringDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiLineStringDAO.getOid());
+      virtualMdAttributeMultiLineStringDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributeMultiLineStringDAO.apply();
 
       virtualMdAttributeMultiPolygonDAO = MdAttributeVirtualDAO.newInstance();
-      virtualMdAttributeMultiPolygonDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiPolygonDAO.getId());
-      virtualMdAttributeMultiPolygonDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getId());
+      virtualMdAttributeMultiPolygonDAO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeMultiPolygonDAO.getOid());
+      virtualMdAttributeMultiPolygonDAO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, testVirtualMdViewDAO.getOid());
       virtualMdAttributeMultiPolygonDAO.apply();
     }
     catch (Throwable t)

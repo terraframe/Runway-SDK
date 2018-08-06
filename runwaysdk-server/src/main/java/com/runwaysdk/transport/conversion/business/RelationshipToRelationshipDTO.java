@@ -106,7 +106,7 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
 
       Locale locale = Session.getCurrentLocale();
 
-      return new RelationshipTypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getId(), parentMdBusiness, childMdBusiness, this.getMdTypeIF().isGenerateSource());
+      return new RelationshipTypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getOid(), parentMdBusiness, childMdBusiness, this.getMdTypeIF().isGenerateSource());
     }
     else
     {

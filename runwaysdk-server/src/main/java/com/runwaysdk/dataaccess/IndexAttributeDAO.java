@@ -105,7 +105,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
       mdIndex.dropIndex(false);
     }
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
     
     if (mdIndex.isActive() &&
         (this.isNew() || this.isImport() || this.getAttributeIF(IndexAttributeInfo.INDEX_ORDER).isModified()))
@@ -113,7 +113,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
       mdIndex.buildIndex();
     }
     
-    return id;
+    return oid;
   }
 
   public Integer getIndexOrder()

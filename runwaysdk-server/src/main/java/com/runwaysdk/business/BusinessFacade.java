@@ -705,24 +705,24 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Element with the given id
+   * Returns the type-safe (through reflection) instance of the Element with the given oid
    * 
    * @return
    */
-  public static Element getElement(String id)
+  public static Element getElement(String oid)
   {
-    ElementDAOIF elementDAOIF = ElementDAO.get(id);
+    ElementDAOIF elementDAOIF = ElementDAO.get(oid);
     return (Element) get(elementDAOIF);
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Entity with the given id
+   * Returns the type-safe (through reflection) instance of the Entity with the given oid
    * 
    * @return
    */
-  public static Entity getEntity(String id)
+  public static Entity getEntity(String oid)
   {
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
     return get(entityDAO);
   }
 

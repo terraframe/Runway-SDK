@@ -29,7 +29,7 @@ public abstract class ClassInheritance extends ClassInheritanceBase
   
   public ClassInheritance(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdClass child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

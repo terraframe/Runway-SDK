@@ -297,9 +297,9 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdTableDAOIF get(String id)
+  public static MdTableDAOIF get(String oid)
   {
-    return (MdTableDAOIF) BusinessDAO.get(id);
+    return (MdTableDAOIF) BusinessDAO.get(oid);
   }
   
 

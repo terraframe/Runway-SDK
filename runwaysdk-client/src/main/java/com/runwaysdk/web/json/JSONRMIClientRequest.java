@@ -35,7 +35,7 @@ public class JSONRMIClientRequest extends JSONClientRequest
    */
   private static final long serialVersionUID = 7157122665755164046L;
   /**
-   * RemoteController interface object to id server-side RMI
+   * RemoteController interface object to oid server-side RMI
    * implementation.
    */
   private JSONRemoteAdapter rmiAdapter = null;
@@ -201,11 +201,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String lock(String sessionId, String id)
+  public String lock(String sessionId, String oid)
   {
     try
     {
-      return rmiAdapter.lock(sessionId, id);
+      return rmiAdapter.lock(sessionId, oid);
     }
     catch (RuntimeException e)
     {
@@ -217,11 +217,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String unlock(String sessionId, String id)
+  public String unlock(String sessionId, String oid)
   {
     try
     {
-       return rmiAdapter.unlock(sessionId, id);
+       return rmiAdapter.unlock(sessionId, oid);
     }
     catch (RuntimeException e)
     {
@@ -297,11 +297,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String delete(String sessionId, String id)
+  public String delete(String sessionId, String oid)
   {
     try
     {
-      return rmiAdapter.delete(sessionId, id);
+      return rmiAdapter.delete(sessionId, oid);
     }
     catch (RuntimeException e)
     {
@@ -313,11 +313,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
-  public String get(String sessionId, String id)
+  public String get(String sessionId, String oid)
   {
     try
     {
-      return rmiAdapter.get(sessionId, id);
+      return rmiAdapter.get(sessionId, oid);
     }
     catch (RuntimeException e)
     {

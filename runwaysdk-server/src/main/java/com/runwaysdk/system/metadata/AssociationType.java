@@ -47,10 +47,10 @@ public enum AssociationType implements com.runwaysdk.business.BusinessEnumeratio
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -65,11 +65,11 @@ public enum AssociationType implements com.runwaysdk.business.BusinessEnumeratio
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static AssociationType get(String id)
+  public static AssociationType get(String oid)
   {
     for (AssociationType e : AssociationType.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

@@ -30,7 +30,7 @@ import com.runwaysdk.session.Request;
 public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAdapter
 {
   /**
-   * auto-generated id
+   * auto-generated oid
    */
   private static final long serialVersionUID = 2267386320233346121L;
  
@@ -95,17 +95,17 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    */
-  public String delete(String sessionId, String id)
+  public String delete(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.delete(sessionId, id);
+    return JSONAdapterDelegate.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
-  public String get(String sessionId, String id)
+  public String get(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.get(sessionId, id);
+    return JSONAdapterDelegate.get(sessionId, oid);
   }
 
   public String getQuery(String sessionId, String type)
@@ -178,7 +178,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    * Changes the user for the given session.
    *
    * @param sessionId
-   *          id of a session.
+   *          oid of a session.
    * @param username
    *          The name of the user.
    * @param password
@@ -289,17 +289,17 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
-  public String lock(String sessionId, String id)
+  public String lock(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.lock(sessionId, id);
+    return JSONAdapterDelegate.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
-  public String unlock(String sessionId, String id)
+  public String unlock(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.unlock(sessionId, id);
+    return JSONAdapterDelegate.unlock(sessionId, oid);
   }
 
   /**
@@ -322,34 +322,34 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String, com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
 
-  public String getChildren(String sessionId, String id, String relationshipType)
+  public String getChildren(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getChildren(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getChildren(sessionId, oid, relationshipType);
   }
 
-  public String getChildRelationships(String sessionId, String id, String relationshipType)
+  public String getChildRelationships(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getChildRelationships(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getChildRelationships(sessionId, oid, relationshipType);
   }
 
-  public String getParentRelationships(String sessionId, String id, String relationshipType)
+  public String getParentRelationships(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getParentRelationships(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getParentRelationships(sessionId, oid, relationshipType);
   }
 
-  public String getParents(String sessionId, String id, String relationshipType)
+  public String getParents(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getParents(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getParents(sessionId, oid, relationshipType);
   }
 
-  public String deleteChildren(String sessionId, String id, String relationshipType)
+  public String deleteChildren(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.deleteChildren(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.deleteChildren(sessionId, oid, relationshipType);
   }
 
-  public String deleteParents(String sessionId, String id, String relationshipType)
+  public String deleteParents(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.deleteParents(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.deleteParents(sessionId, oid, relationshipType);
   }
 
   public String queryBusinesses(String sessionId, String queryJSON)

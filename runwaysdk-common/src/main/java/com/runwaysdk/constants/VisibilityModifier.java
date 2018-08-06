@@ -26,12 +26,12 @@ public enum VisibilityModifier
   
   private String javaModifier;
   
-  private String id;
+  private String oid;
   
-  private VisibilityModifier(String javaModifier, String id)
+  private VisibilityModifier(String javaModifier, String oid)
   {
     this.javaModifier = javaModifier;
-    this.id = id;
+    this.oid = oid;
   }
   
   public String getJavaModifier()
@@ -39,9 +39,9 @@ public enum VisibilityModifier
     return this.javaModifier;
   }
   
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   } 
 
 }

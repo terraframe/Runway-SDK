@@ -41,9 +41,9 @@ public abstract class AssociationTypeEnumBase extends com.runwaysdk.system.Enume
     return CLASS;
   }
   
-  public static AssociationTypeEnum get(String id)
+  public static AssociationTypeEnum get(String oid)
   {
-    return (AssociationTypeEnum) com.runwaysdk.business.Business.get(id);
+    return (AssociationTypeEnum) com.runwaysdk.business.Business.get(oid);
   }
   
   public static AssociationTypeEnum getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class AssociationTypeEnumBase extends com.runwaysdk.system.Enume
     return (AssociationTypeEnum) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.AssociationTypeEnum.CLASS ,enumName);
   }
   
-  public static AssociationTypeEnum lock(java.lang.String id)
+  public static AssociationTypeEnum lock(java.lang.String oid)
   {
-    AssociationTypeEnum _instance = AssociationTypeEnum.get(id);
+    AssociationTypeEnum _instance = AssociationTypeEnum.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AssociationTypeEnum unlock(java.lang.String id)
+  public static AssociationTypeEnum unlock(java.lang.String oid)
   {
-    AssociationTypeEnum _instance = AssociationTypeEnum.get(id);
+    AssociationTypeEnum _instance = AssociationTypeEnum.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -103,7 +103,7 @@ public class ConversionStrategyAdapter implements IConversionStrategy
 
           for (EnumerationItemDAOIF item : items)
           {
-            destination.addItem(attribute.getName(), item.getId());
+            destination.addItem(attribute.getName(), item.getOid());
           }
         }
         else

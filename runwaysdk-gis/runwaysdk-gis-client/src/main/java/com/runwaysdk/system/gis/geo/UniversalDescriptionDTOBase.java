@@ -46,7 +46,7 @@ public abstract class UniversalDescriptionDTOBase extends com.runwaysdk.business
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
@@ -111,9 +111,9 @@ public abstract class UniversalDescriptionDTOBase extends com.runwaysdk.business
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static UniversalDescriptionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static UniversalDescriptionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (UniversalDescriptionDTO) dto;
   }
@@ -131,7 +131,7 @@ public abstract class UniversalDescriptionDTOBase extends com.runwaysdk.business
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.UniversalDescriptionQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

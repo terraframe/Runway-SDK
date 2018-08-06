@@ -49,10 +49,10 @@ public enum IndicatorOperator implements com.runwaysdk.business.BusinessEnumerat
     return enumeration.getOperatorSymbol();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -67,11 +67,11 @@ public enum IndicatorOperator implements com.runwaysdk.business.BusinessEnumerat
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static IndicatorOperator get(String id)
+  public static IndicatorOperator get(String oid)
   {
     for (IndicatorOperator e : IndicatorOperator.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

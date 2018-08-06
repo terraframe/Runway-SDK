@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestWarningBase extends com.runwaysdk.business.Warning implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestWarning";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String WARNINGCHAR = "warningChar";
   public static java.lang.String WARNINGINT = "warningInt";
   private static final long serialVersionUID = 220977573;
@@ -39,7 +39,7 @@ public abstract class TestWarningBase extends com.runwaysdk.business.Warning imp
     super();
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -49,7 +49,7 @@ public abstract class TestWarningBase extends com.runwaysdk.business.Warning imp
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestWarning.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -119,7 +119,7 @@ public abstract class TestWarningBase extends com.runwaysdk.business.Warning imp
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{warningChar}", this.getWarningChar());
     message = replace(message, "{warningInt}", this.getWarningInt());
     return message;

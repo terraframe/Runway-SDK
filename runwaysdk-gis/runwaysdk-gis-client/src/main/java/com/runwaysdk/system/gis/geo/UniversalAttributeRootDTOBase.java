@@ -49,7 +49,7 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -146,7 +146,7 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -331,7 +331,7 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -452,9 +452,9 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
     return com.runwaysdk.system.gis.geo.UniversalDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO) dto;
   }
@@ -484,7 +484,7 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.UniversalAttributeRootQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -497,10 +497,10 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -510,10 +510,10 @@ public abstract class UniversalAttributeRootDTOBase extends com.runwaysdk.busine
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

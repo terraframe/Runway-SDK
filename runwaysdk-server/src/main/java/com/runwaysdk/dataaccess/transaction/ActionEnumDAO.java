@@ -45,16 +45,16 @@ public enum ActionEnumDAO
   NO_OPERATION
   ("0oiyrpw65ysskspuxxml8gpoi1iuxiquz62bgzkm0p8s4i08714kboipputg2pty");
 
-  private String id;
+  private String oid;
 
-  private ActionEnumDAO(String id)
+  private ActionEnumDAO(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
 }

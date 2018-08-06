@@ -58,9 +58,9 @@ public abstract class MdTableBase extends com.runwaysdk.system.metadata.MdClass
     return CLASS;
   }
   
-  public static MdTable get(String id)
+  public static MdTable get(String oid)
   {
-    return (MdTable) com.runwaysdk.business.Business.get(id);
+    return (MdTable) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdTable getByKey(String key)
@@ -68,17 +68,17 @@ public abstract class MdTableBase extends com.runwaysdk.system.metadata.MdClass
     return (MdTable) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdTable lock(java.lang.String id)
+  public static MdTable lock(java.lang.String oid)
   {
-    MdTable _instance = MdTable.get(id);
+    MdTable _instance = MdTable.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdTable unlock(java.lang.String id)
+  public static MdTable unlock(java.lang.String oid)
   {
-    MdTable _instance = MdTable.get(id);
+    MdTable _instance = MdTable.get(oid);
     _instance.unlock();
     
     return _instance;

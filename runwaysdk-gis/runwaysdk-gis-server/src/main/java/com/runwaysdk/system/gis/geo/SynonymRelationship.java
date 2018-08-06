@@ -29,7 +29,7 @@ public class SynonymRelationship extends SynonymRelationshipBase
   
   public SynonymRelationship(com.runwaysdk.system.gis.geo.GeoEntity parent, com.runwaysdk.system.gis.geo.Synonym child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   @Override

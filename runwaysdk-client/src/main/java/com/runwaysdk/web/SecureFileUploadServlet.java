@@ -40,7 +40,7 @@ import com.scand.fileupload.ProgressMonitorFileItemFactory;
 public class SecureFileUploadServlet extends FileUploadServlet
 {
   /**
-   * Eclipse auto generated id
+   * Eclipse auto generated oid
    */
   private static final long serialVersionUID = 4321135637358960948L;
 
@@ -83,8 +83,8 @@ public class SecureFileUploadServlet extends FileUploadServlet
           
           BusinessDTO fileDTO = clientRequest.newSecureFile(fileName, extension, stream);
           
-          // return the vault id to the dhtmlxVault callback
-          req.getSession().setAttribute("FileUpload.Progress."+fileId, fileDTO.getId());
+          // return the vault oid to the dhtmlxVault callback
+          req.getSession().setAttribute("FileUpload.Progress."+fileId, fileDTO.getOid());
         }
       }
     }

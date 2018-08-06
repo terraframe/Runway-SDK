@@ -29,15 +29,15 @@ super();
 }
 protected String buildKey()
 {
-  return this.getId();
+  return this.getOid();
 }
 public String toString()
 {
-  return "TestClass: "+getId();
+  return "TestClass: "+getOid();
 }
-public static TestClass get(String id)
+public static TestClass get(String oid)
 {
-return (TestClass) com.runwaysdk.business.Business.get(id);
+return (TestClass) com.runwaysdk.business.Business.get(oid);
 }
 @com.runwaysdk.business.rbac.Authenticate
 public com.runwaysdk.jstest.TestClass[] createInstances(java.lang.Integer num)

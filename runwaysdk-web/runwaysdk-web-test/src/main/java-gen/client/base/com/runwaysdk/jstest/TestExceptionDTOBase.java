@@ -71,7 +71,7 @@ public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartE
   
   public static java.lang.String EXCHAR = "exChar";
   public static java.lang.String EXINT = "exInt";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public String getExChar()
   {
     return getValue(EXCHAR);
@@ -156,7 +156,7 @@ public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartE
     
     template = template.replace("{exChar}", this.getExChar().toString());
     template = template.replace("{exInt}", this.getExInt().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

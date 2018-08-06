@@ -489,13 +489,13 @@ public class MySQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
    *      String);
    */
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
     String statement = "CREATE TABLE " + tableName + " \n" + "(" + MdEnumerationDAOIF.SET_ID_COLUMN + "                CHAR(" + Database.DATABASE_SET_ID_SIZE + ") BINARY NOT NULL, \n" + MdEnumerationDAOIF.ITEM_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") BINARY NOT NULL) \n" + "ENGINE = InnoDB;";
     String undo = "DROP TABLE " + tableName;
     new DDLCommand(statement, undo, false).doIt();
 
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
     undo = "ALTER TABLE " + tableName + " DROP INDEX " + indexName;
     new DDLCommand(statement, undo, false).doIt();
@@ -559,9 +559,9 @@ public class MySQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String,
    *      String);
    */
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     String statement = "ALTER TABLE " + tableName + " DROP INDEX " + indexName;
     String undo = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
@@ -1992,10 +1992,10 @@ public class MySQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -2003,8 +2003,8 @@ public class MySQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       byte[] resultBytes = resultSet.getBytes(columnName);

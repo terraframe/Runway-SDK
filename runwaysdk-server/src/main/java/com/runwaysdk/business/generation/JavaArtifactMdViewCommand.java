@@ -214,8 +214,8 @@ public class JavaArtifactMdViewCommand extends JavaArtifactMdTransientCommand
    */
   private void restoreToFileSystem_QueryNonStubSourceFile()
   {
-    String queryBaseSource = Database.getMdViewBaseQuerySource(this.getMdTypeIF().getId(), conn);
-    String queryDTOsource = Database.getViewQueryDTOsource(this.getMdTypeIF().getId(), conn);
+    String queryBaseSource = Database.getMdViewBaseQuerySource(this.getMdTypeIF().getOid(), conn);
+    String queryDTOsource = Database.getViewQueryDTOsource(this.getMdTypeIF().getOid(), conn);
 
     try
     {
@@ -233,7 +233,7 @@ public class JavaArtifactMdViewCommand extends JavaArtifactMdTransientCommand
    */
   private void restoreToFileSystem_QueryStubSourceFile()
   {
-    String queryStubSource = Database.getMdViewStubQuerySource(this.getMdTypeIF().getId(), conn);
+    String queryStubSource = Database.getMdViewStubQuerySource(this.getMdTypeIF().getOid(), conn);
     try
     {
       FileIO.write(this.queryStubSourceFile, queryStubSource);
@@ -249,13 +249,13 @@ public class JavaArtifactMdViewCommand extends JavaArtifactMdTransientCommand
    */
   private void restoreToFileSystem_QueryClassFiles()
   {
-    byte[] queryBaseClassBytes = Database.getMdViewBaseQueryClass(this.getMdTypeIF().getId(), conn);
+    byte[] queryBaseClassBytes = Database.getMdViewBaseQueryClass(this.getMdTypeIF().getOid(), conn);
     ClassManager.writeClasses(this.queryBaseClassDirectory, queryBaseClassBytes);
 
-    byte[] queryStubClassBytes = Database.getMdViewStubQueryClass(this.getMdTypeIF().getId(), conn);
+    byte[] queryStubClassBytes = Database.getMdViewStubQueryClass(this.getMdTypeIF().getOid(), conn);
     ClassManager.writeClasses(this.queryStubClassDirectory, queryStubClassBytes);
 
-    byte[] queryDTOclassBytes = Database.getViewQueryDTOclass(this.getMdTypeIF().getId(), conn);
+    byte[] queryDTOclassBytes = Database.getViewQueryDTOclass(this.getMdTypeIF().getOid(), conn);
     ClassManager.writeClasses(this.queryDTOclassDirectory, queryDTOclassBytes);
   }
 

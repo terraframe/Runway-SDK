@@ -28,7 +28,7 @@ public abstract class MdWebCommentCommentTextDTOBase extends com.runwaysdk.busin
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
@@ -93,9 +93,9 @@ public abstract class MdWebCommentCommentTextDTOBase extends com.runwaysdk.busin
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static MdWebCommentCommentTextDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static MdWebCommentCommentTextDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (MdWebCommentCommentTextDTO) dto;
   }
@@ -113,7 +113,7 @@ public abstract class MdWebCommentCommentTextDTOBase extends com.runwaysdk.busin
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdWebCommentCommentTextQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

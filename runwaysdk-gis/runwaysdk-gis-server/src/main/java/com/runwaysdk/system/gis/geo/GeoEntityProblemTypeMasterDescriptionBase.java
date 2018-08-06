@@ -30,7 +30,7 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1690782062;
@@ -45,9 +45,9 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
     super(component, structName);
   }
   
-  public static GeoEntityProblemTypeMasterDescription get(String id)
+  public static GeoEntityProblemTypeMasterDescription get(String oid)
   {
-    return (GeoEntityProblemTypeMasterDescription) com.runwaysdk.business.Struct.get(id);
+    return (GeoEntityProblemTypeMasterDescription) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static GeoEntityProblemTypeMasterDescription getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
     return (GeoEntityProblemTypeMasterDescription) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class GeoEntityProblemTypeMasterDescriptionBase extends com.runw
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescription.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

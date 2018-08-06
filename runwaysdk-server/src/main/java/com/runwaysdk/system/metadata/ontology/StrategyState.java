@@ -47,10 +47,10 @@ public enum StrategyState implements com.runwaysdk.business.BusinessEnumeration
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -65,11 +65,11 @@ public enum StrategyState implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static StrategyState get(String id)
+  public static StrategyState get(String oid)
   {
     for (StrategyState e : StrategyState.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

@@ -114,13 +114,13 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileLong mdMobileLong)
     {
       if(mdMobileLong == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileLong.getId());
+      return this.EQ(mdMobileLong.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileLong mdMobileLong)
     {
       if(mdMobileLong == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileLong.getId());
+      return this.NE(mdMobileLong.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
 
       for (int i=0; i<mdMobileLong.length; i++)
       {
-        itemIdArray[i] = mdMobileLong[i].getId();
+        itemIdArray[i] = mdMobileLong[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
 
       for (int i=0; i<mdMobileLong.length; i++)
       {
-        itemIdArray[i] = mdMobileLong[i].getId();
+        itemIdArray[i] = mdMobileLong[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
 
       for (int i=0; i<mdMobileLong.length; i++)
       {
-        itemIdArray[i] = mdMobileLong[i].getId();
+        itemIdArray[i] = mdMobileLong[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
 
       for (int i=0; i<mdMobileLong.length; i++)
       {
-        itemIdArray[i] = mdMobileLong[i].getId();
+        itemIdArray[i] = mdMobileLong[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileLongQuery extends com.runwaysdk.system.metadata.MdMobileNu
 
       for (int i=0; i<mdMobileLong.length; i++)
       {
-        itemIdArray[i] = mdMobileLong[i].getId();
+        itemIdArray[i] = mdMobileLong[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

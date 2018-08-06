@@ -136,19 +136,19 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableLong)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionRecord.EXPORTSEQUENCE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, displayLabel);
 
@@ -382,9 +382,9 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.SelectableLong getExportSequence();
     public com.runwaysdk.query.SelectableLong getExportSequence(String alias);
     public com.runwaysdk.query.SelectableLong getExportSequence(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -435,13 +435,13 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.transaction.TransactionRecord transactionRecord)
     {
       if(transactionRecord == null) return this.EQ((java.lang.String)null);
-      return this.EQ(transactionRecord.getId());
+      return this.EQ(transactionRecord.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.transaction.TransactionRecord transactionRecord)
     {
       if(transactionRecord == null) return this.NE((java.lang.String)null);
-      return this.NE(transactionRecord.getId());
+      return this.NE(transactionRecord.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -512,19 +512,19 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.transaction.TransactionRecord.EXPORTSEQUENCE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, displayLabel);
 
@@ -717,9 +717,9 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.SelectableLong getExportSequence();
     public com.runwaysdk.query.SelectableLong getExportSequence(String alias);
     public com.runwaysdk.query.SelectableLong getExportSequence(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -775,7 +775,7 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<transactionRecord.length; i++)
       {
-        itemIdArray[i] = transactionRecord[i].getId();
+        itemIdArray[i] = transactionRecord[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -787,7 +787,7 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<transactionRecord.length; i++)
       {
-        itemIdArray[i] = transactionRecord[i].getId();
+        itemIdArray[i] = transactionRecord[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -799,7 +799,7 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<transactionRecord.length; i++)
       {
-        itemIdArray[i] = transactionRecord[i].getId();
+        itemIdArray[i] = transactionRecord[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -811,7 +811,7 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<transactionRecord.length; i++)
       {
-        itemIdArray[i] = transactionRecord[i].getId();
+        itemIdArray[i] = transactionRecord[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -823,7 +823,7 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<transactionRecord.length; i++)
       {
-        itemIdArray[i] = transactionRecord[i].getId();
+        itemIdArray[i] = transactionRecord[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -896,19 +896,19 @@ public  class TransactionRecordQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableLong)this.get(com.runwaysdk.system.transaction.TransactionRecord.EXPORTSEQUENCE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionRecord.ID, alias, displayLabel);
 

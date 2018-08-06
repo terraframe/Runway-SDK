@@ -72,19 +72,19 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    *
    * @return The ID of this Component.
    */
-  public String getId()
+  public String getOid()
   {
     return this.getAttributeIF(ComponentInfo.ID).getValue();
   }
 
   /**
-   * Returns the root id of this component.
+   * Returns the root oid of this component.
    *
-   * @return root id of this component.
+   * @return root oid of this component.
    */
   public String getRootId()
   {
-    return IdParser.parseRootFromId(this.getId());
+    return IdParser.parseRootFromId(this.getOid());
   }
 
   /**
@@ -410,7 +410,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
 
   public int compareTo(ComponentDAO obj)
   {
-    return this.getId().compareTo(obj.getId());
+    return this.getOid().compareTo(obj.getOid());
   }
 
   /**
@@ -424,12 +424,12 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
     }
     else
     {
-      return this.getId().equals(((ComponentDAO)obj).getId());
+      return this.getOid().equals(((ComponentDAO)obj).getOid());
     }
   }
 
   public int hashCode()
   {
-    return this.getId().hashCode();
+    return this.getOid().hashCode();
   }
 }

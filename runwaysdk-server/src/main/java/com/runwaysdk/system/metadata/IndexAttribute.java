@@ -29,7 +29,7 @@ public class IndexAttribute extends IndexAttributeBase
   
   public IndexAttribute(com.runwaysdk.system.metadata.MdIndex parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -98,7 +98,7 @@ public class MavenClasspathBuilder
       collectRequest.addRepository( centralRepo );
       
       for (Repository repo : repos) {
-        collectRequest.addRepository(new RemoteRepository(propReplacer.replace(repo.getId()), propReplacer.replace(repo.getLayout()), propReplacer.replace(repo.getUrl())));
+        collectRequest.addRepository(new RemoteRepository(propReplacer.replace(repo.getOid()), propReplacer.replace(repo.getLayout()), propReplacer.replace(repo.getUrl())));
       }
       
       try {

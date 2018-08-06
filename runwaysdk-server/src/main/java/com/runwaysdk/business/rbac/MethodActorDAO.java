@@ -33,7 +33,7 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
 {
   /**
-   * Auto generated eclipse serial id
+   * Auto generated eclipse serial oid
    */
   private static final long serialVersionUID = 2195486982087552872L;
 
@@ -86,9 +86,9 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
    */
   public MdMethodDAOIF getMdMethodDAO()
   {
-    String id = this.getValue(MethodActorInfo.MD_METHOD);
+    String oid = this.getValue(MethodActorInfo.MD_METHOD);
 
-    MdMethodDAOIF mdMethodIF = MdMethodDAO.get(id);
+    MdMethodDAOIF mdMethodIF = MdMethodDAO.get(oid);
     return mdMethodIF;
   }
 
@@ -103,9 +103,9 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MethodActorDAOIF get(String id)
+  public static MethodActorDAOIF get(String oid)
   {
-    return (MethodActorDAOIF) BusinessDAO.get(id);
+    return (MethodActorDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -125,7 +125,7 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
       
     boolean appliedToDB = this.isAppliedToDB();
     
-    String id = super.apply();
+    String oid = super.apply();
 
     if (this.isNew() && !appliedToDB)
     {
@@ -133,7 +133,7 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
       {
         String mdMethodId = this.getValue(MethodActorInfo.MD_METHOD);
         String relationshipType = RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType();
-        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, oid, relationshipType);
         relationshipDAO.setKey(buildKeyForMdMethodMethodActor(mdMethodKey));
         relationshipDAO.apply();
       }
@@ -154,7 +154,7 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   private static String buildKeyForMdMethodMethodActor(String mdMethodKey)

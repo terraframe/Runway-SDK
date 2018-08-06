@@ -502,7 +502,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     // Validate the name
     validateName();
 
-    String id = new String();
+    String oid = new String();
     boolean applied = this.isAppliedToDB();
 
     if (this.isNew() && !applied)
@@ -521,7 +521,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       }
     }
 
-    id = super.save(validateRequired);
+    oid = super.save(validateRequired);
 
     if (this.isNew() && !applied)
     {
@@ -557,7 +557,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     this.updateCacheStrategy();
 
-    return id;
+    return oid;
   }
 
   /**
@@ -703,9 +703,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     String tableName = mdEntityIF.getTableName();
 
     // check to make sure object hasn't already been deleted and does exist.
-    if (!Database.doesObjectExist(this.getId(), tableName))
+    if (!Database.doesObjectExist(this.getOid(), tableName))
     {
-      String error = "Object [" + this.getId() + "] does not exist in the database - it may have already been deleted";
+      String error = "Object [" + this.getOid() + "] does not exist in the database - it may have already been deleted";
       throw new StaleEntityException(error, this);
     }
   }
@@ -762,7 +762,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
       MdTypeDAOIF mdType = mdMethod.getEnclosingMdTypeDAO();
 
-      if (!mdType.getId().equals(this.getId()))
+      if (!mdType.getOid().equals(this.getOid()))
       {
         errors.add(mdMethod);
       }
@@ -797,7 +797,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
       MdTypeDAOIF mdType = parameterMarker.getEnclosingMdTypeDAO();
 
-      if (!mdType.getId().equals(this.getId()))
+      if (!mdType.getOid().equals(this.getOid()))
       {
         errors.add(parameterMarker);
       }
@@ -964,7 +964,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
       if (queryAPIsource != null && queryAPIclassBytes != null)
       {
-        Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryAPIclassColumnName, queryAPIclassBytes, queryAPIsourceColumnName, queryAPIsource, conn);
+        Database.updateClassAndSource(this.getOid(), MdEntityDAOIF.TABLE, queryAPIclassColumnName, queryAPIclassBytes, queryAPIsourceColumnName, queryAPIsource, conn);
 
         // Only update the source. The blob attributes just point to the
         // database anyway.
@@ -987,7 +987,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
       if (queryDTOsource != null && queryDTOclassBytes != null)
       {
-        Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryDTOclassColumnName, queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
+        Database.updateClassAndSource(this.getOid(), MdEntityDAOIF.TABLE, queryDTOclassColumnName, queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
 
         // Mark the class artifacts as modified, so that their values will be
         // logged (if enabled)
@@ -1036,8 +1036,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     return Boolean.parseBoolean(this.getAttributeIF(MdEntityInfo.ENFORCE_SITE_MASTER).getValue());
   }
 
-  public static MdEntityDAOIF get(String id)
+  public static MdEntityDAOIF get(String oid)
   {
-    return (MdEntityDAOIF) BusinessDAO.get(id);
+    return (MdEntityDAOIF) BusinessDAO.get(oid);
   }
 }

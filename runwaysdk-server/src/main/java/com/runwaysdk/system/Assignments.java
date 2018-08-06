@@ -33,7 +33,7 @@ public class Assignments extends AssignmentsBase
   
   public Assignments(com.runwaysdk.system.SingleActor parent, com.runwaysdk.system.Roles child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   public void apply()

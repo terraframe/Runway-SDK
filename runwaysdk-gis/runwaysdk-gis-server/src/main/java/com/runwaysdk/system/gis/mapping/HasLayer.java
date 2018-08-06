@@ -29,7 +29,7 @@ public class HasLayer extends HasLayerBase
   
   public HasLayer(com.runwaysdk.system.gis.mapping.GeneratedMap parent, com.runwaysdk.system.gis.mapping.Layer child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

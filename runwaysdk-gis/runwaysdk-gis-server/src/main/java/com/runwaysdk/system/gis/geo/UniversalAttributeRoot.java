@@ -29,7 +29,7 @@ public class UniversalAttributeRoot extends UniversalAttributeRootBase
   
   public UniversalAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

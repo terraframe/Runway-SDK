@@ -75,7 +75,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
   }
 
   /**
-   * The object's id is the hash code.
+   * The object's oid is the hash code.
    * 
    */
   public int hashCode()
@@ -440,25 +440,25 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
   }
 
   /**
-   * This is a spoofed id.
+   * This is a spoofed oid.
    */
-  public String getId()
+  public String getOid()
   {
     return this.spoofedId;
   }
 
   /**
    * 
-   * This is a spoofed id.
+   * This is a spoofed oid.
    */
   public String getRootId()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public String getKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDAOIF getMdAttributeDAO(String name)
@@ -499,7 +499,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
 
   public String getPermissionKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDimensionDAOIF getMdAttributeDimension(MdDimensionDAOIF mdDimension)

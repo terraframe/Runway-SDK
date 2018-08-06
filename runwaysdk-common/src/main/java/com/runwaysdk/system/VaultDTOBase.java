@@ -49,7 +49,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -183,7 +183,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -368,7 +368,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -479,9 +479,9 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(VAULTNAME).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.VaultDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.VaultDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.VaultDTO) dto;
   }
@@ -499,7 +499,7 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.VaultQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -512,10 +512,10 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.VaultDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.VaultDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.VaultDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.VaultDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -525,10 +525,10 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.VaultDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.VaultDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.VaultDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.VaultDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

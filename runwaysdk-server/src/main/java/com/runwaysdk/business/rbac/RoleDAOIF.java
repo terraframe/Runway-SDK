@@ -150,7 +150,7 @@ public interface RoleDAOIF extends ActorDAOIF
    * Returns all of the operations a role has on a object
    * @pre get(mdTypeId) instanceof Metadata
    *
-   * @param mdTypeId The id of the MdType
+   * @param mdTypeId The oid of the MdType
    * @return A list of all operations the role has permissions for
    */
   //public Set<Operation> operationsOnObject(String mdTypeId);
@@ -173,7 +173,7 @@ public interface RoleDAOIF extends ActorDAOIF
   /**
    * Returns all of the roles which a role inherits
    *
-   * @param roleId The id of the role
+   * @param roleId The oid of the role
    * @return A list of all role ids which the given role inherits
    */
   public Set<RoleDAOIF> getSuperRoles();
@@ -181,7 +181,7 @@ public interface RoleDAOIF extends ActorDAOIF
   /**
    * Returns all of the roles which inherit from a role
    *
-   * @param roleId The id of the role
+   * @param roleId The oid of the role
    * @return A list of all role ids which inherit the given role
    */
   public Set<RoleDAOIF> getSubRoles();

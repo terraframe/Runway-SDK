@@ -114,13 +114,13 @@ public  class LessThanRuleQuery extends com.runwaysdk.system.gis.mapping.Primiti
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.LessThanRule lessThanRule)
     {
       if(lessThanRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(lessThanRule.getId());
+      return this.EQ(lessThanRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.LessThanRule lessThanRule)
     {
       if(lessThanRule == null) return this.NE((java.lang.String)null);
-      return this.NE(lessThanRule.getId());
+      return this.NE(lessThanRule.getOid());
     }
 
   }

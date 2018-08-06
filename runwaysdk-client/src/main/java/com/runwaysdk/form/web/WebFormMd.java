@@ -37,7 +37,7 @@ public class WebFormMd extends FormMd
     md.setDescription(mdForm.getDescription().getValue());
     md.setFormMdClass(mdForm.getFormMdClassId());
     md.setFormName(mdForm.getFormName());
-    md.setId(mdForm.getId());
+    md.setOid(mdForm.getOid());
     
     return md;
   }

@@ -30,7 +30,7 @@ public abstract class GeoEntityDisplayLabelBase extends com.runwaysdk.business.L
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 2070786593;
@@ -45,9 +45,9 @@ public abstract class GeoEntityDisplayLabelBase extends com.runwaysdk.business.L
     super(component, structName);
   }
   
-  public static GeoEntityDisplayLabel get(String id)
+  public static GeoEntityDisplayLabel get(String oid)
   {
-    return (GeoEntityDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (GeoEntityDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static GeoEntityDisplayLabel getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class GeoEntityDisplayLabelBase extends com.runwaysdk.business.L
     return (GeoEntityDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class GeoEntityDisplayLabelBase extends com.runwaysdk.business.L
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityDisplayLabel.CLASS);
     return mdClassIF.definesAttribute(ID);

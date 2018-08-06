@@ -182,7 +182,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
 
     if (resource == null)
     {
-      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getIdentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
+      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getOidentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
       throw new RunwayConfigurationException(msg);
     }
 

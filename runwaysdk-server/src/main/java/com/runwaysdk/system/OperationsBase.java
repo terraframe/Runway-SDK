@@ -41,9 +41,9 @@ public abstract class OperationsBase extends com.runwaysdk.system.EnumerationMas
     return CLASS;
   }
   
-  public static Operations get(String id)
+  public static Operations get(String oid)
   {
-    return (Operations) com.runwaysdk.business.Business.get(id);
+    return (Operations) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Operations getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class OperationsBase extends com.runwaysdk.system.EnumerationMas
     return (Operations) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.Operations.CLASS ,enumName);
   }
   
-  public static Operations lock(java.lang.String id)
+  public static Operations lock(java.lang.String oid)
   {
-    Operations _instance = Operations.get(id);
+    Operations _instance = Operations.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Operations unlock(java.lang.String id)
+  public static Operations unlock(java.lang.String oid)
   {
-    Operations _instance = Operations.get(id);
+    Operations _instance = Operations.get(oid);
     _instance.unlock();
     
     return _instance;

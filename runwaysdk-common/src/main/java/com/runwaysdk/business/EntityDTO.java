@@ -28,7 +28,7 @@ public abstract class EntityDTO extends MutableDTO
 {
 
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long  serialVersionUID = -7535525506459007659L;
 

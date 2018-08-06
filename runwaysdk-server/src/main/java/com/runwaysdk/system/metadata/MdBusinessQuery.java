@@ -623,13 +623,13 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdBusiness mdBusiness)
     {
       if(mdBusiness == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdBusiness.getId());
+      return this.EQ(mdBusiness.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdBusiness mdBusiness)
     {
       if(mdBusiness == null) return this.NE((java.lang.String)null);
-      return this.NE(mdBusiness.getId());
+      return this.NE(mdBusiness.getOid());
     }
 
   public com.runwaysdk.system.metadata.EntityCacheMasterQuery.ClassCacheQueryIF getCacheAlgorithm()
@@ -1088,7 +1088,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1100,7 +1100,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1112,7 +1112,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1124,7 +1124,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1136,7 +1136,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

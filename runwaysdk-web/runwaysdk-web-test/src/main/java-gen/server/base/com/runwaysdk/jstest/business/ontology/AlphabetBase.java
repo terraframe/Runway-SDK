@@ -43,7 +43,7 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   private com.runwaysdk.business.Struct displayLabel = null;
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -174,11 +174,11 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -188,7 +188,7 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -330,7 +330,7 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -450,9 +450,9 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
-  public static Alphabet get(String id)
+  public static Alphabet get(String oid)
   {
-    return (Alphabet) com.runwaysdk.business.Business.get(id);
+    return (Alphabet) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Alphabet getByKey(String key)
@@ -477,17 +477,17 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static Alphabet lock(java.lang.String id)
+  public static Alphabet lock(java.lang.String oid)
   {
-    Alphabet _instance = Alphabet.get(id);
+    Alphabet _instance = Alphabet.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Alphabet unlock(java.lang.String id)
+  public static Alphabet unlock(java.lang.String oid)
   {
-    Alphabet _instance = Alphabet.get(id);
+    Alphabet _instance = Alphabet.get(oid);
     _instance.unlock();
     
     return _instance;

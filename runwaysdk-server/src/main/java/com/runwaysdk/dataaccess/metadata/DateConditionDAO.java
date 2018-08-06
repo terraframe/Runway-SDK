@@ -122,9 +122,9 @@ public class DateConditionDAO extends BasicConditionDAO implements DateCondition
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static DateConditionDAOIF get(String id)
+  public static DateConditionDAOIF get(String oid)
   {
-    return (DateConditionDAOIF) BusinessDAO.get(id);
+    return (DateConditionDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

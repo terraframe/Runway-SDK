@@ -29,7 +29,7 @@ public class SynonymMultiTermAttributeRoot extends SynonymMultiTermAttributeRoot
   
   public SynonymMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.Synonym child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

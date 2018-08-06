@@ -61,9 +61,9 @@ public abstract class GeoEntityProblemTypeMasterBase extends com.runwaysdk.syste
     return CLASS;
   }
   
-  public static GeoEntityProblemTypeMaster get(String id)
+  public static GeoEntityProblemTypeMaster get(String oid)
   {
-    return (GeoEntityProblemTypeMaster) com.runwaysdk.business.Business.get(id);
+    return (GeoEntityProblemTypeMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeoEntityProblemTypeMaster getByKey(String key)
@@ -76,17 +76,17 @@ public abstract class GeoEntityProblemTypeMasterBase extends com.runwaysdk.syste
     return (GeoEntityProblemTypeMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster.CLASS ,enumName);
   }
   
-  public static GeoEntityProblemTypeMaster lock(java.lang.String id)
+  public static GeoEntityProblemTypeMaster lock(java.lang.String oid)
   {
-    GeoEntityProblemTypeMaster _instance = GeoEntityProblemTypeMaster.get(id);
+    GeoEntityProblemTypeMaster _instance = GeoEntityProblemTypeMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeoEntityProblemTypeMaster unlock(java.lang.String id)
+  public static GeoEntityProblemTypeMaster unlock(java.lang.String oid)
   {
-    GeoEntityProblemTypeMaster _instance = GeoEntityProblemTypeMaster.get(id);
+    GeoEntityProblemTypeMaster _instance = GeoEntityProblemTypeMaster.get(oid);
     _instance.unlock();
     
     return _instance;

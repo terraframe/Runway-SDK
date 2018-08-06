@@ -29,7 +29,7 @@ public class VisibleDependency extends VisibleDependencyBase
   
   public VisibleDependency(com.runwaysdk.system.metadata.MdField parent, com.runwaysdk.system.metadata.MdField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -168,13 +168,13 @@ public class JSONAdapterDelegate
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
    *      java.lang.String)
    */
-  public static String delete(String sessionId, String id)
+  public static String delete(String sessionId, String oid)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
 
     try
     {
-      Facade.delete(sessionId, id);
+      Facade.delete(sessionId, oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -188,14 +188,14 @@ public class JSONAdapterDelegate
    * @see com.runwaysdk.ClientRequest#get(java.lang.String,
    *      java.lang.String)
    */
-  public static String get(String sessionId, String id)
+  public static String get(String sessionId, String oid)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     MutableDTO mutableDTO;
 
     try
     {
-      mutableDTO = Facade.get(sessionId, id);
+      mutableDTO = Facade.get(sessionId, oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -422,7 +422,7 @@ public class JSONAdapterDelegate
    * Changes the user for the given session.
    *
    * @param sessionId
-   *          id of a session.
+   *          oid of a session.
    * @param username
    *          The name of the user.
    * @param password
@@ -709,14 +709,14 @@ public class JSONAdapterDelegate
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
    *      java.lang.String)
    */
-  public static String lock(String sessionId, String id)
+  public static String lock(String sessionId, String oid)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     EntityDTO entityDTO;
 
     try
     {
-      entityDTO = Facade.lock(sessionId, id);
+      entityDTO = Facade.lock(sessionId, oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -733,14 +733,14 @@ public class JSONAdapterDelegate
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
    *      java.lang.String)
    */
-  public static String unlock(String sessionId, String id)
+  public static String unlock(String sessionId, String oid)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     EntityDTO entityDTO;
 
     try
     {
-      entityDTO = Facade.unlock(sessionId, id);
+      entityDTO = Facade.unlock(sessionId, oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -798,14 +798,14 @@ public class JSONAdapterDelegate
    *      com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public static String getChildren(String sessionId, String id, String relationshipType)
+  public static String getChildren(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     List<BusinessDTO> businessDTOs;
 
     try
     {
-      businessDTOs = Facade.getChildren(sessionId, id, relationshipType);
+      businessDTOs = Facade.getChildren(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -819,14 +819,14 @@ public class JSONAdapterDelegate
   }
 
   @SuppressWarnings("unchecked")
-  public static String getChildRelationships(String sessionId, String id, String relationshipType)
+  public static String getChildRelationships(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     List<RelationshipDTO> relationshipDTOs;
 
     try
     {
-      relationshipDTOs = Facade.getChildRelationships(sessionId, id, relationshipType);
+      relationshipDTOs = Facade.getChildRelationships(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -840,14 +840,14 @@ public class JSONAdapterDelegate
   }
 
   @SuppressWarnings("unchecked")
-  public static String getParentRelationships(String sessionId, String id, String relationshipType)
+  public static String getParentRelationships(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     List<RelationshipDTO> relationshipDTOs;
 
     try
     {
-      relationshipDTOs = Facade.getParentRelationships(sessionId, id, relationshipType);
+      relationshipDTOs = Facade.getParentRelationships(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -861,14 +861,14 @@ public class JSONAdapterDelegate
   }
 
   @SuppressWarnings("unchecked")
-  public static String getParents(String sessionId, String id, String relationshipType)
+  public static String getParents(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
     List<BusinessDTO> businessDTOs;
 
     try
     {
-      businessDTOs = Facade.getParents(sessionId, id, relationshipType);
+      businessDTOs = Facade.getParents(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -881,13 +881,13 @@ public class JSONAdapterDelegate
     return returnJSON.toString();
   }
 
-  public static String deleteChildren(String sessionId, String id, String relationshipType)
+  public static String deleteChildren(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
 
     try
     {
-      Facade.deleteChildren(sessionId, id, relationshipType);
+      Facade.deleteChildren(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -897,13 +897,13 @@ public class JSONAdapterDelegate
     return returnJSON.toString();
   }
 
-  public static String deleteParents(String sessionId, String id, String relationshipType)
+  public static String deleteParents(String sessionId, String oid, String relationshipType)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();
 
     try
     {
-      Facade.deleteParents(sessionId, id, relationshipType);
+      Facade.deleteParents(sessionId, oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {

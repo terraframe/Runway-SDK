@@ -229,7 +229,7 @@ public class FieldBuilders
           // When flattening conditions, use the original field as the
           // referencingMdField and not the group
           // as there are no groups generated in the JavaScript.
-          cond.getConditionMd().setReferencingMdField(mdField.getId());
+          cond.getConditionMd().setReferencingMdField(mdField.getOid());
 
           if (root != null)
           {
@@ -315,7 +315,7 @@ public class FieldBuilders
           // Don't invoke the type-safe getter for a reference or complex
           // because that's
           // an expensive call that fetches the referenced object. Instead we
-          // simply want the id of the referenced object, which the generic
+          // simply want the oid of the referenced object, which the generic
           // getter
           // will return.
           setValue = attr.getValue();
@@ -323,7 +323,7 @@ public class FieldBuilders
         }
         else if (field instanceof WebGeo || field instanceof WebSingleTerm)
         {
-          // we want to return the full value but only set the id
+          // we want to return the full value but only set the oid
           retValue = invokeGetter(attr, field);
           setValue = attr.getValue();
         }

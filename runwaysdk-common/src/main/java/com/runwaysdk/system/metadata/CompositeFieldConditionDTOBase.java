@@ -72,7 +72,7 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     }
     else
     {
-      setValue(FIRSTCONDITION, value.getId());
+      setValue(FIRSTCONDITION, value.getOid());
     }
   }
   
@@ -121,7 +121,7 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     }
     else
     {
-      setValue(SECONDCONDITION, value.getId());
+      setValue(SECONDCONDITION, value.getOid());
     }
   }
   
@@ -145,9 +145,9 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(SECONDCONDITION).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.CompositeFieldConditionDTO) dto;
   }
@@ -165,7 +165,7 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.CompositeFieldConditionQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -178,10 +178,10 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.CompositeFieldConditionDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.CompositeFieldConditionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -191,10 +191,10 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.CompositeFieldConditionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.CompositeFieldConditionDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.CompositeFieldConditionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

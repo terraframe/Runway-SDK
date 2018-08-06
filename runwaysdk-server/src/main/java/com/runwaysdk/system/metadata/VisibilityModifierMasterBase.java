@@ -70,9 +70,9 @@ public abstract class VisibilityModifierMasterBase extends com.runwaysdk.system.
     return CLASS;
   }
   
-  public static VisibilityModifierMaster get(String id)
+  public static VisibilityModifierMaster get(String oid)
   {
-    return (VisibilityModifierMaster) com.runwaysdk.business.Business.get(id);
+    return (VisibilityModifierMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static VisibilityModifierMaster getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class VisibilityModifierMasterBase extends com.runwaysdk.system.
     return (VisibilityModifierMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.VisibilityModifierMaster.CLASS ,enumName);
   }
   
-  public static VisibilityModifierMaster lock(java.lang.String id)
+  public static VisibilityModifierMaster lock(java.lang.String oid)
   {
-    VisibilityModifierMaster _instance = VisibilityModifierMaster.get(id);
+    VisibilityModifierMaster _instance = VisibilityModifierMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static VisibilityModifierMaster unlock(java.lang.String id)
+  public static VisibilityModifierMaster unlock(java.lang.String oid)
   {
-    VisibilityModifierMaster _instance = VisibilityModifierMaster.get(id);
+    VisibilityModifierMaster _instance = VisibilityModifierMaster.get(oid);
     _instance.unlock();
     
     return _instance;

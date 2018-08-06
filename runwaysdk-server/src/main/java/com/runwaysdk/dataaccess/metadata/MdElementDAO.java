@@ -173,7 +173,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
   public String save(boolean validateRequired)
   {
     boolean applied = this.isAppliedToDB();
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     if (this.isNew() && !applied)
     {
@@ -189,7 +189,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
       this.updateInheritanceRelationshipKey();
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -383,9 +383,9 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
    *
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdElementDAOIF get(String id)
+  public static MdElementDAOIF get(String oid)
   {
-    return (MdElementDAOIF) BusinessDAO.get(id);
+    return (MdElementDAOIF) BusinessDAO.get(oid);
   }
 
   public final String getTableOfStubAttributes()

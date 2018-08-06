@@ -214,13 +214,13 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.LongCondition longCondition)
     {
       if(longCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(longCondition.getId());
+      return this.EQ(longCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.LongCondition longCondition)
     {
       if(longCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(longCondition.getId());
+      return this.NE(longCondition.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdFieldQuery.MdFieldQueryReferenceIF getDefiningMdField()
@@ -351,7 +351,7 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<longCondition.length; i++)
       {
-        itemIdArray[i] = longCondition[i].getId();
+        itemIdArray[i] = longCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -363,7 +363,7 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<longCondition.length; i++)
       {
-        itemIdArray[i] = longCondition[i].getId();
+        itemIdArray[i] = longCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -375,7 +375,7 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<longCondition.length; i++)
       {
-        itemIdArray[i] = longCondition[i].getId();
+        itemIdArray[i] = longCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -387,7 +387,7 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<longCondition.length; i++)
       {
-        itemIdArray[i] = longCondition[i].getId();
+        itemIdArray[i] = longCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -399,7 +399,7 @@ public  class LongConditionQuery extends com.runwaysdk.system.metadata.FieldCond
 
       for (int i=0; i<longCondition.length; i++)
       {
-        itemIdArray[i] = longCondition[i].getId();
+        itemIdArray[i] = longCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

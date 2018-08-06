@@ -165,19 +165,19 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, displayLabel);
 
@@ -566,9 +566,9 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -646,13 +646,13 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
     {
       if(alphabet == null) return this.EQ((java.lang.String)null);
-      return this.EQ(alphabet.getId());
+      return this.EQ(alphabet.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
     {
       if(alphabet == null) return this.NE((java.lang.String)null);
-      return this.NE(alphabet.getId());
+      return this.NE(alphabet.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -740,19 +740,19 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, displayLabel);
 
@@ -1100,9 +1100,9 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1161,7 +1161,7 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<alphabet.length; i++)
       {
-        itemIdArray[i] = alphabet[i].getId();
+        itemIdArray[i] = alphabet[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1173,7 +1173,7 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<alphabet.length; i++)
       {
-        itemIdArray[i] = alphabet[i].getId();
+        itemIdArray[i] = alphabet[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1185,7 +1185,7 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<alphabet.length; i++)
       {
-        itemIdArray[i] = alphabet[i].getId();
+        itemIdArray[i] = alphabet[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1197,7 +1197,7 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<alphabet.length; i++)
       {
-        itemIdArray[i] = alphabet[i].getId();
+        itemIdArray[i] = alphabet[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1209,7 +1209,7 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<alphabet.length; i++)
       {
-        itemIdArray[i] = alphabet[i].getId();
+        itemIdArray[i] = alphabet[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1299,19 +1299,19 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.ID, alias, displayLabel);
 

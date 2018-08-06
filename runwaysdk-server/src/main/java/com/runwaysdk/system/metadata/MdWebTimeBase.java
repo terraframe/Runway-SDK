@@ -41,9 +41,9 @@ public abstract class MdWebTimeBase extends com.runwaysdk.system.metadata.MdWebM
     return CLASS;
   }
   
-  public static MdWebTime get(String id)
+  public static MdWebTime get(String oid)
   {
-    return (MdWebTime) com.runwaysdk.business.Business.get(id);
+    return (MdWebTime) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebTime getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebTimeBase extends com.runwaysdk.system.metadata.MdWebM
     return (MdWebTime) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebTime lock(java.lang.String id)
+  public static MdWebTime lock(java.lang.String oid)
   {
-    MdWebTime _instance = MdWebTime.get(id);
+    MdWebTime _instance = MdWebTime.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebTime unlock(java.lang.String id)
+  public static MdWebTime unlock(java.lang.String oid)
   {
-    MdWebTime _instance = MdWebTime.get(id);
+    MdWebTime _instance = MdWebTime.get(oid);
     _instance.unlock();
     
     return _instance;

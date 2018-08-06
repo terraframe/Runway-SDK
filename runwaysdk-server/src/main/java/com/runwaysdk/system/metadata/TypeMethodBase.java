@@ -51,9 +51,9 @@ public abstract class TypeMethodBase extends com.runwaysdk.system.metadata.Metad
     return (com.runwaysdk.system.metadata.MdMethod) super.getChild();
   }
   
-  public static TypeMethod get(String id)
+  public static TypeMethod get(String oid)
   {
-    return (TypeMethod) com.runwaysdk.business.Relationship.get(id);
+    return (TypeMethod) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static TypeMethod getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class TypeMethodBase extends com.runwaysdk.system.metadata.Metad
     return (TypeMethod) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static TypeMethod lock(java.lang.String id)
+  public static TypeMethod lock(java.lang.String oid)
   {
-    TypeMethod _instance = TypeMethod.get(id);
+    TypeMethod _instance = TypeMethod.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TypeMethod unlock(java.lang.String id)
+  public static TypeMethod unlock(java.lang.String oid)
   {
-    TypeMethod _instance = TypeMethod.get(id);
+    TypeMethod _instance = TypeMethod.get(oid);
     _instance.unlock();
     
     return _instance;

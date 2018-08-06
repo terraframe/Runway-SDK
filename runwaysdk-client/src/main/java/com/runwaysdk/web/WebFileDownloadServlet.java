@@ -35,6 +35,6 @@ public class WebFileDownloadServlet extends FileDownloadServlet
    */
   protected final InputStream getFileBytes(ClientRequestIF clientRequest, BusinessDTO fileDTO)
   {
-    return clientRequest.getFile(fileDTO.getId());
+    return clientRequest.getFile(fileDTO.getOid());
   }
 }

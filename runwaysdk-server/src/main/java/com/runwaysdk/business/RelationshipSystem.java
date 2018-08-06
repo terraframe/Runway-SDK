@@ -29,7 +29,7 @@ public abstract class RelationshipSystem extends RelationshipSystemBase
   
   public RelationshipSystem(com.runwaysdk.business.Business parent, com.runwaysdk.business.Business child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -31,7 +31,7 @@ public abstract class TestExceptionBase extends com.runwaysdk.business.SmartExce
   public final static String CLASS = "com.runwaysdk.jstest.TestException";
   public static java.lang.String EXCHAR = "exChar";
   public static java.lang.String EXINT = "exInt";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = 595253420;
   
   public TestExceptionBase()
@@ -110,7 +110,7 @@ public abstract class TestExceptionBase extends com.runwaysdk.business.SmartExce
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -120,7 +120,7 @@ public abstract class TestExceptionBase extends com.runwaysdk.business.SmartExce
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestException.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -136,7 +136,7 @@ public abstract class TestExceptionBase extends com.runwaysdk.business.SmartExce
     java.lang.String message = super.localize(locale);
     message = replace(message, "{exChar}", this.getExChar());
     message = replace(message, "{exInt}", this.getExInt());
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

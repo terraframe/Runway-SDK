@@ -44,7 +44,7 @@ import com.runwaysdk.web.WebClientSession;
 public class JSONControllerServlet extends HttpServlet
 {
   /**
-   * Auto-generated id
+   * Auto-generated oid
    */
   private static final long serialVersionUID = -3892528595585482859L;
 

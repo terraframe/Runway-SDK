@@ -41,9 +41,9 @@ public abstract class GeoNodeEntityBase extends com.runwaysdk.system.gis.geo.Geo
     return CLASS;
   }
   
-  public static GeoNodeEntity get(String id)
+  public static GeoNodeEntity get(String oid)
   {
-    return (GeoNodeEntity) com.runwaysdk.business.Business.get(id);
+    return (GeoNodeEntity) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeoNodeEntity getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class GeoNodeEntityBase extends com.runwaysdk.system.gis.geo.Geo
     return (GeoNodeEntity) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GeoNodeEntity lock(java.lang.String id)
+  public static GeoNodeEntity lock(java.lang.String oid)
   {
-    GeoNodeEntity _instance = GeoNodeEntity.get(id);
+    GeoNodeEntity _instance = GeoNodeEntity.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeoNodeEntity unlock(java.lang.String id)
+  public static GeoNodeEntity unlock(java.lang.String oid)
   {
-    GeoNodeEntity _instance = GeoNodeEntity.get(id);
+    GeoNodeEntity _instance = GeoNodeEntity.get(oid);
     _instance.unlock();
     
     return _instance;

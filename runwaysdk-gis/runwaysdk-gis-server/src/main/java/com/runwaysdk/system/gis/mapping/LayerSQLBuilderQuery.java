@@ -165,19 +165,19 @@ public  class LayerSQLBuilderQuery extends com.runwaysdk.query.GeneratedBusiness
     return (com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery.MdAttributeGeometryQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.GEOMATTRIBUTE, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.ID, alias, displayLabel);
 
@@ -439,9 +439,9 @@ public  class LayerSQLBuilderQuery extends com.runwaysdk.query.GeneratedBusiness
     public com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery.MdAttributeGeometryQueryReferenceIF getGeomAttribute();
     public com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery.MdAttributeGeometryQueryReferenceIF getGeomAttribute(String alias);
     public com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery.MdAttributeGeometryQueryReferenceIF getGeomAttribute(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -495,13 +495,13 @@ public  class LayerSQLBuilderQuery extends com.runwaysdk.query.GeneratedBusiness
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.LayerSQLBuilder layerSQLBuilder)
     {
       if(layerSQLBuilder == null) return this.EQ((java.lang.String)null);
-      return this.EQ(layerSQLBuilder.getId());
+      return this.EQ(layerSQLBuilder.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.LayerSQLBuilder layerSQLBuilder)
     {
       if(layerSQLBuilder == null) return this.NE((java.lang.String)null);
-      return this.NE(layerSQLBuilder.getId());
+      return this.NE(layerSQLBuilder.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -589,19 +589,19 @@ public  class LayerSQLBuilderQuery extends com.runwaysdk.query.GeneratedBusiness
     return (com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery.MdAttributeGeometryQueryReferenceIF)this.get(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.GEOMATTRIBUTE,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.ID, alias, displayLabel);
 

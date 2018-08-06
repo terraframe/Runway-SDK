@@ -29,7 +29,7 @@ public class ClassAttributeVirtual extends ClassAttributeVirtualBase
   
   public ClassAttributeVirtual(com.runwaysdk.system.metadata.MdView parent, com.runwaysdk.system.metadata.MdAttributeVirtual child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

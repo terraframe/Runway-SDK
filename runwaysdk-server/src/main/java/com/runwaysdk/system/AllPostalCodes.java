@@ -159,10 +159,10 @@ public enum AllPostalCodes implements com.runwaysdk.business.BusinessEnumeration
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -177,11 +177,11 @@ public enum AllPostalCodes implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static AllPostalCodes get(String id)
+  public static AllPostalCodes get(String oid)
   {
     for (AllPostalCodes e : AllPostalCodes.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

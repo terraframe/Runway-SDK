@@ -52,13 +52,13 @@ public enum EntityTypes
 
   private String classType;
   private String tableName;
-  private String id;
+  private String oid;
 
-  private EntityTypes(String classType, String tableName, String id)
+  private EntityTypes(String classType, String tableName, String oid)
   {
    this.classType = classType;
    this.tableName = tableName;
-   this.id = id;
+   this.oid = oid;
   }
 
   public String getType()
@@ -71,9 +71,9 @@ public enum EntityTypes
     return this.tableName;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
 }

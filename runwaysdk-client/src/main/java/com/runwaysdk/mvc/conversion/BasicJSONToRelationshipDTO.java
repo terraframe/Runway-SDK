@@ -38,7 +38,7 @@ public class BasicJSONToRelationshipDTO extends BasicJSONToElementDTO
 
   }
 
-  protected RelationshipDTO factoryMethod(String type, boolean newInstance, String id) throws JSONException
+  protected RelationshipDTO factoryMethod(String type, boolean newInstance, String oid) throws JSONException
   {
     ClientRequestIF request = getClientRequest();
 
@@ -48,7 +48,7 @@ public class BasicJSONToRelationshipDTO extends BasicJSONToElementDTO
     }
     else
     {
-      return (RelationshipDTO) request.get(id);
+      return (RelationshipDTO) request.get(oid);
     }
   }
 

@@ -77,9 +77,9 @@ public abstract class SubClassBase extends com.runwaysdk.jstest.TestClass implem
     return query;
   }
   
-  public static SubClass get(String id)
+  public static SubClass get(String oid)
   {
-    return (SubClass) com.runwaysdk.business.Business.get(id);
+    return (SubClass) com.runwaysdk.business.Business.get(oid);
   }
   
   public static SubClass getByKey(String key)
@@ -87,17 +87,17 @@ public abstract class SubClassBase extends com.runwaysdk.jstest.TestClass implem
     return (SubClass) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static SubClass lock(java.lang.String id)
+  public static SubClass lock(java.lang.String oid)
   {
-    SubClass _instance = SubClass.get(id);
+    SubClass _instance = SubClass.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static SubClass unlock(java.lang.String id)
+  public static SubClass unlock(java.lang.String oid)
   {
-    SubClass _instance = SubClass.get(id);
+    SubClass _instance = SubClass.get(oid);
     _instance.unlock();
     
     return _instance;

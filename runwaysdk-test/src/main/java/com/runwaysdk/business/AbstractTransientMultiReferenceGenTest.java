@@ -82,7 +82,7 @@ public abstract class AbstractTransientMultiReferenceGenTest
     List<? extends Business> results = (List<? extends Business>) method.invoke(view);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(this.contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
@@ -110,9 +110,9 @@ public abstract class AbstractTransientMultiReferenceGenTest
         List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
         Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
+        Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
+        Assert.assertTrue(contains(results, value1.getOid()));
+        Assert.assertTrue(contains(results, value2.getOid()));
       }
       finally
       {
@@ -140,7 +140,7 @@ public abstract class AbstractTransientMultiReferenceGenTest
     List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
@@ -194,7 +194,7 @@ public abstract class AbstractTransientMultiReferenceGenTest
       List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
       Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+      Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
     }
     finally
     {
@@ -204,14 +204,14 @@ public abstract class AbstractTransientMultiReferenceGenTest
 
   /**
    * @param results
-   * @param id
+   * @param oid
    * @return
    */
-  private boolean contains(List<? extends Business> results, String id)
+  private boolean contains(List<? extends Business> results, String oid)
   {
     for (Business result : results)
     {
-      if (result.getId().equals(id))
+      if (result.getOid().equals(oid))
       {
         return true;
       }

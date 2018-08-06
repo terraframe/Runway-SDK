@@ -29,7 +29,7 @@ public class BusinessInheritance extends BusinessInheritanceBase
   
   public BusinessInheritance(com.runwaysdk.system.metadata.MdBusiness parent, com.runwaysdk.system.metadata.MdBusiness child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

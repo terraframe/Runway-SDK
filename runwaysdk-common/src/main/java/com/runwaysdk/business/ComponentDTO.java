@@ -66,9 +66,9 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   private boolean                     readable         = false;
 
   /**
-   * The id of this ComponentDTO instance.
+   * The oid of this ComponentDTO instance.
    */
-  private String                      id               = "";
+  private String                      oid               = "";
 
   /**
    * The type of this BusinessDTO instance.
@@ -149,11 +149,11 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   {
     if (attributeMap.get(ComponentInfo.ID) == null)
     {
-      this.id = "";
+      this.oid = "";
     }
     else
     {
-      this.id = attributeMap.get(ComponentInfo.ID).getValue();
+      this.oid = attributeMap.get(ComponentInfo.ID).getValue();
     }
 
     this.clientRequest = clientRequest;
@@ -200,11 +200,11 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
 
     if (attributeMap.get(ComponentInfo.ID) == null)
     {
-      this.id = "";
+      this.oid = "";
     }
     else
     {
-      this.id = attributeMap.get(ComponentInfo.ID).getValue();
+      this.oid = attributeMap.get(ComponentInfo.ID).getValue();
     }
 
   }
@@ -228,16 +228,16 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   }
 
   /**
-   * Returns the id of this object.
+   * Returns the oid of this object.
    * 
-   * @return A unique id.
+   * @return A unique oid.
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
-  public AttributeCharacterMdDTO getIdMd()
+  public AttributeCharacterMdDTO getOidMd()
   {
     return this.getAttributeCharacterDTO(ComponentInfo.ID).getAttributeMdDTO();
   }
@@ -603,10 +603,10 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
 
   /**
    * If this is called on the front end, it will return all BusinessDTOs for
-   * which this object has an internal mapping. If this object only has the id
+   * which this object has an internal mapping. If this object only has the oid
    * of an enumItem, it will fetch the generic BusinessDTO for it via the
    * clientRequest. If this is called on the back-end, it will only return the
-   * BusinessDTOs that it has references to. If it only has an id for an
+   * BusinessDTOs that it has references to. If it only has an oid for an
    * enumItem, it does not return the BusinessDTO for it. This is OK, as on the
    * back-end, the object should contain all BusinessDTOs. On the front-end, the
    * method addEnumItem(String) may have been called, but the object does not
@@ -614,7 +614,7 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
    * 
    * @param attributeName
    *          The name of the attribute to retrieve all items.
-   * @returns A List of strings where each string is an item id. An emptry list
+   * @returns A List of strings where each string is an item oid. An emptry list
    *          is returned if no items exist for the attribute.
    */
   public List<? extends BusinessDTO> getEnumValues(String attributeName)
@@ -747,6 +747,6 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
     }
 
     ComponentDTOIF comp = (ComponentDTOIF) obj;
-    return this.getId().equals(comp.getId());
+    return this.getOid().equals(comp.getOid());
   }
 }

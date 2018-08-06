@@ -25,11 +25,11 @@ super();
 }
 public String toString()
 {
-  return "TestUtil: "+getId();
+  return "TestUtil: "+getOid();
 }
-public static TestUtil get(String id)
+public static TestUtil get(String oid)
 {
-return (TestUtil) com.runwaysdk.business.Util.get(id);
+return (TestUtil) com.runwaysdk.business.Util.get(oid);
 }
 @com.runwaysdk.business.rbac.Authenticate
 public com.runwaysdk.jstest.TestUtil returnUtil(com.runwaysdk.jstest.TestUtil util)

@@ -29,7 +29,7 @@ public class UtilInheritance extends UtilInheritanceBase
   
   public UtilInheritance(com.runwaysdk.system.metadata.MdUtil parent, com.runwaysdk.system.metadata.MdUtil child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

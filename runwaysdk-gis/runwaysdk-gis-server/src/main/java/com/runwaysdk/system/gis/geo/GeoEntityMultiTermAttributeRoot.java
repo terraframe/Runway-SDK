@@ -29,7 +29,7 @@ public class GeoEntityMultiTermAttributeRoot extends GeoEntityMultiTermAttribute
   
   public GeoEntityMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.GeoEntity child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

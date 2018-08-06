@@ -1399,7 +1399,7 @@ public class ValueQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
@@ -1444,11 +1444,11 @@ public class ValueQuery extends ComponentQuery
 
         if (fSelectable == null || ! ( fSelectable instanceof SelectableSpoof ))
         {
-          MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+          MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getOid());
           if (mdTableClassIF == null)
           {
             mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
-            mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+            mdTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
           }
 
           fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());

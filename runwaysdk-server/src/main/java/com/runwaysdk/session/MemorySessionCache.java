@@ -60,7 +60,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   private PriorityQueue<Session> expireHeap;
 
   /**
-   * A cache of sessions, the mapping between the session id and the Session
+   * A cache of sessions, the mapping between the session oid and the Session
    */
   private Map<String, Session>   sessions;
 
@@ -125,7 +125,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     this.publicSession = new Session(CommonProperties.getDefaultLocale());
     this.publicSession.setExpirationTime(-1);
-    this.sessions.put(this.publicSession.getId(), this.publicSession);
+    this.sessions.put(this.publicSession.getOid(), this.publicSession);
     this.expireHeap.offer(this.publicSession);
 
     sessionChecker = new Thread(this, "Session Cleanup");
@@ -140,7 +140,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     try
     {
-      if (sessionId.equals(publicSession.getId()))
+      if (sessionId.equals(publicSession.getOid()))
       {
         String msg = "Users are not permitted to log into the public session [" + sessionId + "]";
         throw new InvalidLoginException(msg);
@@ -164,7 +164,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     try
     {
-      if (sessionId.equals(publicSession.getId()))
+      if (sessionId.equals(publicSession.getOid()))
       {
         String msg = "Users are not permitted to log into the public session [" + sessionId + "]";
         throw new InvalidLoginException(msg);
@@ -185,7 +185,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
    * Sets the dimension of an existing {@link Session}.
    * 
    * @param sessionId
-   *          The id of the {@link Session}.
+   *          The oid of the {@link Session}.
    * @param dimensionKey
    *          key of a {@link MdDimension}.
    */
@@ -196,7 +196,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     try
     {
-      if (sessionId.equals(publicSession.getId()))
+      if (sessionId.equals(publicSession.getOid()))
       {
         String msg = "Users are not permitted to change the dimension of the public session [" + sessionId + "]";
         throw new InvalidLoginException(msg);
@@ -266,7 +266,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     try
     {
       // Do nothing if the session is the public session
-      if (!sessionId.equals(publicSession.getId()))
+      if (!sessionId.equals(publicSession.getOid()))
       {
         Session session = getSession(sessionId);
         close(session);
@@ -295,14 +295,14 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
       expireHeap.remove(session);
 
       // Remove the session from the sessions cache
-      sessions.remove(session.getId());
+      sessions.remove(session.getOid());
 
       this.decrementUserLoginCount(session);
 
       // Ensure that the heap size and the session cache are synchronized
       if (expireHeap.size() != sessions.size())
       {
-        String error = "Session [" + session.getId() + "]'s cache is corrupt";
+        String error = "Session [" + session.getOid() + "]'s cache is corrupt";
         throw new ProgrammingErrorException(error);
       }
     }
@@ -323,7 +323,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
       sessions.clear();
 
       // Put the public session back onto the heap and mapping
-      sessions.put(publicSession.getId(), publicSession);
+      sessions.put(publicSession.getOid(), publicSession);
       expireHeap.offer(publicSession);
     }
     finally
@@ -388,19 +388,19 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     sessionCacheLock.lock();
     try
     {
-      if (!sessions.containsKey(session.getId()) && this.full())
+      if (!sessions.containsKey(session.getOid()) && this.full())
       {
         String error = "Session Cache is full.";
         throw new ProgrammingErrorException(error);
       }
 
       // Add the session to the Session Cache.
-      if (!sessions.containsKey(session.getId()))
+      if (!sessions.containsKey(session.getOid()))
       {
         super.addSession(session);
         expireHeap.offer(session);
       }
-      sessions.put(session.getId(), session);
+      sessions.put(session.getOid(), session);
     }
     finally
     {
@@ -481,7 +481,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
           next = iterator.next();
           
           // Skip the public session.
-          if (UserDAO.getPublicUser().getId().equals(next.getUser().getId()))
+          if (UserDAO.getPublicUser().getOid().equals(next.getUser().getOid()))
           {
             continue;
           }
@@ -506,7 +506,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     @Override
     public void remove()
     {
-      MemorySessionCache.this.closeSession(current.getId());
+      MemorySessionCache.this.closeSession(current.getOid());
     }
 
     /**

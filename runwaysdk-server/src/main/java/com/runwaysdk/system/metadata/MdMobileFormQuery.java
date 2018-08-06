@@ -258,13 +258,13 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileForm mdMobileForm)
     {
       if(mdMobileForm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileForm.getId());
+      return this.EQ(mdMobileForm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileForm mdMobileForm)
     {
       if(mdMobileForm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileForm.getId());
+      return this.NE(mdMobileForm.getOid());
     }
 
 
@@ -423,7 +423,7 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
 
       for (int i=0; i<mdMobileForm.length; i++)
       {
-        itemIdArray[i] = mdMobileForm[i].getId();
+        itemIdArray[i] = mdMobileForm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -435,7 +435,7 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
 
       for (int i=0; i<mdMobileForm.length; i++)
       {
-        itemIdArray[i] = mdMobileForm[i].getId();
+        itemIdArray[i] = mdMobileForm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
 
       for (int i=0; i<mdMobileForm.length; i++)
       {
-        itemIdArray[i] = mdMobileForm[i].getId();
+        itemIdArray[i] = mdMobileForm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -459,7 +459,7 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
 
       for (int i=0; i<mdMobileForm.length; i++)
       {
-        itemIdArray[i] = mdMobileForm[i].getId();
+        itemIdArray[i] = mdMobileForm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class MdMobileFormQuery extends com.runwaysdk.system.metadata.MdFormQuer
 
       for (int i=0; i<mdMobileForm.length; i++)
       {
-        itemIdArray[i] = mdMobileForm[i].getId();
+        itemIdArray[i] = mdMobileForm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

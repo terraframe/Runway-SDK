@@ -69,9 +69,9 @@ public abstract class CompositeRuleBase extends com.runwaysdk.system.gis.mapping
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRule>) getRelationshipsWithChild(primitiveRule, com.runwaysdk.system.gis.mapping.HasPrimitiveRule.CLASS);
   }
   
-  public static CompositeRule get(String id)
+  public static CompositeRule get(String oid)
   {
-    return (CompositeRule) com.runwaysdk.business.Business.get(id);
+    return (CompositeRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static CompositeRule getByKey(String key)
@@ -79,17 +79,17 @@ public abstract class CompositeRuleBase extends com.runwaysdk.system.gis.mapping
     return (CompositeRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static CompositeRule lock(java.lang.String id)
+  public static CompositeRule lock(java.lang.String oid)
   {
-    CompositeRule _instance = CompositeRule.get(id);
+    CompositeRule _instance = CompositeRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static CompositeRule unlock(java.lang.String id)
+  public static CompositeRule unlock(java.lang.String oid)
   {
-    CompositeRule _instance = CompositeRule.get(id);
+    CompositeRule _instance = CompositeRule.get(oid);
     _instance.unlock();
     
     return _instance;

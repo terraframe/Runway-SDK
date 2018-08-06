@@ -35,7 +35,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
   public static java.lang.String ITEMACTION = "itemAction";
   public static java.lang.String KEYNAME = "keyName";
@@ -183,11 +183,11 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -197,7 +197,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.transaction.TransactionItem.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -241,7 +241,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
   {
     if(value != null)
     {
-      addEnumItem(ITEMACTION, value.getId());
+      addEnumItem(ITEMACTION, value.getOid());
     }
   }
   
@@ -249,7 +249,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
   {
     if(value != null)
     {
-      removeEnumItem(ITEMACTION, value.getId());
+      removeEnumItem(ITEMACTION, value.getOid());
     }
   }
   
@@ -405,7 +405,7 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -518,9 +518,9 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
     return CLASS;
   }
   
-  public static TransactionItem get(String id)
+  public static TransactionItem get(String oid)
   {
-    return (TransactionItem) com.runwaysdk.business.Business.get(id);
+    return (TransactionItem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TransactionItem getByKey(String key)
@@ -528,17 +528,17 @@ public abstract class TransactionItemBase extends com.runwaysdk.business.Busines
     return (TransactionItem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static TransactionItem lock(java.lang.String id)
+  public static TransactionItem lock(java.lang.String oid)
   {
-    TransactionItem _instance = TransactionItem.get(id);
+    TransactionItem _instance = TransactionItem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TransactionItem unlock(java.lang.String id)
+  public static TransactionItem unlock(java.lang.String oid)
   {
-    TransactionItem _instance = TransactionItem.get(id);
+    TransactionItem _instance = TransactionItem.get(oid);
     _instance.unlock();
     
     return _instance;

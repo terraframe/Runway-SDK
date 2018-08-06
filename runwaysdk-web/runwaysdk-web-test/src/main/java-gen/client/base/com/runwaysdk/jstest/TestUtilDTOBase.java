@@ -34,7 +34,7 @@ public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO imp
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String UTILCHARACTER = "utilCharacter";
   public static java.lang.String UTILPHONE = "utilPhone";
   public static java.lang.String UTILREFERENCEOBJECT = "utilReferenceObject";
@@ -126,7 +126,7 @@ public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO imp
     }
     else
     {
-      setValue(UTILREFERENCEOBJECT, value.getId());
+      setValue(UTILREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -212,17 +212,17 @@ public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO imp
     return (com.runwaysdk.jstest.TestUtilDTO) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final com.runwaysdk.jstest.TestUtilDTO returnUtil(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id, com.runwaysdk.jstest.TestUtilDTO input)
+  public static final com.runwaysdk.jstest.TestUtilDTO returnUtil(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid, com.runwaysdk.jstest.TestUtilDTO input)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "com.runwaysdk.jstest.TestUtil"};
-    Object[] _parameters = new Object[]{id, input};
+    Object[] _parameters = new Object[]{oid, input};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestUtilDTO.CLASS, "returnUtil", _declaredTypes);
     return (com.runwaysdk.jstest.TestUtilDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static TestUtilDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static TestUtilDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.UtilDTO dto = (com.runwaysdk.business.UtilDTO)clientRequest.get(id);
+    com.runwaysdk.business.UtilDTO dto = (com.runwaysdk.business.UtilDTO)clientRequest.get(oid);
     
     return (TestUtilDTO) dto;
   }
@@ -240,7 +240,7 @@ public abstract class TestUtilDTOBase extends com.runwaysdk.business.UtilDTO imp
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

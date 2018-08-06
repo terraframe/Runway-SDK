@@ -524,10 +524,10 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns the id to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given ID.
    * 
    * @param type
-   * @return id to the MdEntity that defines the given type.
+   * @return oid to the MdEntity that defines the given type.
    */
   public String getMdEntityId(String type)
   {
@@ -548,13 +548,13 @@ public abstract class AbstractDatabase
 
     ResultSet resultSet = this.query(this.selectClause(mdEntityFields, mdEntityTable, mdEntityConditions));
 
-    String id = "";
+    String oid = "";
 
     try
     {
       if (resultSet.next())
       {
-        id = resultSet.getString(EntityDAOIF.ID_COLUMN);
+        oid = resultSet.getString(EntityDAOIF.ID_COLUMN);
       }
     }
     catch (SQLException sqlEx1)
@@ -575,7 +575,7 @@ public abstract class AbstractDatabase
       }
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -636,10 +636,10 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns the type of the object with the given id.
+   * Returns the type of the object with the given oid.
    * 
    * @param instanceId
-   * @return the type of the object with the given id.
+   * @return the type of the object with the given oid.
    */
   public String getTypeFromInstanceId(String instanceId)
   {
@@ -690,10 +690,10 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns the type of the object with the given id.
+   * Returns the type of the object with the given oid.
    * 
    * @param instanceId
-   * @return the type of the object with the given id.
+   * @return the type of the object with the given oid.
    */
   public Map<String, String> getTypeAndTableFromInstanceId(String instanceId)
   {
@@ -833,10 +833,10 @@ public abstract class AbstractDatabase
    * <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("")
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("")
    * 
-   * @param id
+   * @param oid
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
@@ -845,18 +845,18 @@ public abstract class AbstractDatabase
    * @return Map of Attribute objects for the EnityObject with the given ID and
    *         class.
    */
-  public Map<String, Attribute> getAttributesForHardcodedMetadataObject(String id, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
+  public Map<String, Attribute> getAttributesForHardcodedMetadataObject(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
   {
     Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
-    ResultSet resultSet = this.selectFromWhere("*", tableName, EntityDAOIF.ID_COLUMN + "='" + id + "'");
+    ResultSet resultSet = this.selectFromWhere("*", tableName, EntityDAOIF.ID_COLUMN + "='" + oid + "'");
 
     try
     {
       if (!resultSet.next())
       {
         MdEntityDAOIF mdEntity = MdEntityDAO.getMdEntityDAO(type);
-        String error = "No results found in table [" + tableName + "] with id [" + id + ']';
+        String error = "No results found in table [" + tableName + "] with oid [" + oid + ']';
         throw new DataNotFoundException(error, mdEntity);
       }
 
@@ -955,8 +955,8 @@ public abstract class AbstractDatabase
    * <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("")
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("")
    * 
    * @param _cacheTypeTable
    * @param _type
@@ -1440,7 +1440,7 @@ public abstract class AbstractDatabase
    */
   public String attributeIndexName(String table, String columnName)
   {
-    return this.getIdentifierHashName(table + "_" + columnName);
+    return this.getOidentifierHashName(table + "_" + columnName);
   }
 
   /**
@@ -1448,7 +1448,7 @@ public abstract class AbstractDatabase
    * @param stringToHash
    * @return
    */
-  public String getIdentifierHashName(String stringToHash)
+  public String getOidentifierHashName(String stringToHash)
   {
     // hash needs to be one character shorter than the max size, as
     // we will append a character to the front to ensure it is a valid
@@ -1470,20 +1470,20 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Creates a database friendly identifier from the given id.
+   * Creates a database friendly identifier from the given oid.
    * 
-   * @param id
+   * @param oid
    * 
-   * @return database friendly identifier from the given id.
+   * @return database friendly identifier from the given oid.
    */
-  public String createIdentifierFromId(String id)
+  public String createIdentifierFromId(String oid)
   {
     // hash needs to be one character shorter than the max size, as
     // we will append a character to the front to ensure it is a valid
     // db identifier.
     int maxBaseHashLength = Database.MAX_DB_IDENTIFIER_SIZE - 1;
 
-    String dbIdentifier = id;
+    String dbIdentifier = oid;
 
     if (dbIdentifier.length() < maxBaseHashLength)
     {
@@ -1618,20 +1618,20 @@ public abstract class AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
    *      String);
    */
-  public abstract void createEnumerationTable(String tableName, String id);
+  public abstract void createEnumerationTable(String tableName, String oid);
 
   /**
    * Builds an SQL statement to delete an entry row.
    * 
    * @param table
    *          The table name where the row to delete can be found.
-   * @param id
-   *          The id of the record to delete.
+   * @param oid
+   *          The oid of the record to delete.
    * @return The SQL delete statement.
    */
-  public String buildSQLDeleteStatement(String table, String id)
+  public String buildSQLDeleteStatement(String table, String oid)
   {
-    String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+    String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
     return statement;
   }
 
@@ -1640,15 +1640,15 @@ public abstract class AbstractDatabase
    * 
    * @param table
    *          The table name where the row to delete can be found.
-   * @param id
-   *          The id of the record to delete.
+   * @param oid
+   *          The oid of the record to delete.
    * @param seq
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
    */
-  public String buildSQLDeleteStatement(String table, String id, long seq)
+  public String buildSQLDeleteStatement(String table, String oid, long seq)
   {
-    String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+    String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
     statement += " AND " + ElementDAOIF.SEQUENCE_COLUMN + " = " + seq;
     return statement;
   }
@@ -1658,8 +1658,8 @@ public abstract class AbstractDatabase
    * 
    * @param table
    *          The table name where the row to delete can be found.
-   * @param id
-   *          The id of the record to delete.
+   * @param oid
+   *          The oid of the record to delete.
    * @param seq
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
@@ -1776,7 +1776,7 @@ public abstract class AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String,
    *      String);
    */
-  public abstract void dropEnumerationTable(String tableName, String id);
+  public abstract void dropEnumerationTable(String tableName, String oid);
 
   /**
    * Selects all instances of a field from a table.
@@ -2041,17 +2041,17 @@ public abstract class AbstractDatabase
    *          The values of the fields to update.
    * @param attributeTypes
    *          The core datatypes of the fields to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * 
    * @return <code>UPDATE</code> PreparedStatement
    */
-  public PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String id)
+  public PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String oid)
   {
     if (Database.loggingDMLandDDLstatements() == true)
     {
       // if (table.trim().equalsIgnoreCase(MdEntityDAOIF.TABLE))
-      System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
+      System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, oid) + ";");
     }
 
     String sqlStmt = "UPDATE " + table;
@@ -2076,7 +2076,7 @@ public abstract class AbstractDatabase
       sqlStmt += field + "= " + prepStmtVar + " ";
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + id + "'";
+    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
 
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
@@ -2113,12 +2113,12 @@ public abstract class AbstractDatabase
    *          The values of the fields to update.
    * @param attributeTypes
    *          The core datatypes of the fields to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * 
    * @return <code>UPDATE</code> SQL statement String
    */
-  public String buildSQLupdateStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes, String id)
+  public String buildSQLupdateStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes, String oid)
   {
     String sqlStmt = "UPDATE " + table;
 
@@ -2150,7 +2150,7 @@ public abstract class AbstractDatabase
       sqlStmt += field + "= " + this.formatJavaToSQL(value.toString(), attributeType, false) + " ";
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + id + "'";
+    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
 
     return sqlStmt;
   }
@@ -2168,19 +2168,19 @@ public abstract class AbstractDatabase
    *          The values of the fields to update.
    * @param attributeTypes
    *          The core datatypes of the fields to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * @param seq
    *          sequence of the object to update.
    * 
    * @return <code>UPDATE</code> PreparedStatement
    */
-  public PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String id, long seq)
+  public PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String oid, long seq)
   {
     if (Database.loggingDMLandDDLstatements() == true)
     {
       // if (table.trim().equalsIgnoreCase(MdEntityDAOIF.TABLE))
-      System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
+      System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, oid) + ";");
     }
 
     String sqlStmt = "UPDATE " + table;
@@ -2205,7 +2205,7 @@ public abstract class AbstractDatabase
       sqlStmt += field + "= " + prepStmtVar + " ";
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + id + "'";
+    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
     sqlStmt += " AND " + EntityDAOIF.SEQUENCE_COLUMN + " = " + seq;
 
     Connection conn = Database.getConnection();
@@ -2231,7 +2231,7 @@ public abstract class AbstractDatabase
 
   /**
    * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on
-   * the object with the given id. <br>
+   * the object with the given oid. <br>
    * 
    * @param table
    *          The table to insert into.
@@ -2298,7 +2298,7 @@ public abstract class AbstractDatabase
 
   /**
    * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on
-   * the object with the given id. <br>
+   * the object with the given oid. <br>
    * 
    * @param table
    *          The table to insert into.
@@ -2620,17 +2620,17 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the value of a clob for the column on the table for the object with
-   * the given id.
+   * the given oid.
    * 
    * <br/>
-   * precondition: id must represent a valid object <br/>
+   * precondition: oid must represent a valid object <br/>
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return value of the clob.
    */
-  public String getClob(String table, String columnName, String id)
+  public String getClob(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
 
@@ -2641,7 +2641,7 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
 
       boolean hasNext = resultSet.next();
@@ -2714,11 +2714,11 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param clobString
    * @return The number of bytes written.
    */
-  public void setClob(String table, String columnName, String id, String clobString)
+  public void setClob(String table, String columnName, String oid, String clobString)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -2727,8 +2727,8 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -2832,13 +2832,13 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return byte[] value of the blob.
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
-    byte[] byteArray = this.getBlobAsBytes(table, columnName, id, conn);
+    byte[] byteArray = this.getBlobAsBytes(table, columnName, oid, conn);
 
     try
     {
@@ -2858,11 +2858,11 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param conn
    * @return byte[] value of the blob.
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, Connection conn)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
     byte[] returnBytes = null;
     Statement statement = null;
@@ -2871,7 +2871,7 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -2911,12 +2911,12 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param length
    * @return
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, long pos, int length)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, long pos, int length)
   {
     Connection conn = Database.getConnection();
     byte[] returnBytes = null;
@@ -2926,7 +2926,7 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -2968,14 +2968,14 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset, int length)
+  public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset, int length)
   {
     Connection conn = Database.getConnection();
     int written = 0;
@@ -2985,8 +2985,8 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -3043,11 +3043,11 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     Connection conn = Database.getConnection();
     int written = 0;
@@ -3057,8 +3057,8 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -3117,10 +3117,10 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return The byte array value of this blob attribute.
    */
-  public long getBlobSize(String table, String columnName, String id)
+  public long getBlobSize(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
     long size = 0;
@@ -3130,7 +3130,7 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -3168,10 +3168,10 @@ public abstract class AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -3179,8 +3179,8 @@ public abstract class AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -3356,13 +3356,13 @@ public abstract class AbstractDatabase
    * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
    * objects. If the given parameter is null, then all objects are returned.
    * Otherwise, it returns fields just for object associated with the given
-   * <code>MdAttributeDAOIF</code> id.
+   * <code>MdAttributeDAOIF</code> oid.
    * 
    * @return ResultSet contains fields that are needed by
    *         <code>MdAttributeDimensionDAOIF</code> objects. If the given
    *         parameter is null, then all objects are returned. Otherwise, it
    *         returns fields just for object associated with the given
-   *         <code>MdAttributeDAOIF</code> id.
+   *         <code>MdAttributeDAOIF</code> oid.
    */
   public ResultSet getMdAttributeDimensionFields(String mdAttributeId)
   {
@@ -3387,16 +3387,16 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
    * null, then all objects are returned. Otherwise, the
    * <code>MdAttributeDimensionDAOIF</code>s for the
-   * <code>MdDimensionDAOIF</code> with the given id.
+   * <code>MdDimensionDAOIF</code> with the given oid.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
    *         null, then all objects are returned. Otherwise, the
    *         <code>MdAttributeDimensionDAOIF</code>s for the
-   *         <code>MdDimensionDAOIF</code> with the given id.
+   *         <code>MdDimensionDAOIF</code> with the given oid.
    */
   public ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
@@ -3840,15 +3840,15 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns true if an object with the given id exists in the database.
+   * Returns true if an object with the given oid exists in the database.
    * 
-   * @param id
+   * @param oid
    * @param tableName
    * @return true if it exists, false otherwise.
    */
-  public boolean doesObjectExist(String id, String tableName)
+  public boolean doesObjectExist(String oid, String tableName)
   {
-    ResultSet resultSet = this.selectFromWhere(EntityDAOIF.ID_COLUMN, tableName, EntityDAOIF.ID_COLUMN + "='" + id + "'");
+    ResultSet resultSet = this.selectFromWhere(EntityDAOIF.ID_COLUMN, tableName, EntityDAOIF.ID_COLUMN + "='" + oid + "'");
 
     boolean returnResult = false;
 
@@ -4180,7 +4180,7 @@ public abstract class AbstractDatabase
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -4201,7 +4201,7 @@ public abstract class AbstractDatabase
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -4219,7 +4219,7 @@ public abstract class AbstractDatabase
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -4240,7 +4240,7 @@ public abstract class AbstractDatabase
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -4259,7 +4259,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -4281,7 +4281,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -4299,7 +4299,7 @@ public abstract class AbstractDatabase
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -4321,7 +4321,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -4340,7 +4340,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -4362,7 +4362,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -4384,7 +4384,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -4406,7 +4406,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -4425,7 +4425,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -4447,7 +4447,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -4466,7 +4466,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -4488,7 +4488,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -4507,7 +4507,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -4526,7 +4526,7 @@ public abstract class AbstractDatabase
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -4544,7 +4544,7 @@ public abstract class AbstractDatabase
    * the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -4603,7 +4603,7 @@ public abstract class AbstractDatabase
    * @param columnName
    *          name of the attribute
    * @param entityId
-   *          id of an entity
+   *          oid of an entity
    * @return value of the database column that is used to cache enumeration
    *         mappings for an attribute.
    */
@@ -4659,30 +4659,30 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the SQL that inserts a mapping in the given enumeration table
-   * between the given set id and the given enumeration item id.
+   * between the given set oid and the given enumeration item oid.
    * 
    * @param enumTableName
-   * @param setId
+   * @param setOid
    * @param enumItemID
    */
-  public String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
+  public String buildAddItemStatement(String enumTableName, String setOid, String enumItemID)
   {
     LinkedList<String> columnNames = new LinkedList<String>();
     columnNames.add(MdEnumerationDAOIF.SET_ID_COLUMN);
     columnNames.add(MdEnumerationDAOIF.ITEM_ID_COLUMN);
 
     LinkedList<String> values = new LinkedList<String>();
-    values.add("'" + setId + "'");
+    values.add("'" + setOid + "'");
     values.add("'" + enumItemID + "'");
 
-    String sqlStmt = "INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setId + "', '" + enumItemID + "')";
+    String sqlStmt = "INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setOid + "', '" + enumItemID + "')";
 
     return sqlStmt;
   }
 
   /**
-   * Returns the SQL that updates an enum item id with the provided new enum
-   * item id.
+   * Returns the SQL that updates an enum item oid with the provided new enum
+   * item oid.
    * 
    * @param enumTableName
    * @param oldEnumItemId
@@ -4729,9 +4729,9 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the ids of the enumeration items that are mapped to the given
-   * setId.
+   * setOid.
    */
-  public Set<String> getEnumItemIds(String enumTableName, String setId)
+  public Set<String> getEnumItemIds(String enumTableName, String setOid)
   {
     Set<String> enumIdSet = new HashSet<String>();
 
@@ -4742,9 +4742,9 @@ public abstract class AbstractDatabase
     columnNames.add(MdEnumerationDAOIF.ITEM_ID_COLUMN);
 
     LinkedList<String> conditions = new LinkedList<String>();
-    if (!setId.trim().equals(""))
+    if (!setOid.trim().equals(""))
     {
-      conditions.add(MdEnumerationDAOIF.SET_ID_COLUMN + " ='" + setId + "'");
+      conditions.add(MdEnumerationDAOIF.SET_ID_COLUMN + " ='" + setOid + "'");
     }
 
     ResultSet resultSet = this.select(columnNames, tables, conditions);
@@ -4789,15 +4789,15 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Deletes all instances of the setId from the given enumeration mapping
+   * Deletes all instances of the setOid from the given enumeration mapping
    * table.
    * 
    * @param enumTableName
-   * @param setId
+   * @param setOid
    */
-  public void deleteSetIdFromLinkTable(String enumTableName, String setId)
+  public void deleteSetIdFromLinkTable(String enumTableName, String setOid)
   {
-    this.deleteWhere(enumTableName, MdEnumerationDAOIF.SET_ID_COLUMN + "='" + setId + "'");
+    this.deleteWhere(enumTableName, MdEnumerationDAOIF.SET_ID_COLUMN + "='" + setOid + "'");
   }
 
   /**

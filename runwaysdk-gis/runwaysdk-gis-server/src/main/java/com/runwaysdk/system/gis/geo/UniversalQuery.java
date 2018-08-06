@@ -165,19 +165,19 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
 
@@ -1146,9 +1146,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1354,13 +1354,13 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.Universal universal)
     {
       if(universal == null) return this.EQ((java.lang.String)null);
-      return this.EQ(universal.getId());
+      return this.EQ(universal.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.Universal universal)
     {
       if(universal == null) return this.NE((java.lang.String)null);
-      return this.NE(universal.getId());
+      return this.NE(universal.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -1448,19 +1448,19 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
 
@@ -2388,9 +2388,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -2449,7 +2449,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -2461,7 +2461,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -2473,7 +2473,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -2485,7 +2485,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -2497,7 +2497,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -2587,19 +2587,19 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
 

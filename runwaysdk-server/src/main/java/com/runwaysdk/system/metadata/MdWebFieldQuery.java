@@ -434,13 +434,13 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebField mdWebField)
     {
       if(mdWebField == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebField.getId());
+      return this.EQ(mdWebField.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebField mdWebField)
     {
       if(mdWebField == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebField.getId());
+      return this.NE(mdWebField.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdWebFormQuery.MdWebFormQueryReferenceIF getDefiningMdForm()
@@ -749,7 +749,7 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
 
       for (int i=0; i<mdWebField.length; i++)
       {
-        itemIdArray[i] = mdWebField[i].getId();
+        itemIdArray[i] = mdWebField[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -761,7 +761,7 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
 
       for (int i=0; i<mdWebField.length; i++)
       {
-        itemIdArray[i] = mdWebField[i].getId();
+        itemIdArray[i] = mdWebField[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -773,7 +773,7 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
 
       for (int i=0; i<mdWebField.length; i++)
       {
-        itemIdArray[i] = mdWebField[i].getId();
+        itemIdArray[i] = mdWebField[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -785,7 +785,7 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
 
       for (int i=0; i<mdWebField.length; i++)
       {
-        itemIdArray[i] = mdWebField[i].getId();
+        itemIdArray[i] = mdWebField[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -797,7 +797,7 @@ public  class MdWebFieldQuery extends com.runwaysdk.system.metadata.MdFieldQuery
 
       for (int i=0; i<mdWebField.length; i++)
       {
-        itemIdArray[i] = mdWebField[i].getId();
+        itemIdArray[i] = mdWebField[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -136,9 +136,9 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   private void writeGet()
   {
-    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
+    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine(RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName() + ") clientRequest.get(id);");
+    getWriter().writeLine(RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName() + ") clientRequest.get(oid);");
     getWriter().writeLine("");
     getWriter().writeLine("return (" + this.getDTOStubClassType() + ") dto;");
     getWriter().closeBracket();

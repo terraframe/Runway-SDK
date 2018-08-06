@@ -48,9 +48,9 @@ public interface TransactionItemDAOIF extends BusinessDAOIF, LocalTransactionArt
   public MdClassDAOIF getComponentMdClassDAOIF();
 
   /**
-   * Returns the id of the component.
+   * Returns the oid of the component.
    * 
-   * @return id of the component.
+   * @return oid of the component.
    */
   public String getComponentId();
 

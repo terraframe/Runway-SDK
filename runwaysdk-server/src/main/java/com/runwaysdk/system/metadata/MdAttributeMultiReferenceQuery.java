@@ -194,13 +194,13 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeMultiReference mdAttributeMultiReference)
     {
       if(mdAttributeMultiReference == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeMultiReference.getId());
+      return this.EQ(mdAttributeMultiReference.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeMultiReference mdAttributeMultiReference)
     {
       if(mdAttributeMultiReference == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeMultiReference.getId());
+      return this.NE(mdAttributeMultiReference.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getDefaultValue()
@@ -317,7 +317,7 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeMultiReference.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+        itemIdArray[i] = mdAttributeMultiReference[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -329,7 +329,7 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeMultiReference.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+        itemIdArray[i] = mdAttributeMultiReference[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -341,7 +341,7 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeMultiReference.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+        itemIdArray[i] = mdAttributeMultiReference[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -353,7 +353,7 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeMultiReference.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+        itemIdArray[i] = mdAttributeMultiReference[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -365,7 +365,7 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeMultiReference.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+        itemIdArray[i] = mdAttributeMultiReference[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

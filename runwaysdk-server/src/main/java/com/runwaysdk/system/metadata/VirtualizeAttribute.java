@@ -29,7 +29,7 @@ public class VirtualizeAttribute extends VirtualizeAttributeBase
   
   public VirtualizeAttribute(com.runwaysdk.system.metadata.MdAttributeConcrete parent, com.runwaysdk.system.metadata.MdAttributeVirtual child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

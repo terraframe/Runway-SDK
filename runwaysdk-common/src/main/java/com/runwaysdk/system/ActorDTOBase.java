@@ -48,7 +48,7 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -144,7 +144,7 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -329,7 +329,7 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -406,60 +406,60 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllMetadata()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.TypePermissionDTO> getAllMetadataRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.TypePermissionDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.TypePermissionDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.TypePermissionDTO> getAllMetadataRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.TypePermissionDTO> getAllMetadataRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.TypePermissionDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.TypePermissionDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
   public com.runwaysdk.system.TypePermissionDTO addMetadata(com.runwaysdk.system.metadata.MetadataDTO child)
   {
-    return (com.runwaysdk.system.TypePermissionDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (com.runwaysdk.system.TypePermissionDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.TypePermissionDTO addMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MetadataDTO child)
+  public static com.runwaysdk.system.TypePermissionDTO addMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MetadataDTO child)
   {
-    return (com.runwaysdk.system.TypePermissionDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.TypePermissionDTO.CLASS);
+    return (com.runwaysdk.system.TypePermissionDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
   public void removeMetadata(com.runwaysdk.system.TypePermissionDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.TypePermissionDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllMetadata()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.TypePermissionDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
-  public static void removeAllMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.TypePermissionDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.TypePermissionDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.ActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.ActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.ActorDTO) dto;
   }
@@ -477,7 +477,7 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.ActorQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -490,10 +490,10 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.ActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.ActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ActorDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.ActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -503,10 +503,10 @@ public abstract class ActorDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.ActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.ActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ActorDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.ActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

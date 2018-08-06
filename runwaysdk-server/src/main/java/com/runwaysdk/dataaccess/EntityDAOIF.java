@@ -27,7 +27,7 @@ public interface EntityDAOIF extends ComponentIF
   /**
    * Column name of the attribute that specifies the ID.
    */
-  public static final String ID_COLUMN               = "id";
+  public static final String ID_COLUMN               = "oid";
   
   /**
    * Column name of the attribute that specifies the type.
@@ -45,9 +45,9 @@ public interface EntityDAOIF extends ComponentIF
   public static final String SEQUENCE_COLUMN         = "seq";
   
   /**
-   * Returns the root id of this component.
+   * Returns the root oid of this component.
    * 
-   * @return root id of this component.
+   * @return root oid of this component.
    */
   public String getRootId();
   
@@ -133,7 +133,7 @@ public interface EntityDAOIF extends ComponentIF
   public boolean hasOwner();
 
   /**
-   * Returns a copy of the given EntityDAO instance, with a new id and mastered at the current site.
+   * Returns a copy of the given EntityDAO instance, with a new oid and mastered at the current site.
    * The state of the object is new and has not been applied to the database.
    *
    * @return a copy of the given EntityDAO instance

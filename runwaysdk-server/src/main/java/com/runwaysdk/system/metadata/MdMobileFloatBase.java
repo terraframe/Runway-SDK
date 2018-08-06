@@ -41,9 +41,9 @@ public abstract class MdMobileFloatBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static MdMobileFloat get(String id)
+  public static MdMobileFloat get(String oid)
   {
-    return (MdMobileFloat) com.runwaysdk.business.Business.get(id);
+    return (MdMobileFloat) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileFloat getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileFloatBase extends com.runwaysdk.system.metadata.Md
     return (MdMobileFloat) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileFloat lock(java.lang.String id)
+  public static MdMobileFloat lock(java.lang.String oid)
   {
-    MdMobileFloat _instance = MdMobileFloat.get(id);
+    MdMobileFloat _instance = MdMobileFloat.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileFloat unlock(java.lang.String id)
+  public static MdMobileFloat unlock(java.lang.String oid)
   {
-    MdMobileFloat _instance = MdMobileFloat.get(id);
+    MdMobileFloat _instance = MdMobileFloat.get(oid);
     _instance.unlock();
     
     return _instance;

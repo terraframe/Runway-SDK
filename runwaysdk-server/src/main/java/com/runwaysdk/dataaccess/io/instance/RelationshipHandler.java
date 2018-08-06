@@ -112,7 +112,7 @@ public class RelationshipHandler extends ElementHandler
       this.elementDAO = RelationshipDAO.newInstance(parentId, childId, type);
       this.isNew = true;
 
-      // Set the imported id
+      // Set the imported oid
       Attribute attribute = elementDAO.getAttribute(EntityInfo.ID);
       attribute.setValue(databaseId);
 

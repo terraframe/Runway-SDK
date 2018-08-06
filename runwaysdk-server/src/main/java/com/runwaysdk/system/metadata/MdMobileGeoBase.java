@@ -41,9 +41,9 @@ public abstract class MdMobileGeoBase extends com.runwaysdk.system.metadata.MdMo
     return CLASS;
   }
   
-  public static MdMobileGeo get(String id)
+  public static MdMobileGeo get(String oid)
   {
-    return (MdMobileGeo) com.runwaysdk.business.Business.get(id);
+    return (MdMobileGeo) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileGeo getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileGeoBase extends com.runwaysdk.system.metadata.MdMo
     return (MdMobileGeo) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileGeo lock(java.lang.String id)
+  public static MdMobileGeo lock(java.lang.String oid)
   {
-    MdMobileGeo _instance = MdMobileGeo.get(id);
+    MdMobileGeo _instance = MdMobileGeo.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileGeo unlock(java.lang.String id)
+  public static MdMobileGeo unlock(java.lang.String oid)
   {
-    MdMobileGeo _instance = MdMobileGeo.get(id);
+    MdMobileGeo _instance = MdMobileGeo.get(oid);
     _instance.unlock();
     
     return _instance;

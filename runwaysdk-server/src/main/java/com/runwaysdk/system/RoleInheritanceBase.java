@@ -32,7 +32,7 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,11 +128,11 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -142,7 +142,7 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.RoleInheritance.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -284,7 +284,7 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
     return (com.runwaysdk.system.Roles) super.getChild();
   }
   
-  public static RoleInheritance get(String id)
+  public static RoleInheritance get(String oid)
   {
-    return (RoleInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (RoleInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static RoleInheritance getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class RoleInheritanceBase extends com.runwaysdk.business.Relatio
     return (RoleInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static RoleInheritance lock(java.lang.String id)
+  public static RoleInheritance lock(java.lang.String oid)
   {
-    RoleInheritance _instance = RoleInheritance.get(id);
+    RoleInheritance _instance = RoleInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static RoleInheritance unlock(java.lang.String id)
+  public static RoleInheritance unlock(java.lang.String oid)
   {
-    RoleInheritance _instance = RoleInheritance.get(id);
+    RoleInheritance _instance = RoleInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

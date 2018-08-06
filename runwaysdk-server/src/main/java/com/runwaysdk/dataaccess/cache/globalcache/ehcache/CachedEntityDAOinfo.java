@@ -31,7 +31,7 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
  * If all fields are null, then this object should be removed from the global
  * cache.
  * 
- * Access to this class should be synchronized on the id of the
+ * Access to this class should be synchronized on the oid of the
  * {@link EntityDAOIF}.
  * 
  * @author nathan
@@ -129,9 +129,9 @@ public class CachedEntityDAOinfo implements Serializable
     this.entityDAOIF = null;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.entityDAOIF.getId();
+    return this.entityDAOIF.getOid();
   }
   
   

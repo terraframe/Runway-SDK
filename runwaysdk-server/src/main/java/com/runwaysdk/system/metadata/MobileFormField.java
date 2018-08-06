@@ -29,7 +29,7 @@ public class MobileFormField extends MobileFormFieldBase
   
   public MobileFormField(com.runwaysdk.system.metadata.MdMobileForm parent, com.runwaysdk.system.metadata.MdMobileField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

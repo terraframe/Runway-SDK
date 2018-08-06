@@ -137,15 +137,15 @@ public class EntityMasterTestSetup
       // Switching on cache_code determines the caching of the class
       if (cache_code == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       else if (cache_code == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
       else if (cache_code == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       }
       testMdBusinessId = testMdBusiness.apply();
     }

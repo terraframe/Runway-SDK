@@ -32,7 +32,7 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,11 +129,11 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -143,7 +143,7 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.ThematicAttribute.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -285,7 +285,7 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(MDATTRIBUTE, value.getId());
+      setValue(MDATTRIBUTE, value.getOid());
     }
   }
   
@@ -325,7 +325,7 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -438,9 +438,9 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.mapping.HasThematicAttribute>) getRelationshipsWithParent(layer, com.runwaysdk.system.gis.mapping.HasThematicAttribute.CLASS);
   }
   
-  public static ThematicAttribute get(String id)
+  public static ThematicAttribute get(String oid)
   {
-    return (ThematicAttribute) com.runwaysdk.business.Business.get(id);
+    return (ThematicAttribute) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ThematicAttribute getByKey(String key)
@@ -448,17 +448,17 @@ public abstract class ThematicAttributeBase extends com.runwaysdk.business.Busin
     return (ThematicAttribute) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static ThematicAttribute lock(java.lang.String id)
+  public static ThematicAttribute lock(java.lang.String oid)
   {
-    ThematicAttribute _instance = ThematicAttribute.get(id);
+    ThematicAttribute _instance = ThematicAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ThematicAttribute unlock(java.lang.String id)
+  public static ThematicAttribute unlock(java.lang.String oid)
   {
-    ThematicAttribute _instance = ThematicAttribute.get(id);
+    ThematicAttribute _instance = ThematicAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

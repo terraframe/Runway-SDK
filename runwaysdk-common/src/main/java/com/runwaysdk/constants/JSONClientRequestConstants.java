@@ -24,12 +24,12 @@ package com.runwaysdk.constants;
 public enum JSONClientRequestConstants {
 
   /**
-   * Parent id parameter.
+   * Parent oid parameter.
    */
   PARENT_ID("parentId"),
   
   /**
-   * Child id parameter.
+   * Child oid parameter.
    */
   CHILD_ID("childId"),
   
@@ -39,9 +39,9 @@ public enum JSONClientRequestConstants {
   RELATIONSHIP_TYPE("relationshipType"),
   
   /**
-   * Generic id parameter.
+   * Generic oid parameter.
    */
-  ID("id"),
+  ID("oid"),
   
   /**
    * Type parameter.
@@ -104,7 +104,7 @@ public enum JSONClientRequestConstants {
   PARAMETERS("parameters"),
   
   /**
-   * Relationship id parameter.
+   * Relationship oid parameter.
    */
   RELATIONSHIP_ID("relationshipId"),
   
@@ -139,7 +139,7 @@ public enum JSONClientRequestConstants {
   LOCALE("locale"),
   
   /**
-   * Actor id parameter.
+   * Actor oid parameter.
    */
   ACTOR_ID("actorId"),
   
@@ -150,22 +150,22 @@ public enum JSONClientRequestConstants {
   OPERATION_NAMES("operationNames"),
   
   /**
-   * MdAttribute id parameter.
+   * MdAttribute oid parameter.
    */
   MDATTRIBUTE_ID("mdAttributeId"),
   
   /**
-   * State id parameter.
+   * State oid parameter.
    */
   STATE_ID("stateId"),
   
   /**
-   * MdType id parameter.
+   * MdType oid parameter.
    */
   MDTYPE_ID("mdTypeId"),
   
   /**
-   * MdMethod id parameter.
+   * MdMethod oid parameter.
    */
   MDMETHOD_ID("mdMethodId"),
   

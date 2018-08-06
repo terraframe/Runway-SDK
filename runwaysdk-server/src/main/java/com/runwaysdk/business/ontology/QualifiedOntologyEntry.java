@@ -20,31 +20,31 @@ package com.runwaysdk.business.ontology;
 
 public class QualifiedOntologyEntry implements QualifiedOntologyEntryIF
 {
-  private String id;
+  private String oid;
 
   private String label;
 
   private String qualifier;
 
   /**
-   * @param id
+   * @param oid
    * @param label
    * @param qualifier
    */
-  public QualifiedOntologyEntry(String id, String label, String qualifier)
+  public QualifiedOntologyEntry(String oid, String label, String qualifier)
   {
     super();
-    this.id = id;
+    this.oid = oid;
     this.label = label;
     this.qualifier = qualifier;
   }
 
   /**
-   * @return the id
+   * @return the oid
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   /**

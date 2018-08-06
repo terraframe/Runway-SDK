@@ -63,7 +63,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
   
   public static String LABEL         = "label";
 
-  public static String ID            = "id";
+  public static String ID            = "oid";
 
   public static String ENTITY        = "entity";
 
@@ -163,7 +163,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
             // Create a new editable SolrInputDocument
             SolrInputDocument updateDoc = new SolrInputDocument();
-            updateDoc.addField(ENTITY, term.getId());
+            updateDoc.addField(ENTITY, term.getOid());
             updateDoc.addField(RELATIONSHIPS, this.serialize(relationships));
             updateDoc.addField(QUALIFIER, term.getQualifier());
 
@@ -174,7 +174,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           relationships.put(this.relationship(term));
 
           SolrInputDocument updateDoc = new SolrInputDocument();
-          updateDoc.addField(ENTITY, term.getId());
+          updateDoc.addField(ENTITY, term.getOid());
           updateDoc.addField(RELATIONSHIPS, this.serialize(relationships));
           updateDoc.addField(QUALIFIER, term.getQualifier());
 
@@ -233,10 +233,10 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
       // Add new old paths
       SolrQuery query = new SolrQuery();
-      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(child.getId()) + "*");
+      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(child.getOid()) + "*");
       query.setFields(ENTITY, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
-      query.addSort("id", ORDER.asc); // Pay attention to this line
+      query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
       boolean done = false;
 
@@ -268,7 +268,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
               base.put(relationship);
             }
 
-            if (relationship.getString(ID).equals(child.getId()))
+            if (relationship.getString(ID).equals(child.getOid()))
             {
               found = true;
             }
@@ -317,12 +317,12 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       for (Term parent : parents)
       {
-        if (!cache.containsKey(parent.getId()))
+        if (!cache.containsKey(parent.getOid()))
         {
-          cache.put(parent.getId(), this.getPaths(parent, relationshipType, cache));
+          cache.put(parent.getOid(), this.getPaths(parent, relationshipType, cache));
         }
 
-        List<List<QualifiedOntologyEntryIF>> pp = cache.get(parent.getId());
+        List<List<QualifiedOntologyEntryIF>> pp = cache.get(parent.getOid());
 
         for (List<QualifiedOntologyEntryIF> p : pp)
         {
@@ -350,7 +350,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
     for (OntologyEntryIF synonym : synonyms)
     {
-      QualifiedOntologyEntry entry = new QualifiedOntologyEntry(synonym.getId(), synonym.getLabel(), term.getQualifier());
+      QualifiedOntologyEntry entry = new QualifiedOntologyEntry(synonym.getOid(), synonym.getLabel(), term.getQualifier());
 
       for (List<QualifiedOntologyEntryIF> path : paths)
       {
@@ -429,10 +429,10 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       for (OntologyEntryIF entry : entries)
       {
         JSONArray relationships = new JSONArray();
-        relationships.put(this.relationship(qualifier, entry.getLabel(), entry.getId()));
+        relationships.put(this.relationship(qualifier, entry.getLabel(), entry.getOid()));
 
         SolrInputDocument document = new SolrInputDocument();
-        document.addField(ENTITY, term.getId());
+        document.addField(ENTITY, term.getOid());
         document.addField(RELATIONSHIPS, this.serialize(relationships));
         document.addField(QUALIFIER, term.getQualifier());
 
@@ -454,7 +454,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       SolrCommand command = this.getCommand();
       SolrClient client = command.getClient();
-      String qText = ClientUtils.escapeQueryChars(term.getId());
+      String qText = ClientUtils.escapeQueryChars(term.getOid());
 
       client.deleteByQuery(RELATIONSHIPS + ":*" + qText + "*");
 
@@ -473,13 +473,13 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       SolrCommand command = this.getCommand();
       SolrClient client = command.getClient();
-      String qText = ClientUtils.escapeQueryChars(parent.getId());
+      String qText = ClientUtils.escapeQueryChars(parent.getOid());
 
       SolrQuery query = new SolrQuery();
-      query.setQuery(ENTITY + ":" + term.getId() + " AND " + RELATIONSHIPS + ":*" + qText + "*");
+      query.setQuery(ENTITY + ":" + term.getOid() + " AND " + RELATIONSHIPS + ":*" + qText + "*");
       query.setFields(ID, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
-      query.addSort("id", ORDER.asc); // Pay attention to this line
+      query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
       boolean done = false;
 
@@ -506,7 +506,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(parent.getId()))
+            if (relationship.getString(ID).equals(parent.getOid()))
             {
               found = true;
             }
@@ -563,10 +563,10 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       SolrCommand command = this.getCommand();
       SolrClient client = command.getClient();
       SolrQuery query = new SolrQuery();
-      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(term.getId()) + "*");
+      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(term.getOid()) + "*");
       query.setFields(ENTITY, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
-      query.addSort("id", ORDER.asc); // Pay attention to this line
+      query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
       boolean done = false;
 
@@ -590,9 +590,9 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(term.getId()))
+            if (relationship.getString(ID).equals(term.getOid()))
             {
-              relationship.put(ID, synonym.getId());
+              relationship.put(ID, synonym.getOid());
               relationship.put(LABEL, synonym.getLabel());
             }
           }
@@ -629,10 +629,10 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       SolrClient client = command.getClient();
 
       SolrQuery query = new SolrQuery();
-      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(synonym.getId()) + "*");
+      query.setQuery(RELATIONSHIPS + ":*" + ClientUtils.escapeQueryChars(synonym.getOid()) + "*");
       query.setFields(ID, RELATIONSHIPS, QUALIFIER);
       query.setRows(5000);
-      query.addSort("id", ORDER.asc); // Pay attention to this line
+      query.addSort("oid", ORDER.asc); // Pay attention to this line
       String cursorMark = CursorMarkParams.CURSOR_MARK_START;
       boolean done = false;
 
@@ -656,7 +656,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
           {
             JSONObject relationship = relationships.getJSONObject(i);
 
-            if (relationship.getString(ID).equals(synonym.getId()))
+            if (relationship.getString(ID).equals(synonym.getOid()))
             {
               relationship.put(LABEL, synonym.getLabel());
             }
@@ -693,7 +693,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       SolrCommand command = this.getCommand();
       SolrClient client = command.getClient();
-      String qText = ClientUtils.escapeQueryChars(synonym.getId());
+      String qText = ClientUtils.escapeQueryChars(synonym.getOid());
 
       client.deleteByQuery(RELATIONSHIPS + ":*" + qText + "*");
 
@@ -708,7 +708,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
   @Override
   public void updateLabel(Term term, String label)
   {
-    this.updateSynonym(new OntologyEntry(label, term.getId()));
+    this.updateSynonym(new OntologyEntry(label, term.getOid()));
   }
 
   public SolrCommand getCommand()
@@ -734,7 +734,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
 
     JSONObject relationship = new JSONObject();
     relationship.put(LABEL, t.getLabel());
-    relationship.put(ID, t.getId());
+    relationship.put(ID, t.getOid());
 
     if (qualifier != null)
     {
@@ -744,11 +744,11 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     return relationship;
   }
 
-  public JSONObject relationship(String qualifier, String label, String id) throws JSONException
+  public JSONObject relationship(String qualifier, String label, String oid) throws JSONException
   {
     JSONObject relationship = new JSONObject();
     relationship.put(LABEL, label);
-    relationship.put(ID, id);
+    relationship.put(ID, oid);
 
     if (qualifier != null)
     {
@@ -792,7 +792,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       String[] split = token.split("###");
       String label = split[0];
-      String id = split[1];
+      String oid = split[1];
       String qualifier = null;
 
       if (label.contains("%%%"))
@@ -803,7 +803,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
         label = lSplit[1];
       }
 
-      array.put(this.relationship(qualifier, label, id));
+      array.put(this.relationship(qualifier, label, oid));
     }
 
     return array;

@@ -66,13 +66,13 @@ public interface RemoteAdapter extends Remote
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
-  public void delete(String sessionId, String id) throws RemoteException;
+  public void delete(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
-  public MutableDTO get(String sessionId, String id) throws RemoteException;
+  public MutableDTO get(String sessionId, String oid) throws RemoteException;
 
   public void checkAdminScreenAccess(String sessionId) throws RemoteException;
 
@@ -235,13 +235,13 @@ public interface RemoteAdapter extends Remote
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public ElementDTO lock(String sessionId, String id) throws RemoteException;
+  public ElementDTO lock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public ElementDTO unlock(String sessionId, String id) throws RemoteException;
+  public ElementDTO unlock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String,
@@ -258,13 +258,13 @@ public interface RemoteAdapter extends Remote
    */
   public void deleteParent(String sessionId, String relationshipId) throws RemoteException;
 
-  public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
   public BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO) throws RemoteException;
 
@@ -276,9 +276,9 @@ public interface RemoteAdapter extends Remote
 
   public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO) throws RemoteException;
 
-  public void deleteChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public void deleteChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public void deleteParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public void deleteParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
   /**
    * Invokes a method defined by a MdMethod on a Entity in the server.

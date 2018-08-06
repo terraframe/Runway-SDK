@@ -41,9 +41,9 @@ public abstract class AndRuleBase extends com.runwaysdk.system.gis.mapping.Compo
     return CLASS;
   }
   
-  public static AndRule get(String id)
+  public static AndRule get(String oid)
   {
-    return (AndRule) com.runwaysdk.business.Business.get(id);
+    return (AndRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static AndRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class AndRuleBase extends com.runwaysdk.system.gis.mapping.Compo
     return (AndRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static AndRule lock(java.lang.String id)
+  public static AndRule lock(java.lang.String oid)
   {
-    AndRule _instance = AndRule.get(id);
+    AndRule _instance = AndRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AndRule unlock(java.lang.String id)
+  public static AndRule unlock(java.lang.String oid)
   {
-    AndRule _instance = AndRule.get(id);
+    AndRule _instance = AndRule.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -73,7 +73,7 @@ public abstract class UniversalSQLBuilderBase extends com.runwaysdk.system.gis.m
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -82,9 +82,9 @@ public abstract class UniversalSQLBuilderBase extends com.runwaysdk.system.gis.m
     return CLASS;
   }
   
-  public static UniversalSQLBuilder get(String id)
+  public static UniversalSQLBuilder get(String oid)
   {
-    return (UniversalSQLBuilder) com.runwaysdk.business.Business.get(id);
+    return (UniversalSQLBuilder) com.runwaysdk.business.Business.get(oid);
   }
   
   public static UniversalSQLBuilder getByKey(String key)
@@ -92,17 +92,17 @@ public abstract class UniversalSQLBuilderBase extends com.runwaysdk.system.gis.m
     return (UniversalSQLBuilder) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static UniversalSQLBuilder lock(java.lang.String id)
+  public static UniversalSQLBuilder lock(java.lang.String oid)
   {
-    UniversalSQLBuilder _instance = UniversalSQLBuilder.get(id);
+    UniversalSQLBuilder _instance = UniversalSQLBuilder.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static UniversalSQLBuilder unlock(java.lang.String id)
+  public static UniversalSQLBuilder unlock(java.lang.String oid)
   {
-    UniversalSQLBuilder _instance = UniversalSQLBuilder.get(id);
+    UniversalSQLBuilder _instance = UniversalSQLBuilder.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -488,7 +488,7 @@ public class Oracle extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
     String statement = "CREATE TABLE " + tableName + " ( " + MdEnumerationDAOIF.SET_ID_COLUMN
         + "                    CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n"
@@ -497,7 +497,7 @@ public class Oracle extends AbstractDatabase
     new DDLCommand(statement, undo, false).doIt();
 
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " ("
         + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
     undo = "DROP INDEX " + indexName;
@@ -557,10 +557,10 @@ public class Oracle extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String, String);
    */
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     String statement = "DROP INDEX " + indexName;
     String undo = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " ("
         + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
@@ -2006,14 +2006,14 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset,
+  public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset,
       int length)
   {
     Connection conn = Database.getConnection();
@@ -2025,10 +2025,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -2087,11 +2087,11 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
@@ -2102,10 +2102,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -2167,10 +2167,10 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     PreparedStatement prepared = null;
     Statement statement = null;
@@ -2179,10 +2179,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -2453,11 +2453,11 @@ public class Oracle extends AbstractDatabase
   {
     /*
 SELECT * FROM (
-  SELECT ROW_NUMBER() OVER (ORDER BY id ASC) AS rn, id, type FROM (
+  SELECT ROW_NUMBER() OVER (ORDER BY oid ASC) AS rn, oid, type FROM (
       SELECT
-      id, type FROM  metadata
+      oid, type FROM  metadata
       UNION ALL
-      SELECT id, type
+      SELECT oid, type
       FROM  metadata
   )
 )

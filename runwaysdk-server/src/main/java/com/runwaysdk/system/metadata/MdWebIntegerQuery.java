@@ -114,13 +114,13 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebInteger mdWebInteger)
     {
       if(mdWebInteger == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebInteger.getId());
+      return this.EQ(mdWebInteger.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebInteger mdWebInteger)
     {
       if(mdWebInteger == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebInteger.getId());
+      return this.NE(mdWebInteger.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
 
       for (int i=0; i<mdWebInteger.length; i++)
       {
-        itemIdArray[i] = mdWebInteger[i].getId();
+        itemIdArray[i] = mdWebInteger[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
 
       for (int i=0; i<mdWebInteger.length; i++)
       {
-        itemIdArray[i] = mdWebInteger[i].getId();
+        itemIdArray[i] = mdWebInteger[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
 
       for (int i=0; i<mdWebInteger.length; i++)
       {
-        itemIdArray[i] = mdWebInteger[i].getId();
+        itemIdArray[i] = mdWebInteger[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
 
       for (int i=0; i<mdWebInteger.length; i++)
       {
-        itemIdArray[i] = mdWebInteger[i].getId();
+        itemIdArray[i] = mdWebInteger[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebIntegerQuery extends com.runwaysdk.system.metadata.MdWebNumbe
 
       for (int i=0; i<mdWebInteger.length; i++)
       {
-        itemIdArray[i] = mdWebInteger[i].getId();
+        itemIdArray[i] = mdWebInteger[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

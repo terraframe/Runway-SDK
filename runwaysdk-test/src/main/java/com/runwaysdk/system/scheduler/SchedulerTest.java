@@ -60,9 +60,9 @@ public class SchedulerTest
     private static Map<String, TestRecord> records = new ConcurrentHashMap<String, TestRecord>();
 
     /**
-     * The id of the Job that this is recorded against.
+     * The oid of the Job that this is recorded against.
      */
-    private final String                   id;
+    private final String                   oid;
 
     /**
      * The number of executions.
@@ -74,19 +74,19 @@ public class SchedulerTest
      */
     private boolean                        executed;
 
-    private TestRecord(String id)
+    private TestRecord(String oid)
     {
-      this.id = id;
+      this.oid = oid;
       this.count = 0;
       this.executed = false;
     }
 
     /**
-     * @return the id
+     * @return the oid
      */
-    public String getId()
+    public String getOid()
     {
-      return id;
+      return oid;
     }
 
     /**
@@ -109,7 +109,7 @@ public class SchedulerTest
     {
       if (this.count > 0)
       {
-        throw new ProgrammingErrorException("Job [" + id + "] has already executed.");
+        throw new ProgrammingErrorException("Job [" + oid + "] has already executed.");
       }
       else
       {
@@ -125,17 +125,17 @@ public class SchedulerTest
 
     private static TestRecord newRecord(ExecutableJob job)
     {
-      String id = job.getJobId();
+      String oid = job.getJobId();
       synchronized (records)
       {
-        if (records.containsKey(id))
+        if (records.containsKey(oid))
         {
-          throw new ProgrammingErrorException("Job [" + id + "] already recorded.");
+          throw new ProgrammingErrorException("Job [" + oid + "] already recorded.");
         }
         else
         {
-          TestRecord tr = new TestRecord(id);
-          records.put(id, tr);
+          TestRecord tr = new TestRecord(oid);
+          records.put(oid, tr);
           return tr;
         }
 
@@ -155,7 +155,7 @@ public class SchedulerTest
     public void execute(ExecutionContext executionContext)
     {
       ExecutableJob job = executionContext.getJob();
-      String id = job.getJobId();
+      String oid = job.getJobId();
 
       JobHistory history = executionContext.getJobHistory();
       history.lock();
@@ -169,7 +169,7 @@ public class SchedulerTest
       }
       history.unlock();
 
-      TestRecord testRecord = TestRecord.records.get(id);
+      TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.recordOnce();
     }
   }
@@ -229,7 +229,7 @@ public class SchedulerTest
       {
         if (runs > maxWaits)
         {
-          Assert.fail("The record [" + tr.getId() + "] took longer than [" + maxWaits + "] retries to complete.");
+          Assert.fail("The record [" + tr.getOid() + "] took longer than [" + maxWaits + "] retries to complete.");
         }
 
         // Let's wait a while and try again.
@@ -287,7 +287,7 @@ public class SchedulerTest
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -334,7 +334,7 @@ public class SchedulerTest
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -375,7 +375,7 @@ public class SchedulerTest
 
       // Modify the CRON string to never run while the job is currently
       // executing.
-      job = ExecutableJob.get(job.getId());
+      job = ExecutableJob.get(job.getOid());
       job.setCronExpression("");
       job.apply();
 
@@ -394,7 +394,7 @@ public class SchedulerTest
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -450,8 +450,8 @@ public class SchedulerTest
     }
     finally
     {
-      ExecutableJob.get(job1.getId()).delete();
-      ExecutableJob.get(job2.getId()).delete();
+      ExecutableJob.get(job1.getOid()).delete();
+      ExecutableJob.get(job2.getOid()).delete();
       clearHistory();
     }
   }
@@ -698,7 +698,7 @@ public class SchedulerTest
   // // Make sure the ExecutableJob DB record was removed
   // try
   // {
-  // ExecutableJob.get(job.getId());
+  // ExecutableJob.get(job.getOid());
   //
   // Assert.fail("The ExecutableJob was not deleted with removeOnComplete set to
   // true.");
@@ -719,7 +719,7 @@ public class SchedulerTest
   // {
   // try
   // {
-  // ExecutableJob.get(job.getId()).delete();
+  // ExecutableJob.get(job.getOid()).delete();
   // }
   // catch(DataNotFoundException e)
   // {

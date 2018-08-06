@@ -162,9 +162,9 @@ public class MdAttributeFloatDAO extends MdAttributeDecDAO implements MdAttribut
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeFloatDAOIF get(String id)
+  public static MdAttributeFloatDAOIF get(String oid)
   {
-    return (MdAttributeFloatDAOIF) BusinessDAO.get(id);
+    return (MdAttributeFloatDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

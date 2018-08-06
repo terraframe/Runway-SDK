@@ -29,7 +29,7 @@ public class AlphabetAttributeRoot extends AlphabetAttributeRootBase implements 
   
   public AlphabetAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.jstest.business.ontology.Alphabet child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

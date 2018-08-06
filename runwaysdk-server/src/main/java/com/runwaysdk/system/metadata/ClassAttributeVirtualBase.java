@@ -51,9 +51,9 @@ public abstract class ClassAttributeVirtualBase extends com.runwaysdk.system.met
     return (com.runwaysdk.system.metadata.MdAttributeVirtual) super.getChild();
   }
   
-  public static ClassAttributeVirtual get(String id)
+  public static ClassAttributeVirtual get(String oid)
   {
-    return (ClassAttributeVirtual) com.runwaysdk.business.Relationship.get(id);
+    return (ClassAttributeVirtual) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ClassAttributeVirtual getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ClassAttributeVirtualBase extends com.runwaysdk.system.met
     return (ClassAttributeVirtual) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ClassAttributeVirtual lock(java.lang.String id)
+  public static ClassAttributeVirtual lock(java.lang.String oid)
   {
-    ClassAttributeVirtual _instance = ClassAttributeVirtual.get(id);
+    ClassAttributeVirtual _instance = ClassAttributeVirtual.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ClassAttributeVirtual unlock(java.lang.String id)
+  public static ClassAttributeVirtual unlock(java.lang.String oid)
   {
-    ClassAttributeVirtual _instance = ClassAttributeVirtual.get(id);
+    ClassAttributeVirtual _instance = ClassAttributeVirtual.get(oid);
     _instance.unlock();
     
     return _instance;

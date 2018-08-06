@@ -56,7 +56,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
    * Creates a new globally viewable file on the server
    * 
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param path
    *          The fully qualified path on the server to put the file
    * @param filename
@@ -76,7 +76,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
       BusinessDTO businessDTO = clientRequest.newFile(path, filename, extension, RemoteInputStreamClient.wrap(stream));
 
       JSONObject json = new JSONObject();
-      json.put(EntityInfo.ID, businessDTO.getId());
+      json.put(EntityInfo.ID, businessDTO.getOid());
       json.put(VaultFileInfo.FILE_NAME, businessDTO.getValue(VaultFileInfo.FILE_NAME));
       json.put(VaultFileInfo.EXTENSION, businessDTO.getValue(VaultFileInfo.EXTENSION));
       json.put(VaultFileInfo.FILE_SIZE, Integer.parseInt(businessDTO.getValue(VaultFileInfo.FILE_SIZE)));
@@ -101,7 +101,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
    * @param type
    *          Fully qualified type name of the MdType defining the AttributeFile
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */
@@ -116,9 +116,9 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
 
   /**
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param fileId
-   *          The id of the vault file to retrieve
+   *          The oid of the vault file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */
@@ -155,7 +155,7 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
       BusinessDTO businessDTO = clientRequest.newSecureFile(filename, extension, RemoteInputStreamClient.wrap(stream));
 
       JSONObject json = new JSONObject();
-      json.put(EntityInfo.ID, businessDTO.getId());
+      json.put(EntityInfo.ID, businessDTO.getOid());
       json.put(VaultFileInfo.FILE_NAME, businessDTO.getValue(VaultFileInfo.FILE_NAME));
       json.put(VaultFileInfo.EXTENSION, businessDTO.getValue(VaultFileInfo.EXTENSION));
       json.put(VaultFileInfo.FILE_SIZE, Integer.parseInt(businessDTO.getValue(VaultFileInfo.FILE_SIZE)));

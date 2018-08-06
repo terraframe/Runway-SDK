@@ -41,13 +41,13 @@ public class MetadataRelationshipDAO extends TreeDAO implements SpecializedDAOIm
    */
   public String save(boolean save)
   {
-    String id = this.getId();
+    String oid = this.getOid();
 
     Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      this.setKey(id);
+      this.setKey(oid);
     }
 
     return super.save(save);

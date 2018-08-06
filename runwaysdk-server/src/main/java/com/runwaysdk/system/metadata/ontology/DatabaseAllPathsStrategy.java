@@ -176,9 +176,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
       mdParentTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdParentTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-      mdParentTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
-      mdParentTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-      mdParentTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getOid());
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+      mdParentTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdParentTermAttr.apply();
   
       MdAttributeReferenceDAO mdChildTermAttr = MdAttributeReferenceDAO.newInstance();
@@ -187,12 +187,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
       mdChildTermAttr.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdChildTermAttr.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-      mdChildTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getId());
-      mdChildTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-      mdChildTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, allPaths.getOid());
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+      mdChildTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdChildTermAttr.apply();
   
-      this.termAllPaths = MdBusiness.get(allPaths.getId());
+      this.termAllPaths = MdBusiness.get(allPaths.getOid());
     }
     else
     {
@@ -266,7 +266,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       return;
     }
 
-    MdBusiness table = MdBusiness.get(this.getAllPaths().getId());
+    MdBusiness table = MdBusiness.get(this.getAllPaths().getOid());
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(ALL_PATHS_PARAMETER, table);
@@ -349,7 +349,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // make sure there are no children
     QueryFactory f = new QueryFactory();
     RelationshipDAOQuery q = f.relationshipDAOQuery(relationshipType);
-    q.WHERE(q.parentId().EQ(term.getId()));
+    q.WHERE(q.parentId().EQ(term.getOid()));
 
     if (q.getCount() > 0)
     {
@@ -360,7 +360,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // ensure there's only one parent
     f = new QueryFactory();
     q = f.relationshipDAOQuery(relationshipType);
-    q.WHERE(q.childId().EQ(term.getId()));
+    q.WHERE(q.childId().EQ(term.getOid()));
 
     // a leaf can only have one or less parents
     return q.getCount() <= 1;
@@ -391,12 +391,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     // make sure all children are *this* Universal, but don't include
     // the row where this Universal is its own parent
-    pathsQ.WHERE(childTerm.EQ(term.getId()));
-    pathsQ.AND(parentTerm.NE(term.getId()));
+    pathsQ.WHERE(childTerm.EQ(term.getOid()));
+    pathsQ.AND(parentTerm.NE(term.getOid()));
 
     // join the all paths with the universals
 
-    domainQ.WHERE(domainQ.id().EQ(parentTerm.id()));
+    domainQ.WHERE(domainQ.oid().EQ(parentTerm.oid()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
     // List<Term> terms = new LinkedList<Term>();
@@ -441,12 +441,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     // make sure all children are *this* Universal, but don't include
     // the row where this Universal is its own parent
-    pathsQ.WHERE(parentTerm.EQ(term.getId()));
-    pathsQ.AND(childTerm.NE(term.getId()));
+    pathsQ.WHERE(parentTerm.EQ(term.getOid()));
+    pathsQ.AND(childTerm.NE(term.getOid()));
 
     // join the all paths with the universals
 
-    domainQ.WHERE(domainQ.id().EQ(childTerm.id()));
+    domainQ.WHERE(domainQ.oid().EQ(childTerm.oid()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
     // List<Term> terms = new LinkedList<Term>();
@@ -507,8 +507,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     String allPathsType = this.getAllPaths().definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
-    pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(term.getId()));
-    pathsQ.OR(pathsQ.aReference(PARENT_TERM_ATTR).EQ(term.getId()));
+    pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(term.getOid()));
+    pathsQ.OR(pathsQ.aReference(PARENT_TERM_ATTR).EQ(term.getOid()));
 
     OIterator<? extends Business> iter = pathsQ.getIterator();
     try
@@ -535,11 +535,11 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     DDMSAllpathsLogic helper = new DDMSAllpathsLogic(this, relationshipType);
 
     // First, remove the term and all children from the allpaths table.
-    helper.deleteTermAndChildrenFromAllPaths(term.getId(), relationshipType);
+    helper.deleteTermAndChildrenFromAllPaths(term.getOid(), relationshipType);
 
     // Now we update the term and all its children. This will rebuild the
     // allpaths to what it should be.
-    helper.updateAllPathForTerm(term.getId(), null, true);
+    helper.updateAllPathForTerm(term.getOid(), null, true);
   }
 
   /**
@@ -557,8 +557,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       // the
       // parent and the child
       BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths().definesType());
-      instance.setValue(PARENT_TERM_ATTR, term.getId());
-      instance.setValue(CHILD_TERM_ATTR, term.getId());
+      instance.setValue(PARENT_TERM_ATTR, term.getOid());
+      instance.setValue(CHILD_TERM_ATTR, term.getOid());
       instance.apply();
     }
     catch (DuplicateDataDatabaseException ex)
@@ -596,16 +596,16 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       QueryFactory f = new QueryFactory();
       String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
-      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(deleteRoot.getId()));
+      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(deleteRoot.getOid()));
       delRootACount = pathsQ.getCount() - 1;
     }
 
     @Override
     public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
     {
-      String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getId()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
-      String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getId() + "'"));
-      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
+      String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getOid()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
+      String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getOid() + "'"));
+      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
       try
       {
         if (resultSet.next())
@@ -649,7 +649,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       QueryFactory f = new QueryFactory();
       String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
-      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(child.getId()));
+      pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(child.getOid()));
       long ancestorCount = pathsQ.getCount() - 1;
 
       return s.size() + delRootACount < ancestorCount;

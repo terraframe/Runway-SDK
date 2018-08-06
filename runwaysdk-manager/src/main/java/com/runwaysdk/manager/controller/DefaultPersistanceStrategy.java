@@ -75,9 +75,9 @@ public class DefaultPersistanceStrategy extends PersistanceStrategyAdapter imple
   }
 
   @Request
-  public EntityDAOIF get(String id)
+  public EntityDAOIF get(String oid)
   {
-    return EntityDAO.get(id);
+    return EntityDAO.get(oid);
   }
 
   @Request
@@ -142,9 +142,9 @@ public class DefaultPersistanceStrategy extends PersistanceStrategyAdapter imple
   }
 
   @Request
-  public List<RelationshipDAOIF> getChildren(String id, String relationshipType)
+  public List<RelationshipDAOIF> getChildren(String oid, String relationshipType)
   {
-    return BusinessDAO.get(id).getChildren(relationshipType);
+    return BusinessDAO.get(oid).getChildren(relationshipType);
   }
 
   @Request
@@ -154,9 +154,9 @@ public class DefaultPersistanceStrategy extends PersistanceStrategyAdapter imple
   }
 
   @Request
-  public List<RelationshipDAOIF> getParents(String id, String relationshipType)
+  public List<RelationshipDAOIF> getParents(String oid, String relationshipType)
   {
-    return BusinessDAO.get(id).getParents(relationshipType);
+    return BusinessDAO.get(oid).getParents(relationshipType);
   }
 
   @Request

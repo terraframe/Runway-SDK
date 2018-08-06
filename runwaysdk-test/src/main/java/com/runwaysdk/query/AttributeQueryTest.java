@@ -60,7 +60,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -107,7 +107,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -165,8 +165,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -214,7 +214,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -272,8 +272,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -322,7 +322,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -372,7 +372,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -439,8 +439,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -490,7 +490,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -545,8 +545,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -591,7 +591,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -646,8 +646,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -692,7 +692,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -747,8 +747,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -793,7 +793,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -848,8 +848,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -894,7 +894,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -949,8 +949,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -995,7 +995,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1050,8 +1050,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1096,7 +1096,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1151,8 +1151,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1197,7 +1197,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1252,8 +1252,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1298,7 +1298,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1353,8 +1353,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1399,7 +1399,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1454,8 +1454,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1500,7 +1500,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1555,8 +1555,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1601,7 +1601,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1656,8 +1656,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1708,7 +1708,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1776,8 +1776,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1827,7 +1827,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -1870,7 +1870,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -1925,8 +1925,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -1984,8 +1984,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -2031,7 +2031,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2074,7 +2074,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -2129,8 +2129,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2188,8 +2188,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -2235,7 +2235,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2278,7 +2278,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -2333,8 +2333,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2392,8 +2392,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -2439,7 +2439,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2482,7 +2482,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -2537,8 +2537,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2596,8 +2596,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -2643,7 +2643,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2686,7 +2686,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -2741,8 +2741,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2800,8 +2800,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -2847,7 +2847,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2890,7 +2890,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -2945,8 +2945,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3004,8 +3004,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -3051,7 +3051,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3094,7 +3094,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -3149,8 +3149,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3208,8 +3208,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -3255,7 +3255,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3298,7 +3298,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -3353,8 +3353,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3412,8 +3412,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -3459,7 +3459,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3502,7 +3502,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -3557,8 +3557,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3616,8 +3616,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -3663,7 +3663,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3706,7 +3706,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -3761,8 +3761,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3820,8 +3820,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -3867,7 +3867,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3910,7 +3910,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -3965,8 +3965,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -4024,8 +4024,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -4071,7 +4071,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -4114,7 +4114,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -4169,8 +4169,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -4228,8 +4228,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -4283,7 +4283,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -4340,7 +4340,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute Clob values are incorrect.");
         }
@@ -4408,8 +4408,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -4479,8 +4479,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Clob values are incorrect.");
         }
@@ -4531,7 +4531,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4576,7 +4576,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4635,8 +4635,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4684,7 +4684,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4729,7 +4729,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4788,8 +4788,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4837,7 +4837,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4856,7 +4856,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4903,7 +4903,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4925,7 +4925,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4985,8 +4985,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5012,8 +5012,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5061,7 +5061,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5106,7 +5106,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5165,8 +5165,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5214,7 +5214,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5233,7 +5233,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5278,7 +5278,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5300,7 +5300,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5360,8 +5360,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5387,8 +5387,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5436,7 +5436,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5481,7 +5481,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5540,8 +5540,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5595,7 +5595,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date times values are incorrect.");
         }
@@ -5664,8 +5664,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5716,7 +5716,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5761,7 +5761,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5820,8 +5820,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5869,7 +5869,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5914,7 +5914,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5973,8 +5973,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6022,7 +6022,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6041,7 +6041,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6087,7 +6087,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6110,7 +6110,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6170,8 +6170,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6198,8 +6198,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6247,7 +6247,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6292,7 +6292,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6351,8 +6351,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6400,7 +6400,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6419,7 +6419,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6464,7 +6464,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6485,7 +6485,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6545,8 +6545,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6572,8 +6572,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6621,7 +6621,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6666,7 +6666,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6725,8 +6725,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6780,7 +6780,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date times values are incorrect.");
         }
@@ -6849,8 +6849,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6901,7 +6901,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6946,7 +6946,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7005,8 +7005,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7054,7 +7054,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7099,7 +7099,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7158,8 +7158,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7207,7 +7207,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -7226,7 +7226,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -7272,7 +7272,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -7294,7 +7294,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -7353,8 +7353,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7378,8 +7378,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7427,7 +7427,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7472,7 +7472,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7531,8 +7531,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7580,7 +7580,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7599,7 +7599,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7644,7 +7644,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7666,7 +7666,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7726,8 +7726,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7753,8 +7753,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7802,7 +7802,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7847,7 +7847,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7906,8 +7906,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7961,7 +7961,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date times values are incorrect.");
         }
@@ -8029,8 +8029,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -8081,7 +8081,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8124,7 +8124,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8178,8 +8178,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8225,7 +8225,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8268,7 +8268,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8322,8 +8322,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8369,7 +8369,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8388,7 +8388,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8431,7 +8431,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8450,7 +8450,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8505,8 +8505,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8529,8 +8529,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8576,7 +8576,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8619,7 +8619,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8673,8 +8673,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8720,7 +8720,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8739,7 +8739,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8782,7 +8782,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8801,7 +8801,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8855,8 +8855,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8879,8 +8879,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8926,7 +8926,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8969,7 +8969,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -9023,8 +9023,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -9076,7 +9076,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -9143,8 +9143,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -9195,7 +9195,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9238,7 +9238,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9292,8 +9292,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9338,7 +9338,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9381,7 +9381,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9435,8 +9435,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9481,7 +9481,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9500,7 +9500,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9543,7 +9543,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9562,7 +9562,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9617,8 +9617,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9641,8 +9641,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9687,7 +9687,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9730,7 +9730,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9784,8 +9784,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9830,7 +9830,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9849,7 +9849,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9892,7 +9892,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9911,7 +9911,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9966,8 +9966,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9990,8 +9990,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -10036,7 +10036,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -10079,7 +10079,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -10133,8 +10133,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -10185,7 +10185,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -10252,8 +10252,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -10303,7 +10303,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10346,7 +10346,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10400,8 +10400,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10446,7 +10446,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10489,7 +10489,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10543,8 +10543,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10589,7 +10589,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10608,7 +10608,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10651,7 +10651,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10670,7 +10670,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10724,8 +10724,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10748,8 +10748,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10794,7 +10794,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10837,7 +10837,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10891,8 +10891,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10937,7 +10937,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10956,7 +10956,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10999,7 +10999,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -11018,7 +11018,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -11072,8 +11072,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -11096,8 +11096,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -11142,7 +11142,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -11185,7 +11185,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -11239,8 +11239,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -11291,7 +11291,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -11358,8 +11358,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -11409,7 +11409,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11452,7 +11452,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11506,8 +11506,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11552,7 +11552,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11595,7 +11595,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11649,8 +11649,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11695,7 +11695,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11714,7 +11714,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11757,7 +11757,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11776,7 +11776,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11830,8 +11830,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11854,8 +11854,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11900,7 +11900,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11943,7 +11943,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11997,8 +11997,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -12043,7 +12043,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12062,7 +12062,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12105,7 +12105,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12124,7 +12124,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12178,8 +12178,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -12202,8 +12202,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -12248,7 +12248,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12291,7 +12291,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12345,8 +12345,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -12397,7 +12397,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -12464,8 +12464,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -12515,7 +12515,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12558,7 +12558,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12612,8 +12612,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -12658,7 +12658,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12701,7 +12701,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12755,8 +12755,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -12801,7 +12801,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12820,7 +12820,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12863,7 +12863,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12882,7 +12882,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12937,8 +12937,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -12961,8 +12961,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -13007,7 +13007,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13050,7 +13050,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13104,8 +13104,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -13150,7 +13150,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13169,7 +13169,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13212,7 +13212,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13231,7 +13231,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13285,8 +13285,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -13309,8 +13309,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -13355,7 +13355,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13398,7 +13398,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13452,8 +13452,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -13504,7 +13504,7 @@ public class AttributeQueryTest
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -13571,8 +13571,8 @@ public class AttributeQueryTest
       for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }

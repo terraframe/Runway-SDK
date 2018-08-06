@@ -41,9 +41,9 @@ public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeTerm get(String id)
+  public static MdAttributeTerm get(String oid)
   {
-    return (MdAttributeTerm) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeTerm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeTerm getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.
     return (MdAttributeTerm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeTerm lock(java.lang.String id)
+  public static MdAttributeTerm lock(java.lang.String oid)
   {
-    MdAttributeTerm _instance = MdAttributeTerm.get(id);
+    MdAttributeTerm _instance = MdAttributeTerm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeTerm unlock(java.lang.String id)
+  public static MdAttributeTerm unlock(java.lang.String oid)
   {
-    MdAttributeTerm _instance = MdAttributeTerm.get(id);
+    MdAttributeTerm _instance = MdAttributeTerm.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -71,15 +71,15 @@ public class MdMobileGroupDAO extends MdMobileFieldDAO implements MdMobileGroupD
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdMobileGroupDAOIF get(String id)
+  public static MdMobileGroupDAOIF get(String oid)
   {
-    return (MdMobileGroupDAOIF) BusinessDAO.get(id);
+    return (MdMobileGroupDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
   public TreeDAO addField(MdMobileFieldDAOIF mdMobileField)
   {
-    return TreeDAO.newInstance(this.getId(), mdMobileField.getId(), RelationshipTypes.MOBILE_GROUP_FIELD.getType());
+    return TreeDAO.newInstance(this.getOid(), mdMobileField.getOid(), RelationshipTypes.MOBILE_GROUP_FIELD.getType());
   }
 
 }

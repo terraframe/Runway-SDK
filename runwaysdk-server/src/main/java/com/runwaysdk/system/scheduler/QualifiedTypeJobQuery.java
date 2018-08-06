@@ -134,13 +134,13 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.QualifiedTypeJob qualifiedTypeJob)
     {
       if(qualifiedTypeJob == null) return this.EQ((java.lang.String)null);
-      return this.EQ(qualifiedTypeJob.getId());
+      return this.EQ(qualifiedTypeJob.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.QualifiedTypeJob qualifiedTypeJob)
     {
       if(qualifiedTypeJob == null) return this.NE((java.lang.String)null);
-      return this.NE(qualifiedTypeJob.getId());
+      return this.NE(qualifiedTypeJob.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getClassName()
@@ -203,7 +203,7 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
 
       for (int i=0; i<qualifiedTypeJob.length; i++)
       {
-        itemIdArray[i] = qualifiedTypeJob[i].getId();
+        itemIdArray[i] = qualifiedTypeJob[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
 
       for (int i=0; i<qualifiedTypeJob.length; i++)
       {
-        itemIdArray[i] = qualifiedTypeJob[i].getId();
+        itemIdArray[i] = qualifiedTypeJob[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
 
       for (int i=0; i<qualifiedTypeJob.length; i++)
       {
-        itemIdArray[i] = qualifiedTypeJob[i].getId();
+        itemIdArray[i] = qualifiedTypeJob[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
 
       for (int i=0; i<qualifiedTypeJob.length; i++)
       {
-        itemIdArray[i] = qualifiedTypeJob[i].getId();
+        itemIdArray[i] = qualifiedTypeJob[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class QualifiedTypeJobQuery extends com.runwaysdk.system.scheduler.Execu
 
       for (int i=0; i<qualifiedTypeJob.length; i++)
       {
-        itemIdArray[i] = qualifiedTypeJob[i].getId();
+        itemIdArray[i] = qualifiedTypeJob[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

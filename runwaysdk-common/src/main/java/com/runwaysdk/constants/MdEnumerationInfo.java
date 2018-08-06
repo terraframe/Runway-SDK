@@ -32,7 +32,7 @@ public interface MdEnumerationInfo extends MdTypeInfo
    */
   public static final String TABLE_NAME                = "tableName";
   /**
-   * Name of the attribute that specifies the id of the metadata that defines 
+   * Name of the attribute that specifies the oid of the metadata that defines 
    * the type used to store attributes on this relationship.
    */
   public static final String MASTER_MD_BUSINESS        = "masterMdBusiness";

@@ -48,7 +48,7 @@ public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      addEnumItem(INDICATORFUNCTION, value.getId());
+      addEnumItem(INDICATORFUNCTION, value.getOid());
     }
   }
   
@@ -56,7 +56,7 @@ public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      removeEnumItem(INDICATORFUNCTION, value.getId());
+      removeEnumItem(INDICATORFUNCTION, value.getOid());
     }
   }
   
@@ -112,7 +112,7 @@ public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(MDATTRIBUTEPRIMITIVE, value.getId());
+      setValue(MDATTRIBUTEPRIMITIVE, value.getOid());
     }
   }
   
@@ -121,9 +121,9 @@ public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static IndicatorPrimitive get(String id)
+  public static IndicatorPrimitive get(String oid)
   {
-    return (IndicatorPrimitive) com.runwaysdk.business.Business.get(id);
+    return (IndicatorPrimitive) com.runwaysdk.business.Business.get(oid);
   }
   
   public static IndicatorPrimitive getByKey(String key)
@@ -131,17 +131,17 @@ public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metada
     return (IndicatorPrimitive) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static IndicatorPrimitive lock(java.lang.String id)
+  public static IndicatorPrimitive lock(java.lang.String oid)
   {
-    IndicatorPrimitive _instance = IndicatorPrimitive.get(id);
+    IndicatorPrimitive _instance = IndicatorPrimitive.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static IndicatorPrimitive unlock(java.lang.String id)
+  public static IndicatorPrimitive unlock(java.lang.String oid)
   {
-    IndicatorPrimitive _instance = IndicatorPrimitive.get(id);
+    IndicatorPrimitive _instance = IndicatorPrimitive.get(oid);
     _instance.unlock();
     
     return _instance;

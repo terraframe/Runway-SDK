@@ -72,7 +72,7 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     }
     else
     {
-      setValue(CONDITION, value.getId());
+      setValue(CONDITION, value.getOid());
     }
   }
   
@@ -106,9 +106,9 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     return com.runwaysdk.system.metadata.MdFieldDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.metadata.VisibleDependencyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.VisibleDependencyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.VisibleDependencyDTO) dto;
   }
@@ -138,7 +138,7 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.VisibleDependencyQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -151,10 +151,10 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.VisibleDependencyDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.VisibleDependencyDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.VisibleDependencyDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.VisibleDependencyDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -164,10 +164,10 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.VisibleDependencyDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.VisibleDependencyDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.VisibleDependencyDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.VisibleDependencyDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

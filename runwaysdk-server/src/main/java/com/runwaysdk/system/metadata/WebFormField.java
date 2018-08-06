@@ -29,7 +29,7 @@ public class WebFormField extends WebFormFieldBase
   
   public WebFormField(com.runwaysdk.system.metadata.MdWebForm parent, com.runwaysdk.system.metadata.MdWebField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -32,7 +32,7 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,11 +128,11 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -142,7 +142,7 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MetadataRelationship.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -284,7 +284,7 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
     return (com.runwaysdk.business.Business) super.getChild();
   }
   
-  public static MetadataRelationship get(String id)
+  public static MetadataRelationship get(String oid)
   {
-    return (MetadataRelationship) com.runwaysdk.business.Relationship.get(id);
+    return (MetadataRelationship) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static MetadataRelationship getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class MetadataRelationshipBase extends com.runwaysdk.business.Re
     return (MetadataRelationship) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static MetadataRelationship lock(java.lang.String id)
+  public static MetadataRelationship lock(java.lang.String oid)
   {
-    MetadataRelationship _instance = MetadataRelationship.get(id);
+    MetadataRelationship _instance = MetadataRelationship.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MetadataRelationship unlock(java.lang.String id)
+  public static MetadataRelationship unlock(java.lang.String oid)
   {
-    MetadataRelationship _instance = MetadataRelationship.get(id);
+    MetadataRelationship _instance = MetadataRelationship.get(oid);
     _instance.unlock();
     
     return _instance;

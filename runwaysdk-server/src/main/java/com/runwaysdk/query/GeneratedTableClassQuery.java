@@ -104,7 +104,7 @@ public abstract class GeneratedTableClassQuery extends GeneratedComponentQuery
 
 //
 //  @Override
-//  protected SelectableChar getId()
+//  protected SelectableChar getOid()
 //  {
 //    // TODO Auto-generated method stub
 //    return null;

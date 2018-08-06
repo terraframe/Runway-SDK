@@ -156,14 +156,14 @@ public class SharedRequestPersistanceStrategy extends PersistanceStrategyAdapter
   }
 
   @Override
-  public EntityDAOIF get(final String id)
+  public EntityDAOIF get(final String oid)
   {
     SharedRequestExecutor<EntityDAOIF> executor = new SharedRequestExecutor<EntityDAOIF>(state)
     {
       @Override
       protected EntityDAOIF run()
       {
-        return EntityDAO.get(id);
+        return EntityDAO.get(oid);
       }
     };
 
@@ -302,14 +302,14 @@ public class SharedRequestPersistanceStrategy extends PersistanceStrategyAdapter
   }
 
   @Override
-  public List<RelationshipDAOIF> getChildren(final String id, final String relationshipType)
+  public List<RelationshipDAOIF> getChildren(final String oid, final String relationshipType)
   {
     SharedRequestExecutor<List<RelationshipDAOIF>> executor = new SharedRequestExecutor<List<RelationshipDAOIF>>(state)
     {
       @Override
       protected List<RelationshipDAOIF> run()
       {
-        return BusinessDAO.get(id).getChildren(relationshipType);
+        return BusinessDAO.get(oid).getChildren(relationshipType);
       }
     };
 
@@ -332,14 +332,14 @@ public class SharedRequestPersistanceStrategy extends PersistanceStrategyAdapter
   }
 
   @Override
-  public List<RelationshipDAOIF> getParents(final String id, final String relationshipType)
+  public List<RelationshipDAOIF> getParents(final String oid, final String relationshipType)
   {
     SharedRequestExecutor<List<RelationshipDAOIF>> executor = new SharedRequestExecutor<List<RelationshipDAOIF>>(state)
     {
       @Override
       protected List<RelationshipDAOIF> run()
       {
-        return BusinessDAO.get(id).getParents(relationshipType);
+        return BusinessDAO.get(oid).getParents(relationshipType);
       }
     };
 

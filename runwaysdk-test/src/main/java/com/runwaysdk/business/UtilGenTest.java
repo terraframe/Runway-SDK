@@ -47,6 +47,6 @@ public class UtilGenTest extends SessionComponentGenTest
 
   protected String buildGetMethod()
   {
-    return "return (Collection) " + Util.class.getName() + ".get(id);\n";
+    return "return (Collection) " + Util.class.getName() + ".get(oid);\n";
   }
 }

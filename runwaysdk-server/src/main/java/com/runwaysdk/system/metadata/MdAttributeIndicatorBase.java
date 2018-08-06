@@ -73,7 +73,7 @@ public abstract class MdAttributeIndicatorBase extends com.runwaysdk.system.meta
     }
     else
     {
-      setValue(INDICATORELEMENT, value.getId());
+      setValue(INDICATORELEMENT, value.getOid());
     }
   }
   
@@ -125,9 +125,9 @@ public abstract class MdAttributeIndicatorBase extends com.runwaysdk.system.meta
     }
   }
   
-  public static MdAttributeIndicator get(String id)
+  public static MdAttributeIndicator get(String oid)
   {
-    return (MdAttributeIndicator) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeIndicator) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeIndicator getByKey(String key)
@@ -135,17 +135,17 @@ public abstract class MdAttributeIndicatorBase extends com.runwaysdk.system.meta
     return (MdAttributeIndicator) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeIndicator lock(java.lang.String id)
+  public static MdAttributeIndicator lock(java.lang.String oid)
   {
-    MdAttributeIndicator _instance = MdAttributeIndicator.get(id);
+    MdAttributeIndicator _instance = MdAttributeIndicator.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeIndicator unlock(java.lang.String id)
+  public static MdAttributeIndicator unlock(java.lang.String oid)
   {
-    MdAttributeIndicator _instance = MdAttributeIndicator.get(id);
+    MdAttributeIndicator _instance = MdAttributeIndicator.get(oid);
     _instance.unlock();
     
     return _instance;

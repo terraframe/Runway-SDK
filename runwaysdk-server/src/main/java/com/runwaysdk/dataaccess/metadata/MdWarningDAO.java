@@ -114,9 +114,9 @@ public class MdWarningDAO extends MdMessageDAO implements MdWarningDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdWarningDAOIF get(String id)
+  public static MdWarningDAOIF get(String oid)
   {
-    return (MdWarningDAOIF) BusinessDAO.get(id);
+    return (MdWarningDAOIF) BusinessDAO.get(oid);
   }
 
   /*

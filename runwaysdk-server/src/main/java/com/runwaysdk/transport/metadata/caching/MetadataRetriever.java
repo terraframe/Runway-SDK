@@ -44,7 +44,7 @@ public class MetadataRetriever
     String definesType = mdClass.definesType();
     String description = mdClass.getDescription(Session.getCurrentLocale());
     String displayLabel = mdClass.getDisplayLabel(Session.getCurrentLocale());
-    String id = mdClass.getId();
+    String oid = mdClass.getOid();
 
     // Get all user defined, (non-system) attributes to the attributeMap
     Map<String, AttributeMdSession> mdAttributeMap = new HashMap<String, AttributeMdSession>();
@@ -66,13 +66,13 @@ public class MetadataRetriever
 
     Session session = (Session)Session.getCurrentSession();
     
-    boolean readable = SessionFacade.checkTypeAccess(session.getId(), Operation.READ, type);
+    boolean readable = SessionFacade.checkTypeAccess(session.getOid(), Operation.READ, type);
 
-    boolean writable = SessionFacade.checkTypeAccess(session.getId(), Operation.WRITE, type);
+    boolean writable = SessionFacade.checkTypeAccess(session.getOid(), Operation.WRITE, type);
     
-    boolean delete = SessionFacade.checkTypeAccess(session.getId(), Operation.DELETE, type);
+    boolean delete = SessionFacade.checkTypeAccess(session.getOid(), Operation.DELETE, type);
     
-    ClassMdSession classMdSession = new ClassMdSession(definesType, displayLabel, description, id, superType, readable, writable, delete, mdAttributeMap);
+    ClassMdSession classMdSession = new ClassMdSession(definesType, displayLabel, description, oid, superType, readable, writable, delete, mdAttributeMap);
     
     classMdSessionMap.put(type, classMdSession);
     

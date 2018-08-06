@@ -68,12 +68,12 @@ public class TermUtil extends TermUtilBase
   // String sql = "";
   //
   // sql += "WITH RECURSIVE term_flags AS( \n";
-  // // sql += "SELECT t.id, dl.default_locale \n";
-  // sql += "SELECT term.id \n";
+  // // sql += "SELECT t.oid, dl.default_locale \n";
+  // sql += "SELECT term.oid \n";
   // sql += "FROM " + termTable + " term, " + termRelTable + " termRel \n";
   // // sql += "INNER JOIN " + displayLabelTable + " dl\n";
-  // // sql += "ON dl." + "id" + "=t." + "display_label";
-  // sql += "WHERE  termRel." + RelationshipInfo.PARENT_ID + " = term.id \n";
+  // // sql += "ON dl." + "oid" + "=t." + "display_label";
+  // sql += "WHERE  termRel." + RelationshipInfo.PARENT_ID + " = term.oid \n";
   // sql += ") \n";
   // sql += ", recursive_rollup AS ( \n";
   // sql += " SELECT * ,0 as depth \n";
@@ -146,7 +146,7 @@ public class TermUtil extends TermUtilBase
 
       for (Relationship rel : parentRels)
       {
-        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getId()));
+        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getOid()));
       }
     }
 
@@ -181,7 +181,7 @@ public class TermUtil extends TermUtilBase
 
       for (Relationship rel : childRels)
       {
-        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getId()));
+        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getOid()));
       }
     }
 

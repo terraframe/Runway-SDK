@@ -103,18 +103,18 @@ public class TransactionDiskstore implements TransactionStoreIF
   }
 
   /**
-   * Returns the {@link EntityDAOIF} from the cache with the given id or null if
-   * the object with the given id is not in the cache.
+   * Returns the {@link EntityDAOIF} from the cache with the given oid or null if
+   * the object with the given oid is not in the cache.
    * 
-   * @param id
-   * @return {@link EntityDAOIF} from the cache with the given id or null if the
-   *         object with the given id is not in the cache.
+   * @param oid
+   * @return {@link EntityDAOIF} from the cache with the given oid or null if the
+   *         object with the given oid is not in the cache.
    */
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      return cache.get(id);
+      return cache.get(oid);
     }
   }
 
@@ -126,9 +126,9 @@ public class TransactionDiskstore implements TransactionStoreIF
    */
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
   {
-    synchronized (entityDAOIF.getId())
+    synchronized (entityDAOIF.getOid())
     {
-      cache.put(entityDAOIF.getId(), (EntityDAO) entityDAOIF);
+      cache.put(entityDAOIF.getOid(), (EntityDAO) entityDAOIF);
     }
   }
 
@@ -140,11 +140,11 @@ public class TransactionDiskstore implements TransactionStoreIF
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  public void removeEntityDAOIFfromCache(String id)
+  public void removeEntityDAOIFfromCache(String oid)
   {
-    synchronized (id)
+    synchronized (oid)
     {
-      cache.remove(id);
+      cache.remove(oid);
     }
   }
 

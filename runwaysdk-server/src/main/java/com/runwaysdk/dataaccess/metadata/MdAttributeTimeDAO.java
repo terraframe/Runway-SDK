@@ -136,9 +136,9 @@ public class MdAttributeTimeDAO extends MdAttributeMomentDAO implements MdAttrib
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeTimeDAOIF get(String id)
+  public static MdAttributeTimeDAOIF get(String oid)
   {
-    return (MdAttributeTimeDAOIF) BusinessDAO.get(id);
+    return (MdAttributeTimeDAOIF) BusinessDAO.get(oid);
   }
 
 

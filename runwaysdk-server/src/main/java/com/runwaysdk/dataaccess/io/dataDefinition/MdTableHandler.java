@@ -68,7 +68,7 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
     {
       mdTableDAO.apply();
 
-      this.getManager().addMapping(name, mdTableDAO.getId());
+      this.getManager().addMapping(name, mdTableDAO.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdTableDAO);

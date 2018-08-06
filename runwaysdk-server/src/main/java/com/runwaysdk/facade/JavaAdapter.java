@@ -84,17 +84,17 @@ public class JavaAdapter
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    */
-  public static void delete(String sessionId, String id)
+  public static void delete(String sessionId, String oid)
   {
-    Facade.delete(sessionId, id);
+    Facade.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
-  public static MutableDTO get(String sessionId, String id)
+  public static MutableDTO get(String sessionId, String oid)
   {
-    return Facade.get(sessionId, id);
+    return Facade.get(sessionId, oid);
   }
 
   public static EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -309,17 +309,17 @@ public class JavaAdapter
   /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
-  public static EntityDTO lock(String sessionId, String id)
+  public static EntityDTO lock(String sessionId, String oid)
   {
-    return Facade.lock(sessionId, id);
+    return Facade.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
-  public static EntityDTO unlock(String sessionId, String id)
+  public static EntityDTO unlock(String sessionId, String oid)
   {
-    return Facade.unlock(sessionId, id);
+    return Facade.unlock(sessionId, oid);
   }
 
   /**
@@ -349,34 +349,34 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
    *      com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
-  public static List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getChildren(sessionId, id, relationshipType);
+    return Facade.getChildren(sessionId, oid, relationshipType);
   }
 
-  public static List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getChildRelationships(sessionId, id, relationshipType);
+    return Facade.getChildRelationships(sessionId, oid, relationshipType);
   }
 
-  public static List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getParentRelationships(sessionId, id, relationshipType);
+    return Facade.getParentRelationships(sessionId, oid, relationshipType);
   }
 
-  public static List<BusinessDTO> getParents(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getParents(sessionId, id, relationshipType);
+    return Facade.getParents(sessionId, oid, relationshipType);
   }
 
-  public static void deleteChildren(String sessionId, String id, String relationshipType)
+  public static void deleteChildren(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteChildren(sessionId, id, relationshipType);
+    Facade.deleteChildren(sessionId, oid, relationshipType);
   }
 
-  public static void deleteParents(String sessionId, String id, String relationshipType)
+  public static void deleteParents(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteParents(sessionId, id, relationshipType);
+    Facade.deleteParents(sessionId, oid, relationshipType);
   }
 
   public static BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO)

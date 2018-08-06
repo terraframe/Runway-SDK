@@ -35,6 +35,6 @@ public class SecureFileDownloadServlet extends FileDownloadServlet
    */
   protected final InputStream getFileBytes(ClientRequestIF clientRequest, BusinessDTO fileDTO)
   {
-    return clientRequest.getSecureFile(fileDTO.getId());
+    return clientRequest.getSecureFile(fileDTO.getOid());
   }
 }

@@ -176,9 +176,9 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          instantiate
    * @return The localized error message
    */
-  public static String invalidIdException(Locale locale, String id)
+  public static String invalidIdException(Locale locale, String oid)
   {
-    return getMessage(locale, "InvalidIdException", id);
+    return getMessage(locale, "InvalidIdException", oid);
   }
 
   /**
@@ -836,7 +836,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
-   * when an object is requested that does not exist (the id can not be found).
+   * when an object is requested that does not exist (the oid can not be found).
    * 
    * @param locale
    *          The desired locale
@@ -849,7 +849,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
-   * when an object is requested that does not exist (the id can not be found).
+   * when an object is requested that does not exist (the oid can not be found).
    * 
    * @param locale
    *          The desired locale

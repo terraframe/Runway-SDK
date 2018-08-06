@@ -120,7 +120,7 @@ public class Sandbox implements Job
     // MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
     // mdTable.setValue(MdTableInfo.TABLE_NAME, "md_class");
     //
-    // String id = mdTable.apply();
+    // String oid = mdTable.apply();
     //
     // System.out.println();
 
@@ -130,7 +130,7 @@ public class Sandbox implements Job
     // MdAttributeConcreteDAO mdAttribute =
     // (MdAttributeConcreteDAO)mdTable.getMdAttributeDAO(MdTableInfo.TABLE_NAME).getBusinessDAO();
     // mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE,
-    // IndexTypes.NON_UNIQUE_INDEX.getId());
+    // IndexTypes.NON_UNIQUE_INDEX.getOid());
     // mdAttribute.apply();
 
     // mdTable.apply();
@@ -154,7 +154,7 @@ public class Sandbox implements Job
     mdTable.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdTable.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdTable");
     mdTable.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata for relational database tables for entities whose lifecylce is not direclty managed");
-    mdTable.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdClass.getId());
+    mdTable.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdClass.getOid());
     mdTable.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdTable.setValue(MdBusinessInfo.EXPORTED, MdAttributeBooleanInfo.TRUE);
     mdTable.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
@@ -176,9 +176,9 @@ public class Sandbox implements Job
     tableName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     tableName.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.FALSE);
     tableName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    tableName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-    tableName.setValue(MdAttributeCharacterInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-    tableName.setValue(MdAttributeCharacterInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+    tableName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
+    tableName.setValue(MdAttributeCharacterInfo.SETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
+    tableName.setValue(MdAttributeCharacterInfo.GETTER_VISIBILITY, VisibilityModifier.PUBLIC.getOid());
     tableName.setValue(MdAttributeCharacterInfo.SIZE, MdTableInfo.MAX_TABLE_NAME);
     tableName.apply();
   }

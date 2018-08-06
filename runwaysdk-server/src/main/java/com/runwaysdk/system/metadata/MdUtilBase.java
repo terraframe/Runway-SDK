@@ -73,7 +73,7 @@ public abstract class MdUtilBase extends com.runwaysdk.system.metadata.MdSession
     }
     else
     {
-      setValue(SUPERMDUTIL, value.getId());
+      setValue(SUPERMDUTIL, value.getOid());
     }
   }
   
@@ -168,9 +168,9 @@ public abstract class MdUtilBase extends com.runwaysdk.system.metadata.MdSession
     }
   }
   
-  public static MdUtil get(String id)
+  public static MdUtil get(String oid)
   {
-    return (MdUtil) com.runwaysdk.business.Business.get(id);
+    return (MdUtil) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdUtil getByKey(String key)
@@ -178,17 +178,17 @@ public abstract class MdUtilBase extends com.runwaysdk.system.metadata.MdSession
     return (MdUtil) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdUtil lock(java.lang.String id)
+  public static MdUtil lock(java.lang.String oid)
   {
-    MdUtil _instance = MdUtil.get(id);
+    MdUtil _instance = MdUtil.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdUtil unlock(java.lang.String id)
+  public static MdUtil unlock(java.lang.String oid)
   {
-    MdUtil _instance = MdUtil.get(id);
+    MdUtil _instance = MdUtil.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -45,9 +45,9 @@ public class TypeMd implements Serializable, Cloneable
   private String            description;
 
   /**
-   * The id of the metadata defining the type.
+   * The oid of the metadata defining the type.
    */
-  private String            id;
+  private String            oid;
 
   private Boolean           generateSource;
 
@@ -58,7 +58,7 @@ public class TypeMd implements Serializable, Cloneable
   {
     displayLabel = "";
     description = "";
-    id = "";
+    oid = "";
     this.generateSource = true;
   }
 
@@ -69,11 +69,11 @@ public class TypeMd implements Serializable, Cloneable
    * @param generateSource
    *          TODO
    */
-  public TypeMd(String displayLabel, String description, String id, Boolean generateSource)
+  public TypeMd(String displayLabel, String description, String oid, Boolean generateSource)
   {
     this.displayLabel = displayLabel;
     this.description = description;
-    this.id = id;
+    this.oid = oid;
     this.generateSource = generateSource;
   }
 
@@ -118,23 +118,23 @@ public class TypeMd implements Serializable, Cloneable
   }
 
   /**
-   * Returns the id of the metadata that defines this type.
+   * Returns the oid of the metadata that defines this type.
    *
    * @return
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   /**
-   * Sets the id.
+   * Sets the oid.
    *
-   * @param id
+   * @param oid
    */
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
   public boolean isGenerateSource()
@@ -157,7 +157,7 @@ public class TypeMd implements Serializable, Cloneable
       TypeMd typeMd = (TypeMd) super.clone();
       typeMd.setDescription(description);
       typeMd.setDisplayLabel(displayLabel);
-      typeMd.setId(id);
+      typeMd.setOid(oid);
       typeMd.setGenerateSource(this.generateSource);
 
       return typeMd;

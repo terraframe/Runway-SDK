@@ -51,9 +51,9 @@ public abstract class ClassAttributeBase extends com.runwaysdk.system.metadata.M
     return (com.runwaysdk.system.metadata.MdAttribute) super.getChild();
   }
   
-  public static ClassAttribute get(String id)
+  public static ClassAttribute get(String oid)
   {
-    return (ClassAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (ClassAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ClassAttribute getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ClassAttributeBase extends com.runwaysdk.system.metadata.M
     return (ClassAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ClassAttribute lock(java.lang.String id)
+  public static ClassAttribute lock(java.lang.String oid)
   {
-    ClassAttribute _instance = ClassAttribute.get(id);
+    ClassAttribute _instance = ClassAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ClassAttribute unlock(java.lang.String id)
+  public static ClassAttribute unlock(java.lang.String oid)
   {
-    ClassAttribute _instance = ClassAttribute.get(id);
+    ClassAttribute _instance = ClassAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -110,9 +110,9 @@ public abstract class MdAttributeBooleanBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static MdAttributeBoolean get(String id)
+  public static MdAttributeBoolean get(String oid)
   {
-    return (MdAttributeBoolean) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeBoolean) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeBoolean getByKey(String key)
@@ -120,17 +120,17 @@ public abstract class MdAttributeBooleanBase extends com.runwaysdk.system.metada
     return (MdAttributeBoolean) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeBoolean lock(java.lang.String id)
+  public static MdAttributeBoolean lock(java.lang.String oid)
   {
-    MdAttributeBoolean _instance = MdAttributeBoolean.get(id);
+    MdAttributeBoolean _instance = MdAttributeBoolean.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeBoolean unlock(java.lang.String id)
+  public static MdAttributeBoolean unlock(java.lang.String oid)
   {
-    MdAttributeBoolean _instance = MdAttributeBoolean.get(id);
+    MdAttributeBoolean _instance = MdAttributeBoolean.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -109,7 +109,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.IndicatorOperator.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -128,7 +128,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.IndicatorOperator.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -172,13 +172,13 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MathOperator mathOperator)
     {
       if(mathOperator == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mathOperator.getId());
+      return this.EQ(mathOperator.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MathOperator mathOperator)
     {
       if(mathOperator == null) return this.NE((java.lang.String)null);
-      return this.NE(mathOperator.getId());
+      return this.NE(mathOperator.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getOperatorSymbol()
@@ -277,7 +277,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<indicatorOperator.length; i++)
       {
-        enumIdArray[i] = indicatorOperator[i].getId();
+        enumIdArray[i] = indicatorOperator[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -289,7 +289,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<indicatorOperator.length; i++)
       {
-        enumIdArray[i] = indicatorOperator[i].getId();
+        enumIdArray[i] = indicatorOperator[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -301,7 +301,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<indicatorOperator.length; i++)
       {
-        enumIdArray[i] = indicatorOperator[i].getId();
+        enumIdArray[i] = indicatorOperator[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -313,7 +313,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<indicatorOperator.length; i++)
       {
-        enumIdArray[i] = indicatorOperator[i].getId();
+        enumIdArray[i] = indicatorOperator[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -325,7 +325,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<indicatorOperator.length; i++)
       {
-        enumIdArray[i] = indicatorOperator[i].getId();
+        enumIdArray[i] = indicatorOperator[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -372,7 +372,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<mathOperator.length; i++)
       {
-        itemIdArray[i] = mathOperator[i].getId();
+        itemIdArray[i] = mathOperator[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -384,7 +384,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<mathOperator.length; i++)
       {
-        itemIdArray[i] = mathOperator[i].getId();
+        itemIdArray[i] = mathOperator[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -396,7 +396,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<mathOperator.length; i++)
       {
-        itemIdArray[i] = mathOperator[i].getId();
+        itemIdArray[i] = mathOperator[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -408,7 +408,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<mathOperator.length; i++)
       {
-        itemIdArray[i] = mathOperator[i].getId();
+        itemIdArray[i] = mathOperator[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -420,7 +420,7 @@ public  class MathOperatorQuery extends com.runwaysdk.system.EnumerationMasterQu
 
       for (int i=0; i<mathOperator.length; i++)
       {
-        itemIdArray[i] = mathOperator[i].getId();
+        itemIdArray[i] = mathOperator[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

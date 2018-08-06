@@ -73,7 +73,7 @@ public abstract class MdExceptionBase extends com.runwaysdk.system.metadata.MdLo
     }
     else
     {
-      setValue(SUPERMDEXCEPTION, value.getId());
+      setValue(SUPERMDEXCEPTION, value.getOid());
     }
   }
   
@@ -168,9 +168,9 @@ public abstract class MdExceptionBase extends com.runwaysdk.system.metadata.MdLo
     }
   }
   
-  public static MdException get(String id)
+  public static MdException get(String oid)
   {
-    return (MdException) com.runwaysdk.business.Business.get(id);
+    return (MdException) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdException getByKey(String key)
@@ -178,17 +178,17 @@ public abstract class MdExceptionBase extends com.runwaysdk.system.metadata.MdLo
     return (MdException) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdException lock(java.lang.String id)
+  public static MdException lock(java.lang.String oid)
   {
-    MdException _instance = MdException.get(id);
+    MdException _instance = MdException.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdException unlock(java.lang.String id)
+  public static MdException unlock(java.lang.String oid)
   {
-    MdException _instance = MdException.get(id);
+    MdException _instance = MdException.get(oid);
     _instance.unlock();
     
     return _instance;

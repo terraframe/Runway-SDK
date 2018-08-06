@@ -268,9 +268,9 @@ public abstract class MdEntityBase extends com.runwaysdk.system.metadata.MdClass
     }
   }
   
-  public static MdEntity get(String id)
+  public static MdEntity get(String oid)
   {
-    return (MdEntity) com.runwaysdk.business.Business.get(id);
+    return (MdEntity) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdEntity getByKey(String key)
@@ -278,17 +278,17 @@ public abstract class MdEntityBase extends com.runwaysdk.system.metadata.MdClass
     return (MdEntity) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdEntity lock(java.lang.String id)
+  public static MdEntity lock(java.lang.String oid)
   {
-    MdEntity _instance = MdEntity.get(id);
+    MdEntity _instance = MdEntity.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdEntity unlock(java.lang.String id)
+  public static MdEntity unlock(java.lang.String oid)
   {
-    MdEntity _instance = MdEntity.get(id);
+    MdEntity _instance = MdEntity.get(oid);
     _instance.unlock();
     
     return _instance;

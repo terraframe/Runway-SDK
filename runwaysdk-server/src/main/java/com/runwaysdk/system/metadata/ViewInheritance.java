@@ -29,7 +29,7 @@ public class ViewInheritance extends ViewInheritanceBase
   
   public ViewInheritance(com.runwaysdk.system.metadata.MdView parent, com.runwaysdk.system.metadata.MdView child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

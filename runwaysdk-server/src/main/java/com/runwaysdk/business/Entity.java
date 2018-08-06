@@ -339,14 +339,14 @@ public abstract class Entity implements Mutable, Serializable
       Class<?> clazz = LoaderDecorator.load(mdAttribute.javaType(false));
       Method get = clazz.getMethod("get", String.class);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
         try
         {
           // The first parameer for invoke is the object to invoke the method
           // on.
           // get is static, so null means we don't need an object to invoke on.
-          items.add((BusinessEnumeration) get.invoke(null, id));
+          items.add((BusinessEnumeration) get.invoke(null, oid));
         }
         catch (DataNotFoundException ex)
         {
@@ -424,15 +424,15 @@ public abstract class Entity implements Mutable, Serializable
    * 
    * @return <b>this</b> entity's UUID
    */
-  public String getId()
+  public String getOid()
   {
-    return entityDAO.getId();
+    return entityDAO.getOid();
   }
 
   /**
    * Returns the Id used for AttributeProblems (not messages). New instances that fail will have a different ID on the client.
    * 
-   * @return problem notification id.
+   * @return problem notification oid.
    */
   public String getProblemNotificationId()
   {
@@ -470,7 +470,7 @@ public abstract class Entity implements Mutable, Serializable
     SessionIF session = Session.getCurrentSession();
     if (session != null)
     {
-      this.appLock(session.getUser().getId());
+      this.appLock(session.getUser().getOid());
     }
   }
 
@@ -483,9 +483,9 @@ public abstract class Entity implements Mutable, Serializable
   public void releaseAppLock(String userId)
   {
     // Only the thread that has a lock on this object can unlock it.
-    ( LockObject.getLockObject() ).appLock(this.getId());
+    ( LockObject.getLockObject() ).appLock(this.getOid());
 
-    ( LockObject.getLockObject() ).releaseAppLock(this.getId());
+    ( LockObject.getLockObject() ).releaseAppLock(this.getOid());
   }
 
   /**
@@ -499,7 +499,7 @@ public abstract class Entity implements Mutable, Serializable
     SessionIF session = Session.getCurrentSession();
     if (session != null)
     {
-      this.releaseAppLock(session.getUser().getId());
+      this.releaseAppLock(session.getUser().getOid());
     }
   }
 
@@ -659,25 +659,25 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
+   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
    * 
-   * @param id
+   * @param oid
    *          ID of the instance to get.
-   * @return Typesafe Entity representing the id in the database.
+   * @return Typesafe Entity representing the oid in the database.
    */
-  public static Entity getEntity(String id)
+  public static Entity getEntity(String oid)
   {
-    EntityDAO entityDAO = EntityDAO.get(id).getEntityDAO();
+    EntityDAO entityDAO = EntityDAO.get(oid).getEntityDAO();
 
     return Entity.getEntity(entityDAO);
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
+   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
    * 
-   * @param id
+   * @param oid
    *          ID of the instance to get.
-   * @return Typesafe Entity representing the id in the database.
+   * @return Typesafe Entity representing the oid in the database.
    */
   public static Entity getEntity(EntityDAO entityDAO)
   {
@@ -702,20 +702,20 @@ public abstract class Entity implements Mutable, Serializable
       // has a lock on the object.
       return Struct.typeUnsafeStructFactory((StructDAO) entityDAO);
     }
-    throw new UnexpectedTypeException("ID [" + entityDAO.getId() + "] is not an Entity");
+    throw new UnexpectedTypeException("ID [" + entityDAO.getOid() + "] is not an Entity");
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified id from the database. The returned Entity is typesafe, meaning that its actual type is that specified by the type
+   * Using reflection, get returns an object of the specified type with the specified oid from the database. The returned Entity is typesafe, meaning that its actual type is that specified by the type
    * parameter.
    * 
-   * @param id
+   * @param oid
    *          ID of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
-  public static Entity get(String id)
+  public static Entity get(String oid)
   {
-    EntityDAOIF entityDAOIF = EntityDAO.get(id);
+    EntityDAOIF entityDAOIF = EntityDAO.get(oid);
 
     if (entityDAOIF instanceof RelationshipDAO)
     {
@@ -730,7 +730,7 @@ public abstract class Entity implements Mutable, Serializable
       return Struct.instantiate((StructDAOIF) entityDAOIF);
     }
 
-    throw new UnexpectedTypeException("ID [" + id + "] is not an Entity");
+    throw new UnexpectedTypeException("ID [" + oid + "] is not an Entity");
   }
 
   /**
@@ -844,7 +844,7 @@ public abstract class Entity implements Mutable, Serializable
 
   public static void getAllInstances(GeneratedEntityQuery query, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
   {
-    SelectablePrimitive selectablePrimitive = (SelectablePrimitive) query.get("id");
+    SelectablePrimitive selectablePrimitive = (SelectablePrimitive) query.get("oid");
 
     if (sortAttribute != null)
     {
@@ -902,7 +902,7 @@ public abstract class Entity implements Mutable, Serializable
     }
 
     ComponentIF comp = (ComponentIF) obj;
-    return this.getId().equals(comp.getId());
+    return this.getOid().equals(comp.getOid());
   }
 
   public void addMultiItem(String name, String item)
@@ -955,9 +955,9 @@ public abstract class Entity implements Mutable, Serializable
   {
     List<Business> items = new LinkedList<Business>();
 
-    for (String id : ids)
+    for (String oid : ids)
     {
-      items.add(Business.get(id));
+      items.add(Business.get(oid));
     }
     return items;
   }

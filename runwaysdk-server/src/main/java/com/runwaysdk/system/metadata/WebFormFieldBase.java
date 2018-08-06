@@ -51,9 +51,9 @@ public abstract class WebFormFieldBase extends com.runwaysdk.system.metadata.For
     return (com.runwaysdk.system.metadata.MdWebField) super.getChild();
   }
   
-  public static WebFormField get(String id)
+  public static WebFormField get(String oid)
   {
-    return (WebFormField) com.runwaysdk.business.Relationship.get(id);
+    return (WebFormField) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static WebFormField getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class WebFormFieldBase extends com.runwaysdk.system.metadata.For
     return (WebFormField) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static WebFormField lock(java.lang.String id)
+  public static WebFormField lock(java.lang.String oid)
   {
-    WebFormField _instance = WebFormField.get(id);
+    WebFormField _instance = WebFormField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static WebFormField unlock(java.lang.String id)
+  public static WebFormField unlock(java.lang.String oid)
   {
-    WebFormField _instance = WebFormField.get(id);
+    WebFormField _instance = WebFormField.get(oid);
     _instance.unlock();
     
     return _instance;

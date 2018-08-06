@@ -394,13 +394,13 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdField mdField)
     {
       if(mdField == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdField.getId());
+      return this.EQ(mdField.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdField mdField)
     {
       if(mdField == null) return this.NE((java.lang.String)null);
-      return this.NE(mdField.getId());
+      return this.NE(mdField.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdFieldDisplayLabelQuery.MdFieldDisplayLabelQueryStructIF getDisplayLabel()
@@ -687,7 +687,7 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdField.length; i++)
       {
-        itemIdArray[i] = mdField[i].getId();
+        itemIdArray[i] = mdField[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -699,7 +699,7 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdField.length; i++)
       {
-        itemIdArray[i] = mdField[i].getId();
+        itemIdArray[i] = mdField[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -711,7 +711,7 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdField.length; i++)
       {
-        itemIdArray[i] = mdField[i].getId();
+        itemIdArray[i] = mdField[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -723,7 +723,7 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdField.length; i++)
       {
-        itemIdArray[i] = mdField[i].getId();
+        itemIdArray[i] = mdField[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -735,7 +735,7 @@ public  class MdFieldQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdField.length; i++)
       {
-        itemIdArray[i] = mdField[i].getId();
+        itemIdArray[i] = mdField[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

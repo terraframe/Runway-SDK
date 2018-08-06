@@ -49,7 +49,7 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -414,9 +414,9 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
     return com.runwaysdk.system.gis.geo.UniversalDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.gis.geo.AllowedInDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.AllowedInDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.AllowedInDTO) dto;
   }
@@ -446,7 +446,7 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.AllowedInQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -459,10 +459,10 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.AllowedInDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.AllowedInDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -472,10 +472,10 @@ public abstract class AllowedInDTOBase extends com.runwaysdk.business.ontology.T
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.AllowedInDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.AllowedInDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -29,7 +29,7 @@ public class PermissionManager
 {
   /**
    * Hashmap containing all of the permissions for a given actor. Key is the
-   * role id;
+   * role oid;
    */
   private HashMap<String, HashMap<String, RelationshipDAOIF>> permissions;
 
@@ -45,7 +45,7 @@ public class PermissionManager
 
   public HashMap<String, RelationshipDAOIF> getPermissions(ActorDAOIF actor)
   {
-    String key = actor.getId();
+    String key = actor.getOid();
 
     if (!permissions.containsKey(key))
     {
@@ -70,7 +70,7 @@ public class PermissionManager
     
     if(map != null)
     {
-      return map.get(metadata.getId());
+      return map.get(metadata.getOid());
     }
     
     return null;

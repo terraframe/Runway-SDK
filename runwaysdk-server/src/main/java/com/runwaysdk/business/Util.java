@@ -55,21 +55,21 @@ public class Util extends SessionComponent
   }
 
   /**
-   * Returns the Util object with the given id, if it has been persisted to the user's session.
+   * Returns the Util object with the given oid, if it has been persisted to the user's session.
    * 
-   * @param id
-   * @return Util object with the given id.
+   * @param oid
+   * @return Util object with the given oid.
    */
-  public static Util get(String id)
+  public static Util get(String oid)
   {
     // An empty string likely indicates the value was never set. Return null
-    if (id.length() == 0)
+    if (oid.length() == 0)
       return null;
 
     SessionIF session = Session.getCurrentSession();
     if (session != null)
     {
-      Mutable mutable = session.get(id);
+      Mutable mutable = session.get(oid);
 
       if (mutable != null)
       {
@@ -77,8 +77,8 @@ public class Util extends SessionComponent
       }
     }
 
-    String errMsg = "An instance of type [" + Util.class.getName() + "] with id [" + id + "] does not exist in the user's session.";
-    throw new DataNotFoundException(errMsg, MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id)));
+    String errMsg = "An instance of type [" + Util.class.getName() + "] with oid [" + oid + "] does not exist in the user's session.";
+    throw new DataNotFoundException(errMsg, MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid)));
   }
 
   @Override

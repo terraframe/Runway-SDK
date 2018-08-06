@@ -127,9 +127,9 @@ public abstract class MdWebPrimitiveBase extends com.runwaysdk.system.metadata.M
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.WebGridField>) getRelationshipsWithParent(mdWebSingleTermGrid, com.runwaysdk.system.metadata.WebGridField.CLASS);
   }
   
-  public static MdWebPrimitive get(String id)
+  public static MdWebPrimitive get(String oid)
   {
-    return (MdWebPrimitive) com.runwaysdk.business.Business.get(id);
+    return (MdWebPrimitive) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebPrimitive getByKey(String key)
@@ -137,17 +137,17 @@ public abstract class MdWebPrimitiveBase extends com.runwaysdk.system.metadata.M
     return (MdWebPrimitive) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebPrimitive lock(java.lang.String id)
+  public static MdWebPrimitive lock(java.lang.String oid)
   {
-    MdWebPrimitive _instance = MdWebPrimitive.get(id);
+    MdWebPrimitive _instance = MdWebPrimitive.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebPrimitive unlock(java.lang.String id)
+  public static MdWebPrimitive unlock(java.lang.String oid)
   {
-    MdWebPrimitive _instance = MdWebPrimitive.get(id);
+    MdWebPrimitive _instance = MdWebPrimitive.get(oid);
     _instance.unlock();
     
     return _instance;

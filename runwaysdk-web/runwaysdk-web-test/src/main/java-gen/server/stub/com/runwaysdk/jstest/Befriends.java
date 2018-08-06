@@ -29,7 +29,7 @@ public class Befriends extends BefriendsBase implements com.runwaysdk.generation
   
   public Befriends(com.runwaysdk.jstest.TestClass parent, com.runwaysdk.jstest.RefClass child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

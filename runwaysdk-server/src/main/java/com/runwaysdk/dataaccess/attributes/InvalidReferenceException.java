@@ -25,7 +25,7 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 
 /**
  * Thrown when an attribute references an invalid instance. This can arise from
- * an incorrect id, or an incompatible type.
+ * an incorrect oid, or an incompatible type.
  * 
  * @author Eric Grunzke
  */

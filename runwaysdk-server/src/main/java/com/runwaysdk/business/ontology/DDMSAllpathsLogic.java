@@ -82,7 +82,7 @@ public class DDMSAllpathsLogic
       OIterator<Term> childIt = (OIterator<Term>) tCurrent.getChildren(relationshipType);
       for (Term child: childIt)
       {
-        qNext.offer(child.getId());
+        qNext.offer(child.getOid());
       }
     }
   }
@@ -92,7 +92,7 @@ public class DDMSAllpathsLogic
   {
     createPath(childId, childId);
 
-    // If an id of a parent is given, only build paths between this node, the
+    // If an oid of a parent is given, only build paths between this node, the
     // given parent
     // and that parent's parents. This is ideal for copies, so we don't have to
     // traverse

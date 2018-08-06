@@ -72,7 +72,7 @@ public class AttributeEnumerationHandler extends TagHandler implements TagHandle
 
       try
       {
-        dataID = EntityDAO.getIdFromKey(masterListType, enumItemKey);
+        dataID = EntityDAO.getOidFromKey(masterListType, enumItemKey);
       }
       catch (DataNotFoundException e)
       {
@@ -83,7 +83,7 @@ public class AttributeEnumerationHandler extends TagHandler implements TagHandle
 
       if (dataID.equals(""))
       {
-        dataID = EntityDAO.getIdFromKey(masterListType, enumItemKey);
+        dataID = EntityDAO.getOidFromKey(masterListType, enumItemKey);
       }
 
       if (structAttributeName != null)

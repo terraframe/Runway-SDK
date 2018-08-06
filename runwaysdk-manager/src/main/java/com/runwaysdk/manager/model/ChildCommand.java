@@ -75,7 +75,7 @@ public class ChildCommand implements IRelationshipStrategy
       throw new RuntimeException(Localizer.getMessage("NULL_PARENT"));
     }
 
-    return PersistanceFacade.newInstance(component.getId(), input.getId(), relationshipType);
+    return PersistanceFacade.newInstance(component.getOid(), input.getOid(), relationshipType);
   }
 
   @Override

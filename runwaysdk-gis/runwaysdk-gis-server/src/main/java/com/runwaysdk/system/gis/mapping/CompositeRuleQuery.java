@@ -258,13 +258,13 @@ public  class CompositeRuleQuery extends com.runwaysdk.system.gis.mapping.Themat
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.CompositeRule compositeRule)
     {
       if(compositeRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(compositeRule.getId());
+      return this.EQ(compositeRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.CompositeRule compositeRule)
     {
       if(compositeRule == null) return this.NE((java.lang.String)null);
-      return this.NE(compositeRule.getId());
+      return this.NE(compositeRule.getOid());
     }
 
 

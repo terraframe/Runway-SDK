@@ -247,7 +247,7 @@ public class TypeTree
     // append the MdEnumerations at the end.
     for(MdEnumerationDAOIF mdEnumerationIF : mdEnumerations)
     {
-      ordered.put(mdEnumerationIF.getId(), mdEnumerationIF);
+      ordered.put(mdEnumerationIF.getOid(), mdEnumerationIF);
     }
 
     return new LinkedList<MdTypeDAOIF>(ordered.values());
@@ -268,7 +268,7 @@ public class TypeTree
         if(child.getMdTypeIF() != null)
         {
           MdTypeDAOIF mdTypeIF = child.getMdTypeIF();
-          ordered.put(mdTypeIF.getId(), mdTypeIF);
+          ordered.put(mdTypeIF.getOid(), mdTypeIF);
         }
 
         getOrderedTypes(child, ordered);

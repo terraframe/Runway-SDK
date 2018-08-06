@@ -114,13 +114,13 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeChar mdAttributeChar)
     {
       if(mdAttributeChar == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeChar.getId());
+      return this.EQ(mdAttributeChar.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeChar mdAttributeChar)
     {
       if(mdAttributeChar == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeChar.getId());
+      return this.NE(mdAttributeChar.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeChar.length; i++)
       {
-        itemIdArray[i] = mdAttributeChar[i].getId();
+        itemIdArray[i] = mdAttributeChar[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeChar.length; i++)
       {
-        itemIdArray[i] = mdAttributeChar[i].getId();
+        itemIdArray[i] = mdAttributeChar[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeChar.length; i++)
       {
-        itemIdArray[i] = mdAttributeChar[i].getId();
+        itemIdArray[i] = mdAttributeChar[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeChar.length; i++)
       {
-        itemIdArray[i] = mdAttributeChar[i].getId();
+        itemIdArray[i] = mdAttributeChar[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeCharQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeChar.length; i++)
       {
-        itemIdArray[i] = mdAttributeChar[i].getId();
+        itemIdArray[i] = mdAttributeChar[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

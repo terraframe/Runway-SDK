@@ -165,14 +165,14 @@ public enum RelationshipTypes {
   
   private String relationshipType;
 
-  private String id;
+  private String oid;
 
   private String tableName;
 
-  private RelationshipTypes(String relationshipType, String id, String tableName)
+  private RelationshipTypes(String relationshipType, String oid, String tableName)
   {
     this.relationshipType = relationshipType;
-    this.id = id;
+    this.oid = oid;
     this.tableName = tableName;
   }
 
@@ -181,9 +181,9 @@ public enum RelationshipTypes {
     return this.relationshipType;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   public String getTableName()

@@ -110,7 +110,7 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
     }
     else
     {
-      setValue(MDBUSINESS, value.getId());
+      setValue(MDBUSINESS, value.getOid());
     }
   }
   
@@ -171,9 +171,9 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(TABLENAME).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO) dto;
   }
@@ -191,7 +191,7 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -204,10 +204,10 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -217,10 +217,10 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

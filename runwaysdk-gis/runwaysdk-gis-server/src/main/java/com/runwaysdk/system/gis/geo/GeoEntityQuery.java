@@ -193,19 +193,19 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
 
@@ -1087,9 +1087,9 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableGeometry getGeoPoint();
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1274,13 +1274,13 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
     {
       if(geoEntity == null) return this.EQ((java.lang.String)null);
-      return this.EQ(geoEntity.getId());
+      return this.EQ(geoEntity.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
     {
       if(geoEntity == null) return this.NE((java.lang.String)null);
-      return this.NE(geoEntity.getId());
+      return this.NE(geoEntity.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -1402,19 +1402,19 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
 
@@ -2249,9 +2249,9 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableGeometry getGeoPoint();
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -2313,7 +2313,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -2325,7 +2325,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -2337,7 +2337,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -2349,7 +2349,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -2361,7 +2361,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -2485,19 +2485,19 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
 

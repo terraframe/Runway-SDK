@@ -148,7 +148,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
   }
 
   /**
-   * Returns a copy of the given StructDAO instance, with a new id and mastered
+   * Returns a copy of the given StructDAO instance, with a new oid and mastered
    * at the current site. The state of the object is new and has not been
    * applied to the database.
    * 
@@ -173,7 +173,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
       }
     }
 
-    // This should overwrite the non-system attributes, such as id and site
+    // This should overwrite the non-system attributes, such as oid and site
     // master
     copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
@@ -236,23 +236,23 @@ public class StructDAO extends EntityDAO implements StructDAOIF
   }
 
   /**
-   * Returns a StructDAOIF of the given id in the database.
+   * Returns a StructDAOIF of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the database <br/>
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> StructDAOIF representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return StructDAOIF instance of the given id, of the given type
+   * @param oid
+   *          element oid of an item in the database
+   * @return StructDAOIF instance of the given oid, of the given type
    */
-  public static StructDAOIF get(String id)
+  public static StructDAOIF get(String oid)
   {
-    return ObjectCache.getSructObject(id);
+    return ObjectCache.getSructObject(oid);
   }
 
   /**
@@ -297,8 +297,8 @@ public class StructDAO extends EntityDAO implements StructDAOIF
 
   /**
    * Returns a StructDAO of the given type with the given key in the database.
-   * This method does the same thing as get(String id), but is faster. If you
-   * know the type of the id, use this method. Otherwise use the get(String id)
+   * This method does the same thing as get(String oid), but is faster. If you
+   * know the type of the oid, use this method. Otherwise use the get(String oid)
    * method.
    * 
    * <br/>

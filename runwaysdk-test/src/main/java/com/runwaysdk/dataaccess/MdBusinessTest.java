@@ -90,7 +90,7 @@ public class MdBusinessTest
     newParentMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     newParentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     newParentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    newParentMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    newParentMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     newParentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newParentMdBusiness.apply();
 
@@ -114,8 +114,8 @@ public class MdBusinessTest
     newMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     newMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     newMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    newMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    newMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, newParentMdBusiness.getId());
+    newMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
+    newMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, newParentMdBusiness.getOid());
     newMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     newMdBusiness.apply();
   }
@@ -155,7 +155,7 @@ public class MdBusinessTest
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getId());
+    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getOid());
     mdAttributeCharacter1.apply();
 
     try
@@ -167,7 +167,7 @@ public class MdBusinessTest
       mdAttributeCharacter2.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttributeCharacter2.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter2.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getId());
+      mdAttributeCharacter2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getOid());
       mdAttributeCharacter2.apply();
 
       Assert.fail("Able to add an attribute to a type that already has an attribute defined with that same name");
@@ -200,7 +200,7 @@ public class MdBusinessTest
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getId());
+    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getOid());
     mdAttributeCharacter1.apply();
 
     try
@@ -212,7 +212,7 @@ public class MdBusinessTest
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newChildMdBusiness.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newChildMdBusiness.getOid());
       mdAttributeCharacter.apply();
 
       Assert.fail("Able to add an attribute to a type where the parent type already has an attribute defined with that same name");
@@ -251,7 +251,7 @@ public class MdBusinessTest
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newChildMdBusiness.getId());
+    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newChildMdBusiness.getOid());
     mdAttributeCharacter1.apply();
 
     try
@@ -263,7 +263,7 @@ public class MdBusinessTest
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, newParentMdBusiness.getOid());
       mdAttributeCharacter.apply();
 
       Assert.fail("Able to add an attribute to a type where a child type already has an attribute defined with that same name");
@@ -322,7 +322,7 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
-    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
@@ -338,7 +338,7 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
-    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     template.apply();
     template.delete();
@@ -354,7 +354,7 @@ public class MdBusinessTest
     template.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     template.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Description");
     template.setValue(MdBusinessInfo.CACHE_SIZE, "0");
-    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    template.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     template.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -412,7 +412,7 @@ public class MdBusinessTest
     boolean valueSet = false;
     try
     {
-      newMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      newMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       newMdBusiness.apply();
       valueSet = true;
 
@@ -433,7 +433,7 @@ public class MdBusinessTest
       // Restore original value
       if (valueSet)
       {
-        newMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, selectedEnumItem.getId());
+        newMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, selectedEnumItem.getOid());
         newMdBusiness.apply();
       }
     }
@@ -454,7 +454,7 @@ public class MdBusinessTest
 
     MdBusinessDAO newMdBusiness = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType()).getBusinessDAO() );
 
-    List<RelationshipDAOIF> inheritanceRelationships = RelationshipDAOFactory.getParents(newMdBusiness.getId(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
+    List<RelationshipDAOIF> inheritanceRelationships = RelationshipDAOFactory.getParents(newMdBusiness.getOid(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
     if (inheritanceRelationships.size() != 1)
     {
       Assert.fail("Number of parents of " + NEW_CLASS.getType() + " is " + inheritanceRelationships.size() + ", expected 1.");
@@ -531,7 +531,7 @@ public class MdBusinessTest
     List<String> ids = BusinessDAO.getEntityIdsFromDB(newMdBusiness);
     for (BusinessDAO d : instances)
     {
-      if (!ids.contains(d.getId()))
+      if (!ids.contains(d.getOid()))
         Assert.fail("New instance not created correctly.");
     }
 
@@ -561,7 +561,7 @@ public class MdBusinessTest
 
       // Ensure that the CLASS_INHERITANCE relationship is gone from the
       // database
-      List<RelationshipDAOIF> inheritanceRelationships = RelationshipDAOFactory.getParents(newMdBusiness.getId(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
+      List<RelationshipDAOIF> inheritanceRelationships = RelationshipDAOFactory.getParents(newMdBusiness.getOid(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
       if (!inheritanceRelationships.isEmpty())
       {
         Assert.fail("Inheritance relationship not deleted from the database.");
@@ -615,20 +615,20 @@ public class MdBusinessTest
     mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME, "foTest");
     mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusinessTarget.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, newMdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusinessTarget.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, newMdBusiness.getOid());
     mdAttributeReference.apply();
 
     // Create new instances of each class
     BusinessDAO target = BusinessDAO.newInstance(deleteMeClass.getType());
     target.apply();
     BusinessDAO pointer = BusinessDAO.newInstance(NEW_CLASS.getType());
-    pointer.setValue("foTest", target.getId());
+    pointer.setValue("foTest", target.getOid());
     pointer.apply();
 
-    BusinessDAOIF pointerIF = BusinessDAO.get(pointer.getId());
+    BusinessDAOIF pointerIF = BusinessDAO.get(pointer.getOid());
     // Make sure the reference is being pointed to
-    if (!pointerIF.getAttributeIF("foTest").getValue().equals(target.getId()))
+    if (!pointerIF.getAttributeIF("foTest").getValue().equals(target.getOid()))
     {
       Assert.fail("Reference Attribute does not point to the expected target.");
     }
@@ -636,7 +636,7 @@ public class MdBusinessTest
     // Now try deleting the target instance - should blank the reference on the
     // pointer
     target.delete();
-    pointerIF = BusinessDAO.get(pointer.getId());
+    pointerIF = BusinessDAO.get(pointer.getOid());
     if (!pointerIF.getAttributeIF("foTest").getValue().equals(""))
     {
       Assert.fail("Reference Attribute should be blank after target is deleted.");
@@ -683,7 +683,7 @@ public class MdBusinessTest
       newClassWithSameName.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -723,7 +723,7 @@ public class MdBusinessTest
       newClassWithSameName.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -765,8 +765,8 @@ public class MdBusinessTest
       newClassWithSameName.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       newClassWithSameName.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       newClassWithSameName.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      newClassWithSameName.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdRelationshipIFmetadata.getId());
-      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      newClassWithSameName.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdRelationshipIFmetadata.getOid());
+      newClassWithSameName.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       newClassWithSameName.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       newClassWithSameName.apply();
 
@@ -808,7 +808,7 @@ public class MdBusinessTest
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.CACHE_SIZE, "0");
-      mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -844,9 +844,9 @@ public class MdBusinessTest
       mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Author");
       mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-      mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+      mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
       mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusinessIF.getId());
+      mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusinessIF.getOid());
       mdAttrChar.apply();
     }
     catch (CannotAddAttriubteToClassException e)

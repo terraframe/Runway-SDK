@@ -65,7 +65,7 @@ public class MethodFacade
   /**
    * Checks to see if the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param mdTypeIF The object to test permissions on
    *
@@ -82,7 +82,7 @@ public class MethodFacade
    * Checks all types involved in building a {@link ValueObject} to see if
    * the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param valueObject The object to test permissions on
    *

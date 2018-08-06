@@ -111,7 +111,7 @@ public class GISSaxParseTest extends GISAbstractTest
     testClassMdBusinessDAO.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     testClassMdBusinessDAO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     testClassMdBusinessDAO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    testClassMdBusinessDAO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    testClassMdBusinessDAO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     testClassMdBusinessDAO.apply();
 
     return testClassMdBusinessDAO;
@@ -130,7 +130,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributePointDAO.setValue(MdAttributePointInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributePointDAO.setValue(MdAttributePointInfo.SRID, "4326");
     // mdAttributePointDAO.setValue(MdAttributePointInfo.DIMENSION, "2");
-    mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributePointDAO.apply();
 
     return mdAttributePointDAO;
@@ -149,7 +149,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.SRID, "4326");
     // mdAttributePointDAO.setValue(MdAttributeLineStringInfo.DIMENSION, "2");
-    mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributeLineStringDAO.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributeLineStringDAO.apply();
 
     return mdAttributeLineStringDAO;
@@ -168,7 +168,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.SRID, "4326");
     // mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DIMENSION, "2");
-    mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributePolygonDAO.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributePolygonDAO.apply();
 
     return mdAttributePolygonDAO;
@@ -188,7 +188,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.SRID, "4326");
     // mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DIMENSION,
     // "2");
-    mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributeMultiPointDAO.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributeMultiPointDAO.apply();
 
     return mdAttributeMultiPointDAO;
@@ -208,7 +208,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.SRID, "4326");
     // mdAttributeMultiPointDAO.setValue(MdAttributeMultiLineStringInfo.DIMENSION,
     // "2");
-    mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributeMultiLineStringDAO.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributeMultiLineStringDAO.apply();
 
     return mdAttributeMultiLineStringDAO;
@@ -228,7 +228,7 @@ public class GISSaxParseTest extends GISAbstractTest
     mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.SRID, "4326");
     // mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DIMENSION,
     // "2");
-    mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttributeMultiPolygonDAO.apply();
 
     return mdAttributeMultiPolygonDAO;
@@ -248,7 +248,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -265,7 +265,7 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributePointDAOIF.getValue(MdAttributePointInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributePointDAOIF.getValue(MdAttributePointInfo.REMOVE));
     Assert.assertEquals("Test Point", mdAttributePointDAOIF.getStructValue(MdAttributePointInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   /**
@@ -282,7 +282,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -299,7 +299,7 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeLineStringDAOIF.getValue(MdAttributeLineStringInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeLineStringDAOIF.getValue(MdAttributeLineStringInfo.REMOVE));
     Assert.assertEquals("Test LineString", mdAttributeLineStringDAOIF.getStructValue(MdAttributeLineStringInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   /**
@@ -316,7 +316,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("target/test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("target/test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -333,7 +333,7 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributePolygonDAOIF.getValue(MdAttributePolygonInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributePolygonDAOIF.getValue(MdAttributePolygonInfo.REMOVE));
     Assert.assertEquals("Test Polygon", mdAttributePolygonDAOIF.getStructValue(MdAttributePolygonInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   /**
@@ -350,7 +350,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("target/test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("target/test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -367,7 +367,7 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiPointDAOIF.getValue(MdAttributeMultiPointInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiPointDAOIF.getValue(MdAttributeMultiPointInfo.REMOVE));
     Assert.assertEquals("Test MultiPoint", mdAttributeMultiPointDAOIF.getStructValue(MdAttributePolygonInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   /**
@@ -384,7 +384,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("target/test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("target/test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -401,7 +401,7 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiLineStringDAOIF.getValue(MdAttributeMultiLineStringInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiLineStringDAOIF.getValue(MdAttributeMultiLineStringInfo.REMOVE));
     Assert.assertEquals("Test MultiLineString", mdAttributeMultiLineStringDAOIF.getStructValue(MdAttributeMultiLineStringInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   /**
@@ -418,7 +418,7 @@ public class GISSaxParseTest extends GISAbstractTest
 
     SAXExporter.export("target/test.xml", TestConstants.DATATYPE_GIS_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
-    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
+    mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getOid()).getBusinessDAO();
     mdBusiness1.delete();
 
     SAXImporter.runImport(new File("target/test.xml"), TestConstants.DATATYPE_GIS_XSD);
@@ -435,6 +435,6 @@ public class GISSaxParseTest extends GISAbstractTest
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiPolygonDAOIF.getValue(MdAttributeMultiPolygonInfo.REQUIRED));
     Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdAttributeMultiPolygonDAOIF.getValue(MdAttributeMultiPolygonInfo.REMOVE));
     Assert.assertEquals("Test MultiPolygon", mdAttributeMultiPolygonDAOIF.getStructValue(MdAttributeMultiPolygonInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 }

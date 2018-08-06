@@ -36,7 +36,7 @@ public abstract class MdWebField extends MdWebFieldBase
     }
     else
     {
-      return this.getId();
+      return this.getOid();
     }
   }
 

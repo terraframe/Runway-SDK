@@ -61,9 +61,9 @@ public abstract class MdWebCommentBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static MdWebComment get(String id)
+  public static MdWebComment get(String oid)
   {
-    return (MdWebComment) com.runwaysdk.business.Business.get(id);
+    return (MdWebComment) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebComment getByKey(String key)
@@ -71,17 +71,17 @@ public abstract class MdWebCommentBase extends com.runwaysdk.system.metadata.MdW
     return (MdWebComment) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebComment lock(java.lang.String id)
+  public static MdWebComment lock(java.lang.String oid)
   {
-    MdWebComment _instance = MdWebComment.get(id);
+    MdWebComment _instance = MdWebComment.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebComment unlock(java.lang.String id)
+  public static MdWebComment unlock(java.lang.String oid)
   {
-    MdWebComment _instance = MdWebComment.get(id);
+    MdWebComment _instance = MdWebComment.get(oid);
     _instance.unlock();
     
     return _instance;

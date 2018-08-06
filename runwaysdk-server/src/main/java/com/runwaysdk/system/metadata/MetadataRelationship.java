@@ -29,12 +29,12 @@ public abstract class MetadataRelationship extends MetadataRelationshipBase
 
   public MetadataRelationship(com.runwaysdk.system.metadata.Metadata parent, com.runwaysdk.business.Business child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
 
   protected String buildKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
 }

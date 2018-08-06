@@ -107,7 +107,7 @@ public class MdAttributeTest
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
 
@@ -121,7 +121,7 @@ public class MdAttributeTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessDAOIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessDAOIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
@@ -173,7 +173,7 @@ public class MdAttributeTest
       Iterator<String> i = index.getEnumItemIdList().iterator();
       String indexTypeId = i.next();
 
-      Assert.assertEquals("Referenced attribute did receive the correct non-unique default index", IndexTypes.NON_UNIQUE_INDEX.getId(), indexTypeId);
+      Assert.assertEquals("Referenced attribute did receive the correct non-unique default index", IndexTypes.NON_UNIQUE_INDEX.getOid(), indexTypeId);
 
       // check for correctness
       if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
@@ -204,7 +204,7 @@ public class MdAttributeTest
 
     MdAttributeReferenceDAO mdAttributeReferenceDAO = TestFixtureFactory.addReferenceAttribute(testMdBusinessIF, referenceMdBusinessIF);
 
-    mdAttributeReferenceDAO.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeReferenceDAO.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
 
     try
     {
@@ -214,7 +214,7 @@ public class MdAttributeTest
       Iterator<String> i = index.getEnumItemIdList().iterator();
       String indexTypeId = i.next();
 
-      Assert.assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getId(), indexTypeId);
+      Assert.assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getOid(), indexTypeId);
 
       // check for correctness
       if (!Database.uniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
@@ -254,7 +254,7 @@ public class MdAttributeTest
     try
     {
 
-      mdAttributeEnumerationDAO = this.attribute_Add_Delete_Add_Enum_in_transaction(hashedColumnNames, enumBusinessDAO.getId());
+      mdAttributeEnumerationDAO = this.attribute_Add_Delete_Add_Enum_in_transaction(hashedColumnNames, enumBusinessDAO.getOid());
 
       QueryFactory qf = new QueryFactory();
       BusinessDAOQuery bq = qf.businessDAOQuery(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -265,11 +265,11 @@ public class MdAttributeTest
       {
         for (BusinessDAOIF businessDAOIF : i)
         {
-          object1Id = businessDAOIF.getId();
+          object1Id = businessDAOIF.getOid();
 
           AttributeEnumerationIF attributeEnum = (AttributeEnumerationIF) businessDAOIF.getAttributeIF("myAttribute");
 
-          if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getId()))
+          if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getOid()))
           {
             Assert.fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
           }
@@ -317,7 +317,7 @@ public class MdAttributeTest
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -327,7 +327,7 @@ public class MdAttributeTest
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
@@ -382,7 +382,7 @@ public class MdAttributeTest
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
@@ -485,7 +485,7 @@ public class MdAttributeTest
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -495,7 +495,7 @@ public class MdAttributeTest
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
@@ -550,7 +550,7 @@ public class MdAttributeTest
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
@@ -604,7 +604,7 @@ public class MdAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
@@ -627,7 +627,7 @@ public class MdAttributeTest
     mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
@@ -693,11 +693,11 @@ public class MdAttributeTest
         {
           if (businessDAOIF.getValue("myAttribute").equals("Value 1"))
           {
-            object1Id = businessDAOIF.getId();
+            object1Id = businessDAOIF.getOid();
           }
           else if (businessDAOIF.getValue("myAttribute").equals("Value 2"))
           {
-            object2Id = businessDAOIF.getId();
+            object2Id = businessDAOIF.getOid();
           }
         }
       }
@@ -755,7 +755,7 @@ public class MdAttributeTest
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -765,7 +765,7 @@ public class MdAttributeTest
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
@@ -820,7 +820,7 @@ public class MdAttributeTest
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
@@ -874,7 +874,7 @@ public class MdAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
@@ -897,7 +897,7 @@ public class MdAttributeTest
     mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
@@ -972,11 +972,11 @@ public class MdAttributeTest
         {
           if (businessDAOIF.getValue("myAttribute").equals("Value 1"))
           {
-            object1Id = businessDAOIF.getId();
+            object1Id = businessDAOIF.getOid();
           }
           else if (businessDAOIF.getValue("myAttribute").equals("Value 2"))
           {
-            object2Id = businessDAOIF.getId();
+            object2Id = businessDAOIF.getOid();
           }
         }
       }
@@ -1033,7 +1033,7 @@ public class MdAttributeTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.COLUMN_NAME, "custom_column");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -1044,7 +1044,7 @@ public class MdAttributeTest
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setValue(MdAttributeDateInfo.COLUMN_NAME, "custom_column");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
@@ -1068,7 +1068,7 @@ public class MdAttributeTest
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.COLUMN_NAME, "custom_column");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
@@ -1093,7 +1093,7 @@ public class MdAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.COLUMN_NAME, "custom_column");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
@@ -1117,7 +1117,7 @@ public class MdAttributeTest
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setValue(MdAttributeTextInfo.COLUMN_NAME, "custom_column");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
@@ -1159,7 +1159,7 @@ public class MdAttributeTest
     MdAttributeTextDAO mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     List<String> hashedColumnNames = new LinkedList<String>();
@@ -1221,7 +1221,7 @@ public class MdAttributeTest
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
@@ -1244,7 +1244,7 @@ public class MdAttributeTest
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
@@ -1268,7 +1268,7 @@ public class MdAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
@@ -1291,7 +1291,7 @@ public class MdAttributeTest
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // A hashed column should have been created.
@@ -1338,9 +1338,9 @@ public class MdAttributeTest
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "changeCharIndex");
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Change Index Type Attribute");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "64");
 
     mdAttrChar.apply();
@@ -1354,7 +1354,7 @@ public class MdAttributeTest
 
     try
     {
-      mdAttrChar.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdAttrChar.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdAttrChar.apply();
 
       if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttrChar.getColumnName(), indexName))
@@ -1382,9 +1382,9 @@ public class MdAttributeTest
     mdAttrClob.setValue(MdAttributeClobInfo.NAME, "uniqueAttrClob");
     mdAttrClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attribute Clob");
     mdAttrClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttrClob.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrClob.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1415,11 +1415,11 @@ public class MdAttributeTest
     mdAttrClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attribute Clob");
     mdAttrClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrClob.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1456,7 +1456,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "2");
@@ -1500,7 +1500,7 @@ public class MdAttributeTest
     mdAttrBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttrBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1534,7 +1534,7 @@ public class MdAttributeTest
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.SIZE, "4");
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "A default character greater than 4");
-    mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1567,7 +1567,7 @@ public class MdAttributeTest
     mdAttrRef.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, MdClassInfo.ID_VALUE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "An invalid reference");
-    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1601,9 +1601,9 @@ public class MdAttributeTest
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "An invalid enumeration item");
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1630,7 +1630,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "-2");
@@ -1667,7 +1667,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "0");
@@ -1704,7 +1704,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");
@@ -1741,7 +1741,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");
@@ -1778,7 +1778,7 @@ public class MdAttributeTest
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");

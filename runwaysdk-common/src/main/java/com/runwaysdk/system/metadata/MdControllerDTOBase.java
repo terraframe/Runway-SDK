@@ -117,60 +117,60 @@ public abstract class MdControllerDTOBase extends com.runwaysdk.system.metadata.
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO> getAllMdAction()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO> getAllMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO> getAllMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdActionDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.ControllerActionDTO> getAllMdActionRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.ControllerActionDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.ControllerActionDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.ControllerActionDTO> getAllMdActionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.ControllerActionDTO> getAllMdActionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.ControllerActionDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.ControllerActionDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
   public com.runwaysdk.system.ControllerActionDTO addMdAction(com.runwaysdk.system.metadata.MdActionDTO child)
   {
-    return (com.runwaysdk.system.ControllerActionDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (com.runwaysdk.system.ControllerActionDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.ControllerActionDTO addMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdActionDTO child)
+  public static com.runwaysdk.system.ControllerActionDTO addMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdActionDTO child)
   {
-    return (com.runwaysdk.system.ControllerActionDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.ControllerActionDTO.CLASS);
+    return (com.runwaysdk.system.ControllerActionDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
   public void removeMdAction(com.runwaysdk.system.ControllerActionDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.ControllerActionDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllMdAction()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.ControllerActionDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
-  public static void removeAllMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllMdAction(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.ControllerActionDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.ControllerActionDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdControllerDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdControllerDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdControllerDTO) dto;
   }
@@ -188,7 +188,7 @@ public abstract class MdControllerDTOBase extends com.runwaysdk.system.metadata.
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdControllerQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -201,10 +201,10 @@ public abstract class MdControllerDTOBase extends com.runwaysdk.system.metadata.
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdControllerDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdControllerDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdControllerDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdControllerDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -214,10 +214,10 @@ public abstract class MdControllerDTOBase extends com.runwaysdk.system.metadata.
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdControllerDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdControllerDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdControllerDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdControllerDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -26,7 +26,7 @@ import com.runwaysdk.constants.ExceptionConstants;
 public class MethodMetaData implements Serializable
 {
   /**
-   * Auto generated serializable id
+   * Auto generated serializable oid
    */
   private static final long serialVersionUID = -2380180278873914600L;
 

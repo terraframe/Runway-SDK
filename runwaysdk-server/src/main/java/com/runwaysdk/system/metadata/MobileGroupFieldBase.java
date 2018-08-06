@@ -51,9 +51,9 @@ public abstract class MobileGroupFieldBase extends com.runwaysdk.system.metadata
     return (com.runwaysdk.system.metadata.MdMobileField) super.getChild();
   }
   
-  public static MobileGroupField get(String id)
+  public static MobileGroupField get(String oid)
   {
-    return (MobileGroupField) com.runwaysdk.business.Relationship.get(id);
+    return (MobileGroupField) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static MobileGroupField getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class MobileGroupFieldBase extends com.runwaysdk.system.metadata
     return (MobileGroupField) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static MobileGroupField lock(java.lang.String id)
+  public static MobileGroupField lock(java.lang.String oid)
   {
-    MobileGroupField _instance = MobileGroupField.get(id);
+    MobileGroupField _instance = MobileGroupField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MobileGroupField unlock(java.lang.String id)
+  public static MobileGroupField unlock(java.lang.String oid)
   {
-    MobileGroupField _instance = MobileGroupField.get(id);
+    MobileGroupField _instance = MobileGroupField.get(oid);
     _instance.unlock();
     
     return _instance;

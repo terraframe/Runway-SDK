@@ -50,7 +50,7 @@ public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
     bag = MdViewDAO.newInstance();
     
     superClassField = MdViewInfo.SUPER_MD_VIEW;
-    getterMethodImplementation = "    return (" + sessionTypeName + ") " + View.class.getName() + ".get(id);";  
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + View.class.getName() + ".get(oid);";  
     
     modelSetup();
   }

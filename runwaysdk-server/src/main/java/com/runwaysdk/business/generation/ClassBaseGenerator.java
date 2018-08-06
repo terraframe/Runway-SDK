@@ -290,7 +290,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("addEnumItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("addEnumItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -300,7 +300,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("removeEnumItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("removeEnumItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -342,7 +342,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("this.addMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("this.addMultiItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -352,7 +352,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("removeMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("removeMultiItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -478,7 +478,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    // Generate an accessor that returns the reference id
+    // Generate an accessor that returns the reference oid
     String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
     String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.ID).javaType(false);
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + getRefIdReturnType + " get" + refAttributeIdName + "()");
@@ -540,15 +540,15 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getSetterVisibility();
     
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " id)");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " oid)");
     getWriter().openBracket();
-    getWriter().writeLine("if(id == null)");
+    getWriter().writeLine("if(oid == null)");
     getWriter().openBracket();
     getWriter().writeLine(m.setterWrapper("\"\"") + ";");
     getWriter().closeBracket();
     getWriter().writeLine("else");
     getWriter().openBracket();
-    getWriter().writeLine(m.setterWrapper("id") + ";");
+    getWriter().writeLine(m.setterWrapper("oid") + ";");
     getWriter().closeBracket();
     getWriter().closeBracket();
     getWriter().writeLine("");
@@ -601,8 +601,8 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       if (!mdMethod.isStatic())
       {
         List<MdParameterDAOIF> list = mdMethod.getMdParameterDAOs();
-        MdParameterDAO id = GenerationUtil.getMdParameterId();
-        list.add(0, id);
+        MdParameterDAO oid = GenerationUtil.getMdParameterId();
+        list.add(0, oid);
 
         addMdMethod(mdMethod.getName(), mdMethod.getReturnType(), list, true);
       }
@@ -617,7 +617,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     getWriter().writeLine("public " + modifier + returnType.getType() + " " + methodName + "(" + parameters + ")");
     getWriter().openBracket();
-    getWriter().writeLine(this.getMdTypeDAOIF().getTypeName() + " _instance = " + this.getMdTypeDAOIF().getTypeName() + ".get(id);");
+    getWriter().writeLine(this.getMdTypeDAOIF().getTypeName() + " _instance = " + this.getMdTypeDAOIF().getTypeName() + ".get(oid);");
 
     if (!returnType.isVoid())
     {

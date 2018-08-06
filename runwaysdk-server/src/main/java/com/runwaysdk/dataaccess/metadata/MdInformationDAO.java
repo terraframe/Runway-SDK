@@ -116,9 +116,9 @@ public class MdInformationDAO extends MdMessageDAO implements MdInformationDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdInformationDAOIF get(String id)
+  public static MdInformationDAOIF get(String oid)
   {
-    return (MdInformationDAOIF) BusinessDAO.get(id);
+    return (MdInformationDAOIF) BusinessDAO.get(oid);
   }
   
   /* (non-Javadoc)

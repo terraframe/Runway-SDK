@@ -128,9 +128,9 @@ public abstract class MdAttributeFloatBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static MdAttributeFloat get(String id)
+  public static MdAttributeFloat get(String oid)
   {
-    return (MdAttributeFloat) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeFloat) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeFloat getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdAttributeFloatBase extends com.runwaysdk.system.metadata
     return (MdAttributeFloat) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeFloat lock(java.lang.String id)
+  public static MdAttributeFloat lock(java.lang.String oid)
   {
-    MdAttributeFloat _instance = MdAttributeFloat.get(id);
+    MdAttributeFloat _instance = MdAttributeFloat.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeFloat unlock(java.lang.String id)
+  public static MdAttributeFloat unlock(java.lang.String oid)
   {
-    MdAttributeFloat _instance = MdAttributeFloat.get(id);
+    MdAttributeFloat _instance = MdAttributeFloat.get(oid);
     _instance.unlock();
     
     return _instance;

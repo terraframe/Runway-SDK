@@ -149,7 +149,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
 
     MdElementDAOIF mdEntity = MdElementDAO.getMdElementDAO(entityType);
 
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdEntity.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdEntity.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, attributes.getValue(XMLTags.INDEX_UNIQUE_ATTRIBUTE));
     mdIndex.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.FALSE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, attributes.getValue(XMLTags.DISPLAY_LABEL_ATTRIBUTE));

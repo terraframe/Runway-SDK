@@ -108,13 +108,13 @@ public class StandaloneStructQueryTest
     suitEnum.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitEnum.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitEnum.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
+    suitEnum.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getOid());
     suitEnum.apply();
 
     MdAttributeBlobDAO pic = MdAttributeBlobDAO.newInstance();
     pic.setValue(MdAttributeBlobInfo.NAME, "pic");
     pic.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Pic");
-    pic.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getId());
+    pic.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, suitMaster.getOid());
     pic.apply();
 
     BusinessDAO enumItem = BusinessDAO.newInstance(suitMaster.definesType());
@@ -150,7 +150,7 @@ public class StandaloneStructQueryTest
     MdAttributeBlobDAO aBlob = MdAttributeBlobDAO.newInstance();
     aBlob.setValue(MdAttributeBlobInfo.NAME, "queryBlob");
     aBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Query Blob");
-    aBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getId());
+    aBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, collection.getOid());
     aBlob.apply();
 
     MdAttributeBooleanDAO aBoolean = MdAttributeBooleanDAO.newInstance();
@@ -158,20 +158,20 @@ public class StandaloneStructQueryTest
     aBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Query Boolean");
     aBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     aBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
-    aBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getId());
+    aBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, collection.getOid());
     aBoolean.apply();
 
     MdAttributeCharacterDAO aCharacter = MdAttributeCharacterDAO.newInstance();
     aCharacter.setValue(MdAttributeCharacterInfo.NAME, "queryCharacter");
     aCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     aCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    aCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getId());
+    aCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, collection.getOid());
     aCharacter.apply();
 
     MdAttributeDecimalDAO aDecimal = MdAttributeDecimalDAO.newInstance();
     aDecimal.setValue(MdAttributeDecimalInfo.NAME, "queryDecimal");
     aDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
-    aDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getId());
+    aDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, collection.getOid());
     aDecimal.setValue(MdAttributeDecimalInfo.LENGTH, "16");
     aDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "4");
     aDecimal.apply();
@@ -179,7 +179,7 @@ public class StandaloneStructQueryTest
     MdAttributeDoubleDAO aDouble = MdAttributeDoubleDAO.newInstance();
     aDouble.setValue(MdAttributeDoubleInfo.NAME, "queryDouble");
     aDouble.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
-    aDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getId());
+    aDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, collection.getOid());
     aDouble.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     aDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
     aDouble.apply();
@@ -188,14 +188,14 @@ public class StandaloneStructQueryTest
     anEnum.setValue(MdAttributeEnumerationInfo.NAME, "queryEnumeration");
     anEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enuemrated Attribute");
     anEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    anEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getId());
-    anEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getId());
+    anEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, collection.getOid());
+    anEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitEnum.getOid());
     anEnum.apply();
 
     MdAttributeFloatDAO aFloat = MdAttributeFloatDAO.newInstance();
     aFloat.setValue(MdAttributeFloatInfo.NAME, "queryFloat");
     aFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
-    aFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getId());
+    aFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, collection.getOid());
     aFloat.setValue(MdAttributeFloatInfo.LENGTH, "16");
     aFloat.setValue(MdAttributeFloatInfo.DECIMAL, "4");
     aFloat.apply();
@@ -203,43 +203,43 @@ public class StandaloneStructQueryTest
     MdAttributeIntegerDAO anInteger = MdAttributeIntegerDAO.newInstance();
     anInteger.setValue(MdAttributeIntegerInfo.NAME, "queryInteger");
     anInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer");
-    anInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getId());
+    anInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, collection.getOid());
     anInteger.apply();
 
     MdAttributeLongDAO aLong = MdAttributeLongDAO.newInstance();
     aLong.setValue(MdAttributeLongInfo.NAME, "queryLong");
     aLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
-    aLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getId());
+    aLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, collection.getOid());
     aLong.apply();
 
     MdAttributeDateDAO aDate = MdAttributeDateDAO.newInstance();
     aDate.setValue(MdAttributeDateInfo.NAME, "queryDate");
     aDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date");
-    aDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getId());
+    aDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, collection.getOid());
     aDate.apply();
 
     MdAttributeDateTimeDAO aDateTime = MdAttributeDateTimeDAO.newInstance();
     aDateTime.setValue(MdAttributeDateTimeInfo.NAME, "queryDateTime");
     aDateTime.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime");
-    aDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    aDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     aDateTime.apply();
 
     MdAttributeTimeDAO aTime = MdAttributeTimeDAO.newInstance();
     aTime.setValue(MdAttributeTimeInfo.NAME, "queryTime");
     aTime.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time");
-    aTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getId());
+    aTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, collection.getOid());
     aTime.apply();
 
     MdAttributeTextDAO aText = MdAttributeTextDAO.newInstance();
     aText.setValue(MdAttributeTextInfo.NAME, "queryText");
     aText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text");
-    aText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getId());
+    aText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getOid());
     aText.apply();
 
     MdAttributeClobDAO aClob = MdAttributeClobDAO.newInstance();
     aClob.setValue(MdAttributeTextInfo.NAME, "queryClob");
     aClob.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob");
-    aClob.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getId());
+    aClob.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getOid());
     aClob.apply();
 
     testStructQueryObject = StructDAO.newInstance(collection.definesType());
@@ -295,7 +295,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -342,7 +342,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -402,8 +402,8 @@ public class StandaloneStructQueryTest
         for (Object object : (Iterable<?>) resultIterator)
         {
           objectClass.cast(object);
-          String objectId = (String) objectClass.getMethod("getId").invoke(object);
-          if (!objectId.equals(testStructQueryObject.getId()))
+          String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+          if (!objectId.equals(testStructQueryObject.getOid()))
           {
             Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
           }
@@ -456,7 +456,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -515,8 +515,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -564,7 +564,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
@@ -607,7 +607,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -662,8 +662,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -708,7 +708,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -763,8 +763,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -809,7 +809,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -864,8 +864,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -910,7 +910,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -965,8 +965,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1011,7 +1011,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1066,8 +1066,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1112,7 +1112,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1167,8 +1167,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1213,7 +1213,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1268,8 +1268,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1314,7 +1314,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1369,8 +1369,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1415,7 +1415,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1470,8 +1470,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1516,7 +1516,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1571,8 +1571,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1617,7 +1617,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1672,8 +1672,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1718,7 +1718,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute character values are incorrect.");
         }
@@ -1773,8 +1773,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on character values are incorrect.");
         }
@@ -1819,7 +1819,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -1862,7 +1862,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -1917,8 +1917,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -1976,8 +1976,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -2023,7 +2023,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2066,7 +2066,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -2121,8 +2121,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2180,8 +2180,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -2227,7 +2227,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2270,7 +2270,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -2325,8 +2325,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2384,8 +2384,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -2431,7 +2431,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2474,7 +2474,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -2529,8 +2529,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2588,8 +2588,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -2635,7 +2635,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2678,7 +2678,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -2733,8 +2733,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2792,8 +2792,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -2839,7 +2839,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -2882,7 +2882,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -2937,8 +2937,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -2996,8 +2996,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -3043,7 +3043,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3086,7 +3086,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -3141,8 +3141,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3200,8 +3200,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -3247,7 +3247,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3290,7 +3290,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -3345,8 +3345,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3404,8 +3404,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -3451,7 +3451,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3494,7 +3494,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -3549,8 +3549,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3608,8 +3608,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -3655,7 +3655,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3698,7 +3698,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -3753,8 +3753,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -3800,7 +3800,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -3843,7 +3843,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -3898,8 +3898,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -3957,8 +3957,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -4004,7 +4004,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute text values are incorrect.");
         }
@@ -4047,7 +4047,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute clob values are incorrect.");
         }
@@ -4102,8 +4102,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on text values are incorrect.");
         }
@@ -4161,8 +4161,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on clob values are incorrect.");
         }
@@ -4208,7 +4208,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4253,7 +4253,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4312,8 +4312,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4361,7 +4361,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4406,7 +4406,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4465,8 +4465,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4514,7 +4514,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4533,7 +4533,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4580,7 +4580,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4602,7 +4602,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4662,8 +4662,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4689,8 +4689,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4738,7 +4738,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4783,7 +4783,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4842,8 +4842,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -4891,7 +4891,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4910,7 +4910,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4955,7 +4955,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -4977,7 +4977,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5037,8 +5037,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5064,8 +5064,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5113,7 +5113,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5158,7 +5158,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute datetime values are incorrect.");
         }
@@ -5217,8 +5217,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on datetime values are incorrect.");
         }
@@ -5266,7 +5266,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5311,7 +5311,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5370,8 +5370,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5419,7 +5419,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5464,7 +5464,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5523,8 +5523,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5572,7 +5572,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5591,7 +5591,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5637,7 +5637,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5660,7 +5660,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5720,8 +5720,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5748,8 +5748,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5797,7 +5797,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5842,7 +5842,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5901,8 +5901,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -5950,7 +5950,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -5969,7 +5969,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6014,7 +6014,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6035,7 +6035,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6095,8 +6095,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6122,8 +6122,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6171,7 +6171,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6216,7 +6216,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6275,8 +6275,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on date values are incorrect.");
         }
@@ -6324,7 +6324,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6369,7 +6369,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6428,8 +6428,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -6477,7 +6477,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6522,7 +6522,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6581,8 +6581,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -6630,7 +6630,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6649,7 +6649,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6695,7 +6695,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6717,7 +6717,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute date values are incorrect.");
         }
@@ -6776,8 +6776,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -6801,8 +6801,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -6850,7 +6850,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6895,7 +6895,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -6954,8 +6954,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7003,7 +7003,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7022,7 +7022,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7067,7 +7067,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7089,7 +7089,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7149,8 +7149,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7176,8 +7176,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7225,7 +7225,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7270,7 +7270,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute time values are incorrect.");
         }
@@ -7329,8 +7329,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Time values are incorrect.");
         }
@@ -7378,7 +7378,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7421,7 +7421,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7475,8 +7475,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -7522,7 +7522,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7565,7 +7565,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7619,8 +7619,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -7666,7 +7666,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7685,7 +7685,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7728,7 +7728,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7747,7 +7747,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7802,8 +7802,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -7826,8 +7826,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -7873,7 +7873,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7916,7 +7916,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -7970,8 +7970,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8017,7 +8017,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8036,7 +8036,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8079,7 +8079,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8098,7 +8098,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8152,8 +8152,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8176,8 +8176,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8223,7 +8223,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8266,7 +8266,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -8320,8 +8320,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on integer values are incorrect.");
         }
@@ -8367,7 +8367,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8410,7 +8410,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8464,8 +8464,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -8510,7 +8510,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8553,7 +8553,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8607,8 +8607,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -8653,7 +8653,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8672,7 +8672,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8715,7 +8715,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8734,7 +8734,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8789,8 +8789,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -8813,8 +8813,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -8859,7 +8859,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8902,7 +8902,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -8956,8 +8956,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9002,7 +9002,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9021,7 +9021,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9064,7 +9064,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9083,7 +9083,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9138,8 +9138,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9162,8 +9162,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9208,7 +9208,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9251,7 +9251,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute long values are incorrect.");
         }
@@ -9305,8 +9305,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on long values are incorrect.");
         }
@@ -9351,7 +9351,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9394,7 +9394,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9448,8 +9448,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -9494,7 +9494,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9537,7 +9537,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9591,8 +9591,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -9637,7 +9637,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9656,7 +9656,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9699,7 +9699,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9718,7 +9718,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9772,8 +9772,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -9796,8 +9796,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -9842,7 +9842,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9885,7 +9885,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -9939,8 +9939,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -9985,7 +9985,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10004,7 +10004,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10047,7 +10047,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10066,7 +10066,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10120,8 +10120,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10144,8 +10144,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10190,7 +10190,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10233,7 +10233,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute float values are incorrect.");
         }
@@ -10287,8 +10287,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on float values are incorrect.");
         }
@@ -10333,7 +10333,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10376,7 +10376,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10430,8 +10430,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -10476,7 +10476,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10519,7 +10519,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10573,8 +10573,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -10619,7 +10619,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10638,7 +10638,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10681,7 +10681,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10700,7 +10700,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10754,8 +10754,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -10778,8 +10778,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -10824,7 +10824,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10867,7 +10867,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10921,8 +10921,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -10967,7 +10967,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -10986,7 +10986,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11029,7 +11029,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11048,7 +11048,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11102,8 +11102,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11126,8 +11126,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11172,7 +11172,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11215,7 +11215,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
@@ -11269,8 +11269,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Decimal values are incorrect.");
         }
@@ -11315,7 +11315,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11358,7 +11358,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11412,8 +11412,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -11458,7 +11458,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11501,7 +11501,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11555,8 +11555,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -11601,7 +11601,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11620,7 +11620,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11663,7 +11663,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11682,7 +11682,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11737,8 +11737,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -11761,8 +11761,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -11807,7 +11807,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11850,7 +11850,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11904,8 +11904,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -11950,7 +11950,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -11969,7 +11969,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12012,7 +12012,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12031,7 +12031,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12085,8 +12085,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -12109,8 +12109,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }
@@ -12155,7 +12155,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12198,7 +12198,7 @@ public class StandaloneStructQueryTest
 
       for (StructDAOIF object : iterator)
       {
-        if (!object.getId().equals(testStructQueryObject.getId()))
+        if (!object.getOid().equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on attribute double values are incorrect.");
         }
@@ -12252,8 +12252,8 @@ public class StandaloneStructQueryTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(testStructQueryObject.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(testStructQueryObject.getOid()))
         {
           Assert.fail("The objects returned by a query based on Double values are incorrect.");
         }

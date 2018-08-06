@@ -400,6 +400,6 @@ public class IdConversionTest
       t.start();
     }
     waitOnThreads();
-    System.out.println("Deleted all global id, test complete.");
+    System.out.println("Deleted all global oid, test complete.");
   }
 }

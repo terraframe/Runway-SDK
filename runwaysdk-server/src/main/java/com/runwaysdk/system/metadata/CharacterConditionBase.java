@@ -75,7 +75,7 @@ public abstract class CharacterConditionBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(DEFININGMDFIELD, value.getId());
+      setValue(DEFININGMDFIELD, value.getOid());
     }
   }
   
@@ -89,7 +89,7 @@ public abstract class CharacterConditionBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      addEnumItem(OPERATION, value.getId());
+      addEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -97,7 +97,7 @@ public abstract class CharacterConditionBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      removeEnumItem(OPERATION, value.getId());
+      removeEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -150,9 +150,9 @@ public abstract class CharacterConditionBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static CharacterCondition get(String id)
+  public static CharacterCondition get(String oid)
   {
-    return (CharacterCondition) com.runwaysdk.business.Business.get(id);
+    return (CharacterCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static CharacterCondition getByKey(String key)
@@ -160,17 +160,17 @@ public abstract class CharacterConditionBase extends com.runwaysdk.system.metada
     return (CharacterCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static CharacterCondition lock(java.lang.String id)
+  public static CharacterCondition lock(java.lang.String oid)
   {
-    CharacterCondition _instance = CharacterCondition.get(id);
+    CharacterCondition _instance = CharacterCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static CharacterCondition unlock(java.lang.String id)
+  public static CharacterCondition unlock(java.lang.String oid)
   {
-    CharacterCondition _instance = CharacterCondition.get(id);
+    CharacterCondition _instance = CharacterCondition.get(oid);
     _instance.unlock();
     
     return _instance;

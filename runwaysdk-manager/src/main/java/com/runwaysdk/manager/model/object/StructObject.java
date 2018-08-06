@@ -51,6 +51,6 @@ public class StructObject extends EntityObject
       return PersistanceFacade.newInstance(this.getType());
     }
 
-    return PersistanceFacade.get(this.getId()).getEntityDAO();
+    return PersistanceFacade.get(this.getOid()).getEntityDAO();
   }
 }

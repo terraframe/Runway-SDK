@@ -22,7 +22,7 @@ public interface MethodActorInfo extends EntityInfo
 {
 
   /**
-   * The name of the attribute on which contains the MdMethod id
+   * The name of the attribute on which contains the MdMethod oid
    */
   public static final String MD_METHOD = "mdMethod";
 

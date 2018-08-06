@@ -70,7 +70,7 @@ public class DeterministicIDTest
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
     mdBusiness.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
@@ -80,7 +80,7 @@ public class DeterministicIDTest
     mdAttChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some CharacterAttribute");
     mdAttChar.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttChar.apply();
 
   }
@@ -114,7 +114,7 @@ public class DeterministicIDTest
     BusinessDAO businessDAO1 = BusinessDAO.newInstance(NEW_CLASS.getType());
     businessDAO1.apply();
 
-    Assert.assertEquals("ID and KeyName values were not equal on a type without deterministic IDs.", businessDAO1.getId(), businessDAO1.getKey());
+    Assert.assertEquals("ID and KeyName values were not equal on a type without deterministic IDs.", businessDAO1.getOid(), businessDAO1.getKey());
 
     // Enable Deterministic IDs
     mdBusiness.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
@@ -159,7 +159,7 @@ public class DeterministicIDTest
       businessDAO1.setValue(EntityInfo.KEY, "TestKeyOne");
       businessDAO1.apply();
 
-      String busId1 = businessDAO1.getId();
+      String busId1 = businessDAO1.getOid();
       businessDAO1.delete();
 
       BusinessDAO businessDAO2 = BusinessDAO.newInstance(NEW_CLASS.getType());
@@ -167,7 +167,7 @@ public class DeterministicIDTest
       businessDAO2.apply();
       businessDAO2.delete();
 
-      String busId2 = businessDAO2.getId();
+      String busId2 = businessDAO2.getOid();
 
       Assert.assertEquals("IDs from two different objects should have deterministically been the same", busId1, busId2);
     }
@@ -196,11 +196,11 @@ public class DeterministicIDTest
       businessDAO1.setValue(EntityInfo.KEY, "TestKeyOne");
       businessDAO1.setValue(CHAR_ATTR, "Obj1");
       businessDAO1.apply();
-      String obj1TestKeyOneId = businessDAO1.getId();
+      String obj1TestKeyOneId = businessDAO1.getOid();
 
       businessDAO1.setValue(EntityInfo.KEY, "TestKeyTwo");
       businessDAO1.apply();
-      String obj1TestKeyTwoId = businessDAO1.getId();
+      String obj1TestKeyTwoId = businessDAO1.getOid();
 
       Assert.assertTrue("An ID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
 
@@ -208,7 +208,7 @@ public class DeterministicIDTest
       businessDAO2.setValue(EntityInfo.KEY, "TestKeyOne");
       businessDAO2.setValue(CHAR_ATTR, "Obj2");
       businessDAO2.apply();
-      String obj2TestKeyOneId = businessDAO2.getId();
+      String obj2TestKeyOneId = businessDAO2.getOid();
 
       Assert.assertTrue("The same ID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));
 
@@ -283,12 +283,12 @@ public class DeterministicIDTest
     businessDAO1.setValue(EntityInfo.KEY, "TestKeyOne");
     businessDAO1.setValue(CHAR_ATTR, "Obj1");
     businessDAO1.apply();
-    String obj1TestKeyOneId = businessDAO1.getId();
+    String obj1TestKeyOneId = businessDAO1.getOid();
     returnList.add(businessDAO1);
 
     businessDAO1.setValue(EntityInfo.KEY, "TestKeyTwo");
     businessDAO1.apply();
-    String obj1TestKeyTwoId = businessDAO1.getId();
+    String obj1TestKeyTwoId = businessDAO1.getOid();
 
     Assert.assertTrue("An ID for an object did not change when the key name value changed.", !obj1TestKeyOneId.equals(obj1TestKeyTwoId));
 
@@ -296,7 +296,7 @@ public class DeterministicIDTest
     businessDAO2.setValue(EntityInfo.KEY, "TestKeyOne");
     businessDAO2.setValue(CHAR_ATTR, "Obj2");
     businessDAO2.apply();
-    String obj2TestKeyOneId = businessDAO2.getId();
+    String obj2TestKeyOneId = businessDAO2.getOid();
     returnList.add(businessDAO2);
 
     Assert.assertTrue("The same ID was not generated for two different objects that have the same key.", obj1TestKeyOneId.equals(obj2TestKeyOneId));

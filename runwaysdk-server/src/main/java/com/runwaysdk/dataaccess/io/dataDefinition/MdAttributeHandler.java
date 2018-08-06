@@ -151,8 +151,8 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
     protected RelationshipDAO getRelationship(MdAttributeDAO mdAttribute, BusinessDAOIF term, String relationshipType)
     {
-      String parentId = mdAttribute.getId();
-      String childId = term.getId();
+      String parentId = mdAttribute.getOid();
+      String childId = term.getOid();
 
       RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(relationshipType);
       query.WHERE(query.parentId().EQ(parentId));
@@ -292,14 +292,14 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     {
       if (mdAttribute instanceof MdAttributeConcreteDAOIF)
       {
-        mdAttribute.setValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS, mdClass.getId());
+        mdAttribute.setValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS, mdClass.getOid());
         mdAttribute.apply();
       }
       else if (mdAttribute instanceof MdAttributeVirtualDAOIF && mdClass instanceof MdViewDAO)
       {
         try
         {
-          mdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdClass.getId());
+          mdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdClass.getOid());
           mdAttribute.apply();
         }
         catch (InvalidReferenceException e)
@@ -370,7 +370,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
         if (concreteAttribute instanceof MdAttributeConcreteDAOIF)
         {
-          mdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, concreteAttribute.getId());
+          mdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, concreteAttribute.getOid());
         }
       }
     }
@@ -400,17 +400,17 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
       if (indexType != null)
       {
         // Default to non unique indexing
-        String indexingId = IndexTypes.NON_UNIQUE_INDEX.getId();
+        String indexingId = IndexTypes.NON_UNIQUE_INDEX.getOid();
 
         // Change to an everything caching algorithm
         if (indexType.equals(XMLTags.UNIQUE_INDEX_ENUMERATION))
         {
-          indexingId = IndexTypes.UNIQUE_INDEX.getId();
+          indexingId = IndexTypes.UNIQUE_INDEX.getOid();
         }
         // Change to a nonthing caching algorithm
         else if (indexType.equals(XMLTags.NO_INDEX_ENUMERATION))
         {
-          indexingId = IndexTypes.NO_INDEX.getId();
+          indexingId = IndexTypes.NO_INDEX.getOid();
         }
 
         mdAttribute.addItem(MdAttributeConcreteInfo.INDEX_TYPE, indexingId);
@@ -421,11 +421,11 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     {
       if (value != null && value.equals(XMLTags.PUBLIC_VISIBILITY_ENUMERATION))
       {
-        mdAttribute.addItem(attributeName, VisibilityModifier.PUBLIC.getId());
+        mdAttribute.addItem(attributeName, VisibilityModifier.PUBLIC.getOid());
       }
       else if (value != null && value.equals(XMLTags.PROTECTED_VISIBILITY_ENUMERATION))
       {
-        mdAttribute.addItem(attributeName, VisibilityModifier.PROTECTED.getId());
+        mdAttribute.addItem(attributeName, VisibilityModifier.PROTECTED.getOid());
       }
     }
 
@@ -488,11 +488,11 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         String masterListType = mdAttributeEnumerationDAO.getMdEnumerationDAO().getMasterListMdBusinessDAO().definesType();
         String enumerationItemKey = EnumerationItemDAO.buildKey(masterListType, defaultValue);
 
-        String id = "";
+        String oid = "";
 
         try
         {
-          id = EntityDAO.getIdFromKey(masterListType, enumerationItemKey);
+          oid = EntityDAO.getOidFromKey(masterListType, enumerationItemKey);
         }
         catch (DataNotFoundException e)
         {
@@ -501,12 +501,12 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
           SearchHandler.searchEntity(this.getManager(), criteria, mdClass.definesType());
         }
 
-        if (id.equals(""))
+        if (oid.equals(""))
         {
-          id = EntityDAO.getIdFromKey(masterListType, enumerationItemKey);
+          oid = EntityDAO.getOidFromKey(masterListType, enumerationItemKey);
         }
 
-        mdAttributeEnumerationDAO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, id);
+        mdAttributeEnumerationDAO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, oid);
       }
     }
 
@@ -522,7 +522,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         }
 
         MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(mdEnumerationType);
-        mdAttributeEnumerationDAO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getId());
+        mdAttributeEnumerationDAO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getOid());
       }
     }
 
@@ -532,7 +532,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
       // NOTE: enumeration type must be imported before the default value
       // because the enumeration type is required in order to dereference
-      // the actual id of the default value.
+      // the actual oid of the default value.
       importEnumerationType(mdClass, mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
 
       importEnumerationDefaultValue(mdClass, mdAttribute, attributes.getValue(XMLTags.DEFAULT_VALUE_ATTRIBUTE));
@@ -568,11 +568,11 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
       {
         String referenceType = ( (MdAttributeRefDAOIF) mdAttribute ).getReferenceMdBusinessDAO().definesType();
 
-        String id = "";
+        String oid = "";
 
         try
         {
-          id = EntityDAO.getIdFromKey(referenceType, defaultValue);
+          oid = EntityDAO.getOidFromKey(referenceType, defaultValue);
         }
         catch (DataNotFoundException e)
         {
@@ -581,12 +581,12 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
           SearchHandler.searchEntity(this.getManager(), criteria, mdClass.definesType());
         }
 
-        if (id.equals(""))
+        if (oid.equals(""))
         {
-          id = EntityDAO.getIdFromKey(referenceType, defaultValue);
+          oid = EntityDAO.getOidFromKey(referenceType, defaultValue);
         }
 
-        mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, id);
+        mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, oid);
       }
     }
 
@@ -603,7 +603,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
         // Get the databaseID of the enumeration reference
         MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(referenceType);
-        mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refMdBusinessIF.getId());
+        mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refMdBusinessIF.getOid());
       }
     }
   }
@@ -739,7 +739,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         MdLocalStructDAOIF refMdLocalStructIF = MdLocalStructDAO.getMdLocalStructDAO(localType);
 
         // Reference to a struct class
-        mdAttribute.setValue(MdAttributeLocalInfo.MD_STRUCT, refMdLocalStructIF.getId());
+        mdAttribute.setValue(MdAttributeLocalInfo.MD_STRUCT, refMdLocalStructIF.getOid());
       }
     }
 
@@ -892,7 +892,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         MdStructDAOIF refMdStructIF = MdStructDAO.getMdStructDAO(structType);
 
         // Reference to a struct class
-        mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, refMdStructIF.getId());
+        mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, refMdStructIF.getOid());
       }
     }
 
@@ -927,7 +927,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     {
       if (symmetricMethod != null)
       {
-        // Find the id associated with the of the symmetric method
+        // Find the oid associated with the of the symmetric method
         QueryFactory qFactory = new QueryFactory();
         BusinessDAOQuery query = qFactory.businessDAOQuery(EntityTypes.SYMMETRIC_METHOD.getType());
         query.WHERE(query.aCharacter(EnumerationMasterInfo.NAME).EQ(symmetricMethod));
@@ -940,7 +940,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
           // If the encryption method has been defined
           if (iterator.hasNext())
           {
-            String methodId = iterator.next().getId();
+            String methodId = iterator.next().getOid();
 
             // Set the hash value
             mdAttribute.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, methodId);
@@ -995,7 +995,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
       // Parse the referenceName attribute
       if (hashMethod != null)
       {
-        // Find the id associated with the name of the hash method
+        // Find the oid associated with the name of the hash method
         QueryFactory qFactory = new QueryFactory();
         BusinessDAOQuery hashMethodQ = qFactory.businessDAOQuery(EntityTypes.HASH_METHOD.getType());
         hashMethodQ.WHERE(hashMethodQ.aCharacter(EnumerationMasterInfo.NAME).EQ(hashMethod));
@@ -1006,7 +1006,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
           // If the encryption method has been defined
           if (iterator.hasNext())
           {
-            String methodId = iterator.next().getId();
+            String methodId = iterator.next().getOid();
 
             // Set the hash value
             mdAttribute.addItem(MdAttributeHashInfo.HASH_METHOD, methodId);

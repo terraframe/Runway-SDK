@@ -114,7 +114,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private String                   oldId                 = null;
 
   /**
-   * True if <code>this.hasIdChanged()</code> is true and the new id has been
+   * True if <code>this.hasIdChanged()</code> is true and the new oid has been
    * applied to the database.
    */
   private boolean                  newIdApplied          = false;
@@ -219,7 +219,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Clears the previous id, if any.
+   * Clears the previous oid, if any.
    */
   public void clearOldId()
   {
@@ -228,9 +228,9 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns true if the id has changed, false otherwise.
+   * Returns true if the oid has changed, false otherwise.
    * 
-   * @return true if the id has changed, false otherwise.
+   * @return true if the oid has changed, false otherwise.
    */
   public boolean hasIdChanged()
   {
@@ -338,12 +338,12 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * Returns the Id used for AttributeProblems (not messages). New instances
    * that fail will have a different ID on the client.
    * 
-   * @return problem notification id.
+   * @return problem notification oid.
    */
   public String getProblemNotificationId()
   {
-    // If we're using predictive id's then the id may have changed. Return the
-    // old id.
+    // If we're using predictive oid's then the oid may have changed. Return the
+    // old oid.
     if (this.hasIdChanged())
     {
       return this.oldId;
@@ -351,7 +351,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     if (this.getObjectState().getProblemNotificationId().equals(""))
     {
-      return this.getId();
+      return this.getOid();
     }
     else
     {
@@ -583,15 +583,15 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Sets the id to the given value, and saves the state of the old id.
+   * Sets the oid to the given value, and saves the state of the old oid.
    * 
    * @param newId
    */
   // Called by an aspect
   @SuppressWarnings("unused")
-  private void setId(String newId)
+  private void setOid(String newId)
   {
-    if (this.isAppliedToDB() && !this.getId().equals(newId))
+    if (this.isAppliedToDB() && !this.getOid().equals(newId))
     {
       this.oldId = this.getAttribute(EntityInfo.ID).getValue();
     }
@@ -609,10 +609,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns true if the the id has changed and has been applied to the
+   * Returns true if the the oid has changed and has been applied to the
    * database, false otherwise.
    * 
-   * @return true if the the id has changed and has been applied to the
+   * @return true if the the oid has changed and has been applied to the
    *         database, false otherwise.
    */
   public boolean isNewIdApplied()
@@ -991,7 +991,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public String save(boolean validateRequired)
   {
-    // UserIdAspect will replace the user id with the ID of the user
+    // UserIdAspect will replace the user oid with the ID of the user
     // doing this action through the facade
 
     if (this.isAppliedToDB() == false && !this.isImport())
@@ -1019,7 +1019,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     this.setAppliedToDB(true);
 
-    return this.getId();
+    return this.getOid();
   }
 
   /**
@@ -1245,12 +1245,12 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public String apply()
   {
-    // UserIdAspect will replace the user id with the ID of the user
+    // UserIdAspect will replace the user oid with the ID of the user
     // doing this action through the facade
 
     if (this.isDisconnected())
     {
-      String error = "Object [" + this.getId() + "] can not be applied: It is a disconnected entity.";
+      String error = "Object [" + this.getOid() + "] can not be applied: It is a disconnected entity.";
       throw new DisconnectedEntityException(error);
     }
 
@@ -1261,7 +1261,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns a copy of the given EntityDAO instance, with a new id and mastered
+   * Returns a copy of the given EntityDAO instance, with a new oid and mastered
    * at the current site. The state of the object is new and has not been
    * applied to the database.
    * 
@@ -1431,7 +1431,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     if (!this.isAppliedToDB())
     {
-      String error = "Object [" + this.getId() + "] has not been applied: " + "instances that have not been applied to the database cannot be deleted.";
+      String error = "Object [" + this.getOid() + "] has not been applied: " + "instances that have not been applied to the database cannot be deleted.";
       throw new DeleteUnappliedObjectException(error, this);
     }
 
@@ -1529,11 +1529,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       }
 
       // Exclude this object from the database
-      entityQuery.WHERE(entityQuery.aCharacter(EntityInfo.ID).NE(this.getId()));
+      entityQuery.WHERE(entityQuery.aCharacter(EntityInfo.ID).NE(this.getOid()));
 
       if (entityQuery.getCount() > 0)
       {
-        String error = "Duplicate item violation.  Instance [" + this.getId() + "] contains the same values for certain fields: ";
+        String error = "Duplicate item violation.  Instance [" + this.getOid() + "] contains the same values for certain fields: ";
 
         for (int i = 0; i < uniqueMdAttributeIFList.size(); i++)
         {
@@ -1576,7 +1576,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     QueryFactory qf = entityQ.getQueryFactory();
     ValueQuery q = qf.valueQuery();
 
-    q.SELECT(entityQ.id("entityId"));
+    q.SELECT(entityQ.oid("entityId"));
     q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value));
 
     OIterator<ValueObject> i = q.getIterator();
@@ -1686,23 +1686,23 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns a EntityDAO of the given id in the database.
+   * Returns a EntityDAO of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the database <br/>
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> EntityDAO representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return EntityDAO instance of the given id, of the given type
+   * @param oid
+   *          element oid of an item in the database
+   * @return EntityDAO instance of the given oid, of the given type
    */
-  public static EntityDAOIF get(String id)
+  public static EntityDAOIF get(String oid)
   {
-    return ObjectCache.getEntityDAO(id);
+    return ObjectCache.getEntityDAO(oid);
   }
 
   /**
@@ -1729,7 +1729,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns a id of the entity of the given type with the given key in the
+   * Returns a oid of the entity of the given type with the given key in the
    * database.
    * 
    * <br/>
@@ -1747,7 +1747,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * 
    * @return EntityDAOIF instance of the given type and key
    */
-  public static String getIdFromKey(String type, String key)
+  public static String getOidFromKey(String type, String key)
   {
     MdEntityDAOIF mdEntityDAOIF = MdEntityDAO.getMdEntityDAO(type);
 
@@ -1756,7 +1756,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     ValueQuery vq = new ValueQuery(qf);
 
-    vq.SELECT(entityQueryDAO.id(EntityInfo.ID));
+    vq.SELECT(entityQueryDAO.oid(EntityInfo.ID));
     vq.WHERE(entityQueryDAO.aCharacter(EntityInfo.KEY).EQ(key));
 
     OIterator<ValueObject> i = vq.getIterator();
@@ -1769,7 +1769,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       }
       else
       {
-        String errMsg = "Unable to find id for object of type [" + type + "] with " + EntityInfo.KEY + " [" + key + "]";
+        String errMsg = "Unable to find oid for object of type [" + type + "] with " + EntityInfo.KEY + " [" + key + "]";
         throw new DataNotFoundException(errMsg, mdEntityDAOIF);
       }
     }

@@ -30,7 +30,7 @@ public class TypeInfo
 
   private String packageName;
 
-  private String id;
+  private String oid;
 
   public TypeInfo(String packageName, String typeName)
   {
@@ -68,14 +68,14 @@ public class TypeInfo
     return this.packageName + "." + this.typeName;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
-  public void setId(String id)
+  public void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
 }

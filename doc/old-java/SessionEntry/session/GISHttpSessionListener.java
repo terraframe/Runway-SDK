@@ -25,7 +25,7 @@ public class GISHttpSessionListener implements HttpSessionAttributeListener
   }
 
   /**
-   * Removes all SessionEntry objects with the associated session id stored in the HttpSession.
+   * Removes all SessionEntry objects with the associated session oid stored in the HttpSession.
    */
   @Override
   public void attributeRemoved(HttpSessionBindingEvent evt)
@@ -35,7 +35,7 @@ public class GISHttpSessionListener implements HttpSessionAttributeListener
 //      WebClientSession wcs = (WebClientSession) evt.getValue();
 //      String sessionId =  wcs.getSessionId();
 //
-//      String msg = "Removing SessionEntry objects for session id ["+sessionId+"] after unbinding attribute ["+evt.getName()+"].";
+//      String msg = "Removing SessionEntry objects for session oid ["+sessionId+"] after unbinding attribute ["+evt.getName()+"].";
 //      log.debug(msg);
 //      
 //      try

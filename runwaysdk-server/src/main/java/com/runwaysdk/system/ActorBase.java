@@ -32,7 +32,7 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,11 +128,11 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -142,7 +142,7 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Actor.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -284,7 +284,7 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -384,9 +384,9 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
     }
   }
   
-  public static Actor get(String id)
+  public static Actor get(String oid)
   {
-    return (Actor) com.runwaysdk.business.Business.get(id);
+    return (Actor) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Actor getByKey(String key)
@@ -394,17 +394,17 @@ public abstract class ActorBase extends com.runwaysdk.business.Business
     return (Actor) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Actor lock(java.lang.String id)
+  public static Actor lock(java.lang.String oid)
   {
-    Actor _instance = Actor.get(id);
+    Actor _instance = Actor.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Actor unlock(java.lang.String id)
+  public static Actor unlock(java.lang.String oid)
   {
-    Actor _instance = Actor.get(id);
+    Actor _instance = Actor.get(oid);
     _instance.unlock();
     
     return _instance;

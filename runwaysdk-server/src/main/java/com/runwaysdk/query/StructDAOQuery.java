@@ -46,15 +46,15 @@ public class StructDAOQuery extends EntityQuery
   }
 
   /**
-   * Creates a query object with the criteria set to fetch an object with the given id.
-   * @param id ID of the StructDAO
-   * @return query object with the criteria set to fetch an object with the given id.
+   * Creates a query object with the criteria set to fetch an object with the given oid.
+   * @param oid ID of the StructDAO
+   * @return query object with the criteria set to fetch an object with the given oid.
    */
-  public static StructDAOQuery getObjectInstance(String id)
+  public static StructDAOQuery getObjectInstance(String oid)
   {
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     StructDAOQuery structDAOQuery = new QueryFactory().structDAOQuery(mdClassIF.definesType());
-    structDAOQuery.WHERE(structDAOQuery.aCharacter(EntityInfo.ID).EQ(id));
+    structDAOQuery.WHERE(structDAOQuery.aCharacter(EntityInfo.ID).EQ(oid));
     structDAOQuery.instanceQuery = true;
 
     return structDAOQuery;

@@ -58,7 +58,7 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
 
   /**
    * Data structure used to store key of {@link EntityDAO}s that should be
-   * cached according to this collection. The value is the id of the object. <br/>
+   * cached according to this collection. The value is the oid of the object. <br/>
    * <b>invariant</b> entityDAOIdByKeyMap != null
    * 
    * Key: object keyname Value: objectId
@@ -208,16 +208,16 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
     ObjectCache.removeFromGlobalCache(this.entityDAOIdSet);
   }
 
-  public abstract EntityDAOIF getEntityInstance(String id);
+  public abstract EntityDAOIF getEntityInstance(String oid);
 
   public abstract EntityDAOIF getEntityInstance(String type, String key);
 
   /**
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  protected abstract EntityDAOIF getFromFactory(String id);
+  protected abstract EntityDAOIF getFromFactory(String oid);
 
   /**
    * 
@@ -233,14 +233,14 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
   }
   
   /**
-   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * Removes the {@link EntityDAO} with the given oid from the cache so that it can be refreshed
    * on the next request for the object.
    *
    * <br/><b>Precondition:</b>  {@link EntityDAO} != null
    *
    * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
    *
-   * @param  id for the {@link EntityDAO} to remove from this collection
+   * @param  oid for the {@link EntityDAO} to remove from this collection
    */
   public abstract void clearCacheForRefresh(String entityId);
 

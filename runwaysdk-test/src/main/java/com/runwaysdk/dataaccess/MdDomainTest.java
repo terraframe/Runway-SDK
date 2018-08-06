@@ -76,10 +76,10 @@ public class MdDomainTest
   public void testSetDomain()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getId());
+    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getOid());
     businessDAO.apply();
 
-    Assert.assertEquals(mdDomain.getId(), BusinessDAO.get(businessDAO.getId()).getValue(ElementInfo.DOMAIN));
+    Assert.assertEquals(mdDomain.getOid(), BusinessDAO.get(businessDAO.getOid()).getValue(ElementInfo.DOMAIN));
   }
 
   @Request
@@ -87,13 +87,13 @@ public class MdDomainTest
   public void testRemoveDomain()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getId());
+    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getOid());
     businessDAO.apply();
 
-    BusinessDAO dao = BusinessDAO.get(businessDAO.getId()).getBusinessDAO();
+    BusinessDAO dao = BusinessDAO.get(businessDAO.getOid()).getBusinessDAO();
     dao.setValue(ElementInfo.DOMAIN, "");
     dao.apply();
 
-    Assert.assertEquals("", BusinessDAO.get(businessDAO.getId()).getValue(ElementInfo.DOMAIN));
+    Assert.assertEquals("", BusinessDAO.get(businessDAO.getOid()).getValue(ElementInfo.DOMAIN));
   }
 }

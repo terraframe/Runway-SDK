@@ -34,7 +34,7 @@ public class ImmutableAttributeProblemDTO extends AttributeProblemDTO
    * Constructs a new ImmutableAttributeProblemDTO with the specified localized message from the server. 
    * 
    * @param type of the runway exception.
-   * @param componentId id of the containing component.
+   * @param componentId oid of the containing component.
    * @param definingType type of the containing component.
    * @param definingTypeDisplayLabel display label of the type of the containing component.
    * @param attributeName name of the attribute.

@@ -438,13 +438,13 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWarning mdWarning)
     {
       if(mdWarning == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWarning.getId());
+      return this.EQ(mdWarning.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWarning mdWarning)
     {
       if(mdWarning == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWarning.getId());
+      return this.NE(mdWarning.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdMessageQuery.MdMessageQueryReferenceIF getSuperMdWarning()
@@ -753,7 +753,7 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
 
       for (int i=0; i<mdWarning.length; i++)
       {
-        itemIdArray[i] = mdWarning[i].getId();
+        itemIdArray[i] = mdWarning[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -765,7 +765,7 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
 
       for (int i=0; i<mdWarning.length; i++)
       {
-        itemIdArray[i] = mdWarning[i].getId();
+        itemIdArray[i] = mdWarning[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -777,7 +777,7 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
 
       for (int i=0; i<mdWarning.length; i++)
       {
-        itemIdArray[i] = mdWarning[i].getId();
+        itemIdArray[i] = mdWarning[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -789,7 +789,7 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
 
       for (int i=0; i<mdWarning.length; i++)
       {
-        itemIdArray[i] = mdWarning[i].getId();
+        itemIdArray[i] = mdWarning[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -801,7 +801,7 @@ public  class MdWarningQuery extends com.runwaysdk.system.metadata.MdMessageQuer
 
       for (int i=0; i<mdWarning.length; i++)
       {
-        itemIdArray[i] = mdWarning[i].getId();
+        itemIdArray[i] = mdWarning[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

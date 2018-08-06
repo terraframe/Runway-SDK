@@ -121,7 +121,7 @@ public class CacheTest
     parentMD.apply();
 
     AttributeEnumerationIF attributeEnumerationIF = (AttributeEnumerationIF) parentMD.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
-    originalParentMdCacheId = attributeEnumerationIF.dereference()[0].getId();
+    originalParentMdCacheId = attributeEnumerationIF.dereference()[0].getOid();
 
     MdBusinessDAO childMD = MdBusinessDAO.newInstance();
     childMD.setValue(MdBusinessInfo.NAME, childInfo.getTypeName());
@@ -132,12 +132,12 @@ public class CacheTest
     childMD.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMD.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     childMD.setValue(MdBusinessInfo.CACHE_SIZE, "50");
-    childMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMD.getId());
+    childMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMD.getOid());
     childMD.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMD.apply();
 
     attributeEnumerationIF = (AttributeEnumerationIF) childMD.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
-    originalChildMdCacheId = attributeEnumerationIF.dereference()[0].getId();
+    originalChildMdCacheId = attributeEnumerationIF.dereference()[0].getOid();
 
     mdDomain = MdDomainDAO.newInstance();
     mdDomain.setValue(MdDomainInfo.DOMAIN_NAME, "testDomain");
@@ -176,9 +176,9 @@ public class CacheTest
     MdBusinessDAO parentMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(parentInfo.getType()) ).getBusinessDAO();
     MdBusinessDAO childMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(childInfo.getType()) ).getBusinessDAO();
 
-    parentMD.setValue(MdElementInfo.CACHE_ALGORITHM, parentCache.getId());
+    parentMD.setValue(MdElementInfo.CACHE_ALGORITHM, parentCache.getOid());
     parentMD.apply();
-    childMD.setValue(MdElementInfo.CACHE_ALGORITHM, childCache.getId());
+    childMD.setValue(MdElementInfo.CACHE_ALGORITHM, childCache.getOid());
     childMD.apply();
   }
 
@@ -222,13 +222,13 @@ public class CacheTest
    *          A BusinessDAOCollection
    * @param ids
    *          A List of ids that should be in the collection
-   * @return true if every id is in the collection, false otherwise
+   * @return true if every oid is in the collection, false otherwise
    */
   private boolean containsAll(CacheStrategy cacheStrategy, List<String> ids)
   {
-    for (String id : ids)
+    for (String oid : ids)
     {
-      if (!cacheStrategy.entityDAOIdSet.contains(id))
+      if (!cacheStrategy.entityDAOIdSet.contains(oid))
       {
         return false;
       }
@@ -238,21 +238,21 @@ public class CacheTest
 
   /**
    * Checks the global collection cache to ensure that all data objects with the
-   * given ids Performs a BusinessDAO.get(id) on each id to ensure the object
+   * given ids Performs a BusinessDAO.get(oid) on each oid to ensure the object
    * gets into the global cache. If it does not, then the global cache is not
    * being maintained properly.
    *
    * @param ids
    *          A List of ids that should be in the collection
-   * @return true if every id is in the collection, false otherwise
+   * @return true if every oid is in the collection, false otherwise
    */
   private boolean globalCacheContainsAll(List<String> ids)
   {
-    for (String id : ids)
+    for (String oid : ids)
     {
       // Should put the object in the cache.
-      BusinessDAO.get(id);
-      if (!ObjectCache.globalCacheContainsId(id))
+      BusinessDAO.get(oid);
+      if (!ObjectCache.globalCacheContainsId(oid))
       {
         return false;
       }
@@ -363,13 +363,13 @@ public class CacheTest
     hardMD.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Parent Class");
     hardMD.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     hardMD.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    hardMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
+    hardMD.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getOid());
     hardMD.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     // Test Everything extends Hardcoded
     try
     {
-      hardMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      hardMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       hardMD.apply();
       hardMD.delete();
       Assert.fail("Cache " + EntityCacheMaster.CACHE_EVERYTHING + " allowed to extend " + EntityCacheMaster.CACHE_HARDCODED);
@@ -383,7 +383,7 @@ public class CacheTest
     try
     {
       hardMD.setValue(MdBusinessInfo.CACHE_SIZE, "5");
-      hardMD.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      hardMD.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       hardMD.apply();
       hardMD.delete();
       Assert.fail("Cache " + EntityCacheMaster.CACHE_MOST_RECENTLY_USED + " allowed to extend " + EntityCacheMaster.CACHE_HARDCODED);
@@ -522,7 +522,7 @@ public class CacheTest
       populate(10, 10);
 
       MdBusinessDAO parentMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(parentInfo.getType()) ).getBusinessDAO();
-      parentMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      parentMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       parentMD.apply();
 
       CacheStrategy parentCache = ObjectCache.getTypeCollection(parentInfo.getType());
@@ -616,18 +616,18 @@ public class CacheTest
 
       // The front portion of the list should have been bumped out of the cache
       List<String> uncachedParentIds = parentIds.subList(0, parentIds.size() - cacheSize + 25);
-      for (String id : uncachedParentIds)
+      for (String oid : uncachedParentIds)
       {
-        if (parentCache.entityDAOIdSet.contains(id))
+        if (parentCache.entityDAOIdSet.contains(oid))
         {
           Assert.fail("MRU collection contains items that were not used recently.");
         }
       }
 
       // The list should also have been bumped out of the global cache.
-      for (String id : uncachedParentIds)
+      for (String oid : uncachedParentIds)
       {
-        if (ObjectCache.globalCacheContainsId(id))
+        if (ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("Global cache is corrupt:  Global cache contains items that were not used recently.");
         }
@@ -697,17 +697,17 @@ public class CacheTest
 
       // The front portion of the list should have been bumped out of the cache
       List<String> uncachedParentIds = parentIds.subList(0, 25);
-      for (String id : uncachedParentIds)
+      for (String oid : uncachedParentIds)
       {
-        if (parentCache.entityDAOIdSet.contains(id))
+        if (parentCache.entityDAOIdSet.contains(oid))
         {
           Assert.fail("MRU collection contains items that were not used recently.");
         }
       }
 
-      for (String id : uncachedParentIds)
+      for (String oid : uncachedParentIds)
       {
-        if (ObjectCache.globalCacheContainsId(id))
+        if (ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("Global cache is corrupt:  Global cache contains items that were not used recently.");
         }
@@ -742,7 +742,7 @@ public class CacheTest
       MdBusinessDAO childMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(childInfo.getType()) ).getBusinessDAO();
 
       // Set the child to start caching everything
-      childMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      childMD.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       childMD.apply();
 
       CacheStrategy parentCache = ObjectCache.getTypeCollection(parentInfo.getType());
@@ -771,13 +771,13 @@ public class CacheTest
       // Since the child is caching all, the parent collection should have no
       // instances of the child.
       // The child should still be referenced in the global cache.
-      for (String id : childIds)
+      for (String oid : childIds)
       {
-        if (parentCache.entityDAOIdSet.contains(id))
+        if (parentCache.entityDAOIdSet.contains(oid))
         {
           Assert.fail("Parent collection still has instances of Child");
         }
-        if (!ObjectCache.globalCacheContainsId(id))
+        if (!ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("Global cache is corrupt: Global cache does not contain an instance of Child");
         }
@@ -813,24 +813,24 @@ public class CacheTest
       mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "String to be Dropped");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Sup Yo");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+      mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdIF.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdIF.getOid());
       mdAttributeCharacter.apply();
 
       populate(10, 10);
 
       // Now we check to make sure that all items in both caches have the new
       // attribute
-      for (String id : parentIds)
+      for (String oid : parentIds)
       {
-        EntityDAOIF parent = ObjectCache.getEntityDAO(id);
+        EntityDAOIF parent = ObjectCache.getEntityDAO(oid);
         parent.getAttributeIF("dropMe");
       }
 
-      for (String id : childIds)
+      for (String oid : childIds)
       {
-        EntityDAOIF child = ObjectCache.getEntityDAO(id);
+        EntityDAOIF child = ObjectCache.getEntityDAO(oid);
         child.getAttributeIF("dropMe");
       }
 
@@ -840,12 +840,12 @@ public class CacheTest
 
       // Now we check to make sure that all items in both caches have dropped
       // the attribute
-      for (String id : parentIds)
+      for (String oid : parentIds)
       {
         // Check the global cached
         // Make sure it gets into the cache.
-        ObjectCache.getEntityDAO(id);
-        EntityDAOIF parent = ObjectCache.getEntityDAOIFfromCache(id);
+        ObjectCache.getEntityDAO(oid);
+        EntityDAOIF parent = ObjectCache.getEntityDAOIFfromCache(oid);
         try
         {
           parent.getAttributeIF("dropMe");
@@ -857,12 +857,12 @@ public class CacheTest
         }
       }
 
-      for (String id : childIds)
+      for (String oid : childIds)
       {
         // Check the global cached
         // Make sure it gets into the cache.
-        ObjectCache.getEntityDAO(id);
-        EntityDAOIF child = ObjectCache.getEntityDAOIFfromCache(id);
+        ObjectCache.getEntityDAO(oid);
+        EntityDAOIF child = ObjectCache.getEntityDAOIFfromCache(oid);
         try
         {
           child.getAttributeIF("dropMe");
@@ -906,7 +906,7 @@ public class CacheTest
       accurDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       accurDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       accurDO.setValue(MdBusinessInfo.CACHE_SIZE, size);
-      accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       accurDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       accurDO.apply();
 
@@ -917,9 +917,9 @@ public class CacheTest
       for (int i = 0; i < Integer.parseInt(size); i++)
       {
         accur = BusinessDAO.newInstance(accurClass.getType());
-        String id = accur.apply();
-        BusinessDAO.get(id);
-        objectIdList.add(id);
+        String oid = accur.apply();
+        BusinessDAO.get(oid);
+        objectIdList.add(oid);
       }
 
       // get number of objects
@@ -930,9 +930,9 @@ public class CacheTest
         Assert.fail("The MRU cache size did not equal the size originally set");
       }
 
-      for (String id : objectIdList)
+      for (String oid : objectIdList)
       {
-        if (!ObjectCache.globalCacheContainsId(id))
+        if (!ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("The global object cache is corrupt. It is missing a reference to an object");
         }
@@ -966,9 +966,9 @@ public class CacheTest
     statusMdBusiness.setValue(MdBusinessInfo.PACKAGE, status.getPackageName());
     statusMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Auction Status");
     statusMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    statusMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationAttributeMdBusinessIF.getId());
+    statusMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationAttributeMdBusinessIF.getOid());
     statusMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    status.setId(statusMdBusiness.apply());
+    status.setOid(statusMdBusiness.apply());
 
     // Define an MdEnumeration
     MdEnumerationDAO statusMdEnumeration = MdEnumerationDAO.newInstance();
@@ -976,12 +976,12 @@ public class CacheTest
     statusMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, statusEnum.getPackageName());
     statusMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Auction Statuses");
     statusMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    statusMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, statusMdBusiness.getId());
+    statusMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, statusMdBusiness.getOid());
     statusMdEnumeration.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    statusEnum.setId(statusMdEnumeration.apply());
+    statusEnum.setOid(statusMdEnumeration.apply());
 
     // Verify that the MdEnumeration made it into the cache and the database
-    ResultSet resultSet = Database.selectFromWhere(EntityDAOIF.ID_COLUMN, MdEnumerationDAOIF.TABLE, EntityDAOIF.ID_COLUMN + "='" + statusEnum.getId() + "'");
+    ResultSet resultSet = Database.selectFromWhere(EntityDAOIF.ID_COLUMN, MdEnumerationDAOIF.TABLE, EntityDAOIF.ID_COLUMN + "='" + statusEnum.getOid() + "'");
 
     int loopCount = 0;
 
@@ -1019,16 +1019,16 @@ public class CacheTest
       Assert.fail("MdEnumeration is not in the system after .apply()");
     }
 
-    if (!ObjectCache.globalCacheContainsId(statusMdEnumeration.getId()))
+    if (!ObjectCache.globalCacheContainsId(statusMdEnumeration.getOid()))
     {
       Assert.fail("The global cache is corrupt.  It does not contain a reference to a newly created MdEnumeration.");
     }
 
     // Now delete it
-    BusinessDAO.get(statusMdEnumeration.getId()).getBusinessDAO().delete();
-    BusinessDAO.get(statusMdBusiness.getId()).getBusinessDAO().delete();
+    BusinessDAO.get(statusMdEnumeration.getOid()).getBusinessDAO().delete();
+    BusinessDAO.get(statusMdBusiness.getOid()).getBusinessDAO().delete();
 
-    resultSet = Database.selectFromWhere(EntityDAOIF.ID_COLUMN, MdEnumerationDAOIF.TABLE, EntityDAOIF.ID_COLUMN + "='" + statusEnum.getId() + "'");
+    resultSet = Database.selectFromWhere(EntityDAOIF.ID_COLUMN, MdEnumerationDAOIF.TABLE, EntityDAOIF.ID_COLUMN + "='" + statusEnum.getOid() + "'");
 
     loopCount = 0;
 
@@ -1070,7 +1070,7 @@ public class CacheTest
 
     // ObjectCache.flushCache();
 
-    if (ObjectCache.globalCacheContainsId(statusMdEnumeration.getId()))
+    if (ObjectCache.globalCacheContainsId(statusMdEnumeration.getOid()))
     {
       Assert.fail("The global cache is corrupt.  It contains a reference to a deleted MdEnumeration.");
     }
@@ -1099,7 +1099,7 @@ public class CacheTest
       accurDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       accurDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
       accurDO.setValue(MdBusinessInfo.CACHE_SIZE, size);
-      accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      accurDO.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       accurDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       accurDO.apply();
 
@@ -1110,9 +1110,9 @@ public class CacheTest
       for (int i = 0; i < Integer.parseInt(size); i++)
       {
         accur = BusinessDAO.newInstance(accurClass.getType());
-        String id = accur.apply();
-        BusinessDAO.get(id);
-        oldTeacherList.add(id);
+        String oid = accur.apply();
+        BusinessDAO.get(oid);
+        oldTeacherList.add(oid);
       }
 
       String newSize = "7";
@@ -1124,9 +1124,9 @@ public class CacheTest
       for (int i = 0; i < Integer.parseInt(newSize); i++)
       {
         accur = BusinessDAO.newInstance(accurClass.getType());
-        String id = accur.apply();
-        BusinessDAO.get(id);
-        newTeacherList.add(id);
+        String oid = accur.apply();
+        BusinessDAO.get(oid);
+        newTeacherList.add(oid);
       }
 
       // get number of objects
@@ -1137,17 +1137,17 @@ public class CacheTest
         Assert.fail("The MRU cache size did not equal the newly set size");
       }
 
-      for (String id : oldTeacherList)
+      for (String oid : oldTeacherList)
       {
-        if (ObjectCache.globalCacheContainsId(id))
+        if (ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("The global object cache is corrupt. Global cache contains a reference to an object that should have been removed from the cache.");
         }
       }
 
-      for (String id : newTeacherList)
+      for (String oid : newTeacherList)
       {
-        if (!ObjectCache.globalCacheContainsId(id))
+        if (!ObjectCache.globalCacheContainsId(oid))
         {
           Assert.fail("The global object cache is corrupt. It is missing a reference to an object");
         }

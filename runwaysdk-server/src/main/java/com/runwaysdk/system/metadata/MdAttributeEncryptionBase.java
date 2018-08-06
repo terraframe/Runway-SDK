@@ -70,9 +70,9 @@ public abstract class MdAttributeEncryptionBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static MdAttributeEncryption get(String id)
+  public static MdAttributeEncryption get(String oid)
   {
-    return (MdAttributeEncryption) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeEncryption) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeEncryption getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdAttributeEncryptionBase extends com.runwaysdk.system.met
     return (MdAttributeEncryption) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeEncryption lock(java.lang.String id)
+  public static MdAttributeEncryption lock(java.lang.String oid)
   {
-    MdAttributeEncryption _instance = MdAttributeEncryption.get(id);
+    MdAttributeEncryption _instance = MdAttributeEncryption.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeEncryption unlock(java.lang.String id)
+  public static MdAttributeEncryption unlock(java.lang.String oid)
   {
-    MdAttributeEncryption _instance = MdAttributeEncryption.get(id);
+    MdAttributeEncryption _instance = MdAttributeEncryption.get(oid);
     _instance.unlock();
     
     return _instance;

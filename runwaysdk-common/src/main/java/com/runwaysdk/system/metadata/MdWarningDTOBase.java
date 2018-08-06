@@ -71,7 +71,7 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
     }
     else
     {
-      setValue(SUPERMDWARNING, value.getId());
+      setValue(SUPERMDWARNING, value.getOid());
     }
   }
   
@@ -98,114 +98,114 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllChildMessages()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllChildMessagesRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllChildMessagesRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllChildMessagesRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.WarningInheritanceDTO addChildMessages(com.runwaysdk.system.metadata.MdWarningDTO child)
   {
-    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.WarningInheritanceDTO addChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdWarningDTO child)
+  public static com.runwaysdk.system.metadata.WarningInheritanceDTO addChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdWarningDTO child)
   {
-    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   public void removeChildMessages(com.runwaysdk.system.metadata.WarningInheritanceDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.WarningInheritanceDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllChildMessages()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
-  public static void removeAllChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllChildMessages(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllParentMessage()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO> getAllParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWarningDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllParentMessageRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllParentMessageRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO> getAllParentMessageRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WarningInheritanceDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.WarningInheritanceDTO addParentMessage(com.runwaysdk.system.metadata.MdWarningDTO parent)
   {
-    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.WarningInheritanceDTO addParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdWarningDTO parent)
+  public static com.runwaysdk.system.metadata.WarningInheritanceDTO addParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdWarningDTO parent)
   {
-    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WarningInheritanceDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
   public void removeParentMessage(com.runwaysdk.system.metadata.WarningInheritanceDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.WarningInheritanceDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllParentMessage()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
-  public static void removeAllParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllParentMessage(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.WarningInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdWarningDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdWarningDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdWarningDTO) dto;
   }
@@ -223,7 +223,7 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdWarningQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -236,10 +236,10 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWarningDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWarningDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWarningDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWarningDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -249,10 +249,10 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWarningDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWarningDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWarningDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWarningDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

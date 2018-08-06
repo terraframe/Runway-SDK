@@ -97,19 +97,19 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
   /**
    * Returns an array of Relationship objects of the given type
-   * that are children of the BusinessDAO with given BusinessDAO id.
+   * that are children of the BusinessDAO with given BusinessDAO oid.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
    * <br/><b>Precondition:</b>  !businessDAOid.trim().equals("")
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO id
+   *         that are children of the BusinessDAO with given BusinessDAO oid
    *
-   * @param businessDAOid  id of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the
    *                     children relationships
    * @return An array of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO id from the cache.
+   *         that are children of the BusinessDAO with given BusinessDAO oid from the cache.
    */
   public List<RelationshipDAOIF> getChildrenFromCache(String businessDAOid, String relationshipType)
   {
@@ -118,7 +118,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
   /**
    * Returns an array of Relationship objects of the given type
-   * that are children of the BusinessDAO with given BusinessDAO id.  Relationships
+   * that are children of the BusinessDAO with given BusinessDAO oid.  Relationships
    * are retrieved from the cache.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -126,12 +126,12 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO id
+   *         that are children of the BusinessDAO with given BusinessDAO oid
    *
-   * @param businessDAOid  id of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the
    *                     children relationships
    * @return Array of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO id.
+   *         that are children of the BusinessDAO with given BusinessDAO oid.
    */
   public List<RelationshipDAOIF> getChildren(String businessDAOid, String relationshipType)
   {
@@ -139,10 +139,10 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
   }
   
   /**
-   * Returns true if this cache has children for the object with the given id, false otherwise.
+   * Returns true if this cache has children for the object with the given oid, false otherwise.
    * 
    * @param businessDAOid
-   * @return true if this cache has children for the object with the given id, false otherwise.
+   * @return true if this cache has children for the object with the given oid, false otherwise.
    */
   public boolean hasChildren(String businessDAOid)
   {
@@ -189,7 +189,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
   /**
    * Returns an array of Relationship objects of the given type
-   * that are parents of the BusinessDAO with given BusinessDAO id. Relationships
+   * that are parents of the BusinessDAO with given BusinessDAO oid. Relationships
    * are retrieved from the cache.
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -197,12 +197,12 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
    * <br/><b>Precondition:</b>  relationshipType != null
    * <br/><b>Precondition:</b>  !relationshipType.trim().equals("")
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO id.
+   *         that are parents of the BusinessDAO with given BusinessDAO oid.
    *
-   * @param businessDAOid  id of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the
    *                     parents relationships
    * @return array of Relationship objects of the given type
-   *         that are parents of the BusinessDAO with given BusinessDAO id.
+   *         that are parents of the BusinessDAO with given BusinessDAO oid.
    */
   public List<RelationshipDAOIF> getParentsFromCache(String businessDAOid, String relationshipType)
   {
@@ -210,10 +210,10 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
   }
 
   /**
-   * Returns true if this cache has parents for the object with the given id, false otherwise.
+   * Returns true if this cache has parents for the object with the given oid, false otherwise.
    * 
    * @param businessDAOid
-   * @return true if this cache has parents for the object with the given id, false otherwise.
+   * @return true if this cache has parents for the object with the given oid, false otherwise.
    */
   public boolean hasParents(String businessDAOid)
   {
@@ -274,7 +274,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       RelationshipDAO relationshipDAO = (RelationshipDAO)entityDAO;
 
@@ -309,7 +309,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
         
       if (hasIdChanged || hasParentIdChanged || hasChildIdChanged)
       {
-        // Need to set the old id variable, so that the code below will work.
+        // Need to set the old oid variable, so that the code below will work.
         if (hasIdChanged)
         {
           relationshipDAO.setOldId(oldId);
@@ -349,7 +349,7 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
    */
   public void removeCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {   
       RelationshipDAO relationship = (RelationshipDAO)entityDAO;
      
@@ -375,12 +375,12 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  protected EntityDAOIF getFromFactory(String id)
+  protected EntityDAOIF getFromFactory(String oid)
   {
-    return RelationshipDAOFactory.get(id);
+    return RelationshipDAOFactory.get(oid);
   }
 
   /**

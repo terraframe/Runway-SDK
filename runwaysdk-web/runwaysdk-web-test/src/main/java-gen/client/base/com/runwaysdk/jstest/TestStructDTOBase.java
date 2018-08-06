@@ -45,7 +45,7 @@ public abstract class TestStructDTOBase extends com.runwaysdk.business.StructDTO
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRUCTCHAR = "structChar";
@@ -148,9 +148,9 @@ public abstract class TestStructDTOBase extends com.runwaysdk.business.StructDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(STRUCTCHAR).getAttributeMdDTO();
   }
   
-  public static TestStructDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static TestStructDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (TestStructDTO) dto;
   }
@@ -168,7 +168,7 @@ public abstract class TestStructDTOBase extends com.runwaysdk.business.StructDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.TestStructQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

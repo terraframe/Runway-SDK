@@ -74,7 +74,7 @@ public abstract class MdClassDimensionBase extends com.runwaysdk.system.metadata
     }
     else
     {
-      setValue(DEFININGMDCLASS, value.getId());
+      setValue(DEFININGMDCLASS, value.getOid());
     }
   }
   
@@ -114,7 +114,7 @@ public abstract class MdClassDimensionBase extends com.runwaysdk.system.metadata
     }
     else
     {
-      setValue(DEFININGMDDIMENSION, value.getId());
+      setValue(DEFININGMDDIMENSION, value.getOid());
     }
   }
   
@@ -209,9 +209,9 @@ public abstract class MdClassDimensionBase extends com.runwaysdk.system.metadata
     }
   }
   
-  public static MdClassDimension get(String id)
+  public static MdClassDimension get(String oid)
   {
-    return (MdClassDimension) com.runwaysdk.business.Business.get(id);
+    return (MdClassDimension) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdClassDimension getByKey(String key)
@@ -219,17 +219,17 @@ public abstract class MdClassDimensionBase extends com.runwaysdk.system.metadata
     return (MdClassDimension) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdClassDimension lock(java.lang.String id)
+  public static MdClassDimension lock(java.lang.String oid)
   {
-    MdClassDimension _instance = MdClassDimension.get(id);
+    MdClassDimension _instance = MdClassDimension.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdClassDimension unlock(java.lang.String id)
+  public static MdClassDimension unlock(java.lang.String oid)
   {
-    MdClassDimension _instance = MdClassDimension.get(id);
+    MdClassDimension _instance = MdClassDimension.get(oid);
     _instance.unlock();
     
     return _instance;

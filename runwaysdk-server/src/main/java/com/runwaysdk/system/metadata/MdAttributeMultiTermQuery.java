@@ -114,13 +114,13 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
     {
       if(mdAttributeMultiTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeMultiTerm.getId());
+      return this.EQ(mdAttributeMultiTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeMultiTerm mdAttributeMultiTerm)
     {
       if(mdAttributeMultiTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeMultiTerm.getId());
+      return this.NE(mdAttributeMultiTerm.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeMultiTerm.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiTerm[i].getId();
+        itemIdArray[i] = mdAttributeMultiTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeMultiTerm.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiTerm[i].getId();
+        itemIdArray[i] = mdAttributeMultiTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeMultiTerm.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiTerm[i].getId();
+        itemIdArray[i] = mdAttributeMultiTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeMultiTerm.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiTerm[i].getId();
+        itemIdArray[i] = mdAttributeMultiTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeMultiTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeMultiTerm.length; i++)
       {
-        itemIdArray[i] = mdAttributeMultiTerm[i].getId();
+        itemIdArray[i] = mdAttributeMultiTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

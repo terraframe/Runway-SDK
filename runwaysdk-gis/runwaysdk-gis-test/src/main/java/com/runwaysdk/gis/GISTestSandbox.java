@@ -70,7 +70,7 @@ public class GISTestSandbox
     Locale[] locs = new Locale[] { CommonProperties.getDefaultLocale() };
     WebClientSession session = WebClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, locs);
 
-    MdFormDTO mdFormDTO = MdFormDTO.get(session.getRequest(), mdForm.getId());
+    MdFormDTO mdFormDTO = MdFormDTO.get(session.getRequest(), mdForm.getOid());
 
     WebFormObject obj = WebFormObject.newInstance(mdFormDTO);
     JSONFormVisitor v = new JSONFormVisitor(CommonProperties.getDefaultLocale());
@@ -80,15 +80,15 @@ public class GISTestSandbox
     System.out.println(json.toString(2));
   }
 
-  // private static void export(String id, Set<String> all)
+  // private static void export(String oid, Set<String> all)
   // {
-  // if (!all.contains(id))
+  // if (!all.contains(oid))
   // {
-  // EntityDAOIF entity = EntityDAO.get(id);
+  // EntityDAOIF entity = EntityDAO.get(oid);
   //
   // if (!isRunwayMetadata(entity))
   // {
-  // all.add(id);
+  // all.add(oid);
   //
   // if (entity instanceof BusinessDAOIF)
   // {
@@ -97,14 +97,14 @@ public class GISTestSandbox
   //
   // for (RelationshipDAOIF child : children)
   // {
-  // export(child.getId(), all);
+  // export(child.getOid(), all);
   // }
   //
   // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
   //
   // for (RelationshipDAOIF parent : parents)
   // {
-  // export(parent.getId(), all);
+  // export(parent.getOid(), all);
   // }
   // }
   // else if (entity instanceof RelationshipDAOIF)
@@ -129,7 +129,7 @@ public class GISTestSandbox
     mdGeometry.setValue(MdType.PACKAGENAME, GISConstants.GIS_METADATA_PACKAGE);
     mdGeometry.setValue(MdType.TYPENAME, "MdWebGeometry");
     mdGeometry.setValue(MdBusinessInfo.ABSTRACT, "true");
-    mdGeometry.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdGeometry.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdGeometry.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geometry Field");
     mdGeometry.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Geometry Field");
     mdGeometry.apply();
@@ -137,7 +137,7 @@ public class GISTestSandbox
     MdBusinessDAO mdWebPoint = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebPoint.setValue(MdType.PACKAGENAME, GISConstants.GIS_METADATA_PACKAGE);
     mdWebPoint.setValue(MdType.TYPENAME, "MdWebPoint");
-    mdWebPoint.setValue(MdBusiness.SUPERMDBUSINESS, mdGeometry.getId());
+    mdWebPoint.setValue(MdBusiness.SUPERMDBUSINESS, mdGeometry.getOid());
     mdWebPoint.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Point Field");
     mdWebPoint.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Point Field");
     mdWebPoint.apply();
@@ -165,7 +165,7 @@ public class GISTestSandbox
     // testClassMdBusinessDAO.setValue(MdBusinessInfo.ABSTRACT,
     // MdAttributeBooleanInfo.FALSE);
     // testClassMdBusinessDAO.setValue(MdBusinessInfo.CACHE_ALGORITHM,
-    // EntityCacheMaster.CACHE_NOTHING.getId());
+    // EntityCacheMaster.CACHE_NOTHING.getOid());
     // testClassMdBusinessDAO.apply();
     //
     // MdAttributePointDAO mdAttributePointDAO =
@@ -186,7 +186,7 @@ public class GISTestSandbox
     // mdAttributePointDAO.setValue(MdAttributePointInfo.SRID, "4326");
     // // mdAttributePointDAO.setValue(MdAttributePointInfo.DIMENSION, "2");
     // mdAttributePointDAO.setValue(MdAttributePointInfo.DEFINING_MD_CLASS,
-    // testClassMdBusinessDAO.getId());
+    // testClassMdBusinessDAO.getOid());
     // mdAttributePointDAO.apply();
     //
     // BusinessDAO businessDAO =

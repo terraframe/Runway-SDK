@@ -214,7 +214,7 @@ public class TransactionImportTest
 
       String type = mdBusiness.definesType();
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(type);
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
       // Ensure the data from the first site is propigated
       Assert.assertNotNull(mdBusinessIF);
@@ -460,7 +460,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
@@ -531,7 +531,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
@@ -595,7 +595,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
@@ -659,7 +659,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
@@ -777,18 +777,18 @@ public class TransactionImportTest
       // Ensure that none of the users were re-imported
       for (UserDAO user : users)
       {
-        Assert.assertFalse(ids.contains(user.getId()));
+        Assert.assertFalse(ids.contains(user.getOid()));
       }
     }
     finally
     {
       List<String> ids = UserDAO.getEntityIdsDB(UserInfo.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          UserDAO user = UserDAO.get(id).getBusinessDAO();
+          UserDAO user = UserDAO.get(oid).getBusinessDAO();
           user.delete();
         }
       }
@@ -807,7 +807,7 @@ public class TransactionImportTest
     try
     {
       MdAttributeDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.apply();
@@ -856,7 +856,7 @@ public class TransactionImportTest
 
       new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
       Assert.assertEquals("UpdateValue", businessDAOIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
     }
@@ -936,7 +936,7 @@ public class TransactionImportTest
 
       new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
       Assert.assertNotNull(businessDAOIF);
     }
@@ -995,7 +995,7 @@ public class TransactionImportTest
       @Transaction
       private void update(BusinessDAO expected)
       {
-        BusinessDAO business = BusinessDAO.get(expected.getId()).getBusinessDAO();
+        BusinessDAO business = BusinessDAO.get(expected.getOid()).getBusinessDAO();
         AttributeStruct attributeStruct = (AttributeStruct) business.getAttribute("testLocalCharacter");
 
         StructDAO struct = attributeStruct.getStructDAO();
@@ -1022,7 +1022,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAOIF test = BusinessDAO.get(expected.getId());
+        BusinessDAOIF test = BusinessDAO.get(expected.getOid());
 
         Assert.assertEquals(value, test.getStructValue("testLocalCharacter", MdAttributeLocalCharacterDAO.DEFAULT_LOCALE));
       }
@@ -1173,7 +1173,7 @@ public class TransactionImportTest
       @Transaction
       private void updateLocalValue(BusinessDAO expected, String attributeName)
       {
-        BusinessDAO business = BusinessDAO.get(expected.getId()).getBusinessDAO();
+        BusinessDAO business = BusinessDAO.get(expected.getOid()).getBusinessDAO();
 
         AttributeStruct attributeStruct = (AttributeStruct) business.getAttribute(attributeName);
 
@@ -1206,7 +1206,7 @@ public class TransactionImportTest
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAOIF test = BusinessDAO.get(expected.getId());
+        BusinessDAOIF test = BusinessDAO.get(expected.getOid());
 
         Assert.assertEquals(value, test.getStructValue(propertyLabel, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
         Assert.assertEquals(value, test.getStructValue(propertyDescription, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));

@@ -113,7 +113,7 @@ public class JSONLocalStructConversionTest implements DoNotWeave
     Assert.assertEquals(source.getType(), test.getType());
     Assert.assertEquals(source.getValue(), test.getValue());
     Assert.assertEquals(source.isNewInstance(), test.isNewInstance());
-    Assert.assertEquals(source.getId(), test.getId());
+    Assert.assertEquals(source.getOid(), test.getOid());
   }
 
   @Request
@@ -134,11 +134,11 @@ public class JSONLocalStructConversionTest implements DoNotWeave
       Assert.assertEquals(source.getType(), test.getType());
       Assert.assertEquals(source.getValue(), test.getValue());
       Assert.assertEquals(source.isNewInstance(), test.isNewInstance());
-      Assert.assertEquals(source.getId(), test.getId());
+      Assert.assertEquals(source.getOid(), test.getOid());
     }
     finally
     {
-      Facade.delete(this.sessionId, source.getId());
+      Facade.delete(this.sessionId, source.getOid());
     }
   }
 
@@ -191,7 +191,7 @@ public class JSONLocalStructConversionTest implements DoNotWeave
     }
     finally
     {
-      Facade.delete(this.sessionId, source.getId());
+      Facade.delete(this.sessionId, source.getOid());
     }
   }
 
@@ -208,7 +208,7 @@ public class JSONLocalStructConversionTest implements DoNotWeave
       String attributeName = mdAttributeTerm.definesAttribute();
 
       BusinessDTO source = (BusinessDTO) Facade.newMutable(sessionId, mdBusiness.definesType());
-      source.setValue(attributeName, term.getId());
+      source.setValue(attributeName, term.getOid());
       source = Facade.createBusiness(this.sessionId, source);
 
       try
@@ -228,12 +228,12 @@ public class JSONLocalStructConversionTest implements DoNotWeave
       }
       finally
       {
-        Facade.delete(this.sessionId, source.getId());
+        Facade.delete(this.sessionId, source.getOid());
       }
     }
     finally
     {
-      Facade.delete(this.sessionId, term.getId());
+      Facade.delete(this.sessionId, term.getOid());
     }
   }
 

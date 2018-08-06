@@ -154,13 +154,13 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebHeader mdWebHeader)
     {
       if(mdWebHeader == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebHeader.getId());
+      return this.EQ(mdWebHeader.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebHeader mdWebHeader)
     {
       if(mdWebHeader == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebHeader.getId());
+      return this.NE(mdWebHeader.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdWebHeaderHeaderTextQuery.MdWebHeaderHeaderTextQueryStructIF getHeaderText()
@@ -237,7 +237,7 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
 
       for (int i=0; i<mdWebHeader.length; i++)
       {
-        itemIdArray[i] = mdWebHeader[i].getId();
+        itemIdArray[i] = mdWebHeader[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
 
       for (int i=0; i<mdWebHeader.length; i++)
       {
-        itemIdArray[i] = mdWebHeader[i].getId();
+        itemIdArray[i] = mdWebHeader[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
 
       for (int i=0; i<mdWebHeader.length; i++)
       {
-        itemIdArray[i] = mdWebHeader[i].getId();
+        itemIdArray[i] = mdWebHeader[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
 
       for (int i=0; i<mdWebHeader.length; i++)
       {
-        itemIdArray[i] = mdWebHeader[i].getId();
+        itemIdArray[i] = mdWebHeader[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdWebHeaderQuery extends com.runwaysdk.system.metadata.MdWebFieldQ
 
       for (int i=0; i<mdWebHeader.length; i++)
       {
-        itemIdArray[i] = mdWebHeader[i].getId();
+        itemIdArray[i] = mdWebHeader[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

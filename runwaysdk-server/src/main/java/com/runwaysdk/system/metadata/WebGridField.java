@@ -29,7 +29,7 @@ public class WebGridField extends WebGridFieldBase
   
   public WebGridField(com.runwaysdk.system.metadata.MdWebSingleTermGrid parent, com.runwaysdk.system.metadata.MdWebPrimitive child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

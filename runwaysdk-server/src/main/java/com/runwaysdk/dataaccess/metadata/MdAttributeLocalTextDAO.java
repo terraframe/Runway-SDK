@@ -126,7 +126,7 @@ public class MdAttributeLocalTextDAO extends MdAttributeLocalDAO implements MdAt
     localText.getAttribute(MdAttributeTextInfo.REQUIRED).setValue(MdAttributeBooleanInfo.FALSE);
     localText.getAttribute(MdAttributeTextInfo.IMMUTABLE).setValue(MdAttributeBooleanInfo.FALSE);
     localText.getAttribute(MdAttributeTextInfo.GENERATE_ACCESSOR).setValue(Boolean.toString(false));
-    localText.getAttribute(MdAttributeTextInfo.DEFINING_MD_CLASS).setValue(mdLocalStructDAOIF.getId());
+    localText.getAttribute(MdAttributeTextInfo.DEFINING_MD_CLASS).setValue(mdLocalStructDAOIF.getOid());
     localText.apply();
 
     return localText;

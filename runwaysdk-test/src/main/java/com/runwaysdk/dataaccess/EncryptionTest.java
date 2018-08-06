@@ -46,7 +46,7 @@ import sun.security.provider.Sun;
 
 public class EncryptionTest
 {
-  // The id of different attribute enumeration items (This is only hardcoded for
+  // The oid of different attribute enumeration items (This is only hardcoded for
   // testing)
 
   private static final TypeInfo TEST_CLASS             = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "SiteLogin");
@@ -67,7 +67,7 @@ public class EncryptionTest
     testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    testMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    testMdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testMdBusiness.apply();
 
@@ -76,21 +76,21 @@ public class EncryptionTest
     mdAttributeHash.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A hash password");
     mdAttributeHash.setValue(MdAttributeHashInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeHash.setValue(MdAttributeHashInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeHash.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
-    mdAttributeHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+    mdAttributeHash.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
+    mdAttributeHash.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
     mdAttributeHash.apply();
-    MD_ATTRIBUTE_HASH.setId(mdAttributeHash.getId());
+    MD_ATTRIBUTE_HASH.setOid(mdAttributeHash.getOid());
 
     MdAttributeSymmetricDAO mdAttributeSymmetric = MdAttributeSymmetricDAO.newInstance();
     mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.NAME, MD_ATTRIBUTE_SYMMETRIC.getTypeName());
     mdAttributeSymmetric.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A symmetric password");
     mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeSymmetric.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
+    mdAttributeSymmetric.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
     mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
-    mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+    mdAttributeSymmetric.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
     mdAttributeSymmetric.apply();
-    MD_ATTRIBUTE_SYMMETRIC.setId(mdAttributeSymmetric.getId());
+    MD_ATTRIBUTE_SYMMETRIC.setOid(mdAttributeSymmetric.getOid());
   }
 
   @Request
@@ -111,8 +111,8 @@ public class EncryptionTest
     MdAttributeHashDAO passDO = null;
     try
     {
-      passDO = (MdAttributeHashDAO) ( BusinessDAO.get(MD_ATTRIBUTE_HASH.getId()) ).getBusinessDAO();
-      passDO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getId());
+      passDO = (MdAttributeHashDAO) ( BusinessDAO.get(MD_ATTRIBUTE_HASH.getOid()) ).getBusinessDAO();
+      passDO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
       passDO.apply();
 
       BusinessDAO user = BusinessDAO.newInstance(TEST_CLASS.getType());
@@ -169,8 +169,8 @@ public class EncryptionTest
     try
     {
 
-      passDO = (MdAttributeHashDAO) ( MdAttributeHashDAO.get(MD_ATTRIBUTE_HASH.getId()) ).getBusinessDAO();
-      passDO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.SHA.getId());
+      passDO = (MdAttributeHashDAO) ( MdAttributeHashDAO.get(MD_ATTRIBUTE_HASH.getOid()) ).getBusinessDAO();
+      passDO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.SHA.getOid());
       passDO.apply();
 
       BusinessDAO user = BusinessDAO.newInstance(TEST_CLASS.getType());
@@ -224,8 +224,8 @@ public class EncryptionTest
     MdAttributeSymmetricDAO passDO = null;
     try
     {
-      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getId()) ).getBusinessDAO();
-      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getId());
+      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getOid()) ).getBusinessDAO();
+      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
       passDO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
       passDO.apply();
 
@@ -267,8 +267,8 @@ public class EncryptionTest
     try
     {
 
-      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getId()) ).getBusinessDAO();
-      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.AES.getId());
+      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getOid()) ).getBusinessDAO();
+      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.AES.getOid());
       passDO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "128");
       passDO.apply();
 
@@ -308,8 +308,8 @@ public class EncryptionTest
     MdAttributeSymmetricDAO passDO = null;
     try
     {
-      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getId()) ).getBusinessDAO();
-      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.AES.getId());
+      passDO = (MdAttributeSymmetricDAO) ( MdAttributeSymmetricDAO.get(MD_ATTRIBUTE_SYMMETRIC.getOid()) ).getBusinessDAO();
+      passDO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.AES.getOid());
       passDO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "128");
       passDO.apply();
 

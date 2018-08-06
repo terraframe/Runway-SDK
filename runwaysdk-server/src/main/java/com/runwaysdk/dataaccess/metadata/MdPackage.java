@@ -159,7 +159,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdEnumeration.definesType()))
       {
-        EntityDAO.get(mdEnumeration.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdEnumeration.getOid()).getEntityDAO().delete();
       }
     }
     
@@ -168,7 +168,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdForm.definesType()))
       {
-        EntityDAO.get(mdForm.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdForm.getOid()).getEntityDAO().delete();
       }      
     }    
     
@@ -177,7 +177,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdRelationship.definesType()))
       {
-        EntityDAO.get(mdRelationship.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdRelationship.getOid()).getEntityDAO().delete();
       }
     }
     
@@ -186,7 +186,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdBusinesses.definesType()))
       {
-        EntityDAO.get(mdBusinesses.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdBusinesses.getOid()).getEntityDAO().delete();
       }
     }
     
@@ -195,7 +195,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdStruct.definesType()))
       {
-        EntityDAO.get(mdStruct.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdStruct.getOid()).getEntityDAO().delete();
       }
     }
     
@@ -204,7 +204,7 @@ public class MdPackage
     {
       if(MdTypeDAO.isDefined(mdType.definesType()))
       {
-        EntityDAO.get(mdType.getId()).getEntityDAO().delete();
+        EntityDAO.get(mdType.getOid()).getEntityDAO().delete();
       }
     }
   }

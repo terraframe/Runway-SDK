@@ -114,13 +114,13 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileMoment mdMobileMoment)
     {
       if(mdMobileMoment == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileMoment.getId());
+      return this.EQ(mdMobileMoment.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileMoment mdMobileMoment)
     {
       if(mdMobileMoment == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileMoment.getId());
+      return this.NE(mdMobileMoment.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileMoment.length; i++)
       {
-        itemIdArray[i] = mdMobileMoment[i].getId();
+        itemIdArray[i] = mdMobileMoment[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileMoment.length; i++)
       {
-        itemIdArray[i] = mdMobileMoment[i].getId();
+        itemIdArray[i] = mdMobileMoment[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileMoment.length; i++)
       {
-        itemIdArray[i] = mdMobileMoment[i].getId();
+        itemIdArray[i] = mdMobileMoment[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileMoment.length; i++)
       {
-        itemIdArray[i] = mdMobileMoment[i].getId();
+        itemIdArray[i] = mdMobileMoment[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileMomentQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileMoment.length; i++)
       {
-        itemIdArray[i] = mdMobileMoment[i].getId();
+        itemIdArray[i] = mdMobileMoment[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

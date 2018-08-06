@@ -46,8 +46,8 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference"), query.id("objectId"));
-      vQ.WHERE(query.aReference("reference").EQ(QueryMasterSetup.childRefQueryObject.getId()));
+      vQ.SELECT(query.aReference("reference"), query.oid("objectId"));
+      vQ.WHERE(query.aReference("reference").EQ(QueryMasterSetup.childRefQueryObject.getOid()));
 
       i = vQ.getIterator();
 
@@ -58,7 +58,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -102,7 +102,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").NE(""));
 
       i = vQ.getIterator();
@@ -114,7 +114,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -124,7 +124,7 @@ public class ValueQueryReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(query.aReference("reference"));
-      vQ.WHERE(query.aReference("reference").NE(QueryMasterSetup.childRefQueryObject.getId()));
+      vQ.WHERE(query.aReference("reference").NE(QueryMasterSetup.childRefQueryObject.getOid()));
 
       i = vQ.getIterator();
 
@@ -158,8 +158,8 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference"), query.id("objectId"));
-      vQ.WHERE(query.aReference("reference").IN(QueryMasterSetup.childRefQueryObject.getId(), QueryMasterSetup.childRefQueryObject2.getId(), ""));
+      vQ.SELECT(query.aReference("reference"), query.oid("objectId"));
+      vQ.WHERE(query.aReference("reference").IN(QueryMasterSetup.childRefQueryObject.getOid(), QueryMasterSetup.childRefQueryObject2.getOid(), ""));
 
       i = vQ.getIterator();
 
@@ -170,7 +170,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -180,7 +180,7 @@ public class ValueQueryReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(query.aReference("reference"));
-      vQ.WHERE(query.aReference("reference").IN("purple monkey dishwasher", QueryMasterSetup.childRefQueryObject2.getId(), ""));
+      vQ.WHERE(query.aReference("reference").IN("purple monkey dishwasher", QueryMasterSetup.childRefQueryObject2.getOid(), ""));
 
       i = vQ.getIterator();
 
@@ -214,8 +214,8 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference"), query.id("objectId"));
-      vQ.WHERE(query.aReference("reference").NI(QueryMasterSetup.childRefQueryObject2.getId(), QueryMasterSetup.testQueryObject1.getId(), QueryMasterSetup.relQueryObject1.getId()));
+      vQ.SELECT(query.aReference("reference"), query.oid("objectId"));
+      vQ.WHERE(query.aReference("reference").NI(QueryMasterSetup.childRefQueryObject2.getOid(), QueryMasterSetup.testQueryObject1.getOid(), QueryMasterSetup.relQueryObject1.getOid()));
 
       i = vQ.getIterator();
 
@@ -226,7 +226,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -236,7 +236,7 @@ public class ValueQueryReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(query.aReference("reference"));
-      vQ.WHERE(query.aReference("reference").NI(QueryMasterSetup.childRefQueryObject.getId(), QueryMasterSetup.childRefQueryObject2.getId(), QueryMasterSetup.relQueryObject1.getId()));
+      vQ.WHERE(query.aReference("reference").NI(QueryMasterSetup.childRefQueryObject.getOid(), QueryMasterSetup.childRefQueryObject2.getOid(), QueryMasterSetup.relQueryObject1.getOid()));
 
       i = vQ.getIterator();
 
@@ -270,7 +270,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aEnumeration("refQueryEnumeration").containsAll(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -282,7 +282,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -326,7 +326,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aEnumeration("refQueryEnumeration").containsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -338,7 +338,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -382,7 +382,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aEnumeration("refQueryEnumeration").containsExactly(QueryMasterSetup.connecticutItemId, QueryMasterSetup.coloradoItemId));
 
       i = vQ.getIterator();
@@ -394,7 +394,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -438,7 +438,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aEnumeration("refQueryEnumeration").notContainsAll(QueryMasterSetup.coloradoItemId, QueryMasterSetup.kansasItemId));
 
       i = vQ.getIterator();
@@ -450,7 +450,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -494,7 +494,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aEnumeration("refQueryEnumeration"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aEnumeration("refQueryEnumeration").notContainsAny(QueryMasterSetup.californiaItemId, QueryMasterSetup.kansasItemId));
 
       i = vQ.getIterator();
@@ -506,7 +506,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -550,7 +550,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").EQ(true));
 
       i = vQ.getIterator();
@@ -562,7 +562,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -572,7 +572,7 @@ public class ValueQueryReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").EQ(false));
 
       i = vQ.getIterator();
@@ -607,7 +607,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").EQ(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
@@ -619,7 +619,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -629,7 +629,7 @@ public class ValueQueryReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").EQ(MdAttributeBooleanInfo.FALSE));
 
       i = vQ.getIterator();
@@ -668,7 +668,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").EQ(""));
 
       i = vQ.getIterator();
@@ -680,7 +680,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -690,7 +690,7 @@ public class ValueQueryReferenceTest
       // values
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").NE(""));
 
       i = vQ.getIterator();
@@ -728,7 +728,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").NE(false));
 
       i = vQ.getIterator();
@@ -740,7 +740,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -750,7 +750,7 @@ public class ValueQueryReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").NE(true));
 
       i = vQ.getIterator();
@@ -783,7 +783,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").NE(MdAttributeBooleanInfo.FALSE));
 
       OIterator<ValueObject> i = vQ.getIterator();
@@ -795,7 +795,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -805,7 +805,7 @@ public class ValueQueryReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aBoolean("refQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aBoolean("refQueryBoolean").NE(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
@@ -835,7 +835,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").EQ("ref character value"));
 
       i = vQ.getIterator();
@@ -847,7 +847,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -856,7 +856,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").EQ("wrong character value"));
 
       i = vQ.getIterator();
@@ -891,7 +891,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").EQi("REF CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -903,7 +903,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -912,7 +912,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").EQi("WRONG CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -947,7 +947,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").IN("wrong value 1", "ref character value", "wrong value 2"));
 
       i = vQ.getIterator();
@@ -959,7 +959,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -968,7 +968,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3", "REF CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -1003,7 +1003,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").INi("wrong value 1", "REF CHARACTER VALUE", "wrong value 2"));
 
       i = vQ.getIterator();
@@ -1015,7 +1015,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1024,7 +1024,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       i = vQ.getIterator();
@@ -1063,7 +1063,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").EQ(""));
 
       i = vQ.getIterator();
@@ -1075,7 +1075,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1084,7 +1084,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 3 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").NE(""));
 
       i = vQ.getIterator();
@@ -1122,7 +1122,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").LIKE("%character%"));
 
       i = vQ.getIterator();
@@ -1134,7 +1134,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1143,7 +1143,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").LIKE("%character"));
 
       i = vQ.getIterator();
@@ -1178,7 +1178,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").LIKEi("%CHARACTER%"));
 
       i = vQ.getIterator();
@@ -1190,7 +1190,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1199,7 +1199,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aCharacter("refQueryCharacter").LIKEi("%CHARACTER"));
 
       i = vQ.getIterator();
@@ -1234,7 +1234,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NE("wrong character value"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1246,7 +1246,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1255,7 +1255,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NE("ref character value"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1290,7 +1290,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NEi("WRONG CHARACTER VALUE"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1302,7 +1302,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1311,7 +1311,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NEi("REF CHARACTER VALUE"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1346,7 +1346,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NI("wrong character value 1", "wrong character value 2", "wrong character value 3"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1358,7 +1358,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1367,7 +1367,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NI("wrong value", "ref character value", "wrong value 2"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1402,7 +1402,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NIi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1414,7 +1414,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1423,7 +1423,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NIi("WRONG VALUE", "REF CHARACTER VALUE", "WRONG VALUE 2"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1458,7 +1458,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NLIKE("%wrong%"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1470,7 +1470,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1479,7 +1479,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NLIKE("%character%"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1514,7 +1514,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NLIKEi("%WRONG%"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1526,7 +1526,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1535,7 +1535,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aCharacter("refQueryCharacter"), query.oid("objectId"));
       vQ.WHERE(OR.get(query.aReference("reference").aCharacter("refQueryCharacter").NLIKEi("%CHARACTER%"), query.aReference("reference").aCharacter("refQueryCharacter").EQ("")));
 
       i = vQ.getIterator();
@@ -1571,7 +1571,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1583,7 +1583,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1594,7 +1594,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1629,7 +1629,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").EQ("2007-11-06"));
 
       i = vQ.getIterator();
@@ -1641,7 +1641,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1650,7 +1650,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").EQ("2006-05-05"));
 
       i = vQ.getIterator();
@@ -1686,7 +1686,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GT(date));
 
       i = vQ.getIterator();
@@ -1698,7 +1698,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1709,7 +1709,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GT(date));
 
       i = vQ.getIterator();
@@ -1744,7 +1744,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GT("2007-11-05"));
 
       i = vQ.getIterator();
@@ -1756,7 +1756,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1765,7 +1765,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GT("2007-11-07"));
 
       i = vQ.getIterator();
@@ -1801,7 +1801,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1813,7 +1813,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1824,7 +1824,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1836,7 +1836,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1847,7 +1847,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE(date));
 
       i = vQ.getIterator();
@@ -1882,7 +1882,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE("2007-11-06"));
 
       i = vQ.getIterator();
@@ -1894,7 +1894,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1903,7 +1903,7 @@ public class ValueQueryReferenceTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE("2007-11-05"));
 
       i = vQ.getIterator();
@@ -1915,7 +1915,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1924,7 +1924,7 @@ public class ValueQueryReferenceTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").GE("2007-11-07"));
 
       i = vQ.getIterator();
@@ -1963,7 +1963,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").EQ(""));
 
       i = vQ.getIterator();
@@ -1975,7 +1975,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1984,7 +1984,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").NE(""));
 
       i = vQ.getIterator();
@@ -2023,7 +2023,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LT(date));
 
       i = vQ.getIterator();
@@ -2035,7 +2035,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2046,7 +2046,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LT(date));
 
       i = vQ.getIterator();
@@ -2081,7 +2081,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LT("2007-11-07"));
 
       i = vQ.getIterator();
@@ -2093,7 +2093,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2102,7 +2102,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LT("2007-11-05"));
 
       i = vQ.getIterator();
@@ -2138,7 +2138,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2150,7 +2150,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2161,7 +2161,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2173,7 +2173,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2184,7 +2184,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE(date));
 
       i = vQ.getIterator();
@@ -2219,7 +2219,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE("2007-11-06"));
 
       i = vQ.getIterator();
@@ -2231,7 +2231,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2240,7 +2240,7 @@ public class ValueQueryReferenceTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE("2007-11-07"));
 
       i = vQ.getIterator();
@@ -2252,7 +2252,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2261,7 +2261,7 @@ public class ValueQueryReferenceTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").LE("2007-11-05"));
 
       i = vQ.getIterator();
@@ -2297,7 +2297,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").NE(date));
 
       i = vQ.getIterator();
@@ -2309,7 +2309,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2320,7 +2320,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").NE(date));
 
       i = vQ.getIterator();
@@ -2355,7 +2355,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").NE("2007-11-05"));
 
       i = vQ.getIterator();
@@ -2367,7 +2367,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2376,7 +2376,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDate("refQueryDate"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDate("refQueryDate").NE("2007-11-06"));
 
       i = vQ.getIterator();
@@ -2412,7 +2412,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2424,7 +2424,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2435,7 +2435,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2470,7 +2470,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").EQ("2007-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2482,7 +2482,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2491,7 +2491,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").EQ("2007-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2527,7 +2527,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2539,7 +2539,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2550,7 +2550,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2585,7 +2585,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GT("2007-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2597,7 +2597,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2606,7 +2606,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GT("2007-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2642,7 +2642,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2654,7 +2654,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2665,7 +2665,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2677,7 +2677,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2688,7 +2688,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2723,7 +2723,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE("2007-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -2735,7 +2735,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2744,7 +2744,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE("2007-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2756,7 +2756,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2765,7 +2765,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").GE("2007-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -2804,7 +2804,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").EQ(""));
 
       i = vQ.getIterator();
@@ -2816,7 +2816,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2825,7 +2825,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").NE(""));
 
       i = vQ.getIterator();
@@ -2864,7 +2864,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2876,7 +2876,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2887,7 +2887,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2922,7 +2922,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LT("2007-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -2934,7 +2934,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2943,7 +2943,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LT("2007-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2979,7 +2979,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2991,7 +2991,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3002,7 +3002,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -3014,7 +3014,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3025,7 +3025,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -3060,7 +3060,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE("2007-11-06 12:00:00"));
 
       i = vQ.getIterator();
@@ -3072,7 +3072,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3081,7 +3081,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE("2007-11-07 12:00:00"));
 
       i = vQ.getIterator();
@@ -3093,7 +3093,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3102,7 +3102,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").LE("2007-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -3138,7 +3138,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").NE(date));
 
       i = vQ.getIterator();
@@ -3150,7 +3150,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3161,7 +3161,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(query.aReference("reference").aDateTime("refQueryDateTime").NE(date), query.aReference("reference").aDateTime("refQueryDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -3196,7 +3196,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDateTime("refQueryDateTime").NE("2007-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -3208,7 +3208,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3217,7 +3217,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDateTime("refQueryDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(query.aReference("reference").aDateTime("refQueryDateTime").NE("2007-11-06 12:00:00"), query.aReference("reference").aDateTime("refQueryDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -3252,7 +3252,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").EQ(new BigDecimal(200.5)));
 
       i = vQ.getIterator();
@@ -3264,7 +3264,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3273,7 +3273,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").EQ(new BigDecimal(201.5)));
 
       i = vQ.getIterator();
@@ -3308,7 +3308,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").EQ("200.5"));
 
       i = vQ.getIterator();
@@ -3320,7 +3320,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3329,7 +3329,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").EQ("201.5"));
 
       i = vQ.getIterator();
@@ -3364,7 +3364,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GT(new BigDecimal(200)));
 
       i = vQ.getIterator();
@@ -3376,7 +3376,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3385,7 +3385,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GT(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3420,7 +3420,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GT("200"));
 
       i = vQ.getIterator();
@@ -3432,7 +3432,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3441,7 +3441,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GT("201"));
 
       i = vQ.getIterator();
@@ -3476,7 +3476,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE(new BigDecimal(200.5)));
 
       i = vQ.getIterator();
@@ -3488,7 +3488,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3497,7 +3497,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE(new BigDecimal(200)));
 
       i = vQ.getIterator();
@@ -3509,7 +3509,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3518,7 +3518,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3553,7 +3553,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE("200.5"));
 
       i = vQ.getIterator();
@@ -3565,7 +3565,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3574,7 +3574,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE("200"));
 
       i = vQ.getIterator();
@@ -3586,7 +3586,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3595,7 +3595,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").GE("201"));
 
       i = vQ.getIterator();
@@ -3634,7 +3634,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").EQ(""));
 
       i = vQ.getIterator();
@@ -3646,7 +3646,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3655,7 +3655,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").NE(""));
 
       i = vQ.getIterator();
@@ -3693,7 +3693,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LT(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3705,7 +3705,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3714,7 +3714,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LT(new BigDecimal(200)));
 
       i = vQ.getIterator();
@@ -3749,7 +3749,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LT("201"));
 
       i = vQ.getIterator();
@@ -3761,7 +3761,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3770,7 +3770,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LT("200"));
 
       i = vQ.getIterator();
@@ -3805,7 +3805,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE(new BigDecimal(200.5)));
 
       i = vQ.getIterator();
@@ -3817,7 +3817,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3826,7 +3826,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3838,7 +3838,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3847,7 +3847,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE(new BigDecimal(99)));
 
       i = vQ.getIterator();
@@ -3882,7 +3882,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE("200.5"));
 
       i = vQ.getIterator();
@@ -3894,7 +3894,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3903,7 +3903,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE("201"));
 
       i = vQ.getIterator();
@@ -3915,7 +3915,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3924,7 +3924,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").LE("99"));
 
       i = vQ.getIterator();
@@ -3959,7 +3959,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").NE(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3971,7 +3971,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3980,7 +3980,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").NE(new BigDecimal(200.5)));
 
       i = vQ.getIterator();
@@ -4015,7 +4015,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").NE("201"));
 
       i = vQ.getIterator();
@@ -4027,7 +4027,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4036,7 +4036,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDecimal("refQueryDecimal"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDecimal("refQueryDecimal").NE("200.5"));
 
       i = vQ.getIterator();
@@ -4071,7 +4071,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").EQ(200.5));
 
       i = vQ.getIterator();
@@ -4083,7 +4083,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4092,7 +4092,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").EQ(201.5));
 
       i = vQ.getIterator();
@@ -4127,7 +4127,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").EQ("200.5"));
 
       i = vQ.getIterator();
@@ -4139,7 +4139,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4148,7 +4148,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").EQ("201.5"));
 
       i = vQ.getIterator();
@@ -4183,7 +4183,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GT(20.5));
 
       i = vQ.getIterator();
@@ -4195,7 +4195,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4204,7 +4204,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GT(220.5));
 
       i = vQ.getIterator();
@@ -4239,7 +4239,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GT("20.5"));
 
       i = vQ.getIterator();
@@ -4251,7 +4251,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4260,7 +4260,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GT("220.5"));
 
       i = vQ.getIterator();
@@ -4295,7 +4295,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE(200.5));
 
       i = vQ.getIterator();
@@ -4307,7 +4307,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4316,7 +4316,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE(20.5));
 
       i = vQ.getIterator();
@@ -4328,7 +4328,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4337,7 +4337,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE(220.5));
 
       i = vQ.getIterator();
@@ -4372,7 +4372,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE("200.5"));
 
       i = vQ.getIterator();
@@ -4384,7 +4384,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4393,7 +4393,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE("20.5"));
 
       i = vQ.getIterator();
@@ -4405,7 +4405,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4414,7 +4414,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").GE("220.5"));
 
       i = vQ.getIterator();
@@ -4453,7 +4453,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").EQ(""));
 
       i = vQ.getIterator();
@@ -4465,7 +4465,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4474,7 +4474,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").NE(""));
 
       i = vQ.getIterator();
@@ -4512,7 +4512,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LT(220.5));
 
       i = vQ.getIterator();
@@ -4524,7 +4524,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4533,7 +4533,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LT(20.5));
 
       i = vQ.getIterator();
@@ -4568,7 +4568,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LT("220.5"));
 
       i = vQ.getIterator();
@@ -4580,7 +4580,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4589,7 +4589,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LT("20.5"));
 
       i = vQ.getIterator();
@@ -4624,7 +4624,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE(200.5));
 
       i = vQ.getIterator();
@@ -4636,7 +4636,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4645,7 +4645,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE(220.5));
 
       i = vQ.getIterator();
@@ -4657,7 +4657,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4666,7 +4666,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE(20.5));
 
       i = vQ.getIterator();
@@ -4701,7 +4701,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE("200.5"));
 
       i = vQ.getIterator();
@@ -4713,7 +4713,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4722,7 +4722,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE("220.5"));
 
       i = vQ.getIterator();
@@ -4734,7 +4734,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4743,7 +4743,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").LE("20.5"));
 
       i = vQ.getIterator();
@@ -4778,7 +4778,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").NE(201.5));
 
       i = vQ.getIterator();
@@ -4790,7 +4790,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4799,7 +4799,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").NE(200.5));
 
       i = vQ.getIterator();
@@ -4834,7 +4834,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").NE("201.5"));
 
       i = vQ.getIterator();
@@ -4846,7 +4846,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4855,7 +4855,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aDouble("refQueryDouble"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aDouble("refQueryDouble").NE("200.5"));
 
       i = vQ.getIterator();
@@ -4890,7 +4890,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").EQ((float) 200.5));
 
       i = vQ.getIterator();
@@ -4902,7 +4902,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4911,7 +4911,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").EQ((float) 201.5));
 
       i = vQ.getIterator();
@@ -4946,7 +4946,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").EQ("200.5"));
 
       i = vQ.getIterator();
@@ -4958,7 +4958,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4967,7 +4967,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").EQ("201.5"));
 
       i = vQ.getIterator();
@@ -5002,7 +5002,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GT((float) 20.5));
 
       i = vQ.getIterator();
@@ -5014,7 +5014,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5023,7 +5023,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GT((float) 221.5));
 
       i = vQ.getIterator();
@@ -5058,7 +5058,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GT("20.5"));
 
       i = vQ.getIterator();
@@ -5070,7 +5070,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5079,7 +5079,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GT("221.5"));
 
       i = vQ.getIterator();
@@ -5114,7 +5114,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE((float) 200.5));
 
       i = vQ.getIterator();
@@ -5126,7 +5126,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5135,7 +5135,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE((float) 21.5));
 
       i = vQ.getIterator();
@@ -5147,7 +5147,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5156,7 +5156,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE((float) 221.5));
 
       i = vQ.getIterator();
@@ -5191,7 +5191,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE("200.5"));
 
       i = vQ.getIterator();
@@ -5203,7 +5203,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5212,7 +5212,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE("21.5"));
 
       i = vQ.getIterator();
@@ -5224,7 +5224,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5233,7 +5233,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").GE("221.5"));
 
       i = vQ.getIterator();
@@ -5272,7 +5272,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").EQ(""));
 
       i = vQ.getIterator();
@@ -5284,7 +5284,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5293,7 +5293,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").NE(""));
 
       i = vQ.getIterator();
@@ -5331,7 +5331,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LT((float) 220.5));
 
       i = vQ.getIterator();
@@ -5343,7 +5343,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5352,7 +5352,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LT((float) 21.5));
 
       i = vQ.getIterator();
@@ -5387,7 +5387,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LT("220.5"));
 
       i = vQ.getIterator();
@@ -5399,7 +5399,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5408,7 +5408,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LT("21.5"));
 
       i = vQ.getIterator();
@@ -5443,7 +5443,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE((float) 200.5));
 
       i = vQ.getIterator();
@@ -5455,7 +5455,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5464,7 +5464,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE((float) 201.5));
 
       i = vQ.getIterator();
@@ -5476,7 +5476,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5485,7 +5485,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE((float) 21.5));
 
       i = vQ.getIterator();
@@ -5520,7 +5520,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE("200.5"));
 
       i = vQ.getIterator();
@@ -5532,7 +5532,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5541,7 +5541,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE("201.5"));
 
       i = vQ.getIterator();
@@ -5553,7 +5553,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5562,7 +5562,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").LE("21.5"));
 
       i = vQ.getIterator();
@@ -5597,7 +5597,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").NE((float) 210.5));
 
       i = vQ.getIterator();
@@ -5609,7 +5609,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5618,7 +5618,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").NE((float) 200.5));
 
       i = vQ.getIterator();
@@ -5653,7 +5653,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").NE("210.5"));
 
       i = vQ.getIterator();
@@ -5665,7 +5665,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5674,7 +5674,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aFloat("refQueryFloat"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aFloat("refQueryFloat").NE("200.5"));
 
       i = vQ.getIterator();
@@ -5709,7 +5709,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").EQ(200));
 
       i = vQ.getIterator();
@@ -5721,7 +5721,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5730,7 +5730,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").EQ(201));
 
       i = vQ.getIterator();
@@ -5765,7 +5765,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").EQ("200"));
 
       i = vQ.getIterator();
@@ -5777,7 +5777,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5786,7 +5786,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").EQ("201"));
 
       i = vQ.getIterator();
@@ -5821,7 +5821,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GT(20));
 
       i = vQ.getIterator();
@@ -5833,7 +5833,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5842,7 +5842,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GT(201));
 
       i = vQ.getIterator();
@@ -5877,7 +5877,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GT("20"));
 
       i = vQ.getIterator();
@@ -5889,7 +5889,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5898,7 +5898,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GT("201"));
 
       i = vQ.getIterator();
@@ -5933,7 +5933,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE(200));
 
       i = vQ.getIterator();
@@ -5945,7 +5945,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5954,7 +5954,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE(20));
 
       i = vQ.getIterator();
@@ -5966,7 +5966,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5975,7 +5975,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE(201));
 
       i = vQ.getIterator();
@@ -6010,7 +6010,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE("200"));
 
       i = vQ.getIterator();
@@ -6022,7 +6022,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6031,7 +6031,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE("20"));
 
       i = vQ.getIterator();
@@ -6043,7 +6043,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6052,7 +6052,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").GE("201"));
 
       i = vQ.getIterator();
@@ -6091,7 +6091,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").EQ(""));
 
       i = vQ.getIterator();
@@ -6103,7 +6103,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6112,7 +6112,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").NE(""));
 
       i = vQ.getIterator();
@@ -6150,7 +6150,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LT(201));
 
       i = vQ.getIterator();
@@ -6162,7 +6162,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6171,7 +6171,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LT(20));
 
       i = vQ.getIterator();
@@ -6206,7 +6206,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LT("201"));
 
       i = vQ.getIterator();
@@ -6218,7 +6218,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6227,7 +6227,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LT("20"));
 
       i = vQ.getIterator();
@@ -6262,7 +6262,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE(200));
 
       i = vQ.getIterator();
@@ -6274,7 +6274,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6283,7 +6283,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE(201));
 
       i = vQ.getIterator();
@@ -6295,7 +6295,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6304,7 +6304,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE(20));
 
       i = vQ.getIterator();
@@ -6339,7 +6339,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE("200"));
 
       i = vQ.getIterator();
@@ -6351,7 +6351,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6360,7 +6360,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE("201"));
 
       i = vQ.getIterator();
@@ -6372,7 +6372,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6381,7 +6381,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").LE("20"));
 
       i = vQ.getIterator();
@@ -6416,7 +6416,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").NE(201));
 
       i = vQ.getIterator();
@@ -6428,7 +6428,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6437,7 +6437,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").NE(200));
 
       i = vQ.getIterator();
@@ -6472,7 +6472,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").NE("201"));
 
       i = vQ.getIterator();
@@ -6484,7 +6484,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6493,7 +6493,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aInteger("refQueryInteger"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aInteger("refQueryInteger").NE("200"));
 
       i = vQ.getIterator();
@@ -6528,7 +6528,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").EQ((long) 200));
 
       i = vQ.getIterator();
@@ -6540,7 +6540,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6549,7 +6549,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").EQ((long) 201));
 
       i = vQ.getIterator();
@@ -6584,7 +6584,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").EQ("200"));
 
       i = vQ.getIterator();
@@ -6596,7 +6596,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6605,7 +6605,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").EQ("201"));
 
       i = vQ.getIterator();
@@ -6640,7 +6640,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GT((long) 20));
 
       i = vQ.getIterator();
@@ -6652,7 +6652,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6661,7 +6661,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GT((long) 201));
 
       i = vQ.getIterator();
@@ -6696,7 +6696,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GT("20"));
 
       i = vQ.getIterator();
@@ -6708,7 +6708,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6717,7 +6717,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GT("201"));
 
       i = vQ.getIterator();
@@ -6752,7 +6752,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE((long) 200));
 
       i = vQ.getIterator();
@@ -6764,7 +6764,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6773,7 +6773,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE((long) 20));
 
       i = vQ.getIterator();
@@ -6785,7 +6785,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6794,7 +6794,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE((long) 201));
 
       i = vQ.getIterator();
@@ -6829,7 +6829,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE("200"));
 
       i = vQ.getIterator();
@@ -6841,7 +6841,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6850,7 +6850,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE("20"));
 
       i = vQ.getIterator();
@@ -6862,7 +6862,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6871,7 +6871,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").GE("201"));
 
       i = vQ.getIterator();
@@ -6910,7 +6910,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").EQ(""));
 
       i = vQ.getIterator();
@@ -6922,7 +6922,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6931,7 +6931,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").NE(""));
 
       i = vQ.getIterator();
@@ -6972,7 +6972,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LT((long) 220));
 
       i = vQ.getIterator();
@@ -6984,7 +6984,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6993,7 +6993,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LT((long) 20));
 
       i = vQ.getIterator();
@@ -7028,7 +7028,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LT("220"));
 
       i = vQ.getIterator();
@@ -7040,7 +7040,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7049,7 +7049,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LT("20"));
 
       i = vQ.getIterator();
@@ -7084,7 +7084,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE((long) 200));
 
       i = vQ.getIterator();
@@ -7096,7 +7096,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7105,7 +7105,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE((long) 220));
 
       i = vQ.getIterator();
@@ -7117,7 +7117,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7126,7 +7126,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE((long) 20));
 
       i = vQ.getIterator();
@@ -7161,7 +7161,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE("200"));
 
       i = vQ.getIterator();
@@ -7173,7 +7173,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7182,7 +7182,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE("220"));
 
       i = vQ.getIterator();
@@ -7194,7 +7194,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7203,7 +7203,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").LE("20"));
 
       i = vQ.getIterator();
@@ -7238,7 +7238,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").NE((long) 20));
 
       i = vQ.getIterator();
@@ -7250,7 +7250,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7259,7 +7259,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").NE((long) 200));
 
       i = vQ.getIterator();
@@ -7294,7 +7294,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").NE("20"));
 
       i = vQ.getIterator();
@@ -7306,7 +7306,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7315,7 +7315,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aLong("refQueryLong"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aLong("refQueryLong").NE("200"));
 
       i = vQ.getIterator();
@@ -7350,7 +7350,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").EQ("ref text value"));
 
       i = vQ.getIterator();
@@ -7362,7 +7362,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7371,7 +7371,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NE("ref text value"));
 
       i = vQ.getIterator();
@@ -7406,7 +7406,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").EQi("REF TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7418,7 +7418,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7427,7 +7427,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").EQi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7462,7 +7462,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").IN("REF text value", "ref text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7474,7 +7474,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7483,7 +7483,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").IN("REF text value", "REF TEXT value", "REF TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7518,7 +7518,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").INi("WRONG TEXT VALUE", "REF TEXT VALUE", "wrong TEXT value 2"));
 
       i = vQ.getIterator();
@@ -7530,7 +7530,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7539,7 +7539,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").INi("WRONG TEXT VALUE", "WRONG TEXT VALUE 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7578,7 +7578,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").EQ(""));
 
       i = vQ.getIterator();
@@ -7590,7 +7590,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7599,7 +7599,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NE(""));
 
       i = vQ.getIterator();
@@ -7637,7 +7637,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").LIKE("%text%"));
 
       i = vQ.getIterator();
@@ -7649,7 +7649,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7658,7 +7658,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").LIKE("%text"));
 
       i = vQ.getIterator();
@@ -7693,7 +7693,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").LIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -7705,7 +7705,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7714,7 +7714,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").LIKEi("%TEXT"));
 
       i = vQ.getIterator();
@@ -7749,7 +7749,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NE("wrong text value"));
 
       i = vQ.getIterator();
@@ -7761,7 +7761,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7770,7 +7770,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NE("ref text value"));
 
       i = vQ.getIterator();
@@ -7805,7 +7805,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NEi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7817,7 +7817,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7826,7 +7826,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NEi("REF TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7861,7 +7861,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NI("REF text value", "REF TEXT value", "REF TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7873,7 +7873,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7882,7 +7882,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NI("REF text value", "ref text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7917,7 +7917,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NIi("WRONG text value", "WRONG TEXT value 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7929,7 +7929,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7938,7 +7938,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NIi("REF text value", "REF TEXT VALUE", "REF TEXT value"));
 
       i = vQ.getIterator();
@@ -7973,7 +7973,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NLIKEi("%WRONG%"));
 
       i = vQ.getIterator();
@@ -7985,7 +7985,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7994,7 +7994,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aText("refQueryText"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aText("refQueryText").NLIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -8030,7 +8030,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").EQ(date));
 
       i = vQ.getIterator();
@@ -8042,7 +8042,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8053,7 +8053,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").EQ(date));
 
       i = vQ.getIterator();
@@ -8088,7 +8088,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").EQ("12:00:00"));
 
       i = vQ.getIterator();
@@ -8100,7 +8100,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8109,7 +8109,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").EQ("11:00:00"));
 
       i = vQ.getIterator();
@@ -8145,7 +8145,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GT(date));
 
       i = vQ.getIterator();
@@ -8157,7 +8157,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8168,7 +8168,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GT(date));
 
       i = vQ.getIterator();
@@ -8203,7 +8203,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GT("11:00:00"));
 
       i = vQ.getIterator();
@@ -8215,7 +8215,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8224,7 +8224,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GT("14:00:00"));
 
       i = vQ.getIterator();
@@ -8260,7 +8260,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8272,7 +8272,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8283,7 +8283,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8295,7 +8295,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8306,7 +8306,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE(date));
 
       i = vQ.getIterator();
@@ -8341,7 +8341,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8353,7 +8353,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8362,7 +8362,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8374,7 +8374,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8383,7 +8383,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").GE("14:00:00"));
 
       i = vQ.getIterator();
@@ -8421,7 +8421,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").EQ(""));
 
       i = vQ.getIterator();
@@ -8433,7 +8433,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8442,7 +8442,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").NE(""));
 
       i = vQ.getIterator();
@@ -8481,7 +8481,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LT(date));
 
       i = vQ.getIterator();
@@ -8493,7 +8493,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8504,7 +8504,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LT(date));
 
       i = vQ.getIterator();
@@ -8539,7 +8539,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LT("14:00:00"));
 
       i = vQ.getIterator();
@@ -8551,7 +8551,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8560,7 +8560,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LT("10:00:00"));
 
       i = vQ.getIterator();
@@ -8596,7 +8596,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8608,7 +8608,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8619,7 +8619,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8631,7 +8631,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8642,7 +8642,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE(date));
 
       i = vQ.getIterator();
@@ -8677,7 +8677,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE("12:00:00"));
 
       i = vQ.getIterator();
@@ -8689,7 +8689,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8698,7 +8698,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE("14:00:00"));
 
       i = vQ.getIterator();
@@ -8710,7 +8710,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8719,7 +8719,7 @@ public class ValueQueryReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").LE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8755,7 +8755,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").NE(date));
 
       i = vQ.getIterator();
@@ -8767,7 +8767,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8778,7 +8778,7 @@ public class ValueQueryReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").NE(date));
 
       i = vQ.getIterator();
@@ -8813,7 +8813,7 @@ public class ValueQueryReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").NE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8825,7 +8825,7 @@ public class ValueQueryReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!i.next().getValue("objectId").equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8834,7 +8834,7 @@ public class ValueQueryReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.id("objectId"));
+      vQ.SELECT(query.aReference("reference").aTime("refQueryTime"), query.oid("objectId"));
       vQ.WHERE(query.aReference("reference").aTime("refQueryTime").NE("12:00:00"));
 
       i = vQ.getIterator();

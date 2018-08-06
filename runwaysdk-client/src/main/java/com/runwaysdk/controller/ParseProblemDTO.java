@@ -54,12 +54,12 @@ public abstract class ParseProblemDTO extends RunwayProblemDTO implements Attrib
   {
     super(ParseProblemDTO.class.getName(), "");
 
-    this.componentId = component.getId();
+    this.componentId = component.getOid();
     this.componentType = component.getType();
     this.componentLabel = component.getMd().getDisplayLabel();
     
     this.attributeName = attributeMd.getName();
-    this.attributeId = attributeMd.getId();
+    this.attributeId = attributeMd.getOid();
     this.attributeLabel = attributeMd.getDisplayLabel();
     
     this.locale = locale;

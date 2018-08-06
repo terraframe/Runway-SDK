@@ -79,13 +79,13 @@ public class Sandbox
     // mdAttribute.getBusinessDAO().delete();
 
     MdAttributeCharacterDAO vaultName = MdAttributeCharacterDAO.newInstance();
-    vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getOid());
     vaultName.setValue(MdAttributeCharacterInfo.NAME, VaultInfo.VAULT_NAME);
     vaultName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
     vaultName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
     vaultName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     vaultName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    vaultName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     vaultName.setValue(MdAttributeCharacterInfo.SIZE, "255");
     vaultName.apply();
   }

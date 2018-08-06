@@ -94,7 +94,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     {
       mdBusinessDAO.apply();
 
-      this.getManager().addMapping(name, mdBusinessDAO.getId());
+      this.getManager().addMapping(name, mdBusinessDAO.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdBusinessDAO);
@@ -162,7 +162,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
       }
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(extend);
-      mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
+      mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getOid());
     }
 
     if (cacheAlgorithm != null)
@@ -170,16 +170,16 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
       // Change to an everything caching algorithm
       if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       // Change to a nonthing caching algorithm
       else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
       else
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       }
     }
 

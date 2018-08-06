@@ -55,7 +55,7 @@ public class ProfileConfigurationResolver implements ConfigurationResolverIF
   
   public ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)
   {
-    return ProfileManager.getBundle(configGroup.getIdentifier() + "/" + config);
+    return ProfileManager.getBundle(configGroup.getOidentifier() + "/" + config);
   }
   
   public URL getResource(ConfigGroupIF configGroup, String name)
@@ -82,7 +82,7 @@ public class ProfileConfigurationResolver implements ConfigurationResolverIF
         }
         else
         {
-          location += "/" + profileName + "/" + configGroup.getIdentifier() + "/" + name;
+          location += "/" + profileName + "/" + configGroup.getOidentifier() + "/" + name;
         }
 
         File file = new File(location);
@@ -106,7 +106,7 @@ public class ProfileConfigurationResolver implements ConfigurationResolverIF
         }
         else
         {
-          path = profileName + "/" + configGroup.getIdentifier() + "/" + name;
+          path = profileName + "/" + configGroup.getOidentifier() + "/" + name;
         }
         location = "classpath:" + path;
         resource = ConfigurationManager.class.getClassLoader().getResource(path);
@@ -115,7 +115,7 @@ public class ProfileConfigurationResolver implements ConfigurationResolverIF
     
     if (resource == null)
     {
-      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getIdentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
+      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getOidentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
       throw new RunwayConfigurationException(msg);
     }
     

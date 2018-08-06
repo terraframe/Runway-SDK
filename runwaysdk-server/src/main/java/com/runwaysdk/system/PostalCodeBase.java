@@ -41,9 +41,9 @@ public abstract class PostalCodeBase extends com.runwaysdk.system.EnumerationMas
     return CLASS;
   }
   
-  public static PostalCode get(String id)
+  public static PostalCode get(String oid)
   {
-    return (PostalCode) com.runwaysdk.business.Business.get(id);
+    return (PostalCode) com.runwaysdk.business.Business.get(oid);
   }
   
   public static PostalCode getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class PostalCodeBase extends com.runwaysdk.system.EnumerationMas
     return (PostalCode) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.PostalCode.CLASS ,enumName);
   }
   
-  public static PostalCode lock(java.lang.String id)
+  public static PostalCode lock(java.lang.String oid)
   {
-    PostalCode _instance = PostalCode.get(id);
+    PostalCode _instance = PostalCode.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static PostalCode unlock(java.lang.String id)
+  public static PostalCode unlock(java.lang.String oid)
   {
-    PostalCode _instance = PostalCode.get(id);
+    PostalCode _instance = PostalCode.get(oid);
     _instance.unlock();
     
     return _instance;

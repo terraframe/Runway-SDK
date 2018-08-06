@@ -32,9 +32,9 @@ public abstract class FormMd
   private String description;
 
   /**
-   * The id of the metadata defining the type.
+   * The oid of the metadata defining the type.
    */
-  private String id;
+  private String oid;
   
   /**
    * The name of the form.
@@ -42,7 +42,7 @@ public abstract class FormMd
   private String formName;
   
   /**
-   * The id of the form
+   * The oid of the form
    */
   private String formMdClass;
   
@@ -53,7 +53,7 @@ public abstract class FormMd
     this.formMdClass = null;
     this.displayLabel = null;
     this.description = null;
-    this.id = null;
+    this.oid = null;
   }
 
   protected void setFormName(String formName)
@@ -117,23 +117,23 @@ public abstract class FormMd
   }
 
   /**
-   * Returns the id of the metadata that defines this type.
+   * Returns the oid of the metadata that defines this type.
    *
    * @return
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   /**
-   * Sets the id.
+   * Sets the oid.
    *
-   * @param id
+   * @param oid
    */
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
 }

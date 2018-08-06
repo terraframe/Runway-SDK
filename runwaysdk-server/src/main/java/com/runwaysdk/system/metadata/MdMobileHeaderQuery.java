@@ -154,13 +154,13 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileHeader mdMobileHeader)
     {
       if(mdMobileHeader == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileHeader.getId());
+      return this.EQ(mdMobileHeader.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileHeader mdMobileHeader)
     {
       if(mdMobileHeader == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileHeader.getId());
+      return this.NE(mdMobileHeader.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdMobileHeaderHeaderTextQuery.MdMobileHeaderHeaderTextQueryStructIF getHeaderText()
@@ -237,7 +237,7 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileHeader.length; i++)
       {
-        itemIdArray[i] = mdMobileHeader[i].getId();
+        itemIdArray[i] = mdMobileHeader[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileHeader.length; i++)
       {
-        itemIdArray[i] = mdMobileHeader[i].getId();
+        itemIdArray[i] = mdMobileHeader[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileHeader.length; i++)
       {
-        itemIdArray[i] = mdMobileHeader[i].getId();
+        itemIdArray[i] = mdMobileHeader[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileHeader.length; i++)
       {
-        itemIdArray[i] = mdMobileHeader[i].getId();
+        itemIdArray[i] = mdMobileHeader[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdMobileHeaderQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileHeader.length; i++)
       {
-        itemIdArray[i] = mdMobileHeader[i].getId();
+        itemIdArray[i] = mdMobileHeader[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

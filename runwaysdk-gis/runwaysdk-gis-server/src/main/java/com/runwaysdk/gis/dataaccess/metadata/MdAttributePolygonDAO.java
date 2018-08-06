@@ -117,9 +117,9 @@ public class MdAttributePolygonDAO extends MdAttributeGeometryDAO implements MdA
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributePolygonDAOIF get(String id)
+  public static MdAttributePolygonDAOIF get(String oid)
   {
-    return (MdAttributePolygonDAOIF) BusinessDAO.get(id);
+    return (MdAttributePolygonDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

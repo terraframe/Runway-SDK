@@ -647,7 +647,7 @@ public abstract class Attribute implements AttributeIF, Serializable
       // Hence, only an EntityDAO would call this method.
       if ( ( (EntityDAO) getContainingComponent() ).isAppliedToDB())
       {
-        entityQ.WHERE(entityQ.aCharacter(EntityInfo.ID).NE(getContainingComponent().getId()));
+        entityQ.WHERE(entityQ.aCharacter(EntityInfo.ID).NE(getContainingComponent().getOid()));
       }
 
       if (entityQ.getCount() > 0)

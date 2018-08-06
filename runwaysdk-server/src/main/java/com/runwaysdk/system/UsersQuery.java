@@ -214,13 +214,13 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.Users users)
     {
       if(users == null) return this.EQ((java.lang.String)null);
-      return this.EQ(users.getId());
+      return this.EQ(users.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.Users users)
     {
       if(users == null) return this.NE((java.lang.String)null);
-      return this.NE(users.getId());
+      return this.NE(users.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getInactive()
@@ -357,7 +357,7 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<users.length; i++)
       {
-        itemIdArray[i] = users[i].getId();
+        itemIdArray[i] = users[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -369,7 +369,7 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<users.length; i++)
       {
-        itemIdArray[i] = users[i].getId();
+        itemIdArray[i] = users[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -381,7 +381,7 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<users.length; i++)
       {
-        itemIdArray[i] = users[i].getId();
+        itemIdArray[i] = users[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -393,7 +393,7 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<users.length; i++)
       {
-        itemIdArray[i] = users[i].getId();
+        itemIdArray[i] = users[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -405,7 +405,7 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<users.length; i++)
       {
-        itemIdArray[i] = users[i].getId();
+        itemIdArray[i] = users[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

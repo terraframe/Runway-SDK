@@ -66,18 +66,18 @@ public class JSONJavaAdapter
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
    *      java.lang.String)
    */
-  public static String delete(String sessionId, String id)
+  public static String delete(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.delete(sessionId, id);
+    return JSONAdapterDelegate.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String,
    *      java.lang.String)
    */
-  public static String get(String sessionId, String id)
+  public static String get(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.get(sessionId, id);
+    return JSONAdapterDelegate.get(sessionId, oid);
   }
 
   public static String getQuery(String sessionId, String type)
@@ -156,7 +156,7 @@ public class JSONJavaAdapter
    * Changes the user for the given session.
    *
    * @param sessionId
-   *            id of a session.
+   *            oid of a session.
    * @param username
    *            The name of the user.
    * @param password
@@ -284,18 +284,18 @@ public class JSONJavaAdapter
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
    *      java.lang.String)
    */
-  public static String lock(String sessionId, String id)
+  public static String lock(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.lock(sessionId, id);
+    return JSONAdapterDelegate.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
    *      java.lang.String)
    */
-  public static String unlock(String sessionId, String id)
+  public static String unlock(String sessionId, String oid)
   {
-    return JSONAdapterDelegate.unlock(sessionId, id);
+    return JSONAdapterDelegate.unlock(sessionId, oid);
   }
 
   /**
@@ -321,37 +321,37 @@ public class JSONJavaAdapter
    *      com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
 
-  public static String getChildren(String sessionId, String id, String relationshipType)
+  public static String getChildren(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getChildren(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getChildren(sessionId, oid, relationshipType);
   }
 
 
-  public static String getChildRelationships(String sessionId, String id, String relationshipType)
+  public static String getChildRelationships(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getChildRelationships(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getChildRelationships(sessionId, oid, relationshipType);
   }
 
 
-  public static String getParentRelationships(String sessionId, String id, String relationshipType)
+  public static String getParentRelationships(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getParentRelationships(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getParentRelationships(sessionId, oid, relationshipType);
   }
 
 
-  public static String getParents(String sessionId, String id, String relationshipType)
+  public static String getParents(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.getParents(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.getParents(sessionId, oid, relationshipType);
   }
 
-  public static String deleteChildren(String sessionId, String id, String relationshipType)
+  public static String deleteChildren(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.deleteChildren(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.deleteChildren(sessionId, oid, relationshipType);
   }
 
-  public static String deleteParents(String sessionId, String id, String relationshipType)
+  public static String deleteParents(String sessionId, String oid, String relationshipType)
   {
-    return JSONAdapterDelegate.deleteParents(sessionId, id, relationshipType);
+    return JSONAdapterDelegate.deleteParents(sessionId, oid, relationshipType);
   }
 
   public static String queryBusinesses(String sessionId, String queryJSON)

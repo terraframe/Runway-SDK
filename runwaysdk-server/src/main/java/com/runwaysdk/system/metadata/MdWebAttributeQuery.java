@@ -194,13 +194,13 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebAttribute mdWebAttribute)
     {
       if(mdWebAttribute == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebAttribute.getId());
+      return this.EQ(mdWebAttribute.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebAttribute mdWebAttribute)
     {
       if(mdWebAttribute == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebAttribute.getId());
+      return this.NE(mdWebAttribute.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute()
@@ -317,7 +317,7 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
 
       for (int i=0; i<mdWebAttribute.length; i++)
       {
-        itemIdArray[i] = mdWebAttribute[i].getId();
+        itemIdArray[i] = mdWebAttribute[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -329,7 +329,7 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
 
       for (int i=0; i<mdWebAttribute.length; i++)
       {
-        itemIdArray[i] = mdWebAttribute[i].getId();
+        itemIdArray[i] = mdWebAttribute[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -341,7 +341,7 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
 
       for (int i=0; i<mdWebAttribute.length; i++)
       {
-        itemIdArray[i] = mdWebAttribute[i].getId();
+        itemIdArray[i] = mdWebAttribute[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -353,7 +353,7 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
 
       for (int i=0; i<mdWebAttribute.length; i++)
       {
-        itemIdArray[i] = mdWebAttribute[i].getId();
+        itemIdArray[i] = mdWebAttribute[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -365,7 +365,7 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
 
       for (int i=0; i<mdWebAttribute.length; i++)
       {
-        itemIdArray[i] = mdWebAttribute[i].getId();
+        itemIdArray[i] = mdWebAttribute[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

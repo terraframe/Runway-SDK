@@ -229,11 +229,11 @@ public class ComponentLabelVisitor implements MdAttributeDAOVisitor
   {
     label = "";
 
-    String id = component.getValue(attribute.definesAttribute());
+    String oid = component.getValue(attribute.definesAttribute());
 
-    if (id != null && id.length() > 0)
+    if (oid != null && oid.length() > 0)
     {
-      EntityDAOIF entity = PersistanceFacade.get(id);
+      EntityDAOIF entity = PersistanceFacade.get(oid);
 
       label = entity.getKey();
     }

@@ -29,7 +29,7 @@ public class EnumerationAttributeItem extends EnumerationAttributeItemBase
   
   public EnumerationAttributeItem(com.runwaysdk.system.metadata.MdEnumeration parent, com.runwaysdk.system.EnumerationMaster child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

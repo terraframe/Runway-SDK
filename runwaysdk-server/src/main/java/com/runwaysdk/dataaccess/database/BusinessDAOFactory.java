@@ -459,12 +459,12 @@ public class BusinessDAOFactory
 
   /**
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  public static BusinessDAOIF get(String id)
+  public static BusinessDAOIF get(String oid)
   {
-    BusinessDAOQuery businessDAOsQuery = BusinessDAOQuery.getObjectInstance(id);
+    BusinessDAOQuery businessDAOsQuery = BusinessDAOQuery.getObjectInstance(oid);
     List<BusinessDAO> businessDAOlist = queryBusiessDAOs(businessDAOsQuery);
 
     // If the BusinessDAO list is null, then a BusinessDAO with the given ID
@@ -481,8 +481,8 @@ public class BusinessDAOFactory
 
   /**
    * Returns a BusinessDAO of the given type with the given key in the database.
-   * This method does the same thing as get(String id), but is faster. If you
-   * know the type of the id, use this method. Otherwise use the get(String id)
+   * This method does the same thing as get(String oid), but is faster. If you
+   * know the type of the oid, use this method. Otherwise use the get(String oid)
    * method.
    * 
    * <br/>
@@ -627,7 +627,7 @@ public class BusinessDAOFactory
    * @param columnInfoMap
    *          contains information about attributes used in the query
    * @param definedByTableClasMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          {@link MdAttribute} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -720,7 +720,7 @@ public class BusinessDAOFactory
 
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getId());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getOid());
     newBusinessDAO.getAttribute(EntityInfo.ID).setValue(newId);
 
     return newBusinessDAO;
@@ -744,14 +744,14 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Changes all references to this object with its current id to the new given
-   * id.
+   * Changes all references to this object with its current oid to the new given
+   * oid.
    * 
    * @param _businessDAO
    * @param _oldId
-   *          the old reference id
+   *          the old reference oid
    * @param _newId
-   *          new id to reference
+   *          new oid to reference
    */
   public static void floatObjectIdReferences(BusinessDAO _businessDAO, String _oldId, String _newId)
   {
@@ -826,7 +826,7 @@ public class BusinessDAOFactory
             attribute.setValueNoValidation(_newId);
 
             // Write the field to the database
-            PreparedStatement statement = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getId(), mdAttrEnumDAOIF.getCacheColumnName(), "?", newEnumItemIds, MdAttributeCharacterInfo.CLASS);
+            PreparedStatement statement = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getOid(), mdAttrEnumDAOIF.getCacheColumnName(), "?", newEnumItemIds, MdAttributeCharacterInfo.CLASS);
 
             List<PreparedStatement> statements = new LinkedList<PreparedStatement>();
             statements.add(statement);
@@ -861,7 +861,7 @@ public class BusinessDAOFactory
 
         // Write the field to the database
         List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getOid(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
         preparedStatementList.add(preparedStmt);
         Database.executeStatementBatch(preparedStatementList);
 
@@ -886,7 +886,7 @@ public class BusinessDAOFactory
 
           // Write the field to the database
           List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getOid(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
           preparedStatementList.add(preparedStmt);
           Database.executeStatementBatch(preparedStatementList);
 
@@ -934,7 +934,7 @@ public class BusinessDAOFactory
             // Write the field to the database
             List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getId(), mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getOid(), mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
             preparedStatementList.add(preparedStmt);
             Database.executeStatementBatch(preparedStatementList);
 
@@ -966,7 +966,7 @@ public class BusinessDAOFactory
 
         // Write the field to the database
         List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getOid(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
         preparedStatementList.add(preparedStmt);
         Database.executeStatementBatch(preparedStatementList);
 
@@ -994,7 +994,7 @@ public class BusinessDAOFactory
 
           // Write the field to the database
           List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getOid(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
           preparedStatementList.add(preparedStmt);
           Database.executeStatementBatch(preparedStatementList);
 
@@ -1010,7 +1010,7 @@ public class BusinessDAOFactory
 
   /**
    * Updates all relationship references to the given object with the newly
-   * given id.
+   * given oid.
    * 
    * @param businessDAO
    * @param oldId
@@ -1053,7 +1053,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getId(), RelationshipInfo.PARENT_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.PARENT_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 
@@ -1066,7 +1066,7 @@ public class BusinessDAOFactory
             {
               String type = relationshipDAO.getType();
               String key = relationshipDAO.getKey();
-              String error = "Object with id [" + relationshipDAO.getId() + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
+              String error = "Object with oid [" + relationshipDAO.getOid() + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
               throw new StaleEntityException(error, relationshipDAO);
             }
           }
@@ -1114,7 +1114,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getId(), RelationshipInfo.CHILD_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.CHILD_ID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 
@@ -1127,7 +1127,7 @@ public class BusinessDAOFactory
             {
               String type = relationshipDAO.getType();
               String key = relationshipDAO.getKey();
-              String error = "Object with id [" + relationshipDAO.getId() + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
+              String error = "Object with oid [" + relationshipDAO.getOid() + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
               throw new StaleEntityException(error, relationshipDAO);
             }
           }
@@ -1183,14 +1183,14 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Changes all references to this object with its current id to the new given
-   * id.
+   * Changes all references to this object with its current oid to the new given
+   * oid.
    * 
    * @param _businessDAO
    * @param _oldId
-   *          the old reference id
+   *          the old reference oid
    * @param _newId
-   *          new id to reference
+   *          new oid to reference
    * @param _ignoreRelationshipException
    */
   public static void floatObjectIdReferencesDatabase(BusinessDAO _businessDAO, String _oldId, String _newId, boolean _ignoreRelationshipException)
@@ -1244,7 +1244,7 @@ public class BusinessDAOFactory
 
         // Write the field to the database
         List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getOid(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
         preparedStatementList.add(preparedStmt);
         Database.executeStatementBatch(preparedStatementList);
 
@@ -1272,7 +1272,7 @@ public class BusinessDAOFactory
 
           // Write the field to the database
           List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getOid(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
           preparedStatementList.add(preparedStmt);
           Database.executeStatementBatch(preparedStatementList);
 

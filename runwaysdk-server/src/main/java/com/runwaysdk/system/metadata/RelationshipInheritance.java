@@ -29,7 +29,7 @@ public class RelationshipInheritance extends RelationshipInheritanceBase
   
   public RelationshipInheritance(com.runwaysdk.system.metadata.MdRelationship parent, com.runwaysdk.system.metadata.MdRelationship child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

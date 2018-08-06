@@ -30,8 +30,8 @@ import com.runwaysdk.session.Request;
  * 
  * @author Richard Rowlands
  * 
- *         This class takes a globally unique server id and converts it into a
- *         concise mobile id and back again. This new id is unique to a client's
+ *         This class takes a globally unique server oid and converts it into a
+ *         concise mobile oid and back again. This new oid is unique to a client's
  *         session and will reduce network load.
  * 
  */
@@ -53,7 +53,7 @@ public class IdConverter
 
   private final MobileIdSessionIdCache mobileSessionCache            = new MobileIdSessionIdCache(sessionMobileCache.getMaxSize());
 
-  // The total number of local ids stored in memory by the id generator is these
+  // The total number of local ids stored in memory by the oid generator is these
   // two numbers multiplied together.
   protected static final int           MAX_LOCAL_IDS_PER_STACK       = 30;
 
@@ -75,7 +75,7 @@ public class IdConverter
   }
 
   // NOTE: This concatenation separator MUST NOT be a valid character in global
-  // id strings or local id strings.
+  // oid strings or local oid strings.
   private static final String KEY_CONCATENATION_SEPARATOR = "_";
 
   private class GlobalIdLocalIdCache extends RunwayMemoryCache<String, String>

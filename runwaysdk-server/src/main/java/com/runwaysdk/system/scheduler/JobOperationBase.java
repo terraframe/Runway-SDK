@@ -41,9 +41,9 @@ public abstract class JobOperationBase extends com.runwaysdk.system.EnumerationM
     return CLASS;
   }
   
-  public static JobOperation get(String id)
+  public static JobOperation get(String oid)
   {
-    return (JobOperation) com.runwaysdk.business.Business.get(id);
+    return (JobOperation) com.runwaysdk.business.Business.get(oid);
   }
   
   public static JobOperation getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class JobOperationBase extends com.runwaysdk.system.EnumerationM
     return (JobOperation) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.scheduler.JobOperation.CLASS ,enumName);
   }
   
-  public static JobOperation lock(java.lang.String id)
+  public static JobOperation lock(java.lang.String oid)
   {
-    JobOperation _instance = JobOperation.get(id);
+    JobOperation _instance = JobOperation.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static JobOperation unlock(java.lang.String id)
+  public static JobOperation unlock(java.lang.String oid)
   {
-    JobOperation _instance = JobOperation.get(id);
+    JobOperation _instance = JobOperation.get(oid);
     _instance.unlock();
     
     return _instance;

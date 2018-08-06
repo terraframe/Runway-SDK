@@ -99,9 +99,9 @@ public abstract class MdAttributePrimitiveBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static MdAttributePrimitive get(String id)
+  public static MdAttributePrimitive get(String oid)
   {
-    return (MdAttributePrimitive) com.runwaysdk.business.Business.get(id);
+    return (MdAttributePrimitive) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributePrimitive getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdAttributePrimitiveBase extends com.runwaysdk.system.meta
     return (MdAttributePrimitive) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributePrimitive lock(java.lang.String id)
+  public static MdAttributePrimitive lock(java.lang.String oid)
   {
-    MdAttributePrimitive _instance = MdAttributePrimitive.get(id);
+    MdAttributePrimitive _instance = MdAttributePrimitive.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributePrimitive unlock(java.lang.String id)
+  public static MdAttributePrimitive unlock(java.lang.String oid)
   {
-    MdAttributePrimitive _instance = MdAttributePrimitive.get(id);
+    MdAttributePrimitive _instance = MdAttributePrimitive.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -75,7 +75,7 @@ public abstract class DoubleConditionBase extends com.runwaysdk.system.metadata.
     }
     else
     {
-      setValue(DEFININGMDFIELD, value.getId());
+      setValue(DEFININGMDFIELD, value.getOid());
     }
   }
   
@@ -89,7 +89,7 @@ public abstract class DoubleConditionBase extends com.runwaysdk.system.metadata.
   {
     if(value != null)
     {
-      addEnumItem(OPERATION, value.getId());
+      addEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -97,7 +97,7 @@ public abstract class DoubleConditionBase extends com.runwaysdk.system.metadata.
   {
     if(value != null)
     {
-      removeEnumItem(OPERATION, value.getId());
+      removeEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -150,9 +150,9 @@ public abstract class DoubleConditionBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static DoubleCondition get(String id)
+  public static DoubleCondition get(String oid)
   {
-    return (DoubleCondition) com.runwaysdk.business.Business.get(id);
+    return (DoubleCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static DoubleCondition getByKey(String key)
@@ -160,17 +160,17 @@ public abstract class DoubleConditionBase extends com.runwaysdk.system.metadata.
     return (DoubleCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static DoubleCondition lock(java.lang.String id)
+  public static DoubleCondition lock(java.lang.String oid)
   {
-    DoubleCondition _instance = DoubleCondition.get(id);
+    DoubleCondition _instance = DoubleCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static DoubleCondition unlock(java.lang.String id)
+  public static DoubleCondition unlock(java.lang.String oid)
   {
-    DoubleCondition _instance = DoubleCondition.get(id);
+    DoubleCondition _instance = DoubleCondition.get(oid);
     _instance.unlock();
     
     return _instance;

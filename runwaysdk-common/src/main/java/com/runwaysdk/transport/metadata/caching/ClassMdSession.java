@@ -38,7 +38,7 @@ public class ClassMdSession
 
   private String                          description;
 
-  private String                          id;
+  private String                          oid;
 
   private ClassMdSession                  superType;
     
@@ -50,13 +50,13 @@ public class ClassMdSession
   
   private Map<String, AttributeMdSession> mdAttributeMap = new HashMap<String, AttributeMdSession>();
 
-  public ClassMdSession(String definesType, String displayLabel, String description, String id,
+  public ClassMdSession(String definesType, String displayLabel, String description, String oid,
       ClassMdSession superType, boolean readable, boolean writable, boolean deleteable, Map<String, AttributeMdSession> mdAttributeMap)
   {
     this.definesType    = definesType;
     this.displayLabel   = displayLabel;
     this.description    = description;
-    this.id             = id;
+    this.oid             = oid;
     this.superType      = superType;
     this.readable       = readable;
     this.writable       = writable;
@@ -79,9 +79,9 @@ public class ClassMdSession
     return description;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   public ClassMdSession getSuperType()

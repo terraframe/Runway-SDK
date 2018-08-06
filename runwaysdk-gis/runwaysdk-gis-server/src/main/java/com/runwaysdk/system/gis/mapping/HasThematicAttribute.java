@@ -29,7 +29,7 @@ public class HasThematicAttribute extends HasThematicAttributeBase
   
   public HasThematicAttribute(com.runwaysdk.system.gis.mapping.Layer parent, com.runwaysdk.system.gis.mapping.ThematicAttribute child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

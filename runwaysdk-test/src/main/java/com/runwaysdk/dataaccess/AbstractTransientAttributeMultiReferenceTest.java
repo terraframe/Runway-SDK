@@ -87,7 +87,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     Set<String> result = attribute.getCachedItemIdSet();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
   @Request
@@ -101,7 +101,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
   @Request
@@ -122,17 +122,17 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
       {
         TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
         AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-        attribute.addItem(value1.getId());
-        attribute.addItem(value2.getId());
+        attribute.addItem(value1.getOid());
+        attribute.addItem(value2.getOid());
         transientDAO.apply();
 
         AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
         Set<String> result = attributeIF.getItemIdList();
 
         Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(this.getDefaultValue().getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
+        Assert.assertTrue(result.contains(this.getDefaultValue().getOid()));
+        Assert.assertTrue(result.contains(value1.getOid()));
+        Assert.assertTrue(result.contains(value2.getOid()));
       }
       finally
       {
@@ -151,15 +151,15 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
   {
     TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
     AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-    attribute.addItem(this.getDefaultValue().getId());
-    attribute.addItem(this.getDefaultValue().getId());
+    attribute.addItem(this.getDefaultValue().getOid());
+    attribute.addItem(this.getDefaultValue().getOid());
     transientDAO.apply();
 
     AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attributeIF.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
   @Request
@@ -176,14 +176,14 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
       transientDAO.apply();
 
       AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.replaceItems(Arrays.asList(value.getId()));
+      attribute.replaceItems(Arrays.asList(value.getOid()));
       transientDAO.apply();
 
       AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
+      Assert.assertTrue(result.contains(value.getOid()));
     }
     finally
     {
@@ -216,7 +216,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     transientDAO.apply();
 
     AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-    attribute.removeItem(this.getDefaultValue().getId());
+    attribute.removeItem(this.getDefaultValue().getOid());
     transientDAO.apply();
 
     AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
@@ -239,14 +239,14 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
       transientDAO.apply();
 
       AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.removeItem(value1.getId());
+      attribute.removeItem(value1.getOid());
       transientDAO.apply();
 
       AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+      Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
     }
     finally
     {
@@ -266,7 +266,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     {
       TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
       AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.addItem(value1.getId());
+      attribute.addItem(value1.getOid());
       transientDAO.apply();
 
       AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
@@ -314,17 +314,17 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
       try
       {
         TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
-        transientDAO.addItem(this.getMdAttribute().definesAttribute(), value1.getId());
-        transientDAO.addItem(this.getMdAttribute().definesAttribute(), value2.getId());
+        transientDAO.addItem(this.getMdAttribute().definesAttribute(), value1.getOid());
+        transientDAO.addItem(this.getMdAttribute().definesAttribute(), value2.getOid());
         transientDAO.apply();
 
         AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
         Set<String> result = attributeIF.getItemIdList();
 
         Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(this.getDefaultValue().getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
+        Assert.assertTrue(result.contains(this.getDefaultValue().getOid()));
+        Assert.assertTrue(result.contains(value1.getOid()));
+        Assert.assertTrue(result.contains(value2.getOid()));
       }
       finally
       {
@@ -349,14 +349,14 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     try
     {
       TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
-      transientDAO.replaceItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getId()));
+      transientDAO.replaceItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getOid()));
       transientDAO.apply();
 
       AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
+      Assert.assertTrue(result.contains(value.getOid()));
     }
     finally
     {
@@ -371,7 +371,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest
     TransientDAO transientDAO = TransientDAO.newInstance(this.getMdTransient().definesType());
     transientDAO.apply();
 
-    transientDAO.removeItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getId());
+    transientDAO.removeItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getOid());
     transientDAO.apply();
 
     AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(this.getMdAttribute().definesAttribute());

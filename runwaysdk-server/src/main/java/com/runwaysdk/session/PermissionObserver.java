@@ -118,14 +118,14 @@ public class PermissionObserver
    */
   private static void notify(SingleActorDAOIF singleActorIF)
   {
-    String id = singleActorIF.getId();
+    String oid = singleActorIF.getOid();
     PermissionObserver manager = getManager();
     
     for(PermissionEntity entity : manager.getListeners())
     {
-      String entityId = entity.getUser().getId();
+      String entityId = entity.getUser().getOid();
       
-      if(id.equals(entityId))
+      if(oid.equals(entityId))
       {
         entity.notify(PermissionEvent.PERMISSION_CHANGE);
       }
@@ -138,7 +138,7 @@ public class PermissionObserver
    */
   private static synchronized void updateGlobalPermissions(ActorDAOIF actor)
   {
-    if (RoleDAO.OWNER_ID.equals(actor.getId()) || RoleDAO.PUBLIC_ROLE_ID.equals(actor.getId()))
+    if (RoleDAO.OWNER_ID.equals(actor.getOid()) || RoleDAO.PUBLIC_ROLE_ID.equals(actor.getOid()))
     {
       PermissionCache.reload();
     }
@@ -152,7 +152,7 @@ public class PermissionObserver
    */
   private static boolean isGlobalActor(ActorDAOIF actor)
   {
-    return RoleDAO.PUBLIC_ROLE_ID.equals(actor.getId()) || RoleDAO.OWNER_ID.equals(actor.getId()); 
+    return RoleDAO.PUBLIC_ROLE_ID.equals(actor.getOid()) || RoleDAO.OWNER_ID.equals(actor.getOid()); 
   }
     
   /**

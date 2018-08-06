@@ -49,7 +49,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
@@ -187,7 +187,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -492,7 +492,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -640,9 +640,9 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(WORKTOTAL).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.scheduler.AbstractJobDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.scheduler.AbstractJobDTO) dto;
   }
@@ -660,7 +660,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.scheduler.AbstractJobQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -673,10 +673,10 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.scheduler.AbstractJobDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.AbstractJobDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.scheduler.AbstractJobDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -686,10 +686,10 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.scheduler.AbstractJobDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.AbstractJobDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.scheduler.AbstractJobDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

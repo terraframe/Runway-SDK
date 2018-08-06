@@ -128,9 +128,9 @@ public abstract class MdAttributeDecimalBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static MdAttributeDecimal get(String id)
+  public static MdAttributeDecimal get(String oid)
   {
-    return (MdAttributeDecimal) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeDecimal) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeDecimal getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdAttributeDecimalBase extends com.runwaysdk.system.metada
     return (MdAttributeDecimal) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeDecimal lock(java.lang.String id)
+  public static MdAttributeDecimal lock(java.lang.String oid)
   {
-    MdAttributeDecimal _instance = MdAttributeDecimal.get(id);
+    MdAttributeDecimal _instance = MdAttributeDecimal.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeDecimal unlock(java.lang.String id)
+  public static MdAttributeDecimal unlock(java.lang.String oid)
   {
-    MdAttributeDecimal _instance = MdAttributeDecimal.get(id);
+    MdAttributeDecimal _instance = MdAttributeDecimal.get(oid);
     _instance.unlock();
     
     return _instance;

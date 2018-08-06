@@ -176,9 +176,9 @@ public class MdAttributeFileDAO extends MdAttributeConcreteDAO implements MdAttr
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeFileDAOIF get(String id)
+  public static MdAttributeFileDAOIF get(String oid)
   {
-    return (MdAttributeFileDAOIF) BusinessDAO.get(id);
+    return (MdAttributeFileDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

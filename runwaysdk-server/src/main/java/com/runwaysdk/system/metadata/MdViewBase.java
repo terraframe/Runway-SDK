@@ -187,7 +187,7 @@ public abstract class MdViewBase extends com.runwaysdk.system.metadata.MdSession
     }
     else
     {
-      setValue(SUPERMDVIEW, value.getId());
+      setValue(SUPERMDVIEW, value.getOid());
     }
   }
   
@@ -325,9 +325,9 @@ public abstract class MdViewBase extends com.runwaysdk.system.metadata.MdSession
     }
   }
   
-  public static MdView get(String id)
+  public static MdView get(String oid)
   {
-    return (MdView) com.runwaysdk.business.Business.get(id);
+    return (MdView) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdView getByKey(String key)
@@ -335,17 +335,17 @@ public abstract class MdViewBase extends com.runwaysdk.system.metadata.MdSession
     return (MdView) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdView lock(java.lang.String id)
+  public static MdView lock(java.lang.String oid)
   {
-    MdView _instance = MdView.get(id);
+    MdView _instance = MdView.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdView unlock(java.lang.String id)
+  public static MdView unlock(java.lang.String oid)
   {
-    MdView _instance = MdView.get(id);
+    MdView _instance = MdView.get(oid);
     _instance.unlock();
     
     return _instance;

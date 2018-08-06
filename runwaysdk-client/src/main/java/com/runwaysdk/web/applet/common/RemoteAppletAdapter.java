@@ -29,9 +29,9 @@ public interface RemoteAppletAdapter extends Remote
 {
   /**
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * 
    * @return The content of a file as a {@link InputStream} of data
    */
@@ -41,7 +41,7 @@ public interface RemoteAppletAdapter extends Remote
    * Creates a new globally viewable file on the server
    * 
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param path
    *          The fully qualified path on the server to put the file
    * @param filename
@@ -62,7 +62,7 @@ public interface RemoteAppletAdapter extends Remote
    * @param type
    *          Fully qualified type name of the MdType defining the AttributeFile
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */
@@ -70,9 +70,9 @@ public interface RemoteAppletAdapter extends Remote
 
   /**
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param fileId
-   *          The id of the vault file to retrieve
+   *          The oid of the vault file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */
@@ -90,7 +90,7 @@ public interface RemoteAppletAdapter extends Remote
    * @param Stream
    *          containing the contents to be written
    * 
-   * @return The id representing the new vault file which was written
+   * @return The oid representing the new vault file which was written
    */
   public String newSecureFile(String sessionId, String filename, String extension, RemoteInputStream stream) throws RemoteException;
 

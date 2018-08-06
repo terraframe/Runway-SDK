@@ -43,7 +43,7 @@ public abstract class MutableDTOToBasicJSON extends ComponentDTOIFToBasicJSON
   {
     super.setProperties();
 
-    // id
+    // oid
     this.getJSON().put("newInstance", this.getComponentDTO().isNewInstance());
   }
 

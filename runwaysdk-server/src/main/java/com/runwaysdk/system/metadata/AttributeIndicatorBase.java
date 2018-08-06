@@ -51,9 +51,9 @@ public abstract class AttributeIndicatorBase extends com.runwaysdk.system.metada
     return (com.runwaysdk.system.metadata.IndicatorComposite) super.getChild();
   }
   
-  public static AttributeIndicator get(String id)
+  public static AttributeIndicator get(String oid)
   {
-    return (AttributeIndicator) com.runwaysdk.business.Relationship.get(id);
+    return (AttributeIndicator) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static AttributeIndicator getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class AttributeIndicatorBase extends com.runwaysdk.system.metada
     return (AttributeIndicator) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static AttributeIndicator lock(java.lang.String id)
+  public static AttributeIndicator lock(java.lang.String oid)
   {
-    AttributeIndicator _instance = AttributeIndicator.get(id);
+    AttributeIndicator _instance = AttributeIndicator.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AttributeIndicator unlock(java.lang.String id)
+  public static AttributeIndicator unlock(java.lang.String oid)
   {
-    AttributeIndicator _instance = AttributeIndicator.get(id);
+    AttributeIndicator _instance = AttributeIndicator.get(oid);
     _instance.unlock();
     
     return _instance;

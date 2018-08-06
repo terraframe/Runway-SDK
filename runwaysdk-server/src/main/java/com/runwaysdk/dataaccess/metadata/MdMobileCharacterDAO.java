@@ -120,15 +120,15 @@ public class MdMobileCharacterDAO extends MdMobilePrimitiveDAO implements MdMobi
   {
     boolean firstApply = (this.isNew() && !this.isAppliedToDB() && !this.isImport());
     
-    String id = super.apply();
+    String oid = super.apply();
     
     if(firstApply)
     {
       String formId = this.getMdFormId();
-      RelationshipDAO rel = RelationshipDAO.newInstance(formId, id, MobileFormFieldInfo.CLASS);
+      RelationshipDAO rel = RelationshipDAO.newInstance(formId, oid, MobileFormFieldInfo.CLASS);
       rel.apply();
     }
     
-    return id;
+    return oid;
   }
 }

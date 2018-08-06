@@ -51,9 +51,9 @@ public abstract class VirtualizeAttributeBase extends com.runwaysdk.system.metad
     return (com.runwaysdk.system.metadata.MdAttributeVirtual) super.getChild();
   }
   
-  public static VirtualizeAttribute get(String id)
+  public static VirtualizeAttribute get(String oid)
   {
-    return (VirtualizeAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (VirtualizeAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static VirtualizeAttribute getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class VirtualizeAttributeBase extends com.runwaysdk.system.metad
     return (VirtualizeAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static VirtualizeAttribute lock(java.lang.String id)
+  public static VirtualizeAttribute lock(java.lang.String oid)
   {
-    VirtualizeAttribute _instance = VirtualizeAttribute.get(id);
+    VirtualizeAttribute _instance = VirtualizeAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static VirtualizeAttribute unlock(java.lang.String id)
+  public static VirtualizeAttribute unlock(java.lang.String oid)
   {
-    VirtualizeAttribute _instance = VirtualizeAttribute.get(id);
+    VirtualizeAttribute _instance = VirtualizeAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

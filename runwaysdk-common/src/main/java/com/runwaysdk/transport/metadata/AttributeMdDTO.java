@@ -61,9 +61,9 @@ public abstract class AttributeMdDTO implements Serializable
   private String name;
   
   /**
-   * The id of the metadata that defines this attribute.
+   * The oid of the metadata that defines this attribute.
    */
-  private String id;
+  private String oid;
   
   /**
    * Flag denoting if this attribute has generated getters and setters
@@ -80,7 +80,7 @@ public abstract class AttributeMdDTO implements Serializable
     immutable = false;
     displayLabel = "";
     description = "";
-    id = "";
+    oid = "";
     name = "";
     system = false;
     generateAccessor = true;    
@@ -117,13 +117,13 @@ public abstract class AttributeMdDTO implements Serializable
   }
   
   /**
-   * Returns the id of the attribute metadata that defines this attribute.
+   * Returns the oid of the attribute metadata that defines this attribute.
    * 
    * @return
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   /**
@@ -154,13 +154,13 @@ public abstract class AttributeMdDTO implements Serializable
   }
   
   /**
-   * Sets the id of the attribute metadata that defines this attribute. 
+   * Sets the oid of the attribute metadata that defines this attribute. 
    * 
-   * @param id
+   * @param oid
    */
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
   
   /**

@@ -217,7 +217,7 @@ public class DelegatingServletTest
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.ID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(200, resp.getStatus());
@@ -230,7 +230,7 @@ public class DelegatingServletTest
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 
@@ -272,7 +272,7 @@ public class DelegatingServletTest
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.ID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(200, resp.getStatus());
@@ -285,7 +285,7 @@ public class DelegatingServletTest
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 

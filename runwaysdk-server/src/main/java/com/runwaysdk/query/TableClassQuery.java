@@ -1490,7 +1490,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
@@ -1513,11 +1513,11 @@ public abstract class TableClassQuery extends ComponentQuery
         continue;
       }
       
-      MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+      MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getOid());
       if (mdTableClassIF == null)
       {
         mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
-        mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+        mdTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
       }
       String attributeNameSpace = mdTableClassIF.definesType();
 
@@ -1532,7 +1532,7 @@ public abstract class TableClassQuery extends ComponentQuery
         selectString.append(",\n");
       }
 
-      if (mdAttributeIDMap.get(mdAttributeIF.getId()) != null)
+      if (mdAttributeIDMap.get(mdAttributeIF.getOid()) != null)
       {
         selectString.append(selectIndent + columnInfo.getSelectClauseString(mdAttributeIF));
 
@@ -1829,7 +1829,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap)
@@ -1867,11 +1867,11 @@ public abstract class TableClassQuery extends ComponentQuery
 
       if (componentQuery instanceof EntityQuery)
       {
-        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
+        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getOid());
         if (mdEntityIF == null)
         {
           mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
-          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+          mdEntityMap.put(mdAttributeIF.getOid(), mdEntityIF);
         }
 
         fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
@@ -2489,7 +2489,7 @@ public abstract class TableClassQuery extends ComponentQuery
       // A convoluted way to get system attributes directly from the global cache, which is not affected by the transaction.
       CacheAllRelationshipDAOStrategy relationshipStrategy = (CacheAllRelationshipDAOStrategy)ObjectCache.getTypeCollection(RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
-      List<RelationshipDAOIF> mdAttributeRels = relationshipStrategy.getChildren(_mdTableClassIF.getId(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      List<RelationshipDAOIF> mdAttributeRels = relationshipStrategy.getChildren(_mdTableClassIF.getOid(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
       for (RelationshipDAOIF relationshipDAOIF : mdAttributeRels)
       {

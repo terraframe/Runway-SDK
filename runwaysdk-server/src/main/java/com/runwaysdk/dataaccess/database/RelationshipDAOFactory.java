@@ -126,7 +126,7 @@ public class RelationshipDAOFactory
 
   /**
    * Returns an array of Relationship objects that represent child relationships
-   * (of the given relationship type) of the BusinessDAO with the given id. If
+   * (of the given relationship type) of the BusinessDAO with the given oid. If
    * <code>relationshipType</code> is an empty String, then Relationship objects
    * of all types will be returned.
    * 
@@ -136,15 +136,15 @@ public class RelationshipDAOFactory
    * <b>Precondition:</b> mdRelationshipId != null <br/>
    * <b>Postcondition:</b> Returns a LinkedList of Relationship objects that
    * represent child relationships (of the given relationship type) of the
-   * BusinessDAO with the given id.
+   * BusinessDAO with the given oid.
    * 
    * @param businessDAOid
-   *          id of the BusinessDAO
+   *          oid of the BusinessDAO
    * @param relationshipType
    *          Type of the relationship
    * @return An array of Relationship objects that represent child relationships
    *         (of the given relationship type) of the BusinessDAO with the given
-   *         id.
+   *         oid.
    */
   public static List<RelationshipDAOIF> getChildren(String businessDAOid, String relationshipType)
   {
@@ -164,7 +164,7 @@ public class RelationshipDAOFactory
   /**
    * Returns an array of Relationship objects that represent parent
    * relationships (of the given relationship type) of the BusinessDAO with the
-   * given id. If <code>reationshipNameId</code> is an empty String, then
+   * given oid. If <code>reationshipNameId</code> is an empty String, then
    * Relationship objects of all types will be returned.
    * 
    * <br/>
@@ -173,7 +173,7 @@ public class RelationshipDAOFactory
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Postcondition:</b> Returns a LinkedList of Relationship objects that
    * represent parent relationships (of the given relationship type) of the
-   * BusinessDAO with the given id.
+   * BusinessDAO with the given oid.
    * 
    * @param businessDAOid
    *          ID of the BusinessDAO
@@ -181,7 +181,7 @@ public class RelationshipDAOFactory
    *          Type of the relationship
    * @return an array of Relationship objects that represent parent
    *         relationships (of the given relationship type) with the BusinessDAO
-   *         with the given id
+   *         with the given oid
    */
   public static List<RelationshipDAOIF> getParents(String businessDAOid, String relationshipType)
   {
@@ -240,11 +240,11 @@ public class RelationshipDAOFactory
    * <b>Precondition:</b> childId represents a valid BusinessDAO in the database
    * 
    * @param parentId
-   *          id of the parent BusinessDAO
+   *          oid of the parent BusinessDAO
    * @param childId
-   *          id of the child BusinessDAO
+   *          oid of the child BusinessDAO
    * @param relationshipType
-   *          id of the metadata BusinessDAO that defines this relationship type
+   *          oid of the metadata BusinessDAO that defines this relationship type
    * @throws DataAccessException
    *           if adding the given child to the given parent will create a
    *           recursive relationship.
@@ -320,22 +320,22 @@ public class RelationshipDAOFactory
 
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getId());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getOid());
     newRelationshipObject.getAttribute(EntityInfo.ID).setValue(newId);
 
     return newRelationshipObject;
   }
 
   /**
-   * Returns the relationship object with the given id.
+   * Returns the relationship object with the given oid.
    * 
-   * @param id
-   *          of the relationship id.
-   * @return relationship object with the given id.
+   * @param oid
+   *          of the relationship oid.
+   * @return relationship object with the given oid.
    */
-  public static RelationshipDAOIF get(String id)
+  public static RelationshipDAOIF get(String oid)
   {
-    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(id);
+    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(oid);
     List<RelationshipDAOIF> relationshipList = queryRelationshipObjects(relationshipQuery);
 
     // If the Relationship list is null, then a Relationship with the given ID
@@ -494,7 +494,7 @@ public class RelationshipDAOFactory
    * @param columnInfoMap
    *          contains information about attributes used in the query
    * @param definedByMdTableClassMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -556,14 +556,14 @@ public class RelationshipDAOFactory
   /**
    * This is called when the core boots up.
    * 
-   * @param id
+   * @param oid
    * @param parentId
    * @param childId
    * @param attributeMap
    * @param relationshipType
    * @return
    */
-  public static RelationshipDAO get(String id, String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public static RelationshipDAO get(String oid, String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
   {
     return factoryMethod(parentId, childId, attributeMap, relationshipType, false);
   }

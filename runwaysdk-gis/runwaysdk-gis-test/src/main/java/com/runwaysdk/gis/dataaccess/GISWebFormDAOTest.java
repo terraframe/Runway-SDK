@@ -79,15 +79,15 @@ public class GISWebFormDAOTest extends GISAbstractTest
     testForm.setValue(MdWebFormInfo.FORM_NAME, FORM_CLASS.getTypeName());
     testForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "GIS Test Form.");
     testForm.setStructValue(MdWebFormInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "A GIS Test Form for Geometry Attributes");
-    testForm.setValue(MdWebFormInfo.FORM_MD_CLASS, GISMasterTestSetup.testClassMdBusinessDAO.getId());
+    testForm.setValue(MdWebFormInfo.FORM_MD_CLASS, GISMasterTestSetup.testClassMdBusinessDAO.getOid());
     testForm.apply();
 
     mdWebPoint = MdWebPointDAO.newInstance();
     mdWebPoint.setValue(MdWebFieldInfo.FIELD_NAME, TEST_POINT);
     mdWebPoint.setStructValue(MdWebFieldInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Point");
     mdWebPoint.setStructValue(MdWebFieldInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Point Desc");
-    mdWebPoint.setValue(MdWebFieldInfo.DEFINING_MD_FORM, testForm.getId());
-    mdWebPoint.setValue(MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, GISMasterTestSetup.mdAttributePointDAO.getId());
+    mdWebPoint.setValue(MdWebFieldInfo.DEFINING_MD_FORM, testForm.getOid());
+    mdWebPoint.setValue(MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, GISMasterTestSetup.mdAttributePointDAO.getOid());
     mdWebPoint.setValue(MdWebAttributeInfo.FIELD_ORDER, nextOrder());
     mdWebPoint.apply();
 
@@ -96,7 +96,7 @@ public class GISWebFormDAOTest extends GISAbstractTest
     headerField.setValue(MdWebHeaderInfo.FIELD_NAME, "testHeader");
     headerField.setStructValue(MdWebHeaderInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header");
     headerField.setStructValue(MdWebHeaderInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header Desc");
-    headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, testForm.getId());
+    headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, testForm.getOid());
     headerField.setStructValue(MdWebHeader.HEADERTEXT, MetadataDisplayLabel.DEFAULTLOCALE, "This is a test header");
     headerField.setValue(MdWebAttributeInfo.FIELD_ORDER, nextOrder());
     headerField.apply();

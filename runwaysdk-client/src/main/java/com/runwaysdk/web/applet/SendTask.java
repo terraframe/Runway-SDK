@@ -47,7 +47,7 @@ public class SendTask extends SwingWorker
   private RemoteAppletAdapter     remoteAdapter;
 
   /**
-   * Session id of the uploader
+   * Session oid of the uploader
    */
   private String                  sessionId;
 

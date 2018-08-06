@@ -109,7 +109,7 @@ public class Demo
     startDate.setValue(MdAttributeDateInfo.NAME, "startDate");
     startDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
     startDate.setValue(MdAttributeDateInfo.REMOVE, "false");
-    startDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    startDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     startDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Date");
     startDate.apply();
 
@@ -117,7 +117,7 @@ public class Demo
     endDate.setValue(MdAttributeDateInfo.NAME, "endDate");
     endDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
     endDate.setValue(MdAttributeDateInfo.REMOVE, "false");
-    endDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    endDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     endDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Date");
     endDate.apply();
 
@@ -125,7 +125,7 @@ public class Demo
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.NAME, "beforeTodayInclusive");
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    beforeTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    beforeTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Before today (inclusive)");
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -135,7 +135,7 @@ public class Demo
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.NAME, "afterTodayInclusive");
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    afterTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    afterTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "After today (inclusive)");
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -145,7 +145,7 @@ public class Demo
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.NAME, "beforeTodayExclusive");
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    beforeTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    beforeTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Before today (exclusive)");
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -155,7 +155,7 @@ public class Demo
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.NAME, "afterTodayExclusive");
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    afterTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getId());
+    afterTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttributeDate.getOid());
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "After today (exclusive)");
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -171,7 +171,7 @@ public class Demo
     startDate.setValue(MdAttributeDateInfo.NAME, "startDate");
     startDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
     startDate.setValue(MdAttributeDateInfo.REMOVE, "false");
-    startDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    startDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     startDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Date");
     startDate.apply();
 
@@ -179,7 +179,7 @@ public class Demo
     endDate.setValue(MdAttributeDateInfo.NAME, "endDate");
     endDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
     endDate.setValue(MdAttributeDateInfo.REMOVE, "false");
-    endDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    endDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     endDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Date");
     endDate.apply();
 
@@ -187,7 +187,7 @@ public class Demo
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.NAME, "beforeTodayInclusive");
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     beforeTodayInclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    beforeTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    beforeTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Before today (inclusive)");
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     beforeTodayInclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -197,7 +197,7 @@ public class Demo
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.NAME, "afterTodayInclusive");
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     afterTodayInclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    afterTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    afterTodayInclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "After today (inclusive)");
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     afterTodayInclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -207,7 +207,7 @@ public class Demo
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.NAME, "beforeTodayExclusive");
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     beforeTodayExclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    beforeTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    beforeTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Before today (exclusive)");
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     beforeTodayExclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -217,7 +217,7 @@ public class Demo
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.NAME, "afterTodayExclusive");
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     afterTodayExclusive.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    afterTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getId());
+    afterTodayExclusive.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebDate.getOid());
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "After today (exclusive)");
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
     afterTodayExclusive.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
@@ -233,7 +233,7 @@ public class Demo
     startRangeInteger.setValue(MdAttributeIntegerInfo.NAME, "startRange");
     startRangeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, "false");
     startRangeInteger.setValue(MdAttributeIntegerInfo.REMOVE, "false");
-    startRangeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdAttributeInteger.getId());
+    startRangeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdAttributeInteger.getOid());
     startRangeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRangeInteger.apply();
 
@@ -241,7 +241,7 @@ public class Demo
     endRangeInteger.setValue(MdAttributeIntegerInfo.NAME, "endRange");
     endRangeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, "false");
     endRangeInteger.setValue(MdAttributeIntegerInfo.REMOVE, "false");
-    endRangeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdAttributeInteger.getId());
+    endRangeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdAttributeInteger.getOid());
     endRangeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRangeInteger.apply();
 
@@ -251,7 +251,7 @@ public class Demo
     startRangeLong.setValue(MdAttributeLongInfo.NAME, "startRange");
     startRangeLong.setValue(MdAttributeLongInfo.REQUIRED, "false");
     startRangeLong.setValue(MdAttributeLongInfo.REMOVE, "false");
-    startRangeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdAttributeLong.getId());
+    startRangeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdAttributeLong.getOid());
     startRangeLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRangeLong.apply();
 
@@ -259,7 +259,7 @@ public class Demo
     endRangeLong.setValue(MdAttributeLongInfo.NAME, "endRange");
     endRangeLong.setValue(MdAttributeLongInfo.REQUIRED, "false");
     endRangeLong.setValue(MdAttributeLongInfo.REMOVE, "false");
-    endRangeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdAttributeLong.getId());
+    endRangeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdAttributeLong.getOid());
     endRangeLong.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRangeLong.apply();
 
@@ -271,7 +271,7 @@ public class Demo
     startRangeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "6");
     startRangeDecimal.setValue(MdAttributeDecimalInfo.REQUIRED, "false");
     startRangeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, "false");
-    startRangeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdAttributeDecimal.getId());
+    startRangeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdAttributeDecimal.getOid());
     startRangeDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRangeDecimal.apply();
 
@@ -281,7 +281,7 @@ public class Demo
     endRangeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "6");
     endRangeDecimal.setValue(MdAttributeDecimalInfo.REQUIRED, "false");
     endRangeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, "false");
-    endRangeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdAttributeDecimal.getId());
+    endRangeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdAttributeDecimal.getOid());
     endRangeDecimal.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRangeDecimal.apply();
 
@@ -293,7 +293,7 @@ public class Demo
     startRangeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "6");
     startRangeDouble.setValue(MdAttributeDoubleInfo.REQUIRED, "false");
     startRangeDouble.setValue(MdAttributeDoubleInfo.REMOVE, "false");
-    startRangeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdAttributeDouble.getId());
+    startRangeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdAttributeDouble.getOid());
     startRangeDouble.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRangeDouble.apply();
 
@@ -303,7 +303,7 @@ public class Demo
     endRangeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "6");
     endRangeDouble.setValue(MdAttributeDoubleInfo.REQUIRED, "false");
     endRangeDouble.setValue(MdAttributeDoubleInfo.REMOVE, "false");
-    endRangeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdAttributeDouble.getId());
+    endRangeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdAttributeDouble.getOid());
     endRangeDouble.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRangeDouble.apply();
 
@@ -315,7 +315,7 @@ public class Demo
     startRangeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "6");
     startRangeFloat.setValue(MdAttributeFloatInfo.REQUIRED, "false");
     startRangeFloat.setValue(MdAttributeFloatInfo.REMOVE, "false");
-    startRangeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdAttributeFloat.getId());
+    startRangeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdAttributeFloat.getOid());
     startRangeFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRangeFloat.apply();
 
@@ -325,7 +325,7 @@ public class Demo
     endRangeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "6");
     endRangeFloat.setValue(MdAttributeFloatInfo.REQUIRED, "false");
     endRangeFloat.setValue(MdAttributeFloatInfo.REMOVE, "false");
-    endRangeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdAttributeFloat.getId());
+    endRangeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdAttributeFloat.getOid());
     endRangeFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRangeFloat.apply();
   }
@@ -341,7 +341,7 @@ public class Demo
       // new Locale[] { Locale.ENGLISH });
       // ClientRequestIF request = session.getRequest();
       // String mdFormId = new MdFormQuery(new
-      // QueryFactory()).getIterator().next().getId();
+      // QueryFactory()).getIterator().next().getOid();
       // MdFormDTO mdFormDTO = MdFormDTO.get(request, mdFormId);
       //
       // WebFormObject fo = (WebFormObject)
@@ -403,7 +403,7 @@ public class Demo
     ignoreSequenceNumber.setValue(MdAttributeBooleanInfo.NAME, "ignoreSequenceNumber");
     ignoreSequenceNumber.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     ignoreSequenceNumber.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    ignoreSequenceNumber.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdTransactionItem.getId());
+    ignoreSequenceNumber.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdTransactionItem.getOid());
     ignoreSequenceNumber.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Ignore sequence number");
     ignoreSequenceNumber.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
     ignoreSequenceNumber.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
@@ -418,7 +418,7 @@ public class Demo
     defaultValue.setValue(MdAttributeBooleanInfo.NAME, "defaultValue");
     defaultValue.setValue(MdAttributeBooleanInfo.REQUIRED, "false");
     defaultValue.setValue(MdAttributeBooleanInfo.REMOVE, "false");
-    defaultValue.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebBoolean.getId());
+    defaultValue.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdWebBoolean.getOid());
     defaultValue.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Default value");
     defaultValue.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
     defaultValue.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "true");
@@ -437,14 +437,14 @@ public class Demo
     MdBusinessDAO mdWebReference = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebReference.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdWebReference.setValue(MdBusinessInfo.NAME, "MdWebReference");
-    mdWebReference.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebAttributeInfo.CLASS).getId());
+    mdWebReference.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebAttributeInfo.CLASS).getOid());
     mdWebReference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference");
     mdWebReference.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference");
     mdWebReference.setGenerateMdController(false);
     mdWebReference.apply();
 
     MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, MdBusinessDAO.getMdBusinessDAO(MdWebCharacterInfo.CLASS).getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, MdBusinessDAO.getMdBusinessDAO(MdWebCharacterInfo.CLASS).getOid());
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "unique");
@@ -459,7 +459,7 @@ public class Demo
   public static void setupConditionMetadata()
   {
     MdBusinessDAO operationMaster = MdBusinessDAO.newInstance();
-    operationMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS).getId());
+    operationMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS).getOid());
     operationMaster.setValue(MdBusinessInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
     operationMaster.setValue(MdBusinessInfo.NAME, "FieldOperation");
     operationMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
@@ -501,7 +501,7 @@ public class Demo
     characterOperations.setValue(MdEnumerationInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
     characterOperations.setValue(MdEnumerationInfo.NAME, "CharacterOperation");
     characterOperations.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
-    characterOperations.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, operationMaster.getId());
+    characterOperations.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, operationMaster.getOid());
     characterOperations.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character operation");
     characterOperations.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character condition operation");
     characterOperations.apply();
@@ -513,7 +513,7 @@ public class Demo
     allOperations.setValue(MdEnumerationInfo.PACKAGE, Constants.SYSTEM_PACKAGE);
     allOperations.setValue(MdEnumerationInfo.NAME, "AllOperation");
     allOperations.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    allOperations.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, operationMaster.getId());
+    allOperations.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, operationMaster.getOid());
     allOperations.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     allOperations.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Condition operation");
     allOperations.apply();
@@ -529,7 +529,7 @@ public class Demo
     condition.apply();
 
     MdBusinessDAO compositeCondition = MdBusinessDAO.newInstance();
-    compositeCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getId());
+    compositeCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getOid());
     compositeCondition.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
     compositeCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     compositeCondition.setValue(MdBusinessInfo.NAME, "CompositeFieldCondition");
@@ -538,25 +538,25 @@ public class Demo
     compositeCondition.apply();
 
     MdAttributeReferenceDAO firstCondition = MdAttributeReferenceDAO.newInstance();
-    firstCondition.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, compositeCondition.getId());
+    firstCondition.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, compositeCondition.getOid());
     firstCondition.setValue(MdAttributeReferenceInfo.NAME, "firstCondition");
     firstCondition.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    firstCondition.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getId());
+    firstCondition.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getOid());
     firstCondition.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "First Condition");
     firstCondition.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "First condition of a composite condition");
     firstCondition.apply();
 
     MdAttributeReferenceDAO secondCondition = MdAttributeReferenceDAO.newInstance();
-    secondCondition.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, compositeCondition.getId());
+    secondCondition.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, compositeCondition.getOid());
     secondCondition.setValue(MdAttributeReferenceInfo.NAME, "secondCondition");
     secondCondition.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    secondCondition.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getId());
+    secondCondition.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getOid());
     secondCondition.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Second Condition");
     secondCondition.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Second condition of a composite condition");
     secondCondition.apply();
 
     MdBusinessDAO andCondition = MdBusinessDAO.newInstance();
-    andCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, compositeCondition.getId());
+    andCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, compositeCondition.getOid());
     andCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     andCondition.setValue(MdBusinessInfo.NAME, "AndFieldCondition");
     andCondition.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "And Condition");
@@ -564,7 +564,7 @@ public class Demo
     andCondition.apply();
 
     MdBusinessDAO characterCondition = MdBusinessDAO.newInstance();
-    characterCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getId());
+    characterCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getOid());
     characterCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     characterCondition.setValue(MdBusinessInfo.NAME, "CharacterCondition");
     characterCondition.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character condition");
@@ -572,16 +572,16 @@ public class Demo
     characterCondition.apply();
 
     MdAttributeReferenceDAO definingMdField = MdAttributeReferenceDAO.newInstance();
-    definingMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, characterCondition.getId());
+    definingMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, characterCondition.getOid());
     definingMdField.setValue(MdAttributeReferenceInfo.NAME, "definingMdField");
     definingMdField.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    definingMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getId());
+    definingMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getOid());
     definingMdField.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining Field");
     definingMdField.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field upon which the criteria is checked");
     definingMdField.apply();
 
     MdAttributeCharacterDAO characterValue = MdAttributeCharacterDAO.newInstance();
-    characterValue.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, characterCondition.getId());
+    characterValue.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, characterCondition.getOid());
     characterValue.setValue(MdAttributeCharacterInfo.NAME, "value");
     characterValue.setValue(MdAttributeCharacterInfo.COLUMN_NAME, "fieldValue");
     characterValue.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -591,18 +591,18 @@ public class Demo
     characterValue.apply();
 
     MdAttributeEnumerationDAO characterOperation = MdAttributeEnumerationDAO.newInstance();
-    characterOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, characterCondition.getId());
+    characterOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, characterCondition.getOid());
     characterOperation.setValue(MdAttributeEnumerationInfo.NAME, "operation");
     characterOperation.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, "conditionOperation");
     characterOperation.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    characterOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, characterOperations.getId());
+    characterOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, characterOperations.getOid());
     characterOperation.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     characterOperation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     characterOperation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     characterOperation.apply();
 
     MdBusinessDAO dateCondition = MdBusinessDAO.newInstance();
-    dateCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getId());
+    dateCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getOid());
     dateCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     dateCondition.setValue(MdBusinessInfo.NAME, "DateCondition");
     dateCondition.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character condition");
@@ -610,16 +610,16 @@ public class Demo
     dateCondition.apply();
 
     MdAttributeReferenceDAO dateDefiningMdField = MdAttributeReferenceDAO.newInstance();
-    dateDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, dateCondition.getId());
+    dateDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, dateCondition.getOid());
     dateDefiningMdField.setValue(MdAttributeReferenceInfo.NAME, "definingMdField");
     dateDefiningMdField.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    dateDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getId());
+    dateDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getOid());
     dateDefiningMdField.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining Field");
     dateDefiningMdField.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field upon which the criteria is checked");
     dateDefiningMdField.apply();
 
     MdAttributeDateDAO dateValue = MdAttributeDateDAO.newInstance();
-    dateValue.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, dateCondition.getId());
+    dateValue.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, dateCondition.getOid());
     dateValue.setValue(MdAttributeDateInfo.NAME, "value");
     dateValue.setValue(MdAttributeDateInfo.COLUMN_NAME, "fieldValue");
     dateValue.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -628,18 +628,18 @@ public class Demo
     dateValue.apply();
 
     MdAttributeEnumerationDAO dateOperation = MdAttributeEnumerationDAO.newInstance();
-    dateOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, dateCondition.getId());
+    dateOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, dateCondition.getOid());
     dateOperation.setValue(MdAttributeEnumerationInfo.NAME, "operation");
     dateOperation.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, "conditionOperation");
     dateOperation.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    dateOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getId());
+    dateOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getOid());
     dateOperation.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     dateOperation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     dateOperation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     dateOperation.apply();
 
     MdBusinessDAO doubleCondition = MdBusinessDAO.newInstance();
-    doubleCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getId());
+    doubleCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getOid());
     doubleCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     doubleCondition.setValue(MdBusinessInfo.NAME, "DoubleCondition");
     doubleCondition.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double condition");
@@ -647,16 +647,16 @@ public class Demo
     doubleCondition.apply();
 
     MdAttributeReferenceDAO doubleDefiningMdField = MdAttributeReferenceDAO.newInstance();
-    doubleDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, doubleCondition.getId());
+    doubleDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, doubleCondition.getOid());
     doubleDefiningMdField.setValue(MdAttributeReferenceInfo.NAME, "definingMdField");
     doubleDefiningMdField.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    doubleDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getId());
+    doubleDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getOid());
     doubleDefiningMdField.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining Field");
     doubleDefiningMdField.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field upon which the criteria is checked");
     doubleDefiningMdField.apply();
 
     MdAttributeDoubleDAO doubleValue = MdAttributeDoubleDAO.newInstance();
-    doubleValue.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, doubleCondition.getId());
+    doubleValue.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, doubleCondition.getOid());
     doubleValue.setValue(MdAttributeDoubleInfo.NAME, "value");
     doubleValue.setValue(MdAttributeDoubleInfo.COLUMN_NAME, "fieldValue");
     doubleValue.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -668,18 +668,18 @@ public class Demo
     doubleValue.apply();
 
     MdAttributeEnumerationDAO doubleOperation = MdAttributeEnumerationDAO.newInstance();
-    doubleOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, doubleCondition.getId());
+    doubleOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, doubleCondition.getOid());
     doubleOperation.setValue(MdAttributeEnumerationInfo.NAME, "operation");
     doubleOperation.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, "conditionOperation");
     doubleOperation.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    doubleOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getId());
+    doubleOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getOid());
     doubleOperation.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     doubleOperation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     doubleOperation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     doubleOperation.apply();
 
     MdBusinessDAO longCondition = MdBusinessDAO.newInstance();
-    longCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getId());
+    longCondition.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, condition.getOid());
     longCondition.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     longCondition.setValue(MdBusinessInfo.NAME, "LongCondition");
     longCondition.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long condition");
@@ -687,16 +687,16 @@ public class Demo
     longCondition.apply();
 
     MdAttributeReferenceDAO longDefiningMdField = MdAttributeReferenceDAO.newInstance();
-    longDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, longCondition.getId());
+    longDefiningMdField.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, longCondition.getOid());
     longDefiningMdField.setValue(MdAttributeReferenceInfo.NAME, "definingMdField");
     longDefiningMdField.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    longDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getId());
+    longDefiningMdField.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdField.getOid());
     longDefiningMdField.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining Field");
     longDefiningMdField.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field upon which the criteria is checked");
     longDefiningMdField.apply();
 
     MdAttributeLongDAO longValue = MdAttributeLongDAO.newInstance();
-    longValue.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, longCondition.getId());
+    longValue.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, longCondition.getOid());
     longValue.setValue(MdAttributeLongInfo.NAME, "value");
     longValue.setValue(MdAttributeLongInfo.COLUMN_NAME, "fieldValue");
     longValue.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
@@ -706,22 +706,22 @@ public class Demo
     longValue.apply();
 
     MdAttributeEnumerationDAO longOperation = MdAttributeEnumerationDAO.newInstance();
-    longOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, longCondition.getId());
+    longOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, longCondition.getOid());
     longOperation.setValue(MdAttributeEnumerationInfo.NAME, "operation");
     longOperation.setValue(MdAttributeEnumerationInfo.COLUMN_NAME, "conditionOperation");
     longOperation.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    longOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getId());
+    longOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allOperations.getOid());
     longOperation.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     longOperation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     longOperation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Operation");
     longOperation.apply();
 
     MdAttributeReferenceDAO conditionAttributes = MdAttributeReferenceDAO.newInstance();
-    conditionAttributes.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdField.getId());
+    conditionAttributes.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdField.getOid());
     conditionAttributes.setValue(MdAttributeReferenceInfo.NAME, "fieldCondition");
     conditionAttributes.setValue(MdAttributeReferenceInfo.COLUMN_NAME, "fieldCondition");
     conditionAttributes.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    conditionAttributes.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getId());
+    conditionAttributes.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, condition.getOid());
     conditionAttributes.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Condition");
     conditionAttributes.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The condition which must be satisfied");
     conditionAttributes.apply();
@@ -729,7 +729,7 @@ public class Demo
     MdBusinessDAO mdWebGroup = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebGroup.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdWebGroup.setValue(MdBusinessInfo.NAME, "MdWebGroup");
-    mdWebGroup.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebFieldInfo.CLASS).getId());
+    mdWebGroup.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebFieldInfo.CLASS).getOid());
     mdWebGroup.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
     mdWebGroup.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
     mdWebGroup.apply();
@@ -737,14 +737,14 @@ public class Demo
     MdTreeDAO mdWebTree = MdTreeDAO.newInstance();
     mdWebTree.setValue(MdTreeInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdWebTree.setValue(MdTreeInfo.NAME, "WebGroupField");
-    mdWebTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, RelationshipTypes.METADATA_RELATIONSHIP.getId());
+    mdWebTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, RelationshipTypes.METADATA_RELATIONSHIP.getOid());
     mdWebTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "FormField");
     mdWebTree.setStructValue(MdTreeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Form Field");
-    mdWebTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdWebGroup.getId());
+    mdWebTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdWebGroup.getOid());
     mdWebTree.setValue(MdTreeInfo.PARENT_METHOD, "GroupFields");
     mdWebTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdWebTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
-    mdWebTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebFieldInfo.CLASS).getId());
+    mdWebTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdWebFieldInfo.CLASS).getOid());
     mdWebTree.setValue(MdTreeInfo.CHILD_METHOD, "WebGroups");
     mdWebTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdWebTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Fields");
@@ -753,7 +753,7 @@ public class Demo
     MdBusinessDAO mdMobileGroup = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileGroup.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdMobileGroup.setValue(MdBusinessInfo.NAME, "MdMobileGroup");
-    mdMobileGroup.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdMobileFieldInfo.CLASS).getId());
+    mdMobileGroup.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdMobileFieldInfo.CLASS).getOid());
     mdMobileGroup.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
     mdMobileGroup.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
     mdMobileGroup.apply();
@@ -761,14 +761,14 @@ public class Demo
     MdTreeDAO mdMobileTree = MdTreeDAO.newInstance();
     mdMobileTree.setValue(MdTreeInfo.PACKAGE, Constants.METADATA_PACKAGE);
     mdMobileTree.setValue(MdTreeInfo.NAME, "MobileGroupField");
-    mdMobileTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, RelationshipTypes.METADATA_RELATIONSHIP.getId());
+    mdMobileTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, RelationshipTypes.METADATA_RELATIONSHIP.getOid());
     mdMobileTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group field");
     mdMobileTree.setStructValue(MdTreeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group field");
-    mdMobileTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdMobileGroup.getId());
+    mdMobileTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdMobileGroup.getOid());
     mdMobileTree.setValue(MdTreeInfo.PARENT_METHOD, "GroupFields");
     mdMobileTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdMobileTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Group");
-    mdMobileTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdMobileFieldInfo.CLASS).getId());
+    mdMobileTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdMobileFieldInfo.CLASS).getOid());
     mdMobileTree.setValue(MdTreeInfo.CHILD_METHOD, "MobileGroups");
     mdMobileTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdMobileTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Fields");
@@ -789,7 +789,7 @@ public class Demo
     mdForm.setValue(MdBusiness.ISABSTRACT, "true");
     mdForm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdForm.setValue(MdType.TYPENAME, mdFormName);
-    mdForm.setValue(MdBusiness.SUPERMDBUSINESS, mdType.getId());
+    mdForm.setValue(MdBusiness.SUPERMDBUSINESS, mdType.getOid());
     mdForm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdForm");
     mdForm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Form");
     apply(mdForm);
@@ -798,8 +798,8 @@ public class Demo
     MdAttributeDAO formMdClass = (MdAttributeDAO) MdAttributeReferenceDAO.newInstance();
     formMdClass.setValue(MdAttributeReference.ATTRIBUTENAME, "formMdClass");
     formMdClass.setValue(MdAttributeReference.REQUIRED, "true");
-    formMdClass.setValue(MdAttributeReference.MDBUSINESS, mdClass.getId());
-    formMdClass.setValue(MdAttributeReference.DEFININGMDCLASS, mdForm.getId());
+    formMdClass.setValue(MdAttributeReference.MDBUSINESS, mdClass.getOid());
+    formMdClass.setValue(MdAttributeReference.DEFININGMDCLASS, mdForm.getOid());
     formMdClass.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Form Class");
     formMdClass.setStructValue(MdAttributeReference.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The underlying MdClass of this Form");
     apply(formMdClass);
@@ -810,7 +810,7 @@ public class Demo
     formName.setValue(MdAttributeCharacter.REQUIRED, "true");
     formName.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Form Name");
     formName.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The name of the form");
-    formName.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdForm.getId());
+    formName.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdForm.getOid());
     formName.setValue(MdAttributeCharacter.DATABASESIZE, "100");
     apply(formName);
 
@@ -821,7 +821,7 @@ public class Demo
     MdBusinessDAO mdWebForm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebForm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebForm.setValue(MdType.TYPENAME, mdWebFormName);
-    mdWebForm.setValue(MdBusiness.SUPERMDBUSINESS, mdForm.getId());
+    mdWebForm.setValue(MdBusiness.SUPERMDBUSINESS, mdForm.getOid());
     mdWebForm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdWebForm");
     mdWebForm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Form");
     apply(mdWebForm);
@@ -831,7 +831,7 @@ public class Demo
     MdBusinessDAO mdMobileForm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileForm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileForm.setValue(MdType.TYPENAME, mdMobileFormName);
-    mdMobileForm.setValue(MdBusiness.SUPERMDBUSINESS, mdForm.getId());
+    mdMobileForm.setValue(MdBusiness.SUPERMDBUSINESS, mdForm.getOid());
     mdMobileForm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdMobileForm");
     mdMobileForm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Form");
     apply(mdMobileForm);
@@ -841,7 +841,7 @@ public class Demo
 
     String mdFieldName = "MdField";
     MdBusinessDAO mdField = (MdBusinessDAO) MdBusinessDAO.newInstance();
-    mdField.setValue(MdBusiness.SUPERMDBUSINESS, metadata.getId());
+    mdField.setValue(MdBusiness.SUPERMDBUSINESS, metadata.getOid());
     mdField.setValue(MdBusiness.ISABSTRACT, "true");
     mdField.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdField.setValue(MdType.TYPENAME, mdFieldName);
@@ -855,7 +855,7 @@ public class Demo
     fieldName.setValue(MdAttributeCharacter.REQUIRED, "true");
     fieldName.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field Name");
     fieldName.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The name of the field.");
-    fieldName.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdField.getId());
+    fieldName.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdField.getOid());
     fieldName.setValue(MdAttributeCharacter.DATABASESIZE, "50");
     apply(fieldName);
 
@@ -868,7 +868,7 @@ public class Demo
     required.setStructValue(MdAttributeBoolean.NEGATIVEDISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "false");
     required.setStructValue(MdAttributeBoolean.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required");
     required.setStructValue(MdAttributeBoolean.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Denotes if this field is required");
-    required.setValue(MdAttributeBoolean.DEFININGMDCLASS, mdField.getId());
+    required.setValue(MdAttributeBoolean.DEFININGMDCLASS, mdField.getOid());
     apply(required);
 
     // order
@@ -877,7 +877,7 @@ public class Demo
     order.setValue(MdAttributeInteger.REQUIRED, "true");
     order.setStructValue(MdAttributeInteger.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Field Order");
     order.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The order of the field in the form");
-    order.setValue(MdAttributeInteger.DEFININGMDCLASS, mdField.getId());
+    order.setValue(MdAttributeInteger.DEFININGMDCLASS, mdField.getOid());
     apply(order);
 
     // display label
@@ -886,7 +886,7 @@ public class Demo
     fieldDisplay.setValue(MdAttributeCharacter.REQUIRED, "true");
     fieldDisplay.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     fieldDisplay.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The display label of the form");
-    fieldDisplay.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdField.getId());
+    fieldDisplay.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdField.getOid());
     apply(fieldDisplay);
 
     // /////////////////////////
@@ -897,7 +897,7 @@ public class Demo
     mdWebField.setValue(MdBusiness.ISABSTRACT, "true");
     mdWebField.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebField.setValue(MdType.TYPENAME, mdWebFieldName);
-    mdWebField.setValue(MdBusiness.SUPERMDBUSINESS, mdField.getId());
+    mdWebField.setValue(MdBusiness.SUPERMDBUSINESS, mdField.getOid());
     mdWebField.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Web Field");
     mdWebField.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Field");
     apply(mdWebField);
@@ -907,8 +907,8 @@ public class Demo
     definingMdForm.setValue(MdAttributeReference.REQUIRED, "true");
     definingMdForm.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining MdForm");
     definingMdForm.setStructValue(MdAttributeReference.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The defining MdForm of this Field");
-    definingMdForm.setValue(MdAttributeReference.MDBUSINESS, mdWebForm.getId());
-    definingMdForm.setValue(MdAttributeReference.DEFININGMDCLASS, mdWebField.getId());
+    definingMdForm.setValue(MdAttributeReference.MDBUSINESS, mdWebForm.getOid());
+    definingMdForm.setValue(MdAttributeReference.DEFININGMDCLASS, mdWebField.getOid());
     apply(definingMdForm);
 
     defineWebFormFields(mdWebField);
@@ -919,7 +919,7 @@ public class Demo
     mdMobileField.setValue(MdBusiness.ISABSTRACT, "true");
     mdMobileField.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileField.setValue(MdType.TYPENAME, mdMobileFieldName);
-    mdMobileField.setValue(MdBusiness.SUPERMDBUSINESS, mdField.getId());
+    mdMobileField.setValue(MdBusiness.SUPERMDBUSINESS, mdField.getOid());
     mdMobileField.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Field");
     mdMobileField.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Field");
     apply(mdMobileField);
@@ -930,8 +930,8 @@ public class Demo
     definingMdForm.setValue(MdAttributeReference.REQUIRED, "true");
     definingMdForm.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining MdForm");
     definingMdForm.setStructValue(MdAttributeReference.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The defining MdForm of this Field");
-    definingMdForm.setValue(MdAttributeReference.MDBUSINESS, mdMobileForm.getId());
-    definingMdForm.setValue(MdAttributeReference.DEFININGMDCLASS, mdMobileField.getId());
+    definingMdForm.setValue(MdAttributeReference.MDBUSINESS, mdMobileForm.getOid());
+    definingMdForm.setValue(MdAttributeReference.DEFININGMDCLASS, mdMobileField.getOid());
     apply(definingMdForm);
 
     defineMobileFormFields(mdMobileField);
@@ -944,11 +944,11 @@ public class Demo
     formField.setValue(MdRelationship.TYPENAME, formFieldName);
     formField.setStructValue(MdRelationship.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "FormField");
     formField.setStructValue(MdRelationship.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Form Field");
-    formField.setValue(MdRelationship.PARENTMDBUSINESS, mdForm.getId());
+    formField.setValue(MdRelationship.PARENTMDBUSINESS, mdForm.getOid());
     formField.setValue(MdRelationship.PARENTMETHOD, "MdForm");
     formField.setValue(MdRelationship.PARENTCARDINALITY, "1");
     formField.setValue(MdRelationship.PARENTDISPLAYLABEL, "MdForm Parent");
-    formField.setValue(MdRelationship.CHILDMDBUSINESS, mdField.getId());
+    formField.setValue(MdRelationship.CHILDMDBUSINESS, mdField.getOid());
     formField.setValue(MdRelationship.CHILDMETHOD, "MdFields");
     formField.setValue(MdRelationship.CHILDCARDINALITY, "*");
     formField.setValue(MdRelationship.CHILDDISPLAYLABEL, "MdField Child");
@@ -957,16 +957,16 @@ public class Demo
     // WebFormField (MdWebForm <-> MdWebField)
     String webFormFieldName = "WebFormField";
     MdRelationshipDAO webFormField = (MdRelationshipDAO) MdRelationshipDAO.newInstance();
-    webFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP, formField.getId());
+    webFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP, formField.getOid());
     webFormField.setValue(MdRelationship.PACKAGENAME, pck);
     webFormField.setValue(MdRelationship.TYPENAME, webFormFieldName);
     webFormField.setStructValue(MdRelationship.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "WebFormField");
     webFormField.setStructValue(MdRelationship.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Web Form Field");
-    webFormField.setValue(MdRelationship.PARENTMDBUSINESS, mdWebForm.getId());
+    webFormField.setValue(MdRelationship.PARENTMDBUSINESS, mdWebForm.getOid());
     webFormField.setValue(MdRelationship.PARENTMETHOD, "MdForm");
     webFormField.setValue(MdRelationship.PARENTCARDINALITY, "1");
     webFormField.setValue(MdRelationship.PARENTDISPLAYLABEL, "MdWebForm Parent");
-    webFormField.setValue(MdRelationship.CHILDMDBUSINESS, mdWebField.getId());
+    webFormField.setValue(MdRelationship.CHILDMDBUSINESS, mdWebField.getOid());
     webFormField.setValue(MdRelationship.CHILDMETHOD, "MdFields");
     webFormField.setValue(MdRelationship.CHILDCARDINALITY, "*");
     webFormField.setValue(MdRelationship.CHILDDISPLAYLABEL, "MdWebField Child");
@@ -975,16 +975,16 @@ public class Demo
     // MobileFormField (MdMobileForm <-> MdMobileField)
     String mobileFormField = "MobileFormField";
     MdRelationshipDAO mdFormField = (MdRelationshipDAO) MdRelationshipDAO.newInstance();
-    mdFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP, formField.getId());
+    mdFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP, formField.getOid());
     mdFormField.setValue(MdRelationship.PACKAGENAME, pck);
     mdFormField.setValue(MdRelationship.TYPENAME, mobileFormField);
     mdFormField.setStructValue(MdRelationship.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MobileFormField");
     mdFormField.setStructValue(MdRelationship.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Form Field");
-    mdFormField.setValue(MdRelationship.PARENTMDBUSINESS, mdMobileForm.getId());
+    mdFormField.setValue(MdRelationship.PARENTMDBUSINESS, mdMobileForm.getOid());
     mdFormField.setValue(MdRelationship.PARENTMETHOD, "MdForm");
     mdFormField.setValue(MdRelationship.PARENTCARDINALITY, "1");
     mdFormField.setValue(MdRelationship.PARENTDISPLAYLABEL, "MdWebForm Parent");
-    mdFormField.setValue(MdRelationship.CHILDMDBUSINESS, mdMobileField.getId());
+    mdFormField.setValue(MdRelationship.CHILDMDBUSINESS, mdMobileField.getOid());
     mdFormField.setValue(MdRelationship.CHILDMETHOD, "MdFields");
     mdFormField.setValue(MdRelationship.CHILDCARDINALITY, "*");
     mdFormField.setValue(MdRelationship.CHILDDISPLAYLABEL, "MdWebField Child");
@@ -996,7 +996,7 @@ public class Demo
     getOrderedMdFields.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Returns the MdFields in proper field order.");
     getOrderedMdFields.setValue(MdMethodInfo.RETURN_TYPE, MdField.CLASS + "[]");
     getOrderedMdFields.setValue(MdMethodInfo.IS_STATIC, "false");
-    getOrderedMdFields.setValue(MdMethodInfo.REF_MD_TYPE, mdForm.getId());
+    getOrderedMdFields.setValue(MdMethodInfo.REF_MD_TYPE, mdForm.getOid());
     apply(getOrderedMdFields);
   }
 
@@ -1008,7 +1008,7 @@ public class Demo
     mdWebAttribute.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebAttribute.setValue(MdBusiness.ISABSTRACT, "true");
     mdWebAttribute.setValue(MdType.TYPENAME, "MdWebAttribute");
-    mdWebAttribute.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getId());
+    mdWebAttribute.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getOid());
     mdWebAttribute.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdWebAttribute");
     mdWebAttribute.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Attribute");
     apply(mdWebAttribute);
@@ -1019,15 +1019,15 @@ public class Demo
     definingMdAttribute.setValue(MdAttributeReference.REQUIRED, "true");
     definingMdAttribute.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining MdAttribute");
     definingMdAttribute.setStructValue(MdAttributeReference.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The defining MdAttribute of this Field");
-    definingMdAttribute.setValue(MdAttributeReference.MDBUSINESS, mdAttribute.getId());
-    definingMdAttribute.setValue(MdAttributeReference.DEFININGMDCLASS, mdWebAttribute.getId());
+    definingMdAttribute.setValue(MdAttributeReference.MDBUSINESS, mdAttribute.getOid());
+    definingMdAttribute.setValue(MdAttributeReference.DEFININGMDCLASS, mdWebAttribute.getOid());
     apply(definingMdAttribute);
 
     MdBusinessDAO mdPrimitive = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdPrimitive.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdPrimitive.setValue(MdBusiness.ISABSTRACT, "true");
     mdPrimitive.setValue(MdType.TYPENAME, "MdWebPrimitive");
-    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdPrimitive.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Primitive Web Field");
     mdPrimitive.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Primitive Field");
     apply(mdPrimitive);
@@ -1036,7 +1036,7 @@ public class Demo
     MdBusinessDAO mdWebCharacter = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebCharacter.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebCharacter.setValue(MdType.TYPENAME, "MdWebCharacter");
-    mdWebCharacter.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdWebCharacter.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdWebCharacter.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character Field");
     mdWebCharacter.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Character Field");
     apply(mdWebCharacter);
@@ -1047,7 +1047,7 @@ public class Demo
     maxLength.setStructValue(MdAttributeInteger.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Max Length");
     maxLength.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The maximum length of the field value.");
     maxLength.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    maxLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebCharacter.getId());
+    maxLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebCharacter.getOid());
     apply(maxLength);
 
     MdAttributeDAO displayLength = (MdAttributeDAO) MdAttributeIntegerDAO.newInstance();
@@ -1056,14 +1056,14 @@ public class Demo
     displayLength.setStructValue(MdAttributeInteger.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Length");
     displayLength.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The displayed length of the field value.");
     displayLength.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    displayLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebCharacter.getId());
+    displayLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebCharacter.getOid());
     apply(displayLength);
 
     // MdWebText
     MdBusinessDAO mdWebText = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebText.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebText.setValue(MdType.TYPENAME, "MdWebText");
-    mdWebText.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdWebText.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdWebText.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Field");
     mdWebText.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Text Field");
     apply(mdWebText);
@@ -1076,7 +1076,7 @@ public class Demo
     height.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The height of the text field.");
     height.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
     height.setValue(MdAttributeInteger.REJECTZERO, "true");
-    height.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebText.getId());
+    height.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebText.getOid());
     apply(height);
 
     MdAttributeDAO width = (MdAttributeDAO) MdAttributeIntegerDAO.newInstance();
@@ -1087,7 +1087,7 @@ public class Demo
     width.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The width of the text field.");
     width.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
     width.setValue(MdAttributeInteger.REJECTZERO, "true");
-    width.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebText.getId());
+    width.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebText.getOid());
     apply(width);
 
     // MdWebMoment
@@ -1095,7 +1095,7 @@ public class Demo
     mdWebMoment.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebMoment.setValue(MdBusiness.ISABSTRACT, "true");
     mdWebMoment.setValue(MdType.TYPENAME, "MdWebMoment");
-    mdWebMoment.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdWebMoment.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdWebMoment.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Moment Field");
     mdWebMoment.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Moment Field");
     apply(mdWebMoment);
@@ -1104,7 +1104,7 @@ public class Demo
     MdBusinessDAO mdWebDate = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebDate.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebDate.setValue(MdType.TYPENAME, "MdWebDate");
-    mdWebDate.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getId());
+    mdWebDate.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getOid());
     mdWebDate.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Date Field");
     apply(mdWebDate);
@@ -1113,7 +1113,7 @@ public class Demo
     MdBusinessDAO mdWebDateTime = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebDateTime.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebDateTime.setValue(MdType.TYPENAME, "MdWebDateTime");
-    mdWebDateTime.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getId());
+    mdWebDateTime.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getOid());
     mdWebDateTime.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Time Field");
     mdWebDateTime.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web DateTime Field");
     apply(mdWebDateTime);
@@ -1122,7 +1122,7 @@ public class Demo
     MdBusinessDAO mdWebTime = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebTime.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebTime.setValue(MdType.TYPENAME, "MdWebTime");
-    mdWebTime.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getId());
+    mdWebTime.setValue(MdBusiness.SUPERMDBUSINESS, mdWebMoment.getOid());
     mdWebTime.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Field");
     mdWebTime.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Time Field");
     apply(mdWebTime);
@@ -1132,7 +1132,7 @@ public class Demo
     mdWebNumber.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebNumber.setValue(MdBusiness.ISABSTRACT, "true");
     mdWebNumber.setValue(MdType.TYPENAME, "MdWebNumber");
-    mdWebNumber.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdWebNumber.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdWebNumber.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Number Field");
     mdWebNumber.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Number Field");
     apply(mdWebNumber);
@@ -1144,7 +1144,7 @@ public class Demo
     startRange.setValue(MdAttributeCharacter.REQUIRED, "false");
     startRange.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRange.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number start range.");
-    startRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebNumber.getId());
+    startRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebNumber.getOid());
     apply(startRange);
 
     // endRange
@@ -1154,14 +1154,14 @@ public class Demo
     endRange.setValue(MdAttributeCharacter.REQUIRED, "false");
     endRange.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRange.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number end range.");
-    endRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebNumber.getId());
+    endRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebNumber.getOid());
     apply(endRange);
 
     // MdWebInteger
     MdBusinessDAO mdWebInteger = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebInteger.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebInteger.setValue(MdType.TYPENAME, "MdWebInteger");
-    mdWebInteger.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getId());
+    mdWebInteger.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getOid());
     mdWebInteger.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Field");
     mdWebInteger.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Integer Field");
     apply(mdWebInteger);
@@ -1170,7 +1170,7 @@ public class Demo
     MdBusinessDAO mdWebLong = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebLong.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebLong.setValue(MdType.TYPENAME, "MdWebLong");
-    mdWebLong.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getId());
+    mdWebLong.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getOid());
     mdWebLong.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Long Field");
     apply(mdWebLong);
@@ -1180,7 +1180,7 @@ public class Demo
     mdWebDec.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebDec.setValue(MdBusiness.ISABSTRACT, "true");
     mdWebDec.setValue(MdType.TYPENAME, "MdWebDec");
-    mdWebDec.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getId());
+    mdWebDec.setValue(MdBusiness.SUPERMDBUSINESS, mdWebNumber.getOid());
     mdWebDec.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Dec Field");
     mdWebDec.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Dec Field");
     apply(mdWebDec);
@@ -1194,7 +1194,7 @@ public class Demo
     precision.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number of signifcant digits.");
     precision.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
     precision.setValue(MdAttributeInteger.REJECTZERO, "true");
-    precision.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebDec.getId());
+    precision.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebDec.getOid());
     apply(precision);
 
     // scale
@@ -1205,14 +1205,14 @@ public class Demo
     scale.setValue(MdAttributeInteger.DEFAULTVALUE, "1");
     scale.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number of decimal digits.");
     scale.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    scale.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebDec.getId());
+    scale.setValue(MdAttributeInteger.DEFININGMDCLASS, mdWebDec.getOid());
     apply(scale);
 
     // MdWebDouble
     MdBusinessDAO mdWebDouble = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebDouble.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebDouble.setValue(MdType.TYPENAME, "MdWebDouble");
-    mdWebDouble.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getId());
+    mdWebDouble.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getOid());
     mdWebDouble.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Field");
     mdWebDouble.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Double Field");
     apply(mdWebDouble);
@@ -1221,7 +1221,7 @@ public class Demo
     MdBusinessDAO mdWebFloat = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebFloat.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebFloat.setValue(MdType.TYPENAME, "MdWebFloat");
-    mdWebFloat.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getId());
+    mdWebFloat.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getOid());
     mdWebFloat.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Field");
     mdWebFloat.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Float Field");
     apply(mdWebFloat);
@@ -1230,7 +1230,7 @@ public class Demo
     MdBusinessDAO mdWebDecimal = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebDecimal.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebDecimal.setValue(MdType.TYPENAME, "MdWebDecimal");
-    mdWebDecimal.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getId());
+    mdWebDecimal.setValue(MdBusiness.SUPERMDBUSINESS, mdWebDec.getOid());
     mdWebDecimal.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Field");
     mdWebDecimal.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Decimal Field");
     apply(mdWebDecimal);
@@ -1239,7 +1239,7 @@ public class Demo
     MdBusinessDAO mdWebBoolean = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebBoolean.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebBoolean.setValue(MdType.TYPENAME, "MdWebBoolean");
-    mdWebBoolean.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdWebBoolean.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdWebBoolean.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Field");
     mdWebBoolean.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Boolean Field");
     apply(mdWebBoolean);
@@ -1248,7 +1248,7 @@ public class Demo
     MdBusinessDAO mdWebSingleTerm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebSingleTerm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebSingleTerm.setValue(MdType.TYPENAME, "MdWebSingleTerm");
-    mdWebSingleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdWebSingleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdWebSingleTerm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Field");
     mdWebSingleTerm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web SingleTerm Field");
     apply(mdWebSingleTerm);
@@ -1257,7 +1257,7 @@ public class Demo
     MdBusinessDAO mdWebMultipleTerm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebMultipleTerm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebMultipleTerm.setValue(MdType.TYPENAME, "MdWebMultipleTerm");
-    mdWebMultipleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdWebMultipleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdWebMultipleTerm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Multiple Term Field");
     mdWebMultipleTerm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web MultipleTerm Field");
     apply(mdWebMultipleTerm);
@@ -1266,23 +1266,23 @@ public class Demo
     MdBusinessDAO mdWebSingleTermGrid = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebSingleTermGrid.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebSingleTermGrid.setValue(MdType.TYPENAME, "MdWebSingleTermGrid");
-    mdWebSingleTermGrid.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdWebSingleTermGrid.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdWebSingleTermGrid.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Grid Field");
     mdWebSingleTermGrid.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web SingleTermGrid Field");
     apply(mdWebSingleTermGrid);
 
     MdRelationshipDAO webGridField = (MdRelationshipDAO) MdRelationshipDAO.newInstance();
     // mdFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP,
-    // GridField.getId());
+    // GridField.getOid());
     webGridField.setValue(MdRelationship.PACKAGENAME, Constants.METADATA_PACKAGE);
     webGridField.setValue(MdRelationship.TYPENAME, "WebGridField");
     webGridField.setStructValue(MdRelationship.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "WebGridField");
     webGridField.setStructValue(MdRelationship.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Web Grid Field");
-    webGridField.setValue(MdRelationship.PARENTMDBUSINESS, mdWebSingleTermGrid.getId());
+    webGridField.setValue(MdRelationship.PARENTMDBUSINESS, mdWebSingleTermGrid.getOid());
     webGridField.setValue(MdRelationship.PARENTMETHOD, "Grid");
     webGridField.setValue(MdRelationship.PARENTCARDINALITY, "1");
     webGridField.setValue(MdRelationship.PARENTDISPLAYLABEL, "Defining Grid Parent");
-    webGridField.setValue(MdRelationship.CHILDMDBUSINESS, mdPrimitive.getId());
+    webGridField.setValue(MdRelationship.CHILDMDBUSINESS, mdPrimitive.getOid());
     webGridField.setValue(MdRelationship.CHILDMETHOD, "MdFields");
     webGridField.setValue(MdRelationship.CHILDCARDINALITY, "*");
     webGridField.setValue(MdRelationship.CHILDDISPLAYLABEL, "MdWebField Child");
@@ -1292,7 +1292,7 @@ public class Demo
     MdBusinessDAO mdWebGeo = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebGeo.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebGeo.setValue(MdType.TYPENAME, "MdWebGeo");
-    mdWebGeo.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdWebGeo.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdWebGeo.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Field");
     mdWebGeo.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web MdWebGeo Field");
     apply(mdWebGeo);
@@ -1301,7 +1301,7 @@ public class Demo
     mdDisplayField.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdPrimitive.setValue(MdBusiness.ISABSTRACT, "true");
     mdPrimitive.setValue(MdType.TYPENAME, "MdWebPrimitive");
-    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getId());
+    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdWebAttribute.getOid());
     mdPrimitive.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Primitive Field");
     mdPrimitive.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Primitive Field");
     apply(mdPrimitive);
@@ -1310,7 +1310,7 @@ public class Demo
     MdBusinessDAO mdWebHeader = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebHeader.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebHeader.setValue(MdType.TYPENAME, "MdWebHeader");
-    mdWebHeader.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getId());
+    mdWebHeader.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getOid());
     mdWebHeader.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header");
     mdWebHeader.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Header Field");
     apply(mdWebHeader);
@@ -1321,14 +1321,14 @@ public class Demo
     headerText.setValue(MdAttributeCharacter.REQUIRED, "false");
     headerText.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Text");
     headerText.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The text data for the header.");
-    headerText.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebHeader.getId());
+    headerText.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdWebHeader.getOid());
     apply(headerText);
 
     // MdWebBreak
     MdBusinessDAO mdWebBreak = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebBreak.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebBreak.setValue(MdType.TYPENAME, "MdWebBreak");
-    mdWebBreak.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getId());
+    mdWebBreak.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getOid());
     mdWebBreak.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Break");
     mdWebBreak.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Break Field");
     apply(mdWebBreak);
@@ -1337,7 +1337,7 @@ public class Demo
     MdBusinessDAO mdWebComment = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdWebComment.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdWebComment.setValue(MdType.TYPENAME, "MdWebComment");
-    mdWebComment.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getId());
+    mdWebComment.setValue(MdBusiness.SUPERMDBUSINESS, mdWebField.getOid());
     mdWebComment.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment");
     mdWebComment.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Web Comment Field");
     apply(mdWebComment);
@@ -1348,7 +1348,7 @@ public class Demo
     comment.setValue(MdAttributeText.REQUIRED, "false");
     comment.setStructValue(MdAttributeText.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Text");
     comment.setStructValue(MdAttributeText.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The text data for the comment.");
-    comment.setValue(MdAttributeText.DEFININGMDCLASS, mdWebComment.getId());
+    comment.setValue(MdAttributeText.DEFININGMDCLASS, mdWebComment.getOid());
     apply(comment);
   }
 
@@ -1360,7 +1360,7 @@ public class Demo
     mdMobileAttribute.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileAttribute.setValue(MdBusiness.ISABSTRACT, "true");
     mdMobileAttribute.setValue(MdType.TYPENAME, "MdMobileAttribute");
-    mdMobileAttribute.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getId());
+    mdMobileAttribute.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getOid());
     mdMobileAttribute.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Attribute");
     mdMobileAttribute.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Attribute");
     apply(mdMobileAttribute);
@@ -1371,15 +1371,15 @@ public class Demo
     definingMdAttribute.setValue(MdAttributeReference.REQUIRED, "true");
     definingMdAttribute.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Defining MdAttribute");
     definingMdAttribute.setStructValue(MdAttributeReference.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The defining MdAttribute of this Field");
-    definingMdAttribute.setValue(MdAttributeReference.MDBUSINESS, mdAttribute.getId());
-    definingMdAttribute.setValue(MdAttributeReference.DEFININGMDCLASS, mdMobileAttribute.getId());
+    definingMdAttribute.setValue(MdAttributeReference.MDBUSINESS, mdAttribute.getOid());
+    definingMdAttribute.setValue(MdAttributeReference.DEFININGMDCLASS, mdMobileAttribute.getOid());
     apply(definingMdAttribute);
 
     MdBusinessDAO mdPrimitive = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdPrimitive.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdPrimitive.setValue(MdBusiness.ISABSTRACT, "true");
     mdPrimitive.setValue(MdType.TYPENAME, "MdMobilePrimitive");
-    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdPrimitive.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Primitive Field");
     mdPrimitive.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Primitive Field");
     apply(mdPrimitive);
@@ -1388,7 +1388,7 @@ public class Demo
     MdBusinessDAO mdMobileCharacter = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileCharacter.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileCharacter.setValue(MdType.TYPENAME, "MdMobileCharacter");
-    mdMobileCharacter.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdMobileCharacter.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdMobileCharacter.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Character Field");
     mdMobileCharacter.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Character Field");
     apply(mdMobileCharacter);
@@ -1399,7 +1399,7 @@ public class Demo
     maxLength.setStructValue(MdAttributeInteger.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Max Length");
     maxLength.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The maximum length of the field value.");
     maxLength.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    maxLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileCharacter.getId());
+    maxLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileCharacter.getOid());
     apply(maxLength);
 
     MdAttributeDAO displayLength = (MdAttributeDAO) MdAttributeIntegerDAO.newInstance();
@@ -1408,14 +1408,14 @@ public class Demo
     displayLength.setStructValue(MdAttributeInteger.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Length");
     displayLength.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The displayed length of the field value.");
     displayLength.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    displayLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileCharacter.getId());
+    displayLength.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileCharacter.getOid());
     apply(displayLength);
 
     // MdMobileText
     MdBusinessDAO mdMobileText = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileText.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileText.setValue(MdType.TYPENAME, "MdMobileText");
-    mdMobileText.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdMobileText.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdMobileText.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Text Field");
     mdMobileText.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Text Field");
     apply(mdMobileText);
@@ -1425,7 +1425,7 @@ public class Demo
     mdMobileMoment.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileMoment.setValue(MdBusiness.ISABSTRACT, "true");
     mdMobileMoment.setValue(MdType.TYPENAME, "MdMobileMoment");
-    mdMobileMoment.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdMobileMoment.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdMobileMoment.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Moment Field");
     mdMobileMoment.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Moment Field");
     apply(mdMobileMoment);
@@ -1434,7 +1434,7 @@ public class Demo
     MdBusinessDAO mdMobileDate = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileDate.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileDate.setValue(MdType.TYPENAME, "MdMobileDate");
-    mdMobileDate.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getId());
+    mdMobileDate.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getOid());
     mdMobileDate.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Date Field");
     mdMobileDate.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Date Field");
     apply(mdMobileDate);
@@ -1443,7 +1443,7 @@ public class Demo
     MdBusinessDAO mdMobileDateTime = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileDateTime.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileDateTime.setValue(MdType.TYPENAME, "MdMobileDateTime");
-    mdMobileDateTime.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getId());
+    mdMobileDateTime.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getOid());
     mdMobileDateTime.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Date Time Field");
     mdMobileDateTime.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile DateTime Field");
     apply(mdMobileDateTime);
@@ -1452,7 +1452,7 @@ public class Demo
     MdBusinessDAO mdMobileTime = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileTime.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileTime.setValue(MdType.TYPENAME, "MdMobileTime");
-    mdMobileTime.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getId());
+    mdMobileTime.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileMoment.getOid());
     mdMobileTime.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Time Field");
     mdMobileTime.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Time Field");
     apply(mdMobileTime);
@@ -1462,7 +1462,7 @@ public class Demo
     mdMobileNumber.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileNumber.setValue(MdBusiness.ISABSTRACT, "true");
     mdMobileNumber.setValue(MdType.TYPENAME, "MdMobileNumber");
-    mdMobileNumber.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdMobileNumber.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdMobileNumber.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Number Field");
     mdMobileNumber.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Number Field");
     apply(mdMobileNumber);
@@ -1474,7 +1474,7 @@ public class Demo
     startRange.setValue(MdAttributeCharacter.REQUIRED, "false");
     startRange.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Range");
     startRange.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number start range.");
-    startRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileNumber.getId());
+    startRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileNumber.getOid());
     apply(startRange);
 
     // endRange
@@ -1484,14 +1484,14 @@ public class Demo
     endRange.setValue(MdAttributeCharacter.REQUIRED, "false");
     endRange.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "End Range");
     endRange.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number end range.");
-    endRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileNumber.getId());
+    endRange.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileNumber.getOid());
     apply(endRange);
 
     // MdMobileInteger
     MdBusinessDAO mdMobileInteger = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileInteger.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileInteger.setValue(MdType.TYPENAME, "MdMobileInteger");
-    mdMobileInteger.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getId());
+    mdMobileInteger.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getOid());
     mdMobileInteger.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Integer Field");
     mdMobileInteger.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Integer Field");
     apply(mdMobileInteger);
@@ -1500,7 +1500,7 @@ public class Demo
     MdBusinessDAO mdMobileLong = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileLong.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileLong.setValue(MdType.TYPENAME, "MdMobileLong");
-    mdMobileLong.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getId());
+    mdMobileLong.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getOid());
     mdMobileLong.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Long Field");
     mdMobileLong.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Long Field");
     apply(mdMobileLong);
@@ -1510,7 +1510,7 @@ public class Demo
     mdMobileDec.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileDec.setValue(MdBusiness.ISABSTRACT, "true");
     mdMobileDec.setValue(MdType.TYPENAME, "MdMobileDec");
-    mdMobileDec.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getId());
+    mdMobileDec.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileNumber.getOid());
     mdMobileDec.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Dec Field");
     mdMobileDec.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Dec Field");
     apply(mdMobileDec);
@@ -1524,7 +1524,7 @@ public class Demo
     precision.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number of signifcant digits.");
     precision.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
     precision.setValue(MdAttributeInteger.REJECTZERO, "true");
-    precision.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileDec.getId());
+    precision.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileDec.getOid());
     apply(precision);
 
     // scale
@@ -1535,14 +1535,14 @@ public class Demo
     scale.setValue(MdAttributeInteger.DEFAULTVALUE, "1");
     scale.setStructValue(MdAttributeInteger.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The number of decimal digits.");
     scale.setValue(MdAttributeInteger.REJECTNEGATIVE, "true");
-    scale.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileDec.getId());
+    scale.setValue(MdAttributeInteger.DEFININGMDCLASS, mdMobileDec.getOid());
     apply(scale);
 
     // MdMobileDouble
     MdBusinessDAO mdMobileDouble = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileDouble.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileDouble.setValue(MdType.TYPENAME, "MdMobileDouble");
-    mdMobileDouble.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getId());
+    mdMobileDouble.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getOid());
     mdMobileDouble.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Double Field");
     mdMobileDouble.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Double Field");
     apply(mdMobileDouble);
@@ -1551,7 +1551,7 @@ public class Demo
     MdBusinessDAO mdMobileFloat = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileFloat.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileFloat.setValue(MdType.TYPENAME, "MdMobileFloat");
-    mdMobileFloat.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getId());
+    mdMobileFloat.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getOid());
     mdMobileFloat.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Float Field");
     mdMobileFloat.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Float Field");
     apply(mdMobileFloat);
@@ -1560,7 +1560,7 @@ public class Demo
     MdBusinessDAO mdMobileDecimal = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileDecimal.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileDecimal.setValue(MdType.TYPENAME, "MdMobileDecimal");
-    mdMobileDecimal.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getId());
+    mdMobileDecimal.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileDec.getOid());
     mdMobileDecimal.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Decimal Field");
     mdMobileDecimal.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Decimal Field");
     apply(mdMobileDecimal);
@@ -1569,7 +1569,7 @@ public class Demo
     MdBusinessDAO mdMobileBoolean = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileBoolean.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileBoolean.setValue(MdType.TYPENAME, "MdMobileBoolean");
-    mdMobileBoolean.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getId());
+    mdMobileBoolean.setValue(MdBusiness.SUPERMDBUSINESS, mdPrimitive.getOid());
     mdMobileBoolean.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Boolean Field");
     mdMobileBoolean.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Boolean Field");
     apply(mdMobileBoolean);
@@ -1578,7 +1578,7 @@ public class Demo
     MdBusinessDAO mdMobileSingleTerm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileSingleTerm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileSingleTerm.setValue(MdType.TYPENAME, "MdMobileSingleTerm");
-    mdMobileSingleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdMobileSingleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdMobileSingleTerm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Term Field");
     mdMobileSingleTerm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile SingleTerm Field");
     apply(mdMobileSingleTerm);
@@ -1587,7 +1587,7 @@ public class Demo
     MdBusinessDAO mdMobileMultipleTerm = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileMultipleTerm.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileMultipleTerm.setValue(MdType.TYPENAME, "MdMobileMultipleTerm");
-    mdMobileMultipleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdMobileMultipleTerm.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdMobileMultipleTerm.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Multiple Term Field");
     mdMobileMultipleTerm.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile MultipleTerm Field");
     apply(mdMobileMultipleTerm);
@@ -1596,23 +1596,23 @@ public class Demo
     MdBusinessDAO mdMobileSingleTermGrid = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileSingleTermGrid.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileSingleTermGrid.setValue(MdType.TYPENAME, "MdMobileSingleTermGrid");
-    mdMobileSingleTermGrid.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdMobileSingleTermGrid.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdMobileSingleTermGrid.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Grid Field");
     mdMobileSingleTermGrid.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile SingleTermGrid Field");
     apply(mdMobileSingleTermGrid);
 
     MdRelationshipDAO mobileGridField = (MdRelationshipDAO) MdRelationshipDAO.newInstance();
     // mdFormField.setValue(MdRelationship.SUPERMDRELATIONSHIP,
-    // GridField.getId());
+    // GridField.getOid());
     mobileGridField.setValue(MdRelationship.PACKAGENAME, Constants.METADATA_PACKAGE);
     mobileGridField.setValue(MdRelationship.TYPENAME, "MobileGridField");
     mobileGridField.setStructValue(MdRelationship.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MobileGridField");
     mobileGridField.setStructValue(MdRelationship.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Grid Field");
-    mobileGridField.setValue(MdRelationship.PARENTMDBUSINESS, mdMobileSingleTermGrid.getId());
+    mobileGridField.setValue(MdRelationship.PARENTMDBUSINESS, mdMobileSingleTermGrid.getOid());
     mobileGridField.setValue(MdRelationship.PARENTMETHOD, "Grid");
     mobileGridField.setValue(MdRelationship.PARENTCARDINALITY, "1");
     mobileGridField.setValue(MdRelationship.PARENTDISPLAYLABEL, "Defining Grid Parent");
-    mobileGridField.setValue(MdRelationship.CHILDMDBUSINESS, mdPrimitive.getId());
+    mobileGridField.setValue(MdRelationship.CHILDMDBUSINESS, mdPrimitive.getOid());
     mobileGridField.setValue(MdRelationship.CHILDMETHOD, "MdFields");
     mobileGridField.setValue(MdRelationship.CHILDCARDINALITY, "*");
     mobileGridField.setValue(MdRelationship.CHILDDISPLAYLABEL, "MdMobileField Child");
@@ -1622,7 +1622,7 @@ public class Demo
     MdBusinessDAO mdMobileGeo = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileGeo.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileGeo.setValue(MdType.TYPENAME, "MdMobileGeo");
-    mdMobileGeo.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdMobileGeo.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdMobileGeo.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Geo Field");
     mdMobileGeo.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile MdMobileGeo Field");
     apply(mdMobileGeo);
@@ -1631,7 +1631,7 @@ public class Demo
     mdDisplayField.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdPrimitive.setValue(MdBusiness.ISABSTRACT, "true");
     mdPrimitive.setValue(MdType.TYPENAME, "MdMobilePrimitive");
-    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getId());
+    mdPrimitive.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileAttribute.getOid());
     mdPrimitive.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Primitive Field");
     mdPrimitive.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Primitive Field");
     apply(mdPrimitive);
@@ -1640,7 +1640,7 @@ public class Demo
     MdBusinessDAO mdMobileHeader = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileHeader.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileHeader.setValue(MdType.TYPENAME, "MdMobileHeader");
-    mdMobileHeader.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getId());
+    mdMobileHeader.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getOid());
     mdMobileHeader.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Header");
     mdMobileHeader.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Header Field");
     apply(mdMobileHeader);
@@ -1651,14 +1651,14 @@ public class Demo
     headerText.setValue(MdAttributeCharacter.REQUIRED, "false");
     headerText.setStructValue(MdAttributeCharacter.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Text");
     headerText.setStructValue(MdAttributeCharacter.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The text data for the header.");
-    headerText.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileHeader.getId());
+    headerText.setValue(MdAttributeCharacter.DEFININGMDCLASS, mdMobileHeader.getOid());
     apply(headerText);
 
     // MdMobileBreak
     MdBusinessDAO mdMobileBreak = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileBreak.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileBreak.setValue(MdType.TYPENAME, "MdMobileBreak");
-    mdMobileBreak.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getId());
+    mdMobileBreak.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getOid());
     mdMobileBreak.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Break");
     mdMobileBreak.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Break Field");
     apply(mdMobileBreak);
@@ -1667,7 +1667,7 @@ public class Demo
     MdBusinessDAO mdMobileComment = (MdBusinessDAO) MdBusinessDAO.newInstance();
     mdMobileComment.setValue(MdType.PACKAGENAME, Constants.METADATA_PACKAGE);
     mdMobileComment.setValue(MdType.TYPENAME, "MdMobileComment");
-    mdMobileComment.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getId());
+    mdMobileComment.setValue(MdBusiness.SUPERMDBUSINESS, mdMobileField.getOid());
     mdMobileComment.setStructValue(MdType.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Mobile Comment");
     mdMobileComment.setStructValue(MdType.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata Mobile Comment Field");
     apply(mdMobileComment);
@@ -1678,7 +1678,7 @@ public class Demo
     comment.setValue(MdAttributeText.REQUIRED, "false");
     comment.setStructValue(MdAttributeText.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Text");
     comment.setStructValue(MdAttributeText.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The text data for the comment.");
-    comment.setValue(MdAttributeText.DEFININGMDCLASS, mdMobileComment.getId());
+    comment.setValue(MdAttributeText.DEFININGMDCLASS, mdMobileComment.getOid());
     apply(comment);
   }
 

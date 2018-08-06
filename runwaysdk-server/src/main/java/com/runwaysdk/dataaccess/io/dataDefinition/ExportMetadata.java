@@ -235,7 +235,7 @@ public class ExportMetadata
   private List<ComponentIF>         revokePermissionsList;
 
   /**
-   * Mapping between an existing {@link ComponentIF} id and it's {@link NewComponent}s.
+   * Mapping between an existing {@link ComponentIF} oid and it's {@link NewComponent}s.
    */
   private Map<String, NewComponent> newComponentList;
 
@@ -378,7 +378,7 @@ public class ExportMetadata
   /**
    * @param role
    * @param exportRole If true then all the permissions on the RoleDAOIF will also be exported.
-   * @param id
+   * @param oid
    */
   public void grantAllPermissions(RoleDAOIF component, boolean exportRole, MdBusinessDAOIF... mdBusinesses)
   {
@@ -431,12 +431,12 @@ public class ExportMetadata
    */
   public void addNewMdAttribute(MdClassDAOIF mdClass, MdAttributeDAO mdAttribute)
   {
-    if (!newComponentList.containsKey(mdClass.getId()))
+    if (!newComponentList.containsKey(mdClass.getOid()))
     {
-      newComponentList.put(mdClass.getId(), new NewComponent());
+      newComponentList.put(mdClass.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdClass.getId()).addMdAttribute(mdAttribute);
+    newComponentList.get(mdClass.getOid()).addMdAttribute(mdAttribute);
   }
 
   /**
@@ -446,22 +446,22 @@ public class ExportMetadata
    */
   public List<MdAttributeDAO> getNewMdAttributes(MdClassDAOIF mdClass)
   {
-    if (!newComponentList.containsKey(mdClass.getId()))
+    if (!newComponentList.containsKey(mdClass.getOid()))
     {
       return new LinkedList<MdAttributeDAO>();
     }
 
-    return newComponentList.get(mdClass.getId()).attributes;
+    return newComponentList.get(mdClass.getOid()).attributes;
   }
 
   public List<MdWebFieldDAO> getNewMdWebFields(MdWebFormDAOIF mdWebForm)
   {
-    if (!newComponentList.containsKey(mdWebForm.getId()))
+    if (!newComponentList.containsKey(mdWebForm.getOid()))
     {
       return new LinkedList<MdWebFieldDAO>();
     }
 
-    return newComponentList.get(mdWebForm.getId()).fields;
+    return newComponentList.get(mdWebForm.getOid()).fields;
   }
 
   /**
@@ -476,12 +476,12 @@ public class ExportMetadata
    */
   public void addNewMdMethod(MdTypeDAOIF mdType, MdMethodDAO mdMethod, MdParameterDAO... mdParameters)
   {
-    if (!newComponentList.containsKey(mdType.getId()))
+    if (!newComponentList.containsKey(mdType.getOid()))
     {
-      newComponentList.put(mdType.getId(), new NewComponent());
+      newComponentList.put(mdType.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdType.getId()).addMethod(mdMethod, mdParameters);
+    newComponentList.get(mdType.getOid()).addMethod(mdMethod, mdParameters);
   }
 
   /**
@@ -494,12 +494,12 @@ public class ExportMetadata
    */
   public void addNewMdParameter(ParameterMarker marker, MdParameterDAO mdParameter)
   {
-    if (!newComponentList.containsKey(marker.getId()))
+    if (!newComponentList.containsKey(marker.getOid()))
     {
-      newComponentList.put(marker.getId(), new NewComponent());
+      newComponentList.put(marker.getOid(), new NewComponent());
     }
 
-    newComponentList.get(marker.getId()).addMdParameter(mdParameter);
+    newComponentList.get(marker.getOid()).addMdParameter(mdParameter);
   }
 
   /**
@@ -512,12 +512,12 @@ public class ExportMetadata
    */
   public void addRemoveEnumItem(MdEnumerationDAOIF mdEnumeration, BusinessDAOIF... businessDAOs)
   {
-    if (!newComponentList.containsKey(mdEnumeration.getId()))
+    if (!newComponentList.containsKey(mdEnumeration.getOid()))
     {
-      newComponentList.put(mdEnumeration.getId(), new NewComponent());
+      newComponentList.put(mdEnumeration.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdEnumeration.getId()).addRemoveEnumItem(businessDAOs);
+    newComponentList.get(mdEnumeration.getOid()).addRemoveEnumItem(businessDAOs);
   }
 
   /**
@@ -526,7 +526,7 @@ public class ExportMetadata
    */
   public boolean hasNewComponents(ComponentIF component)
   {
-    return newComponentList.containsKey(component.getId());
+    return newComponentList.containsKey(component.getOid());
   }
 
   /**
@@ -536,12 +536,12 @@ public class ExportMetadata
    */
   public List<NewParameterMarker> getNewParameterMarkers(MdTypeDAOIF mdType)
   {
-    if (!newComponentList.containsKey(mdType.getId()))
+    if (!newComponentList.containsKey(mdType.getOid()))
     {
       return new LinkedList<NewParameterMarker>();
     }
 
-    return newComponentList.get(mdType.getId()).markers;
+    return newComponentList.get(mdType.getOid()).markers;
   }
 
   /**
@@ -551,12 +551,12 @@ public class ExportMetadata
    */
   public List<MdParameterDAOIF> getNewMdParameters(ParameterMarker marker)
   {
-    if (!newComponentList.containsKey(marker.getId()))
+    if (!newComponentList.containsKey(marker.getOid()))
     {
       return new LinkedList<MdParameterDAOIF>();
     }
 
-    return newComponentList.get(marker.getId()).mdParameters;
+    return newComponentList.get(marker.getOid()).mdParameters;
   }
 
   /**
@@ -566,12 +566,12 @@ public class ExportMetadata
    */
   public List<BusinessDAOIF> getRemoveEnumItems(MdEnumerationDAOIF mdEnumeration)
   {
-    if (!newComponentList.containsKey(mdEnumeration.getId()))
+    if (!newComponentList.containsKey(mdEnumeration.getOid()))
     {
       return new LinkedList<BusinessDAOIF>();
     }
 
-    return newComponentList.get(mdEnumeration.getId()).removeEnumItems;
+    return newComponentList.get(mdEnumeration.getOid()).removeEnumItems;
   }
 
   public boolean isExportSource()
@@ -661,42 +661,42 @@ public class ExportMetadata
 
   public void renameAttribute(MdAttributeDAOIF mdAttribute, String updatedName)
   {
-    this.renameAttributes.put(mdAttribute.getId(), updatedName);
+    this.renameAttributes.put(mdAttribute.getOid(), updatedName);
   }
 
   public boolean hasRename(MdAttributeDAOIF mdAttribute)
   {
-    return this.renameAttributes.containsKey(mdAttribute.getId());
+    return this.renameAttributes.containsKey(mdAttribute.getOid());
   }
 
   public String getRename(MdAttributeDAOIF mdAttribute)
   {
-    return this.renameAttributes.get(mdAttribute.getId());
+    return this.renameAttributes.get(mdAttribute.getOid());
   }
 
   public void rekeyEntity(EntityDAOIF entity, String newKey)
   {
-    this.rekeyEntities.put(entity.getId(), newKey);
+    this.rekeyEntities.put(entity.getOid(), newKey);
   }
 
   public boolean isRekeyed(EntityDAOIF entity)
   {
-    return this.rekeyEntities.containsKey(entity.getId());
+    return this.rekeyEntities.containsKey(entity.getOid());
   }
 
   public String getRekey(EntityDAOIF entity)
   {
-    return this.rekeyEntities.get(entity.getId());
+    return this.rekeyEntities.get(entity.getOid());
   }
 
   public void addNewMdField(MdWebFormDAO mdWebForm, MdWebFieldDAO mdWebField)
   {
-    if (!newComponentList.containsKey(mdWebForm.getId()))
+    if (!newComponentList.containsKey(mdWebForm.getOid()))
     {
-      newComponentList.put(mdWebForm.getId(), new NewComponent());
+      newComponentList.put(mdWebForm.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdWebForm.getId()).addMdWebField(mdWebField);
+    newComponentList.get(mdWebForm.getOid()).addMdWebField(mdWebField);
   }
 
 }

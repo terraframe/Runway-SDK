@@ -117,9 +117,9 @@ public class MdAttributeMultiLineStringDAO extends MdAttributeGeometryDAO implem
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeMultiLineStringDAOIF get(String id)
+  public static MdAttributeMultiLineStringDAOIF get(String oid)
   {
-    return (MdAttributeMultiLineStringDAOIF) BusinessDAO.get(id);
+    return (MdAttributeMultiLineStringDAOIF) BusinessDAO.get(oid);
   }
 
   public void accept(MdAttributeDAOVisitor visitor)

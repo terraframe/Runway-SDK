@@ -55,7 +55,7 @@ public class SiteTest
     mdBusiness.apply();
 
     MdAttributeConcreteDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
-    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, "testChar");

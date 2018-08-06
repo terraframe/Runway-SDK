@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestProblemBase extends com.runwaysdk.business.Problem implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestProblem";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String PROBLEMCHAR = "problemChar";
   public static java.lang.String PROBLEMINT = "problemInt";
   private static final long serialVersionUID = 236721288;
@@ -44,7 +44,7 @@ public abstract class TestProblemBase extends com.runwaysdk.business.Problem imp
     super(developerMessage);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -54,7 +54,7 @@ public abstract class TestProblemBase extends com.runwaysdk.business.Problem imp
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestProblem.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -124,7 +124,7 @@ public abstract class TestProblemBase extends com.runwaysdk.business.Problem imp
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{problemChar}", this.getProblemChar());
     message = replace(message, "{problemInt}", this.getProblemInt());
     return message;

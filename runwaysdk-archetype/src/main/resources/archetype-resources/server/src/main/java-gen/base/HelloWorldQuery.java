@@ -137,19 +137,19 @@ private static final long serialVersionUID = -948446041;
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(${package}.HelloWorld.GREETING, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(${package}.HelloWorld.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(${package}.HelloWorld.ID, alias, displayLabel);
 
@@ -383,9 +383,9 @@ private static final long serialVersionUID = -948446041;
     public com.runwaysdk.query.SelectableChar getGreeting();
     public com.runwaysdk.query.SelectableChar getGreeting(String alias);
     public com.runwaysdk.query.SelectableChar getGreeting(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -437,13 +437,13 @@ private static final long serialVersionUID = -638343099;
     public com.runwaysdk.query.BasicCondition EQ(${package}.HelloWorld helloWorld)
     {
       if(helloWorld == null) return this.EQ((java.lang.String)null);
-      return this.EQ(helloWorld.getId());
+      return this.EQ(helloWorld.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(${package}.HelloWorld helloWorld)
     {
       if(helloWorld == null) return this.NE((java.lang.String)null);
-      return this.NE(helloWorld.getId());
+      return this.NE(helloWorld.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -514,19 +514,19 @@ private static final long serialVersionUID = -638343099;
     return (com.runwaysdk.query.SelectableChar)this.get(${package}.HelloWorld.GREETING, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(${package}.HelloWorld.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(${package}.HelloWorld.ID, alias, displayLabel);
 

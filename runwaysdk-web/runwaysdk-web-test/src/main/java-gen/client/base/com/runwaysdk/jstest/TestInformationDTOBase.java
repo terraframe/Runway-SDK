@@ -34,7 +34,7 @@ public abstract class TestInformationDTOBase extends com.runwaysdk.business.Info
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String INFOCHAR = "infoChar";
   public static java.lang.String INFOINT = "infoInt";
   public String getInfoChar()

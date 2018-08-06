@@ -79,7 +79,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testGetMdClasses()
   {
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
     List<MdClassDimensionDAOIF> mdClassDimensions = mdClass.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
@@ -107,7 +107,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testGetMdAttributes()
   {
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttribute.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
@@ -116,7 +116,7 @@ public class ClassAndAttributeDimensionBuilderTest
     }
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
@@ -138,7 +138,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testBuildMdClasses()
   {
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
     List<MdClassDimensionDAOIF> mdClassDimensions = mdClass.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
@@ -157,7 +157,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testBuildMdAttributes()
   {
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttribute.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
@@ -166,14 +166,14 @@ public class ClassAndAttributeDimensionBuilderTest
     }
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder().build();
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(1, mdAttribute.getMdAttributeDimensions().size());
   }
@@ -182,7 +182,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testBuildMdLocalAttributes()
   {
-    MdAttributeLocalCharacterDAO mdAttribute = ( (MdAttributeLocalCharacterDAOIF) MdAttributeDAO.get(mdAttributeLocalCharacter.getId()) ).getBusinessDAO();
+    MdAttributeLocalCharacterDAO mdAttribute = ( (MdAttributeLocalCharacterDAOIF) MdAttributeDAO.get(mdAttributeLocalCharacter.getOid()) ).getBusinessDAO();
     MdLocalStructDAO struct = mdAttribute.getMdStructDAOIF().getBusinessDAO();
 
     BusinessDAO defaultLocale = struct.definesAttribute(mdDimension.getDefaultLocaleAttributeName()).getBusinessDAO();
@@ -201,7 +201,7 @@ public class ClassAndAttributeDimensionBuilderTest
   public void testDifferentSiteMasterMdClass()
   {
     String siteMaster = CommonProperties.getDomain() + "Different";
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
     List<MdClassDimensionDAOIF> mdClassDimensions = mdClass.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
@@ -223,7 +223,7 @@ public class ClassAndAttributeDimensionBuilderTest
   public void testDifferentSiteMasterMdAttribute()
   {
     String siteMaster = CommonProperties.getDomain() + "Different";
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttribute.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
@@ -232,14 +232,14 @@ public class ClassAndAttributeDimensionBuilderTest
     }
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder(siteMaster, false).build();
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     Assert.assertEquals(1, test.size());
@@ -250,7 +250,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testSequenceNumberMdClass()
   {
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
     List<MdClassDimensionDAOIF> mdClassDimensions = mdClass.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
@@ -271,7 +271,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @Test
   public void testSequenceMdAttribute()
   {
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttribute.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
@@ -280,14 +280,14 @@ public class ClassAndAttributeDimensionBuilderTest
     }
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder().build();
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     Assert.assertEquals(1, test.size());
@@ -299,7 +299,7 @@ public class ClassAndAttributeDimensionBuilderTest
   public void testMainDifferentSiteMasterMdClass()
   {
     String siteMaster = CommonProperties.getDomain() + "Different";
-    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getId());
+    MdClassDAOIF mdClass = (MdClassDAOIF) MdClassDAO.get(mdBusiness.getOid());
     List<MdClassDimensionDAOIF> mdClassDimensions = mdClass.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
@@ -321,7 +321,7 @@ public class ClassAndAttributeDimensionBuilderTest
   public void testMainDifferentSiteMasterMdAttribute()
   {
     String siteMaster = CommonProperties.getDomain() + "Different";
-    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getId());
+    MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttributeCharacter.getOid());
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttribute.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
@@ -330,14 +330,14 @@ public class ClassAndAttributeDimensionBuilderTest
     }
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     Assert.assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     ClassAndAttributeDimensionBuilder.main(new String[] { siteMaster });
 
     // Refresh the object, as it will contain an updated dimension cache
-    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getOid());
 
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     Assert.assertEquals(1, test.size());

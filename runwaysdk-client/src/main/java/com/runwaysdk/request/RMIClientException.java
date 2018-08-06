@@ -27,7 +27,7 @@ import com.runwaysdk.ClientExceptionMessageLocalizer;
 public class RMIClientException extends ClientRequestException
 {
   /**
-   * Auto-generated serial id
+   * Auto-generated serial oid
    */
   private static final long serialVersionUID = -5910739424230215626L;
 

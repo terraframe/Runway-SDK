@@ -114,13 +114,13 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.GeoNodeEntity geoNodeEntity)
     {
       if(geoNodeEntity == null) return this.EQ((java.lang.String)null);
-      return this.EQ(geoNodeEntity.getId());
+      return this.EQ(geoNodeEntity.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.GeoNodeEntity geoNodeEntity)
     {
       if(geoNodeEntity == null) return this.NE((java.lang.String)null);
-      return this.NE(geoNodeEntity.getId());
+      return this.NE(geoNodeEntity.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
 
       for (int i=0; i<geoNodeEntity.length; i++)
       {
-        itemIdArray[i] = geoNodeEntity[i].getId();
+        itemIdArray[i] = geoNodeEntity[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
 
       for (int i=0; i<geoNodeEntity.length; i++)
       {
-        itemIdArray[i] = geoNodeEntity[i].getId();
+        itemIdArray[i] = geoNodeEntity[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
 
       for (int i=0; i<geoNodeEntity.length; i++)
       {
-        itemIdArray[i] = geoNodeEntity[i].getId();
+        itemIdArray[i] = geoNodeEntity[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
 
       for (int i=0; i<geoNodeEntity.length; i++)
       {
-        itemIdArray[i] = geoNodeEntity[i].getId();
+        itemIdArray[i] = geoNodeEntity[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class GeoNodeEntityQuery extends com.runwaysdk.system.gis.geo.GeoNodeQue
 
       for (int i=0; i<geoNodeEntity.length; i++)
       {
-        itemIdArray[i] = geoNodeEntity[i].getId();
+        itemIdArray[i] = geoNodeEntity[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

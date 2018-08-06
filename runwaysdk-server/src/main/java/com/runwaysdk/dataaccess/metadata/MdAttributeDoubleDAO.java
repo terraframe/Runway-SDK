@@ -155,9 +155,9 @@ public class MdAttributeDoubleDAO extends MdAttributeDecDAO implements MdAttribu
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeDoubleDAOIF get(String id)
+  public static MdAttributeDoubleDAOIF get(String oid)
   {
-    return (MdAttributeDoubleDAOIF) BusinessDAO.get(id);
+    return (MdAttributeDoubleDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

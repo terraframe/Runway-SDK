@@ -84,9 +84,9 @@ public abstract class MdWebGroupBase extends com.runwaysdk.system.metadata.MdWeb
     }
   }
   
-  public static MdWebGroup get(String id)
+  public static MdWebGroup get(String oid)
   {
-    return (MdWebGroup) com.runwaysdk.business.Business.get(id);
+    return (MdWebGroup) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebGroup getByKey(String key)
@@ -94,17 +94,17 @@ public abstract class MdWebGroupBase extends com.runwaysdk.system.metadata.MdWeb
     return (MdWebGroup) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebGroup lock(java.lang.String id)
+  public static MdWebGroup lock(java.lang.String oid)
   {
-    MdWebGroup _instance = MdWebGroup.get(id);
+    MdWebGroup _instance = MdWebGroup.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebGroup unlock(java.lang.String id)
+  public static MdWebGroup unlock(java.lang.String oid)
   {
-    MdWebGroup _instance = MdWebGroup.get(id);
+    MdWebGroup _instance = MdWebGroup.get(oid);
     _instance.unlock();
     
     return _instance;

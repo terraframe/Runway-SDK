@@ -41,9 +41,9 @@ public abstract class MdMobileBreakBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static MdMobileBreak get(String id)
+  public static MdMobileBreak get(String oid)
   {
-    return (MdMobileBreak) com.runwaysdk.business.Business.get(id);
+    return (MdMobileBreak) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileBreak getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileBreakBase extends com.runwaysdk.system.metadata.Md
     return (MdMobileBreak) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileBreak lock(java.lang.String id)
+  public static MdMobileBreak lock(java.lang.String oid)
   {
-    MdMobileBreak _instance = MdMobileBreak.get(id);
+    MdMobileBreak _instance = MdMobileBreak.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileBreak unlock(java.lang.String id)
+  public static MdMobileBreak unlock(java.lang.String oid)
   {
-    MdMobileBreak _instance = MdMobileBreak.get(id);
+    MdMobileBreak _instance = MdMobileBreak.get(oid);
     _instance.unlock();
     
     return _instance;

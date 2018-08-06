@@ -763,7 +763,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Creates a map with the key being the id of the MdAttribute that defines the value, the AttributeDTO.
+   * Creates a map with the key being the oid of the MdAttribute that defines the value, the AttributeDTO.
    * 
    * @param dto
    * @return
@@ -775,7 +775,7 @@ public class ComponentDTOFacade
     for (String name : dto.getAttributeNames())
     {
       AttributeDTO attr = getAttributeDTO(dto, name);
-      attributes.put(attr.getAttributeMdDTO().getId(), attr);
+      attributes.put(attr.getAttributeMdDTO().getOid(), attr);
     }
 
     return attributes;

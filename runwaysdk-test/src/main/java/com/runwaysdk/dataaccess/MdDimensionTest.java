@@ -423,8 +423,8 @@ public class MdDimensionTest
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
     mdAttrEnum.apply();
 
     MdAttributeDimensionDAO mdAttributeDimensionDAO = (MdAttributeDimensionDAO) mdAttrEnum.getMdAttributeDimension(mdDimension).getBusinessDAO();
@@ -461,8 +461,8 @@ public class MdDimensionTest
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
     mdAttrEnum.apply();
 
     String masterDefiningType = mdEnumerationIF.getMasterListMdBusinessDAO().definesType();
@@ -482,7 +482,7 @@ public class MdDimensionTest
       i.close();
     }
 
-    String dimensionDefaultValue = businessDAOIF.getId();
+    String dimensionDefaultValue = businessDAOIF.getOid();
     MdAttributeDimensionDAO mdAttributeDimensionDAO = (MdAttributeDimensionDAO) mdAttrEnum.getMdAttributeDimension(mdDimension).getBusinessDAO();
     mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, dimensionDefaultValue);
 
@@ -610,7 +610,7 @@ public class MdDimensionTest
       try
       {
         MdAttributeDimensionDAO mdAttributeDimensionDAO = mdAttributeReference.getMdAttributeDimension(mdDimension).getBusinessDAO();
-        mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, businessDAO.getId());
+        mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, businessDAO.getOid());
         mdAttributeDimensionDAO.apply();
       }
       catch (AttributeValueException e)
@@ -892,10 +892,10 @@ public class MdDimensionTest
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
 
-    MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
+    MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getOid());
 
-    Assert.assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
-    Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+    Assert.assertEquals(mdAttributeDAOIF_1.getOid(), test.definingMdAttribute().getOid());
+    Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
   }
 
   @Request
@@ -909,10 +909,10 @@ public class MdDimensionTest
     {
       mdAttributeDimension.apply();
 
-      MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
+      MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getOid());
 
-      Assert.assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
-      Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+      Assert.assertEquals(mdAttributeDAOIF_1.getOid(), test.definingMdAttribute().getOid());
+      Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
     }
     finally
     {
@@ -938,7 +938,7 @@ public class MdDimensionTest
 
       try
       {
-        MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
+        MdAttributeDimensionDAO.get(mdAttributeDimension.getOid());
 
         Assert.fail("MdAttributeDimension was not deleted when the defining MdBusiness of the MdAttribute was deleted.");
       }
@@ -973,7 +973,7 @@ public class MdDimensionTest
 
       try
       {
-        MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
+        MdAttributeDimensionDAO.get(mdAttributeDimension.getOid());
 
         Assert.fail("MdAttributeDimension was not deleted when the defining MdBusiness of the MdAttribute was deleted.");
       }
@@ -999,8 +999,8 @@ public class MdDimensionTest
     MdAttributeDimensionDAOIF test = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
 
     Assert.assertNotNull(test);
-    Assert.assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
-    Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+    Assert.assertEquals(mdAttributeDAOIF_1.getOid(), test.definingMdAttribute().getOid());
+    Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
   }
 
   @Request
@@ -1019,8 +1019,8 @@ public class MdDimensionTest
     MdAttributeDimensionDAOIF test = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
 
     Assert.assertNotNull(test);
-    Assert.assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
-    Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+    Assert.assertEquals(mdAttributeDAOIF_1.getOid(), test.definingMdAttribute().getOid());
+    Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
   }
 
   @Request
@@ -1039,8 +1039,8 @@ public class MdDimensionTest
     MdClassDimensionDAOIF test = testMdBusiness.getMdClassDimension(mdDimension);
 
     Assert.assertNotNull(test);
-    Assert.assertEquals(testMdBusiness.getId(), test.definingMdClass().getId());
-    Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+    Assert.assertEquals(testMdBusiness.getOid(), test.definingMdClass().getOid());
+    Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
   }
 
   @Request
@@ -1059,8 +1059,8 @@ public class MdDimensionTest
     MdClassDimensionDAOIF test = mdDimension.getMdClassDimension(testMdBusiness);
 
     Assert.assertNotNull(test);
-    Assert.assertEquals(testMdBusiness.getId(), test.definingMdClass().getId());
-    Assert.assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
+    Assert.assertEquals(testMdBusiness.getOid(), test.definingMdClass().getOid());
+    Assert.assertEquals(mdDimension.getOid(), test.definingMdDimension().getOid());
   }
 
   @Request
@@ -1081,7 +1081,7 @@ public class MdDimensionTest
   private MdAttributeCharacterDAOIF getMdAttributeCharacter1()
   {
     // Refresh the object, as the dimension information is cached
-    mdAttributeDAOIF_1 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_1.getId());
+    mdAttributeDAOIF_1 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_1.getOid());
     return mdAttributeDAOIF_1;
   }
 
@@ -1095,7 +1095,7 @@ public class MdDimensionTest
   private MdAttributeDAOIF getMdAttributeCharacter2()
   {
     // Refresh the object, as the dimension information is cached
-    mdAttributeDAOIF_2 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_2.getId());
+    mdAttributeDAOIF_2 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_2.getOid());
     return mdAttributeDAOIF_2;
   }
 

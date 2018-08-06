@@ -136,19 +136,19 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.mobile.LocalIdMapping.GLOBALID, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, displayLabel);
 
@@ -416,9 +416,9 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.query.SelectableChar getGlobalId();
     public com.runwaysdk.query.SelectableChar getGlobalId(String alias);
     public com.runwaysdk.query.SelectableChar getGlobalId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -475,13 +475,13 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.mobile.LocalIdMapping localIdMapping)
     {
       if(localIdMapping == null) return this.EQ((java.lang.String)null);
-      return this.EQ(localIdMapping.getId());
+      return this.EQ(localIdMapping.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.mobile.LocalIdMapping localIdMapping)
     {
       if(localIdMapping == null) return this.NE((java.lang.String)null);
-      return this.NE(localIdMapping.getId());
+      return this.NE(localIdMapping.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -552,19 +552,19 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.GLOBALID, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, displayLabel);
 
@@ -791,9 +791,9 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.query.SelectableChar getGlobalId();
     public com.runwaysdk.query.SelectableChar getGlobalId(String alias);
     public com.runwaysdk.query.SelectableChar getGlobalId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -855,7 +855,7 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<localIdMapping.length; i++)
       {
-        itemIdArray[i] = localIdMapping[i].getId();
+        itemIdArray[i] = localIdMapping[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -867,7 +867,7 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<localIdMapping.length; i++)
       {
-        itemIdArray[i] = localIdMapping[i].getId();
+        itemIdArray[i] = localIdMapping[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -879,7 +879,7 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<localIdMapping.length; i++)
       {
-        itemIdArray[i] = localIdMapping[i].getId();
+        itemIdArray[i] = localIdMapping[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -891,7 +891,7 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<localIdMapping.length; i++)
       {
-        itemIdArray[i] = localIdMapping[i].getId();
+        itemIdArray[i] = localIdMapping[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -903,7 +903,7 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<localIdMapping.length; i++)
       {
-        itemIdArray[i] = localIdMapping[i].getId();
+        itemIdArray[i] = localIdMapping[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -976,19 +976,19 @@ public  class LocalIdMappingQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.GLOBALID, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.mobile.LocalIdMapping.ID, alias, displayLabel);
 

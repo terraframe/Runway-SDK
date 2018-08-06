@@ -33,11 +33,11 @@ public class BefriendsController extends BefriendsControllerBase implements com.
   public void cancel(com.runwaysdk.jstest.BefriendsDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     dto.unlock();
-    this.view(dto.getId());
+    this.view(dto.getOid());
   }
   public void failCancel(com.runwaysdk.jstest.BefriendsDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.edit(dto.getId());
+    this.edit(dto.getOid());
   }
   public void childQuery(java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
   {
@@ -55,7 +55,7 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -84,15 +84,15 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.jstest.BefriendsDTO dto = com.runwaysdk.jstest.BefriendsDTO.lock(super.getClientRequest(), id);
+    com.runwaysdk.jstest.BefriendsDTO dto = com.runwaysdk.jstest.BefriendsDTO.lock(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(id);
+    this.view(oid);
   }
   public void newInstance(java.lang.String parentId, java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
   {
@@ -131,7 +131,7 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -143,13 +143,13 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.jstest.BefriendsDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.jstest.BefriendsDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }

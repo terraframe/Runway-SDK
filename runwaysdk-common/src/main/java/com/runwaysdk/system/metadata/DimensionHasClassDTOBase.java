@@ -56,9 +56,9 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
     return com.runwaysdk.system.metadata.MdClassDimensionDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.metadata.DimensionHasClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.DimensionHasClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.DimensionHasClassDTO) dto;
   }
@@ -88,7 +88,7 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.DimensionHasClassQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -101,10 +101,10 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.DimensionHasClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.DimensionHasClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.DimensionHasClassDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.DimensionHasClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -114,10 +114,10 @@ public abstract class DimensionHasClassDTOBase extends com.runwaysdk.system.meta
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.DimensionHasClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.DimensionHasClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.DimensionHasClassDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.DimensionHasClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -34,7 +34,7 @@ public abstract class AggregateFunction extends Function implements Expression, 
    */
   protected AggregateFunction(EntityQuery entityQuery, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    this(entityQuery.id(), userDefinedAlias, userDefinedDisplayLabel);
+    this(entityQuery.oid(), userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**

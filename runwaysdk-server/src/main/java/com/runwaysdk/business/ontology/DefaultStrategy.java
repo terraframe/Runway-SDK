@@ -259,7 +259,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     {
       int count = 0;
 
-      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getId() + "'");
+      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "'");
       try
       {
         if (resultSet.next())

@@ -41,9 +41,9 @@ public abstract class MdLocalStructBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static MdLocalStruct get(String id)
+  public static MdLocalStruct get(String oid)
   {
-    return (MdLocalStruct) com.runwaysdk.business.Business.get(id);
+    return (MdLocalStruct) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdLocalStruct getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdLocalStructBase extends com.runwaysdk.system.metadata.Md
     return (MdLocalStruct) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdLocalStruct lock(java.lang.String id)
+  public static MdLocalStruct lock(java.lang.String oid)
   {
-    MdLocalStruct _instance = MdLocalStruct.get(id);
+    MdLocalStruct _instance = MdLocalStruct.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdLocalStruct unlock(java.lang.String id)
+  public static MdLocalStruct unlock(java.lang.String oid)
   {
-    MdLocalStruct _instance = MdLocalStruct.get(id);
+    MdLocalStruct _instance = MdLocalStruct.get(oid);
     _instance.unlock();
     
     return _instance;

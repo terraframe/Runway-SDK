@@ -53,15 +53,15 @@ public class OntologyStrategyTest
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    // mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
+    // mdTerm.setValue(MdTermInfo.STRATEGY, state.getOid());
     mdTerm.apply();
 
     try
     {
       BusinessDAO state = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
-      state.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-      state.setValue(DatabaseAllPathsStrategy.TERMCLASS, mdTerm.getId());
+      state.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getOid());
+      state.setValue(DatabaseAllPathsStrategy.TERMCLASS, mdTerm.getOid());
       state.apply();
 
       try
@@ -72,10 +72,10 @@ public class OntologyStrategyTest
         // Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY),
         // mdTerm.getValue(MdTermInfo.STRATEGY));
         
-        BusinessDAOIF test = BusinessDAO.get(state.getId());
+        BusinessDAOIF test = BusinessDAO.get(state.getOid());
 
         Assert.assertNotNull(test);
-        Assert.assertEquals(state.getId(), test.getId());
+        Assert.assertEquals(state.getOid(), test.getOid());
         Assert.assertEquals(state.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE), test.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE));
       }
       finally

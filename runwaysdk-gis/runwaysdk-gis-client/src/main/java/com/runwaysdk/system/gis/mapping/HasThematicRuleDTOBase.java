@@ -49,7 +49,7 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -414,9 +414,9 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
     return com.runwaysdk.system.gis.mapping.ThematicRuleDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) dto;
   }
@@ -446,7 +446,7 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.HasThematicRuleQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -459,10 +459,10 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -472,10 +472,10 @@ public abstract class HasThematicRuleDTOBase extends com.runwaysdk.business.Rela
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

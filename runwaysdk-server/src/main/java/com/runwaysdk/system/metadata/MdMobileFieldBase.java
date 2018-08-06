@@ -73,7 +73,7 @@ public abstract class MdMobileFieldBase extends com.runwaysdk.system.metadata.Md
     }
     else
     {
-      setValue(DEFININGMDFORM, value.getId());
+      setValue(DEFININGMDFORM, value.getOid());
     }
   }
   
@@ -153,9 +153,9 @@ public abstract class MdMobileFieldBase extends com.runwaysdk.system.metadata.Md
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MobileFormField>) getRelationshipsWithParent(mdMobileForm, com.runwaysdk.system.metadata.MobileFormField.CLASS);
   }
   
-  public static MdMobileField get(String id)
+  public static MdMobileField get(String oid)
   {
-    return (MdMobileField) com.runwaysdk.business.Business.get(id);
+    return (MdMobileField) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileField getByKey(String key)
@@ -163,17 +163,17 @@ public abstract class MdMobileFieldBase extends com.runwaysdk.system.metadata.Md
     return (MdMobileField) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileField lock(java.lang.String id)
+  public static MdMobileField lock(java.lang.String oid)
   {
-    MdMobileField _instance = MdMobileField.get(id);
+    MdMobileField _instance = MdMobileField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileField unlock(java.lang.String id)
+  public static MdMobileField unlock(java.lang.String oid)
   {
-    MdMobileField _instance = MdMobileField.get(id);
+    MdMobileField _instance = MdMobileField.get(oid);
     _instance.unlock();
     
     return _instance;

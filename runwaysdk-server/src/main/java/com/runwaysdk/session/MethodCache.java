@@ -74,7 +74,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      MethodSession methodSession = cache.get(mdMethodIF.getId());
+      MethodSession methodSession = cache.get(mdMethodIF.getOid());
     
       if (methodSession == null)
       {
@@ -110,7 +110,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      String key = mdMethodIF.getId();
+      String key = mdMethodIF.getOid();
 
       //If the cache does not contain the permissions for the 
       //MdMethod then load the permissions.
@@ -355,7 +355,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      String key = mdMethod.getId();
+      String key = mdMethod.getOid();
       if(cache.containsKey(key))
       {
         MethodSession method = cache.get(key);
@@ -403,7 +403,7 @@ public class MethodCache
     
     try
     {
-      return cache.containsKey(mdMethod.getId());
+      return cache.containsKey(mdMethod.getOid());
     }
     finally
     {

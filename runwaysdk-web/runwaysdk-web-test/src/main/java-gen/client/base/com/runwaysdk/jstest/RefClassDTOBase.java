@@ -48,7 +48,7 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -444,60 +444,60 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.jstest.TestClassDTO> getAllTestClass()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.TestClassDTO>) getRequest().getParents(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.TestClassDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.TestClassDTO> getAllTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.jstest.TestClassDTO> getAllTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.TestClassDTO>) clientRequestIF.getParents(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.TestClassDTO>) clientRequestIF.getParents(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllTestClassRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllTestClassRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO> getAllTestClassRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.BefriendsDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   public com.runwaysdk.jstest.BefriendsDTO addTestClass(com.runwaysdk.jstest.TestClassDTO parent)
   {
-    return (com.runwaysdk.jstest.BefriendsDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (com.runwaysdk.jstest.BefriendsDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static com.runwaysdk.jstest.BefriendsDTO addTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.jstest.TestClassDTO parent)
+  public static com.runwaysdk.jstest.BefriendsDTO addTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.jstest.TestClassDTO parent)
   {
-    return (com.runwaysdk.jstest.BefriendsDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    return (com.runwaysdk.jstest.BefriendsDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
   public void removeTestClass(com.runwaysdk.jstest.BefriendsDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.jstest.BefriendsDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllTestClass()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static void removeAllTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllTestClass(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.jstest.BefriendsDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.jstest.BefriendsDTO.CLASS);
   }
   
-  public static com.runwaysdk.jstest.RefClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.jstest.RefClassDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.jstest.RefClassDTO) dto;
   }
@@ -515,7 +515,7 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.RefClassQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -528,10 +528,10 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.jstest.RefClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.RefClassDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.RefClassDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.jstest.RefClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -541,10 +541,10 @@ public abstract class RefClassDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.jstest.RefClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.RefClassDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.RefClassDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.jstest.RefClassDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

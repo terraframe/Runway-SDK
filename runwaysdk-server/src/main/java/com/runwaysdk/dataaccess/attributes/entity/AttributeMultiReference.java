@@ -104,7 +104,7 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
   }
 
   /**
-   * Initializes the setId, which is the value of this attribute.
+   * Initializes the setOid, which is the value of this attribute.
    * 
    */
   private void initSetId()
@@ -176,7 +176,7 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
 
       if (!this.getContainingComponent().isNew())
       {
-        // refresh the local id mapping cache
+        // refresh the local oid mapping cache
         this.refreshEnumIdList(true);
       }
 

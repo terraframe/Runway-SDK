@@ -194,13 +194,13 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.TypeTuple typeTuple)
     {
       if(typeTuple == null) return this.EQ((java.lang.String)null);
-      return this.EQ(typeTuple.getId());
+      return this.EQ(typeTuple.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.TypeTuple typeTuple)
     {
       if(typeTuple == null) return this.NE((java.lang.String)null);
-      return this.NE(typeTuple.getId());
+      return this.NE(typeTuple.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -311,7 +311,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -323,7 +323,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -335,7 +335,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -347,7 +347,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -359,7 +359,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

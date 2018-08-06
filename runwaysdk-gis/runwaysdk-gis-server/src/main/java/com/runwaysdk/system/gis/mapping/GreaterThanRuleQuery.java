@@ -114,13 +114,13 @@ public  class GreaterThanRuleQuery extends com.runwaysdk.system.gis.mapping.Prim
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.GreaterThanRule greaterThanRule)
     {
       if(greaterThanRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(greaterThanRule.getId());
+      return this.EQ(greaterThanRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.GreaterThanRule greaterThanRule)
     {
       if(greaterThanRule == null) return this.NE((java.lang.String)null);
-      return this.NE(greaterThanRule.getId());
+      return this.NE(greaterThanRule.getOid());
     }
 
   }

@@ -101,9 +101,9 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
   private void getInstance()
   {
     // get for the java class
-    getWriter().writeLine("public static " + this.getSubClassName() + " get(String id)");
+    getWriter().writeLine("public static " + this.getSubClassName() + " get(String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".get(id);");
+    getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".get(oid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
 

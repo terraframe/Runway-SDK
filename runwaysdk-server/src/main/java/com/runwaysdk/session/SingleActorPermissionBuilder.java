@@ -89,7 +89,7 @@ public class SingleActorPermissionBuilder extends AbstractPermissionBuilder impl
   {
     PermissionManager manager = this.getManager();
 
-    String[] ids = this.getIdsToQuery(actor);
+    String[] ids = this.getOidsToQuery(actor);
 
     QueryFactory factory = new QueryFactory();
 
@@ -114,16 +114,16 @@ public class SingleActorPermissionBuilder extends AbstractPermissionBuilder impl
     }
   }
 
-  private String[] getIdsToQuery(SingleActorDAOIF actor)
+  private String[] getOidsToQuery(SingleActorDAOIF actor)
   {
     List<String> ids = new LinkedList<String>();
     Set<RoleDAOIF> roles = actor.authorizedRoles();
 
-    ids.add(actor.getId());
+    ids.add(actor.getOid());
 
     for (RoleDAOIF role : roles)
     {
-      ids.add(role.getId());
+      ids.add(role.getOid());
     }
 
     return ids.toArray(new String[ids.size()]);

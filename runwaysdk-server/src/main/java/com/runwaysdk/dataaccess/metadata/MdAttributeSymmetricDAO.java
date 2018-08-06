@@ -136,11 +136,11 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
     return Integer.parseInt(secretKeySize);
   }
 
-  protected static void deleteKey(String id)
+  protected static void deleteKey(String oid)
   {
     // delete keystore entry
     KeyStoreAccess access = KeyStoreAccess.getInstance();
-    access.deleteKey(id);
+    access.deleteKey(oid);
   }
 
   /**
@@ -151,7 +151,7 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
   {
     boolean isAppliedToDB = this.isAppliedToDB();
     
-    String id = super.save(validationRequired);
+    String oid = super.save(validationRequired);
 
     // if this MdAttributeSymmetric instance is new, generate a secret key
     if (isNew() && isAppliedToDB);
@@ -167,7 +167,7 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
 
         // store the key
         KeyStoreAccess access = KeyStoreAccess.getInstance();
-        String alias = this.getId();
+        String alias = this.getOid();
         access.addKey(key, alias);
       }
       catch (NoSuchAlgorithmException e)
@@ -178,7 +178,7 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
         throw new EncryptionException(error, this);
       }
     }
-    return id;
+    return oid;
   }
 
 
@@ -192,7 +192,7 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
    */
   public void delete(boolean businessContext)
   {
-    deleteKey(this.getId());
+    deleteKey(this.getOid());
     super.delete(businessContext);
   }
 
@@ -219,9 +219,9 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeSymmetricDAOIF get(String id)
+  public static MdAttributeSymmetricDAOIF get(String oid)
   {
-    return (MdAttributeSymmetricDAOIF) BusinessDAO.get(id);
+    return (MdAttributeSymmetricDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

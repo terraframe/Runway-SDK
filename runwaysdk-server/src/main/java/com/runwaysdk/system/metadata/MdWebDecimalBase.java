@@ -41,9 +41,9 @@ public abstract class MdWebDecimalBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static MdWebDecimal get(String id)
+  public static MdWebDecimal get(String oid)
   {
-    return (MdWebDecimal) com.runwaysdk.business.Business.get(id);
+    return (MdWebDecimal) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebDecimal getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebDecimalBase extends com.runwaysdk.system.metadata.MdW
     return (MdWebDecimal) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebDecimal lock(java.lang.String id)
+  public static MdWebDecimal lock(java.lang.String oid)
   {
-    MdWebDecimal _instance = MdWebDecimal.get(id);
+    MdWebDecimal _instance = MdWebDecimal.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebDecimal unlock(java.lang.String id)
+  public static MdWebDecimal unlock(java.lang.String oid)
   {
-    MdWebDecimal _instance = MdWebDecimal.get(id);
+    MdWebDecimal _instance = MdWebDecimal.get(oid);
     _instance.unlock();
     
     return _instance;

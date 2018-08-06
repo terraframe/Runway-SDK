@@ -61,7 +61,7 @@ public class KeyTest
     EnumerationItemDAOIF[] dereference = attribute.dereference();
 
     Assert.assertEquals(1, dereference.length);
-    Assert.assertEquals(IndexTypes.UNIQUE_INDEX.getId(), dereference[0].getId());
+    Assert.assertEquals(IndexTypes.UNIQUE_INDEX.getOid(), dereference[0].getOid());
   }
 
   @Request
@@ -74,7 +74,7 @@ public class KeyTest
     business1.setKey(key);
     business1.apply();
 
-    BusinessDAOIF business1IF = BusinessDAO.get(business1.getId());
+    BusinessDAOIF business1IF = BusinessDAO.get(business1.getOid());
 
     Assert.assertEquals(key, business1IF.getKey());
 

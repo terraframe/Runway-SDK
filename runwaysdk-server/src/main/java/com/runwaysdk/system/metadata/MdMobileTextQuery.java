@@ -114,13 +114,13 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileText mdMobileText)
     {
       if(mdMobileText == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileText.getId());
+      return this.EQ(mdMobileText.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileText mdMobileText)
     {
       if(mdMobileText == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileText.getId());
+      return this.NE(mdMobileText.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
 
       for (int i=0; i<mdMobileText.length; i++)
       {
-        itemIdArray[i] = mdMobileText[i].getId();
+        itemIdArray[i] = mdMobileText[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
 
       for (int i=0; i<mdMobileText.length; i++)
       {
-        itemIdArray[i] = mdMobileText[i].getId();
+        itemIdArray[i] = mdMobileText[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
 
       for (int i=0; i<mdMobileText.length; i++)
       {
-        itemIdArray[i] = mdMobileText[i].getId();
+        itemIdArray[i] = mdMobileText[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
 
       for (int i=0; i<mdMobileText.length; i++)
       {
-        itemIdArray[i] = mdMobileText[i].getId();
+        itemIdArray[i] = mdMobileText[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileTextQuery extends com.runwaysdk.system.metadata.MdMobilePr
 
       for (int i=0; i<mdMobileText.length; i++)
       {
-        itemIdArray[i] = mdMobileText[i].getId();
+        itemIdArray[i] = mdMobileText[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -41,9 +41,9 @@ public abstract class MdWebGeometryBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static MdWebGeometry get(String id)
+  public static MdWebGeometry get(String oid)
   {
-    return (MdWebGeometry) com.runwaysdk.business.Business.get(id);
+    return (MdWebGeometry) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebGeometry getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebGeometryBase extends com.runwaysdk.system.metadata.Md
     return (MdWebGeometry) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebGeometry lock(java.lang.String id)
+  public static MdWebGeometry lock(java.lang.String oid)
   {
-    MdWebGeometry _instance = MdWebGeometry.get(id);
+    MdWebGeometry _instance = MdWebGeometry.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebGeometry unlock(java.lang.String id)
+  public static MdWebGeometry unlock(java.lang.String oid)
   {
-    MdWebGeometry _instance = MdWebGeometry.get(id);
+    MdWebGeometry _instance = MdWebGeometry.get(oid);
     _instance.unlock();
     
     return _instance;

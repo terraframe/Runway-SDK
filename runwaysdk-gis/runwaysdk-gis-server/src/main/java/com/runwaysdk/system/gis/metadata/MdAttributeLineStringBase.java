@@ -41,9 +41,9 @@ public abstract class MdAttributeLineStringBase extends com.runwaysdk.system.gis
     return CLASS;
   }
   
-  public static MdAttributeLineString get(String id)
+  public static MdAttributeLineString get(String oid)
   {
-    return (MdAttributeLineString) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeLineString) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeLineString getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeLineStringBase extends com.runwaysdk.system.gis
     return (MdAttributeLineString) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeLineString lock(java.lang.String id)
+  public static MdAttributeLineString lock(java.lang.String oid)
   {
-    MdAttributeLineString _instance = MdAttributeLineString.get(id);
+    MdAttributeLineString _instance = MdAttributeLineString.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeLineString unlock(java.lang.String id)
+  public static MdAttributeLineString unlock(java.lang.String oid)
   {
-    MdAttributeLineString _instance = MdAttributeLineString.get(id);
+    MdAttributeLineString _instance = MdAttributeLineString.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -157,9 +157,9 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeClobDAOIF get(String id)
+  public static MdAttributeClobDAOIF get(String oid)
   {
-    return (MdAttributeClobDAOIF) BusinessDAO.get(id);
+    return (MdAttributeClobDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

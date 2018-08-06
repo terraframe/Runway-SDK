@@ -53,7 +53,7 @@ public class MdMethodHandler extends TagHandler implements TagHandlerIF, Handler
     String key = typeName + "." + methodName;
 
     MdMethodDAO mdMethod = (MdMethodDAO) this.getManager().getEntityDAO(MdMethodInfo.CLASS, key).getEntityDAO();
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdType.getId());
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdType.getOid());
 
     if (attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE) != null)
     {

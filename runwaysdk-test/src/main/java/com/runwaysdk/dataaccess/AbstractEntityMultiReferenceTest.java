@@ -72,7 +72,7 @@ public abstract class AbstractEntityMultiReferenceTest
     List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(this.contains(results, this.getDefaultValue().getOid()));
   }
 
   @Request
@@ -90,16 +90,16 @@ public abstract class AbstractEntityMultiReferenceTest
       try
       {
         Business business = new Business(this.getMdBusiness().definesType());
-        business.addMultiItem(this.getMdAttribute().definesAttribute(), value1.getId());
-        business.addMultiItem(this.getMdAttribute().definesAttribute(), value2.getId());
+        business.addMultiItem(this.getMdAttribute().definesAttribute(), value1.getOid());
+        business.addMultiItem(this.getMdAttribute().definesAttribute(), value2.getOid());
         business.apply();
 
         List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
 
         Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
+        Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
+        Assert.assertTrue(contains(results, value1.getOid()));
+        Assert.assertTrue(contains(results, value2.getOid()));
       }
       finally
       {
@@ -117,14 +117,14 @@ public abstract class AbstractEntityMultiReferenceTest
   public void testAddDuplicates()
   {
     Business business = new Business(this.getMdBusiness().definesType());
-    business.addMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getId());
-    business.addMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getId());
+    business.addMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getOid());
+    business.addMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getOid());
     business.apply();
 
     List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
   }
 
   @Request
@@ -134,12 +134,12 @@ public abstract class AbstractEntityMultiReferenceTest
     Business business = new Business(this.getMdBusiness().definesType());
     business.apply();
 
-    Business test = Business.get(business.getId());
+    Business test = Business.get(business.getOid());
 
     List<? extends Business> results = test.getMultiItems(this.getMdAttribute().definesAttribute());
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(this.contains(results, this.getDefaultValue().getOid()));
   }
 
   @Request
@@ -153,13 +153,13 @@ public abstract class AbstractEntityMultiReferenceTest
     {
       Business business = new Business(this.getMdBusiness().definesType());
       business.apply();
-      business.replaceMultiItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getId()));
+      business.replaceMultiItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getOid()));
       business.apply();
 
       List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
 
       Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, value.getId()));
+      Assert.assertTrue(contains(results, value.getOid()));
     }
     finally
     {
@@ -187,7 +187,7 @@ public abstract class AbstractEntityMultiReferenceTest
   {
     Business business = new Business(this.getMdBusiness().definesType());
     business.apply();
-    business.removeMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getId());
+    business.removeMultiItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getOid());
     business.apply();
 
     List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
@@ -206,13 +206,13 @@ public abstract class AbstractEntityMultiReferenceTest
     {
       Business business = new Business(this.getMdBusiness().definesType());
       business.apply();
-      business.removeMultiItem(this.getMdAttribute().definesAttribute(), value.getId());
+      business.removeMultiItem(this.getMdAttribute().definesAttribute(), value.getOid());
       business.apply();
 
       List<? extends Business> results = business.getMultiItems(this.getMdAttribute().definesAttribute());
 
       Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+      Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
     }
     finally
     {
@@ -222,14 +222,14 @@ public abstract class AbstractEntityMultiReferenceTest
 
   /**
    * @param results
-   * @param id
+   * @param oid
    * @return
    */
-  private boolean contains(List<? extends Business> results, String id)
+  private boolean contains(List<? extends Business> results, String oid)
   {
     for (Business result : results)
     {
-      if (result.getId().equals(id))
+      if (result.getOid().equals(oid))
       {
         return true;
       }

@@ -101,9 +101,9 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdTermDAOIF get(String id)
+  public static MdTermDAOIF get(String oid)
   {
-    return (MdTermDAOIF) BusinessDAO.get(id);
+    return (MdTermDAOIF) BusinessDAO.get(oid);
   }
 
   /**
@@ -188,7 +188,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       // Add display label to metadata.
       MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
       displayLabel.setValue(MdAttributeLocalCharacterInfo.NAME, MdTermInfo.DISPLAY_LABEL);
-      displayLabel.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, this.getId());
+      displayLabel.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, this.getOid());
       displayLabel.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
       displayLabel.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       displayLabel.apply();
@@ -209,18 +209,18 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     attributeTermRoots.setValue(MdRelationshipInfo.PACKAGE, this.getAttribute(MdBusinessInfo.PACKAGE).getValue());
     attributeTermRoots.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel + " Attribute Root");
     attributeTermRoots.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
-    attributeTermRoots.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, this.getId());
+    attributeTermRoots.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, this.getOid());
     attributeTermRoots.setValue(MdRelationshipInfo.CHILD_METHOD, typeName + "s");
     attributeTermRoots.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
     attributeTermRoots.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
-    attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getId());
+    attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getOid());
     attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, typeName + "s");
     attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
     attributeTermRoots.apply();
 
     MdAttributeBooleanDAO selectable = MdAttributeBooleanDAO.newInstance();
     selectable.setValue(MdAttributeBooleanInfo.NAME, MdAttributeTermInfo.SELECTABLE);
-    selectable.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeTermRoots.getId());
+    selectable.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeTermRoots.getOid());
     selectable.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Selectable");
     selectable.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Yes");
     selectable.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "No");

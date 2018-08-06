@@ -12,7 +12,7 @@ public abstract class MdMobileCommentCommentTextBase extends com.runwaysdk.busin
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileCommentCommentText";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -932036744;
@@ -27,9 +27,9 @@ public abstract class MdMobileCommentCommentTextBase extends com.runwaysdk.busin
     super(component, structName);
   }
   
-  public static MdMobileCommentCommentText get(String id)
+  public static MdMobileCommentCommentText get(String oid)
   {
-    return (MdMobileCommentCommentText) com.runwaysdk.business.Struct.get(id);
+    return (MdMobileCommentCommentText) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdMobileCommentCommentText getByKey(String key)
@@ -37,7 +37,7 @@ public abstract class MdMobileCommentCommentTextBase extends com.runwaysdk.busin
     return (MdMobileCommentCommentText) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class MdMobileCommentCommentTextBase extends com.runwaysdk.busin
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdMobileCommentCommentText.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

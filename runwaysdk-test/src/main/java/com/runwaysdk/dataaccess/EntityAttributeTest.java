@@ -194,10 +194,10 @@ public class EntityAttributeTest
     someTree.setValue(MdTreeInfo.PACKAGE, someTreeInfo.getPackageName());
     someTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some tree Relationship");
     someTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testMdBusinessIF.getId());
+    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testMdBusinessIF.getOid());
     someTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     someTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 1");
-    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusinessIF.getId());
+    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusinessIF.getOid());
     someTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     someTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     someTree.setValue(MdTreeInfo.PARENT_METHOD, "someParentAccessor");
@@ -214,8 +214,8 @@ public class EntityAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "homePhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -225,8 +225,8 @@ public class EntityAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "workPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -236,8 +236,8 @@ public class EntityAttributeTest
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "cellPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -247,7 +247,7 @@ public class EntityAttributeTest
     mdAttributeText.setValue(MdAttributeTextInfo.DEFAULT_VALUE, "");
     mdAttributeText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeText.setValue(MdAttributeTextInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
     definitions.add(mdAttributeText);
 
@@ -257,7 +257,7 @@ public class EntityAttributeTest
     mdAttributeClob.setValue(MdAttributeClobInfo.DEFAULT_VALUE, "");
     mdAttributeClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeClob.apply();
     definitions.add(mdAttributeClob);
 
@@ -269,7 +269,7 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "I wish I was a reference field!");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // Add atributes to the test type
@@ -279,9 +279,9 @@ public class EntityAttributeTest
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -289,9 +289,9 @@ public class EntityAttributeTest
     mdAttributeBlob.setValue(MdAttributeBlobInfo.NAME, "testBlob");
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some blob");
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBlob.apply();
     definitions.add(mdAttributeBlob);
 
@@ -302,7 +302,7 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity dog");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -313,7 +313,7 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -323,7 +323,7 @@ public class EntityAttributeTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
     definitions.add(mdAttributeInteger);
 
@@ -333,7 +333,7 @@ public class EntityAttributeTest
     mdAttributeLong.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeLong.apply();
     definitions.add(mdAttributeLong);
 
@@ -345,7 +345,7 @@ public class EntityAttributeTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -357,7 +357,7 @@ public class EntityAttributeTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -372,7 +372,7 @@ public class EntityAttributeTest
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -384,7 +384,7 @@ public class EntityAttributeTest
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.LENGTH, "13");
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "3");
-    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDecimal.apply();
     definitions.add(mdAttributeDecimal);
 
@@ -396,7 +396,7 @@ public class EntityAttributeTest
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDouble.apply();
     definitions.add(mdAttributeDouble);
 
@@ -406,7 +406,7 @@ public class EntityAttributeTest
     mdAttributeTime.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     mdAttributeTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTime.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeTime.apply();
     definitions.add(mdAttributeTime);
 
@@ -416,7 +416,7 @@ public class EntityAttributeTest
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDate.setValue(MdAttributeDateInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
     definitions.add(mdAttributeDate);
 
@@ -426,7 +426,7 @@ public class EntityAttributeTest
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFAULT_VALUE, "");
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDateTime.apply();
     definitions.add(mdAttributeDateTime);
 
@@ -436,8 +436,8 @@ public class EntityAttributeTest
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
 
@@ -456,9 +456,9 @@ public class EntityAttributeTest
     // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REMOVE,
     // MdAttributeBooleanInfo.TRUE);
     // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
-    // someTree.getId());
+    // someTree.getOid());
     // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,
-    // testMdBusinessIF.getId());
+    // testMdBusinessIF.getOid());
     // mdAttributeRelationshipReference.apply();
     // definitions.add(mdAttributeRelationshipReference);
     //
@@ -477,9 +477,9 @@ public class EntityAttributeTest
     // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REMOVE,
     // MdAttributeBooleanInfo.TRUE);
     // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
-    // phoneNumber.getId());
+    // phoneNumber.getOid());
     // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,
-    // testMdBusinessIF.getId());
+    // testMdBusinessIF.getOid());
     // mdAttributeStructReference.apply();
     // definitions.add(mdAttributeStructReference);
 
@@ -490,7 +490,7 @@ public class EntityAttributeTest
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
     definitions.add(mdAttributeBoolean);
 
@@ -502,15 +502,15 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
     MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
     mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
     mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, testTerm.getId());
-    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, testTerm.getOid());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeTerm.apply();
     definitions.add(mdAttributeTerm);
 
@@ -526,11 +526,11 @@ public class EntityAttributeTest
     BusinessDAO temp = null;
     for (MdAttributeConcreteDAOIF mdAttributeIF : definitions)
     {
-      temp = BusinessDAO.get(mdAttributeIF.getId()).getBusinessDAO();
+      temp = BusinessDAO.get(mdAttributeIF.getOid()).getBusinessDAO();
       temp.delete();
     }
 
-    someTree = (MdTreeDAO) MdTreeDAO.get(someTree.getId()).getBusinessDAO();
+    someTree = (MdTreeDAO) MdTreeDAO.get(someTree.getOid()).getBusinessDAO();
     someTree.delete();
 
     TestFixtureFactory.delete(testTerm);
@@ -558,7 +558,7 @@ public class EntityAttributeTest
   {
     if (!testObject.isNew())
     {
-      testObject = BusinessDAO.get(testObject.getId()).getBusinessDAO();
+      testObject = BusinessDAO.get(testObject.getOid()).getBusinessDAO();
       testObject.delete();
     }
   }
@@ -1551,20 +1551,20 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttrGroupInteger0");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Integer");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     mdAttributeCharacter.apply();
 
     mdAttributeInteger.apply();
 
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1750,7 +1750,7 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttrGroupInteger1");
@@ -1758,10 +1758,10 @@ public class EntityAttributeTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.FALSE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1830,7 +1830,7 @@ public class EntityAttributeTest
   private void mdIndexNoAttributes()
   {
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.FALSE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1880,7 +1880,7 @@ public class EntityAttributeTest
         Assert.fail("Database index does not exist when it should.");
       }
 
-      mdIndex = MdIndexDAO.get(mdIndex.getId()).getBusinessDAO();
+      mdIndex = MdIndexDAO.get(mdIndex.getOid()).getBusinessDAO();
 
       mdIndex.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.FALSE);
       mdIndex.apply();
@@ -1938,7 +1938,7 @@ public class EntityAttributeTest
         Assert.fail("Database index does not exist when it should.");
       }
 
-      mdIndex = MdIndexDAO.get(mdIndex.getId()).getBusinessDAO();
+      mdIndex = MdIndexDAO.get(mdIndex.getOid()).getBusinessDAO();
 
       mdIndex.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.FALSE);
       mdIndex.apply();
@@ -1975,7 +1975,7 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttrGroupInteger2");
@@ -1983,10 +1983,10 @@ public class EntityAttributeTest
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.FALSE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -2017,14 +2017,14 @@ public class EntityAttributeTest
       mdIndex.delete();
     }
 
-    mdAttributeCharacter = MdAttributeCharacterDAO.get(mdAttributeCharacter.getId()).getBusinessDAO();
+    mdAttributeCharacter = MdAttributeCharacterDAO.get(mdAttributeCharacter.getOid()).getBusinessDAO();
 
     if (mdAttributeCharacter != null && !mdAttributeCharacter.isNew())
     {
       mdAttributeCharacter.delete();
     }
 
-    mdAttributeInteger = MdAttributeIntegerDAO.get(mdAttributeInteger.getId()).getBusinessDAO();
+    mdAttributeInteger = MdAttributeIntegerDAO.get(mdAttributeInteger.getOid()).getBusinessDAO();
 
     if (mdAttributeInteger != null && !mdAttributeInteger.isNew())
     {
@@ -2157,20 +2157,20 @@ public class EntityAttributeTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttrGroupInteger3");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Integer");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     mdAttributeCharacter.apply();
 
     mdAttributeInteger.apply();
 
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -2203,7 +2203,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeCharacter retrieved = (AttributeCharacter) appliedObject.getAttributeIF(key);
 
       if (!retrieved.getValue().equals(value))
@@ -2291,7 +2291,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeText retrieved = (AttributeText) appliedObject.getAttributeIF(key);
 
       if (!retrieved.getValue().equals(value))
@@ -2322,7 +2322,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeClob retrieved = (AttributeClob) appliedObject.getAttributeIF(key);
 
       if (!retrieved.getValue().equals(value))
@@ -2389,7 +2389,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeClob clob = (AttributeClob) appliedObject.getAttributeIF(key);
       clob.setValue(value);
       clob.flushClobCache();// make sure we're not using the cache value.
@@ -2397,7 +2397,7 @@ public class EntityAttributeTest
       MdBusinessDAOIF mdBusinessDAOIF = appliedObject.getMdBusinessDAO();
       MdAttributeConcreteDAOIF mdAttributeDAOIF = mdBusinessDAOIF.definesAttribute(key);
 
-      String databaseValue = Database.getClob(mdBusinessDAOIF.getTableName(), mdAttributeDAOIF.getColumnName(), testObject.getId());
+      String databaseValue = Database.getClob(mdBusinessDAOIF.getTableName(), mdAttributeDAOIF.getColumnName(), testObject.getOid());
 
       if (!databaseValue.equals(value))
       {
@@ -2476,7 +2476,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeBoolean retrieved = (AttributeBoolean) appliedObject.getAttributeIF(key);
 
       if (Boolean.parseBoolean(retrieved.getValue()) != Boolean.parseBoolean( ( value )))
@@ -2540,7 +2540,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeInteger retrieved = (AttributeInteger) appliedObject.getAttributeIF(key);
 
       if (Integer.parseInt(retrieved.getValue()) != Integer.parseInt( ( value )))
@@ -2609,7 +2609,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeLong retrieved = (AttributeLong) appliedObject.getAttributeIF(key);
 
       if (Long.parseLong(retrieved.getValue()) != Long.parseLong( ( value )))
@@ -2678,7 +2678,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeFloat retrieved = (AttributeFloat) appliedObject.getAttributeIF(key);
 
       if (Float.parseFloat(retrieved.getValue()) != Float.parseFloat( ( value )))
@@ -2779,7 +2779,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeDouble retrieved = (AttributeDouble) appliedObject.getAttributeIF(key);
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
@@ -2862,7 +2862,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeDecimal retrieved = (AttributeDecimal) appliedObject.getAttributeIF(key);
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
@@ -2946,7 +2946,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeTime retrieved = (AttributeTime) appliedObject.getAttributeIF(key);
       if (!retrieved.getValue().equals(value))
       {
@@ -3030,7 +3030,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // retrieve the applied object and test
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeDate retrieved = (AttributeDate) appliedObject.getAttributeIF(key);
 
       if (!retrieved.getValue().equals(value))
@@ -3116,7 +3116,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // retrieve the applied object and test
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeDateTime retrieved = (AttributeDateTime) appliedObject.getAttributeIF(key);
 
       if (!retrieved.getValue().equals(value))
@@ -3206,11 +3206,11 @@ public class EntityAttributeTest
       mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "homePhone attr");
       mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-      mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+      mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+      mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
       mdAttrStruct.apply();
 
-      testObj = BusinessDAO.get(testObj.getId()).getBusinessDAO();
+      testObj = BusinessDAO.get(testObj.getOid()).getBusinessDAO();
     }
     catch (DataAccessException e)
     {
@@ -3249,18 +3249,18 @@ public class EntityAttributeTest
       mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "homePhone attr");
       mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-      mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+      mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+      mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
       mdAttrStruct.apply();
 
-      testObj = BusinessDAO.get(testObj.getId()).getBusinessDAO();
+      testObj = BusinessDAO.get(testObj.getOid()).getBusinessDAO();
 
       testObj.setStructValue("homePhoneTest", "areaCode", "303");
       testObj.setStructValue("homePhoneTest", "prefix", "979");
       testObj.setStructValue("homePhoneTest", "suffix", "7745");
       testObj.apply();
 
-      testObj = BusinessDAO.get(testObj.getId()).getBusinessDAO();
+      testObj = BusinessDAO.get(testObj.getOid()).getBusinessDAO();
 
       if (!testObj.getStructValue("homePhoneTest", "areaCode").equals("303") || !testObj.getStructValue("homePhoneTest", "prefix").equals("979") || !testObj.getStructValue("homePhoneTest", "suffix").equals("7745"))
       {
@@ -3295,7 +3295,7 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testReference", reference.getId());
+      testObject.setValue("testReference", reference.getOid());
       Assert.assertTrue(testObject.getAttributeIF("testReference") instanceof AttributeReference);
     }
     catch (DataAccessException e)
@@ -3320,7 +3320,7 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testReference", reference.getId());
+      testObject.setValue("testReference", reference.getOid());
       testObject.getAttributeIF("testReference");
       Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
@@ -3346,11 +3346,11 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testReference", reference.getId());
+      testObject.setValue("testReference", reference.getOid());
       testObject.apply();
       AttributeReference fo = (AttributeReference) testObject.getAttributeIF("testReference");
-      Assert.assertEquals(reference.getId(), testObject.getAttributeIF("testReference").getValue());
-      Assert.assertEquals(reference.getId(), fo.dereference().getId());
+      Assert.assertEquals(reference.getOid(), testObject.getAttributeIF("testReference").getValue());
+      Assert.assertEquals(reference.getOid(), fo.dereference().getOid());
       Assert.assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
     }
     catch (DataAccessException e)
@@ -3376,7 +3376,7 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testTerm", term.getId());
+      testObject.setValue("testTerm", term.getOid());
       Assert.assertTrue(testObject.getAttributeIF("testTerm") instanceof AttributeTerm);
     }
     catch (DataAccessException e)
@@ -3401,7 +3401,7 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testTerm", reference.getId());
+      testObject.setValue("testTerm", reference.getOid());
       testObject.getAttributeIF("testTerm");
       Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
@@ -3428,11 +3428,11 @@ public class EntityAttributeTest
 
     try
     {
-      testObject.setValue("testTerm", term.getId());
+      testObject.setValue("testTerm", term.getOid());
       testObject.apply();
       AttributeTerm fo = (AttributeTerm) testObject.getAttributeIF("testTerm");
-      Assert.assertEquals(term.getId(), testObject.getAttributeIF("testTerm").getValue());
-      Assert.assertEquals(term.getId(), fo.dereference().getId());
+      Assert.assertEquals(term.getOid(), testObject.getAttributeIF("testTerm").getValue());
+      Assert.assertEquals(term.getOid(), fo.dereference().getOid());
     }
     catch (DataAccessException e)
     {
@@ -3513,7 +3513,7 @@ public class EntityAttributeTest
       other.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       other.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       other.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      other.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, testMdBusinessIF.getId());
+      other.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, testMdBusinessIF.getOid());
       other.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       other.apply();
 
@@ -3527,7 +3527,7 @@ public class EntityAttributeTest
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getOid());
       float1DO.apply();
 
       // if we hit the line below, then our check failed
@@ -3555,7 +3555,7 @@ public class EntityAttributeTest
     {
       // first declaration of attribute Cost
       MdAttributeFloatDAO mdFloatAttr = ( (MdAttributeFloatDAO) testObject.getAttribute("testIndexFloat").getMdAttribute() ).getBusinessDAO();
-      mdFloatAttr.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdFloatAttr.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdFloatAttr.apply();
 
       // check for correctness
@@ -3565,7 +3565,7 @@ public class EntityAttributeTest
       }
 
       // now take away the index
-      mdFloatAttr.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+      mdFloatAttr.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
       mdFloatAttr.apply();
 
       // make sure the change was correctly saved.
@@ -3608,7 +3608,7 @@ public class EntityAttributeTest
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
       float1DO.apply();
 
       Assert.fail("An attribute identifier length is too long, but was accepted by the system.");
@@ -3672,8 +3672,8 @@ public class EntityAttributeTest
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
       mdAttributeReference.apply();
 
       Assert.fail("A reference was incorrectly able to reference a relationship.");
@@ -3700,8 +3700,8 @@ public class EntityAttributeTest
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testObject.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testObject.getOid());
       mdAttributeReference.apply();
 
       Assert.fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
@@ -3736,8 +3736,8 @@ public class EntityAttributeTest
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
       mdAttributeReference.apply();
 
       someReference = BusinessDAO.newInstance(referenceMdBusinessIF.definesType());
@@ -3745,7 +3745,7 @@ public class EntityAttributeTest
 
       someTestObject = BusinessDAO.newInstance(testMdBusinessIF.definesType());
 
-      someTestObject.setValue(attributeName, someReference.getId());
+      someTestObject.setValue(attributeName, someReference.getOid());
       someTestObject.apply();
 
       // Delete the object that is referenced by someTestObject.
@@ -3799,7 +3799,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeBlob blobRetrieved = (AttributeBlob) appliedObject.getAttributeIF(key);
 
       if (!EntityAttributeTest.equalsBytes(value, blobRetrieved.getBlobAsBytes()))
@@ -4156,7 +4156,7 @@ public class EntityAttributeTest
       testObject.apply();
 
       // compare the input and the retrieved value
-      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getId());
+      BusinessDAOIF appliedObject = BusinessDAO.get(testObject.getOid());
       AttributeBlob blob = (AttributeBlob) appliedObject.getAttributeIF(key);
       blob.setBlobAsBytes(value);
       blob.flushBlobCache();// make sure we're not using the cache value.

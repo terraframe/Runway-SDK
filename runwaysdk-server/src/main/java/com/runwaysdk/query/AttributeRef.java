@@ -56,18 +56,18 @@ public abstract class AttributeRef extends Attribute
   }
 
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public abstract BasicCondition EQ(String id);
+  public abstract BasicCondition EQ(String oid);
 
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public abstract BasicCondition NE(String id);
+  public abstract BasicCondition NE(String oid);
 
   /**
    * Returns an attribute character statement object.

@@ -95,9 +95,9 @@ public abstract class AbstractOntologyStrategyTest
       return getTerm(termCId);
     }
 
-    public static Term getTerm(String id)
+    public static Term getTerm(String oid)
     {
-      return (Term) Term.get(id);
+      return (Term) Term.get(oid);
     }
   }
 
@@ -178,7 +178,7 @@ public abstract class AbstractOntologyStrategyTest
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase \n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + this.getOntologyStrategy().getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n " + this.getInitializeStrategySource() + "\n" + "}\n" + "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
@@ -187,15 +187,15 @@ public abstract class AbstractOntologyStrategyTest
     mdTermRelationship.setValue(MdTreeInfo.NAME, "Sequential");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sequential Relationship");
-    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Previous Letter");
-    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Next Letter");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
     mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
     mdTermRelationship.apply();
 
     // Gotta have a root term.
@@ -218,12 +218,12 @@ public abstract class AbstractOntologyStrategyTest
     termC.apply();
     termB.addChild(termC, mdTermRelationship.definesType()).apply();
 
-    TermHolder.termAId = termA.getId();
-    TermHolder.termBId = termB.getId();
-    TermHolder.termCId = termC.getId();
+    TermHolder.termAId = termA.getOid();
+    TermHolder.termBId = termB.getOid();
+    TermHolder.termCId = termC.getOid();
 
-    mdTermId = mdTerm.getId();
-    mdTermRelationshipId = mdTermRelationship.getId();
+    mdTermId = mdTerm.getOid();
+    mdTermRelationshipId = mdTermRelationship.getOid();
   }
 
   @Request
@@ -592,7 +592,7 @@ public abstract class AbstractOntologyStrategyTest
 
     List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType()).getAll();
     Iterator<Term> it = descendents.iterator();
-    Assert.assertEquals(it.next().getId(), bb.getId());
-    Assert.assertEquals(it.next().getId(), cc.getId());
+    Assert.assertEquals(it.next().getOid(), bb.getOid());
+    Assert.assertEquals(it.next().getOid(), cc.getOid());
   }
 }

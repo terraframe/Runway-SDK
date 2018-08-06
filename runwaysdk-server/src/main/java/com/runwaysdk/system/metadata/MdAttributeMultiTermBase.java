@@ -41,9 +41,9 @@ public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static MdAttributeMultiTerm get(String id)
+  public static MdAttributeMultiTerm get(String oid)
   {
-    return (MdAttributeMultiTerm) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeMultiTerm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeMultiTerm getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.meta
     return (MdAttributeMultiTerm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeMultiTerm lock(java.lang.String id)
+  public static MdAttributeMultiTerm lock(java.lang.String oid)
   {
-    MdAttributeMultiTerm _instance = MdAttributeMultiTerm.get(id);
+    MdAttributeMultiTerm _instance = MdAttributeMultiTerm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeMultiTerm unlock(java.lang.String id)
+  public static MdAttributeMultiTerm unlock(java.lang.String oid)
   {
-    MdAttributeMultiTerm _instance = MdAttributeMultiTerm.get(id);
+    MdAttributeMultiTerm _instance = MdAttributeMultiTerm.get(oid);
     _instance.unlock();
     
     return _instance;

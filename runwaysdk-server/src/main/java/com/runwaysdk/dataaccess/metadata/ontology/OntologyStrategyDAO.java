@@ -122,7 +122,7 @@ public class OntologyStrategyDAO extends BusinessDAO
 //    
 //    if (!keyHasBeenSet)
 //    {
-      this.setKey(this.getId());
+      this.setKey(this.getOid());
 //    }
     
     return super.apply();

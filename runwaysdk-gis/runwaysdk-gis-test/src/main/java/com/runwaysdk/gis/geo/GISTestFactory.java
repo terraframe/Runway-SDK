@@ -45,7 +45,7 @@ public class GISTestFactory
     Universal uni = new Universal();
     uni.getDisplayLabel().setValue(name);
 
-    return Universal.create(uni, allowedInParents[0].getUniversal().getId(), AllowedIn.CLASS);
+    return Universal.create(uni, allowedInParents[0].getUniversal().getOid(), AllowedIn.CLASS);
   }
 
   public static UniversalInput convertToInput(UniversalView view)

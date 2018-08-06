@@ -51,9 +51,9 @@ public abstract class WebGroupFieldBase extends com.runwaysdk.system.metadata.Me
     return (com.runwaysdk.system.metadata.MdWebField) super.getChild();
   }
   
-  public static WebGroupField get(String id)
+  public static WebGroupField get(String oid)
   {
-    return (WebGroupField) com.runwaysdk.business.Relationship.get(id);
+    return (WebGroupField) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static WebGroupField getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class WebGroupFieldBase extends com.runwaysdk.system.metadata.Me
     return (WebGroupField) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static WebGroupField lock(java.lang.String id)
+  public static WebGroupField lock(java.lang.String oid)
   {
-    WebGroupField _instance = WebGroupField.get(id);
+    WebGroupField _instance = WebGroupField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static WebGroupField unlock(java.lang.String id)
+  public static WebGroupField unlock(java.lang.String oid)
   {
-    WebGroupField _instance = WebGroupField.get(id);
+    WebGroupField _instance = WebGroupField.get(oid);
     _instance.unlock();
     
     return _instance;

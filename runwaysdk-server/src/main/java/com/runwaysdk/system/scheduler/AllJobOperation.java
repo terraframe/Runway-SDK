@@ -49,10 +49,10 @@ public enum AllJobOperation implements com.runwaysdk.business.BusinessEnumeratio
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -67,11 +67,11 @@ public enum AllJobOperation implements com.runwaysdk.business.BusinessEnumeratio
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static AllJobOperation get(String id)
+  public static AllJobOperation get(String oid)
   {
     for (AllJobOperation e : AllJobOperation.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

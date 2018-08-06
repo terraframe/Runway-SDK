@@ -36,13 +36,13 @@ public class SingleUserExportBuilder extends ExportBuilder<UserDAO>
 
   private UserDAO       user;
 
-  private String        id;
+  private String        oid;
 
-  public SingleUserExportBuilder(List<UserDAO> list, File file, String id)
+  public SingleUserExportBuilder(List<UserDAO> list, File file, String oid)
   {
     this.list = list;
     this.file = file;
-    this.id = id;
+    this.oid = oid;
   }
 
   @Override
@@ -59,7 +59,7 @@ public class SingleUserExportBuilder extends ExportBuilder<UserDAO>
     user = UserDAO.newInstance();
     user.setUsername("ReferenceUser");
     user.setPassword("ReferenceUser");
-    user.setValue("owner", id);
+    user.setValue("owner", oid);
     user.apply();
 
     return user;

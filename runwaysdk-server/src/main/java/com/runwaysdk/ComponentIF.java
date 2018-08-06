@@ -57,7 +57,7 @@ public interface ComponentIF
    * 
    * @return  The ID of the component
    */
-  public String     getId();
+  public String     getOid();
   
   /**
    * Returns the name of the class of this component.

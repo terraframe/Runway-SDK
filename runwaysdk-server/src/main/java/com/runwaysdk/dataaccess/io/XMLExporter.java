@@ -120,12 +120,12 @@ public class XMLExporter
   private Element                         root;
 
   /**
-   * <code>elementMap</code> stores id-->element mappings. Used for quick access to an element if additional information needs to be added.
+   * <code>elementMap</code> stores oid-->element mappings. Used for quick access to an element if additional information needs to be added.
    */
   private Hashtable<String, Element>      elementMap;
 
   /**
-   * <code>attributeMap</code> stores Element-->id mappings. When an <code>&lt;
+   * <code>attributeMap</code> stores Element-->oid mappings. When an <code>&lt;
    * md_attribute></code> tag is created, it is attached as a child to the <code>&lt;
    * definitions></code> tag of the defining <code>&lt;object</code>. This map allows the elements to be attached to the appropriate parents before writing to the file.
    */
@@ -143,7 +143,7 @@ public class XMLExporter
   private boolean                         allowDuplicates;
 
   /**
-   * <code>ids</code> contains every id that has been added to the Document. Used when detecting duplicates. <code><b>false</b></code> by default.
+   * <code>ids</code> contains every oid that has been added to the Document. Used when detecting duplicates. <code><b>false</b></code> by default.
    */
   private TreeSet<String>                 ids;
 
@@ -376,14 +376,14 @@ public class XMLExporter
   }
 
   /**
-   * Gets the instance of the <code>Component</code> referenced by the given <code>id</code> and adds it to the <code>document</code>.
+   * Gets the instance of the <code>Component</code> referenced by the given <code>oid</code> and adds it to the <code>document</code>.
    * 
-   * @param id
+   * @param oid
    *          of a Component in the database
    */
-  public void add(String id)
+  public void add(String oid)
   {
-    EntityDAOIF entityDAOIF = EntityDAO.get(id);
+    EntityDAOIF entityDAOIF = EntityDAO.get(oid);
     add(entityDAOIF);
     return;
   }
@@ -396,11 +396,11 @@ public class XMLExporter
    */
   private void addObject(EntityDAO entityDAO, Element entityElement, String tagName)
   {
-    String id = entityDAO.getId();
-    checkID(id);
+    String oid = entityDAO.getOid();
+    checkID(oid);
 
     Element objectTag = document.createElement(tagName);
-    elementMap.put(id, objectTag);
+    elementMap.put(oid, objectTag);
     entityElement.appendChild(objectTag);
 
     Element classType = document.createElement(EntityInfo.TYPE);
@@ -408,7 +408,7 @@ public class XMLExporter
     objectTag.appendChild(classType);
 
     Element idTag = document.createElement(EntityInfo.ID);
-    idTag.appendChild(document.createTextNode(id));
+    idTag.appendChild(document.createTextNode(oid));
     objectTag.appendChild(idTag);
 
     Element attributesTag = document.createElement("attributes");
@@ -425,7 +425,7 @@ public class XMLExporter
    */
   private void addRelationship(RelationshipDAO relationship)
   {
-    checkID(relationship.getId());
+    checkID(relationship.getOid());
 
     Element relationshipTag;
     if (relationship.getType().equals(RelationshipTypes.ENTITY_INDEX.getType()))
@@ -439,8 +439,8 @@ public class XMLExporter
 
     root.appendChild(relationshipTag);
 
-    Element idElement = document.createElement("id");
-    idElement.appendChild(document.createTextNode(relationship.getId()));
+    Element idElement = document.createElement("oid");
+    idElement.appendChild(document.createTextNode(relationship.getOid()));
     relationshipTag.appendChild(idElement);
 
     Element parentIdTag = document.createElement(RelationshipInfo.PARENT_ID);
@@ -598,7 +598,7 @@ public class XMLExporter
   protected void addAttributeDefinition(MdAttributeConcreteDAOIF mdAttribute)
   {
 
-    checkID(mdAttribute.getId());
+    checkID(mdAttribute.getOid());
 
     String typeName = mdAttribute.getType();
     String className = BusinessDAOFactory.getClassNameFromType(typeName);
@@ -703,14 +703,14 @@ public class XMLExporter
     mdEnumerationTypeTag.appendChild(document.createTextNode(mdEnumerationIF.definesEnumeration()));
     enumerationTag.appendChild(mdEnumerationTypeTag);
 
-    Element setIdTag = document.createElement(MdEnumerationInfo.SET_ID);
-    setIdTag.appendChild(document.createTextNode(getAttributeValue(attribute)));
-    enumerationTag.appendChild(setIdTag);
+    Element setOidTag = document.createElement(MdEnumerationInfo.SET_ID);
+    setOidTag.appendChild(document.createTextNode(getAttributeValue(attribute)));
+    enumerationTag.appendChild(setOidTag);
 
-    for (String id : attribute.getEnumItemIdList())
+    for (String oid : attribute.getEnumItemIdList())
     {
       Element enumAttrIdTag = document.createElement(MdEnumerationInfo.ITEM_ID);
-      enumAttrIdTag.appendChild(document.createTextNode(id));
+      enumAttrIdTag.appendChild(document.createTextNode(oid));
       enumerationTag.appendChild(enumAttrIdTag);
     }
   }
@@ -724,21 +724,21 @@ public class XMLExporter
   }
 
   /**
-   * Checks an id to see if it has already been added to this document. If so (and duplicates are not allowed), an exception is thrown.
+   * Checks an oid to see if it has already been added to this document. If so (and duplicates are not allowed), an exception is thrown.
    * 
-   * @param id
-   *          The id of an element to be added to the document.
-   * @return <code>true</code> if the document does not already contain the id.
+   * @param oid
+   *          The oid of an element to be added to the document.
+   * @return <code>true</code> if the document does not already contain the oid.
    */
-  private boolean checkID(String id)
+  private boolean checkID(String oid)
   {
-    boolean newID = ids.add(id);
+    boolean newID = ids.add(oid);
     if (allowDuplicates || newID)
     {
       return true;
     }
 
-    String error = EntityInfo.ID + " [" + id + "] is already in the document.  If you want to " + "allow duplicate elements in your document, call setAllowDuplicates(true)";
+    String error = EntityInfo.ID + " [" + oid + "] is already in the document.  If you want to " + "allow duplicate elements in your document, call setAllowDuplicates(true)";
     throw new XMLException(error);
   }
 

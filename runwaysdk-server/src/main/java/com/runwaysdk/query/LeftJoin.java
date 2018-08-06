@@ -94,7 +94,7 @@ public abstract class LeftJoin extends Join
    */
   protected LeftJoin(Selectable selectable1, EntityQuery entityQuery)
   {
-    super(selectable1, entityQuery.id());
+    super(selectable1, entityQuery.oid());
     
     this.nestedLeftJoin = null;
   }
@@ -107,7 +107,7 @@ public abstract class LeftJoin extends Join
    */
   protected LeftJoin(EntityQuery entityQuery, Selectable... selectableArray2)
   {
-    super(entityQuery.id(), selectableArray2[0]);
+    super(entityQuery.oid(), selectableArray2[0]);
     
     this.nestedLeftJoin = null;
   }
@@ -120,7 +120,7 @@ public abstract class LeftJoin extends Join
    */
   protected LeftJoin(EntityQuery entityQuery, Selectable selectable2)
   {
-    super(entityQuery.id(), selectable2);
+    super(entityQuery.oid(), selectable2);
 
     this.selectableArray2 = new Selectable[1];
 

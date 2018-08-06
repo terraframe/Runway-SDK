@@ -258,13 +258,13 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.SingleActor singleActor)
     {
       if(singleActor == null) return this.EQ((java.lang.String)null);
-      return this.EQ(singleActor.getId());
+      return this.EQ(singleActor.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.SingleActor singleActor)
     {
       if(singleActor == null) return this.NE((java.lang.String)null);
-      return this.NE(singleActor.getId());
+      return this.NE(singleActor.getOid());
     }
 
 
@@ -423,7 +423,7 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<singleActor.length; i++)
       {
-        itemIdArray[i] = singleActor[i].getId();
+        itemIdArray[i] = singleActor[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -435,7 +435,7 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<singleActor.length; i++)
       {
-        itemIdArray[i] = singleActor[i].getId();
+        itemIdArray[i] = singleActor[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<singleActor.length; i++)
       {
-        itemIdArray[i] = singleActor[i].getId();
+        itemIdArray[i] = singleActor[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -459,7 +459,7 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<singleActor.length; i++)
       {
-        itemIdArray[i] = singleActor[i].getId();
+        itemIdArray[i] = singleActor[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class SingleActorQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<singleActor.length; i++)
       {
-        itemIdArray[i] = singleActor[i].getId();
+        itemIdArray[i] = singleActor[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

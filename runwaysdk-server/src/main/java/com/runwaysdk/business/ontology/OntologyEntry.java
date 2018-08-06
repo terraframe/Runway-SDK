@@ -22,23 +22,23 @@ public class OntologyEntry implements OntologyEntryIF
 {
   private String label;
 
-  private String id;
+  private String oid;
 
   /**
    * @param label
-   * @param id
+   * @param oid
    */
-  public OntologyEntry(String label, String id)
+  public OntologyEntry(String label, String oid)
   {
     super();
     this.label = label;
-    this.id = id;
+    this.oid = oid;
   }
 
   @Override
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   @Override

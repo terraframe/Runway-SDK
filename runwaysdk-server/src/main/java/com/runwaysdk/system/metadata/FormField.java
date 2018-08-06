@@ -29,7 +29,7 @@ public abstract class FormField extends FormFieldBase
   
   public FormField(com.runwaysdk.system.metadata.MdForm parent, com.runwaysdk.system.metadata.MdField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

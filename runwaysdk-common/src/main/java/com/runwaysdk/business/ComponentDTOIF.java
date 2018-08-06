@@ -38,11 +38,11 @@ public interface ComponentDTOIF
   public static final boolean       READABLE_DEFAULT    = false;
 
   /**
-   * Returns the id of this object.
+   * Returns the oid of this object.
    * 
-   * @return A unique id.
+   * @return A unique oid.
    */
-  public String getId();
+  public String getOid();
   
   /**
    * Returns the type of this object.
@@ -133,17 +133,17 @@ public interface ComponentDTOIF
   
   /**
    * If this is called on the front end, it will return all BusinessDTOs for which this
-   * object has an internal mapping.  If this object only has the id of an enumItem, it
+   * object has an internal mapping.  If this object only has the oid of an enumItem, it
    * will fetch the generic BusinessDTO for it via the clientRequest.  If this is called on the 
    * back-end, it will only return the BusinessDTOs that it has references to.  If it only 
-   * has an id for an enumItem, it does not return the BusinessDTO for it.  This is OK,
+   * has an oid for an enumItem, it does not return the BusinessDTO for it.  This is OK,
    * as on the back-end, the object should contain all BusinessDTOs.  On the front-end,
    * the method addEnumItem(String) may have been called, but the object does not have a
    * businessDTO for that item.
    * 
    * @param attributeName
    *          The name of the attribute to retrieve all items.
-   * @returns A List of strings where each string is an item id. An emptry list
+   * @returns A List of strings where each string is an item oid. An emptry list
    *          is returned if no items exist for the attribute.
    */
   public List<? extends BusinessDTO> getEnumValues(String attributeName);

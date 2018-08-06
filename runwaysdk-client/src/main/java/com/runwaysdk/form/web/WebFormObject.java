@@ -86,10 +86,10 @@ public class WebFormObject extends FormObject implements WebFormComponent
     WebFormObject formObject = new WebFormObject(md, fields);
 
     // Set standard fields on the form describing the data it wraps
-    String id = IDGenerator.nextID() + mdFormDTO.getMd().getId().substring(0, new Integer(DatabaseInfo.ROOT_ID_SIZE).intValue());
+    String oid = IDGenerator.nextID() + mdFormDTO.getMd().getOid().substring(0, new Integer(DatabaseInfo.ROOT_ID_SIZE).intValue());
 
-    formObject.setId(id);
-    formObject.setDataId(formData.getId());
+    formObject.setOid(oid);
+    formObject.setDataId(formData.getOid());
     formObject.setType(mdFormDTO.getType());
     formObject.setReadable(formData.isReadable());
 
@@ -149,7 +149,7 @@ public class WebFormObject extends FormObject implements WebFormComponent
   }
 
   /**
-   * Constructs a FormObject based on the data object with the given id.
+   * Constructs a FormObject based on the data object with the given oid.
    * 
    * @param mdFormDTO
    * @param dataId

@@ -258,13 +258,13 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileGroup mdMobileGroup)
     {
       if(mdMobileGroup == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileGroup.getId());
+      return this.EQ(mdMobileGroup.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileGroup mdMobileGroup)
     {
       if(mdMobileGroup == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileGroup.getId());
+      return this.NE(mdMobileGroup.getOid());
     }
 
 
@@ -423,7 +423,7 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
 
       for (int i=0; i<mdMobileGroup.length; i++)
       {
-        itemIdArray[i] = mdMobileGroup[i].getId();
+        itemIdArray[i] = mdMobileGroup[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -435,7 +435,7 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
 
       for (int i=0; i<mdMobileGroup.length; i++)
       {
-        itemIdArray[i] = mdMobileGroup[i].getId();
+        itemIdArray[i] = mdMobileGroup[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
 
       for (int i=0; i<mdMobileGroup.length; i++)
       {
-        itemIdArray[i] = mdMobileGroup[i].getId();
+        itemIdArray[i] = mdMobileGroup[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -459,7 +459,7 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
 
       for (int i=0; i<mdMobileGroup.length; i++)
       {
-        itemIdArray[i] = mdMobileGroup[i].getId();
+        itemIdArray[i] = mdMobileGroup[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class MdMobileGroupQuery extends com.runwaysdk.system.metadata.MdMobileF
 
       for (int i=0; i<mdMobileGroup.length; i++)
       {
-        itemIdArray[i] = mdMobileGroup[i].getId();
+        itemIdArray[i] = mdMobileGroup[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

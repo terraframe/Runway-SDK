@@ -60,9 +60,9 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
       this.labels = new HashMap<String, String>(5);
     }
 
-    public void add(String id, String label)
+    public void add(String oid, String label)
     {
-      this.labels.put(id, label);
+      this.labels.put(oid, label);
     }
 
     public String getUniversal()
@@ -110,29 +110,29 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
     StringBuilder builder = new StringBuilder();
     builder.append("WITH RECURSIVE quick_paths (original_child) AS (");
-    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.parent_id, ge.universal, gdl.default_locale AS label, sy.id AS synonym_id, sdl.default_locale AS synonym");
+    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.parent_id, ge.universal, gdl.default_locale AS label, sy.oid AS synonym_id, sdl.default_locale AS synonym");
     builder.append("  FROM located_in AS li");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = li.parent_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = li.parent_id");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_id");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_id");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
     builder.append("  UNION");
-    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.child_id AS parent_id, ge.universal, gdl.default_locale AS label, sy.id AS synonym_id, sdl.default_locale AS synonym");
+    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.child_id AS parent_id, ge.universal, gdl.default_locale AS label, sy.oid AS synonym_id, sdl.default_locale AS synonym");
     builder.append("  FROM located_in AS li");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = li.child_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = li.child_id");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_id");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_id");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
     builder.append("  UNION");
-    builder.append("  SELECT original_child, l.child_id, l.parent_id, ge.universal, gdl.default_locale, sy.id, sdl.default_locale");
+    builder.append("  SELECT original_child, l.child_id, l.parent_id, ge.universal, gdl.default_locale, sy.oid, sdl.default_locale");
     builder.append("  FROM located_in AS l");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = l.parent_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = l.parent_id");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_id");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_id");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
     builder.append("  INNER JOIN quick_paths ON (l.child_id  = quick_paths.parent_id)");
     builder.append(")");
     builder.append("  SELECT *");
@@ -159,7 +159,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
         while (results.next())
         {
-          String id = results.getString(ORIGINAL_CHILD);
+          String oid = results.getString(ORIGINAL_CHILD);
           String parentId = results.getString(PARENT_ID);
           String childId = results.getString(CHILD_ID);
           String label = results.getString(LABEL);
@@ -167,7 +167,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
           String synonymId = results.getString(SYNONYM_ID);
           String universal = results.getString(UNIVERSAL);
 
-          if (prevId != null && !prevId.equals(id))
+          if (prevId != null && !prevId.equals(oid))
           {
             // Process Entry
 
@@ -239,7 +239,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
             relationships.get(childId).add(parentId);
           }
 
-          prevId = id;
+          prevId = oid;
         }
 
         logger.info("GeoEntitySolrOntologyStrategy Finished Index: " + System.currentTimeMillis());

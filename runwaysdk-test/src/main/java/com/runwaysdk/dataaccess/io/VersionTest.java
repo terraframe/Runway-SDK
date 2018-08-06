@@ -108,7 +108,7 @@ public class VersionTest
       BusinessDAOIF businessDAOIF = BusinessDAO.get("test.xmlclasses.Class99", "test.xmlclasses.Class99.01");
 
       AttributeEnumerationIF attributeEnum = (AttributeEnumerationIF) businessDAOIF.getAttributeIF("myAttribute");
-      if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getId()))
+      if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getOid()))
       {
         Assert.fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
       }
@@ -504,7 +504,7 @@ public class VersionTest
       MdAttributeLocalCharacterDAO mdAttributeLocal = TestFixtureFactory.addLocalCharacterAttribute(mdBusiness);
       mdAttributeLocal.apply();
 
-      business = BusinessDAO.get(business.getId()).getBusinessDAO();
+      business = BusinessDAO.get(business.getOid()).getBusinessDAO();
       business.setStructValue(mdAttributeLocal.definesAttribute(), "defaultLocale", "Localized Value");
       business.apply();
 

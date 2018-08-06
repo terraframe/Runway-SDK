@@ -99,7 +99,7 @@ public class XMLTermExporterTest
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.\n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + DatabaseAllPathsStrategy.class.getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n ((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);\n" + "}\n" + "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
@@ -108,15 +108,15 @@ public class XMLTermExporterTest
     mdTermRelationship.setValue(MdTreeInfo.NAME, "Sequential");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sequential Relationship");
-    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Previous Letter");
-    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Next Letter");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
     mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
     mdTermRelationship.apply();
 
     // Lets define a relationship A > B > C between these terms.
@@ -149,13 +149,13 @@ public class XMLTermExporterTest
     termBba.apply();
     termBb.addChild(termBba, mdTermRelationship.definesType()).apply();
 
-    termAId = termA.getId();
-    termBId = termB.getId();
-    termCId = termC.getId();
+    termAId = termA.getOid();
+    termBId = termB.getOid();
+    termCId = termC.getOid();
 
-    termBaId = termBa.getId();
-    termBbId = termBb.getId();
-    termBbaId = termBba.getId();
+    termBaId = termBa.getOid();
+    termBbId = termBb.getOid();
+    termBbaId = termBba.getOid();
   }
 
   protected static void afterTransactionFinishes()
@@ -235,7 +235,7 @@ public class XMLTermExporterTest
 
     List<? extends Business> aChildren = termA.getChildren(mdTermRelationship.definesType()).getAll();
     Assert.assertEquals(1, aChildren.size());
-    Assert.assertEquals(aChildren.get(0).getId(), termB.getId());
+    Assert.assertEquals(aChildren.get(0).getOid(), termB.getOid());
 
     List<? extends Business> bChildren = termB.getChildren(mdTermRelationship.definesType()).getAll();
     Assert.assertEquals(3, bChildren.size());

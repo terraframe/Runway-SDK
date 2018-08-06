@@ -29,7 +29,7 @@ public class DimensionHasClass extends DimensionHasClassBase
   
   public DimensionHasClass(com.runwaysdk.system.metadata.MdDimension parent, com.runwaysdk.system.metadata.MdClassDimension child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

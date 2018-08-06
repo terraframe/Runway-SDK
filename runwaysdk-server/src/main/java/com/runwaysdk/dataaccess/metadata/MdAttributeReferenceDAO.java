@@ -170,7 +170,7 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   @Override
   protected String generatedServerSetter(String attributeName)
   {
-    return this.setterWrapper(attributeName, "value.getId()");
+    return this.setterWrapper(attributeName, "value.getOid()");
   }
 
   /*
@@ -195,9 +195,9 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   }
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    * 
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedServerGetterRefId()
   {
@@ -205,9 +205,9 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   }
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    * 
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedClientGetterRefId()
   {
@@ -260,9 +260,9 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeReferenceDAOIF get(String id)
+  public static MdAttributeReferenceDAOIF get(String oid)
   {
-    return (MdAttributeReferenceDAOIF) BusinessDAO.get(id);
+    return (MdAttributeReferenceDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -283,7 +283,7 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   @Override
   public AttributeMdSession getAttributeMdSession()
   {
-    AttributeReferenceMdSession attrSes = new AttributeReferenceMdSession(this.getReferenceMdBusinessDAO().getId(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
+    AttributeReferenceMdSession attrSes = new AttributeReferenceMdSession(this.getReferenceMdBusinessDAO().getOid(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
@@ -315,11 +315,11 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   protected void setDefaultIndex()
   {
     AttributeEnumerationIF index = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-    String derefId = index.dereference()[0].getId();
+    String derefId = index.dereference()[0].getOid();
 
-    if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+    if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getOid()))
     {
-      this.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      this.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
     }
   }
 }

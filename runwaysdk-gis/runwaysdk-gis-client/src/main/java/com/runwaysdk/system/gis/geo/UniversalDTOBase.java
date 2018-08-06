@@ -50,7 +50,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -197,7 +197,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -382,7 +382,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -512,330 +512,330 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllContains()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllContainsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllContainsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllContainsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.AllowedInDTO addContains(com.runwaysdk.system.gis.geo.UniversalDTO child)
   {
-    return (com.runwaysdk.system.gis.geo.AllowedInDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.AllowedInDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.AllowedInDTO addContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.geo.UniversalDTO child)
+  public static com.runwaysdk.system.gis.geo.AllowedInDTO addContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.UniversalDTO child)
   {
-    return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   public void removeContains(com.runwaysdk.system.gis.geo.AllowedInDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.AllowedInDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllContains()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
-  public static void removeAllContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllContains(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSubType()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSubTypeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSubTypeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSubTypeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.IsARelationshipDTO addSubType(com.runwaysdk.system.gis.geo.UniversalDTO child)
   {
-    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.IsARelationshipDTO addSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.geo.UniversalDTO child)
+  public static com.runwaysdk.system.gis.geo.IsARelationshipDTO addSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.UniversalDTO child)
   {
-    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   public void removeSubType(com.runwaysdk.system.gis.geo.IsARelationshipDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.IsARelationshipDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllSubType()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
-  public static void removeAllSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSubType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllAllowedIn()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllAllowedInRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllAllowedInRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO> getAllAllowedInRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.AllowedInDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.AllowedInDTO addAllowedIn(com.runwaysdk.system.gis.geo.UniversalDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.AllowedInDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.AllowedInDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.AllowedInDTO addAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.geo.UniversalDTO parent)
+  public static com.runwaysdk.system.gis.geo.AllowedInDTO addAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.UniversalDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.AllowedInDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   public void removeAllowedIn(com.runwaysdk.system.gis.geo.AllowedInDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.AllowedInDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllAllowedIn()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
-  public static void removeAllAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllAllowedIn(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.AllowedInDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSuperType()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSuperTypeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSuperTypeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO> getAllSuperTypeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.IsARelationshipDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.IsARelationshipDTO addSuperType(com.runwaysdk.system.gis.geo.UniversalDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.IsARelationshipDTO addSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.geo.UniversalDTO parent)
+  public static com.runwaysdk.system.gis.geo.IsARelationshipDTO addSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.UniversalDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.IsARelationshipDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   public void removeSuperType(com.runwaysdk.system.gis.geo.IsARelationshipDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.IsARelationshipDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllSuperType()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
-  public static void removeAllSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSuperType(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.IsARelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllUniversalMultiTermAttributeRoots()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO> getAllUniversalMultiTermAttributeRootsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO> getAllUniversalMultiTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO> getAllUniversalMultiTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO addUniversalMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO addUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO addUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   public void removeUniversalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllUniversalMultiTermAttributeRoots()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
-  public static void removeAllUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllUniversalMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllUniversalTermAttributeRoots()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO> getAllUniversalTermAttributeRootsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO> getAllUniversalTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO> getAllUniversalTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO addUniversalTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO addUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
+  public static com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO addUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   public void removeUniversalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllUniversalTermAttributeRoots()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
-  public static void removeAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.UniversalDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.UniversalDTO) dto;
   }
@@ -853,7 +853,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.UniversalQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -866,10 +866,10 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -879,10 +879,10 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

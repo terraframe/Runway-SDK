@@ -134,13 +134,13 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebBoolean mdWebBoolean)
     {
       if(mdWebBoolean == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebBoolean.getId());
+      return this.EQ(mdWebBoolean.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebBoolean mdWebBoolean)
     {
       if(mdWebBoolean == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebBoolean.getId());
+      return this.NE(mdWebBoolean.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getDefaultValue()
@@ -203,7 +203,7 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
 
       for (int i=0; i<mdWebBoolean.length; i++)
       {
-        itemIdArray[i] = mdWebBoolean[i].getId();
+        itemIdArray[i] = mdWebBoolean[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
 
       for (int i=0; i<mdWebBoolean.length; i++)
       {
-        itemIdArray[i] = mdWebBoolean[i].getId();
+        itemIdArray[i] = mdWebBoolean[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
 
       for (int i=0; i<mdWebBoolean.length; i++)
       {
-        itemIdArray[i] = mdWebBoolean[i].getId();
+        itemIdArray[i] = mdWebBoolean[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
 
       for (int i=0; i<mdWebBoolean.length; i++)
       {
-        itemIdArray[i] = mdWebBoolean[i].getId();
+        itemIdArray[i] = mdWebBoolean[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdWebBooleanQuery extends com.runwaysdk.system.metadata.MdWebPrimi
 
       for (int i=0; i<mdWebBoolean.length; i++)
       {
-        itemIdArray[i] = mdWebBoolean[i].getId();
+        itemIdArray[i] = mdWebBoolean[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

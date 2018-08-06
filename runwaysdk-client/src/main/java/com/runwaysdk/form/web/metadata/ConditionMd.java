@@ -21,7 +21,7 @@ package com.runwaysdk.form.web.metadata;
 
 public abstract class ConditionMd
 {
-  protected String id;
+  protected String oid;
   protected String referencingMdForm;
   protected String referencingMdField;
   
@@ -32,14 +32,14 @@ public abstract class ConditionMd
     referencingMdField = null;
   }
   
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
   
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
   public String getReferencingMdForm()

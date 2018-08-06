@@ -119,19 +119,19 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.IndicatorElement.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, displayLabel);
 
@@ -362,9 +362,9 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -415,13 +415,13 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.IndicatorElement indicatorElement)
     {
       if(indicatorElement == null) return this.EQ((java.lang.String)null);
-      return this.EQ(indicatorElement.getId());
+      return this.EQ(indicatorElement.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.IndicatorElement indicatorElement)
     {
       if(indicatorElement == null) return this.NE((java.lang.String)null);
-      return this.NE(indicatorElement.getId());
+      return this.NE(indicatorElement.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -475,19 +475,19 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.metadata.IndicatorElement.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, displayLabel);
 
@@ -677,9 +677,9 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -735,7 +735,7 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
 
       for (int i=0; i<indicatorElement.length; i++)
       {
-        itemIdArray[i] = indicatorElement[i].getId();
+        itemIdArray[i] = indicatorElement[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -747,7 +747,7 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
 
       for (int i=0; i<indicatorElement.length; i++)
       {
-        itemIdArray[i] = indicatorElement[i].getId();
+        itemIdArray[i] = indicatorElement[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -759,7 +759,7 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
 
       for (int i=0; i<indicatorElement.length; i++)
       {
-        itemIdArray[i] = indicatorElement[i].getId();
+        itemIdArray[i] = indicatorElement[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -771,7 +771,7 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
 
       for (int i=0; i<indicatorElement.length; i++)
       {
-        itemIdArray[i] = indicatorElement[i].getId();
+        itemIdArray[i] = indicatorElement[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -783,7 +783,7 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
 
       for (int i=0; i<indicatorElement.length; i++)
       {
-        itemIdArray[i] = indicatorElement[i].getId();
+        itemIdArray[i] = indicatorElement[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -839,19 +839,19 @@ public  class IndicatorElementQuery extends com.runwaysdk.query.GeneratedBusines
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.metadata.IndicatorElement.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.IndicatorElement.ID, alias, displayLabel);
 

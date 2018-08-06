@@ -68,7 +68,7 @@ public interface TransactionCacheIF
   
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * parent.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -77,7 +77,7 @@ public interface TransactionCacheIF
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * child.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -104,15 +104,15 @@ public interface TransactionCacheIF
   public abstract void storeTransactionEntityDAO(EntityDAO entityDAO);
   
   /**
-   * Returns the id of the object before it was changed in this transaction.
+   * Returns the oid of the object before it was changed in this transaction.
    * 
-   * @return id of the object before it was changed in this transaction.
+   * @return oid of the object before it was changed in this transaction.
    */
-  public abstract String getOriginalId(String id);
+  public abstract String getOriginalId(String oid);
 
   
   /**
-   * When the id of an object changes, update all caches.
+   * When the oid of an object changes, update all caches.
    * 
    * @param oldId
    * @param entityDAO
@@ -289,30 +289,30 @@ public interface TransactionCacheIF
   public abstract void updateEntityDAOCollection(String type, CacheStrategy entityDAOCollectoin);
 
   /**
-   * Returns the <code>EntityDAOIF</code> with the given id from the Transaction cache.
+   * Returns the <code>EntityDAOIF</code> with the given oid from the Transaction cache.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
    * <b>Postcondition:</b> true
    * 
-   * @param id entity id
+   * @param oid entity oid
    *          
-   * @return <code>EntityDAOIF</code>  with the given id if it exists in the transaction cache,
+   * @return <code>EntityDAOIF</code>  with the given oid if it exists in the transaction cache,
    *         false otherwise.
    */
-  public abstract EntityDAOIF getEntityDAO(String id);
+  public abstract EntityDAOIF getEntityDAO(String oid);
   
   /**
-   * Returns the <code>EntityDAOIF</code> with the given id directly from the Transaction cache,
-   * null if no such object with the id exists.
+   * Returns the <code>EntityDAOIF</code> with the given oid directly from the Transaction cache,
+   * null if no such object with the oid exists.
    * 
-   * @param id entity id
+   * @param oid entity oid
    * 
-   * @return <code>EntityDAOIF</code>  with the given id if it exists in the transaction cache,
+   * @return <code>EntityDAOIF</code>  with the given oid if it exists in the transaction cache,
    *         false otherwise.
    */
-  public abstract EntityDAOIF getEntityDAOIFfromCache(String id);
+  public abstract EntityDAOIF getEntityDAOIFfromCache(String oid);
 
   /**
    * Returns a map of all entities that were updated during this transaction.
@@ -322,18 +322,18 @@ public interface TransactionCacheIF
   public Map<String, TransactionItemEntityDAOAction> getEntityDAOIDsMap();
 
   /**
-   * Returns the ID that should be passed on to the ObjectCache for fetching parents objects with the given id.
-   * The id could have been changed during the transaction, and the id in the global cache may be different 
-   * than the id for the object in the current transaction.
+   * Returns the ID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
+   * The oid could have been changed during the transaction, and the oid in the global cache may be different 
+   * than the oid for the object in the current transaction.
    * 
    * @param businessDAOid
    * @param relationshipType
-   * @return ID that should be passed on to the ObjectCache for fetching parents objects with the given id.
+   * @return ID that should be passed on to the ObjectCache for fetching parents objects with the given oid.
    */
   public abstract String getBusIdForGetParentsMethod(String businessDAOid, String relationshipType);
   
   /**
-   * Returns parent relationships for the object with the given id in the
+   * Returns parent relationships for the object with the given oid in the
    * transaction.
    * 
    * @param relationshipList
@@ -346,7 +346,7 @@ public interface TransactionCacheIF
   public abstract List<RelationshipDAOIF> getParents(List<RelationshipDAOIF> relationshipList, String businessDAOid, String relationshipType);
 
   /**
-   * Returns child relationships for the object with the given id in the
+   * Returns child relationships for the object with the given oid in the
    * transaction.
    * 
    * @param relationshipList
@@ -368,9 +368,9 @@ public interface TransactionCacheIF
    * <b>Precondition:</b> key != null <br/>
    * <b>Precondition:</b> !key.trim().equals("")
    * 
-   * @param id
-   *          entity id
-   * @return EntityDAO with the given id if it exists in the transaction cache,
+   * @param oid
+   *          entity oid
+   * @return EntityDAO with the given oid if it exists in the transaction cache,
    *         false otherwise.
    */
   public abstract EntityDAOIF getEntityDAO(String type, String key);
@@ -490,7 +490,7 @@ public interface TransactionCacheIF
 
   /**
    * Returns true if the given delete method signature has already been executed
-   * on the entity with the given id, false otherwise.
+   * on the entity with the given oid, false otherwise.
    * 
    * @param entityDAO
    *          EntityDAO.
@@ -498,12 +498,12 @@ public interface TransactionCacheIF
    *          method signature.
    * 
    * @return true if the given delete method signature has already been executed
-   *         on the entity with the given id, false otherwise.
+   *         on the entity with the given oid, false otherwise.
    */
   public abstract boolean hasExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature);
 
   /**
-   * Sets the given delete method signature for the entity with the given id has
+   * Sets the given delete method signature for the entity with the given oid has
    * having been executed in this transaction.
    * 
    * @param entityDAO
@@ -514,7 +514,7 @@ public interface TransactionCacheIF
   public abstract void setExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature);
 
   /**
-   * Removes the deleted method signature for the entity with the given id. Once the outer most delete method for
+   * Removes the deleted method signature for the entity with the given oid. Once the outer most delete method for
    * the entity has been executed, we no longer keep track of it.
    * 
    * @param entityDAO
@@ -535,7 +535,7 @@ public interface TransactionCacheIF
 
   /**
    * Called when an <code>EntityDAO</code> is being created in case within the transaction
-   * and object with the same id has been previously deleted.
+   * and object with the same oid has been previously deleted.
    * 
    * @param entityDAO
    */
@@ -581,7 +581,7 @@ public interface TransactionCacheIF
   public abstract void addRelationship(RelationshipDAO relationshipDAO);
 
   /**
-   * Call this method if the id of the relationshipId has changed during the transaction.
+   * Call this method if the oid of the relationshipId has changed during the transaction.
    * 
    * <br/>
    * <b>Precondition:</b> relationshipDAO != null <br/>

@@ -86,7 +86,7 @@ public class VaultFile extends VaultFileBase
 
     if (session != null)
     {
-      String sessionId = session.getId();
+      String sessionId = session.getOid();
       boolean access = SessionFacade.checkAccess(sessionId, operation, entity);
 
       if (!access)

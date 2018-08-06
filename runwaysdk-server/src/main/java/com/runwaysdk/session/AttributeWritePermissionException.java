@@ -28,7 +28,7 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 public class AttributeWritePermissionException extends PermissionException
 {
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = 2360190297631758413L;
 

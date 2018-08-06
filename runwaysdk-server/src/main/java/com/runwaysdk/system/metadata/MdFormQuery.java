@@ -348,13 +348,13 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdForm mdForm)
     {
       if(mdForm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdForm.getId());
+      return this.EQ(mdForm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdForm mdForm)
     {
       if(mdForm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdForm.getId());
+      return this.NE(mdForm.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getDimension()
@@ -591,7 +591,7 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
 
       for (int i=0; i<mdForm.length; i++)
       {
-        itemIdArray[i] = mdForm[i].getId();
+        itemIdArray[i] = mdForm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -603,7 +603,7 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
 
       for (int i=0; i<mdForm.length; i++)
       {
-        itemIdArray[i] = mdForm[i].getId();
+        itemIdArray[i] = mdForm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -615,7 +615,7 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
 
       for (int i=0; i<mdForm.length; i++)
       {
-        itemIdArray[i] = mdForm[i].getId();
+        itemIdArray[i] = mdForm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -627,7 +627,7 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
 
       for (int i=0; i<mdForm.length; i++)
       {
-        itemIdArray[i] = mdForm[i].getId();
+        itemIdArray[i] = mdForm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -639,7 +639,7 @@ public  class MdFormQuery extends com.runwaysdk.system.metadata.MdTypeQuery
 
       for (int i=0; i<mdForm.length; i++)
       {
-        itemIdArray[i] = mdForm[i].getId();
+        itemIdArray[i] = mdForm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

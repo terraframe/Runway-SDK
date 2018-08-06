@@ -187,7 +187,7 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
     if (this.isExpression())
     {
       MdWebPrimitiveQuery webPrimQ = new MdWebPrimitiveQuery(new QueryFactory());
-      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getId().EQ(this.getId()));
+      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getOid().EQ(this.getOid()));
       OIterator<? extends MdWebPrimitive> mdWebPrimIt = webPrimQ.getIterator();
       
       while (mdWebPrimIt.hasNext())

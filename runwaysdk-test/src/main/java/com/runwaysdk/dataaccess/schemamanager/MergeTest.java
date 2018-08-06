@@ -298,12 +298,12 @@ public class MergeTest
     mdAttribute.apply();
 
     // Add permissions to the MdBusiness
-    role.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    role.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    role.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    role.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    role.grantPermission(Operation.WRITE, mdAttribute.getId());
-    role.grantPermission(Operation.READ, mdAttribute.getId());
+    role.grantPermission(Operation.WRITE, mdAttribute.getOid());
+    role.grantPermission(Operation.READ, mdAttribute.getOid());
 
     // Generate the initial model
     ExportMetadata metadata = new ExportMetadata();
@@ -381,7 +381,7 @@ public class MergeTest
       {
         mdStruct.setValue(MdBusinessInfo.CACHE_SIZE, "600");
 
-        MdStructDAO updateStruct = MdStructDAO.get(mdStruct.getId()).getBusinessDAO();
+        MdStructDAO updateStruct = MdStructDAO.get(mdStruct.getOid()).getBusinessDAO();
         updateStruct.setValue(MdBusinessInfo.CACHE_SIZE, "600");
         updateStruct.apply();
 
@@ -399,7 +399,7 @@ public class MergeTest
     Assert.assertEquals("600", mdStructIF.getValue(MdBusinessInfo.CACHE_SIZE));
 
     // Ensure that the correct class is being referenced
-    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getId());
+    Assert.assertEquals(mdAttributeIF.getValue(MdAttributeStructInfo.MD_STRUCT), mdStructIF.getOid());
 
     // List<String> ids = EntityDAO.getEntityIdsDB(CLASS);
 
@@ -432,7 +432,7 @@ public class MergeTest
     mdInformation1.apply();
 
     MdInformationDAO mdInformation2 = TestFixtureFactory.createMdInformation2();
-    mdInformation2.setValue(MdInformationInfo.SUPER_MD_INFORMATION, mdInformation1.getId());
+    mdInformation2.setValue(MdInformationInfo.SUPER_MD_INFORMATION, mdInformation1.getOid());
     mdInformation2.setValue(MdInformationInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdInformation2.setValue(MdInformationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdInformation2.apply();
@@ -469,10 +469,10 @@ public class MergeTest
     Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getId());
+    Assert.assertEquals(mdInformation2IF.getValue(MdInformationInfo.SUPER_MD_INFORMATION), mdInformation1IF.getOid());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getOid());
   }
 
   @Request
@@ -548,7 +548,7 @@ public class MergeTest
     final MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdProblem1);
 
     MdProblemDAO mdProblem2 = TestFixtureFactory.createMdProblem2();
-    mdProblem2.setValue(MdProblemInfo.SUPER_MD_PROBLEM, mdProblem1.getId());
+    mdProblem2.setValue(MdProblemInfo.SUPER_MD_PROBLEM, mdProblem1.getOid());
     mdProblem2.setValue(MdProblemInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdProblem2.setValue(MdProblemInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdProblem2.apply();
@@ -582,10 +582,10 @@ public class MergeTest
     Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getId());
+    Assert.assertEquals(mdProblem2IF.getValue(MdProblemInfo.SUPER_MD_PROBLEM), mdProblem1IF.getOid());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getOid());
   }
 
   /**
@@ -614,16 +614,16 @@ public class MergeTest
    * BusinessDAO.newInstance(mdBusiness2.definesType()); businessDAO2.apply();
    * 
    * // Create Test RelationshipDAO RelationshipDAO relationshipDAO1 =
-   * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2 .getId(),
+   * RelationshipDAO.newInstance(businessDAO1.getOid(), businessDAO2 .getOid(),
    * mdRelationship1.definesType());
    * relationshipDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
    * MdAttributeBooleanInfo.TRUE); relationshipDAO1.apply();
    * 
    * final RelationshipDAO relationshipDAO2 =
-   * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2.getId(),
+   * RelationshipDAO.newInstance(businessDAO1.getOid(), businessDAO2.getOid(),
    * mdRelationship1.definesType());
    * relationshipDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
-   * MdAttributeBooleanInfo.TRUE); String id = relationshipDAO2.apply();
+   * MdAttributeBooleanInfo.TRUE); String oid = relationshipDAO2.apply();
    * 
    * final ComponentIF[] componentArray = new ComponentIF[] { mdBusiness1,
    * mdBusiness2, mdRelationship1, relationshipDAO1, relationshipDAO2 };
@@ -644,16 +644,16 @@ public class MergeTest
    * RelationshipDAO.get(r1Ids.get(0));
    * 
    * // Ensure that the parent references the instance of CLASS
-   * Assert.assertEquals(c1.getId(), r1.getParentId()); // Ensure that the child
-   * reference the instance of CLASS2 Assert.assertEquals(c2.getId(),
+   * Assert.assertEquals(c1.getOid(), r1.getParentId()); // Ensure that the child
+   * reference the instance of CLASS2 Assert.assertEquals(c2.getOid(),
    * r1.getChildId()); // Ensure that the value of testBoolean is true
    * Assert.assertEquals(MdAttributeBooleanInfo.TRUE,
    * r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
    * 
-   * try { RelationshipDAO.get(id);
+   * try { RelationshipDAO.get(oid);
    * 
-   * Assert.fail("SAXImporter did not delete the RelationshipDAO with the id ["
-   * + id + "]"); } catch (DataNotFoundException e) { // This is expected }
+   * Assert.fail("SAXImporter did not delete the RelationshipDAO with the oid ["
+   * + oid + "]"); } catch (DataNotFoundException e) { // This is expected }
    * 
    * Assert.assertEquals(1,
    * MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size()); }
@@ -704,7 +704,7 @@ public class MergeTest
     Assert.assertEquals(attribute.getStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Character Set Test");
     Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.SIZE), "200");
     Assert.assertEquals(attribute.getValue(MdAttributeCharacterInfo.IMMUTABLE), MdAttributeBooleanInfo.TRUE);
-    Assert.assertEquals(index.dereference()[0].getId(), IndexTypes.NO_INDEX.getId());
+    Assert.assertEquals(index.dereference()[0].getOid(), IndexTypes.NO_INDEX.getOid());
   }
 
   @Request
@@ -802,7 +802,7 @@ public class MergeTest
     final MdAttributeConcreteDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdException1);
 
     final MdExceptionDAO mdException2 = TestFixtureFactory.createMdException2();
-    mdException2.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, mdException1.getId());
+    mdException2.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, mdException1.getOid());
     mdException2.setValue(MdExceptionInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdException2.setValue(MdExceptionInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdException2.apply();
@@ -835,10 +835,10 @@ public class MergeTest
     Assert.assertEquals(mdException2IF.getValue(MdElementInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
     // Ensure inheritance is linking to the correct super class
-    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getId());
+    Assert.assertEquals(mdException2IF.getValue(MdExceptionInfo.SUPER_MD_EXCEPTION), mdException1IF.getOid());
 
     // Ensure the attributes are linked to the correct MdBusiness object
-    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getOid());
   }
 
   @Request
@@ -873,25 +873,25 @@ public class MergeTest
     mdAttributeBool.apply();
 
     // Add permissions to the MdBusiness
-    user.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    user.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    user.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    user.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
+    user.grantPermission(Operation.WRITE, mdAttributeChar.getOid());
 
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
-    user.grantPermission(Operation.DELETE, mdStruct.getId());
+    user.grantPermission(Operation.DELETE, mdStruct.getOid());
 
     // Add permissions to a MdRelationship
-    user.grantPermission(Operation.CREATE, mdRelationship.getId());
-    user.grantPermission(Operation.DELETE, mdRelationship.getId());
+    user.grantPermission(Operation.CREATE, mdRelationship.getOid());
+    user.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Add permissions to an attribute defined by the MdRelationship
-    user.grantPermission(Operation.READ, mdAttributeBool.getId());
+    user.grantPermission(Operation.READ, mdAttributeBool.getOid());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -908,26 +908,26 @@ public class MergeTest
 
     metadataAfterUpdate.addRevokePermissions(user);
 
-    user.grantPermission(Operation.READ, mdAttributeChar.getId());
+    user.grantPermission(Operation.READ, mdAttributeChar.getOid());
 
     VersionExporter.export(UPDATE_SCHEMA_2, SCHEMA, metadataAfterUpdate);
 
 
     // Add permissions to the MdBusiness
-    user.revokePermission(Operation.CREATE, mdBusiness1.getId());
-    user.revokePermission(Operation.WRITE, mdBusiness1.getId());
+    user.revokePermission(Operation.CREATE, mdBusiness1.getOid());
+    user.revokePermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    user.revokePermission(Operation.WRITE, mdAttributeChar.getId());
+    user.revokePermission(Operation.WRITE, mdAttributeChar.getOid());
 
-    user.revokePermission(Operation.DELETE, mdStruct.getId());
+    user.revokePermission(Operation.DELETE, mdStruct.getOid());
 
     // Add permissions to a MdRelationship
-    user.revokePermission(Operation.CREATE, mdRelationship.getId());
-    user.revokePermission(Operation.DELETE, mdRelationship.getId());
+    user.revokePermission(Operation.CREATE, mdRelationship.getOid());
+    user.revokePermission(Operation.DELETE, mdRelationship.getOid());
 
     // Add permissions to an attribute defined by the MdRelationship
-    user.revokePermission(Operation.READ, mdAttributeBool.getId());
+    user.revokePermission(Operation.READ, mdAttributeBool.getOid());
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
 
@@ -988,26 +988,26 @@ public class MergeTest
     mdAttributeBool.apply();
 
     // Add permissions to the MdBusiness
-    user.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    user.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    user.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    user.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
-    user.grantPermission(Operation.READ, mdAttributeChar.getId());
+    user.grantPermission(Operation.WRITE, mdAttributeChar.getOid());
+    user.grantPermission(Operation.READ, mdAttributeChar.getOid());
 
     // Add struct permissions
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
-    user.grantPermission(Operation.DELETE, mdStruct.getId());
+    user.grantPermission(Operation.DELETE, mdStruct.getOid());
 
     // Add permissions to a MdRelationship
-    user.grantPermission(Operation.CREATE, mdRelationship.getId());
-    user.grantPermission(Operation.DELETE, mdRelationship.getId());
+    user.grantPermission(Operation.CREATE, mdRelationship.getOid());
+    user.grantPermission(Operation.DELETE, mdRelationship.getOid());
 
     // Add permissions to an attribute defined by the MdRelationship
-    user.grantPermission(Operation.READ, mdAttributeBool.getId());
+    user.grantPermission(Operation.READ, mdAttributeBool.getOid());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1017,7 +1017,7 @@ public class MergeTest
     generateCreateSchema(metadata);
 
     ExportMetadata metadataAfterUpdate = new ExportMetadata();
-    // metadata.addExisting(BusinessDAO.get(com.runwaysdk.constants.Locale.EN_US.getId()));
+    // metadata.addExisting(BusinessDAO.get(com.runwaysdk.constants.Locale.EN_US.getOid()));
     // metadata.addCreate(user);
     metadataAfterUpdate.addGrantPermissions(user);
 
@@ -1085,12 +1085,12 @@ public class MergeTest
     mdAttributeChar.apply();
 
     // Add permissions to the MdBusiness
-    user.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    user.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    user.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    user.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
-    user.grantPermission(Operation.READ, mdAttributeChar.getId());
+    user.grantPermission(Operation.WRITE, mdAttributeChar.getOid());
+    user.grantPermission(Operation.READ, mdAttributeChar.getOid());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1153,15 +1153,15 @@ public class MergeTest
     MethodActorDAO methodActor = TestFixtureFactory.createMethodActor(mdMethod);
     methodActor.apply();
 
-    methodActor.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    methodActor.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    methodActor.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    methodActor.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add permissions to the MdBusiness
-    user.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    user.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    user.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    user.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Add attribute permissions
-    user.grantPermission(Operation.EXECUTE, mdMethod.getId());
+    user.grantPermission(Operation.EXECUTE, mdMethod.getOid());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1219,8 +1219,8 @@ public class MergeTest
     mdBusiness2.apply();
 
     // Add permissions to the MdBusiness
-    user.grantPermission(Operation.CREATE, mdBusiness1.getId());
-    user.grantPermission(Operation.WRITE, mdBusiness1.getId());
+    user.grantPermission(Operation.CREATE, mdBusiness1.getOid());
+    user.grantPermission(Operation.WRITE, mdBusiness1.getOid());
 
     // Export the permissions
     ExportMetadata metadata = new ExportMetadata();
@@ -1239,8 +1239,8 @@ public class MergeTest
     mdAttributeChar.apply();
 
     // Add attribute permissions
-    user.grantPermission(Operation.WRITE, mdAttributeChar.getId());
-    user.grantPermission(Operation.READ, mdAttributeChar.getId());
+    user.grantPermission(Operation.WRITE, mdAttributeChar.getOid());
+    user.grantPermission(Operation.READ, mdAttributeChar.getOid());
 
     ExportMetadata metadataAfterUpdate = new ExportMetadata();
     metadataAfterUpdate.addGrantPermissions(user);
@@ -1338,7 +1338,7 @@ public class MergeTest
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, "defaultLocale", displayLabel);
     mdMethod.apply();
 
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getOid());
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, "defaultLocale", displayLabel);
     mdParameter.apply();
 
@@ -1645,14 +1645,14 @@ public class MergeTest
     mdAttribute.apply();
 
     BusinessDAO object = BusinessDAO.newInstance(mdBusiness1.definesType());
-    object.addItem(mdAttribute.definesAttribute(), hearts.getId());
+    object.addItem(mdAttribute.definesAttribute(), hearts.getOid());
     object.getAttribute("keyName").setValue(key);
     object.apply();
 
     // Partial schema element definition
     generateCreateSchema(ExportMetadata.buildCreate(object));
 
-    object.addItem(mdAttribute.definesAttribute(), clubs.getId());
+    object.addItem(mdAttribute.definesAttribute(), clubs.getOid());
     object.apply();
 
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildUpdate(object));
@@ -1769,7 +1769,7 @@ public class MergeTest
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "index");
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness1.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness1.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.apply();
 
@@ -1834,7 +1834,7 @@ public class MergeTest
 
     MdIndexDAO firstMdIndex = MdIndexDAO.newInstance();
     firstMdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "index");
-    firstMdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getId());
+    firstMdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getOid());
     firstMdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     firstMdIndex.apply();
 
@@ -1856,7 +1856,7 @@ public class MergeTest
 
     MdIndexDAO secondMdIndex = MdIndexDAO.newInstance();
     secondMdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "index");
-    secondMdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getId());
+    secondMdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getOid());
     secondMdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     secondMdIndex.apply();
 
@@ -1913,7 +1913,7 @@ public class MergeTest
    * 
    * final BusinessDAO businessDAO3 =
    * BusinessDAO.newInstance(mdBusiness2.definesType());
-   * businessDAO3.setValue("testReference", businessDAO1.getId());
+   * businessDAO3.setValue("testReference", businessDAO1.getOid());
    * businessDAO3.apply();
    * 
    * final BusinessDAO businessDAO4 =
@@ -1921,7 +1921,7 @@ public class MergeTest
    * businessDAO4.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
    * MdAttributeBooleanInfo.TRUE);
    * businessDAO4.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Delete");
-   * String id = businessDAO4.apply();
+   * String oid = businessDAO4.apply();
    * 
    * final ExportMetadata updateMetadata = new ExportMetadata();
    * generateMerge(updateMetadata, new ComponentIF[] {}, new ComponentIF[]
@@ -1941,7 +1941,7 @@ public class MergeTest
    * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
    * MdAttributeBooleanInfo.TRUE); businessDAO2.apply();
    * 
-   * businessDAO3.setValue("testReference", businessDAO2.getId());
+   * businessDAO3.setValue("testReference", businessDAO2.getOid());
    * businessDAO3.apply();
    * 
    * 
@@ -1956,9 +1956,9 @@ public class MergeTest
    * // Assert that the values of refTest refer to instances of CLASS
    * Assert.assertTrue(classIds.contains(class2.getValue("testReference")));
    * 
-   * try { BusinessDAO.get(id);
+   * try { BusinessDAO.get(oid);
    * 
-   * Assert.fail("SAXImporter did not delete the businessDAO with the id [" + id
+   * Assert.fail("SAXImporter did not delete the businessDAO with the oid [" + oid
    * + "]"); } catch (DataNotFoundException e) { // This is expected } }
    */
 
@@ -2141,7 +2141,7 @@ public class MergeTest
 
           if (!mdAttribute.isSystem())
           {
-            role.grantPermission(Operation.WRITE, mdAttribute.getId());
+            role.grantPermission(Operation.WRITE, mdAttribute.getOid());
           }
         }
 
@@ -2155,11 +2155,11 @@ public class MergeTest
 
           if (!mdAttribute.isSystem())
           {
-            role.revokeAllPermissions(mdAttribute.getId());
+            role.revokeAllPermissions(mdAttribute.getOid());
 
             MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
 
-            role.grantPermission(Operation.READ, mdAttributeDimension.getId());
+            role.grantPermission(Operation.READ, mdAttributeDimension.getOid());
           }
         }
 
@@ -2449,10 +2449,10 @@ public class MergeTest
     MdAttributeCharacterDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, ATTRIBUTE_NAME);
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character Set Test");
-    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "200");
-    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdEntity.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdEntity.getOid());
 
     return mdAttribute;
   }
@@ -2461,7 +2461,7 @@ public class MergeTest
   {
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
     mdMethod.setValue(MdMethodInfo.NAME, METHOD_NAME);
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdEntity.getId());
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdEntity.getOid());
     mdMethod.setValue(MdMethodInfo.RETURN_TYPE, RETURN_TYPE);
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, METHOD_NAME);
     mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, METHOD_NAME);
@@ -2473,7 +2473,7 @@ public class MergeTest
   private MdParameterDAO createMdParameter(MdMethodDAO mdMethod)
   {
     MdParameterDAO mdParameter = MdParameterDAO.newInstance();
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, mdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.TYPE, PARAMETER_TYPE);
     mdParameter.setValue(MdParameterInfo.NAME, "validName");
     mdParameter.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "validName");

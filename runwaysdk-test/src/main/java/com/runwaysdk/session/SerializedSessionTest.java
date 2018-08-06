@@ -186,17 +186,17 @@ public class SerializedSessionTest
 
     // Create a businessDAO of MdBusiness
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO.apply();
 
     businessDAO2 = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO2.apply();
 
-    business1 = Business.getBusiness(businessDAO.getId());
-    business2 = Business.getBusiness(businessDAO2.getId());
+    business1 = Business.getBusiness(businessDAO.getOid());
+    business2 = Business.getBusiness(businessDAO2.getOid());
 
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
@@ -272,7 +272,7 @@ public class SerializedSessionTest
   public void testCheckAccess()
   {
     // Grant permissions to the user on the md class
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     new PermissionBuilder(newUser).serialize();
 
@@ -292,7 +292,7 @@ public class SerializedSessionTest
   {
     RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
 
-    publicRole.grantPermission(Operation.READ, mdBusiness.getId());
+    publicRole.grantPermission(Operation.READ, mdBusiness.getOid());
 
     new PermissionBuilder(publicRole).serialize();
 
@@ -310,7 +310,7 @@ public class SerializedSessionTest
     }
     finally
     {
-      publicRole.revokeAllPermissions(mdBusiness.getId());
+      publicRole.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
@@ -324,14 +324,14 @@ public class SerializedSessionTest
     RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
 
     // Grant permissions ot the owner role
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
+    role.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
     new PermissionBuilder(role).serialize();
 
     try
     {
       // Ensure the owner was correctly set
-      Assert.assertEquals(newUser.getId(), businessDAO.getValue(ElementInfo.OWNER));
+      Assert.assertEquals(newUser.getOid(), businessDAO.getValue(ElementInfo.OWNER));
 
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -341,7 +341,7 @@ public class SerializedSessionTest
     }
     finally
     {
-      role.revokeAllPermissions(mdBusiness.getId());
+      role.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
@@ -349,7 +349,7 @@ public class SerializedSessionTest
   @Test
   public void testAttributePermissions()
   {
-    newUser.grantPermission(Operation.READ, mdAttribute.getId());
+    newUser.grantPermission(Operation.READ, mdAttribute.getOid());
 
     new PermissionBuilder(newUser).serialize();
 
@@ -362,7 +362,7 @@ public class SerializedSessionTest
     }
     finally
     {
-      newUser.revokeAllPermissions(mdAttribute.getId());
+      newUser.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
@@ -373,7 +373,7 @@ public class SerializedSessionTest
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.READ, mdAttribute.getId());
+    role.grantPermission(Operation.READ, mdAttribute.getOid());
 
     new PermissionBuilder(role).serialize();
 
@@ -386,7 +386,7 @@ public class SerializedSessionTest
     }
     finally
     {
-      role.revokeAllPermissions(mdAttribute.getId());
+      role.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
@@ -395,7 +395,7 @@ public class SerializedSessionTest
   @Test
   public void testRelationshipPermission()
   {
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
 
     new PermissionBuilder(newUser).serialize();
 
@@ -403,12 +403,12 @@ public class SerializedSessionTest
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      Assert.assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId()));
-      Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId()));
+      Assert.assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getOid()));
+      Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getOid()));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdRelationship.getId());
+      newUser.revokeAllPermissions(mdRelationship.getOid());
     }
   }
 }

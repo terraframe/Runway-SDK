@@ -154,13 +154,13 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebText mdWebText)
     {
       if(mdWebText == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebText.getId());
+      return this.EQ(mdWebText.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebText mdWebText)
     {
       if(mdWebText == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebText.getId());
+      return this.NE(mdWebText.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getHeight()
@@ -243,7 +243,7 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
 
       for (int i=0; i<mdWebText.length; i++)
       {
-        itemIdArray[i] = mdWebText[i].getId();
+        itemIdArray[i] = mdWebText[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
 
       for (int i=0; i<mdWebText.length; i++)
       {
-        itemIdArray[i] = mdWebText[i].getId();
+        itemIdArray[i] = mdWebText[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
 
       for (int i=0; i<mdWebText.length; i++)
       {
-        itemIdArray[i] = mdWebText[i].getId();
+        itemIdArray[i] = mdWebText[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
 
       for (int i=0; i<mdWebText.length; i++)
       {
-        itemIdArray[i] = mdWebText[i].getId();
+        itemIdArray[i] = mdWebText[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdWebTextQuery extends com.runwaysdk.system.metadata.MdWebPrimitiv
 
       for (int i=0; i<mdWebText.length; i++)
       {
-        itemIdArray[i] = mdWebText[i].getId();
+        itemIdArray[i] = mdWebText[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

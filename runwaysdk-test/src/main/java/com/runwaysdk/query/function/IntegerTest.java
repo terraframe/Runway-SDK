@@ -60,7 +60,7 @@ public class IntegerTest
 
     for (BusinessDAOIF object : iterator)
     {
-      if (!object.getId().equals(businessDAO.getId()))
+      if (!object.getOid().equals(businessDAO.getOid()))
       {
         Assert.fail("Query did not return the expected object.");
       }
@@ -102,8 +102,8 @@ public class IntegerTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(businessDAO.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(businessDAO.getOid()))
         {
           Assert.fail("Query did not return the expected object.");
         }
@@ -339,7 +339,7 @@ public class IntegerTest
 
     for (BusinessDAOIF object : iterator)
     {
-      if (!object.getId().equals(businessDAO.getId()))
+      if (!object.getOid().equals(businessDAO.getOid()))
       {
         Assert.fail("Query did not return the expected object.");
       }
@@ -382,8 +382,8 @@ public class IntegerTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(businessDAO.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(businessDAO.getOid()))
         {
           Assert.fail("Query did not return the expected object.");
         }
@@ -493,7 +493,7 @@ public class IntegerTest
 
     for (BusinessDAOIF object : iterator)
     {
-      if (!object.getId().equals(businessDAO.getId()))
+      if (!object.getOid().equals(businessDAO.getOid()))
       {
         Assert.fail("Query did not return the expected object.");
       }
@@ -535,8 +535,8 @@ public class IntegerTest
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(businessDAO.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(businessDAO.getOid()))
         {
           Assert.fail("Query did not return the expected object.");
         }

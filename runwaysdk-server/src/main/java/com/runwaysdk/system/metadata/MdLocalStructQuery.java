@@ -114,13 +114,13 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdLocalStruct mdLocalStruct)
     {
       if(mdLocalStruct == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdLocalStruct.getId());
+      return this.EQ(mdLocalStruct.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdLocalStruct mdLocalStruct)
     {
       if(mdLocalStruct == null) return this.NE((java.lang.String)null);
-      return this.NE(mdLocalStruct.getId());
+      return this.NE(mdLocalStruct.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
 
       for (int i=0; i<mdLocalStruct.length; i++)
       {
-        itemIdArray[i] = mdLocalStruct[i].getId();
+        itemIdArray[i] = mdLocalStruct[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
 
       for (int i=0; i<mdLocalStruct.length; i++)
       {
-        itemIdArray[i] = mdLocalStruct[i].getId();
+        itemIdArray[i] = mdLocalStruct[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
 
       for (int i=0; i<mdLocalStruct.length; i++)
       {
-        itemIdArray[i] = mdLocalStruct[i].getId();
+        itemIdArray[i] = mdLocalStruct[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
 
       for (int i=0; i<mdLocalStruct.length; i++)
       {
-        itemIdArray[i] = mdLocalStruct[i].getId();
+        itemIdArray[i] = mdLocalStruct[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdLocalStructQuery extends com.runwaysdk.system.metadata.MdStructQ
 
       for (int i=0; i<mdLocalStruct.length; i++)
       {
-        itemIdArray[i] = mdLocalStruct[i].getId();
+        itemIdArray[i] = mdLocalStruct[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

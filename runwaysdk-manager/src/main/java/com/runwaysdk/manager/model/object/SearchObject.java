@@ -31,7 +31,7 @@ public class SearchObject extends ComponentObject
   }
 
   @Override
-  public String getId()
+  public String getOid()
   {
     return this.getMdClassDAO().getKey();
   }

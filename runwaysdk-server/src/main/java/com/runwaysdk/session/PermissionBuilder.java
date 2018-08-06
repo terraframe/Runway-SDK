@@ -299,6 +299,6 @@ public final class PermissionBuilder extends AbstractPermissionBuilder implement
 
   private String getSerializedFilePath()
   {
-    return LocalProperties.getPermissionCacheDirectory() + File.separator + this.getActor().getId() + ".ser";
+    return LocalProperties.getPermissionCacheDirectory() + File.separator + this.getActor().getOid() + ".ser";
   }
 }

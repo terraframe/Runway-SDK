@@ -108,7 +108,7 @@ public class MdWebFormTest extends MdFormDAOTest
       testForm.setValue(MdWebFormInfo.FORM_NAME, testFormName);
       testForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Form.");
       testForm.setStructValue(MdWebFormInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "An MdForm representation of a TestType.");
-      testForm.setValue(MdWebFormInfo.FORM_MD_CLASS, testTypeMd.getId());
+      testForm.setValue(MdWebFormInfo.FORM_MD_CLASS, testTypeMd.getOid());
       testForm.apply();
 
       MdFieldDAO charField = createField(testForm, charAttr, MdWebCharacterInfo.CLASS);
@@ -222,7 +222,7 @@ public class MdWebFormTest extends MdFormDAOTest
       headerField.setValue(MdWebHeaderInfo.FIELD_NAME, "testHeader");
       headerField.setStructValue(MdWebHeaderInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header");
       headerField.setStructValue(MdWebHeaderInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Header Desc");
-      headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, testForm.getId());
+      headerField.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, testForm.getOid());
       headerField.setStructValue(MdWebHeader.HEADERTEXT, MetadataDisplayLabel.DEFAULTLOCALE, "This is a test header");
       applyField(headerField);
 
@@ -231,7 +231,7 @@ public class MdWebFormTest extends MdFormDAOTest
       breakField.setValue(MdWebBreakInfo.FIELD_NAME, "testBreak");
       breakField.setStructValue(MdWebBreakInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Break");
       breakField.setStructValue(MdWebBreakInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Break Desc");
-      breakField.setValue(MdWebBreakInfo.DEFINING_MD_FORM, testForm.getId());
+      breakField.setValue(MdWebBreakInfo.DEFINING_MD_FORM, testForm.getOid());
       applyField(breakField);
 
       // comment
@@ -239,7 +239,7 @@ public class MdWebFormTest extends MdFormDAOTest
       commentField.setValue(MdWebCommentInfo.FIELD_NAME, "testComment");
       commentField.setStructValue(MdWebCommentInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, "Test Comment");
       commentField.setStructValue(MdWebCommentInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, "Test Comment Desc");
-      commentField.setValue(MdWebCommentInfo.DEFINING_MD_FORM, testForm.getId());
+      commentField.setValue(MdWebCommentInfo.DEFINING_MD_FORM, testForm.getOid());
       commentField.setStructValue(MdWebCommentInfo.COMMENT_TEXT, MetadataDisplayLabel.DEFAULTLOCALE, "This is a test comment");
       applyField(commentField);
 
@@ -270,11 +270,11 @@ public class MdWebFormTest extends MdFormDAOTest
     field.setValue(MdWebFieldInfo.FIELD_NAME, fieldName);
     field.setStructValue(MdWebFieldInfo.DISPLAY_LABEL, MetadataDisplayLabel.DEFAULTLOCALE, display);
     field.setStructValue(MdWebFieldInfo.DESCRIPTION, MetadataDisplayLabel.DEFAULTLOCALE, description);
-    field.setValue(MdWebFieldInfo.DEFINING_MD_FORM, form.getId());
+    field.setValue(MdWebFieldInfo.DEFINING_MD_FORM, form.getOid());
 
     if (field instanceof MdWebAttributeDAOIF)
     {
-      field.setValue(MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, md.getId());
+      field.setValue(MdWebAttributeInfo.DEFINING_MD_ATTRIBUTE, md.getOid());
     }
 
     return (MdWebFieldDAO) field;
@@ -329,9 +329,9 @@ public class MdWebFormTest extends MdFormDAOTest
   @Test
   public void testFormMetadata()
   {
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
 
-    Assert.assertEquals(testForm.getId(), form.getId());
+    Assert.assertEquals(testForm.getOid(), form.getOid());
     Assert.assertEquals(testForm.getTypeName(), form.getTypeName());
     Assert.assertEquals(testForm.getPackage(), form.getPackage());
     Assert.assertEquals(testForm.getFormName(), form.getFormName());
@@ -348,7 +348,7 @@ public class MdWebFormTest extends MdFormDAOTest
   @Test
   public void testFieldOrder()
   {
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     List<? extends MdFieldDAOIF> allFields = form.getOrderedMdFields();
 
     Iterator<String> iter = fields.keySet().iterator();
@@ -360,7 +360,7 @@ public class MdWebFormTest extends MdFormDAOTest
 
       Assert.assertEquals(Integer.parseInt(returned.getFieldOrder()), index);
       Assert.assertEquals(returned.getFieldOrder(), expected.getFieldOrder());
-      Assert.assertEquals(expected.getBusinessDAO().getId(), returned.getBusinessDAO().getId());
+      Assert.assertEquals(expected.getBusinessDAO().getOid(), returned.getBusinessDAO().getOid());
 
       index++;
     }
@@ -392,7 +392,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = geoAttr.definesAttribute();
     MdWebGeoDAO field = (MdWebGeoDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebGeoDAO geoField = (MdWebGeoDAO) form.getMdField(fieldName);
 
     _testField(field, geoField);
@@ -405,7 +405,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = singleTermAttr.definesAttribute();
     MdWebSingleTermDAO field = (MdWebSingleTermDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebSingleTermDAO singleTerm = (MdWebSingleTermDAO) form.getMdField(fieldName);
 
     _testField(field, singleTerm);
@@ -418,7 +418,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = multipleTermAttr.definesAttribute();
     MdWebMultipleTermDAO field = (MdWebMultipleTermDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebMultipleTermDAO multipleTerm = (MdWebMultipleTermDAO) form.getMdField(fieldName);
 
     _testField(field, multipleTerm);
@@ -431,7 +431,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = singleGridAttr.definesAttribute();
     MdWebSingleTermGridDAO field = (MdWebSingleTermGridDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebSingleTermGridDAO singleTermGrid = (MdWebSingleTermGridDAO) form.getMdField(fieldName);
 
     _testField(field, singleTermGrid);
@@ -442,7 +442,7 @@ public class MdWebFormTest extends MdFormDAOTest
   // String fieldName = pointAttr.definesAttribute();
   // MdWebPointDAO field = (MdWebPointDAO) fields.get(fieldName);
   //
-  // MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+  // MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
   // MdWebPointDAO point = (MdWebPointDAO) form.getMdField(fieldName);
   //
   // _testField(field, point);
@@ -458,7 +458,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = charAttr.definesAttribute();
     MdWebCharacterDAO field = (MdWebCharacterDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebCharacterDAO charField = (MdWebCharacterDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -474,7 +474,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = textAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -487,7 +487,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = dateAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -500,7 +500,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = doubleAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -513,7 +513,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = floatAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -526,7 +526,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = integerAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);
@@ -539,7 +539,7 @@ public class MdWebFormTest extends MdFormDAOTest
     String fieldName = booleanAttr.definesAttribute();
     MdWebFieldDAO field = (MdWebFieldDAO) fields.get(fieldName);
 
-    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
+    MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getOid());
     MdWebFieldDAO charField = (MdWebFieldDAO) form.getMdField(fieldName);
 
     _testField(field, charField);

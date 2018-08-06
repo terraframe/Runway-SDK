@@ -36,7 +36,7 @@ public class ImmutableAttributeProblem extends AttributeProblem
    * Constructs a new ImmutableAttributeProblem with the specified developer
    * message.
    *
-   * @param componentId id of the containing component.
+   * @param componentId oid of the containing component.
    * @param mdClassIF defines the type of the containing component.
    * @param mdAttributeIF defines the attribute.
    * @param devMessage

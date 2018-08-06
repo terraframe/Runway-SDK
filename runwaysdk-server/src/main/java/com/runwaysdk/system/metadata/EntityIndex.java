@@ -29,7 +29,7 @@ public class EntityIndex extends EntityIndexBase
   
   public EntityIndex(com.runwaysdk.system.metadata.MdEntity parent, com.runwaysdk.system.metadata.MdIndex child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

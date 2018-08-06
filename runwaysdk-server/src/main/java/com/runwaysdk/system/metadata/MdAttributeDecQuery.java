@@ -154,13 +154,13 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeDec mdAttributeDec)
     {
       if(mdAttributeDec == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeDec.getId());
+      return this.EQ(mdAttributeDec.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeDec mdAttributeDec)
     {
       if(mdAttributeDec == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeDec.getId());
+      return this.NE(mdAttributeDec.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getDatabaseDecimal()
@@ -243,7 +243,7 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeDec.length; i++)
       {
-        itemIdArray[i] = mdAttributeDec[i].getId();
+        itemIdArray[i] = mdAttributeDec[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeDec.length; i++)
       {
-        itemIdArray[i] = mdAttributeDec[i].getId();
+        itemIdArray[i] = mdAttributeDec[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeDec.length; i++)
       {
-        itemIdArray[i] = mdAttributeDec[i].getId();
+        itemIdArray[i] = mdAttributeDec[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeDec.length; i++)
       {
-        itemIdArray[i] = mdAttributeDec[i].getId();
+        itemIdArray[i] = mdAttributeDec[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdAttributeDecQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeDec.length; i++)
       {
-        itemIdArray[i] = mdAttributeDec[i].getId();
+        itemIdArray[i] = mdAttributeDec[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

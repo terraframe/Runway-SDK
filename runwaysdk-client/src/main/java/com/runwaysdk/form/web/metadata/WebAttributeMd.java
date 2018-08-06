@@ -63,9 +63,9 @@ public abstract class WebAttributeMd extends WebFieldMd
     return this.definingMdAttribute;
   }
 
-  protected void setDefiningMdAttribute(String id)
+  protected void setDefiningMdAttribute(String oid)
   {
-    this.definingMdAttribute = id;
+    this.definingMdAttribute = oid;
   }
 
   protected void setShowOnSearch(Boolean showOnSearch)

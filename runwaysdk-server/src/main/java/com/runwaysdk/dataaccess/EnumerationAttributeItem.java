@@ -43,13 +43,13 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
    */
   public String save(boolean validateRequired)
   {
-    String id = this.getId();
+    String oid = this.getOid();
 
     Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      this.setKey(id);
+      this.setKey(oid);
     }
 
     return super.save(validateRequired);

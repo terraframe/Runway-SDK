@@ -149,8 +149,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
     mdAttributeMultiReference = mdAttributeMultiReferenceDAO;
     mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
     mdAttributeMultiReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeMultiReference.apply();
   }
 
@@ -220,8 +220,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).containsAny(term2.getId()));
+      vQ.SELECT(this.getQueryAttribute(query), query.oid("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).containsAny(term2.getOid()));
 
       i = vQ.getIterator();
 
@@ -232,7 +232,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -242,7 +242,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(this.getQueryAttribute(query));
-      vQ.WHERE(this.getQueryAttribute(query).containsAny(term1.getId()));
+      vQ.WHERE(this.getQueryAttribute(query).containsAny(term1.getOid()));
 
       i = vQ.getIterator();
 
@@ -273,8 +273,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).notContainsAny(term1.getId()));
+      vQ.SELECT(this.getQueryAttribute(query), query.oid("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).notContainsAny(term1.getOid()));
 
       i = vQ.getIterator();
 
@@ -285,7 +285,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -295,7 +295,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(this.getQueryAttribute(query));
-      vQ.WHERE(this.getQueryAttribute(query).notContainsAny(term2.getId()));
+      vQ.WHERE(this.getQueryAttribute(query).notContainsAny(term2.getOid()));
 
       i = vQ.getIterator();
 
@@ -325,8 +325,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).containsAll(term2.getId(), term3.getId()));
+      vQ.SELECT(this.getQueryAttribute(query), query.oid("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).containsAll(term2.getOid(), term3.getOid()));
 
       i = vQ.getIterator();
 
@@ -337,7 +337,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -347,7 +347,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(this.getQueryAttribute(query));
-      vQ.WHERE(this.getQueryAttribute(query).containsAll(term2.getId(), term1.getId()));
+      vQ.WHERE(this.getQueryAttribute(query).containsAll(term2.getOid(), term1.getOid()));
 
       i = vQ.getIterator();
 
@@ -377,8 +377,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getId(), term1.getId()));
+      vQ.SELECT(this.getQueryAttribute(query), query.oid("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getOid(), term1.getOid()));
 
       i = vQ.getIterator();
 
@@ -389,7 +389,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -399,7 +399,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(this.getQueryAttribute(query));
-      vQ.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getId(), term3.getId()));
+      vQ.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getOid(), term3.getOid()));
 
       i = vQ.getIterator();
 
@@ -429,8 +429,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).containsExactly(term2.getId(), term3.getId()));
+      vQ.SELECT(this.getQueryAttribute(query), query.oid("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).containsExactly(term2.getOid(), term3.getOid()));
 
       i = vQ.getIterator();
 
@@ -441,7 +441,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -451,7 +451,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(this.getQueryAttribute(query));
-      vQ.WHERE(this.getQueryAttribute(query).containsExactly(term2.getId()));
+      vQ.WHERE(this.getQueryAttribute(query).containsExactly(term2.getOid()));
 
       i = vQ.getIterator();
 
@@ -481,7 +481,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(true));
 
       i = vQ.getIterator();
@@ -493,7 +493,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -503,7 +503,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(false));
 
       i = vQ.getIterator();
@@ -534,7 +534,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
@@ -546,7 +546,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -556,7 +556,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(MdAttributeBooleanInfo.FALSE));
 
       i = vQ.getIterator();
@@ -579,12 +579,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN);
     enumObject1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue(TestFixConst.ATTRIBUTE_BOOLEAN);
     enumObject2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "");
     enumObject2.apply();
@@ -597,7 +597,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(""));
 
       i = vQ.getIterator();
@@ -609,7 +609,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -619,7 +619,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // values
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(""));
 
       i = vQ.getIterator();
@@ -656,7 +656,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(false));
 
       i = vQ.getIterator();
@@ -668,7 +668,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -678,7 +678,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(true));
 
       i = vQ.getIterator();
@@ -705,7 +705,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     ValueQuery vQ = qf.valueQuery();
     BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
     vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(MdAttributeBooleanInfo.FALSE));
 
     OIterator<ValueObject> i = vQ.getIterator();
@@ -717,7 +717,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
     while (i.hasNext())
     {
-      if (!i.next().getValue("objectId").equals(business.getId()))
+      if (!i.next().getValue("objectId").equals(business.getOid()))
       {
         Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
       }
@@ -727,7 +727,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     // matches
     vQ = qf.valueQuery();
 
-    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
+    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.oid("objectId"));
     vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(MdAttributeBooleanInfo.TRUE));
 
     i = vQ.getIterator();
@@ -752,7 +752,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("Test Value"));
 
       i = vQ.getIterator();
@@ -764,7 +764,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -773,7 +773,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("wrong character value"));
 
       i = vQ.getIterator();
@@ -804,7 +804,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQi("Test Value".toUpperCase()));
 
       i = vQ.getIterator();
@@ -816,7 +816,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -825,7 +825,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQi("WRONG CHARACTER VALUE"));
 
       i = vQ.getIterator();
@@ -856,7 +856,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "Test Value", "wrong value 2"));
 
       i = vQ.getIterator();
@@ -868,7 +868,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -877,7 +877,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "wrong value 2", "wrong value 3", "Test Value".toUpperCase()));
 
       i = vQ.getIterator();
@@ -908,7 +908,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).INi("wrong value 1", "Test Value".toUpperCase(), "wrong value 2"));
 
       i = vQ.getIterator();
@@ -920,7 +920,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -929,7 +929,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       i = vQ.getIterator();
@@ -952,12 +952,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue(TestFixConst.ATTRIBUTE_CHARACTER);
     enumObject1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue(TestFixConst.ATTRIBUTE_CHARACTER);
     enumObject2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
     enumObject2.apply();
@@ -970,7 +970,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ(""));
 
       i = vQ.getIterator();
@@ -982,7 +982,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -991,7 +991,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 3 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE(""));
 
       i = vQ.getIterator();
@@ -1028,7 +1028,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKE("%Test Value%"));
 
       i = vQ.getIterator();
@@ -1040,7 +1040,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1049,7 +1049,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKE("%character"));
 
       i = vQ.getIterator();
@@ -1080,7 +1080,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKEi("%Test Value%".toUpperCase()));
 
       i = vQ.getIterator();
@@ -1092,7 +1092,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1101,7 +1101,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKEi("%CHARACTER"));
 
       i = vQ.getIterator();
@@ -1132,7 +1132,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE("wrong character value"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1144,7 +1144,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1153,7 +1153,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE("Test Value"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1184,7 +1184,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NEi("WRONG CHARACTER VALUE"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1196,7 +1196,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1205,7 +1205,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NEi("Test Value".toUpperCase()), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1236,7 +1236,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NI("wrong character value 1", "wrong character value 2", "wrong character value 3"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1248,7 +1248,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1257,7 +1257,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NI("wrong value", "Test Value", "wrong value 2"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1288,7 +1288,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NIi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1300,7 +1300,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1309,7 +1309,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NIi("WRONG VALUE", "Test Value".toUpperCase(), "WRONG VALUE 2"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1340,7 +1340,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKE("%wrong%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1352,7 +1352,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1361,7 +1361,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKE("%Test Value%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1392,7 +1392,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKEi("%WRONG%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1404,7 +1404,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1413,7 +1413,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.oid("objectId"));
       vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKEi("%Test Value%".toUpperCase()), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
 
       i = vQ.getIterator();
@@ -1445,7 +1445,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1457,7 +1457,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1468,7 +1468,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").EQ(date));
 
       i = vQ.getIterator();
@@ -1499,7 +1499,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").EQ("2012-02-11"));
 
       i = vQ.getIterator();
@@ -1511,7 +1511,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1520,7 +1520,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").EQ("2006-05-05"));
 
       i = vQ.getIterator();
@@ -1552,7 +1552,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GT(date));
 
       i = vQ.getIterator();
@@ -1564,7 +1564,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1575,7 +1575,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GT(date));
 
       i = vQ.getIterator();
@@ -1606,7 +1606,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GT("2011-02-12"));
 
       i = vQ.getIterator();
@@ -1618,7 +1618,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1627,7 +1627,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GT("2012-02-12"));
 
       i = vQ.getIterator();
@@ -1659,7 +1659,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE(date));
 
       i = vQ.getIterator();
@@ -1671,7 +1671,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1682,7 +1682,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE(date));
 
       i = vQ.getIterator();
@@ -1694,7 +1694,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1705,7 +1705,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE(date));
 
       i = vQ.getIterator();
@@ -1736,7 +1736,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE("2012-02-11"));
 
       i = vQ.getIterator();
@@ -1748,7 +1748,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1757,7 +1757,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE("2011-02-12"));
 
       i = vQ.getIterator();
@@ -1769,7 +1769,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1778,7 +1778,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").GE("2012-02-12"));
 
       i = vQ.getIterator();
@@ -1801,12 +1801,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testDate");
     enumObject1.setValue("testDate", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testDate");
     enumObject2.setValue("testDate", "");
     enumObject2.apply();
@@ -1819,7 +1819,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").EQ(""));
 
       i = vQ.getIterator();
@@ -1831,7 +1831,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1840,7 +1840,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").NE(""));
 
       i = vQ.getIterator();
@@ -1878,7 +1878,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LT(date));
 
       i = vQ.getIterator();
@@ -1890,7 +1890,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1901,7 +1901,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LT(date));
 
       i = vQ.getIterator();
@@ -1932,7 +1932,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LT("2012-02-12"));
 
       i = vQ.getIterator();
@@ -1944,7 +1944,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -1953,7 +1953,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LT("2011-02-12"));
 
       i = vQ.getIterator();
@@ -1985,7 +1985,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE(date));
 
       i = vQ.getIterator();
@@ -1997,7 +1997,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2008,7 +2008,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE(date));
 
       i = vQ.getIterator();
@@ -2020,7 +2020,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2031,7 +2031,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE(date));
 
       i = vQ.getIterator();
@@ -2062,7 +2062,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE("2012-02-12"));
 
       i = vQ.getIterator();
@@ -2074,7 +2074,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2083,7 +2083,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query with a date less than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE("2012-02-13"));
 
       i = vQ.getIterator();
@@ -2095,7 +2095,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2104,7 +2104,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query with a date greater than the stored
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").LE("2012-02-10"));
 
       i = vQ.getIterator();
@@ -2136,7 +2136,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").NE(date));
 
       i = vQ.getIterator();
@@ -2148,7 +2148,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2159,7 +2159,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").NE(date));
 
       i = vQ.getIterator();
@@ -2190,7 +2190,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").NE("2011-02-12"));
 
       i = vQ.getIterator();
@@ -2202,7 +2202,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2211,7 +2211,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDate("testDate"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDate("testDate").NE("2012-02-11"));
 
       i = vQ.getIterator();
@@ -2243,7 +2243,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2255,7 +2255,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2266,7 +2266,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").EQ(date));
 
       i = vQ.getIterator();
@@ -2297,7 +2297,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").EQ("2012-02-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2309,7 +2309,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2318,7 +2318,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").EQ("2006-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2350,7 +2350,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2362,7 +2362,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2373,7 +2373,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GT(date));
 
       i = vQ.getIterator();
@@ -2404,7 +2404,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GT("2006-11-06 11:00:00"));
 
       i = vQ.getIterator();
@@ -2416,7 +2416,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2425,7 +2425,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GT("2012-02-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2457,7 +2457,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2469,7 +2469,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2480,7 +2480,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2492,7 +2492,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2503,7 +2503,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE(date));
 
       i = vQ.getIterator();
@@ -2534,7 +2534,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE("2012-02-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2546,7 +2546,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2555,7 +2555,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE("2006-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2567,7 +2567,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2576,7 +2576,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").GE("2012-03-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2599,12 +2599,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testDateTime");
     enumObject1.setValue("testDateTime", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testDateTime");
     enumObject2.setValue("testDateTime", "");
     enumObject2.apply();
@@ -2617,7 +2617,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").EQ(""));
 
       i = vQ.getIterator();
@@ -2629,7 +2629,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2638,7 +2638,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").NE(""));
 
       i = vQ.getIterator();
@@ -2676,7 +2676,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2688,7 +2688,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2699,7 +2699,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LT(date));
 
       i = vQ.getIterator();
@@ -2730,7 +2730,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LT("2012-03-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2742,7 +2742,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2751,7 +2751,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LT("2006-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2783,7 +2783,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2795,7 +2795,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2806,7 +2806,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2818,7 +2818,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2829,7 +2829,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE(date));
 
       i = vQ.getIterator();
@@ -2860,7 +2860,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE("2012-02-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2872,7 +2872,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2881,7 +2881,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE("2012-03-11 12:30:30"));
 
       i = vQ.getIterator();
@@ -2893,7 +2893,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2902,7 +2902,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").LE("2006-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -2934,7 +2934,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").NE(date));
 
       i = vQ.getIterator();
@@ -2946,7 +2946,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -2957,7 +2957,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(this.getQueryAttribute(query).aDateTime("testDateTime").NE(date), this.getQueryAttribute(query).aDateTime("testDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -2988,7 +2988,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDateTime("testDateTime").NE("2006-11-05 12:00:00"));
 
       i = vQ.getIterator();
@@ -3000,7 +3000,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3009,7 +3009,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDateTime("testDateTime"), query.oid("objectId"));
       vQ.WHERE(AND.get(this.getQueryAttribute(query).aDateTime("testDateTime").NE("2012-02-11 12:30:30"), this.getQueryAttribute(query).aDateTime("testDateTime").NE("")));
 
       i = vQ.getIterator();
@@ -3040,7 +3040,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").EQ(new BigDecimal("12.1")));
 
       i = vQ.getIterator();
@@ -3052,7 +3052,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3061,7 +3061,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").EQ(new BigDecimal(15.5)));
 
       i = vQ.getIterator();
@@ -3092,7 +3092,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").EQ("12.1"));
 
       i = vQ.getIterator();
@@ -3104,7 +3104,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3113,7 +3113,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").EQ("15.5"));
 
       i = vQ.getIterator();
@@ -3144,7 +3144,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GT(new BigDecimal(12.0)));
 
       i = vQ.getIterator();
@@ -3156,7 +3156,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3165,7 +3165,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GT(new BigDecimal(15.5)));
 
       i = vQ.getIterator();
@@ -3196,7 +3196,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GT("12.0"));
 
       i = vQ.getIterator();
@@ -3208,7 +3208,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3217,7 +3217,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GT("15.5"));
 
       i = vQ.getIterator();
@@ -3248,7 +3248,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE(new BigDecimal(12.1)));
 
       i = vQ.getIterator();
@@ -3260,7 +3260,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3269,7 +3269,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE(new BigDecimal(11.1)));
 
       i = vQ.getIterator();
@@ -3281,7 +3281,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3290,7 +3290,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE(new BigDecimal(201)));
 
       i = vQ.getIterator();
@@ -3321,7 +3321,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE("12.1"));
 
       i = vQ.getIterator();
@@ -3333,7 +3333,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3342,7 +3342,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE("11.1"));
 
       i = vQ.getIterator();
@@ -3354,7 +3354,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3363,7 +3363,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").GE("15.5"));
 
       i = vQ.getIterator();
@@ -3386,12 +3386,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testDecimal");
     enumObject1.setValue("testDecimal", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testDecimal");
     enumObject2.setValue("testDecimal", "");
     enumObject2.apply();
@@ -3404,7 +3404,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").EQ(""));
 
       i = vQ.getIterator();
@@ -3416,7 +3416,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3425,7 +3425,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").NE(""));
 
       i = vQ.getIterator();
@@ -3462,7 +3462,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LT(new BigDecimal(15.5)));
 
       i = vQ.getIterator();
@@ -3474,7 +3474,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3483,7 +3483,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LT(new BigDecimal(11.1)));
 
       i = vQ.getIterator();
@@ -3514,7 +3514,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LT("15.5"));
 
       i = vQ.getIterator();
@@ -3526,7 +3526,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3535,7 +3535,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LT("12.1"));
 
       i = vQ.getIterator();
@@ -3566,7 +3566,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE(new BigDecimal("12.1")));
 
       i = vQ.getIterator();
@@ -3578,7 +3578,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3587,7 +3587,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE(new BigDecimal(15.5)));
 
       i = vQ.getIterator();
@@ -3599,7 +3599,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3608,7 +3608,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE(new BigDecimal(11.1)));
 
       i = vQ.getIterator();
@@ -3639,7 +3639,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE("12.1"));
 
       i = vQ.getIterator();
@@ -3651,7 +3651,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3660,7 +3660,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE("15.5"));
 
       i = vQ.getIterator();
@@ -3672,7 +3672,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3681,7 +3681,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").LE("12.0"));
 
       i = vQ.getIterator();
@@ -3712,7 +3712,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").NE(new BigDecimal(15.5)));
 
       i = vQ.getIterator();
@@ -3724,7 +3724,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3733,7 +3733,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").NE(new BigDecimal("12.1")));
 
       i = vQ.getIterator();
@@ -3764,7 +3764,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").NE("15.5"));
 
       i = vQ.getIterator();
@@ -3776,7 +3776,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3785,7 +3785,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDecimal("testDecimal"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDecimal("testDecimal").NE("12.1"));
 
       i = vQ.getIterator();
@@ -3816,7 +3816,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").EQ(13.2));
 
       i = vQ.getIterator();
@@ -3828,7 +3828,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3837,7 +3837,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").EQ(201.5));
 
       i = vQ.getIterator();
@@ -3868,7 +3868,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").EQ("13.2"));
 
       i = vQ.getIterator();
@@ -3880,7 +3880,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3889,7 +3889,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").EQ("201.5"));
 
       i = vQ.getIterator();
@@ -3920,7 +3920,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GT(7.2));
 
       i = vQ.getIterator();
@@ -3932,7 +3932,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3941,7 +3941,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GT(220.5));
 
       i = vQ.getIterator();
@@ -3972,7 +3972,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GT("7.2"));
 
       i = vQ.getIterator();
@@ -3984,7 +3984,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -3993,7 +3993,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GT("220.5"));
 
       i = vQ.getIterator();
@@ -4024,7 +4024,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE(13.2));
 
       i = vQ.getIterator();
@@ -4036,7 +4036,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4045,7 +4045,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE(7.2));
 
       i = vQ.getIterator();
@@ -4057,7 +4057,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4066,7 +4066,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE(220.5));
 
       i = vQ.getIterator();
@@ -4097,7 +4097,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE("13.2"));
 
       i = vQ.getIterator();
@@ -4109,7 +4109,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4118,7 +4118,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE("7.2"));
 
       i = vQ.getIterator();
@@ -4130,7 +4130,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4139,7 +4139,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").GE("220.5"));
 
       i = vQ.getIterator();
@@ -4162,12 +4162,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testDouble");
     enumObject1.setValue("testDouble", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testDouble");
     enumObject2.setValue("testDouble", "");
     enumObject2.apply();
@@ -4180,7 +4180,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").EQ(""));
 
       i = vQ.getIterator();
@@ -4192,7 +4192,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4201,7 +4201,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").NE(""));
 
       i = vQ.getIterator();
@@ -4238,7 +4238,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LT(220.5));
 
       i = vQ.getIterator();
@@ -4250,7 +4250,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4259,7 +4259,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LT(7.2));
 
       i = vQ.getIterator();
@@ -4290,7 +4290,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LT("220.5"));
 
       i = vQ.getIterator();
@@ -4302,7 +4302,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4311,7 +4311,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LT("7.2"));
 
       i = vQ.getIterator();
@@ -4342,7 +4342,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE(13.2));
 
       i = vQ.getIterator();
@@ -4354,7 +4354,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4363,7 +4363,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE(220.5));
 
       i = vQ.getIterator();
@@ -4375,7 +4375,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4384,7 +4384,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE(7.2));
 
       i = vQ.getIterator();
@@ -4415,7 +4415,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE("13.2"));
 
       i = vQ.getIterator();
@@ -4427,7 +4427,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4436,7 +4436,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE("220.5"));
 
       i = vQ.getIterator();
@@ -4448,7 +4448,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4457,7 +4457,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").LE("7.2"));
 
       i = vQ.getIterator();
@@ -4488,7 +4488,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").NE(201.5));
 
       i = vQ.getIterator();
@@ -4500,7 +4500,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4509,7 +4509,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").NE(13.2));
 
       i = vQ.getIterator();
@@ -4540,7 +4540,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").NE("201.5"));
 
       i = vQ.getIterator();
@@ -4552,7 +4552,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4561,7 +4561,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aDouble("testDouble"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aDouble("testDouble").NE("13.2"));
 
       i = vQ.getIterator();
@@ -4592,7 +4592,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").EQ((float) 0.0));
 
       i = vQ.getIterator();
@@ -4604,7 +4604,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4613,7 +4613,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").EQ((float) 201.5));
 
       i = vQ.getIterator();
@@ -4644,7 +4644,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").EQ("0.0"));
 
       i = vQ.getIterator();
@@ -4656,7 +4656,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4665,7 +4665,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").EQ("201.5"));
 
       i = vQ.getIterator();
@@ -4696,7 +4696,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GT((float) -20.5));
 
       i = vQ.getIterator();
@@ -4708,7 +4708,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4717,7 +4717,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GT((float) 221.5));
 
       i = vQ.getIterator();
@@ -4748,7 +4748,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GT("-1.5"));
 
       i = vQ.getIterator();
@@ -4760,7 +4760,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4769,7 +4769,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GT("221.5"));
 
       i = vQ.getIterator();
@@ -4800,7 +4800,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE((float) 0.0));
 
       i = vQ.getIterator();
@@ -4812,7 +4812,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4821,7 +4821,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE((float) -21.5));
 
       i = vQ.getIterator();
@@ -4833,7 +4833,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4842,7 +4842,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE((float) 221.5));
 
       i = vQ.getIterator();
@@ -4873,7 +4873,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE("-200.5"));
 
       i = vQ.getIterator();
@@ -4885,7 +4885,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4894,7 +4894,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE("-21.5"));
 
       i = vQ.getIterator();
@@ -4906,7 +4906,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4915,7 +4915,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").GE("221.5"));
 
       i = vQ.getIterator();
@@ -4938,12 +4938,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testFloat");
     enumObject1.setValue("testFloat", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testFloat");
     enumObject2.setValue("testFloat", "");
     enumObject2.apply();
@@ -4956,7 +4956,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").EQ(""));
 
       i = vQ.getIterator();
@@ -4968,7 +4968,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -4977,7 +4977,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").NE(""));
 
       i = vQ.getIterator();
@@ -5014,7 +5014,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LT((float) 220.5));
 
       i = vQ.getIterator();
@@ -5026,7 +5026,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5035,7 +5035,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LT((float) -21.5));
 
       i = vQ.getIterator();
@@ -5066,7 +5066,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LT("220.5"));
 
       i = vQ.getIterator();
@@ -5078,7 +5078,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5087,7 +5087,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LT("-21.5"));
 
       i = vQ.getIterator();
@@ -5118,7 +5118,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE((float) 0));
 
       i = vQ.getIterator();
@@ -5130,7 +5130,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5139,7 +5139,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE((float) 201.5));
 
       i = vQ.getIterator();
@@ -5151,7 +5151,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5160,7 +5160,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE((float) -21.5));
 
       i = vQ.getIterator();
@@ -5191,7 +5191,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE("0.0"));
 
       i = vQ.getIterator();
@@ -5203,7 +5203,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5212,7 +5212,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on less than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE("201.5"));
 
       i = vQ.getIterator();
@@ -5224,7 +5224,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5233,7 +5233,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").LE("-21.5"));
 
       i = vQ.getIterator();
@@ -5264,7 +5264,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").NE((float) 210.5));
 
       i = vQ.getIterator();
@@ -5276,7 +5276,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5285,7 +5285,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").NE((float) 0.0));
 
       i = vQ.getIterator();
@@ -5316,7 +5316,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").NE("210.5"));
 
       i = vQ.getIterator();
@@ -5328,7 +5328,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5337,7 +5337,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aFloat("testFloat"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aFloat("testFloat").NE("0"));
 
       i = vQ.getIterator();
@@ -5368,7 +5368,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").EQ(-10));
 
       i = vQ.getIterator();
@@ -5380,7 +5380,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5389,7 +5389,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").EQ(45));
 
       i = vQ.getIterator();
@@ -5420,7 +5420,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").EQ("-10"));
 
       i = vQ.getIterator();
@@ -5432,7 +5432,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5441,7 +5441,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").EQ("45"));
 
       i = vQ.getIterator();
@@ -5472,7 +5472,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GT(-15));
 
       i = vQ.getIterator();
@@ -5484,7 +5484,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5493,7 +5493,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GT(45));
 
       i = vQ.getIterator();
@@ -5524,7 +5524,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GT("-15"));
 
       i = vQ.getIterator();
@@ -5536,7 +5536,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5545,7 +5545,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GT("45"));
 
       i = vQ.getIterator();
@@ -5576,7 +5576,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE(-10));
 
       i = vQ.getIterator();
@@ -5588,7 +5588,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5597,7 +5597,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE(-15));
 
       i = vQ.getIterator();
@@ -5609,7 +5609,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5618,7 +5618,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE(45));
 
       i = vQ.getIterator();
@@ -5649,7 +5649,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE("-10"));
 
       i = vQ.getIterator();
@@ -5661,7 +5661,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5670,7 +5670,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE("-15"));
 
       i = vQ.getIterator();
@@ -5682,7 +5682,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5691,7 +5691,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").GE("45"));
 
       i = vQ.getIterator();
@@ -5714,12 +5714,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testInteger");
     enumObject1.setValue("testInteger", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testInteger");
     enumObject2.setValue("testInteger", "");
     enumObject2.apply();
@@ -5732,7 +5732,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").EQ(""));
 
       i = vQ.getIterator();
@@ -5744,7 +5744,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5753,7 +5753,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").NE(""));
 
       i = vQ.getIterator();
@@ -5790,7 +5790,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LT(45));
 
       i = vQ.getIterator();
@@ -5802,7 +5802,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5811,7 +5811,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LT(-10));
 
       i = vQ.getIterator();
@@ -5842,7 +5842,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LT("45"));
 
       i = vQ.getIterator();
@@ -5854,7 +5854,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5863,7 +5863,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LT("-10"));
 
       i = vQ.getIterator();
@@ -5894,7 +5894,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE(-10));
 
       i = vQ.getIterator();
@@ -5906,7 +5906,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5915,7 +5915,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE(45));
 
       i = vQ.getIterator();
@@ -5927,7 +5927,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5936,7 +5936,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE(-15));
 
       i = vQ.getIterator();
@@ -5967,7 +5967,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE("-10"));
 
       i = vQ.getIterator();
@@ -5979,7 +5979,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -5988,7 +5988,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE("45"));
 
       i = vQ.getIterator();
@@ -6000,7 +6000,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6009,7 +6009,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").LE("-15"));
 
       i = vQ.getIterator();
@@ -6040,7 +6040,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").NE(-11));
 
       i = vQ.getIterator();
@@ -6052,7 +6052,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6061,7 +6061,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").NE(-10));
 
       i = vQ.getIterator();
@@ -6092,7 +6092,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").NE("45"));
 
       i = vQ.getIterator();
@@ -6104,7 +6104,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6113,7 +6113,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aInteger("testInteger"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aInteger("testInteger").NE("-10"));
 
       i = vQ.getIterator();
@@ -6144,7 +6144,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").EQ((long) 20));
 
       i = vQ.getIterator();
@@ -6156,7 +6156,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6165,7 +6165,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").EQ((long) 201));
 
       i = vQ.getIterator();
@@ -6196,7 +6196,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").EQ("20"));
 
       i = vQ.getIterator();
@@ -6208,7 +6208,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6217,7 +6217,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").EQ("201"));
 
       i = vQ.getIterator();
@@ -6248,7 +6248,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GT((long) 19));
 
       i = vQ.getIterator();
@@ -6260,7 +6260,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6269,7 +6269,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GT((long) 201));
 
       i = vQ.getIterator();
@@ -6300,7 +6300,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GT("19"));
 
       i = vQ.getIterator();
@@ -6312,7 +6312,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6321,7 +6321,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GT("201"));
 
       i = vQ.getIterator();
@@ -6352,7 +6352,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE((long) 20));
 
       i = vQ.getIterator();
@@ -6364,7 +6364,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6373,7 +6373,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE((long) 19));
 
       i = vQ.getIterator();
@@ -6385,7 +6385,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6394,7 +6394,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE((long) 201));
 
       i = vQ.getIterator();
@@ -6425,7 +6425,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE("20"));
 
       i = vQ.getIterator();
@@ -6437,7 +6437,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6446,7 +6446,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE("10"));
 
       i = vQ.getIterator();
@@ -6458,7 +6458,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6467,7 +6467,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").GE("201"));
 
       i = vQ.getIterator();
@@ -6490,12 +6490,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testLong");
     enumObject1.setValue("testLong", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testLong");
     enumObject2.setValue("testLong", "");
     enumObject2.apply();
@@ -6508,7 +6508,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").EQ(""));
 
       i = vQ.getIterator();
@@ -6520,7 +6520,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6529,7 +6529,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").NE(""));
 
       i = vQ.getIterator();
@@ -6566,7 +6566,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LT((long) 220));
 
       i = vQ.getIterator();
@@ -6578,7 +6578,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6587,7 +6587,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LT((long) 20));
 
       i = vQ.getIterator();
@@ -6618,7 +6618,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LT("220"));
 
       i = vQ.getIterator();
@@ -6630,7 +6630,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6639,7 +6639,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LT("20"));
 
       i = vQ.getIterator();
@@ -6670,7 +6670,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE((long) 20));
 
       i = vQ.getIterator();
@@ -6682,7 +6682,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6691,7 +6691,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE((long) 220));
 
       i = vQ.getIterator();
@@ -6703,7 +6703,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6712,7 +6712,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE((long) 19));
 
       i = vQ.getIterator();
@@ -6743,7 +6743,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE("20"));
 
       i = vQ.getIterator();
@@ -6755,7 +6755,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6764,7 +6764,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE("220"));
 
       i = vQ.getIterator();
@@ -6776,7 +6776,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6785,7 +6785,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").LE("19"));
 
       i = vQ.getIterator();
@@ -6816,7 +6816,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").NE((long) 200));
 
       i = vQ.getIterator();
@@ -6828,7 +6828,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6837,7 +6837,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").NE((long) 20));
 
       i = vQ.getIterator();
@@ -6868,7 +6868,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").NE("200"));
 
       i = vQ.getIterator();
@@ -6880,7 +6880,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6889,7 +6889,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aLong("testLong"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aLong("testLong").NE("20"));
 
       i = vQ.getIterator();
@@ -6920,7 +6920,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").EQ("Test Text Value"));
 
       i = vQ.getIterator();
@@ -6932,7 +6932,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6941,7 +6941,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").EQ("Not Test Text Value"));
 
       i = vQ.getIterator();
@@ -6972,7 +6972,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").EQi("Test Text Value".toUpperCase()));
 
       i = vQ.getIterator();
@@ -6984,7 +6984,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -6993,7 +6993,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").EQi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7024,7 +7024,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").IN("Test Text Value", "enum text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7036,7 +7036,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7045,7 +7045,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").IN("ENUM text value", "ENUM TEXT value", "ENUM TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7076,7 +7076,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").INi("Test Text Value".toUpperCase(), "ENUM TEXT VALUE", "wrong TEXT value 2"));
 
       i = vQ.getIterator();
@@ -7088,7 +7088,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7097,7 +7097,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").INi("WRONG TEXT VALUE", "WRONG TEXT VALUE 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7120,12 +7120,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testText");
     enumObject1.setValue("testText", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testText");
     enumObject2.setValue("testText", "");
     enumObject2.apply();
@@ -7138,7 +7138,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").EQ(""));
 
       i = vQ.getIterator();
@@ -7150,7 +7150,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7159,7 +7159,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NE(""));
 
       i = vQ.getIterator();
@@ -7196,7 +7196,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").LIKE("%Text%"));
 
       i = vQ.getIterator();
@@ -7208,7 +7208,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7217,7 +7217,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").LIKE("%text"));
 
       i = vQ.getIterator();
@@ -7248,7 +7248,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").LIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -7260,7 +7260,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7269,7 +7269,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").LIKEi("%TEXT"));
 
       i = vQ.getIterator();
@@ -7300,7 +7300,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NE("wrong text value"));
 
       i = vQ.getIterator();
@@ -7312,7 +7312,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7321,7 +7321,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NE("Test Text Value"));
 
       i = vQ.getIterator();
@@ -7352,7 +7352,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NEi("WRONG TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7364,7 +7364,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7373,7 +7373,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NEi("Test Text Value".toUpperCase()));
 
       i = vQ.getIterator();
@@ -7404,7 +7404,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NI("ENUM text value", "ENUM TEXT value", "ENUM TEXT VALUE"));
 
       i = vQ.getIterator();
@@ -7416,7 +7416,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7425,7 +7425,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NI("Test Text Value", "enum text value", "wrong text value"));
 
       i = vQ.getIterator();
@@ -7456,7 +7456,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NIi("WRONG text value", "WRONG TEXT value 2", "WRONG TEXT VALUE 3"));
 
       i = vQ.getIterator();
@@ -7468,7 +7468,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7477,7 +7477,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NIi("Test Text Value".toLowerCase(), "ENUM TEXT VALUE", "ENUM TEXT value"));
 
       i = vQ.getIterator();
@@ -7508,7 +7508,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NLIKEi("%WRONG%"));
 
       i = vQ.getIterator();
@@ -7520,7 +7520,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7529,7 +7529,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aText("testText"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aText("testText").NLIKEi("%TEXT%"));
 
       i = vQ.getIterator();
@@ -7561,7 +7561,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").EQ(date));
 
       i = vQ.getIterator();
@@ -7573,7 +7573,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7584,7 +7584,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").EQ(date));
 
       i = vQ.getIterator();
@@ -7615,7 +7615,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").EQ("12:30:30"));
 
       i = vQ.getIterator();
@@ -7627,7 +7627,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7636,7 +7636,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").EQ("11:00:00"));
 
       i = vQ.getIterator();
@@ -7668,7 +7668,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GT(date));
 
       i = vQ.getIterator();
@@ -7680,7 +7680,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7691,7 +7691,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GT(date));
 
       i = vQ.getIterator();
@@ -7722,7 +7722,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GT("11:00:00"));
 
       i = vQ.getIterator();
@@ -7734,7 +7734,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7743,7 +7743,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GT("14:00:00"));
 
       i = vQ.getIterator();
@@ -7775,7 +7775,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE(date));
 
       i = vQ.getIterator();
@@ -7787,7 +7787,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7798,7 +7798,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE(date));
 
       i = vQ.getIterator();
@@ -7810,7 +7810,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7821,7 +7821,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE(date));
 
       i = vQ.getIterator();
@@ -7852,7 +7852,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE("12:30:30"));
 
       i = vQ.getIterator();
@@ -7864,7 +7864,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7873,7 +7873,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE("12:30:30"));
 
       i = vQ.getIterator();
@@ -7885,7 +7885,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7894,7 +7894,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").GE("14:00:00"));
 
       i = vQ.getIterator();
@@ -7917,12 +7917,12 @@ public abstract class AbstractValueQueryMultiReferenceTest
   {
     OIterator<ValueObject> i = null;
 
-    BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
+    BusinessDAO enumObject1 = BusinessDAO.get(term3.getOid()).getBusinessDAO();
     String origValue1 = enumObject1.getValue("testTime");
     enumObject1.setValue("testTime", "");
     enumObject1.apply();
 
-    BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
+    BusinessDAO enumObject2 = BusinessDAO.get(term2.getOid()).getBusinessDAO();
     String origValue2 = enumObject2.getValue("testTime");
     enumObject2.setValue("testTime", "");
     enumObject2.apply();
@@ -7935,7 +7935,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").EQ(""));
 
       i = vQ.getIterator();
@@ -7947,7 +7947,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -7956,7 +7956,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").NE(""));
 
       i = vQ.getIterator();
@@ -7994,7 +7994,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LT(date));
 
       i = vQ.getIterator();
@@ -8006,7 +8006,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8017,7 +8017,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LT(date));
 
       i = vQ.getIterator();
@@ -8048,7 +8048,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LT("14:00:00"));
 
       i = vQ.getIterator();
@@ -8060,7 +8060,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8069,7 +8069,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LT("10:00:00"));
 
       i = vQ.getIterator();
@@ -8101,7 +8101,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE(date));
 
       i = vQ.getIterator();
@@ -8113,7 +8113,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8124,7 +8124,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE(date));
 
       i = vQ.getIterator();
@@ -8136,7 +8136,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8147,7 +8147,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE(date));
 
       i = vQ.getIterator();
@@ -8178,7 +8178,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE("12:30:30"));
 
       i = vQ.getIterator();
@@ -8190,7 +8190,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8199,7 +8199,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL find a match based on greater than
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE("14:00:00"));
 
       i = vQ.getIterator();
@@ -8211,7 +8211,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8220,7 +8220,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform a query that WILL NOT find a match
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").LE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8252,7 +8252,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").NE(date));
 
       i = vQ.getIterator();
@@ -8264,7 +8264,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8275,7 +8275,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").NE(date));
 
       i = vQ.getIterator();
@@ -8306,7 +8306,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").NE("10:00:00"));
 
       i = vQ.getIterator();
@@ -8318,7 +8318,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
       while (i.hasNext())
       {
-        if (!i.next().getValue("objectId").equals(business.getId()))
+        if (!i.next().getValue("objectId").equals(business.getOid()))
         {
           Assert.fail("One of the objects returned by the query had an Id not equal to testQueryObject1.");
         }
@@ -8327,7 +8327,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.id("objectId"));
+      vQ.SELECT(this.getQueryAttribute(query).aTime("testTime"), query.oid("objectId"));
       vQ.WHERE(this.getQueryAttribute(query).aTime("testTime").NE("12:30:30"));
 
       i = vQ.getIterator();
@@ -8377,7 +8377,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
     for (ComponentIF term : terms)
     {
-      business.addItem(mdAttributeMultiReference.definesAttribute(), term.getId());
+      business.addItem(mdAttributeMultiReference.definesAttribute(), term.getOid());
     }
 
     business.apply();

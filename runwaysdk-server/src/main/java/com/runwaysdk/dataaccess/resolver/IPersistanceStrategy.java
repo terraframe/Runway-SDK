@@ -40,7 +40,7 @@ public interface IPersistanceStrategy
 
   public void importDelete(IEntityContainer entity);
 
-  public EntityDAOIF get(String id);
+  public EntityDAOIF get(String oid);
 
   public MdEntityDAOIF getMdEntityDAO(String type);
 
@@ -60,9 +60,9 @@ public interface IPersistanceStrategy
 
   public MdBusinessDAOIF getParentMdBusiness(MdRelationshipDAOIF mdRelationship);
 
-  public List<RelationshipDAOIF> getChildren(String id, String relationshipType);
+  public List<RelationshipDAOIF> getChildren(String oid, String relationshipType);
 
-  public List<RelationshipDAOIF> getParents(String id, String relationshipType);
+  public List<RelationshipDAOIF> getParents(String oid, String relationshipType);
 
   public MdAttributeDAOIF getMdAttributeDAO(MdEntityDAOIF mdEntity, String attributeName);
 

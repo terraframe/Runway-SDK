@@ -118,29 +118,29 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   }
 
   /**
-   * Compares the id of a component for equality.
+   * Compares the oid of a component for equality.
    * 
-   * @param id
-   *          id of the object to compare.
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id)
+  public BasicCondition EQ(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionEq(this, statementPrimitive, false);
   }
 
   /**
-   * Compares the id of a component for equality.
+   * Compares the oid of a component for equality.
    * 
-   * @param id
-   *          id of the object to compare.
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition NE(String id)
+  public BasicCondition NE(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }
@@ -1524,7 +1524,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   // Any
   /**
    * Checks if the enumeration attribute contains a mapping with one of the
-   * enumeration items with the given id.
+   * enumeration items with the given oid.
    * 
    * @param enumIds
    *          ID of an enumeration.
@@ -1544,7 +1544,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   // Not Any
   /**
    * Checks if the enumeration attribute does not contain a mapping with one of
-   * the enumeration items with the given id.
+   * the enumeration items with the given oid.
    * 
    * @param enumIds
    *          ID of an enumeration.
@@ -1558,7 +1558,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   // All
   /**
    * Checks if the enumeration attribute contains a mapping with all of the
-   * enumeration items with the given id.
+   * enumeration items with the given oid.
    * 
    * @param enumIds
    *          ID of an enumeration.
@@ -1590,7 +1590,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   // NOT All
   /**
    * Checks if the enumeration attribute does not contain a mapping with all of
-   * the enumeration items with the given id.
+   * the enumeration items with the given oid.
    * 
    * @param enumIds
    *          ID of an enumeration.
@@ -1622,7 +1622,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
   // Exactly
   /**
    * Checks if the enumeration attribute contains a mapping with exactly the
-   * given set of the enumeration items with the given id.
+   * given set of the enumeration items with the given oid.
    * 
    * @param enumIds
    *          ID of an enumeration.
@@ -1934,29 +1934,29 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     }
 
     /**
-     * Compares the id of a component for equality. This class is used only by
+     * Compares the oid of a component for equality. This class is used only by
      * its enclosing class and is never called by a client. Hence This method is
      * implemented only to satisfy the contract of the super class;
      * 
-     * @param id
-     *          id of the object to compare.
+     * @param oid
+     *          oid of the object to compare.
      * @return null;
      */
-    public BasicCondition EQ(String id)
+    public BasicCondition EQ(String oid)
     {
       return null;
     }
 
     /**
-     * Compares the id of a component for equality. This class is used only by
+     * Compares the oid of a component for equality. This class is used only by
      * its enclosing class and is never called by a client. Hence This method is
      * implemented only to satisfy the contract of the super class;
      * 
-     * @param id
-     *          id of the object to compare.
+     * @param oid
+     *          oid of the object to compare.
      * @return null;
      */
-    public BasicCondition NE(String id)
+    public BasicCondition NE(String oid)
     {
       return null;
     }

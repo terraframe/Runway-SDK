@@ -381,7 +381,7 @@ public class HsqlDB extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
     String statement = "CREATE TABLE "+tableName+" \n"+
         "("+MdEnumerationDAOIF.SET_ID_COLUMN+"    CHAR("+Database.DATABASE_ID_SIZE+") NOT NULL, \n"+
@@ -389,7 +389,7 @@ public class HsqlDB extends AbstractDatabase
     String undo = "DROP TABLE " + tableName;
     new DDLCommand(statement, undo, false).doIt();
 
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX "+indexName+" ON "+tableName+
         " ("+MdEnumerationDAOIF.SET_ID_COLUMN+", "+MdEnumerationDAOIF.ITEM_ID_COLUMN+")";
     undo = "DROP INDEX "+indexName;
@@ -452,9 +452,9 @@ public class HsqlDB extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String, String);
    */
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     String statement = "DROP INDEX "+indexName;
     String undo = "CREATE UNIQUE INDEX "+indexName+" ON "+tableName+
         " ("+MdEnumerationDAOIF.SET_ID_COLUMN+", "+MdEnumerationDAOIF.ITEM_ID_COLUMN+")";
@@ -1529,14 +1529,14 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset,
+  public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset,
       int length)
   {
     Connection conn = Database.getConnection();
@@ -1547,10 +1547,10 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       byte[] resultBytes = resultSet.getBytes(columnName);
@@ -1640,11 +1640,11 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
@@ -1653,7 +1653,7 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       prepared = conn.prepareStatement(update);
       prepared.setBytes(1, bytes);
       prepared.executeUpdate();
@@ -1683,11 +1683,11 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return byte[] value of the blob.
    */
   @Override
-  public byte[] getBlobAsBytes(String table, String columnName, String id)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -1697,7 +1697,7 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 
@@ -1732,11 +1732,11 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param conn
    * @return byte[] value of the blob.
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, Connection conn)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -1745,7 +1745,7 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 
@@ -1781,12 +1781,12 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param length
    * @return
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, long pos, int length)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, long pos, int length)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -1796,7 +1796,7 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 
@@ -1837,10 +1837,10 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -1848,10 +1848,10 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       byte[] resultBytes = resultSet.getBytes(columnName);
@@ -1893,11 +1893,11 @@ public class HsqlDB extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return The byte array value of this blob attribute.
    */
   @Override
-  public long getBlobSize(String table, String columnName, String id)
+  public long getBlobSize(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -1907,7 +1907,7 @@ public class HsqlDB extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 

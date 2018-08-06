@@ -182,19 +182,19 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 
@@ -658,9 +658,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -747,13 +747,13 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.JobHistory jobHistory)
     {
       if(jobHistory == null) return this.EQ((java.lang.String)null);
-      return this.EQ(jobHistory.getId());
+      return this.EQ(jobHistory.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.JobHistory jobHistory)
     {
       if(jobHistory == null) return this.NE((java.lang.String)null);
-      return this.NE(jobHistory.getId());
+      return this.NE(jobHistory.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -858,19 +858,19 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, com.runwaysdk.system.metadata.MdAttributeLocalText.CLASS, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 
@@ -1287,9 +1287,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getOid();
+    public com.runwaysdk.query.SelectableChar getOid(String alias);
+    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1357,7 +1357,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<jobHistory.length; i++)
       {
-        itemIdArray[i] = jobHistory[i].getId();
+        itemIdArray[i] = jobHistory[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1369,7 +1369,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<jobHistory.length; i++)
       {
-        itemIdArray[i] = jobHistory[i].getId();
+        itemIdArray[i] = jobHistory[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1381,7 +1381,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<jobHistory.length; i++)
       {
-        itemIdArray[i] = jobHistory[i].getId();
+        itemIdArray[i] = jobHistory[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1393,7 +1393,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<jobHistory.length; i++)
       {
-        itemIdArray[i] = jobHistory[i].getId();
+        itemIdArray[i] = jobHistory[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1405,7 +1405,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<jobHistory.length; i++)
       {
-        itemIdArray[i] = jobHistory[i].getId();
+        itemIdArray[i] = jobHistory[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1512,19 +1512,19 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, com.runwaysdk.system.metadata.MdAttributeLocalText.CLASS, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableChar getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableChar getOid(String alias)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 

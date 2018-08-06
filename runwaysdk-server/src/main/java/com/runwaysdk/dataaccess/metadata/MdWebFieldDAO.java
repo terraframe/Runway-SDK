@@ -115,7 +115,7 @@ public abstract class MdWebFieldDAO extends MdFieldDAO implements MdWebFieldDAOI
     // FIXME put into superclass with getFormFieldRelationship():Str accessor
     boolean firstApply = ( this.isNew() && !this.isAppliedToDB() && !this.isImport() );
 
-    String id = super.apply();
+    String oid = super.apply();
 
     if (firstApply)
     {
@@ -123,12 +123,12 @@ public abstract class MdWebFieldDAO extends MdFieldDAO implements MdWebFieldDAOI
 
       if (formId != null && formId.length() > 0)
       {
-        RelationshipDAO rel = RelationshipDAO.newInstance(formId, id, WebFormFieldInfo.CLASS);
+        RelationshipDAO rel = RelationshipDAO.newInstance(formId, oid, WebFormFieldInfo.CLASS);
         rel.apply();
       }
     }
 
-    return id;
+    return oid;
   }
 
   public MdWebGroupDAOIF getContainingGroup()
@@ -136,7 +136,7 @@ public abstract class MdWebFieldDAO extends MdFieldDAO implements MdWebFieldDAOI
     QueryFactory factory = new QueryFactory();
     RelationshipDAOQuery query = factory.relationshipDAOQuery(RelationshipTypes.WEB_GROUP_FIELD.getType());
 
-    query.WHERE(query.childId().EQ(this.getId()));
+    query.WHERE(query.childId().EQ(this.getOid()));
 
     OIterator<RelationshipDAOIF> it = query.getIterator();
 

@@ -88,9 +88,9 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    *          name of the attribute.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter id()
+  public AttributeCharacter oid()
   {
-    return this.id(null);
+    return this.oid(null);
   }
 
   /**
@@ -99,7 +99,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
-  public AttributeCharacter id(String userDefinedAlias)
+  public AttributeCharacter oid(String userDefinedAlias)
   {
     String name = EntityInfo.ID;
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
@@ -119,7 +119,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable selectable)
   {
-    return new LeftJoinEq(this.id(), selectable);
+    return new LeftJoinEq(this.oid(), selectable);
   }
 
   /**
@@ -129,7 +129,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable... selectableArray)
   {
-    return new LeftJoinEq(this.id(), selectableArray);
+    return new LeftJoinEq(this.oid(), selectableArray);
   }
 
   /**
@@ -139,7 +139,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle selectable)
   {
-    return new LeftJoinNotEq(this.id(), selectable);
+    return new LeftJoinNotEq(this.oid(), selectable);
   }
 
   /**
@@ -149,7 +149,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinNotEq(this.id(), selectableArray);
+    return new LeftJoinNotEq(this.oid(), selectableArray);
   }
 
   /**
@@ -159,7 +159,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle selectable)
   {
-    return new LeftJoinGt(this.id(), selectable);
+    return new LeftJoinGt(this.oid(), selectable);
   }
 
   /**
@@ -169,7 +169,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle... selectableArray)
   {
-    return new LeftJoinGt(this.id(), selectableArray);
+    return new LeftJoinGt(this.oid(), selectableArray);
   }
 
   /**
@@ -179,7 +179,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle selectable)
   {
-    return new LeftJoinGtEq(this.id(), selectable);
+    return new LeftJoinGtEq(this.oid(), selectable);
   }
 
   /**
@@ -189,7 +189,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinGtEq(this.id(), selectableArray);
+    return new LeftJoinGtEq(this.oid(), selectableArray);
   }
 
   /**
@@ -199,7 +199,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle selectable)
   {
-    return new LeftJoinLt(this.id(), selectable);
+    return new LeftJoinLt(this.oid(), selectable);
   }
 
   /**
@@ -209,7 +209,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle... selectableArray)
   {
-    return new LeftJoinLt(this.id(), selectableArray);
+    return new LeftJoinLt(this.oid(), selectableArray);
   }
 
   /**
@@ -219,7 +219,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle selectable)
   {
-    return new LeftJoinLtEq(this.id(), selectable);
+    return new LeftJoinLtEq(this.oid(), selectable);
   }
 
   /**
@@ -229,7 +229,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinLtEq(this.id(), selectableArray);
+    return new LeftJoinLtEq(this.oid(), selectableArray);
   }
 
 

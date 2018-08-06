@@ -294,13 +294,13 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebPrimitive mdWebPrimitive)
     {
       if(mdWebPrimitive == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebPrimitive.getId());
+      return this.EQ(mdWebPrimitive.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebPrimitive mdWebPrimitive)
     {
       if(mdWebPrimitive == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebPrimitive.getId());
+      return this.NE(mdWebPrimitive.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getExpression()
@@ -499,7 +499,7 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
 
       for (int i=0; i<mdWebPrimitive.length; i++)
       {
-        itemIdArray[i] = mdWebPrimitive[i].getId();
+        itemIdArray[i] = mdWebPrimitive[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -511,7 +511,7 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
 
       for (int i=0; i<mdWebPrimitive.length; i++)
       {
-        itemIdArray[i] = mdWebPrimitive[i].getId();
+        itemIdArray[i] = mdWebPrimitive[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -523,7 +523,7 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
 
       for (int i=0; i<mdWebPrimitive.length; i++)
       {
-        itemIdArray[i] = mdWebPrimitive[i].getId();
+        itemIdArray[i] = mdWebPrimitive[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -535,7 +535,7 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
 
       for (int i=0; i<mdWebPrimitive.length; i++)
       {
-        itemIdArray[i] = mdWebPrimitive[i].getId();
+        itemIdArray[i] = mdWebPrimitive[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -547,7 +547,7 @@ public  class MdWebPrimitiveQuery extends com.runwaysdk.system.metadata.MdWebAtt
 
       for (int i=0; i<mdWebPrimitive.length; i++)
       {
-        itemIdArray[i] = mdWebPrimitive[i].getId();
+        itemIdArray[i] = mdWebPrimitive[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

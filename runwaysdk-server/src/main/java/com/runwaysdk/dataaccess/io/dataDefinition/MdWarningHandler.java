@@ -59,7 +59,7 @@ public class MdWarningHandler extends MdLocalizableHandler implements TagHandler
       }
 
       MdWarningDAOIF superException = MdWarningDAO.getMdWarning(extend);
-      mdLocalizable.setValue(MdWarningInfo.SUPER_MD_WARNING, superException.getId());
+      mdLocalizable.setValue(MdWarningInfo.SUPER_MD_WARNING, superException.getOid());
     }
 
   }

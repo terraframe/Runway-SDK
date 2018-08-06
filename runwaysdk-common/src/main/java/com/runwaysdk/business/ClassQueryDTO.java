@@ -289,7 +289,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   public class QueryCondition implements Serializable
   {
     /**
-     * Auto-generated serial id.
+     * Auto-generated serial oid.
      */
     private static final long serialVersionUID = -2928896344450605433L;
 

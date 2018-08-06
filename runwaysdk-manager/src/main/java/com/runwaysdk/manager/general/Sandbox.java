@@ -160,7 +160,7 @@ public class Sandbox
 //    mdBusiness.apply();
 //    
 //    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.createCharacterAttribute(mdBusiness);
-//    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+//    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
 //    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, "true");
 //    mdAttributeCharacter.apply();
 //    
@@ -190,10 +190,10 @@ public class Sandbox
 //    businessDAO.apply();
 //    
 //    BusinessDAO referenceDAO = BusinessDAO.newInstance(Constants.TEST_PACKAGE + "." + Constants.TEST_CLASS2);
-//    referenceDAO.setValue("testReference", businessDAO.getId());
+//    referenceDAO.setValue("testReference", businessDAO.getOid());
 //    referenceDAO.apply();
 //    
-//    businessDAO.setValue("testReference", referenceDAO.getId());
+//    businessDAO.setValue("testReference", referenceDAO.getOid());
 //    businessDAO.apply();
 //  }
 //

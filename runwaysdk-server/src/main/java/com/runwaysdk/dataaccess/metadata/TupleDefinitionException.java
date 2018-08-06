@@ -22,7 +22,7 @@ package com.runwaysdk.dataaccess.metadata;
 public class TupleDefinitionException extends InvalidDefinitionException
 {
   /**
-   * Auto generated eclipse id
+   * Auto generated eclipse oid
    */
   private static final long serialVersionUID = 262503358634937267L;
    

@@ -51,7 +51,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -188,7 +188,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -423,7 +423,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -665,60 +665,60 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllJob()
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO> getAllJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.ExecutableJobDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO> getAllJobRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO> getAllJobRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO> getAllJobRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHistoryRecordDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
   public com.runwaysdk.system.scheduler.JobHistoryRecordDTO addJob(com.runwaysdk.system.scheduler.ExecutableJobDTO parent)
   {
-    return (com.runwaysdk.system.scheduler.JobHistoryRecordDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (com.runwaysdk.system.scheduler.JobHistoryRecordDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.scheduler.JobHistoryRecordDTO addJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.scheduler.ExecutableJobDTO parent)
+  public static com.runwaysdk.system.scheduler.JobHistoryRecordDTO addJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.scheduler.ExecutableJobDTO parent)
   {
-    return (com.runwaysdk.system.scheduler.JobHistoryRecordDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    return (com.runwaysdk.system.scheduler.JobHistoryRecordDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
   public void removeJob(com.runwaysdk.system.scheduler.JobHistoryRecordDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.scheduler.JobHistoryRecordDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllJob()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
-  public static void removeAllJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.scheduler.JobHistoryRecordDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.scheduler.JobHistoryDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.scheduler.JobHistoryDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.scheduler.JobHistoryDTO) dto;
   }
@@ -736,7 +736,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.scheduler.JobHistoryQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -749,10 +749,10 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.JobHistoryDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.scheduler.JobHistoryDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.JobHistoryDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.scheduler.JobHistoryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -762,10 +762,10 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.JobHistoryDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.scheduler.JobHistoryDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.JobHistoryDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.scheduler.JobHistoryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

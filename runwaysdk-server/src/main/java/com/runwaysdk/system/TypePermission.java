@@ -29,7 +29,7 @@ public class TypePermission extends TypePermissionBase
   
   public TypePermission(com.runwaysdk.system.Actor parent, com.runwaysdk.system.metadata.Metadata child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

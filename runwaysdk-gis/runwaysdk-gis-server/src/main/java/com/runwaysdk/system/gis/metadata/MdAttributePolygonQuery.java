@@ -115,12 +115,12 @@ private static final long serialVersionUID = 344158508;
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.metadata.MdAttributePolygon mdAttributePolygon)
     {
-      return this.EQ(mdAttributePolygon.getId());
+      return this.EQ(mdAttributePolygon.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.metadata.MdAttributePolygon mdAttributePolygon)
     {
-      return this.NE(mdAttributePolygon.getId());
+      return this.NE(mdAttributePolygon.getOid());
     }
 
   }

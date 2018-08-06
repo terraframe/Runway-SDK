@@ -72,7 +72,7 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
 
   /**
    * Returns an array of Relationship objects of the given type
-   * that are children of the BusinessDAO with given BusinessDAO id.  Relationships
+   * that are children of the BusinessDAO with given BusinessDAO oid.  Relationships
    * are retrieved from the database
    *
    * <br/><b>Precondition:</b>  businessDAOid != null
@@ -83,10 +83,10 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
    * <br/><b>Postcondition:</b> Returns LinkedList of Relationship objects of the given type
    *         that are children of the BusinessDAO with given BusinessDAO ID
    *
-   * @param businessDAOid  id of the BusinessDAO from which you want to retrieve the
+   * @param businessDAOid  oid of the BusinessDAO from which you want to retrieve the
    *                     children relationships
    * @return Array of Relationship objects of the given type
-   *         that are children of the BusinessDAO with given BusinessDAO id.
+   *         that are children of the BusinessDAO with given BusinessDAO oid.
    */
   public List<RelationshipDAOIF> getChildren(String businessDAOid, String relationshipType)
   {
@@ -141,12 +141,12 @@ public class CacheNoneRelationshipDAOStrategy extends CacheNoneStrategy implemen
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  protected EntityDAOIF getFromFactory(String id)
+  protected EntityDAOIF getFromFactory(String oid)
   {
-    return RelationshipDAOFactory.get(id);
+    return RelationshipDAOFactory.get(oid);
   }
 
   /**

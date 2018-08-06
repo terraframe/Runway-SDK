@@ -323,7 +323,7 @@ public class TransactionImportManager implements IPropertyListener
       }
       catch (DataNotFoundException e)
       {
-        // No vault with the given id exists. Vault may have been deleted.
+        // No vault with the given oid exists. Vault may have been deleted.
       }
     }
   }
@@ -341,7 +341,7 @@ public class TransactionImportManager implements IPropertyListener
 
     if (vaultLocationFile != null && vaultLocationFile.exists())
     {
-      FileIO.copyFolder(new File(this.backupVaultFileLocation + File.separator + vaultDAOIF.getId() + File.separator), new File(vaultLocation));
+      FileIO.copyFolder(new File(this.backupVaultFileLocation + File.separator + vaultDAOIF.getOid() + File.separator), new File(vaultLocation));
     }
   }
 
@@ -385,7 +385,7 @@ public class TransactionImportManager implements IPropertyListener
       }
       catch (DataNotFoundException e)
       {
-        // No webfile with the given id exists. it may have been deleted.
+        // No webfile with the given oid exists. it may have been deleted.
       }
     }
   }

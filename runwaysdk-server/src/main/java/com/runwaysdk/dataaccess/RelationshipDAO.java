@@ -59,26 +59,26 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   private static final long serialVersionUID = 796338853954464656L;
 
   /**
-   * id of the parent BusinessDAO in the relationship. <br/>
+   * oid of the parent BusinessDAO in the relationship. <br/>
    * <b>invariant </b> parentId != null <br/>
    * <b>invariant </b> !parentId.trim().equals("") <br/>
    */
   private String            parentId;
   
   /**
-   * The old id of the parent if the parent has changed.
+   * The old oid of the parent if the parent has changed.
    */
   private String            oldParentId;
 
   /**
-   * id of the child BusinessDAO in the relationship. <br/>
+   * oid of the child BusinessDAO in the relationship. <br/>
    * <b>invariant </b> childId != null <br/>
    * <b>invariant </b> !childId().equals("") <br/>
    */
   private String            childId;
   
   /**
-   * The old id of the parent if the child has changed.
+   * The old oid of the parent if the child has changed.
    */
   private String            oldChildId;
 
@@ -96,7 +96,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * @param parentId
-   *          Overwrites the parent id if this relationship is new and has not
+   *          Overwrites the parent oid if this relationship is new and has not
    *          been applied to the database
    */
   public void overwriteParentId(String parentId)
@@ -109,7 +109,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * @param childId
-   *          Overwrites the child id if this relationship is new and has not
+   *          Overwrites the child oid if this relationship is new and has not
    *          been applied to the database
    */
   public void overwriteChildId(String childId)
@@ -246,7 +246,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * 
    * @return The ID of the Relationship
    */
-  public String getId()
+  public String getOid()
   {
     return this.getAttributeIF(EntityInfo.ID).getValue();
   }
@@ -262,13 +262,13 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns the id of the parent BusinessDAO in this relationship.
+   * Returns the oid of the parent BusinessDAO in this relationship.
    * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    * 
-   * @return id of the parent BusinessDAO in this relationship
+   * @return oid of the parent BusinessDAO in this relationship
    */
   public String getParentId()
   {
@@ -276,7 +276,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Sets the parent id to a new id. ONLY CALL THIS ONCE IN A TRANSACTION!
+   * Sets the parent oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
    * 
    * @param newParentId
    */
@@ -306,9 +306,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
   
   /**
-   * Return true if the child id has changed, false otherwise.
+   * Return true if the child oid has changed, false otherwise.
    * 
-   * @return true if the child id has changed, false otherwise.
+   * @return true if the child oid has changed, false otherwise.
    */
   public boolean hasChildIdChanged()
   {
@@ -324,9 +324,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Return true if the parent id has changed, false otherwise.
+   * Return true if the parent oid has changed, false otherwise.
    * 
-   * @return true if the parent id has changed, false otherwise.
+   * @return true if the parent oid has changed, false otherwise.
    */
   public boolean hasParentIdChanged()
   {
@@ -356,13 +356,13 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns the id of the child BusinessDAO in this relationship.
+   * Returns the oid of the child BusinessDAO in this relationship.
    * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    * 
-   * @return id of the child BusinessDAO in this relationship
+   * @return oid of the child BusinessDAO in this relationship
    */
   public String getChildId()
   {
@@ -370,7 +370,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Sets the child id to a new id. ONLY CALL THIS ONCE IN A TRANSACTION!
+   * Sets the child oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
    * 
    * @param newChildId
    */
@@ -460,7 +460,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
     // Aspect will release the lock after the enclosing transaction is complete.
 
-    return this.getId();
+    return this.getOid();
   }
 
   /**
@@ -500,7 +500,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Return the Relationship instance with the given id. Request is routed to
+   * Return the Relationship instance with the given oid. Request is routed to
    * the collection responsible for relationships of the given type.
    * 
    * <br/>
@@ -508,12 +508,12 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * <b>Precondition:</b> !relId.trim().equals("")
    * 
    * @param relId
-   *          id of a Relationship
-   * @return Relationship object with the given id
+   *          oid of a Relationship
+   * @return Relationship object with the given oid
    */
-  public static RelationshipDAOIF get(String id)
+  public static RelationshipDAOIF get(String oid)
   {
-    return ObjectCache.getRelationshipDAO(id);
+    return ObjectCache.getRelationshipDAO(oid);
   }
 
   /**
@@ -553,7 +553,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public static List<RelationshipDAOIF> get(BusinessDAOIF parentObjectIF, BusinessDAOIF childObjectIF, String relationshipType)
   {
-    return get(parentObjectIF.getId(), childObjectIF.getId(), relationshipType);
+    return get(parentObjectIF.getOid(), childObjectIF.getOid(), relationshipType);
   }
 
   /**
@@ -577,7 +577,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     if (relaitonshipIFList.size() == 0)
     {
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-      String errMsg = "A relationship of type [" + relationshipType + "] with parent id [" + parentId + "] and child id [" + childId + "] could not be found.";
+      String errMsg = "A relationship of type [" + relationshipType + "] with parent oid [" + parentId + "] and child oid [" + childId + "] could not be found.";
       throw new DataNotFoundException(errMsg, mdRelationship);
     }
 
@@ -623,7 +623,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns a copy of the given RelationshipDAO instance, with a new id and
+   * Returns a copy of the given RelationshipDAO instance, with a new oid and
    * mastered at the current site. The state of the object is new and has not
    * been applied to the database.
    * 
@@ -646,7 +646,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       }
     }
 
-    // This should overwrite the non-system attributes, such as id and site
+    // This should overwrite the non-system attributes, such as oid and site
     // master
     copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
@@ -660,7 +660,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     {
       RelationshipDAO r1 = (RelationshipDAO) obj;
 
-      return this.getId().equals(r1.getId());
+      return this.getOid().equals(r1.getOid());
     }
 
     return false;
@@ -668,7 +668,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   public int hashCode()
   {
-    return this.getId().hashCode();
+    return this.getOid().hashCode();
   }
 
   /**

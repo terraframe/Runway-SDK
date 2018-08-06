@@ -41,9 +41,9 @@ public abstract class MdMobileTextBase extends com.runwaysdk.system.metadata.MdM
     return CLASS;
   }
   
-  public static MdMobileText get(String id)
+  public static MdMobileText get(String oid)
   {
-    return (MdMobileText) com.runwaysdk.business.Business.get(id);
+    return (MdMobileText) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileText getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileTextBase extends com.runwaysdk.system.metadata.MdM
     return (MdMobileText) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileText lock(java.lang.String id)
+  public static MdMobileText lock(java.lang.String oid)
   {
-    MdMobileText _instance = MdMobileText.get(id);
+    MdMobileText _instance = MdMobileText.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileText unlock(java.lang.String id)
+  public static MdMobileText unlock(java.lang.String oid)
   {
-    MdMobileText _instance = MdMobileText.get(id);
+    MdMobileText _instance = MdMobileText.get(oid);
     _instance.unlock();
     
     return _instance;

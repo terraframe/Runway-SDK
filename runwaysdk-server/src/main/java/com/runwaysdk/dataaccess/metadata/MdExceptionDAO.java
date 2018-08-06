@@ -203,9 +203,9 @@ public class MdExceptionDAO extends MdLocalizableDAO implements MdExceptionDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdExceptionDAOIF get(String id)
+  public static MdExceptionDAOIF get(String oid)
   {
-    return (MdExceptionDAOIF) BusinessDAO.get(id);
+    return (MdExceptionDAOIF) BusinessDAO.get(oid);
   }
   
   /* (non-Javadoc)

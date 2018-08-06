@@ -109,7 +109,7 @@ public class MdAttributeMultiReference_E extends MdAttributeConcrete_E
     {
       String tableName = ( (MdAttributeMultiReferenceDAOIF) this.mdAttribute ).getTableName();
 
-      Database.createEnumerationTable(tableName, this.mdAttribute.getId());
+      Database.createEnumerationTable(tableName, this.mdAttribute.getOid());
     }
   }
 
@@ -149,7 +149,7 @@ public class MdAttributeMultiReference_E extends MdAttributeConcrete_E
     {
       AttributeEnumerationIF index = (AttributeEnumerationIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
 
-      if (!index.dereference()[0].getId().equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+      if (!index.dereference()[0].getOid().equalsIgnoreCase(IndexTypes.NO_INDEX.getOid()))
       {
         isValid = false;
       }

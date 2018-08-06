@@ -154,13 +154,13 @@ public  class UniversalSQLBuilderQuery extends com.runwaysdk.system.gis.mapping.
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.UniversalSQLBuilder universalSQLBuilder)
     {
       if(universalSQLBuilder == null) return this.EQ((java.lang.String)null);
-      return this.EQ(universalSQLBuilder.getId());
+      return this.EQ(universalSQLBuilder.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.UniversalSQLBuilder universalSQLBuilder)
     {
       if(universalSQLBuilder == null) return this.NE((java.lang.String)null);
-      return this.NE(universalSQLBuilder.getId());
+      return this.NE(universalSQLBuilder.getOid());
     }
 
   public com.runwaysdk.system.gis.geo.UniversalQuery.UniversalQueryReferenceIF getUniversal()

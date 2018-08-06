@@ -66,9 +66,9 @@ public abstract class BusinessSystemBase extends com.runwaysdk.business.ElementS
     }
   }
   
-  public static BusinessSystem get(String id)
+  public static BusinessSystem get(String oid)
   {
-    return (BusinessSystem) com.runwaysdk.business.Business.get(id);
+    return (BusinessSystem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static BusinessSystem getByKey(String key)
@@ -76,17 +76,17 @@ public abstract class BusinessSystemBase extends com.runwaysdk.business.ElementS
     return (BusinessSystem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static BusinessSystem lock(java.lang.String id)
+  public static BusinessSystem lock(java.lang.String oid)
   {
-    BusinessSystem _instance = BusinessSystem.get(id);
+    BusinessSystem _instance = BusinessSystem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static BusinessSystem unlock(java.lang.String id)
+  public static BusinessSystem unlock(java.lang.String oid)
   {
-    BusinessSystem _instance = BusinessSystem.get(id);
+    BusinessSystem _instance = BusinessSystem.get(oid);
     _instance.unlock();
     
     return _instance;

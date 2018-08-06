@@ -12,7 +12,7 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdFieldDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = 875214753;
@@ -27,9 +27,9 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
     super(component, structName);
   }
   
-  public static MdFieldDisplayLabel get(String id)
+  public static MdFieldDisplayLabel get(String oid)
   {
-    return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdFieldDisplayLabel getByKey(String key)
@@ -37,7 +37,7 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
     return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdFieldDisplayLabel.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);

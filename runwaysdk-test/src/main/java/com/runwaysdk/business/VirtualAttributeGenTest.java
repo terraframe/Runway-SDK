@@ -123,7 +123,7 @@ public class VirtualAttributeGenTest
     genreEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Genre Master");
     genreEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     genreEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    genreEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    genreEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     genreEnumMdBusiness.apply();
     genreEnumMdBusinessIF = genreEnumMdBusiness;
 
@@ -135,7 +135,7 @@ public class VirtualAttributeGenTest
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, genreEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, genreEnumMdBusinessIF.getOid());
     mdEnumeration.apply();
     genreMdEnumerationIF = mdEnumeration;
 
@@ -164,8 +164,8 @@ public class VirtualAttributeGenTest
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "");
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, bookMdBusiness.getId());
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, genreMdEnumerationIF.getId());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, bookMdBusiness.getOid());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, genreMdEnumerationIF.getOid());
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumSingle.apply();
 
@@ -176,8 +176,8 @@ public class VirtualAttributeGenTest
     titleMdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test title Attribute");
     titleMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "64");
     titleMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    titleMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    titleMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, bookMdBusiness.getId());
+    titleMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+    titleMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, bookMdBusiness.getOid());
     titleMdAttribute.apply();
 
     authorMdBusiness = MdBusinessDAO.newInstance();
@@ -195,8 +195,8 @@ public class VirtualAttributeGenTest
     authorNameMdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test authorNameame Attribute");
     authorNameMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "64");
     authorNameMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    authorNameMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    authorNameMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, authorMdBusiness.getId());
+    authorNameMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+    authorNameMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, authorMdBusiness.getOid());
     authorNameMdAttribute.apply();
 
     bookMdView = MdViewDAO.newInstance();
@@ -208,18 +208,18 @@ public class VirtualAttributeGenTest
     bookMdView.apply();
 
     virtualGenreMdAttribute = MdAttributeVirtualDAO.newInstance();
-    virtualGenreMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttrEnumSingle.getId());
-    virtualGenreMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getId());
+    virtualGenreMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttrEnumSingle.getOid());
+    virtualGenreMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getOid());
     virtualGenreMdAttribute.apply();
 
     virtualTitleMdAttribute = MdAttributeVirtualDAO.newInstance();
-    virtualTitleMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, titleMdAttribute.getId());
-    virtualTitleMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getId());
+    virtualTitleMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, titleMdAttribute.getOid());
+    virtualTitleMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getOid());
     virtualTitleMdAttribute.apply();
 
     virtualAuthorNameMdAttribute = MdAttributeVirtualDAO.newInstance();
-    virtualAuthorNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, authorNameMdAttribute.getId());
-    virtualAuthorNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getId());
+    virtualAuthorNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, authorNameMdAttribute.getOid());
+    virtualAuthorNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, bookMdView.getOid());
     virtualAuthorNameMdAttribute.apply();
 
     personMdBusiness = MdBusinessDAO.newInstance();
@@ -237,8 +237,8 @@ public class VirtualAttributeGenTest
     personNameMdAttribute.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Person Name Attribute");
     personNameMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "64");
     personNameMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    personNameMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    personNameMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, personMdBusiness.getId());
+    personNameMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+    personNameMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, personMdBusiness.getOid());
     personNameMdAttribute.apply();
 
     employeeMdBusiness = MdBusinessDAO.newInstance();
@@ -247,7 +247,7 @@ public class VirtualAttributeGenTest
     employeeMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Employee");
     employeeMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     employeeMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    employeeMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, personMdBusiness.getId());
+    employeeMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, personMdBusiness.getOid());
     employeeMdBusiness.apply();
 
     employeeIdMdAttribute = MdAttributeIntegerDAO.newInstance();
@@ -256,8 +256,8 @@ public class VirtualAttributeGenTest
     employeeIdMdAttribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     employeeIdMdAttribute.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Employee Id Attribute");
     employeeIdMdAttribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    employeeIdMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    employeeIdMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, employeeMdBusiness.getId());
+    employeeIdMdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+    employeeIdMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, employeeMdBusiness.getOid());
     employeeIdMdAttribute.apply();
 
     MdAttributeReferenceDAO supervisorReferenceMdAttribute = MdAttributeReferenceDAO.newInstance();
@@ -266,8 +266,8 @@ public class VirtualAttributeGenTest
     supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     supervisorReferenceMdAttribute.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Employee Supervisor");
     supervisorReferenceMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, employeeMdBusiness.getId());
-    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, employeeMdBusiness.getId());
+    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, employeeMdBusiness.getOid());
+    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, employeeMdBusiness.getOid());
     supervisorReferenceMdAttribute.apply();
 
     MdRelationshipDAO mdRelationship = MdRelationshipDAO.newInstance();
@@ -276,11 +276,11 @@ public class VirtualAttributeGenTest
     mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Relationship");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Relationship");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, employeeMdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, employeeMdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Relationship");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, employeeMdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, employeeMdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "testChild");
     mdRelationship.apply();
 
@@ -293,15 +293,15 @@ public class VirtualAttributeGenTest
     employeeMdView.apply();
 
     virtualPersonNameMdAttribute = MdAttributeVirtualDAO.newInstance();
-    virtualPersonNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, personNameMdAttribute.getId());
-    virtualPersonNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getId());
+    virtualPersonNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, personNameMdAttribute.getOid());
+    virtualPersonNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getOid());
     virtualPersonNameMdAttribute.apply();
 
     virtualEmployeeIdMdAttribute = MdAttributeVirtualDAO.newInstance();
     virtualEmployeeIdMdAttribute.setValue(MdAttributeVirtualInfo.NAME, "empId");
 
-    virtualEmployeeIdMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, employeeIdMdAttribute.getId());
-    virtualEmployeeIdMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getId());
+    virtualEmployeeIdMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, employeeIdMdAttribute.getOid());
+    virtualEmployeeIdMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getOid());
     virtualEmployeeIdMdAttribute.apply();
 
     virtualSupervisorNameMdAttribute = MdAttributeVirtualDAO.newInstance();
@@ -309,8 +309,8 @@ public class VirtualAttributeGenTest
     virtualSupervisorNameMdAttribute.setStructValue(MdAttributeVirtualInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Supervisor Name");
     virtualSupervisorNameMdAttribute.setStructValue(MdAttributeVirtualInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Supervisor Name Attribute");
     virtualSupervisorNameMdAttribute.setValue(MdAttributeVirtualInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    virtualSupervisorNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, personNameMdAttribute.getId());
-    virtualSupervisorNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getId());
+    virtualSupervisorNameMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, personNameMdAttribute.getOid());
+    virtualSupervisorNameMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getOid());
     virtualSupervisorNameMdAttribute.apply();
 
     virtualSupervisorIdMdAttribute = MdAttributeVirtualDAO.newInstance();
@@ -318,8 +318,8 @@ public class VirtualAttributeGenTest
     virtualSupervisorIdMdAttribute.setStructValue(MdAttributeVirtualInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Supervisor Id");
     virtualSupervisorIdMdAttribute.setStructValue(MdAttributeVirtualInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Id of the supervisor");
     virtualSupervisorIdMdAttribute.setValue(MdAttributeVirtualInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    virtualSupervisorIdMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, employeeIdMdAttribute.getId());
-    virtualSupervisorIdMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getId());
+    virtualSupervisorIdMdAttribute.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, employeeIdMdAttribute.getOid());
+    virtualSupervisorIdMdAttribute.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, employeeMdView.getOid());
     virtualSupervisorIdMdAttribute.apply();
 
     BusinessDAO employee1 = BusinessDAO.newInstance(employeeMdBusiness.definesType());
@@ -330,13 +330,13 @@ public class VirtualAttributeGenTest
     BusinessDAO employee2 = BusinessDAO.newInstance(employeeMdBusiness.definesType());
     employee2.setValue("personName", "Employee Joe");
     employee2.setValue("employeeId", "456");
-    employee2.setValue("supervisor", employee1.getId());
+    employee2.setValue("supervisor", employee1.getOid());
     employee2.apply();
 
     BusinessDAO employee3 = BusinessDAO.newInstance(employeeMdBusiness.definesType());
     employee3.setValue("personName", "Employee Sally");
     employee3.setValue("employeeId", "789");
-    employee3.setValue("supervisor", employee1.getId());
+    employee3.setValue("supervisor", employee1.getOid());
     employee3.apply();
 
   }

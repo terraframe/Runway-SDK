@@ -31,10 +31,10 @@ public enum UserLocales implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getLocaleLabel();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -49,11 +49,11 @@ public enum UserLocales implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static UserLocales get(String id)
+  public static UserLocales get(String oid)
   {
     for (UserLocales e : UserLocales.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

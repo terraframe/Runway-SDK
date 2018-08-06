@@ -43,15 +43,15 @@ public enum IndexTypes
    * Index type of unique group index.
    */
   
-  private String id = null;
+  private String oid = null;
   
-  private IndexTypes(String id)
+  private IndexTypes(String oid)
   {
-   this.id = id;
+   this.oid = oid;
   }
   
-  public String getId()
+  public String getOid()
   {
-    return this.id;  
+    return this.oid;  
   }
 }

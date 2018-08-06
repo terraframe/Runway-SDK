@@ -160,25 +160,25 @@ public class AttributeStruct extends Attribute implements SelectableStruct
   }
   
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id)
+  public BasicCondition EQ(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionEq(this, statementPrimitive, false);
   }
 
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition NE(String id)
+  public BasicCondition NE(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }

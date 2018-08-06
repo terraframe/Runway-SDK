@@ -41,9 +41,9 @@ public abstract class AggregationFunctionBase extends com.runwaysdk.system.Enume
     return CLASS;
   }
   
-  public static AggregationFunction get(String id)
+  public static AggregationFunction get(String oid)
   {
-    return (AggregationFunction) com.runwaysdk.business.Business.get(id);
+    return (AggregationFunction) com.runwaysdk.business.Business.get(oid);
   }
   
   public static AggregationFunction getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class AggregationFunctionBase extends com.runwaysdk.system.Enume
     return (AggregationFunction) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.AggregationFunction.CLASS ,enumName);
   }
   
-  public static AggregationFunction lock(java.lang.String id)
+  public static AggregationFunction lock(java.lang.String oid)
   {
-    AggregationFunction _instance = AggregationFunction.get(id);
+    AggregationFunction _instance = AggregationFunction.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AggregationFunction unlock(java.lang.String id)
+  public static AggregationFunction unlock(java.lang.String oid)
   {
-    AggregationFunction _instance = AggregationFunction.get(id);
+    AggregationFunction _instance = AggregationFunction.get(oid);
     _instance.unlock();
     
     return _instance;

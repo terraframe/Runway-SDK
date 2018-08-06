@@ -118,7 +118,7 @@ public class EntityDAOFactory
    * @param columnInfoMap
    *          contains information about attributes used in the query
    * @param definedByTableClassMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -133,12 +133,12 @@ public class EntityDAOFactory
 
     for (MdAttributeConcreteDAOIF mdAttributeIF : MdAttributeIFList)
     {
-      MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getId());
+      MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getOid());
 
       if (mdTableClassIF == null)
       {
         mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
-        definedByTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+        definedByTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
       }
 
       String attributeName = mdAttributeIF.definesAttribute();
@@ -268,10 +268,10 @@ public class EntityDAOFactory
    * <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("")
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("")
    * 
-   * @param id
+   * @param oid
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
@@ -280,9 +280,9 @@ public class EntityDAOFactory
    * @return <code>Map</code> of Attribute objects for the BusinessDAO with the
    *         given ID and type.
    */
-  public static Map<String, Attribute> getAttributesForHardcodedMetadata(String id, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
+  public static Map<String, Attribute> getAttributesForHardcodedMetadata(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
   {
-    return Database.getAttributesForHardcodedMetadataObject(id, type, tableName, relationshipAttributesHackMap, rootClass);
+    return Database.getAttributesForHardcodedMetadataObject(oid, type, tableName, relationshipAttributesHackMap, rootClass);
   }
 
   /**
@@ -326,12 +326,12 @@ public class EntityDAOFactory
 
     // Check for sessionDefaultValue
 
-    // New enumeration attributes need a unique id so they can map to the
+    // New enumeration attributes need a unique oid so they can map to the
     // MdEnumerationIF.getDatabaseTableName() table
     if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
     {
-      String setId = ServerIDGenerator.nextID();
-      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setId);
+      String setOid = ServerIDGenerator.nextID();
+      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
 
       AttributeEnumeration attributeEnumeration = (AttributeEnumeration) attribute;
 
@@ -342,8 +342,8 @@ public class EntityDAOFactory
     }
     else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
     {
-      String setId = ServerIDGenerator.nextID();
-      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setId);
+      String setOid = ServerIDGenerator.nextID();
+      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
 
       AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
 
@@ -354,8 +354,8 @@ public class EntityDAOFactory
     }
     else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
     {
-      String setId = ServerIDGenerator.nextID();
-      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setId);
+      String setOid = ServerIDGenerator.nextID();
+      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
 
       AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
 
@@ -475,7 +475,7 @@ public class EntityDAOFactory
       {
         columnNames.add(EntityDAOIF.ID_COLUMN);
         prepStmtVars.add("?");
-        values.add(entityDAO.getId());
+        values.add(entityDAO.getOid());
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
         addedId = true;
       }
@@ -521,16 +521,16 @@ public class EntityDAOFactory
       // more sense to the end user.
       else
       {
-        String id = entityDAO.getId();
+        String oid = entityDAO.getOid();
         String keyValue = entityDAO.getKey();
 
         // There was a duplicate ID violation because the ID was derived
         // (hashed) from another record
         // with a duplicate key value. If no key value is supplied, then it is
-        // given the id. If the id
-        // and the key value are not equal, then the id was hashed from the key
+        // given the oid. If the oid
+        // and the key value are not equal, then the oid was hashed from the key
         // name
-        if (!id.equals(keyValue))
+        if (!oid.equals(keyValue))
         {
           AttributeIF keyAttribute = entityDAO.getAttributeIF(ElementInfo.KEY);
           String msg = "Duplicate value on [" + mdEntityDAOIF.definesType() + "] for attribute [" + ElementInfo.KEY + "] with value [" + keyAttribute.getValue() + "]";
@@ -590,7 +590,7 @@ public class EntityDAOFactory
       }
 
       TransactionItemDAO transactionItemDAO = TransactionItemDAO.newInstance();
-      transactionItemDAO.setComponentId(elementDAOIF.getId());
+      transactionItemDAO.setComponentId(elementDAOIF.getOid());
       transactionItemDAO.setComponentSeq(elementDAOIF.getSequence());
       transactionItemDAO.setComponentSiteMaster(elementDAOIF.getSiteMaster());
       transactionItemDAO.setXMLRecord(exportXML);
@@ -620,7 +620,7 @@ public class EntityDAOFactory
     {
       TransactionRecordDAO transactionRecordDAO = TransactionRecordDAO.getCurrentTransactionRecord();
 
-      TransactionItemDAOIF transactionItemDAOIF = transactionRecordDAO.getTransactionItem(mdTypeDAOIF.getId(), mdTypeDAOIF.getSequence());
+      TransactionItemDAOIF transactionItemDAOIF = transactionRecordDAO.getTransactionItem(mdTypeDAOIF.getOid(), mdTypeDAOIF.getSequence());
 
       if (transactionItemDAOIF == null)
       {
@@ -665,7 +665,7 @@ public class EntityDAOFactory
    */
   public static void update(EntityDAO entityDAO, boolean validateRequired)
   {
-    String existingId = entityDAO.getId();
+    String existingId = entityDAO.getOid();
 
     long oldSeq = 0;
 
@@ -768,7 +768,7 @@ public class EntityDAOFactory
       {
         columnNames.add(EntityDAOIF.ID_COLUMN);
         prepStmtVars.add("?");
-        values.add(entityDAO.getId());
+        values.add(entityDAO.getOid());
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
         addedId = true;
       }
@@ -793,7 +793,7 @@ public class EntityDAOFactory
         }
         else
         {
-          // Do not bother updating the table if only the id is changing, but it
+          // Do not bother updating the table if only the oid is changing, but it
           // is being set to the same value it already is.
           if (! ( columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.ID) && values.size() == 1 && values.get(0).equals(existingId) ))
           {
@@ -842,7 +842,7 @@ public class EntityDAOFactory
     MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
     List<? extends MdEntityDAOIF> superMdEntityIF = mdEntityDAOIF.getSuperClasses();
     List<String> deleteStatements = new LinkedList<String>();
-    String id = entityDAO.getId();
+    String oid = entityDAO.getOid();
 
     // Delete the records in the database
     int count = 1;
@@ -851,11 +851,11 @@ public class EntityDAOFactory
       if (count == superMdEntityIF.size() && ( entityDAO instanceof ElementDAO ))
       {
         long seq = ( (ElementDAO) entityDAO ).getSequence();
-        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), id, seq));
+        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), oid, seq));
       }
       else
       {
-        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), id));
+        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), oid));
       }
       count++;
     }
@@ -869,7 +869,7 @@ public class EntityDAOFactory
       {
         String type = entityDAO.getType();
         String key = entityDAO.getKey();
-        String error = "Object with id [" + id + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
+        String error = "Object with oid [" + oid + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
         throw new StaleEntityException(error, entityDAO);
       }
     }
@@ -972,10 +972,10 @@ public class EntityDAOFactory
   }
 
   /**
-   * Returns the id to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given ID.
    * 
    * @param type
-   * @return id to the MdEntity that defines the given type.
+   * @return oid to the MdEntity that defines the given type.
    */
   public static String getMdEntityId(String mdEntityType)
   {
@@ -1062,15 +1062,15 @@ public class EntityDAOFactory
   }
 
   /**
-   * Changes all references to the given object to use the new id. After this
+   * Changes all references to the given object to use the new oid. After this
    * method is called, the given <code>EntityDAO</code> will be assigned the new
    * ID.
    * 
    * @param entityDAO
    * @param oldId
-   *          the old reference id
+   *          the old reference oid
    * @param newId
-   *          the new id that all of the references must point to
+   *          the new oid that all of the references must point to
    */
   public static void floatObjectIdReferences(EntityDAO entityDAO, String oldId, String newId)
   {
@@ -1083,13 +1083,13 @@ public class EntityDAOFactory
   }
 
   /**
-   * Changes the entity id on just the entity itself and no other dependencies.
+   * Changes the entity oid on just the entity itself and no other dependencies.
    *
    * @param entityDAO
    * @param oldId
-   *          the old reference id
+   *          the old reference oid
    * @param newId
-   *          the new id that all of the references must point to
+   *          the new oid that all of the references must point to
    */
   private static void changeEntityId(EntityDAO entityDAO, String oldId, String newId)
   {

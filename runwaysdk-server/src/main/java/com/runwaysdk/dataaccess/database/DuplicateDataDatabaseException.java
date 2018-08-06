@@ -132,7 +132,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
    * @param indexName
    *          Name of the index.
    * @param _pkTableName
-   *          If a value is provided, then the primary key (the id) has been violated.
+   *          If a value is provided, then the primary key (the oid) has been violated.
    *          Name of the table that the index is defined on.
    */
   public DuplicateDataDatabaseException(String devMessage, Throwable cause, String indexName, String _pkTableName)

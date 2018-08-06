@@ -109,7 +109,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.HashOptions.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -128,7 +128,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.HashOptions.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -172,13 +172,13 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.HashMethods hashMethods)
     {
       if(hashMethods == null) return this.EQ((java.lang.String)null);
-      return this.EQ(hashMethods.getId());
+      return this.EQ(hashMethods.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.HashMethods hashMethods)
     {
       if(hashMethods == null) return this.NE((java.lang.String)null);
-      return this.NE(hashMethods.getId());
+      return this.NE(hashMethods.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getMessageDigest()
@@ -277,7 +277,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashOptions.length; i++)
       {
-        enumIdArray[i] = hashOptions[i].getId();
+        enumIdArray[i] = hashOptions[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -289,7 +289,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashOptions.length; i++)
       {
-        enumIdArray[i] = hashOptions[i].getId();
+        enumIdArray[i] = hashOptions[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -301,7 +301,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashOptions.length; i++)
       {
-        enumIdArray[i] = hashOptions[i].getId();
+        enumIdArray[i] = hashOptions[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -313,7 +313,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashOptions.length; i++)
       {
-        enumIdArray[i] = hashOptions[i].getId();
+        enumIdArray[i] = hashOptions[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -325,7 +325,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashOptions.length; i++)
       {
-        enumIdArray[i] = hashOptions[i].getId();
+        enumIdArray[i] = hashOptions[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -372,7 +372,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashMethods.length; i++)
       {
-        itemIdArray[i] = hashMethods[i].getId();
+        itemIdArray[i] = hashMethods[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -384,7 +384,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashMethods.length; i++)
       {
-        itemIdArray[i] = hashMethods[i].getId();
+        itemIdArray[i] = hashMethods[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -396,7 +396,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashMethods.length; i++)
       {
-        itemIdArray[i] = hashMethods[i].getId();
+        itemIdArray[i] = hashMethods[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -408,7 +408,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashMethods.length; i++)
       {
-        itemIdArray[i] = hashMethods[i].getId();
+        itemIdArray[i] = hashMethods[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -420,7 +420,7 @@ public  class HashMethodsQuery extends com.runwaysdk.system.EnumerationMasterQue
 
       for (int i=0; i<hashMethods.length; i++)
       {
-        itemIdArray[i] = hashMethods[i].getId();
+        itemIdArray[i] = hashMethods[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

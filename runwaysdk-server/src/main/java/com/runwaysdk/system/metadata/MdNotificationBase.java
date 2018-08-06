@@ -41,9 +41,9 @@ public abstract class MdNotificationBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdNotification get(String id)
+  public static MdNotification get(String oid)
   {
-    return (MdNotification) com.runwaysdk.business.Business.get(id);
+    return (MdNotification) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdNotification getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdNotificationBase extends com.runwaysdk.system.metadata.M
     return (MdNotification) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdNotification lock(java.lang.String id)
+  public static MdNotification lock(java.lang.String oid)
   {
-    MdNotification _instance = MdNotification.get(id);
+    MdNotification _instance = MdNotification.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdNotification unlock(java.lang.String id)
+  public static MdNotification unlock(java.lang.String oid)
   {
-    MdNotification _instance = MdNotification.get(id);
+    MdNotification _instance = MdNotification.get(oid);
     _instance.unlock();
     
     return _instance;

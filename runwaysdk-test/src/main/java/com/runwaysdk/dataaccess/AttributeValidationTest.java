@@ -99,33 +99,33 @@ public class AttributeValidationTest
 
     MdAttributeDateDAO mdAttributeDateBeforeExclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateBeforeExclusive");
     mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.BEFORE_TODAY_EXCLUSIVE, "true");
     mdAttributeDateBeforeExclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateBeforeInclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateBeforeInclusive");
     mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
     mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.BEFORE_TODAY_INCLUSIVE, "true");
-    mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateBeforeInclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateAfterExclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateAfterExclusive");
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.AFTER_TODAY_EXCLUSIVE, "true");
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDateAfterExclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateAfterInclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateAfterInclusive");
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.AFTER_TODAY_INCLUSIVE, "true");
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDateAfterInclusive.apply();
 
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDate.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.START_DATE, "2001-12-04");
     mdAttributeDate.setValue(MdAttributeDateInfo.END_DATE, "2001-12-12");

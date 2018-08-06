@@ -41,7 +41,7 @@ public abstract class EnumerationHandler extends XMLHandler
    * @param reader The XMLReader stream
    * @param previousHandler The XMLHandler in which control was passed from
    * @param manager ImportManager which provides communication between handlers for a single import
-   * @param current The EntityDAO which defines the attribute-multiple id mapping     
+   * @param current The EntityDAO which defines the attribute-multiple oid mapping     
    * @param attributes The attributes of the instance tag
    */
   public EnumerationHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager) throws SAXException

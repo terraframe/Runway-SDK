@@ -33,7 +33,7 @@ public class RoleInheritance extends RoleInheritanceBase
   
   public RoleInheritance(com.runwaysdk.system.Roles parent, com.runwaysdk.system.Roles child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
  
   public void apply()

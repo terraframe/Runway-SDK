@@ -84,9 +84,9 @@ public abstract class MdMobileGroupBase extends com.runwaysdk.system.metadata.Md
     }
   }
   
-  public static MdMobileGroup get(String id)
+  public static MdMobileGroup get(String oid)
   {
-    return (MdMobileGroup) com.runwaysdk.business.Business.get(id);
+    return (MdMobileGroup) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileGroup getByKey(String key)
@@ -94,17 +94,17 @@ public abstract class MdMobileGroupBase extends com.runwaysdk.system.metadata.Md
     return (MdMobileGroup) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileGroup lock(java.lang.String id)
+  public static MdMobileGroup lock(java.lang.String oid)
   {
-    MdMobileGroup _instance = MdMobileGroup.get(id);
+    MdMobileGroup _instance = MdMobileGroup.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileGroup unlock(java.lang.String id)
+  public static MdMobileGroup unlock(java.lang.String oid)
   {
-    MdMobileGroup _instance = MdMobileGroup.get(id);
+    MdMobileGroup _instance = MdMobileGroup.get(oid);
     _instance.unlock();
     
     return _instance;

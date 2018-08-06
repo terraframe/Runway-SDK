@@ -58,18 +58,18 @@ public enum EntityCacheMaster
   public static final String DESCRIPTION   = "description";
 
 
-  private String id;
+  private String oid;
   private int cacheCode;
 
-  private EntityCacheMaster(String id, int cacheCode)
+  private EntityCacheMaster(String oid, int cacheCode)
   {
-   this.id = id;
+   this.oid = oid;
    this.cacheCode = cacheCode;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   public int getCacheCode()

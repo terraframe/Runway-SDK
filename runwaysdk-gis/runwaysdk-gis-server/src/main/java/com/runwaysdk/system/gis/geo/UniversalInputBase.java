@@ -31,7 +31,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalInput";
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String MOVEOPERATION = "moveOperation";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   public static java.lang.String UNIVERSAL = "universal";
@@ -98,7 +98,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -108,7 +108,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.UniversalInput.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -178,7 +178,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(PARENTUNIVERSAL, value.getId());
+      setValue(PARENTUNIVERSAL, value.getOid());
     }
   }
   
@@ -218,7 +218,7 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -227,9 +227,9 @@ public abstract class UniversalInputBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static UniversalInput get(String id)
+  public static UniversalInput get(String oid)
   {
-    return (UniversalInput) com.runwaysdk.business.View.get(id);
+    return (UniversalInput) com.runwaysdk.business.View.get(oid);
   }
   
   public String toString()

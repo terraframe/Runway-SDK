@@ -208,18 +208,18 @@ public abstract class Java5EnumGenerator extends AbstractGenerator
 
   /**
    * Writes the dereference method, which takes a String ID as a parameter and returns the
-   * associated enum item, or <code>null</code> if the id isn't recognized
+   * associated enum item, or <code>null</code> if the oid isn't recognized
    * 
    * @param name
    *          Name of the enum
    */
   protected void addGet(String name)
   {
-    getWriter().writeLine("public static " + name + " get(String id)");
+    getWriter().writeLine("public static " + name + " get(String oid)");
     getWriter().openBracket();
     getWriter().writeLine("for (" + name + " e : " + name + ".values())");
     getWriter().openBracket();
-    getWriter().writeLine("if (e.getId().equals(id))");
+    getWriter().writeLine("if (e.getOid().equals(oid))");
     getWriter().openBracket();
     getWriter().writeLine("return e;");
     getWriter().closeBracket();

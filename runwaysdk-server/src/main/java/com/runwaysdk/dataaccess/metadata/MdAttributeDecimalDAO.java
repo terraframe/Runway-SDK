@@ -158,9 +158,9 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeDecimalDAOIF get(String id)
+  public static MdAttributeDecimalDAOIF get(String oid)
   {
-    return (MdAttributeDecimalDAOIF) BusinessDAO.get(id);
+    return (MdAttributeDecimalDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

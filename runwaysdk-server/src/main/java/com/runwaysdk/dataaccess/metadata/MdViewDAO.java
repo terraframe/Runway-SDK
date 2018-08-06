@@ -269,9 +269,9 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdViewDAOIF get(String id)
+  public static MdViewDAOIF get(String oid)
   {
-    return (MdViewDAOIF) BusinessDAO.get(id);
+    return (MdViewDAOIF) BusinessDAO.get(oid);
   }
 
   /*
@@ -443,7 +443,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
 
       if (queryBaseSource != null && queryBaseClassBytes != null)
       {
-        Database.updateClassAndSource(this.getId(), MdViewDAOIF.TABLE, queryBaseClassColumnName, queryBaseClassBytes, queryBaseSourceColumnName, queryBaseSource, conn);
+        Database.updateClassAndSource(this.getOid(), MdViewDAOIF.TABLE, queryBaseClassColumnName, queryBaseClassBytes, queryBaseSourceColumnName, queryBaseSource, conn);
 
         this.getAttribute(MdViewInfo.QUERY_BASE_SOURCE).setValue(queryBaseSource);
         this.getAttribute(MdViewInfo.QUERY_BASE_CLASS).setModified(true);
@@ -457,7 +457,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
 
       if (queryStubSource != null && queryStubClassBytes != null)
       {
-        Database.updateClassAndSource(this.getId(), MdViewDAOIF.TABLE, queryStubClassColumnName, queryStubClassBytes, queryStubSourceColumnName, queryStubSource, conn);
+        Database.updateClassAndSource(this.getOid(), MdViewDAOIF.TABLE, queryStubClassColumnName, queryStubClassBytes, queryStubSourceColumnName, queryStubSource, conn);
 
         this.getAttribute(MdViewInfo.QUERY_STUB_SOURCE).setValue(queryStubSource);
         this.getAttribute(MdViewInfo.QUERY_STUB_CLASS).setModified(true);
@@ -478,7 +478,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
 
       if (queryDTOsource != null && queryDTOclassBytes != null)
       {
-        Database.updateClassAndSource(this.getId(), MdViewDAOIF.TABLE, queryDTOclassColumnName, queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
+        Database.updateClassAndSource(this.getOid(), MdViewDAOIF.TABLE, queryDTOclassColumnName, queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
 
         this.getAttribute(MdViewInfo.QUERY_DTO_SOURCE).setValue(queryDTOsource);
         this.getAttribute(MdViewInfo.QUERY_DTO_CLASS).setModified(true);

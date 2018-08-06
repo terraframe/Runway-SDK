@@ -114,13 +114,13 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTerm mdTerm)
     {
       if(mdTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdTerm.getId());
+      return this.EQ(mdTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdTerm mdTerm)
     {
       if(mdTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdTerm.getId());
+      return this.NE(mdTerm.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
 
       for (int i=0; i<mdTerm.length; i++)
       {
-        itemIdArray[i] = mdTerm[i].getId();
+        itemIdArray[i] = mdTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
 
       for (int i=0; i<mdTerm.length; i++)
       {
-        itemIdArray[i] = mdTerm[i].getId();
+        itemIdArray[i] = mdTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
 
       for (int i=0; i<mdTerm.length; i++)
       {
-        itemIdArray[i] = mdTerm[i].getId();
+        itemIdArray[i] = mdTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
 
       for (int i=0; i<mdTerm.length; i++)
       {
-        itemIdArray[i] = mdTerm[i].getId();
+        itemIdArray[i] = mdTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
 
       for (int i=0; i<mdTerm.length; i++)
       {
-        itemIdArray[i] = mdTerm[i].getId();
+        itemIdArray[i] = mdTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

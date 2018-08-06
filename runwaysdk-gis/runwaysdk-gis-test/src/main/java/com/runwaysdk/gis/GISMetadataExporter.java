@@ -84,15 +84,15 @@ public class GISMetadataExporter
     exporter.writeToFile(exportFile);
   }
 
-  // private static void export(String id, Set<String> all)
+  // private static void export(String oid, Set<String> all)
   // {
-  // if (!all.contains(id))
+  // if (!all.contains(oid))
   // {
-  // EntityDAOIF entity = EntityDAO.get(id);
+  // EntityDAOIF entity = EntityDAO.get(oid);
   //
   // if (!isRunwayMetadata(entity))
   // {
-  // all.add(id);
+  // all.add(oid);
   //
   // if (entity instanceof BusinessDAOIF)
   // {
@@ -101,14 +101,14 @@ public class GISMetadataExporter
   //
   // for (RelationshipDAOIF child : children)
   // {
-  // export(child.getId(), all);
+  // export(child.getOid(), all);
   // }
   //
   // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
   //
   // for (RelationshipDAOIF parent : parents)
   // {
-  // export(parent.getId(), all);
+  // export(parent.getOid(), all);
   // }
   // }
   // else if (entity instanceof RelationshipDAOIF)

@@ -41,9 +41,9 @@ public abstract class MdMobileDecimalBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdMobileDecimal get(String id)
+  public static MdMobileDecimal get(String oid)
   {
-    return (MdMobileDecimal) com.runwaysdk.business.Business.get(id);
+    return (MdMobileDecimal) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileDecimal getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileDecimalBase extends com.runwaysdk.system.metadata.
     return (MdMobileDecimal) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileDecimal lock(java.lang.String id)
+  public static MdMobileDecimal lock(java.lang.String oid)
   {
-    MdMobileDecimal _instance = MdMobileDecimal.get(id);
+    MdMobileDecimal _instance = MdMobileDecimal.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileDecimal unlock(java.lang.String id)
+  public static MdMobileDecimal unlock(java.lang.String oid)
   {
-    MdMobileDecimal _instance = MdMobileDecimal.get(id);
+    MdMobileDecimal _instance = MdMobileDecimal.get(oid);
     _instance.unlock();
     
     return _instance;

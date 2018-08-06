@@ -70,7 +70,7 @@ public abstract class CorruptBackupExceptionDTOBase extends com.runwaysdk.busine
   }
   
   public static java.lang.String BACKUPNAME = "backupName";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public String getBackupName()
   {
     return getValue(BACKUPNAME);
@@ -117,7 +117,7 @@ public abstract class CorruptBackupExceptionDTOBase extends com.runwaysdk.busine
     java.lang.String template = super.getMessage();
     
     template = template.replace("{backupName}", this.getBackupName().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

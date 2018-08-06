@@ -249,10 +249,10 @@ public class RequestScraper
       // c is not primitive, must be a DTO defined type
       try
       {
-        // Get the id and isNew status of the DTO
+        // Get the oid and isNew status of the DTO
         String name = this.parameter.getName();
 
-        String id = getValue(name + ".componentId");
+        String oid = getValue(name + ".componentId");
         Boolean isNew = Boolean.parseBoolean(getValue(name + ".isNew"));
         String isDisconnected = this.getValue("#" + name + ".disconnected");
         ClientRequestIF clientRequestIF = manager.getClientRequest();
@@ -293,9 +293,9 @@ public class RequestScraper
         }
         else
         {
-          // Ensure that an id has been supplied, otherwise return null because
-          // it is impossible to perform a get without an id.
-          if (id == null || id.equals(""))
+          // Ensure that an oid has been supplied, otherwise return null because
+          // it is impossible to perform a get without an oid.
+          if (oid == null || oid.equals(""))
           {
             return null;
           }
@@ -304,7 +304,7 @@ public class RequestScraper
           // request. And update the values of the DTO from the scraped
           // parameter
           Method method = c.getMethod(CommonGenerationUtil.GET, ClientRequestIF.class, String.class);
-          MutableDTO mutableDTO = (MutableDTO) method.invoke(null, clientRequestIF, id);
+          MutableDTO mutableDTO = (MutableDTO) method.invoke(null, clientRequestIF, oid);
           this.convertDTO(mutableDTO, name);
 
           return (T) mutableDTO;
@@ -440,9 +440,9 @@ public class RequestScraper
         }
         else if (attributeDTO instanceof AttributeReferenceMdDTO)
         {
-          String id = manager.getReq().getParameter(parameterName);
+          String oid = manager.getReq().getParameter(parameterName);
 
-          if (id == null || id.equals(""))
+          if (oid == null || oid.equals(""))
           {
             String[] values = manager.getReq().getParameterValues(parameterName);
 
@@ -458,21 +458,21 @@ public class RequestScraper
 
             if (values != null && values.length > 0)
             {
-              id = values[0];
+              oid = values[0];
             }
           }
 
-          if (id != null && !id.equals(""))
+          if (oid != null && !oid.equals(""))
           {
             Class<?> javaType = attributeDTO.getJavaType();
 
             // Get the get method for the reference
             Method get = javaType.getMethod(CommonGenerationUtil.GET, ClientRequestIF.class, String.class);
-            Object reference = get.invoke(null, manager.getClientRequest(), id);
+            Object reference = get.invoke(null, manager.getClientRequest(), oid);
 
             facade.setValue(reference);
           }
-          else if (id != null)
+          else if (oid != null)
           {
             facade.setValue(null);
           }
@@ -568,8 +568,8 @@ public class RequestScraper
     if (RelationshipDTO.class.isAssignableFrom(c))
     {
       String name = this.parameter.getName();
-      String parentId = getValue("#" + name + ".parent.id");
-      String childId = getValue("#" + name + ".child.id");
+      String parentId = getValue("#" + name + ".parent.oid");
+      String childId = getValue("#" + name + ".child.oid");
 
       return (MutableDTO) c.getConstructor(ClientRequestIF.class, String.class, String.class).newInstance(clientRequestIF, parentId, childId);
     }

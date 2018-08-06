@@ -131,7 +131,7 @@ public class MdEnumerationStrategy extends MetaDataObjectStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.updateCache(entityDAO);
 
@@ -152,7 +152,7 @@ public class MdEnumerationStrategy extends MetaDataObjectStrategy
    */
   public void removeCache(EntityDAO mdEnumeration)
   {
-    synchronized(mdEnumeration.getId())
+    synchronized(mdEnumeration.getOid())
     {
       super.removeCache(mdEnumeration);
 

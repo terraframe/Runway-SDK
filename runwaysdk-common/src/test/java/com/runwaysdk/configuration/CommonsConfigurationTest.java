@@ -18,12 +18,10 @@
  */
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.io.File;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
-import org.junit.Assert;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,12 +37,11 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     return new CommonsConfigurationResolver();
   }
 
-  @Test
   public void deployPathTest()
   {
-    Assert.assertEquals(CommonProperties.getProjectBasedir() + "/target/test-classes", DeployProperties.getDeployPath());
-    Assert.assertEquals(DeployProperties.getDeployPath() + "/WEB-INF/lib", DeployProperties.getDeployLib());
-    Assert.assertEquals(DeployProperties.getDeployPath() + "/WEB-INF/classes", DeployProperties.getDeployBin());
+    Assert.assertEquals(CommonProperties.getProjectBasedir() + "" + File.separator + "target" + File.separator + "test-classes", DeployProperties.getDeployPath());
+    Assert.assertEquals(DeployProperties.getDeployPath() + "" + File.separator + "WEB-INF" + File.separator + "lib", DeployProperties.getDeployLib());
+    Assert.assertEquals(DeployProperties.getDeployPath() + "" + File.separator + "WEB-INF" + File.separator + "classes", DeployProperties.getDeployBin());
   }
 
   @Test

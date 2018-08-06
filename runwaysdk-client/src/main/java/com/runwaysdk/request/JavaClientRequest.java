@@ -195,7 +195,7 @@ public class JavaClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String)
    */
-  public void delete(String id)
+  public void delete(String oid)
   {
     this.clearNotifications();
 
@@ -203,7 +203,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("delete", String.class, String.class).invoke(null, this.getSessionId(), id);
+      javaAdapterClass.getMethod("delete", String.class, String.class).invoke(null, this.getSessionId(), oid);
     }
     catch (Throwable e)
     {
@@ -223,7 +223,7 @@ public class JavaClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String)
    */
-  public MutableDTO get(String id)
+  public MutableDTO get(String oid)
   {
     this.clearNotifications();
     MutableDTO generic;
@@ -232,7 +232,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (MutableDTO) javaAdapterClass.getMethod(CommonGenerationUtil.GET, String.class, String.class).invoke(null, this.getSessionId(), id);
+      generic = (MutableDTO) javaAdapterClass.getMethod(CommonGenerationUtil.GET, String.class, String.class).invoke(null, this.getSessionId(), oid);
     }
     catch (Throwable e)
     {
@@ -1209,7 +1209,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ElementDTO) javaAdapterClass.getMethod("lock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getId());
+      generic = (ElementDTO) javaAdapterClass.getMethod("lock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getOid());
     }
     catch (Throwable e)
     {
@@ -1241,7 +1241,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ElementDTO) javaAdapterClass.getMethod("unlock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getId());
+      generic = (ElementDTO) javaAdapterClass.getMethod("unlock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getOid());
     }
     catch (Throwable e)
     {
@@ -1321,7 +1321,7 @@ public class JavaClientRequest extends ClientRequest
    *
    */
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getChildren(String id, String relationshipType)
+  public List<? extends BusinessDTO> getChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
@@ -1330,7 +1330,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -1356,7 +1356,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getParents(String id, String relationshipType)
+  public List<? extends BusinessDTO> getParents(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
@@ -1365,7 +1365,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -1396,7 +1396,7 @@ public class JavaClientRequest extends ClientRequest
    *      java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getChildRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
@@ -1405,7 +1405,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getChildRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getChildRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -1435,7 +1435,7 @@ public class JavaClientRequest extends ClientRequest
    *      java.lang.String)
    */
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getParentRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
@@ -1444,7 +1444,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getParentRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getParentRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -1625,7 +1625,7 @@ public class JavaClientRequest extends ClientRequest
     return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  public void deleteChildren(String id, String relationshipType)
+  public void deleteChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
 
@@ -1633,7 +1633,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      javaAdapterClass.getMethod("deleteChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {
@@ -1650,7 +1650,7 @@ public class JavaClientRequest extends ClientRequest
     }
   }
 
-  public void deleteParents(String id, String relationshipType)
+  public void deleteParents(String oid, String relationshipType)
   {
     this.clearNotifications();
 
@@ -1658,7 +1658,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
+      javaAdapterClass.getMethod("deleteParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), oid, relationshipType);
     }
     catch (Throwable e)
     {

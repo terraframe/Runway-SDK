@@ -47,7 +47,7 @@ public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDT
   
   public static java.lang.String ACTION = "action";
   public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRANSACTIONID = "transactionID";
@@ -224,9 +224,9 @@ public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDT
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(TRANSACTIONID).getAttributeMdDTO();
   }
   
-  public static TransactionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static TransactionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (TransactionDTO) dto;
   }
@@ -244,7 +244,7 @@ public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.TransactionQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

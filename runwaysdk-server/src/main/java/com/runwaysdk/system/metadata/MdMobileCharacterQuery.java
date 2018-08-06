@@ -154,13 +154,13 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileCharacter mdMobileCharacter)
     {
       if(mdMobileCharacter == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileCharacter.getId());
+      return this.EQ(mdMobileCharacter.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileCharacter mdMobileCharacter)
     {
       if(mdMobileCharacter == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileCharacter.getId());
+      return this.NE(mdMobileCharacter.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getDisplayLength()
@@ -243,7 +243,7 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobileCharacter.length; i++)
       {
-        itemIdArray[i] = mdMobileCharacter[i].getId();
+        itemIdArray[i] = mdMobileCharacter[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobileCharacter.length; i++)
       {
-        itemIdArray[i] = mdMobileCharacter[i].getId();
+        itemIdArray[i] = mdMobileCharacter[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobileCharacter.length; i++)
       {
-        itemIdArray[i] = mdMobileCharacter[i].getId();
+        itemIdArray[i] = mdMobileCharacter[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobileCharacter.length; i++)
       {
-        itemIdArray[i] = mdMobileCharacter[i].getId();
+        itemIdArray[i] = mdMobileCharacter[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdMobileCharacterQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobileCharacter.length; i++)
       {
-        itemIdArray[i] = mdMobileCharacter[i].getId();
+        itemIdArray[i] = mdMobileCharacter[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

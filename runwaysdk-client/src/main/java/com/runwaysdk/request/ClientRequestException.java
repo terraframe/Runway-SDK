@@ -30,7 +30,7 @@ import com.runwaysdk.ClientExceptionMessageLocalizer;
 public class ClientRequestException extends ClientException
 {  
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = 6710563701340650225L;
 

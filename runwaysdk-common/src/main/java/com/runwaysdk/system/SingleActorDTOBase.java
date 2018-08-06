@@ -48,60 +48,60 @@ public abstract class SingleActorDTOBase extends com.runwaysdk.system.ActorDTO
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllAssignedRole()
   {
-    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.AssignmentsDTO> getAllAssignedRoleRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.AssignmentsDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.AssignmentsDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.AssignmentsDTO> getAllAssignedRoleRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.AssignmentsDTO> getAllAssignedRoleRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.AssignmentsDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.AssignmentsDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
   public com.runwaysdk.system.AssignmentsDTO addAssignedRole(com.runwaysdk.system.RolesDTO child)
   {
-    return (com.runwaysdk.system.AssignmentsDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (com.runwaysdk.system.AssignmentsDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.AssignmentsDTO addAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.RolesDTO child)
+  public static com.runwaysdk.system.AssignmentsDTO addAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.RolesDTO child)
   {
-    return (com.runwaysdk.system.AssignmentsDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.AssignmentsDTO.CLASS);
+    return (com.runwaysdk.system.AssignmentsDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
   public void removeAssignedRole(com.runwaysdk.system.AssignmentsDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.AssignmentsDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllAssignedRole()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.AssignmentsDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
-  public static void removeAllAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllAssignedRole(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.AssignmentsDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.AssignmentsDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.SingleActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.SingleActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.SingleActorDTO) dto;
   }
@@ -119,7 +119,7 @@ public abstract class SingleActorDTOBase extends com.runwaysdk.system.ActorDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.SingleActorQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -132,10 +132,10 @@ public abstract class SingleActorDTOBase extends com.runwaysdk.system.ActorDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.SingleActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.SingleActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.SingleActorDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.SingleActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -145,10 +145,10 @@ public abstract class SingleActorDTOBase extends com.runwaysdk.system.ActorDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.SingleActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.SingleActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.SingleActorDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.SingleActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

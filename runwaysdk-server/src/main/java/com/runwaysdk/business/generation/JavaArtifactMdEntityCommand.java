@@ -204,8 +204,8 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
    */
   private void restoreToFileSystem_QuerySourceFile()
   {
-    String queryAPIsource = Database.getMdEntityQueryAPIsource(this.getMdTypeIF().getId(), conn);
-    String queryDTOsource = Database.getEntityQueryDTOsource(this.getMdTypeIF().getId(), conn);
+    String queryAPIsource = Database.getMdEntityQueryAPIsource(this.getMdTypeIF().getOid(), conn);
+    String queryDTOsource = Database.getEntityQueryDTOsource(this.getMdTypeIF().getOid(), conn);
 
     try
     {
@@ -231,8 +231,8 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
    */
   private void restoreToFileSystem_QueryClassFiles()
   {
-    byte[] queryAPIclassBytes = Database.getMdEntityQueryAPIclass(this.getMdTypeIF().getId(), conn);
-    byte[] queryDTOclassBytes = Database.getEntityQueryDTOclass(this.getMdTypeIF().getId(), conn);
+    byte[] queryAPIclassBytes = Database.getMdEntityQueryAPIclass(this.getMdTypeIF().getOid(), conn);
+    byte[] queryDTOclassBytes = Database.getEntityQueryDTOclass(this.getMdTypeIF().getOid(), conn);
 
     ClassManager.writeClasses(this.queryAPIclassDirectory, queryAPIclassBytes);
     ClassManager.writeClasses(this.queryDTOclassDirectory, queryDTOclassBytes);

@@ -38,7 +38,7 @@ public interface Mutable extends ComponentIF
    * 
    * @return <b>this</b> entity's UUID
    */
-  public String getId();
+  public String getOid();
 
   /**
    * Returns true if the object has an attribute with the given name, false

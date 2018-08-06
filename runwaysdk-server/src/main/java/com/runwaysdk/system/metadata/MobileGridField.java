@@ -29,7 +29,7 @@ public class MobileGridField extends MobileGridFieldBase
   
   public MobileGridField(com.runwaysdk.system.metadata.MdMobileSingleTermGrid parent, com.runwaysdk.system.metadata.MdMobilePrimitive child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

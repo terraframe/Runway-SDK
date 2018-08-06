@@ -293,7 +293,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     // database
     String key = MdMethodDAO.buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
     this.setKey(key);
-    String id = super.apply();
+    String oid = super.apply();
 
     // Create the appropriate relationship between this MdMethod
     // and either a MdClass or a MdFacade, only create a relationship the first
@@ -306,7 +306,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
         String mdTypeId = this.getMdTypeId();
 
         String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
-        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdTypeId, id, relationshipType);
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdTypeId, oid, relationshipType);
         relationshipDAO.setKey(key);
         relationshipDAO.apply();
       }
@@ -321,7 +321,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
         String mdTypeId = this.getMdTypeId();
         String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
 
-        List<RelationshipDAOIF> relList = RelationshipDAO.get(mdTypeId, id, relationshipType);
+        List<RelationshipDAOIF> relList = RelationshipDAO.get(mdTypeId, oid, relationshipType);
 
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
@@ -346,7 +346,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   /*
@@ -572,9 +572,9 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     // Ensure that a the method name does not already exist in the children
     for (MdMethodDAOIF mdMethodIF : mdMethodIFList)
     {
-      if (! ( mdMethodIF.getId().equals(this.getId()) ) && mdMethodIF.getName().equals(validateName))
+      if (! ( mdMethodIF.getOid().equals(this.getOid()) ) && mdMethodIF.getName().equals(validateName))
       {
-        String msg = "A MdMethod of the name [" + validateName + "] already exists on [" + parentMdType.getId() + "]";
+        String msg = "A MdMethod of the name [" + validateName + "] already exists on [" + parentMdType.getOid() + "]";
         throw new MethodDefinitionException_NameExists(msg, this, parentMdType);
       }
     }
@@ -596,9 +596,9 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdMethodDAOIF get(String id)
+  public static MdMethodDAOIF get(String oid)
   {
-    return (MdMethodDAOIF) BusinessDAO.get(id);
+    return (MdMethodDAOIF) BusinessDAO.get(oid);
   }
 
   /**

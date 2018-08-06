@@ -61,9 +61,9 @@ public abstract class MdMobileCommentBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdMobileComment get(String id)
+  public static MdMobileComment get(String oid)
   {
-    return (MdMobileComment) com.runwaysdk.business.Business.get(id);
+    return (MdMobileComment) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileComment getByKey(String key)
@@ -71,17 +71,17 @@ public abstract class MdMobileCommentBase extends com.runwaysdk.system.metadata.
     return (MdMobileComment) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileComment lock(java.lang.String id)
+  public static MdMobileComment lock(java.lang.String oid)
   {
-    MdMobileComment _instance = MdMobileComment.get(id);
+    MdMobileComment _instance = MdMobileComment.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileComment unlock(java.lang.String id)
+  public static MdMobileComment unlock(java.lang.String oid)
   {
-    MdMobileComment _instance = MdMobileComment.get(id);
+    MdMobileComment _instance = MdMobileComment.get(oid);
     _instance.unlock();
     
     return _instance;

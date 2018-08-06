@@ -78,7 +78,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
     {
       mdUtil.apply();
 
-      this.getManager().addMapping(mdUtil.definesType(), mdUtil.getId());
+      this.getManager().addMapping(mdUtil.definesType(), mdUtil.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdUtil);
@@ -123,7 +123,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdUtil.definesType());
       }
 
-      mdUtil.setValue(MdUtilInfo.SUPER_MD_UTIL, MdUtilDAO.getMdUtil(extend).getId());
+      mdUtil.setValue(MdUtilInfo.SUPER_MD_UTIL, MdUtilDAO.getMdUtil(extend).getOid());
     }
   }
 

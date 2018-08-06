@@ -43,7 +43,7 @@ public interface MdTypeDAOIF extends MetadataDAOIF
   public static final String PACKAGE_NAME_COLUMN    = "package_name";
   
   /**
-   * Column name root of the id.  Denormalized for metadata loading performance.
+   * Column name root of the oid.  Denormalized for metadata loading performance.
    */
   public static final String ROOT_ID_COLUMN         = "root_id";
   

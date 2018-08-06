@@ -26,10 +26,10 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * Moves the business from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
    * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
    * 
-   * @param sessionId The id of a previously established session.
-   * @param newParentId The id of the business that the child will be appended under.
-   * @param childId The id of the business that will be either moved or copied.
-   * @param oldRelationshipId The id of the relationship that currently exists between parent and child.
+   * @param sessionId The oid of a previously established session.
+   * @param newParentId The oid of the business that the child will be appended under.
+   * @param childId The oid of the business that will be either moved or copied.
+   * @param oldRelationshipId The oid of the relationship that currently exists between parent and child.
    * @param newRelationshipType The type string of the new relationship to create.
    */
   public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType);
@@ -37,8 +37,8 @@ public interface JSONClientRequestIF extends ClientRequestMarker
   /**
    * Returns all children of and their relationship with the given term.
    * 
-   * @param sessionId The id of a previously established session.
-   * @param parentId The id of the term to get all children.
+   * @param sessionId The oid of a previously established session.
+   * @param parentId The oid of the term to get all children.
    * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
    * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
    * @return A list of TermAndRelDTO objects of size pageSize.
@@ -91,10 +91,10 @@ public interface JSONClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of RelationshipDTO objects (with children information)
-   * of the specified relationhip type for the given business object id.
+   * of the specified relationhip type for the given business object oid.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
@@ -102,10 +102,10 @@ public interface JSONClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of RelationshipDTO objects (with parent information)
-   * of the specified relationhip type for the given business object id.
+   * of the specified relationhip type for the given business object oid.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
@@ -118,22 +118,22 @@ public interface JSONClientRequestIF extends ClientRequestMarker
   public String getAllEnumerations(String sessionId, String enumType);
 
   /**
-   * Locks an object with the specified id.
+   * Locks an object with the specified oid.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @return EntityDTO representing the object that was locked.
    */
-  public String lock(String sessionId, String id);
+  public String lock(String sessionId, String oid);
 
   /**
-   * Unlocks an object with the specified id.
+   * Unlocks an object with the specified oid.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @return EntityDTO representing the object that was unlocked.
    */
-  public String unlock(String sessionId, String id);
+  public String unlock(String sessionId, String oid);
 
   /**
    * Adds a child to a parent for a given relationship.
@@ -179,18 +179,18 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * Deletes a business object.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    */
-  public String delete(String sessionId, String id);
+  public String delete(String sessionId, String oid);
 
   /**
-   * Returns the entity instance associated with the specified id.
+   * Returns the entity instance associated with the specified oid.
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @return An EntityDTO object representing the requested instance.
    */
-  public String get(String sessionId, String id);
+  public String get(String sessionId, String oid);
 
   /**
    * Returns an ClassQueryDTO instance (as a json string) that represents
@@ -237,7 +237,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param username
    * @param password
    * @param locales
-   * @return A String representing the user's session id.
+   * @return A String representing the user's session oid.
    */
   public String login(String username, String password, String[] locales);
 
@@ -248,14 +248,14 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param password
    * @param dimensionKey
    * @param locales
-   * @return A String representing the user's session id.
+   * @return A String representing the user's session oid.
    */
   public String login(String username, String password, String dimensionKey, String[] locales);
 
   /**
    * Sets the dimension of an existing Session.
    *
-   * @param sessionId The id of the Session.
+   * @param sessionId The oid of the Session.
    * @param dimensionKey key of a MdDimension.
    */
   public String setDimension(String sessionId, String dimensionKey);
@@ -264,7 +264,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * Creates a session with the public user.
    *
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   public String loginAnonymous(String[] locales);
 
@@ -273,28 +273,28 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    *
    * @param dimensionKey
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   public String loginAnonymous(String dimensionKey, String[] locales);
 
   /**
    * Changes the user for the given session.
    *
-   * @param sessionId id of a session.
+   * @param sessionId oid of a session.
    * @param username The name of the user.
    * @param password The password of the user.
    */
   public String changeLogin(String sessionId, String username, String password);
 
   /**
-   * Returns the UserDTO for the session with the given session id
+   * Returns the UserDTO for the session with the given session oid
    *
-   * @param sessionId id of a session.
+   * @param sessionId oid of a session.
    */
   public String getSessionUser(String sessionId);
 
   /**
-   * Logs a user out with the specified session id.
+   * Logs a user out with the specified session oid.
    *
    * @param sessionId
    */
@@ -343,13 +343,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @pre: get(mdTypeId)instanceof MdType
    *
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param operationId
-   *          id of operation to grant.
+   *          oid of operation to grant.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    */
   public String grantTypePermission(String sessionId, String actorId, String mdTypeId, String ... operationIds);
 
@@ -359,13 +359,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @pre: get(mdMethodId)instanceof MdMethod
    *
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param operationId
-   *          id of operation to grant.
+   *          oid of operation to grant.
    * @param mdMethodId
-   *          The id of the method.
+   *          The oid of the method.
    */
   public String grantMethodPermission(String sessionId, String actorId, String mdMethodId, String ... operationIds);
 
@@ -385,13 +385,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @pre: get(mdTypeId)instanceof MdType
    *
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param operationId
-   *          id of operation to revoke.
+   *          oid of operation to revoke.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    */
   public String revokeTypePermission(String sessionId, String actorId, String mdTypeId, String ... operationIds);
 
@@ -402,13 +402,13 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @pre: get(mdMethodId)instanceof MdMethod
    *
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param operationId
-   *          id of operation to revoke.
+   *          oid of operation to revoke.
    * @param mdMethodId
-   *          The id of the type.
+   *          The oid of the type.
    */
   public String revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String ... operationIds);
 
@@ -464,18 +464,18 @@ public interface JSONClientRequestIF extends ClientRequestMarker
   /**
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    */
-  public String deleteChildren(String sessionId, String id, String relationshipType);
+  public String deleteChildren(String sessionId, String oid, String relationshipType);
 
   /**
    *
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    */
-  public String deleteParents(String sessionId, String id, String relationshipType);
+  public String deleteParents(String sessionId, String oid, String relationshipType);
 
   /**
    * Invokes a method deifned by a MdMethod on the given EntityDTO in the BusinessLayer

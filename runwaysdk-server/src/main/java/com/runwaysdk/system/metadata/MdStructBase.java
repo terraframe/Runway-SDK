@@ -47,7 +47,7 @@ public abstract class MdStructBase extends com.runwaysdk.system.metadata.MdEntit
   {
     if(value != null)
     {
-      addEnumItem(CACHEALGORITHM, value.getId());
+      addEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -55,7 +55,7 @@ public abstract class MdStructBase extends com.runwaysdk.system.metadata.MdEntit
   {
     if(value != null)
     {
-      removeEnumItem(CACHEALGORITHM, value.getId());
+      removeEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -80,9 +80,9 @@ public abstract class MdStructBase extends com.runwaysdk.system.metadata.MdEntit
     return CLASS;
   }
   
-  public static MdStruct get(String id)
+  public static MdStruct get(String oid)
   {
-    return (MdStruct) com.runwaysdk.business.Business.get(id);
+    return (MdStruct) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdStruct getByKey(String key)
@@ -90,17 +90,17 @@ public abstract class MdStructBase extends com.runwaysdk.system.metadata.MdEntit
     return (MdStruct) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdStruct lock(java.lang.String id)
+  public static MdStruct lock(java.lang.String oid)
   {
-    MdStruct _instance = MdStruct.get(id);
+    MdStruct _instance = MdStruct.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdStruct unlock(java.lang.String id)
+  public static MdStruct unlock(java.lang.String oid)
   {
-    MdStruct _instance = MdStruct.get(id);
+    MdStruct _instance = MdStruct.get(oid);
     _instance.unlock();
     
     return _instance;

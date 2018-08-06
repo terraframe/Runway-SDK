@@ -154,13 +154,13 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebComment mdWebComment)
     {
       if(mdWebComment == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebComment.getId());
+      return this.EQ(mdWebComment.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebComment mdWebComment)
     {
       if(mdWebComment == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebComment.getId());
+      return this.NE(mdWebComment.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdWebCommentCommentTextQuery.MdWebCommentCommentTextQueryStructIF getCommentText()
@@ -237,7 +237,7 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
 
       for (int i=0; i<mdWebComment.length; i++)
       {
-        itemIdArray[i] = mdWebComment[i].getId();
+        itemIdArray[i] = mdWebComment[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
 
       for (int i=0; i<mdWebComment.length; i++)
       {
-        itemIdArray[i] = mdWebComment[i].getId();
+        itemIdArray[i] = mdWebComment[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
 
       for (int i=0; i<mdWebComment.length; i++)
       {
-        itemIdArray[i] = mdWebComment[i].getId();
+        itemIdArray[i] = mdWebComment[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
 
       for (int i=0; i<mdWebComment.length; i++)
       {
-        itemIdArray[i] = mdWebComment[i].getId();
+        itemIdArray[i] = mdWebComment[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdWebCommentQuery extends com.runwaysdk.system.metadata.MdWebField
 
       for (int i=0; i<mdWebComment.length; i++)
       {
-        itemIdArray[i] = mdWebComment[i].getId();
+        itemIdArray[i] = mdWebComment[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

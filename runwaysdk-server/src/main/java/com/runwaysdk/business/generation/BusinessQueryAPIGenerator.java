@@ -232,7 +232,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "      for (int i=0; i<" + parameterName + ".length; i++)");
     writeLine(this.srcBuffer, "      {");
-    writeLine(this.srcBuffer, "        itemIdArray[i] = " + parameterName + "[i].getId();");
+    writeLine(this.srcBuffer, "        itemIdArray[i] = " + parameterName + "[i].getOid();");
     writeLine(this.srcBuffer, "      }");
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "      return this." + methodName + "(itemIdArray);");
@@ -908,7 +908,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     write(this.srcBuffer, "    " + BusinessQuery.class.getName() + " businessQuery = ");
     writeLine(this.srcBuffer, "queryFactory.businessQuery(" + MdEnumerationInfo.CLASS + ".CLASS);");
     writeLine(this.srcBuffer, "    " + MdEnumerationDAOIF.class.getName() + " mdEnumerationIF = " + MdEnumerationDAO.class.getName() + ".getMdEnumerationDAO(" + mdEnumerationIF.definesType() + ".CLASS); ");
-    writeLine(this.srcBuffer, "    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));");
+    writeLine(this.srcBuffer, "    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));");
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "    relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));");
     writeLine(this.srcBuffer, "");
@@ -935,7 +935,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     write(this.srcBuffer, "    " + BusinessQuery.class.getName() + " businessQuery = ");
     writeLine(this.srcBuffer, "queryFactory.businessQuery(" + MdEnumerationInfo.CLASS + ".CLASS);");
     writeLine(this.srcBuffer, "    " + MdEnumerationDAOIF.class.getName() + " mdEnumerationIF = " + MdEnumerationDAO.class.getName() + ".getMdEnumerationDAO(" + mdEnumerationIF.definesType() + ".CLASS); ");
-    writeLine(this.srcBuffer, "    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));");
+    writeLine(this.srcBuffer, "    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));");
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "    relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));");
     writeLine(this.srcBuffer, "");
@@ -1415,7 +1415,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "      for (int i=0; i<" + parameterName + ".length; i++)");
     writeLine(this.srcBuffer, "      {");
-    writeLine(this.srcBuffer, "        enumIdArray[i] = " + parameterName + "[i].getId();");
+    writeLine(this.srcBuffer, "        enumIdArray[i] = " + parameterName + "[i].getOid();");
     writeLine(this.srcBuffer, "      }");
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "      return this." + methodName + "(enumIdArray);");
@@ -1514,13 +1514,13 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     writeLine(this.srcBuffer, "    public " + BasicCondition.class.getName() + " EQ(" + mdBusinessIF.definesType() + " " + paramName + ")");
     writeLine(this.srcBuffer, "    {");
     writeLine(this.srcBuffer, "      if(" + paramName + " == null) return this.EQ((" + String.class.getName() + ")null);");
-    writeLine(this.srcBuffer, "      return this.EQ(" + paramName + ".getId());");
+    writeLine(this.srcBuffer, "      return this.EQ(" + paramName + ".getOid());");
     writeLine(this.srcBuffer, "    }");
     writeLine(this.srcBuffer, "");
     writeLine(this.srcBuffer, "    public " + BasicCondition.class.getName() + " NE(" + mdBusinessIF.definesType() + " " + paramName + ")");
     writeLine(this.srcBuffer, "    {");
     writeLine(this.srcBuffer, "      if(" + paramName + " == null) return this.NE((" + String.class.getName() + ")null);");
-    writeLine(this.srcBuffer, "      return this.NE(" + paramName + ".getId());");
+    writeLine(this.srcBuffer, "      return this.NE(" + paramName + ".getOid());");
     writeLine(this.srcBuffer, "    }");
     writeLine(this.srcBuffer, "");
 

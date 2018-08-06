@@ -245,25 +245,25 @@ public class OperationManager
   }
 
   /**
-   * Returns the Operation that corresponds to a given id
+   * Returns the Operation that corresponds to a given oid
    *
-   * @param id
-   *          The id of the Operation
-   * @return The corresponding enumeration Operation of a given id
+   * @param oid
+   *          The oid of the Operation
+   * @return The corresponding enumeration Operation of a given oid
    */
-  public static Operation getOperation(String id)
+  public static Operation getOperation(String oid)
   {
     // Iterate over each operation and check for a match
     for (Operation operation : Operation.values())
     {
-      if (id.equals(operation.getId()))
+      if (oid.equals(operation.getOid()))
       {
         return operation;
       }
     }
 
     // No matching operations found
-    String error = "Cannot find operation [" + id + "] - the id is not recognized.";
+    String error = "Cannot find operation [" + oid + "] - the oid is not recognized.";
     throw new DataNotFoundException(error, Operation.READ.getMdBusiness());
   }
 
@@ -303,14 +303,14 @@ public class OperationManager
     for (BusinessDAOIF op : ops)
     {
       // Add the proper operation
-      operations.add(OperationManager.getOperation(op.getId()));
+      operations.add(OperationManager.getOperation(op.getOid()));
     }
 
     return operations;
   }
 
   /**
-   * Determines if a businessDAO in a list is referring, aka has the same id ,
+   * Determines if a businessDAO in a list is referring, aka has the same oid ,
    * to an Operation
    *
    * @param list
@@ -324,7 +324,7 @@ public class OperationManager
 
     for (BusinessDAOIF businessDAO : list)
     {
-      if (businessDAO.getId().equals(o.getId()))
+      if (businessDAO.getOid().equals(o.getOid()))
       {
         return true;
       }

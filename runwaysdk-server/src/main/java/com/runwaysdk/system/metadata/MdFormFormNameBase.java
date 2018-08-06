@@ -30,7 +30,7 @@ public abstract class MdFormFormNameBase extends com.runwaysdk.business.LocalStr
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdFormFormName";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1375635228;
@@ -45,9 +45,9 @@ public abstract class MdFormFormNameBase extends com.runwaysdk.business.LocalStr
     super(component, structName);
   }
   
-  public static MdFormFormName get(String id)
+  public static MdFormFormName get(String oid)
   {
-    return (MdFormFormName) com.runwaysdk.business.Struct.get(id);
+    return (MdFormFormName) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdFormFormName getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class MdFormFormNameBase extends com.runwaysdk.business.LocalStr
     return (MdFormFormName) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class MdFormFormNameBase extends com.runwaysdk.business.LocalStr
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdFormFormName.CLASS);
     return mdClassIF.definesAttribute(ID);

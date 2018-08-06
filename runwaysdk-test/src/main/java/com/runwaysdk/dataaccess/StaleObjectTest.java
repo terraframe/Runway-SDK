@@ -85,7 +85,7 @@ public class StaleObjectTest
     utensilMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     utensilMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     utensilMdBusiness.apply();
-    utensilClass.setId(utensilMdBusiness.getId());
+    utensilClass.setOid(utensilMdBusiness.getOid());
   }
 
   /**
@@ -217,16 +217,16 @@ public class StaleObjectTest
       AtoW = MdTreeDAO.newInstance();
       AtoW.setValue(MdTreeInfo.NAME, AtoW_REL.getTypeName());
       AtoW.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       AtoW.setValue(MdTreeInfo.PACKAGE, AtoW_REL.getPackageName());
       AtoW.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A to W");
       AtoW.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       AtoW.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       AtoW.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getId());
+      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getOid());
       AtoW.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent A");
-      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getId());
+      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getOid());
       AtoW.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
       AtoW.setValue(MdTreeInfo.PARENT_METHOD, "A");

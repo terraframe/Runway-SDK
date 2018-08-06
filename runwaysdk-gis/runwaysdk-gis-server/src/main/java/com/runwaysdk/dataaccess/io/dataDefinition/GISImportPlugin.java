@@ -90,7 +90,7 @@ public class GISImportPlugin implements ImportPluginIF
 
         if (concreteAttribute != null)
         {
-          node.setValue(attributeName, concreteAttribute.getMdAttributeConcrete().getId());
+          node.setValue(attributeName, concreteAttribute.getMdAttributeConcrete().getOid());
         }
         else
         {
@@ -120,7 +120,7 @@ public class GISImportPlugin implements ImportPluginIF
 
       System.out.println("Creating node [" + key + "]");
 
-      this.getManager().addImportedObject(node.getId());
+      this.getManager().addImportedObject(node.getOid());
     }
 
     private GeoNodeEntity getOrCreateNode(String key)
@@ -206,7 +206,7 @@ public class GISImportPlugin implements ImportPluginIF
 
       System.out.println("Creating node [" + key + "]");
 
-      this.getManager().addImportedObject(node.getId());
+      this.getManager().addImportedObject(node.getOid());
     }
 
     private GeoNodeGeometry getOrCreateNode(String key)

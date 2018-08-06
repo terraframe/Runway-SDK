@@ -41,9 +41,9 @@ public abstract class JobSnapshotBase extends com.runwaysdk.system.scheduler.Abs
     return CLASS;
   }
   
-  public static JobSnapshot get(String id)
+  public static JobSnapshot get(String oid)
   {
-    return (JobSnapshot) com.runwaysdk.business.Business.get(id);
+    return (JobSnapshot) com.runwaysdk.business.Business.get(oid);
   }
   
   public static JobSnapshot getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class JobSnapshotBase extends com.runwaysdk.system.scheduler.Abs
     return (JobSnapshot) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static JobSnapshot lock(java.lang.String id)
+  public static JobSnapshot lock(java.lang.String oid)
   {
-    JobSnapshot _instance = JobSnapshot.get(id);
+    JobSnapshot _instance = JobSnapshot.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static JobSnapshot unlock(java.lang.String id)
+  public static JobSnapshot unlock(java.lang.String oid)
   {
-    JobSnapshot _instance = JobSnapshot.get(id);
+    JobSnapshot _instance = JobSnapshot.get(oid);
     _instance.unlock();
     
     return _instance;

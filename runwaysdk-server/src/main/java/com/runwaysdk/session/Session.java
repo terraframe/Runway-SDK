@@ -80,9 +80,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   private static int             comparatorOffset  = 1;
 
   /**
-   * The unique id of the session
+   * The unique oid of the session
    */
-  private volatile String        id;
+  private volatile String        oid;
 
   /**
    * A reference to the user of the session
@@ -144,7 +144,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
     // Get a new session Id
-    this.id = ServerIDGenerator.nextID();
+    this.oid = ServerIDGenerator.nextID();
     this.user = publicUser;
     this.closeOnEndOfRequest = false;
     this.locale = locale;
@@ -278,11 +278,11 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.session.SessionIF#getId()
+   * @see com.runwaysdk.session.SessionIF#getOid()
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   @Override
@@ -592,9 +592,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
 
         // Load owner type permissions
-        if (ownerPermissions.containsKey(mdClassIF.getId()))
+        if (ownerPermissions.containsKey(mdClassIF.getOid()))
         {
-          operations.addAll(ownerPermissions.get(mdClassIF.getId()));
+          operations.addAll(ownerPermissions.get(mdClassIF.getOid()));
         }
 
         // Load owner domain-type permissions
@@ -604,7 +604,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
           if (!domainId.equals(""))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getId(), null);
+            String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
 
             if (ownerPermissions.containsKey(key))
             {
@@ -688,8 +688,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       // check
       // if (state != null)
       // {
-      // tupleReference = PermissionTuple.buildKey(mdAttribute.getId(),
-      // state.getId());
+      // tupleReference = PermissionTuple.buildKey(mdAttribute.getOid(),
+      // state.getOid());
       // }
       //
       // // Check if permissions exist on the State-MdAttribute pairing
@@ -723,9 +723,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
 
         // Load owner mdAttribute permissions
-        if (ownerPermissions.containsKey(mdAttribute.getId()))
+        if (ownerPermissions.containsKey(mdAttribute.getOid()))
         {
-          operations.addAll(ownerPermissions.get(mdAttribute.getId()));
+          operations.addAll(ownerPermissions.get(mdAttribute.getOid()));
         }
 
         // Load owner domain-mdAttribute permissions
@@ -736,7 +736,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
           // Load owner domain-attribute permissions
           if (!domainId.equals(""))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getId(), null);
+            String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
             if (ownerPermissions.containsKey(key))
             {
@@ -950,9 +950,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         Set<Operation> operations = new TreeSet<Operation>();
 
         // Load owner method
-        if (ownerPermissions.containsKey(mdMethod.getId()))
+        if (ownerPermissions.containsKey(mdMethod.getOid()))
         {
-          operations.addAll(ownerPermissions.get(mdMethod.getId()));
+          operations.addAll(ownerPermissions.get(mdMethod.getOid()));
         }
 
         // Load owner domain-method
@@ -962,7 +962,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
           if (!domainId.equals(""))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdMethod.getId(), null);
+            String key = DomainTupleDAO.buildKey(domainId, mdMethod.getOid(), null);
 
             if (ownerPermissions.containsKey(key))
             {
@@ -1006,7 +1006,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
         if (ownerId != null && !ownerId.equals(""))
         {
-          return ownerId.equals(user.getId());
+          return ownerId.equals(user.getOid());
         }
         else
         {
@@ -1049,7 +1049,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         return 1 * comparatorOffset; // Java 1.5: return -1;
       }
 
-      return this.getId().compareTo(s0.getId());
+      return this.getOid().compareTo(s0.getOid());
     }
     finally
     {
@@ -1084,7 +1084,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
   public int hashCode()
   {
-    return this.id.hashCode();
+    return this.oid.hashCode();
   }
 
   /**
@@ -1109,7 +1109,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       // was set.
       if (this.locale == null)
       {
-        if (this.user.getId().equals(UserDAOIF.PUBLIC_USER_ID))
+        if (this.user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
         {
           this.setLocale(CommonProperties.getDefaultLocale());
         }
@@ -1263,18 +1263,18 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
   /**
    * Adds the given object to the session. Object is stored in a map where the
-   * key is the id of the object.
+   * key is the oid of the object.
    * 
    * @param mutable
    */
   public void put(Mutable mutable)
   {
-    this.mutableMap.put(mutable.getId(), mutable);
+    this.mutableMap.put(mutable.getOid(), mutable);
   }
 
   /**
    * Adds the given object to the session stored in a map using the given key.
-   * Object is stored in a map where the key is the id of the object.
+   * Object is stored in a map where the key is the oid of the object.
    * 
    * @param mutable
    */
@@ -1336,13 +1336,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   }
 
   /**
-   * Hook method for aspects. This is used to create a mapping between the id of
-   * an object that is generated on a new <code>MutableDTO</code> to the id that
+   * Hook method for aspects. This is used to create a mapping between the oid of
+   * an object that is generated on a new <code>MutableDTO</code> to the oid that
    * is generated on the <code>Mutable</code> object to which the values of the
    * DTO are copied.
    * 
    * @param oldTempId
-   *          original temporary id for new instances.
+   *          original temporary oid for new instances.
    * @param newId
    */
   public static void mapNewInstanceTempId(String oldTempId, String newId)

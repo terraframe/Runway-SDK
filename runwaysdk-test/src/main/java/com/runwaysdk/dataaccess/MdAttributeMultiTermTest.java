@@ -85,13 +85,13 @@ public class MdAttributeMultiTermTest
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiTermInfo.NAME), mdAttributeMultiTerm.getValue(MdAttributeMultiTermInfo.NAME));
@@ -142,13 +142,13 @@ public class MdAttributeMultiTermTest
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdView.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdView.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiTermInfo.NAME), mdAttributeMultiTerm.getValue(MdAttributeMultiTermInfo.NAME));
@@ -202,17 +202,17 @@ public class MdAttributeMultiTermTest
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFAULT_VALUE, defaultValue.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFAULT_VALUE, defaultValue.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
-          Assert.assertEquals(defaultValue.getId(), result.getValue(MdAttributeMultiTermInfo.DEFAULT_VALUE));
+          Assert.assertEquals(defaultValue.getOid(), result.getValue(MdAttributeMultiTermInfo.DEFAULT_VALUE));
         }
         finally
         {
@@ -249,8 +249,8 @@ public class MdAttributeMultiTermTest
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiTerm Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdReference.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdReference.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeMultiTerm.apply();
 
         TestFixtureFactory.delete(mdAttributeMultiTerm);

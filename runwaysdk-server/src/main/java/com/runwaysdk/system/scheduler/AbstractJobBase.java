@@ -33,7 +33,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
@@ -162,11 +162,11 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -176,7 +176,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -192,7 +192,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   {
     if(value != null)
     {
-      addEnumItem(JOBOPERATION, value.getId());
+      addEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -200,7 +200,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   {
     if(value != null)
     {
-      removeEnumItem(JOBOPERATION, value.getId());
+      removeEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -412,7 +412,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -525,9 +525,9 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     return CLASS;
   }
   
-  public static AbstractJob get(String id)
+  public static AbstractJob get(String oid)
   {
-    return (AbstractJob) com.runwaysdk.business.Business.get(id);
+    return (AbstractJob) com.runwaysdk.business.Business.get(oid);
   }
   
   public static AbstractJob getByKey(String key)
@@ -535,17 +535,17 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
     return (AbstractJob) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static AbstractJob lock(java.lang.String id)
+  public static AbstractJob lock(java.lang.String oid)
   {
-    AbstractJob _instance = AbstractJob.get(id);
+    AbstractJob _instance = AbstractJob.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AbstractJob unlock(java.lang.String id)
+  public static AbstractJob unlock(java.lang.String oid)
   {
-    AbstractJob _instance = AbstractJob.get(id);
+    AbstractJob _instance = AbstractJob.get(oid);
     _instance.unlock();
     
     return _instance;

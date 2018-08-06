@@ -70,9 +70,9 @@ public abstract class MdWebReferenceBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdWebReference get(String id)
+  public static MdWebReference get(String oid)
   {
-    return (MdWebReference) com.runwaysdk.business.Business.get(id);
+    return (MdWebReference) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebReference getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdWebReferenceBase extends com.runwaysdk.system.metadata.M
     return (MdWebReference) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebReference lock(java.lang.String id)
+  public static MdWebReference lock(java.lang.String oid)
   {
-    MdWebReference _instance = MdWebReference.get(id);
+    MdWebReference _instance = MdWebReference.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebReference unlock(java.lang.String id)
+  public static MdWebReference unlock(java.lang.String oid)
   {
-    MdWebReference _instance = MdWebReference.get(id);
+    MdWebReference _instance = MdWebReference.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -294,7 +294,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   after(Entity entity) : clearAppLock(entity)
   {
-    this.getState().addUnsetAppLocksSet(entity.getId());
+    this.getState().addUnsetAppLocksSet(entity.getOid());
   }
 
   // these objects should be unlocked at the end of the session request
@@ -349,7 +349,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     : updatedEntityDAO(entityDAO)
   {
     // Set a default key value if one has not been not been provided
-    // Set the key to the id if no value has been specified.
+    // Set the key to the oid if no value has been specified.
     Attribute keyAttribute = entityDAO.getAttribute(ComponentInfo.KEY);
     String keyValue = keyAttribute.getValue();
 
@@ -368,16 +368,16 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       else
       {
         // If the key has been modified, then we must change the ID
-        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getOid()))
         {          
-          String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
+          String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
           String newRootId = ServerIDGenerator.hashedId(keyValue);
           String newId = IdParser.buildId(newRootId, mdTypeRootId);
-          String currentId = entityDAO.getId();
+          String currentId = entityDAO.getOid();
           
           if(!newId.equals(currentId))
           {
-            entityDAO.setId(newId);
+            entityDAO.setOid(newId);
              
             if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
             {
@@ -393,7 +393,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (keyValue.trim().equals(""))
       {
-        keyAttribute.setValue(entityDAO.getId());
+        keyAttribute.setValue(entityDAO.getOid());
       }
     }    
     
@@ -618,7 +618,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (!this.getTransactionCache().hasBeenDeletedInTransaction(entity.entityDAO))
       {
-        String error = "Object [" + entity.entityDAO.getId() + "] has already been deleted.";
+        String error = "Object [" + entity.entityDAO.getOid() + "] has already been deleted.";
         throw new StaleEntityException(error, entity.entityDAO);
       }
     }
@@ -668,7 +668,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (!this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO))
       {
-        String error = "Object [" + entityDAO.getId() + "] has already been deleted.";
+        String error = "Object [" + entityDAO.getOid() + "] has already been deleted.";
         throw new StaleEntityException(error, entityDAO);
       }
     }
@@ -1122,19 +1122,19 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // Should this object be requested later in the transaction, used the version
   // that was
   // modified but not yet applied.
-  protected pointcut getEntityById(String id)
+  protected pointcut getEntityById(String oid)
     :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(String))
-    && args(id);
+    && args(oid);
 
-  Object around(String id) : getEntityById(id)
+  Object around(String oid) : getEntityById(oid)
   {
     EntityDAOIF entityDAO = null;
 
-    entityDAO = this.getTransactionCache().getEntityDAO(id);
+    entityDAO = this.getTransactionCache().getEntityDAO(oid);
 
     if (entityDAO == null)
     {
-      entityDAO = (EntityDAOIF) proceed(id);
+      entityDAO = (EntityDAOIF) proceed(oid);
     }
 
     return entityDAO;
@@ -1365,7 +1365,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * parent.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -1384,7 +1384,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * child.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -1414,7 +1414,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getParents(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the id in the global cache could be different
+    // ID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
@@ -1437,7 +1437,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getChildren(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the id in the global cache could be different
+    // ID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
@@ -1479,7 +1479,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
    * database deadlock detection Get DML tables -------------------
    * Database.buildSQLInsertStatement(String table, List<String> fields,
    * List<String> values) Database.buildSQLUpdateStatement(String table,
-   * Map<String, String> values, String id)
+   * Map<String, String> values, String oid)
    * 
    * 
    * Get DDL tables ------------------- Database.createClassTable(String table)

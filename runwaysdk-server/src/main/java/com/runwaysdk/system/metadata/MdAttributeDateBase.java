@@ -244,9 +244,9 @@ public abstract class MdAttributeDateBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeDate get(String id)
+  public static MdAttributeDate get(String oid)
   {
-    return (MdAttributeDate) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeDate) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeDate getByKey(String key)
@@ -254,17 +254,17 @@ public abstract class MdAttributeDateBase extends com.runwaysdk.system.metadata.
     return (MdAttributeDate) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeDate lock(java.lang.String id)
+  public static MdAttributeDate lock(java.lang.String oid)
   {
-    MdAttributeDate _instance = MdAttributeDate.get(id);
+    MdAttributeDate _instance = MdAttributeDate.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeDate unlock(java.lang.String id)
+  public static MdAttributeDate unlock(java.lang.String oid)
   {
-    MdAttributeDate _instance = MdAttributeDate.get(id);
+    MdAttributeDate _instance = MdAttributeDate.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -44,10 +44,10 @@ public enum GeoEntityProblemType implements com.runwaysdk.business.BusinessEnume
     this.enumeration = enumeration;
   }
 
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
 
   public java.lang.String getEnumName()
@@ -68,11 +68,11 @@ public enum GeoEntityProblemType implements com.runwaysdk.business.BusinessEnume
     return enumeration.getDescription().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
 
-  public static GeoEntityProblemType get(String id)
+  public static GeoEntityProblemType get(String oid)
   {
     for (GeoEntityProblemType e : GeoEntityProblemType.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

@@ -175,9 +175,9 @@ public class MdAttributeHashDAO extends MdAttributeEncryptionDAO implements MdAt
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeHashDAOIF get(String id)
+  public static MdAttributeHashDAOIF get(String oid)
   {
-    return (MdAttributeHashDAOIF) BusinessDAO.get(id);
+    return (MdAttributeHashDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

@@ -85,7 +85,7 @@ public class DispatcherServletTest
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     clientRequest.createBusiness(mdAttributeCharacterDTO);
 
     mdRelationship = clientRequest.newBusiness(MdRelationshipInfo.CLASS);
@@ -96,10 +96,10 @@ public class DispatcherServletTest
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent dto");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child dto");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
@@ -114,7 +114,7 @@ public class DispatcherServletTest
   {
     ClientRequestIF request = session.getRequest();
 
-    request.delete(mdBusiness.getId());
+    request.delete(mdBusiness.getOid());
 
     session.logout();
   }
@@ -236,7 +236,7 @@ public class DispatcherServletTest
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.ID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(200, resp.getStatus());
@@ -249,7 +249,7 @@ public class DispatcherServletTest
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 
@@ -291,7 +291,7 @@ public class DispatcherServletTest
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.ID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(request.getSessionId(), response.getString("sessionId"));
@@ -305,7 +305,7 @@ public class DispatcherServletTest
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 

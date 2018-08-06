@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.geo;
 public abstract class InvalidUniversalTypeExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.InvalidUniversalTypeException";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = -1082236574;
   
   public InvalidUniversalTypeExceptionBase()
@@ -52,7 +52,7 @@ public abstract class InvalidUniversalTypeExceptionBase extends com.runwaysdk.bu
     super(cause);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -62,7 +62,7 @@ public abstract class InvalidUniversalTypeExceptionBase extends com.runwaysdk.bu
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.InvalidUniversalTypeException.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -76,7 +76,7 @@ public abstract class InvalidUniversalTypeExceptionBase extends com.runwaysdk.bu
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

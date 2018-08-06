@@ -438,13 +438,13 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdException mdException)
     {
       if(mdException == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdException.getId());
+      return this.EQ(mdException.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdException mdException)
     {
       if(mdException == null) return this.NE((java.lang.String)null);
-      return this.NE(mdException.getId());
+      return this.NE(mdException.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdExceptionQuery.MdExceptionQueryReferenceIF getSuperMdException()
@@ -753,7 +753,7 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
 
       for (int i=0; i<mdException.length; i++)
       {
-        itemIdArray[i] = mdException[i].getId();
+        itemIdArray[i] = mdException[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -765,7 +765,7 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
 
       for (int i=0; i<mdException.length; i++)
       {
-        itemIdArray[i] = mdException[i].getId();
+        itemIdArray[i] = mdException[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -777,7 +777,7 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
 
       for (int i=0; i<mdException.length; i++)
       {
-        itemIdArray[i] = mdException[i].getId();
+        itemIdArray[i] = mdException[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -789,7 +789,7 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
 
       for (int i=0; i<mdException.length; i++)
       {
-        itemIdArray[i] = mdException[i].getId();
+        itemIdArray[i] = mdException[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -801,7 +801,7 @@ public  class MdExceptionQuery extends com.runwaysdk.system.metadata.MdLocalizab
 
       for (int i=0; i<mdException.length; i++)
       {
-        itemIdArray[i] = mdException[i].getId();
+        itemIdArray[i] = mdException[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

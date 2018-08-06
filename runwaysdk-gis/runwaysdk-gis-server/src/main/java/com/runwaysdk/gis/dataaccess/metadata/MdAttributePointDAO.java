@@ -116,9 +116,9 @@ public class MdAttributePointDAO extends MdAttributeGeometryDAO implements MdAtt
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributePointDAOIF get(String id)
+  public static MdAttributePointDAOIF get(String oid)
   {
-    return (MdAttributePointDAOIF) BusinessDAO.get(id);
+    return (MdAttributePointDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

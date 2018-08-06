@@ -28,7 +28,7 @@ public class TermAndRelDTO implements ToJSONIF
 {
   public static final String CLASS = "com.runwaysdk.business.ontology.TermAndRel"; 
   
-  public static final String concatChar = ";"; // The code breaks if this char is contained within the relationship id or the business id.
+  public static final String concatChar = ";"; // The code breaks if this char is contained within the relationship oid or the business oid.
   
   private TermDTO term;
   private String relationshipType;

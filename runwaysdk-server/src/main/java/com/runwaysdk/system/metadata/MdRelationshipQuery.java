@@ -838,13 +838,13 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdRelationship mdRelationship)
     {
       if(mdRelationship == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdRelationship.getId());
+      return this.EQ(mdRelationship.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdRelationship mdRelationship)
     {
       if(mdRelationship == null) return this.NE((java.lang.String)null);
-      return this.NE(mdRelationship.getId());
+      return this.NE(mdRelationship.getOid());
     }
 
   public com.runwaysdk.system.metadata.EntityCacheMasterQuery.RelationshipCacheQueryIF getCacheAlgorithm()
@@ -1505,7 +1505,7 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
 
       for (int i=0; i<mdRelationship.length; i++)
       {
-        itemIdArray[i] = mdRelationship[i].getId();
+        itemIdArray[i] = mdRelationship[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1517,7 +1517,7 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
 
       for (int i=0; i<mdRelationship.length; i++)
       {
-        itemIdArray[i] = mdRelationship[i].getId();
+        itemIdArray[i] = mdRelationship[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1529,7 +1529,7 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
 
       for (int i=0; i<mdRelationship.length; i++)
       {
-        itemIdArray[i] = mdRelationship[i].getId();
+        itemIdArray[i] = mdRelationship[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1541,7 +1541,7 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
 
       for (int i=0; i<mdRelationship.length; i++)
       {
-        itemIdArray[i] = mdRelationship[i].getId();
+        itemIdArray[i] = mdRelationship[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1553,7 +1553,7 @@ public  class MdRelationshipQuery extends com.runwaysdk.system.metadata.MdElemen
 
       for (int i=0; i<mdRelationship.length; i++)
       {
-        itemIdArray[i] = mdRelationship[i].getId();
+        itemIdArray[i] = mdRelationship[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

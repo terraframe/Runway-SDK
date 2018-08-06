@@ -384,9 +384,9 @@ public interface XMLTags
   public static final String   REMOVE_ENUM_ITEM_TAG             = "removeEnumItem";
 
   /**
-   * The xml name of the id attribute for enumeration_instance and instance tags
+   * The xml name of the oid attribute for enumeration_instance and instance tags
    */
-  public static final String   ID_ATTRIBUTE                     = "id";
+  public static final String   ID_ATTRIBUTE                     = "oid";
 
   /**
    * The xml tag for the Business type
@@ -404,7 +404,7 @@ public interface XMLTags
   public static final String   ATTRIBUTE_TAG                    = "attribute";
 
   /**
-   * The xml tag for an enumeration id selection of a AttributeEnumeration
+   * The xml tag for an enumeration oid selection of a AttributeEnumeration
    */
   public static final String   ATTRIBUTE_ENUMERATION_TAG        = "attributeEnumeration";
 

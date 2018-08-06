@@ -29,7 +29,7 @@ public class MetadataParameter extends MetadataParameterBase
   
   public MetadataParameter(com.runwaysdk.system.metadata.Metadata parent, com.runwaysdk.system.metadata.MdParameter child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

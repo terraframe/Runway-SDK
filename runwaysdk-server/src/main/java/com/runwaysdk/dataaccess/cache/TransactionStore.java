@@ -56,11 +56,11 @@ public class TransactionStore implements TransactionStoreIF
   }
 
   @Override
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
     synchronized (this.storeName)
     {
-      EntityDAOIF entity = store.getEntityDAOIFfromCache(id);     
+      EntityDAOIF entity = store.getEntityDAOIFfromCache(oid);     
       
       return entity;
     }
@@ -90,11 +90,11 @@ public class TransactionStore implements TransactionStoreIF
   }
 
   @Override
-  public void removeEntityDAOIFfromCache(String id)
+  public void removeEntityDAOIFfromCache(String oid)
   {
     synchronized (this.storeName)
     {
-      this.store.removeEntityDAOIFfromCache(id);
+      this.store.removeEntityDAOIFfromCache(oid);
     }
   }
 

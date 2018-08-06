@@ -29,7 +29,7 @@ public class LocatedIn extends LocatedInBase
 
   public LocatedIn(com.runwaysdk.system.gis.geo.GeoEntity parent, com.runwaysdk.system.gis.geo.GeoEntity child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
 
   @Override

@@ -76,7 +76,7 @@ public abstract class MdAttributeSymmetricBase extends com.runwaysdk.system.meta
   {
     if(value != null)
     {
-      addEnumItem(SYMMETRICMETHOD, value.getId());
+      addEnumItem(SYMMETRICMETHOD, value.getOid());
     }
   }
   
@@ -84,7 +84,7 @@ public abstract class MdAttributeSymmetricBase extends com.runwaysdk.system.meta
   {
     if(value != null)
     {
-      removeEnumItem(SYMMETRICMETHOD, value.getId());
+      removeEnumItem(SYMMETRICMETHOD, value.getOid());
     }
   }
   
@@ -109,9 +109,9 @@ public abstract class MdAttributeSymmetricBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static MdAttributeSymmetric get(String id)
+  public static MdAttributeSymmetric get(String oid)
   {
-    return (MdAttributeSymmetric) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeSymmetric) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeSymmetric getByKey(String key)
@@ -119,17 +119,17 @@ public abstract class MdAttributeSymmetricBase extends com.runwaysdk.system.meta
     return (MdAttributeSymmetric) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeSymmetric lock(java.lang.String id)
+  public static MdAttributeSymmetric lock(java.lang.String oid)
   {
-    MdAttributeSymmetric _instance = MdAttributeSymmetric.get(id);
+    MdAttributeSymmetric _instance = MdAttributeSymmetric.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeSymmetric unlock(java.lang.String id)
+  public static MdAttributeSymmetric unlock(java.lang.String oid)
   {
-    MdAttributeSymmetric _instance = MdAttributeSymmetric.get(id);
+    MdAttributeSymmetric _instance = MdAttributeSymmetric.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -81,13 +81,13 @@ public class MdAttributeMultiReferenceTest
         MdAttributeMultiReferenceDAO mdAttributeMultReference = MdAttributeMultiReferenceDAO.newInstance();
         mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
         mdAttributeMultReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeMultReference.apply();
 
         try
         {
-          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getId());
+          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiReferenceInfo.NAME), mdAttributeMultReference.getValue(MdAttributeMultiReferenceInfo.NAME));
@@ -138,13 +138,13 @@ public class MdAttributeMultiReferenceTest
         MdAttributeMultiReferenceDAO mdAttributeMultReference = MdAttributeMultiReferenceDAO.newInstance();
         mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
         mdAttributeMultReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdView.getId());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdView.getOid());
         mdAttributeMultReference.apply();
 
         try
         {
-          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getId());
+          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiReferenceInfo.NAME), mdAttributeMultReference.getValue(MdAttributeMultiReferenceInfo.NAME));
@@ -198,17 +198,17 @@ public class MdAttributeMultiReferenceTest
         MdAttributeMultiReferenceDAO mdAttributeMultReference = MdAttributeMultiReferenceDAO.newInstance();
         mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
         mdAttributeMultReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFAULT_VALUE, defaultValue.getId());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+        mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFAULT_VALUE, defaultValue.getOid());
         mdAttributeMultReference.apply();
 
         try
         {
-          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getId());
+          MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getOid());
 
           Assert.assertNotNull(result);
-          Assert.assertEquals(defaultValue.getId(), result.getValue(MdAttributeMultiReferenceInfo.DEFAULT_VALUE));
+          Assert.assertEquals(defaultValue.getOid(), result.getValue(MdAttributeMultiReferenceInfo.DEFAULT_VALUE));
         }
         finally
         {

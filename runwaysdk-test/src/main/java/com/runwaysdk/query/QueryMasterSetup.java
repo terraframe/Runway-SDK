@@ -291,7 +291,7 @@ public class QueryMasterSetup
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.apply();
 
     loadAttributePrimitives(stateEnumMdBusiness, ENUM_PREFIX);
@@ -303,7 +303,7 @@ public class QueryMasterSetup
     stateMdEnumeration_all.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     stateMdEnumeration_all.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     stateMdEnumeration_all.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    stateMdEnumeration_all.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getId());
+    stateMdEnumeration_all.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getOid());
     stateMdEnumeration_all.apply();
 
     MdAttributeCharacterDAO mdAttrChar = MdAttributeCharacterDAO.newInstance();
@@ -312,9 +312,9 @@ public class QueryMasterSetup
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     mdAttrChar = MdAttributeCharacterDAO.newInstance();
@@ -323,9 +323,9 @@ public class QueryMasterSetup
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Name");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     EnumerationItemDAO enumItemCA = EnumerationItemDAO.newInstance(stateClass.getType());
@@ -395,7 +395,7 @@ public class QueryMasterSetup
     stateMdEnumeration_east.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     stateMdEnumeration_east.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     stateMdEnumeration_east.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
-    stateMdEnumeration_east.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getId());
+    stateMdEnumeration_east.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getOid());
     stateMdEnumeration_east.apply();
 
     stateMdEnumeration_east.addEnumItem(enumItemCT);
@@ -408,7 +408,7 @@ public class QueryMasterSetup
     stateMdEnumeration_west.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     stateMdEnumeration_west.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     stateMdEnumeration_west.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
-    stateMdEnumeration_west.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getId());
+    stateMdEnumeration_west.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getOid());
     stateMdEnumeration_west.apply();
 
     stateMdEnumeration_west.addEnumItem(enumItemCA);
@@ -420,8 +420,8 @@ public class QueryMasterSetup
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
@@ -431,8 +431,8 @@ public class QueryMasterSetup
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, relMdBusiness.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, relMdBusiness.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
@@ -455,7 +455,7 @@ public class QueryMasterSetup
     childRefMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary ref type to perform queries on.");
     childRefMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childRefMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    childRefMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentRefMdBusiness.getId());
+    childRefMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentRefMdBusiness.getOid());
     childRefMdBusiness.apply();
 
     MdBusinessDAOIF selectedRefMdBusiness = MdBusinessDAO.getMdBusinessDAO(testRefQueryType);
@@ -466,8 +466,8 @@ public class QueryMasterSetup
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, selectedRefMdBusiness.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, selectedRefMdBusiness.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
@@ -493,7 +493,7 @@ public class QueryMasterSetup
     childMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary type to perform queries on.");
     childMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    childMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMdBusiness.getId());
+    childMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, parentMdBusiness.getOid());
     childMdBusiness.apply();
 
     mdTerm = TestFixtureFactory.createMdTerm(termQueryInfo.getPackageName(), termQueryInfo.getTypeName());
@@ -513,8 +513,8 @@ public class QueryMasterSetup
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, selectedMdBusiness.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
@@ -524,8 +524,8 @@ public class QueryMasterSetup
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, childRefMdBusiness.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, childRefMdBusiness.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, selectedMdBusiness.getOid());
     mdAttributeReference.apply();
 
     MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
@@ -534,8 +534,8 @@ public class QueryMasterSetup
     mdAttributeTerm.setValue(MdAttributeTermInfo.DEFAULT_VALUE, "");
     mdAttributeTerm.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTerm.setValue(MdAttributeTermInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
-    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, selectedMdBusiness.getOid());
     mdAttributeTerm.apply();
 
     MdAttributeStructDAO mdAttrStruct = MdAttributeStructDAO.newInstance();
@@ -543,8 +543,8 @@ public class QueryMasterSetup
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A struct to query.");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, selectedMdBusiness.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttrStruct.apply();
 
     MdAttributeLocalCharacterDAO mdAttrLocalCharacter = MdAttributeLocalCharacterDAO.newInstance();
@@ -552,7 +552,7 @@ public class QueryMasterSetup
     mdAttrLocalCharacter.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A struct to query.");
     mdAttrLocalCharacter.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrLocalCharacter.setValue(MdAttributeLocalCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrLocalCharacter.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
+    mdAttrLocalCharacter.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, selectedMdBusiness.getOid());
     mdAttrLocalCharacter.apply();
 
     MdAttributeStructDAO mdAttrStructRef = MdAttributeStructDAO.newInstance();
@@ -560,8 +560,8 @@ public class QueryMasterSetup
     mdAttrStructRef.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A struct to query.");
     mdAttrStructRef.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStructRef.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStructRef.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, childRefMdBusiness.getId());
-    mdAttrStructRef.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttrStructRef.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, childRefMdBusiness.getOid());
+    mdAttrStructRef.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttrStructRef.apply();
 
     // define the metadata for the entity to use in attribute comparison
@@ -587,10 +587,10 @@ public class QueryMasterSetup
     connectionMdRel.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     connectionMdRel.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     connectionMdRel.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    connectionMdRel.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, selectedMdBusiness.getId());
+    connectionMdRel.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, selectedMdBusiness.getOid());
     connectionMdRel.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     connectionMdRel.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, selectedMdBusiness.definesType());
-    connectionMdRel.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, relMdBusiness.getId());
+    connectionMdRel.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, relMdBusiness.getOid());
     connectionMdRel.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     connectionMdRel.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, relMdBusiness.definesType());
     connectionMdRel.setValue(MdRelationshipInfo.PARENT_METHOD, "QueryParent3");
@@ -603,8 +603,8 @@ public class QueryMasterSetup
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, connectionMdRel.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, connectionMdRel.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration_all.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
@@ -621,10 +621,10 @@ public class QueryMasterSetup
     badConnectionMdRel.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     badConnectionMdRel.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     badConnectionMdRel.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    badConnectionMdRel.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, selectedMdBusiness.getId());
+    badConnectionMdRel.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, selectedMdBusiness.getOid());
     badConnectionMdRel.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     badConnectionMdRel.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, selectedMdBusiness.definesType());
-    badConnectionMdRel.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, relMdBusiness.getId());
+    badConnectionMdRel.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, relMdBusiness.getOid());
     badConnectionMdRel.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     badConnectionMdRel.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, relMdBusiness.definesType());
     badConnectionMdRel.setValue(MdRelationshipInfo.PARENT_METHOD, "BadQueryParent3");
@@ -730,8 +730,8 @@ public class QueryMasterSetup
     testQueryObject1.setValue("queryFloat", "100.5");
     testQueryObject1.setValue("queryDecimal", "100.5");
     testQueryObject1.setValue("queryDouble", "100.5");
-    testQueryObject1.setValue("reference", childRefQueryObject.getId());
-    testQueryObject1.setValue("term", termQueryObject.getId());
+    testQueryObject1.setValue("reference", childRefQueryObject.getOid());
+    testQueryObject1.setValue("term", termQueryObject.getOid());
 
     // set struct values
     testQueryObject1.addStructItem("queryStruct", "structQueryEnumeration", connecticutItemId);
@@ -766,7 +766,7 @@ public class QueryMasterSetup
     relQueryObject1.setValue("relQueryDouble", "500.5");
     relQueryObject1.apply();
 
-    connectionInstance1 = relQueryObject1.addParent(testQueryObject1.getId(), connectionMdRel.definesType());
+    connectionInstance1 = relQueryObject1.addParent(testQueryObject1.getOid(), connectionMdRel.definesType());
 
     connectionInstance1.addItem("conQueryEnumeration", californiaItemId);
     connectionInstance1.setValue("conQueryBoolean", MdAttributeBooleanInfo.TRUE);
@@ -822,7 +822,7 @@ public class QueryMasterSetup
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Query me");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdView.getOid());
     mdAttributeCharacter.apply();
 
   }
@@ -862,7 +862,7 @@ public class QueryMasterSetup
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeBoolean.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
@@ -872,7 +872,7 @@ public class QueryMasterSetup
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Query me");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeCharacter.apply();
 
     MdAttributeTextDAO mdAttributeText = MdAttributeTextDAO.newInstance();
@@ -881,7 +881,7 @@ public class QueryMasterSetup
     mdAttributeText.setValue(MdAttributeTextInfo.DEFAULT_VALUE, "");
     mdAttributeText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeText.setValue(MdAttributeTextInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeText.apply();
 
     MdAttributeClobDAO mdAttributeClob = MdAttributeClobDAO.newInstance();
@@ -890,7 +890,7 @@ public class QueryMasterSetup
     mdAttributeClob.setValue(MdAttributeTextInfo.DEFAULT_VALUE, "");
     mdAttributeClob.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClob.setValue(MdAttributeTextInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeClob.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeClob.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeClob.apply();
 
     MdAttributeDateTimeDAO mdAttributeDateTime = MdAttributeDateTimeDAO.newInstance();
@@ -899,7 +899,7 @@ public class QueryMasterSetup
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFAULT_VALUE, "");
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeDateTime.apply();
 
     MdAttributeDateDAO mdAttributeDate = MdAttributeDateDAO.newInstance();
@@ -908,7 +908,7 @@ public class QueryMasterSetup
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDate.setValue(MdAttributeDateInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeDate.apply();
 
     MdAttributeTimeDAO mdAttributeTime = MdAttributeTimeDAO.newInstance();
@@ -917,7 +917,7 @@ public class QueryMasterSetup
     mdAttributeTime.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     mdAttributeTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTime.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeTime.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
@@ -926,7 +926,7 @@ public class QueryMasterSetup
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeInteger.apply();
 
     MdAttributeLongDAO mdAttributeLong = MdAttributeLongDAO.newInstance();
@@ -935,7 +935,7 @@ public class QueryMasterSetup
     mdAttributeLong.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeLong.apply();
 
     MdAttributeFloatDAO mdAttributeFloat = MdAttributeFloatDAO.newInstance();
@@ -946,7 +946,7 @@ public class QueryMasterSetup
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, NUM_OF_FLOAT_DECIMALS);
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeFloat.apply();
 
     MdAttributeDecimalDAO mdAttributeDecimal = MdAttributeDecimalDAO.newInstance();
@@ -957,7 +957,7 @@ public class QueryMasterSetup
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.LENGTH, "10");
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "2");
-    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeDecimal.apply();
 
     MdAttributeDoubleDAO mdAttributeDouble = MdAttributeDoubleDAO.newInstance();
@@ -968,7 +968,7 @@ public class QueryMasterSetup
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.LENGTH, "10");
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "2");
-    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdClassIF.getId());
+    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, mdClassIF.getOid());
     mdAttributeDouble.apply();
   }
 

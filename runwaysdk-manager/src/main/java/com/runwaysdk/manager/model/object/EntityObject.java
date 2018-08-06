@@ -33,7 +33,7 @@ import com.runwaysdk.manager.model.conversion.ImportConversionStrategy;
 
 public abstract class EntityObject extends ComponentObject implements IEntityObject, IEntityContainer
 {
-  private String  id;
+  private String  oid;
 
   private boolean isNew;
 
@@ -57,7 +57,7 @@ public abstract class EntityObject extends ComponentObject implements IEntityObj
   {
     this.isNew = entityDAO.isNew();
     this.appliedToDB = entityDAO.isAppliedToDB();
-    this.id = entityDAO.getId();
+    this.oid = entityDAO.getOid();
     this.isImport = false;
 
     new ConversionStrategyAdapter().populate(entityDAO, this);
@@ -80,9 +80,9 @@ public abstract class EntityObject extends ComponentObject implements IEntityObj
   }
 
   @Override
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   @Override
@@ -92,7 +92,7 @@ public abstract class EntityObject extends ComponentObject implements IEntityObj
 
     this.populate(entity);
 
-    return entity.getId();
+    return entity.getOid();
   }
 
   private EntityDAO save()
@@ -133,9 +133,9 @@ public abstract class EntityObject extends ComponentObject implements IEntityObj
     return new ConversionStrategyAdapter().populate(this);
   }
 
-  public static IEntityObject get(String id)
+  public static IEntityObject get(String oid)
   {
-    EntityDAOIF entity = PersistanceFacade.get(id);
+    EntityDAOIF entity = PersistanceFacade.get(oid);
 
     return EntityObject.get(entity);
   }

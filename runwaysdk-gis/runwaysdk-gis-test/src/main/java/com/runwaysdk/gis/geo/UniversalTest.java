@@ -89,7 +89,7 @@ public class UniversalTest
 
     try
     {
-      Universal test = Universal.get(universal.getId());
+      Universal test = Universal.get(universal.getOid());
 
       // TEST THE VALUE FROM THE READ
       Assert.assertNotNull(test);
@@ -129,12 +129,12 @@ public class UniversalTest
         List<? extends Universal> children = parent.getAllContains().getAll();
 
         Assert.assertEquals(1, children.size());
-        Assert.assertEquals(child.getId(), children.get(0).getId());
+        Assert.assertEquals(child.getOid(), children.get(0).getOid());
 
         List<? extends Universal> parents = child.getAllAllowedIn().getAll();
 
         Assert.assertEquals(1, parents.size());
-        Assert.assertEquals(parent.getId(), parents.get(0).getId());
+        Assert.assertEquals(parent.getOid(), parents.get(0).getOid());
       }
       finally
       {
@@ -463,7 +463,7 @@ public class UniversalTest
   // List<Term> ancestors = uA.getAllAncestors(AllowedIn.CLASS);
   //
   // Assert.assertEquals(1, ancestors.size());
-  // Assert.assertEquals(root.getId(), ancestors.get(0).getId());
+  // Assert.assertEquals(root.getOid(), ancestors.get(0).getOid());
   // }
   // finally
   // {
@@ -576,8 +576,8 @@ public class UniversalTest
   private void assertAllowedIn(Universal child, Universal parent)
   {
     AllowedInQuery q = new AllowedInQuery(new QueryFactory());
-    q.WHERE(q.childId().EQ(child.getId()));
-    q.AND(q.parentId().EQ(parent.getId()));
+    q.WHERE(q.childId().EQ(child.getOid()));
+    q.AND(q.parentId().EQ(parent.getOid()));
 
     OIterator<? extends AllowedIn> iter = q.getIterator();
     try

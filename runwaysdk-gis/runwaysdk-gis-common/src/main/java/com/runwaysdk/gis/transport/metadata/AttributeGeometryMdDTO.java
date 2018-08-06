@@ -33,7 +33,7 @@ public abstract class AttributeGeometryMdDTO extends AttributeMdDTO
   private int dimension;
 
   /**
-   * Projection id.
+   * Projection oid.
    */
   private int srid;
   

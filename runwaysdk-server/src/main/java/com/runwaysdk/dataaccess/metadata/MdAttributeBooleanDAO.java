@@ -220,9 +220,9 @@ public class MdAttributeBooleanDAO extends MdAttributePrimitiveDAO implements Md
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeBooleanDAOIF get(String id)
+  public static MdAttributeBooleanDAOIF get(String oid)
   {
-    return (MdAttributeBooleanDAOIF) BusinessDAO.get(id);
+    return (MdAttributeBooleanDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

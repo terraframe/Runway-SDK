@@ -98,9 +98,9 @@ public abstract class PrimitiveRuleBase extends com.runwaysdk.system.gis.mapping
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRule>) getRelationshipsWithParent(compositeRule, com.runwaysdk.system.gis.mapping.HasPrimitiveRule.CLASS);
   }
   
-  public static PrimitiveRule get(String id)
+  public static PrimitiveRule get(String oid)
   {
-    return (PrimitiveRule) com.runwaysdk.business.Business.get(id);
+    return (PrimitiveRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static PrimitiveRule getByKey(String key)
@@ -108,17 +108,17 @@ public abstract class PrimitiveRuleBase extends com.runwaysdk.system.gis.mapping
     return (PrimitiveRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static PrimitiveRule lock(java.lang.String id)
+  public static PrimitiveRule lock(java.lang.String oid)
   {
-    PrimitiveRule _instance = PrimitiveRule.get(id);
+    PrimitiveRule _instance = PrimitiveRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static PrimitiveRule unlock(java.lang.String id)
+  public static PrimitiveRule unlock(java.lang.String oid)
   {
-    PrimitiveRule _instance = PrimitiveRule.get(id);
+    PrimitiveRule _instance = PrimitiveRule.get(oid);
     _instance.unlock();
     
     return _instance;

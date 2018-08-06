@@ -130,9 +130,9 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeTermDAOIF get(String id)
+  public static MdAttributeTermDAOIF get(String oid)
   {
-    return (MdAttributeTermDAOIF) BusinessDAO.get(id);
+    return (MdAttributeTermDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -171,7 +171,7 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
   {
     String relationshipType = this.getAttributeRootRelationshipType();
 
-    RelationshipDAO relationship = RelationshipDAO.newInstance(this.getId(), term.getId(), relationshipType);
+    RelationshipDAO relationship = RelationshipDAO.newInstance(this.getOid(), term.getOid(), relationshipType);
     relationship.setValue(MdAttributeTermInfo.SELECTABLE, selectable.toString());
     relationship.apply();
     

@@ -680,7 +680,7 @@ public class SQLServer extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
   @Override
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
     String statement =
       "CREATE TABLE "+tableName+" \n"+
@@ -690,7 +690,7 @@ public class SQLServer extends AbstractDatabase
     new DDLCommand(statement, undo, false).doIt();
 
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX "+indexName+" ON "+tableName+" ("+MdEnumerationDAOIF.SET_ID_COLUMN+", "+MdEnumerationDAOIF.ITEM_ID_COLUMN+")";
     undo = "DROP INDEX "+tableName+"."+indexName;
     new DDLCommand(statement, undo, false).doIt();
@@ -749,10 +749,10 @@ public class SQLServer extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String, String);
    */
   @Override
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     String statement = "DROP INDEX "+tableName+"."+indexName;
     String undo = "CREATE UNIQUE INDEX "+indexName+" ON "+tableName+" ("+MdEnumerationDAOIF.SET_ID_COLUMN+", "+MdEnumerationDAOIF.ITEM_ID_COLUMN+")";
     new DDLCommand(statement, undo, true).doIt();
@@ -2048,12 +2048,12 @@ public class SQLServer extends AbstractDatabase
     /*
 SELECT RowNumber, * FROM
 (
-  SELECT ROW_NUMBER() OVER (ORDER BY id ASC) 'RowNumber', * FROM
+  SELECT ROW_NUMBER() OVER (ORDER BY oid ASC) 'RowNumber', * FROM
   (
-    SELECT id
+    SELECT oid
     FROM  metadata
     UNION ALL
-    SELECT id
+    SELECT oid
     FROM  metadata
   ) i
 ) j

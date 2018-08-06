@@ -29,7 +29,7 @@ public class IsARelationship extends IsARelationshipBase
   
   public IsARelationship(com.runwaysdk.system.gis.geo.Universal parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   @Override

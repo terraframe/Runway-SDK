@@ -29,7 +29,7 @@ public interface Ownable
   ActorDAOIF getOwnerDAO();
   
   /**
-   * Returns the id of the Actor that owns
+   * Returns the oid of the Actor that owns
    * this object.
    * 
    * @return

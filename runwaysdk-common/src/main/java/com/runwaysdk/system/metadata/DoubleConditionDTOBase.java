@@ -73,7 +73,7 @@ public abstract class DoubleConditionDTOBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(DEFININGMDFIELD, value.getId());
+      setValue(DEFININGMDFIELD, value.getOid());
     }
   }
   
@@ -180,9 +180,9 @@ public abstract class DoubleConditionDTOBase extends com.runwaysdk.system.metada
     return (com.runwaysdk.transport.metadata.AttributeDecMdDTO) getAttributeDTO(VALUE).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.DoubleConditionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.DoubleConditionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.DoubleConditionDTO) dto;
   }
@@ -200,7 +200,7 @@ public abstract class DoubleConditionDTOBase extends com.runwaysdk.system.metada
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.DoubleConditionQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -213,10 +213,10 @@ public abstract class DoubleConditionDTOBase extends com.runwaysdk.system.metada
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.DoubleConditionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.DoubleConditionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.DoubleConditionDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.DoubleConditionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -226,10 +226,10 @@ public abstract class DoubleConditionDTOBase extends com.runwaysdk.system.metada
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.DoubleConditionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.DoubleConditionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.DoubleConditionDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.DoubleConditionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -128,9 +128,9 @@ public abstract class MdAttributeDoubleBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdAttributeDouble get(String id)
+  public static MdAttributeDouble get(String oid)
   {
-    return (MdAttributeDouble) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeDouble) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeDouble getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdAttributeDoubleBase extends com.runwaysdk.system.metadat
     return (MdAttributeDouble) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeDouble lock(java.lang.String id)
+  public static MdAttributeDouble lock(java.lang.String oid)
   {
-    MdAttributeDouble _instance = MdAttributeDouble.get(id);
+    MdAttributeDouble _instance = MdAttributeDouble.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeDouble unlock(java.lang.String id)
+  public static MdAttributeDouble unlock(java.lang.String oid)
   {
-    MdAttributeDouble _instance = MdAttributeDouble.get(id);
+    MdAttributeDouble _instance = MdAttributeDouble.get(oid);
     _instance.unlock();
     
     return _instance;

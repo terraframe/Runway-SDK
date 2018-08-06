@@ -29,7 +29,7 @@ public class WarningInheritance extends WarningInheritanceBase
   
   public WarningInheritance(com.runwaysdk.system.metadata.MdWarning parent, com.runwaysdk.system.metadata.MdWarning child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

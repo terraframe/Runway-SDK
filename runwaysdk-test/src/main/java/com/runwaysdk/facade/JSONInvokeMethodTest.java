@@ -85,12 +85,12 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", "142");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
-    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getId());
+    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getOid());
     JSONObject returnObject1 = new JSONObject(returnJSON1);
 
     String businessJSON = returnObject1.getJSONObject(JSONReturnObject.RETURN_VALUE).toString();
@@ -124,12 +124,12 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
-    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getId());
+    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getOid());
 
     JSONObject returnObject1 = new JSONObject(returnJSON1);
 
@@ -170,15 +170,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", input);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -215,15 +215,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -274,15 +274,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -328,15 +328,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -391,15 +391,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     bagClass.getMethod("lock").invoke(object);
@@ -437,15 +437,15 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(bagClass, 1);

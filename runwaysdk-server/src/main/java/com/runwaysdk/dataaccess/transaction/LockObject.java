@@ -76,17 +76,17 @@ public class LockObject
   }
 
   /**
-   * Tries to attain an application lock on an object with the given id. Goes to
+   * Tries to attain an application lock on an object with the given oid. Goes to
    * sleep if the object is already locked.
    * 
-   * @param id
+   * @param oid
    *          of an object.
    */
-  public void appLock(String id)
+  public void appLock(String oid)
   {
     while (true)
     {
-      boolean breakLoop = tryAppLock(id);
+      boolean breakLoop = tryAppLock(oid);
 
       if (breakLoop == true)
       {
@@ -95,19 +95,19 @@ public class LockObject
     } // while (true)
   }
 
-  private synchronized boolean tryAppLock(String id)
+  private synchronized boolean tryAppLock(String oid)
   {
-    if (!this.lockedIDsMap.containsKey(id))
+    if (!this.lockedIDsMap.containsKey(oid))
     {
       if (this.lockCache == null || ( ( this.lockCache != null ) && ( isLockedByThread(this.lockCache) ) ))
       {
-        this.recordAppLock(id);
+        this.recordAppLock(oid);
         return true;
       }
     }
 
-    // block if the id is in the lockedIDsMap
-    if (!isLockedByThread(this.lockedIDsMap.get(id)))
+    // block if the oid is in the lockedIDsMap
+    if (!isLockedByThread(this.lockedIDsMap.get(oid)))
     {
       try
       {
@@ -115,7 +115,7 @@ public class LockObject
       }
       catch (Exception ex)
       {
-        String error = "An error occured during the cache database synchronization routine for id [" + id + "]";
+        String error = "An error occured during the cache database synchronization routine for oid [" + oid + "]";
         throw new LockException(error);
       }
     }
@@ -129,23 +129,23 @@ public class LockObject
 
 
   // Hook method for an aspect
-  private void recordAppLock(String id)
+  private void recordAppLock(String oid)
   {
-    this.lockedIDsMap.put(id, getCurrentThread());
+    this.lockedIDsMap.put(oid, getCurrentThread());
   }
 
   /**
-   * Releases an application lock on the object with the given id, but only if
+   * Releases an application lock on the object with the given oid, but only if
    * the current thread is the thread that holds the lock.
    * 
-   * @param id
-   *          id of an object.
+   * @param oid
+   *          oid of an object.
    */
-  public synchronized void releaseAppLock(String id)
+  public synchronized void releaseAppLock(String oid)
   {
-    if (this.lockedIDsMap.containsKey(id) && isLockedByThread(this.lockedIDsMap.get(id)))
+    if (this.lockedIDsMap.containsKey(oid) && isLockedByThread(this.lockedIDsMap.get(oid)))
     {
-      this.lockedIDsMap.remove(id);
+      this.lockedIDsMap.remove(oid);
     }
     this.notifyAll();
   }
@@ -163,11 +163,11 @@ public class LockObject
 
     while (setIterator.hasNext())
     {
-      String id = (String) setIterator.next();
+      String oid = (String) setIterator.next();
 
-      if (this.lockedIDsMap.containsKey(id) && isLockedByThread(this.lockedIDsMap.get(id)))
+      if (this.lockedIDsMap.containsKey(oid) && isLockedByThread(this.lockedIDsMap.get(oid)))
       {
-        this.lockedIDsMap.remove(id);
+        this.lockedIDsMap.remove(oid);
       }
     }
 
@@ -176,16 +176,16 @@ public class LockObject
 
   /**
    * Returns a reference to the thread that has a lock on the object with the
-   * given id.
+   * given oid.
    * 
-   * @param id
-   *          id of an object.
+   * @param oid
+   *          oid of an object.
    * @return reference to the thread that has a lock on the object with the
-   *         given id.
+   *         given oid.
    */
-  public synchronized Thread getThreadForAppLock(String id)
+  public synchronized Thread getThreadForAppLock(String oid)
   {
-    return this.lockedIDsMap.get(id);
+    return this.lockedIDsMap.get(oid);
   }
 
   /**
@@ -198,14 +198,14 @@ public class LockObject
    */
   public synchronized void addTransactionLocks(Map<String, TransactionItemEntityDAOAction> entityDAOidMap)
   {
-    for (String id : entityDAOidMap.keySet())
+    for (String oid : entityDAOidMap.keySet())
     {
-      if (this.transactionIDsMap.get(id) != null && !isLockedByThread(this.transactionIDsMap.get(id)))
+      if (this.transactionIDsMap.get(oid) != null && !isLockedByThread(this.transactionIDsMap.get(oid)))
       {
-        this.transactionIDsMap.put(id, getCurrentThread());
+        this.transactionIDsMap.put(oid, getCurrentThread());
       }
 
-      TransactionItemAction transactionItemAction = entityDAOidMap.get(id);
+      TransactionItemAction transactionItemAction = entityDAOidMap.get(oid);
 
       if (transactionItemAction instanceof TransactionItemEntityDAOAction)
       {
@@ -237,17 +237,17 @@ public class LockObject
   {
     Map<String, TransactionItemEntityDAOAction> entityDAOidMap = transactionCache.getEntityDAOIDsMap();
     
-    for (String id : entityDAOidMap.keySet())
+    for (String oid : entityDAOidMap.keySet())
     {
       // ID Could have changed during the transaction
-      String originalId = transactionCache.getOriginalId(id);
+      String originalId = transactionCache.getOriginalId(oid);
       
       if (this.transactionIDsMap.containsKey(originalId) && isLockedByThread(this.transactionIDsMap.get(originalId)))
       {
         this.transactionIDsMap.remove(originalId);
       }
 
-      TransactionItemAction transactionItemAction = entityDAOidMap.get(id);
+      TransactionItemAction transactionItemAction = entityDAOidMap.get(oid);
 
       if (transactionItemAction instanceof TransactionItemEntityDAOAction)
       {
@@ -269,16 +269,16 @@ public class LockObject
 
   /**
    * Puts the current thread to sleep if a transaction lock exists on the object
-   * with the given id.
+   * with the given oid.
    * 
-   * @param id
-   *          id of an object that my have a transaction lock.
+   * @param oid
+   *          oid of an object that my have a transaction lock.
    */
-  public void checkTransactionLock(String id)
+  public void checkTransactionLock(String oid)
   {
     while (true)
     {
-      boolean breakLoop = tryCheckTransLock(id);
+      boolean breakLoop = tryCheckTransLock(oid);
 
       if (breakLoop == true)
       {
@@ -287,20 +287,20 @@ public class LockObject
     } // while (true)
   }
 
-  private synchronized boolean tryCheckTransLock(String id)
+  private synchronized boolean tryCheckTransLock(String oid)
   {
-    // Put the thread to sleep if there is a transaction lock on the object id
+    // Put the thread to sleep if there is a transaction lock on the object oid
     // or the entire cache is locked
-    if ( ( this.transactionIDsMap.containsKey(id) && ( !isLockedByThread(this.transactionIDsMap.get(id)) ) ) || ( ( this.lockCache != null ) && ( !isLockedByThread(this.lockCache) ) ))
+    if ( ( this.transactionIDsMap.containsKey(oid) && ( !isLockedByThread(this.transactionIDsMap.get(oid)) ) ) || ( ( this.lockCache != null ) && ( !isLockedByThread(this.lockCache) ) ))
     {
       try
       {
-        // System.out.println("Dang it!  I have to wait on a write lock for "+id);
+        // System.out.println("Dang it!  I have to wait on a write lock for "+oid);
         this.wait();
       }
       catch (Exception ex)
       {
-        String error = "An error occured during the cache database synchronization routine for id [" + id + "]";
+        String error = "An error occured during the cache database synchronization routine for oid [" + oid + "]";
         throw new LockException(error);
       }
     }
@@ -314,10 +314,10 @@ public class LockObject
 
   /**
    * Puts the current thread to sleep if a transaction lock exists on the object
-   * with the given id.
+   * with the given oid.
    * 
-   * @param id
-   *          id of an object that my have a transaction lock.
+   * @param oid
+   *          oid of an object that my have a transaction lock.
    */
   public void checkTransactionLock(String type, String key)
   {
@@ -342,7 +342,7 @@ public class LockObject
     {
       try
       {
-        // System.out.println("Dang it!  I have to wait on a write lock for "+id);
+        // System.out.println("Dang it!  I have to wait on a write lock for "+oid);
         this.wait();
       }
       catch (Exception ex)

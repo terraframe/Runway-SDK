@@ -80,9 +80,9 @@ public abstract class IndexAttributeBase extends com.runwaysdk.system.metadata.M
     return (com.runwaysdk.system.metadata.MdAttributeConcrete) super.getChild();
   }
   
-  public static IndexAttribute get(String id)
+  public static IndexAttribute get(String oid)
   {
-    return (IndexAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (IndexAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static IndexAttribute getByKey(String key)
@@ -90,17 +90,17 @@ public abstract class IndexAttributeBase extends com.runwaysdk.system.metadata.M
     return (IndexAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static IndexAttribute lock(java.lang.String id)
+  public static IndexAttribute lock(java.lang.String oid)
   {
-    IndexAttribute _instance = IndexAttribute.get(id);
+    IndexAttribute _instance = IndexAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static IndexAttribute unlock(java.lang.String id)
+  public static IndexAttribute unlock(java.lang.String oid)
   {
-    IndexAttribute _instance = IndexAttribute.get(id);
+    IndexAttribute _instance = IndexAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

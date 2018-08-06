@@ -100,7 +100,7 @@ public class InstanceHandler extends ElementHandler
       elementDAO = BusinessDAO.newInstance(type);
       isNew = true;
       
-      //Set the imported id
+      //Set the imported oid
       Attribute attribute = elementDAO.getAttribute(EntityInfo.ID);
       attribute.setValue(databaseId);
       

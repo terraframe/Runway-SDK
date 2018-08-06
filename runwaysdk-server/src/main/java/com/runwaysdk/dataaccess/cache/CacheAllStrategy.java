@@ -66,36 +66,36 @@ public abstract class CacheAllStrategy extends CacheStrategy
    * If this collection is supposed to cache the object, the main {@link ObjectCache} is updated.
    * If it is not in the cache, perhaps it was marked to be refreshed by removing it from the cache.
    *
-   * <br/><b>Precondition:</b>  id != null
-   * <br/><b>Precondition:</b>  !id.trim().equals("")
+   * <br/><b>Precondition:</b>  oid != null
+   * <br/><b>Precondition:</b>  !oid.trim().equals("")
    * <br/><b>Postcondition:</b> return value may not be null
    *
-   * @param  id of the desired EntityDAO
-   * @return EntityDAO with the given id
-   * @throws DataAccessException a EntityDAO with the given id does not exist
+   * @param  oid of the desired EntityDAO
+   * @return EntityDAO with the given oid
+   * @throws DataAccessException a EntityDAO with the given oid does not exist
    *         in the database and the cache
    */
-  public EntityDAOIF getEntityInstance(String id)
+  public EntityDAOIF getEntityInstance(String oid)
   {
     if (this.reload == true)
     {
       this.reload();
     }
 
-    synchronized(id)
+    synchronized(oid)
     {
-      EntityDAOIF entityDAOIF = this.getFromFactory(id);
+      EntityDAOIF entityDAOIF = this.getFromFactory(oid);
 
       if (entityDAOIF != null)
       {
         this.updateCache((EntityDAO)entityDAOIF);
-        this.entityDAOIdSet.add(id);
+        this.entityDAOIdSet.add(oid);
       } 
       else
       {
-        MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+        MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
 
-        String errMsg = "An instance of [" + metadata.definesType() + "] with id [" + id
+        String errMsg = "An instance of [" + metadata.definesType() + "] with oid [" + oid
           + "] could not be found. [" + metadata.definesType() + "] caches all.";
 
         throw new DataNotFoundException(errMsg, metadata);
@@ -170,11 +170,11 @@ public abstract class CacheAllStrategy extends CacheStrategy
 
   /**
    *
-   * @param id
+   * @param oid
    * @param entityType
    * @return
    */
-  protected abstract EntityDAOIF getFromFactory(String id);
+  protected abstract EntityDAOIF getFromFactory(String oid);
   
   /**
    * Places the given EntityDAO into the cache.
@@ -194,7 +194,7 @@ public abstract class CacheAllStrategy extends CacheStrategy
     }
     else
     {
-      syncId = entityDAO.getId();
+      syncId = entityDAO.getOid();
     }
     
     String oldKey = null;
@@ -219,12 +219,12 @@ public abstract class CacheAllStrategy extends CacheStrategy
       {
         ObjectCache.putEntityDAOIFintoCache(entityDAO);
       }
-      this.entityDAOIdSet.add(entityDAO.getId());
+      this.entityDAOIdSet.add(entityDAO.getOid());
       if (oldKey != null)
       {
         this.entityDAOIdByKeyMap.remove(oldKey);
       }
-      this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
+      this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getOid());
     }
   }
 
@@ -246,7 +246,7 @@ public abstract class CacheAllStrategy extends CacheStrategy
     }
     else
     {
-      syncId = entityDAO.getId();
+      syncId = entityDAO.getOid();
     }
     
     String oldKey = null;
@@ -264,9 +264,9 @@ public abstract class CacheAllStrategy extends CacheStrategy
         ObjectCache.removeEntityDAOIFfromCache(entityDAO.getOldId(), true);
       } 
       
-      this.entityDAOIdSet.remove(entityDAO.getId());
+      this.entityDAOIdSet.remove(entityDAO.getOid());
 
-      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);      
+      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getOid(), true);      
     }    
     
 
@@ -284,7 +284,7 @@ public abstract class CacheAllStrategy extends CacheStrategy
           
       if (keyId != null)
       {
-        if (keyId.equals(entityDAO.getId()) ||
+        if (keyId.equals(entityDAO.getOid()) ||
             (entityDAO.hasIdChanged() && keyId.equals(entityDAO.getOldId()))
            )
         {
@@ -295,14 +295,14 @@ public abstract class CacheAllStrategy extends CacheStrategy
   }
 
   /**
-   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * Removes the {@link EntityDAO} with the given oid from the cache so that it can be refreshed
    * on the next request for the object.
    *
    * <br/><b>Precondition:</b>  {@link EntityDAO} != null
    *
    * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
    *
-   * @param  id for the {@link EntityDAO} to remove from this collection
+   * @param  oid for the {@link EntityDAO} to remove from this collection
    */
   public void clearCacheForRefresh(String entityId)
   {

@@ -258,13 +258,13 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebSingleTermGrid mdWebSingleTermGrid)
     {
       if(mdWebSingleTermGrid == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebSingleTermGrid.getId());
+      return this.EQ(mdWebSingleTermGrid.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebSingleTermGrid mdWebSingleTermGrid)
     {
       if(mdWebSingleTermGrid == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebSingleTermGrid.getId());
+      return this.NE(mdWebSingleTermGrid.getOid());
     }
 
 
@@ -423,7 +423,7 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
 
       for (int i=0; i<mdWebSingleTermGrid.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTermGrid[i].getId();
+        itemIdArray[i] = mdWebSingleTermGrid[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -435,7 +435,7 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
 
       for (int i=0; i<mdWebSingleTermGrid.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTermGrid[i].getId();
+        itemIdArray[i] = mdWebSingleTermGrid[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
 
       for (int i=0; i<mdWebSingleTermGrid.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTermGrid[i].getId();
+        itemIdArray[i] = mdWebSingleTermGrid[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -459,7 +459,7 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
 
       for (int i=0; i<mdWebSingleTermGrid.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTermGrid[i].getId();
+        itemIdArray[i] = mdWebSingleTermGrid[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class MdWebSingleTermGridQuery extends com.runwaysdk.system.metadata.MdW
 
       for (int i=0; i<mdWebSingleTermGrid.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTermGrid[i].getId();
+        itemIdArray[i] = mdWebSingleTermGrid[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

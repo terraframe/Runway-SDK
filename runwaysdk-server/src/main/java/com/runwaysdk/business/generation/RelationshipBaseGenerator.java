@@ -56,9 +56,9 @@ public class RelationshipBaseGenerator extends ElementBaseGenerator
 
     String subClassName = this.getSubClassName();
 
-    getWriter().writeLine("public static " + subClassName + " get(String id)");
+    getWriter().writeLine("public static " + subClassName + " get(String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + subClassName + ") " + RelationshipInfo.CLASS + ".get(id);");
+    getWriter().writeLine("return (" + subClassName + ") " + RelationshipInfo.CLASS + ".get(oid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
 

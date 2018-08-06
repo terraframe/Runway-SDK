@@ -290,14 +290,14 @@ public class IntegratedMethodTest
     enumMasterMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Master");
     enumMasterMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
     enumMasterMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    enumMasterMdBusiness.getAttribute(MdBusinessInfo.OWNER).setValue(newUser.getId());
+    enumMasterMdBusiness.getAttribute(MdBusinessInfo.OWNER).setValue(newUser.getOid());
     enumMasterMdBusiness.apply();
 
     MdAttributeCharacterDAO mdAttributeCharacter1 = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.NAME, "testEnumCharacter");
     mdAttributeCharacter1.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testEnumCharacter");
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, enumMasterMdBusiness.getId());
+    mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, enumMasterMdBusiness.getOid());
     mdAttributeCharacter1.setValue(MdAttributeCharacterInfo.SIZE, "16");
     mdAttributeCharacter1.apply();
 
@@ -306,7 +306,7 @@ public class IntegratedMethodTest
     structMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, "test.session");
     structMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "StructMdEnumeration");
     structMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    structMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, enumMasterMdBusiness.getId());
+    structMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, enumMasterMdBusiness.getOid());
     structMdEnumeration.apply();
 
     // Create a new MdStruct
@@ -315,7 +315,7 @@ public class IntegratedMethodTest
     mdStruct.setValue(MdStructInfo.PACKAGE, "test.session");
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdStruct.getAttribute(MdStructInfo.OWNER).setValue(newUser.getId());
+    mdStruct.getAttribute(MdStructInfo.OWNER).setValue(newUser.getOid());
     mdStruct.apply();
 
     // Crate a new MdAttribute for the MdStruct
@@ -323,14 +323,14 @@ public class IntegratedMethodTest
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStruct.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStruct.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
     mdAttributeCharacter.apply();
 
     mdAttributeBlob = MdAttributeBlobDAO.newInstance();
     mdAttributeBlob.setValue(MdAttributeBlobInfo.NAME, "testBasicBlob");
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Enum Blob");
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdStruct.getId());
+    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, mdStruct.getOid());
     mdAttributeBlob.apply();
 
     // Create a new MdBusiness
@@ -342,8 +342,8 @@ public class IntegratedMethodTest
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    mdBusiness.getAttribute(MdBusinessInfo.OWNER).setValue(newUser.getId());
+    mdBusiness.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
+    mdBusiness.getAttribute(MdBusinessInfo.OWNER).setValue(newUser.getOid());
     mdBusiness.apply();
 
     // Create an MdAttribute on the MdBusiness
@@ -354,21 +354,21 @@ public class IntegratedMethodTest
     mdAttribute1.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttribute1.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttribute1.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttribute1.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttribute1.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttribute1.apply();
 
     mdAttributeStruct = MdAttributeStructDAO.newInstance();
     mdAttributeStruct.setValue(MdAttributeStructInfo.NAME, "testStruct");
     mdAttributeStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testStruct");
-    mdAttributeStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-    mdAttributeStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttributeStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+    mdAttributeStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttributeStruct.apply();
 
     mdAttributeEnumeration = MdAttributeEnumerationDAO.newInstance();
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.NAME, "structEnumeration");
     mdAttributeEnumeration.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Enumeration");
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getId());
-    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, structMdEnumeration.getId());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getOid());
+    mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, structMdEnumeration.getOid());
     mdAttributeEnumeration.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttributeEnumeration.apply();
 
@@ -380,7 +380,7 @@ public class IntegratedMethodTest
 
     createMdMethod = MdMethodDAO.newInstance();
     createMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    createMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    createMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     createMdMethod.setValue(MdMethodInfo.NAME, "testCreate");
     createMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     createMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
@@ -388,7 +388,7 @@ public class IntegratedMethodTest
 
     deleteMdMethod = MdMethodDAO.newInstance();
     deleteMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    deleteMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    deleteMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     deleteMdMethod.setValue(MdMethodInfo.NAME, "testDelete");
     deleteMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     deleteMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
@@ -398,13 +398,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     writeMdMethod = MdMethodDAO.newInstance();
     writeMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    writeMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    writeMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     writeMdMethod.setValue(MdMethodInfo.NAME, "testWrite");
     writeMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     writeMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Method");
@@ -414,13 +414,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, writeMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, writeMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     promoteMdMethod = MdMethodDAO.newInstance();
     promoteMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
-    promoteMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    promoteMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     promoteMdMethod.setValue(MdMethodInfo.NAME, "testPromote");
     promoteMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     promoteMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Promote");
@@ -430,13 +430,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, promoteMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, promoteMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     addChildMdMethod = MdMethodDAO.newInstance();
     addChildMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    addChildMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    addChildMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     addChildMdMethod.setValue(MdMethodInfo.NAME, "testAddChild");
     addChildMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     addChildMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test AddChild");
@@ -446,13 +446,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, addChildMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, addChildMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     addParentMdMethod = MdMethodDAO.newInstance();
     addParentMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    addParentMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    addParentMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     addParentMdMethod.setValue(MdMethodInfo.NAME, "testAddParent");
     addParentMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     addParentMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Add Parent");
@@ -462,13 +462,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, addParentMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, addParentMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     deleteChildMdMethod = MdMethodDAO.newInstance();
     deleteChildMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    deleteChildMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    deleteChildMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     deleteChildMdMethod.setValue(MdMethodInfo.NAME, "testDeleteChild");
     deleteChildMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     deleteChildMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test AddChild");
@@ -478,13 +478,13 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteChildMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteChildMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
     deleteParentMdMethod = MdMethodDAO.newInstance();
     deleteParentMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    deleteParentMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    deleteParentMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     deleteParentMdMethod.setValue(MdMethodInfo.NAME, "testDeleteParent");
     deleteParentMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     deleteParentMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Delete Parent");
@@ -494,7 +494,7 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdBusiness.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "class1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteParentMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, deleteParentMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
@@ -508,12 +508,12 @@ public class IntegratedMethodTest
     mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
 
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "TestParent");
 
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test child class");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "TestChild");
@@ -521,7 +521,7 @@ public class IntegratedMethodTest
 
     modifyRelationshipMdMethod = MdMethodDAO.newInstance();
     modifyRelationshipMdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.FALSE);
-    modifyRelationshipMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getId());
+    modifyRelationshipMdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdBusiness.getOid());
     modifyRelationshipMdMethod.setValue(MdMethodInfo.NAME, "testWriteRelationship");
     modifyRelationshipMdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     modifyRelationshipMdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Modify Relationship");
@@ -531,7 +531,7 @@ public class IntegratedMethodTest
     mdParameter.setValue(MdParameterInfo.TYPE, mdRelationship.definesType());
     mdParameter.setValue(MdParameterInfo.NAME, "relationship1");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Relationship1 Parameter");
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, modifyRelationshipMdMethod.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, modifyRelationshipMdMethod.getOid());
     mdParameter.setValue(MdParameterInfo.ORDER, "0");
     mdParameter.apply();
 
@@ -543,43 +543,43 @@ public class IntegratedMethodTest
     mdAttribute2.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttribute2.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttribute2.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttribute2.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getId());
+    mdAttribute2.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
     mdAttribute2.apply();
 
     createMethod = MethodActorDAO.newInstance();
-    createMethod.setValue(MethodActorInfo.MD_METHOD, createMdMethod.getId());
+    createMethod.setValue(MethodActorInfo.MD_METHOD, createMdMethod.getOid());
     createMethod.apply();
 
     deleteMethod = MethodActorDAO.newInstance();
-    deleteMethod.setValue(MethodActorInfo.MD_METHOD, deleteMdMethod.getId());
+    deleteMethod.setValue(MethodActorInfo.MD_METHOD, deleteMdMethod.getOid());
     deleteMethod.apply();
 
     writeMethod = MethodActorDAO.newInstance();
-    writeMethod.setValue(MethodActorInfo.MD_METHOD, writeMdMethod.getId());
+    writeMethod.setValue(MethodActorInfo.MD_METHOD, writeMdMethod.getOid());
     writeMethod.apply();
 
     promoteMethod = MethodActorDAO.newInstance();
-    promoteMethod.setValue(MethodActorInfo.MD_METHOD, promoteMdMethod.getId());
+    promoteMethod.setValue(MethodActorInfo.MD_METHOD, promoteMdMethod.getOid());
     promoteMethod.apply();
 
     addChildMethod = MethodActorDAO.newInstance();
-    addChildMethod.setValue(MethodActorInfo.MD_METHOD, addChildMdMethod.getId());
+    addChildMethod.setValue(MethodActorInfo.MD_METHOD, addChildMdMethod.getOid());
     addChildMethod.apply();
 
     addParentMethod = MethodActorDAO.newInstance();
-    addParentMethod.setValue(MethodActorInfo.MD_METHOD, addParentMdMethod.getId());
+    addParentMethod.setValue(MethodActorInfo.MD_METHOD, addParentMdMethod.getOid());
     addParentMethod.apply();
 
     deleteChildMethod = MethodActorDAO.newInstance();
-    deleteChildMethod.setValue(MethodActorInfo.MD_METHOD, deleteChildMdMethod.getId());
+    deleteChildMethod.setValue(MethodActorInfo.MD_METHOD, deleteChildMdMethod.getOid());
     deleteChildMethod.apply();
 
     deleteParentMethod = MethodActorDAO.newInstance();
-    deleteParentMethod.setValue(MethodActorInfo.MD_METHOD, deleteParentMdMethod.getId());
+    deleteParentMethod.setValue(MethodActorInfo.MD_METHOD, deleteParentMdMethod.getOid());
     deleteParentMethod.apply();
 
     modifyRelationshipMethodActor = MethodActorDAO.newInstance();
-    modifyRelationshipMethodActor.setValue(MethodActorInfo.MD_METHOD, modifyRelationshipMdMethod.getId());
+    modifyRelationshipMethodActor.setValue(MethodActorInfo.MD_METHOD, modifyRelationshipMdMethod.getOid());
     modifyRelationshipMethodActor.apply();
   }
 
@@ -593,7 +593,7 @@ public class IntegratedMethodTest
     // Write the new stub, and compile to make sure it's valid
     String stubSource = getEmptyStub();
 
-    MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getId()).getBusinessDAO();
+    MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getOid()).getBusinessDAO();
     mdBusinessUpdate.setValue(MdBusinessInfo.STUB_SOURCE, stubSource);
     mdBusinessUpdate.apply();
 
@@ -647,7 +647,7 @@ public class IntegratedMethodTest
       String stubSource = getMethodStub();
 
       // Write the new stub, and compile to make sure it's valid
-      MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getId()).getBusinessDAO();
+      MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getOid()).getBusinessDAO();
       mdBusinessUpdate.setValue(MdBusinessInfo.STUB_SOURCE, stubSource);
       mdBusinessUpdate.apply();
 
@@ -730,7 +730,7 @@ public class IntegratedMethodTest
   @Test
   public void testNoExecutePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noExecutePermissions(sessionId);
@@ -773,7 +773,7 @@ public class IntegratedMethodTest
   @Test
   public void testNoCreatePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.EXECUTE, createMdMethod.getId());
+    newUser.grantPermission(Operation.EXECUTE, createMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noCreatePermissions(sessionId);
@@ -810,8 +810,8 @@ public class IntegratedMethodTest
   @Test
   public void testCreatePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.EXECUTE, createMdMethod.getId());
-    createMethod.grantPermission(Operation.CREATE, mdBusiness.getId());
+    newUser.grantPermission(Operation.EXECUTE, createMdMethod.getOid());
+    createMethod.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -845,8 +845,8 @@ public class IntegratedMethodTest
   @Test
   public void testNoDeletePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noDeletePermissions(sessionId);
@@ -885,9 +885,9 @@ public class IntegratedMethodTest
   @Test
   public void testDeletePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteMdMethod.getId());
-    deleteMethod.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteMdMethod.getOid());
+    deleteMethod.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -923,10 +923,10 @@ public class IntegratedMethodTest
   @Test
   public void testNoWritePermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, writeMdMethod.getOid());
 
-    writeMethod.revokeAllPermissions(mdBusiness.getId());
+    writeMethod.revokeAllPermissions(mdBusiness.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -972,11 +972,11 @@ public class IntegratedMethodTest
   public void testWritePermissions() throws Exception
   {
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    owner.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
+    owner.grantPermission(Operation.EXECUTE, writeMdMethod.getOid());
 
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    writeMethod.grantPermission(Operation.WRITE, mdBusiness.getId());
-    writeMethod.grantPermission(Operation.WRITE, mdAttribute1.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    writeMethod.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    writeMethod.grantPermission(Operation.WRITE, mdAttribute1.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     writePermissions(sessionId);
@@ -1015,8 +1015,8 @@ public class IntegratedMethodTest
   @Test
   public void testNoAddChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addChildMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, addChildMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noAddChildPermissions(sessionId);
@@ -1059,9 +1059,9 @@ public class IntegratedMethodTest
   @Test
   public void testAddChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addChildMdMethod.getId());
-    addChildMethod.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, addChildMdMethod.getOid());
+    addChildMethod.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1100,10 +1100,10 @@ public class IntegratedMethodTest
   @Test
   public void testWriteChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_CHILD, mdRelationship.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_CHILD, mdAttribute2.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_CHILD, mdRelationship.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_CHILD, mdAttribute2.getOid());
 
     Business parent = business1;
     Business child = business2;
@@ -1162,10 +1162,10 @@ public class IntegratedMethodTest
   @Test
   public void testWriteParentPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_PARENT, mdRelationship.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_PARENT, mdAttribute2.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_PARENT, mdRelationship.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE_PARENT, mdAttribute2.getOid());
 
     Business parent = business1;
     Business child = business2;
@@ -1224,10 +1224,10 @@ public class IntegratedMethodTest
   @Test
   public void testWriteRelationshipPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE, mdRelationship.getId());
-    modifyRelationshipMethodActor.grantPermission(Operation.WRITE, mdAttribute2.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, modifyRelationshipMdMethod.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE, mdRelationship.getOid());
+    modifyRelationshipMethodActor.grantPermission(Operation.WRITE, mdAttribute2.getOid());
 
     Business parent = business1;
     Business child = business2;
@@ -1286,8 +1286,8 @@ public class IntegratedMethodTest
   @Test
   public void testNoAddParentPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addParentMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, addParentMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noAddParentPermissions(sessionId);
@@ -1330,9 +1330,9 @@ public class IntegratedMethodTest
   @Test
   public void testAddParentPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.EXECUTE, addParentMdMethod.getId());
-    addParentMethod.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.EXECUTE, addParentMdMethod.getOid());
+    addParentMethod.grantPermission(Operation.ADD_PARENT, mdRelationship.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1372,9 +1372,9 @@ public class IntegratedMethodTest
   @Test
   public void testNoDeleteChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noDeleteChildPermissions(sessionId);
@@ -1420,10 +1420,10 @@ public class IntegratedMethodTest
   @Test
   public void testDeleteChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getId());
-    deleteChildMethod.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getOid());
+    deleteChildMethod.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1466,10 +1466,10 @@ public class IntegratedMethodTest
   @Test
   public void testStateDeleteChildPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getId());
-    deleteChildMethod.grantPermission(Operation.DELETE_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteChildMdMethod.getOid());
+    deleteChildMethod.grantPermission(Operation.DELETE_CHILD, mdRelationship.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1512,9 +1512,9 @@ public class IntegratedMethodTest
   @Test
   public void testNoDeleteParentPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteParentMdMethod.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.ADD_PARENT, mdRelationship.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteParentMdMethod.getOid());
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noDeleteParentPermissions(sessionId);
@@ -1560,10 +1560,10 @@ public class IntegratedMethodTest
   @Test
   public void testDeleteParentPermissions() throws Exception
   {
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    newUser.grantPermission(Operation.ADD_PARENT, mdRelationship.getId());
-    newUser.grantPermission(Operation.EXECUTE, deleteParentMdMethod.getId());
-    deleteParentMethod.grantPermission(Operation.DELETE_PARENT, mdRelationship.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    newUser.grantPermission(Operation.ADD_PARENT, mdRelationship.getOid());
+    newUser.grantPermission(Operation.EXECUTE, deleteParentMdMethod.getOid());
+    deleteParentMethod.grantPermission(Operation.DELETE_PARENT, mdRelationship.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1610,11 +1610,11 @@ public class IntegratedMethodTest
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute1.getMdAttributeDimension(mdDimension);
 
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    owner.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
+    owner.grantPermission(Operation.EXECUTE, writeMdMethod.getOid());
 
-    newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
-    writeMethod.grantPermission(Operation.WRITE, mdBusiness.getId());
-    writeMethod.grantPermission(Operation.WRITE, mdAttributeDimension.getId());
+    newUser.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    writeMethod.grantPermission(Operation.WRITE, mdBusiness.getOid());
+    writeMethod.grantPermission(Operation.WRITE, mdAttributeDimension.getOid());
 
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -1654,7 +1654,7 @@ public class IntegratedMethodTest
    */
   private static String getMethodStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "   public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String oid)", "  {", "    return (Class1) " + Business.class.getName() + ".get(oid);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "   public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
         "    class1.apply();", "  }",
 
         "  @" + Authenticate.class.getName(), "   public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "   public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "   public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "   public void testDeleteParent(test.session.Class1 class1)", "  {",
@@ -1677,7 +1677,7 @@ public class IntegratedMethodTest
    */
   private static String getEmptyStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "}" };
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String oid)", "  {", "    return (Class1) " + Business.class.getName() + ".get(oid);", "  }", "}" };
 
     String stubSourceString = new String();
 

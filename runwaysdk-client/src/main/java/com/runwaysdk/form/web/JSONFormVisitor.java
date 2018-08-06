@@ -205,7 +205,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       put(root, JS_CLASS, formObject.getClass().getName());
       put(root, TYPE, formObject.getType());
-      put(root, ID, formObject.getId());
+      put(root, ID, formObject.getOid());
       put(root, DATA_ID, formObject.getDataId());
       put(root, NEW_INSTANCE, formObject.isNewInstance());
       put(root, DISCONNECTED, formObject.isDisconnected());
@@ -216,7 +216,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       FormMd md = formObject.getMd();
       put(formMd, "description", md.getDescription());
       put(formMd, "displayLabel", md.getDisplayLabel());
-      put(formMd, ID, md.getId());
+      put(formMd, ID, md.getOid());
       put(formMd, "formName", md.getFormName());
       put(formMd, "formMdClass", md.getFormMdClass());
 
@@ -453,7 +453,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       this.getVisitor().put(obj, MdWebFieldInfo.FIELD_ORDER, md.getFieldOrder());
       this.getVisitor().put(obj, MdWebFieldInfo.DISPLAY_LABEL, md.getDisplayLabel());
       this.getVisitor().put(obj, MdWebFieldInfo.DESCRIPTION, md.getDescription());
-      this.getVisitor().put(obj, MdWebFieldInfo.ID, md.getId());
+      this.getVisitor().put(obj, MdWebFieldInfo.ID, md.getOid());
       this.getVisitor().put(obj, MdWebFieldInfo.REQUIRED, md.isRequired());
 
     }
@@ -1001,7 +1001,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       this.getVisitor().put(obj, JS_CLASS, basicCondition.getClass().getName());
       this.getVisitor().put(obj, BasicConditionInfo.DEFINING_MD_FIELD, basicCondition.getDefiningMdField());
       this.getVisitor().put(obj, BasicConditionInfo.OPERATION, basicCondition.getOperation());
-      this.getVisitor().put(obj, BasicConditionInfo.ID, basicCondition.getId());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, basicCondition.getOid());
     }
 
     protected void initConditionMd(JSONObject obj) throws JSONException
@@ -1009,7 +1009,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       ConditionMd md = this.getCondition().getConditionMd();
 
       this.getVisitor().put(obj, JS_CLASS, md.getClass().getName());
-      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getId());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getOid());
       this.getVisitor().put(obj, BasicConditionInfo.REFERENCING_MD_FIELD, md.getReferencingMdField());
       this.getVisitor().put(obj, BasicConditionInfo.REFERENCING_MD_FORM, md.getReferencingMdForm());
     }
@@ -1066,7 +1066,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       ConditionMd md = this.getCondition().getConditionMd();
 
       this.getVisitor().put(obj, JS_CLASS, md.getClass().getName());
-      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getId());
+      this.getVisitor().put(obj, BasicConditionInfo.ID, md.getOid());
     }
 
     protected void populate()

@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestViewBase extends com.runwaysdk.business.View implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestView";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String VIEWCHARACTER = "viewCharacter";
   public static java.lang.String VIEWPHONE = "viewPhone";
   private com.runwaysdk.business.Struct viewPhone = null;
@@ -44,7 +44,7 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
     viewPhone = super.getStruct("viewPhone");
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -54,7 +54,7 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestView.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -140,7 +140,7 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
     }
     else
     {
-      setValue(VIEWREFERENCEOBJECT, value.getId());
+      setValue(VIEWREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -154,7 +154,7 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
   {
     if(value != null)
     {
-      addEnumItem(VIEWSINGLESTATE, value.getId());
+      addEnumItem(VIEWSINGLESTATE, value.getOid());
     }
   }
   
@@ -162,7 +162,7 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
   {
     if(value != null)
     {
-      removeEnumItem(VIEWSINGLESTATE, value.getId());
+      removeEnumItem(VIEWSINGLESTATE, value.getOid());
     }
   }
   
@@ -187,9 +187,9 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
     return CLASS;
   }
   
-  public static TestView get(String id)
+  public static TestView get(String oid)
   {
-    return (TestView) com.runwaysdk.business.View.get(id);
+    return (TestView) com.runwaysdk.business.View.get(oid);
   }
   
   public static java.lang.Integer doubleAnInt(java.lang.Integer num)
@@ -204,9 +204,9 @@ public abstract class TestViewBase extends com.runwaysdk.business.View implement
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final com.runwaysdk.jstest.TestView returnView(java.lang.String id, com.runwaysdk.jstest.TestView input)
+  public static final com.runwaysdk.jstest.TestView returnView(java.lang.String oid, com.runwaysdk.jstest.TestView input)
   {
-    TestView _instance = TestView.get(id);
+    TestView _instance = TestView.get(oid);
     return _instance.returnView(input);
   }
   

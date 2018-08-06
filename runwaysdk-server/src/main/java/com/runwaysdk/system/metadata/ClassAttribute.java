@@ -29,7 +29,7 @@ public abstract class ClassAttribute extends ClassAttributeBase
   
   public ClassAttribute(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdAttribute child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

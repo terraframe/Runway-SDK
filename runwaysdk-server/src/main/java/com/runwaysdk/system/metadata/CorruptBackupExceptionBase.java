@@ -30,7 +30,7 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CorruptBackupException";
   public static java.lang.String BACKUPNAME = "backupName";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = 2102208607;
   
   public CorruptBackupExceptionBase()
@@ -81,7 +81,7 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -91,7 +91,7 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.CorruptBackupException.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
@@ -106,7 +106,7 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
   {
     java.lang.String message = super.localize(locale);
     message = replace(message, "{backupName}", this.getBackupName());
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

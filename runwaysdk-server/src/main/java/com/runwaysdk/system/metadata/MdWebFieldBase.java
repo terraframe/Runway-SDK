@@ -73,7 +73,7 @@ public abstract class MdWebFieldBase extends com.runwaysdk.system.metadata.MdFie
     }
     else
     {
-      setValue(DEFININGMDFORM, value.getId());
+      setValue(DEFININGMDFORM, value.getOid());
     }
   }
   
@@ -153,9 +153,9 @@ public abstract class MdWebFieldBase extends com.runwaysdk.system.metadata.MdFie
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.WebFormField>) getRelationshipsWithParent(mdWebForm, com.runwaysdk.system.metadata.WebFormField.CLASS);
   }
   
-  public static MdWebField get(String id)
+  public static MdWebField get(String oid)
   {
-    return (MdWebField) com.runwaysdk.business.Business.get(id);
+    return (MdWebField) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebField getByKey(String key)
@@ -163,17 +163,17 @@ public abstract class MdWebFieldBase extends com.runwaysdk.system.metadata.MdFie
     return (MdWebField) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebField lock(java.lang.String id)
+  public static MdWebField lock(java.lang.String oid)
   {
-    MdWebField _instance = MdWebField.get(id);
+    MdWebField _instance = MdWebField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebField unlock(java.lang.String id)
+  public static MdWebField unlock(java.lang.String oid)
   {
-    MdWebField _instance = MdWebField.get(id);
+    MdWebField _instance = MdWebField.get(oid);
     _instance.unlock();
     
     return _instance;

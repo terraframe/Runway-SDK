@@ -69,7 +69,7 @@ public abstract class CreateBackupExceptionDTOBase extends com.runwaysdk.busines
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String LOCATION = "location";
   public String getLocation()
   {
@@ -116,7 +116,7 @@ public abstract class CreateBackupExceptionDTOBase extends com.runwaysdk.busines
   {
     java.lang.String template = super.getMessage();
     
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{location}", this.getLocation().toString());
     
     return template;

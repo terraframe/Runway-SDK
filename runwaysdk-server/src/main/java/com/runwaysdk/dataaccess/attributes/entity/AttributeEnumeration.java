@@ -94,7 +94,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Initializes the setId, which is the value of this attribute.
+   * Initializes the setOid, which is the value of this attribute.
    * 
    */
   private void initSetId()

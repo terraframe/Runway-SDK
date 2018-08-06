@@ -79,7 +79,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
     {
       mdView.apply();
 
-      this.getManager().addMapping(mdView.definesType(), mdView.getId());
+      this.getManager().addMapping(mdView.definesType(), mdView.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdView);
@@ -124,7 +124,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdView.definesType());
       }
 
-      mdView.setValue(MdViewInfo.SUPER_MD_VIEW, MdViewDAO.getMdViewDAO(extend).getId());
+      mdView.setValue(MdViewInfo.SUPER_MD_VIEW, MdViewDAO.getMdViewDAO(extend).getOid());
     }
   }
 

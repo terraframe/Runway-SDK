@@ -108,9 +108,9 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
     Map<String, Map<String, Attribute>> tupleMap = i.next();
     while (tupleMap != null)
     {      
-      String id = tupleMap.keySet().iterator().next();
-      idList.add(id);
-      Map<String, Attribute> attributeMap = tupleMap.get(id);
+      String oid = tupleMap.keySet().iterator().next();
+      idList.add(oid);
+      Map<String, Attribute> attributeMap = tupleMap.get(oid);
       String type = attributeMap.get(ComponentInfo.TYPE).getValue();
       BusinessDAO businessDAO = BusinessDAOFactory.factoryMethod(attributeMap, type, false);
       ObjectCache.putEntityDAOIFintoCache(businessDAO);
@@ -132,12 +132,12 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
       tupleMap = i.next();
       while (tupleMap != null)
       {       
-        String id = tupleMap.keySet().iterator().next();
-        idList.add(id);
+        String oid = tupleMap.keySet().iterator().next();
+        idList.add(oid);
         
-        Map<String, Attribute> attributeMap = tupleMap.get(id);
+        Map<String, Attribute> attributeMap = tupleMap.get(oid);
 
-        BusinessDAO businessDAO = (BusinessDAO)ObjectCache.getEntityDAOIFfromCache(id);       
+        BusinessDAO businessDAO = (BusinessDAO)ObjectCache.getEntityDAOIFfromCache(oid);       
         businessDAO.addAdditionalAttributes(attributeMap);
         ObjectCache.putEntityDAOIFintoCache(businessDAO);
         
@@ -146,9 +146,9 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
     }
     
     // Now that the objects are complete, we need to update all of the other data structures this collection maintains.
-    for (String id : idList)
+    for (String oid : idList)
     {
-      BusinessDAO businessDAO = (BusinessDAO)ObjectCache.getEntityDAOIFfromCache(id);
+      BusinessDAO businessDAO = (BusinessDAO)ObjectCache.getEntityDAOIFfromCache(oid);
       this.updateCache(businessDAO);
     }    
   }
@@ -161,13 +161,13 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
 
   /**
    *
-   * @param id
+   * @param oid
    *
    * @return
    */
-  protected BusinessDAOIF getFromFactory(String id)
+  protected BusinessDAOIF getFromFactory(String oid)
   {
-    String type = Database.getTypeFromInstanceId(id);
+    String type = Database.getTypeFromInstanceId(oid);
 
     // Get a list of classes that the given class inherits from
     LinkedHashMap<String, String> inheritanceListMap = EntityDAOFactory.getSuperEntityTypes(type);
@@ -179,19 +179,19 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
       rootType = someType;
     }
 
-    return this.getFromFactory(id, type, rootType, inheritanceListMap);
+    return this.getFromFactory(oid, type, rootType, inheritanceListMap);
   }
 
   /**
    *
-   * @param id
+   * @param oid
    * @param type
    * @param rootType
    * @param inheritanceListMap
    *
    * @return
    */
-  protected BusinessDAOIF getFromFactory(String id, String type, String rootType, Map<String, String> inheritanceListMap)
+  protected BusinessDAOIF getFromFactory(String oid, String type, String rootType, Map<String, String> inheritanceListMap)
   {
     // get attribute from each inherited class
 
@@ -208,7 +208,7 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
 
       String tableName = inheritanceListMap.get(thisType);
 
-      attributeMap.putAll(EntityDAOFactory.getAttributesForHardcodedMetadata(id, thisType, tableName, null,
+      attributeMap.putAll(EntityDAOFactory.getAttributesForHardcodedMetadata(oid, thisType, tableName, null,
       rootOfHierarchy));
     }
 

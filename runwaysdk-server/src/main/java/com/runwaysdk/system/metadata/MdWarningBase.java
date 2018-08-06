@@ -73,7 +73,7 @@ public abstract class MdWarningBase extends com.runwaysdk.system.metadata.MdMess
     }
     else
     {
-      setValue(SUPERMDWARNING, value.getId());
+      setValue(SUPERMDWARNING, value.getOid());
     }
   }
   
@@ -168,9 +168,9 @@ public abstract class MdWarningBase extends com.runwaysdk.system.metadata.MdMess
     }
   }
   
-  public static MdWarning get(String id)
+  public static MdWarning get(String oid)
   {
-    return (MdWarning) com.runwaysdk.business.Business.get(id);
+    return (MdWarning) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWarning getByKey(String key)
@@ -178,17 +178,17 @@ public abstract class MdWarningBase extends com.runwaysdk.system.metadata.MdMess
     return (MdWarning) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWarning lock(java.lang.String id)
+  public static MdWarning lock(java.lang.String oid)
   {
-    MdWarning _instance = MdWarning.get(id);
+    MdWarning _instance = MdWarning.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWarning unlock(java.lang.String id)
+  public static MdWarning unlock(java.lang.String oid)
   {
-    MdWarning _instance = MdWarning.get(id);
+    MdWarning _instance = MdWarning.get(oid);
     _instance.unlock();
     
     return _instance;

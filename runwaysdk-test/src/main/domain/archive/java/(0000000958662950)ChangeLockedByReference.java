@@ -98,7 +98,7 @@ public class Sandbox
     while (iterator.hasNext())
     {
       MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO) iterator.next().getBusinessDAO();
-      lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getId());
+      lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdSingleActor.getOid());
       lockedBy.apply();
 
       // MdClassDAOIF mdClass = lockedBy.definedByClass();
@@ -113,7 +113,7 @@ public class Sandbox
     // MdAttributeConcreteDAO lockedBy = (MdAttributeConcreteDAO)
     // mdBusinessDAO.definesAttribute(MdElementInfo.LOCKED_BY).getBusinessDAO();
     // lockedBy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
-    // mdSingleActor.getId());
+    // mdSingleActor.getOid());
     // lockedBy.apply();
   }
 }

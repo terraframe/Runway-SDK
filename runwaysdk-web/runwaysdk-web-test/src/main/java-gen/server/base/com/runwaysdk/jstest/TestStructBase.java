@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class TestStructBase extends com.runwaysdk.business.Struct implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestStruct";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String STRUCTCHAR = "structChar";
@@ -45,9 +45,9 @@ public abstract class TestStructBase extends com.runwaysdk.business.Struct imple
     super(component, structName);
   }
   
-  public static TestStruct get(String id)
+  public static TestStruct get(String oid)
   {
-    return (TestStruct) com.runwaysdk.business.Struct.get(id);
+    return (TestStruct) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static TestStruct getByKey(String key)
@@ -55,7 +55,7 @@ public abstract class TestStructBase extends com.runwaysdk.business.Struct imple
     return (TestStruct) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -65,7 +65,7 @@ public abstract class TestStructBase extends com.runwaysdk.business.Struct imple
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.TestStruct.CLASS);
     return mdClassIF.definesAttribute(ID);

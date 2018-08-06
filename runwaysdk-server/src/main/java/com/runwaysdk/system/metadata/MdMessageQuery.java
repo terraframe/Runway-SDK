@@ -114,13 +114,13 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMessage mdMessage)
     {
       if(mdMessage == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMessage.getId());
+      return this.EQ(mdMessage.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMessage mdMessage)
     {
       if(mdMessage == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMessage.getId());
+      return this.NE(mdMessage.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdMessage.length; i++)
       {
-        itemIdArray[i] = mdMessage[i].getId();
+        itemIdArray[i] = mdMessage[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdMessage.length; i++)
       {
-        itemIdArray[i] = mdMessage[i].getId();
+        itemIdArray[i] = mdMessage[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdMessage.length; i++)
       {
-        itemIdArray[i] = mdMessage[i].getId();
+        itemIdArray[i] = mdMessage[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdMessage.length; i++)
       {
-        itemIdArray[i] = mdMessage[i].getId();
+        itemIdArray[i] = mdMessage[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMessageQuery extends com.runwaysdk.system.metadata.MdNotificatio
 
       for (int i=0; i<mdMessage.length; i++)
       {
-        itemIdArray[i] = mdMessage[i].getId();
+        itemIdArray[i] = mdMessage[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

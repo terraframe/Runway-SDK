@@ -269,20 +269,20 @@ public abstract class PermissionEntity implements Serializable
         catch (Exception e)
         {
           // Do nothing, a relationship may or may not have a valid
-          // parent/child id. If the id is not valid then no further
+          // parent/child oid. If the oid is not valid then no further
           // permission checks can be done on the entity
         }
 
         if (Operation.CREATE.equals(o))
         {
           // Check if actor via the parent object can add a child
-          if (parent != null && this.checkRelationshipAccess(Operation.ADD_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.ADD_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can add a parent
-          if (child != null && this.checkRelationshipAccess(Operation.ADD_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.ADD_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -290,13 +290,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.DELETE.equals(o))
         {
           // Check if actor via the parent object can delete a child
-          if (parent != null && this.checkRelationshipAccess(Operation.DELETE_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.DELETE_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can delete a parent
-          if (child != null && this.checkRelationshipAccess(Operation.DELETE_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.DELETE_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -304,13 +304,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.WRITE.equals(o))
         {
           // Check if actor via the parent object can modify a child
-          if (parent != null && this.checkRelationshipAccess(Operation.WRITE_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.WRITE_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can modify a parent
-          if (child != null && this.checkRelationshipAccess(Operation.WRITE_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.WRITE_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -318,13 +318,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.READ.equals(o))
         {
           // Check if actor via the parent object can read a child
-          if (parent != null && this.checkRelationshipAccess(Operation.READ_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.READ_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can read a parent
-          if (child != null && this.checkRelationshipAccess(Operation.READ_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.READ_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -353,7 +353,7 @@ public abstract class PermissionEntity implements Serializable
         // Load domain-type permissions
         if (!domainId.equals(""))
         {
-          String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getId(), null);
+          String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
 
           if (permissions.containsKey(key))
           {
@@ -375,9 +375,9 @@ public abstract class PermissionEntity implements Serializable
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Load type permissions
-    if (permissions.containsKey(mdTypeIF.getId()))
+    if (permissions.containsKey(mdTypeIF.getOid()))
     {
-      operations.addAll(permissions.get(mdTypeIF.getId()));
+      operations.addAll(permissions.get(mdTypeIF.getOid()));
     }
 
     if (mdTypeIF instanceof MdClassDAOIF)
@@ -554,9 +554,9 @@ public abstract class PermissionEntity implements Serializable
       }
 
       // Check if permissions exist of the mdAttribute type
-      if (permissions.containsKey(mdAttribute.getId()))
+      if (permissions.containsKey(mdAttribute.getOid()))
       {
-        Set<Operation> operations = permissions.get(mdAttribute.getId());
+        Set<Operation> operations = permissions.get(mdAttribute.getOid());
 
         if (operations != null && operations.contains(operation))
         {
@@ -606,7 +606,7 @@ public abstract class PermissionEntity implements Serializable
         Business parent = null;
         Business child = null;
 
-        // It is possible that the child or parent id is invalid and can't be
+        // It is possible that the child or parent oid is invalid and can't be
         // dereferenced
 
         try
@@ -624,7 +624,7 @@ public abstract class PermissionEntity implements Serializable
         catch (Exception e)
         {
           // Do nothing, a relationship may or may not have a valid
-          // parent/child id. If the id is not valid then no further
+          // parent/child oid. If the oid is not valid then no further
           // permission checks can be done on the entity
         }
 
@@ -682,7 +682,7 @@ public abstract class PermissionEntity implements Serializable
         // Load domain-attribute permissions
         if (!domainId.equals(""))
         {
-          String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getId(), null);
+          String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
           if (permissions.containsKey(key))
           {
@@ -703,9 +703,9 @@ public abstract class PermissionEntity implements Serializable
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Check if permissions exist of the mdAttribute type
-    if (permissions.containsKey(mdAttribute.getId()))
+    if (permissions.containsKey(mdAttribute.getOid()))
     {
-      operations.addAll(permissions.get(mdAttribute.getId()));
+      operations.addAll(permissions.get(mdAttribute.getOid()));
     }
 
     // Check for permissions of the MdAttributeDimension this permission entity
@@ -853,9 +853,9 @@ public abstract class PermissionEntity implements Serializable
       }
 
       // Check if permissions exist on the MdMethod
-      if (permissions.containsKey(mdMethod.getId()))
+      if (permissions.containsKey(mdMethod.getOid()))
       {
-        Set<Operation> operations = permissions.get(mdMethod.getId());
+        Set<Operation> operations = permissions.get(mdMethod.getOid());
 
         if (operations != null && operations.contains(operation))
         {

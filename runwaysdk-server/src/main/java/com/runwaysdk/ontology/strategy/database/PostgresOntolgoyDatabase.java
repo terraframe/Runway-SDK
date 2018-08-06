@@ -95,7 +95,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
     // Create the INSERT structure. Preserve column order so the values can
     // be appropriately matched.
-    String id = getColumn(termAllPaths, MetadataInfo.ID);
+    String oid = getColumn(termAllPaths, MetadataInfo.ID);
     String siteMaster = getColumn(termAllPaths, MetadataInfo.SITE_MASTER);
     String createdBy = getColumn(termAllPaths, MetadataInfo.CREATED_BY);
     String key = getColumn(termAllPaths, MetadataInfo.KEY);
@@ -111,7 +111,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String childTerm = getColumn(termAllPaths, DatabaseAllPathsStrategy.CHILD_TERM_ATTR);
     String sequenceName = this.getSequenceName(termAllPaths);
 
-    String[] metadataColumns = new String[] { id, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
+    String[] metadataColumns = new String[] { oid, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
 
     String insertColumns = StringUtils.join(metadataColumns, "," + NL);
 
@@ -139,14 +139,14 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     Timestamp transactionDate = new Timestamp(new Date().getTime());
     String siteMasterValue = CommonProperties.getDomain();
     SessionIF sessionIF = Session.getCurrentSession();
-    String createdById = sessionIF != null ? sessionIF.getUser().getId() : ServerConstants.SYSTEM_USER_ID;
+    String createdById = sessionIF != null ? sessionIF.getUser().getOid() : ServerConstants.SYSTEM_USER_ID;
 
     sql.append("SELECT" + NL);
 
     // standard metadata fields
-    sql.append("  MD5(nextval('" + sequenceName + "') || p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + id + "," + NL);
+    sql.append("  MD5(nextval('" + sequenceName + "') || p." + oid + " || c." + oid + " ) || '" + allPathsRootTypeId + "' AS " + oid + "," + NL);
     sql.append("  '" + siteMasterValue + "'  AS " + siteMaster + "," + NL);
-    sql.append("  MD5(nextval('" + sequenceName + "') || p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + key + "," + NL);
+    sql.append("  MD5(nextval('" + sequenceName + "') || p." + oid + " || c." + oid + " ) || '" + allPathsRootTypeId + "' AS " + key + "," + NL);
     sql.append("  '" + termAllPaths.definesType() + "' AS " + type + "," + NL);
     sql.append("  '' AS " + domain + "," + NL);
     sql.append("  ? AS " + lastUpdateDate + "," + NL);
@@ -165,9 +165,9 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
     sql.append("FROM " + domainTable + " as p, " + NL);
     sql.append(domainTable + " as c," + NL);
-    sql.append("(SELECT " + originalChild + ", " + RelationshipInfo.PARENT_ID + " FROM " + view + " UNION SELECT " + id + "," + id + " FROM " + domainTable + " ) AS paths" + NL);
+    sql.append("(SELECT " + originalChild + ", " + RelationshipInfo.PARENT_ID + " FROM " + view + " UNION SELECT " + oid + "," + oid + " FROM " + domainTable + " ) AS paths" + NL);
 
-    sql.append("WHERE p." + id + " = paths." + RelationshipInfo.PARENT_ID + " AND c." + id + " = paths." + originalChild + ";" + NL);
+    sql.append("WHERE p." + oid + " = paths." + RelationshipInfo.PARENT_ID + " AND c." + oid + " = paths." + originalChild + ";" + NL);
 
     int afterCount = this.execute(sql.toString(), transactionDate, transactionDate);
 
@@ -205,7 +205,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
 
     String tableName = allPaths.getTableName();
-    String id = getColumn(allPaths, MetadataInfo.ID);
+    String oid = getColumn(allPaths, MetadataInfo.ID);
     String siteMaster = getColumn(allPaths, MetadataInfo.SITE_MASTER);
     String createdBy = getColumn(allPaths, MetadataInfo.CREATED_BY);
     String key = getColumn(allPaths, MetadataInfo.KEY);
@@ -226,7 +226,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     SessionIF sessionIF = Session.getCurrentSession();
     if (sessionIF != null)
     {
-      createdById = sessionIF.getUser().getId();
+      createdById = sessionIF.getUser().getOid();
     }
     else
     {
@@ -236,12 +236,12 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     // non-term values
     Timestamp transactionDate = new Timestamp(new Date().getTime());
 
-    String[] metadataColumns = new String[] { id, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
+    String[] metadataColumns = new String[] { oid, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
 
     String insertColumns = StringUtils.join(metadataColumns, "," + NL);
 
-    String childId = child.getId();
-    String parentId = parent.getId();
+    String childId = child.getOid();
+    String parentId = parent.getOid();
 
     String identifierSQL = "MD5(nextval('" + sequenceName + "') || allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "'";
 
@@ -314,13 +314,13 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   }
 
   /**
-   * Returns the last 32 characters of the MdBusiness that defines the allpaths metadata. This is used for rapid id creation.
+   * Returns the last 32 characters of the MdBusiness that defines the allpaths metadata. This is used for rapid oid creation.
    * 
    * @return
    */
   private String getAllPathsTypeIdRoot(MdBusiness allPaths)
   {
-    return IdParser.parseRootFromId(allPaths.getId());
+    return IdParser.parseRootFromId(allPaths.getOid());
   }
 
   /**
@@ -394,7 +394,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   public void initialize(Map<String, Object> parameters)
   {
     MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
-    MdBusinessDAOIF allpathsDAO = MdBusinessDAO.get(allPaths.getId());
+    MdBusinessDAOIF allpathsDAO = MdBusinessDAO.get(allPaths.getOid());
 
     String sequenceName = this.getSequenceName(allPaths);
 

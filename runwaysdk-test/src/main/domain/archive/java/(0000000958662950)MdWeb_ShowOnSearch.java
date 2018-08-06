@@ -81,7 +81,7 @@ public class Sandbox
       MdBusinessDAO mdField = MdBusinessDAO.getMdBusinessDAO(type).getBusinessDAO();
 
       MdAttributeBooleanDAO showOnViewAll = MdAttributeBooleanDAO.newInstance();
-      showOnViewAll.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdField.getId());
+      showOnViewAll.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdField.getOid());
       showOnViewAll.setValue(MdAttributeBooleanInfo.NAME, "showOnSearch");
       showOnViewAll.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       showOnViewAll.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);

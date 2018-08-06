@@ -29,7 +29,7 @@ package com.runwaysdk.business;
 public abstract class ComponentSystemBase extends com.runwaysdk.business.Business
 {
   public final static String CLASS = "com.runwaysdk.business.Component";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   private static final long serialVersionUID = -717495607;
   
   public ComponentSystemBase()
@@ -37,7 +37,7 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
     super();
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -47,7 +47,7 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Component.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -58,9 +58,9 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
     return CLASS;
   }
   
-  public static ComponentSystem get(String id)
+  public static ComponentSystem get(String oid)
   {
-    return (ComponentSystem) com.runwaysdk.business.Business.get(id);
+    return (ComponentSystem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ComponentSystem getByKey(String key)
@@ -68,17 +68,17 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
     return (ComponentSystem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static ComponentSystem lock(java.lang.String id)
+  public static ComponentSystem lock(java.lang.String oid)
   {
-    ComponentSystem _instance = ComponentSystem.get(id);
+    ComponentSystem _instance = ComponentSystem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ComponentSystem unlock(java.lang.String id)
+  public static ComponentSystem unlock(java.lang.String oid)
   {
-    ComponentSystem _instance = ComponentSystem.get(id);
+    ComponentSystem _instance = ComponentSystem.get(oid);
     _instance.unlock();
     
     return _instance;

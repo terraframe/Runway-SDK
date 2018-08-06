@@ -76,7 +76,7 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(LEFTOPERAND, value.getId());
+      setValue(LEFTOPERAND, value.getOid());
     }
   }
   
@@ -90,7 +90,7 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      addEnumItem(OPERATOR, value.getId());
+      addEnumItem(OPERATOR, value.getOid());
     }
   }
   
@@ -98,7 +98,7 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      removeEnumItem(OPERATOR, value.getId());
+      removeEnumItem(OPERATOR, value.getOid());
     }
   }
   
@@ -182,7 +182,7 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(RIGHTOPERAND, value.getId());
+      setValue(RIGHTOPERAND, value.getOid());
     }
   }
   
@@ -234,9 +234,9 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
     }
   }
   
-  public static IndicatorComposite get(String id)
+  public static IndicatorComposite get(String oid)
   {
-    return (IndicatorComposite) com.runwaysdk.business.Business.get(id);
+    return (IndicatorComposite) com.runwaysdk.business.Business.get(oid);
   }
   
   public static IndicatorComposite getByKey(String key)
@@ -244,17 +244,17 @@ public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metada
     return (IndicatorComposite) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static IndicatorComposite lock(java.lang.String id)
+  public static IndicatorComposite lock(java.lang.String oid)
   {
-    IndicatorComposite _instance = IndicatorComposite.get(id);
+    IndicatorComposite _instance = IndicatorComposite.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static IndicatorComposite unlock(java.lang.String id)
+  public static IndicatorComposite unlock(java.lang.String oid)
   {
-    IndicatorComposite _instance = IndicatorComposite.get(id);
+    IndicatorComposite _instance = IndicatorComposite.get(oid);
     _instance.unlock();
     
     return _instance;

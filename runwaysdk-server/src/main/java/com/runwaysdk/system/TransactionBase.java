@@ -31,7 +31,7 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
   public final static String CLASS = "com.runwaysdk.system.Transaction";
   public static java.lang.String ACTION = "action";
   public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRANSACTIONID = "transactionID";
@@ -47,9 +47,9 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     super(component, structName);
   }
   
-  public static Transaction get(String id)
+  public static Transaction get(String oid)
   {
-    return (Transaction) com.runwaysdk.business.Struct.get(id);
+    return (Transaction) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static Transaction getByKey(String key)
@@ -113,7 +113,7 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -123,7 +123,7 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
     return mdClassIF.definesAttribute(ID);

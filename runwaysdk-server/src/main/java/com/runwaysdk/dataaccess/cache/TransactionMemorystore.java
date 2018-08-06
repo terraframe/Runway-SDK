@@ -47,21 +47,21 @@ public class TransactionMemorystore implements TransactionStoreIF
   }
 
   @Override
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    return this.entityMap.get(id);
+    return this.entityMap.get(oid);
   }
 
   @Override
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
   {    
-    this.entityMap.put(entityDAOIF.getId(), entityDAOIF);
+    this.entityMap.put(entityDAOIF.getOid(), entityDAOIF);
   }
 
   @Override
-  public void removeEntityDAOIFfromCache(String id)
+  public void removeEntityDAOIFfromCache(String oid)
   {
-    this.entityMap.remove(id);
+    this.entityMap.remove(oid);
   }
   
   public EntityDAOIF removeLast()

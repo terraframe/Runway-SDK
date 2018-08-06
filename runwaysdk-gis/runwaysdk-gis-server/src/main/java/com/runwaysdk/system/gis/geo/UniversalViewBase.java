@@ -31,7 +31,7 @@ public abstract class UniversalViewBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalView";
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String UNIVERSAL = "universal";
   private static final long serialVersionUID = 1483637617;
   
@@ -96,7 +96,7 @@ public abstract class UniversalViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(ID);
   }
@@ -106,7 +106,7 @@ public abstract class UniversalViewBase extends com.runwaysdk.business.View
     this.validateAttribute(ID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.UniversalView.CLASS);
     return mdClassIF.definesAttribute(ID);
@@ -148,7 +148,7 @@ public abstract class UniversalViewBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -157,9 +157,9 @@ public abstract class UniversalViewBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static UniversalView get(String id)
+  public static UniversalView get(String oid)
   {
-    return (UniversalView) com.runwaysdk.business.View.get(id);
+    return (UniversalView) com.runwaysdk.business.View.get(oid);
   }
   
   public String toString()

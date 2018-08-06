@@ -46,11 +46,11 @@ public class AttributeProblemDTO extends RunwayProblemDTO implements AttributeNo
    * Constructs a new AttributeProblemDTO with the specified localized message from the server. 
    * 
    * @param type of the runway problem.
-   * @param componentId id of the containing component.
+   * @param componentId oid of the containing component.
    * @param definingType type of the containing component.
    * @param definingTypeDisplayLabel display label of the type of the containing component.
    * @param attributeName name of the attribute.
-   * @param attributeId id of the attribute.
+   * @param attributeId oid of the attribute.
    * @param attributeDisplayLabel display label of the attribute.
    * @param localizedMessage end user error message.
    */
@@ -71,8 +71,8 @@ public class AttributeProblemDTO extends RunwayProblemDTO implements AttributeNo
   }
 
   /**
-   * Returns the id of the component that defines the attributed.
-   * @return id of the component that defines the attributed.
+   * Returns the oid of the component that defines the attributed.
+   * @return oid of the component that defines the attributed.
    */
   public String getComponentId()
   {

@@ -32,7 +32,7 @@ public interface MdBusinessInfo extends MdElementInfo
   public static final String ID_VALUE                   = "0000000000000000000000000000000100000000000000000000000000000001";
   
   /**
-   * Name of the attribute that stores the id of the super class.
+   * Name of the attribute that stores the oid of the super class.
    */
   public static final String SUPER_MD_BUSINESS         = "superMdBusiness";
   

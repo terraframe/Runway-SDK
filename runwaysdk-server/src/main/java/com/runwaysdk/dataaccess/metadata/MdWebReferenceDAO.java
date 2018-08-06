@@ -68,8 +68,8 @@ public class MdWebReferenceDAO extends MdWebAttributeDAO implements MdWebReferen
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdWebReferenceDAOIF get(String id)
+  public static MdWebReferenceDAOIF get(String oid)
   {
-    return (MdWebReferenceDAOIF) BusinessDAO.get(id);
+    return (MdWebReferenceDAOIF) BusinessDAO.get(oid);
   }
 }

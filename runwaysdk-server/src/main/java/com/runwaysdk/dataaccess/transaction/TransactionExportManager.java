@@ -211,8 +211,8 @@ public class TransactionExportManager
     MdClassDAOIF vaultFileMdClass = MdClassDAO.getMdClassDAO(VaultFileInfo.CLASS);
     MdClassDAOIF webFileMdClass = MdClassDAO.getMdClassDAO(WebFileInfo.CLASS);
 
-    this.vaultFileMdClassRootId = IdParser.parseRootFromId(vaultFileMdClass.getId());
-    this.webFileMdClassRootId = IdParser.parseRootFromId(webFileMdClass.getId());
+    this.vaultFileMdClassRootId = IdParser.parseRootFromId(vaultFileMdClass.getOid());
+    this.webFileMdClassRootId = IdParser.parseRootFromId(webFileMdClass.getOid());
 
   }
 
@@ -238,7 +238,7 @@ public class TransactionExportManager
    */
   private String getExportVaultLocation(VaultDAOIF vaultDAOIF)
   {
-    return this.vaultsDirLocation + vaultDAOIF.getId();
+    return this.vaultsDirLocation + vaultDAOIF.getOid();
   }
 
   /**
@@ -692,7 +692,7 @@ public class TransactionExportManager
    */
   private void exportWebFile(WebFileDAOIF webFileDAOIF)
   {
-    File thisExportWebFileFile = new File(this.webFilesDirLocation + webFileDAOIF.getId());
+    File thisExportWebFileFile = new File(this.webFilesDirLocation + webFileDAOIF.getOid());
 
     try
     {

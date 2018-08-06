@@ -134,13 +134,13 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeEncryption mdAttributeEncryption)
     {
       if(mdAttributeEncryption == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeEncryption.getId());
+      return this.EQ(mdAttributeEncryption.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeEncryption mdAttributeEncryption)
     {
       if(mdAttributeEncryption == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeEncryption.getId());
+      return this.NE(mdAttributeEncryption.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getDefaultValue()
@@ -203,7 +203,7 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
 
       for (int i=0; i<mdAttributeEncryption.length; i++)
       {
-        itemIdArray[i] = mdAttributeEncryption[i].getId();
+        itemIdArray[i] = mdAttributeEncryption[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
 
       for (int i=0; i<mdAttributeEncryption.length; i++)
       {
-        itemIdArray[i] = mdAttributeEncryption[i].getId();
+        itemIdArray[i] = mdAttributeEncryption[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
 
       for (int i=0; i<mdAttributeEncryption.length; i++)
       {
-        itemIdArray[i] = mdAttributeEncryption[i].getId();
+        itemIdArray[i] = mdAttributeEncryption[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
 
       for (int i=0; i<mdAttributeEncryption.length; i++)
       {
-        itemIdArray[i] = mdAttributeEncryption[i].getId();
+        itemIdArray[i] = mdAttributeEncryption[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdAttributeEncryptionQuery extends com.runwaysdk.system.metadata.M
 
       for (int i=0; i<mdAttributeEncryption.length; i++)
       {
-        itemIdArray[i] = mdAttributeEncryption[i].getId();
+        itemIdArray[i] = mdAttributeEncryption[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

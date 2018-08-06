@@ -103,7 +103,7 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
   }
   
   /**
-   * Updates the id of the relationship of the parent relationship to this {@link BusinessDAOIF}.
+   * Updates the oid of the relationship of the parent relationship to this {@link BusinessDAOIF}.
    * <br/>
    * <b>Precondition:</b> assumes the child on the given relationship equals this {@link BusinessDAOIF}.
    * 
@@ -206,7 +206,7 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
   }
   
   /**
-   * Updates the id of the the child relationship to this {@link BusinessDAOIF}.
+   * Updates the oid of the the child relationship to this {@link BusinessDAOIF}.
    * <br/>
    * <b>Precondition:</b> assumes the parent on the given relationship equals this {@link BusinessDAOIF}.
    * 
@@ -323,7 +323,7 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
     */
    public void add(RelationshipDAOIF relationshipDAOIF)
    {
-     this.relationshipDAOidSet.add(relationshipDAOIF.getId());
+     this.relationshipDAOidSet.add(relationshipDAOIF.getOid());
    }
 
    /**
@@ -334,7 +334,7 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
   {
     this.relationshipDAOidSet.remove(((RelationshipDAO)relationshipDAOIF).getOldId());
     
-    this.relationshipDAOidSet.add(relationshipDAOIF.getId());
+    this.relationshipDAOidSet.add(relationshipDAOIF.getOid());
   }
    
    /**
@@ -343,7 +343,7 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
     */
    public void remove(RelationshipDAOIF relationshipDAOIF)
    {
-     this.relationshipDAOidSet.remove(relationshipDAOIF.getId());
+     this.relationshipDAOidSet.remove(relationshipDAOIF.getOid());
    }
 
    /**
@@ -377,8 +377,8 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
      Iterator<String> i = relationshipDAOidSet.iterator();
      while (i.hasNext())
      {
-       String id = i.next();
-       RelationshipDAOIF relationshipDAOIF = (RelationshipDAOIF)ObjectCache.getEntityDAOIFfromCache(id);
+       String oid = i.next();
+       RelationshipDAOIF relationshipDAOIF = (RelationshipDAOIF)ObjectCache.getEntityDAOIFfromCache(oid);
        relationshipList.add(relationshipDAOIF);       
      }
      return relationshipList;

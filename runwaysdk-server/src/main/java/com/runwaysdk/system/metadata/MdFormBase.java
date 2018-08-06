@@ -75,19 +75,19 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     }
     else
     {
-      setValue(DIMENSION, value.getId());
+      setValue(DIMENSION, value.getOid());
     }
   }
   
-  public void setDimensionId(java.lang.String id)
+  public void setDimensionId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(DIMENSION, "");
     }
     else
     {
-      setValue(DIMENSION, id);
+      setValue(DIMENSION, oid);
     }
   }
   
@@ -127,19 +127,19 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     }
     else
     {
-      setValue(FORMMDCLASS, value.getId());
+      setValue(FORMMDCLASS, value.getOid());
     }
   }
   
-  public void setFormMdClassId(java.lang.String id)
+  public void setFormMdClassId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(FORMMDCLASS, "");
     }
     else
     {
-      setValue(FORMMDCLASS, id);
+      setValue(FORMMDCLASS, oid);
     }
   }
   
@@ -204,9 +204,9 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.FormField>) getRelationshipsWithChild(mdField, com.runwaysdk.system.metadata.FormField.CLASS);
   }
   
-  public static MdForm get(String id)
+  public static MdForm get(String oid)
   {
-    return (MdForm) com.runwaysdk.business.Business.get(id);
+    return (MdForm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdForm getByKey(String key)
@@ -220,23 +220,23 @@ public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final com.runwaysdk.system.metadata.MdField[] getOrderedMdFields(java.lang.String id)
+  public static final com.runwaysdk.system.metadata.MdField[] getOrderedMdFields(java.lang.String oid)
   {
-    MdForm _instance = MdForm.get(id);
+    MdForm _instance = MdForm.get(oid);
     return _instance.getOrderedMdFields();
   }
   
-  public static MdForm lock(java.lang.String id)
+  public static MdForm lock(java.lang.String oid)
   {
-    MdForm _instance = MdForm.get(id);
+    MdForm _instance = MdForm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdForm unlock(java.lang.String id)
+  public static MdForm unlock(java.lang.String oid)
   {
-    MdForm _instance = MdForm.get(id);
+    MdForm _instance = MdForm.get(oid);
     _instance.unlock();
     
     return _instance;

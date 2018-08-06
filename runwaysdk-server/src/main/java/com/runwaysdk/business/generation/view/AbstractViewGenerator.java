@@ -391,11 +391,11 @@ public abstract class AbstractViewGenerator
     getWriter().openEscapedTag(STRUCT_TAG, structMap);
   }
 
-  protected void writeForm(String method, String id, String name)
+  protected void writeForm(String method, String oid, String name)
   {
     HashMap<String, String> formMap = new HashMap<String, String>();
     formMap.put("method", method);
-    formMap.put("id", id);
+    formMap.put("oid", oid);
     formMap.put("name", name);
 
     getWriter().openEscapedTag(FORM_TAG, formMap);

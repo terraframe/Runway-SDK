@@ -66,7 +66,7 @@ public class GraphDAO extends RelationshipDAO implements GraphDAOIF
     {
       MdRelationshipDAOIF mdRelationshipIF = relationship.getMdRelationshipDAO();
 
-      String error = "A relationship of type [" + mdRelationshipIF.definesType() + "] already exists between parent object with id [" + relationship.getParentId() + "] and child object with id [" + relationship.getChildId() + "]";
+      String error = "A relationship of type [" + mdRelationshipIF.definesType() + "] already exists between parent object with oid [" + relationship.getParentId() + "] and child object with oid [" + relationship.getChildId() + "]";
 
       DuplicateGraphPathException e = new DuplicateGraphPathException(error);
       e.init(mdRelationshipIF, relationship.getParentId(), relationship.getChildId());

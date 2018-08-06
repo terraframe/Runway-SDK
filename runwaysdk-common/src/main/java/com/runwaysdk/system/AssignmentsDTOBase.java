@@ -49,7 +49,7 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -414,9 +414,9 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
     return com.runwaysdk.system.RolesDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.AssignmentsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.AssignmentsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.AssignmentsDTO) dto;
   }
@@ -446,7 +446,7 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.AssignmentsQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -459,10 +459,10 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.AssignmentsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.AssignmentsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.AssignmentsDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.AssignmentsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -472,10 +472,10 @@ public abstract class AssignmentsDTOBase extends com.runwaysdk.business.Relation
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.AssignmentsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.AssignmentsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.AssignmentsDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.AssignmentsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

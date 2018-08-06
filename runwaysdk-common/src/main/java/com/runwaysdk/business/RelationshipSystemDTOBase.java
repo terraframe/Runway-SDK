@@ -47,7 +47,7 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   }
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public com.runwaysdk.system.metadata.MdDomainDTO getEntityDomain()
   {
@@ -74,7 +74,7 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -149,9 +149,9 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     return dto;
   }
   
-  public static com.runwaysdk.business.RelationshipSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.business.RelationshipSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.business.RelationshipSystemDTO) dto;
   }
@@ -181,7 +181,7 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.business.RelationshipQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -194,10 +194,10 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.business.RelationshipSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.RelationshipSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.RelationshipSystemDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.business.RelationshipSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -207,10 +207,10 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.business.RelationshipSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.RelationshipSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.RelationshipSystemDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.business.RelationshipSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

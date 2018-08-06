@@ -29,7 +29,7 @@ public class HasThematicRule extends HasThematicRuleBase
   
   public HasThematicRule(com.runwaysdk.system.gis.mapping.ThematicAttribute parent, com.runwaysdk.system.gis.mapping.ThematicRule child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

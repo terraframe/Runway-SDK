@@ -204,13 +204,13 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeBoolean mdAttributeBoolean)
     {
       if(mdAttributeBoolean == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeBoolean.getId());
+      return this.EQ(mdAttributeBoolean.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeBoolean mdAttributeBoolean)
     {
       if(mdAttributeBoolean == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeBoolean.getId());
+      return this.NE(mdAttributeBoolean.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getDefaultValue()
@@ -331,7 +331,7 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeBoolean.length; i++)
       {
-        itemIdArray[i] = mdAttributeBoolean[i].getId();
+        itemIdArray[i] = mdAttributeBoolean[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -343,7 +343,7 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeBoolean.length; i++)
       {
-        itemIdArray[i] = mdAttributeBoolean[i].getId();
+        itemIdArray[i] = mdAttributeBoolean[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -355,7 +355,7 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeBoolean.length; i++)
       {
-        itemIdArray[i] = mdAttributeBoolean[i].getId();
+        itemIdArray[i] = mdAttributeBoolean[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -367,7 +367,7 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeBoolean.length; i++)
       {
-        itemIdArray[i] = mdAttributeBoolean[i].getId();
+        itemIdArray[i] = mdAttributeBoolean[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -379,7 +379,7 @@ public  class MdAttributeBooleanQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeBoolean.length; i++)
       {
-        itemIdArray[i] = mdAttributeBoolean[i].getId();
+        itemIdArray[i] = mdAttributeBoolean[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

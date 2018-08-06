@@ -143,7 +143,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
     }
     else
     {
-      setValue(DEFININGMDCLASS, value.getId());
+      setValue(DEFININGMDCLASS, value.getOid());
     }
   }
   
@@ -201,7 +201,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      addEnumItem(GETTERVISIBILITY, value.getId());
+      addEnumItem(GETTERVISIBILITY, value.getOid());
     }
   }
   
@@ -209,7 +209,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      removeEnumItem(GETTERVISIBILITY, value.getId());
+      removeEnumItem(GETTERVISIBILITY, value.getOid());
     }
   }
   
@@ -283,7 +283,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      addEnumItem(INDEXTYPE, value.getId());
+      addEnumItem(INDEXTYPE, value.getOid());
     }
   }
   
@@ -291,7 +291,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      removeEnumItem(INDEXTYPE, value.getId());
+      removeEnumItem(INDEXTYPE, value.getOid());
     }
   }
   
@@ -349,7 +349,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      addEnumItem(SETTERVISIBILITY, value.getId());
+      addEnumItem(SETTERVISIBILITY, value.getOid());
     }
   }
   
@@ -357,7 +357,7 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
   {
     if(value != null)
     {
-      removeEnumItem(SETTERVISIBILITY, value.getId());
+      removeEnumItem(SETTERVISIBILITY, value.getOid());
     }
   }
   
@@ -582,9 +582,9 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
     }
   }
   
-  public static MdAttributeConcrete get(String id)
+  public static MdAttributeConcrete get(String oid)
   {
-    return (MdAttributeConcrete) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeConcrete) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeConcrete getByKey(String key)
@@ -592,17 +592,17 @@ public abstract class MdAttributeConcreteBase extends com.runwaysdk.system.metad
     return (MdAttributeConcrete) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeConcrete lock(java.lang.String id)
+  public static MdAttributeConcrete lock(java.lang.String oid)
   {
-    MdAttributeConcrete _instance = MdAttributeConcrete.get(id);
+    MdAttributeConcrete _instance = MdAttributeConcrete.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeConcrete unlock(java.lang.String id)
+  public static MdAttributeConcrete unlock(java.lang.String oid)
   {
-    MdAttributeConcrete _instance = MdAttributeConcrete.get(id);
+    MdAttributeConcrete _instance = MdAttributeConcrete.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -158,18 +158,18 @@ public class MultiThreadTestSuite
     multiThreadMdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     multiThreadMdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new " + multiThreadMdBusiness1.definesType()
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String oid)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(oid);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new " + multiThreadMdBusiness1.definesType()
     + "();\n" + "    object.setValue(\"someInt\", \"1\");\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
 
 
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
     
     // multiThreadMdBusiness1.setValue(MdEntityInfo.CACHE_ALGORITHM,
-    // EntityCache.EVERYTHING.getId());
+    // EntityCache.EVERYTHING.getOid());
     multiThreadMdBusiness1.apply();
 
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getId());
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getOid());
     mdMethod.setValue(MdMethodInfo.NAME, "someStaticMethod");
     mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Method");
@@ -177,11 +177,11 @@ public class MultiThreadTestSuite
     mdMethod.apply();
 
     methodActor = MethodActorDAO.newInstance();
-    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
+    methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getOid());
     methodActor.apply();
 
     RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
-    publicRole.grantPermission(Operation.EXECUTE, mdMethod.getId());
+    publicRole.grantPermission(Operation.EXECUTE, mdMethod.getOid());
 
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "someInt");
@@ -189,7 +189,7 @@ public class MultiThreadTestSuite
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getOid());
     mdAttributeInteger.apply();
 
     multiThreadMdBusiness2 = MdBusinessDAO.newInstance();
@@ -216,10 +216,10 @@ public class MultiThreadTestSuite
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, multiThreadMdBusiness1.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, multiThreadMdBusiness1.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, Integer.toString(relationshipCardinality));
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, multiThreadMdBusiness2.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, multiThreadMdBusiness2.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, Integer.toString(relationshipCardinality));
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "TestParent1");
@@ -465,8 +465,8 @@ public class MultiThreadTestSuite
   @Test
   public void testAppLockOnCachedType()
   {
-    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
     updateMdBusiness.apply();
 
     this.appLock();
@@ -481,8 +481,8 @@ public class MultiThreadTestSuite
   @Test
   public void testAppLockOnNotCachedType()
   {
-    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     updateMdBusiness.apply();
 
     this.appLock();
@@ -651,8 +651,8 @@ public class MultiThreadTestSuite
   @Test
   public void testUserLockOnCachedType()
   {
-    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
     updateMdBusiness.apply();
 
     // System.out.println("Starting Test");
@@ -674,7 +674,7 @@ public class MultiThreadTestSuite
   @Test
   public void testUserLockOnNotCachedType()
   {
-    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     multiThreadMdBusiness1.apply();
 
     // System.out.println("Starting Test");
@@ -902,9 +902,9 @@ public class MultiThreadTestSuite
   // {
   // // System.out.println("MRU");
   // MdBusinessDAO updateMdBusiness =
-  // MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+  // MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
   // updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM,
-  // EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+  // EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
   // updateMdBusiness.setValue(MdElementInfo.CACHE_SIZE, "5");
   // updateMdBusiness.apply();
   // }
@@ -912,18 +912,18 @@ public class MultiThreadTestSuite
   // {
   // // System.out.println("EVERYTHING");
   // MdBusinessDAO updateMdBusiness =
-  // MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+  // MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
   // updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM,
-  // EntityCacheMaster.CACHE_EVERYTHING.getId());
+  // EntityCacheMaster.CACHE_EVERYTHING.getOid());
   // updateMdBusiness.apply();
   // }
   // else
   // {
   // // System.out.println("NOTHING");
   // MdBusinessDAO updateMdBusiness =
-  // MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+  // MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
   // updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM,
-  // EntityCacheMaster.CACHE_NOTHING.getId());
+  // EntityCacheMaster.CACHE_NOTHING.getOid());
   // updateMdBusiness.apply();
   // }
   // }
@@ -994,8 +994,8 @@ public class MultiThreadTestSuite
   @Test
   public void testUpdateClass()
   {
-    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
     updateMdBusiness.apply();
 
     int _numOfThreads = userLockModTypeTreadNumber;
@@ -1079,7 +1079,7 @@ public class MultiThreadTestSuite
         mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
         mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getId());
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getOid());
         mdAttributeIntegerSomeInt2.apply();
 
         mdAttributeList.add(mdAttributeIntegerSomeInt2);
@@ -1158,8 +1158,8 @@ public class MultiThreadTestSuite
         mdAttributeInteger.delete();
       }
 
-      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       multiThreadMdBusiness1.apply();
 
     }
@@ -1238,8 +1238,8 @@ public class MultiThreadTestSuite
 
       Thread.sleep(5000);
 
-      publicRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
-      publicRole.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
+      publicRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getOid());
+      publicRole.grantPermission(Operation.WRITE, mdAttributeInteger.getOid());
       // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
@@ -1287,13 +1287,13 @@ public class MultiThreadTestSuite
     {
       executor.shutdownNow();
 
-      publicRole.revokePermission(Operation.WRITE, multiThreadMdBusiness1.getId());
-      publicRole.revokePermission(Operation.WRITE, mdAttributeInteger.getId());
+      publicRole.revokePermission(Operation.WRITE, multiThreadMdBusiness1.getOid());
+      publicRole.revokePermission(Operation.WRITE, mdAttributeInteger.getOid());
 
       resultsVector.clear();
 
-      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       multiThreadMdBusiness1.apply();
     }
 
@@ -1373,8 +1373,8 @@ public class MultiThreadTestSuite
 
       Thread.sleep(5000);
 
-      testRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
-      testRole.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
+      testRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getOid());
+      testRole.grantPermission(Operation.WRITE, mdAttributeInteger.getOid());
 
       // System.out.println("Changing permissions");
 
@@ -1425,8 +1425,8 @@ public class MultiThreadTestSuite
 
       resultsVector.clear();
 
-      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       multiThreadMdBusiness1.apply();
 
       testRole.delete();
@@ -1446,9 +1446,9 @@ public class MultiThreadTestSuite
     Business busObject = BusinessFacade.newBusiness(multiThreadMdBusiness1.definesType());
     busObject.setValue("someInt", "1");
     busObject.apply();
-    busObjectIdVector.add(busObject.getId());
+    busObjectIdVector.add(busObject.getOid());
 
-    return busObject.getId();
+    return busObject.getOid();
   }
 
   /**
@@ -1487,8 +1487,8 @@ public class MultiThreadTestSuite
     // Add the users to the role.
     for (UserDAO user : userVector)
     {
-      user.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getId());
-      user.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
+      user.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getOid());
+      user.grantPermission(Operation.WRITE, mdAttributeInteger.getOid());
     }
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
@@ -1547,7 +1547,7 @@ public class MultiThreadTestSuite
     {
       Thread.sleep(5000);
 
-      ownerRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
+      ownerRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getOid());
 
       // System.out.println("Changing permissions");
 
@@ -1583,16 +1583,16 @@ public class MultiThreadTestSuite
 
       resultsVector.clear();
 
-      for (String id : busObjectIdVector)
+      for (String oid : busObjectIdVector)
       {
-        BusinessDAO businessDAO = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO businessDAO = BusinessDAO.get(oid).getBusinessDAO();
         businessDAO.delete();
       }
 
       busObjectIdVector.clear();
 
-      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
-      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
+      multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       multiThreadMdBusiness1.apply();
     }
 
@@ -1609,7 +1609,7 @@ public class MultiThreadTestSuite
   public void testSessionChangeRoleMethodExecutePermissions() throws Exception
   {
     MdMethodDAO mdMethod = MdMethodDAO.newInstance();
-    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getId());
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, multiThreadMdBusiness1.getOid());
     mdMethod.setValue(MdMethodInfo.NAME, "someMethod");
     mdMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Method");
@@ -1617,9 +1617,9 @@ public class MultiThreadTestSuite
     mdMethod.apply();
 
     // Build the new source for CollecticreateSingleObjectForUseron.java
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public void someMethod()\n" + "  {\n" + "  }\n" + "}";
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String oid)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(oid);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public void someMethod()\n" + "  {\n" + "  }\n" + "}";
 
-    multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+    multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getOid()).getBusinessDAO();
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
     multiThreadMdBusiness1.apply();
 
@@ -1630,8 +1630,8 @@ public class MultiThreadTestSuite
     // Add the users to the role.
     for (UserDAO user : userVector)
     {
-      user.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getId());
-      user.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
+      user.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getOid());
+      user.grantPermission(Operation.WRITE, mdAttributeInteger.getOid());
     }
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
@@ -1691,7 +1691,7 @@ public class MultiThreadTestSuite
     {
       Thread.sleep(5000);
 
-      ownerRole.grantPermission(Operation.EXECUTE, mdMethod.getId());
+      ownerRole.grantPermission(Operation.EXECUTE, mdMethod.getOid());
 
       // System.out.println("Changing permissions");
 
@@ -1727,9 +1727,9 @@ public class MultiThreadTestSuite
 
       resultsVector.clear();
 
-      for (String id : busObjectIdVector)
+      for (String oid : busObjectIdVector)
       {
-        BusinessDAO businessDAO = BusinessDAO.get(id).getBusinessDAO();
+        BusinessDAO businessDAO = BusinessDAO.get(oid).getBusinessDAO();
         businessDAO.delete();
       }
 
@@ -1753,7 +1753,7 @@ public class MultiThreadTestSuite
 
     busObject.setValue("someInt", "1");
     busObject.apply();
-    busObjectIdVector.add(busObject.getId());
+    busObjectIdVector.add(busObject.getOid());
 
     int _numOfThreads = methodCreatePermissions;
 
@@ -1812,9 +1812,9 @@ public class MultiThreadTestSuite
     try
     {
       Thread.sleep(5000);
-      methodActor.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getId());
-      methodActor.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
-      methodActor.grantPermission(Operation.DELETE, multiThreadMdBusiness1.getId());
+      methodActor.grantPermission(Operation.CREATE, multiThreadMdBusiness1.getOid());
+      methodActor.grantPermission(Operation.WRITE, mdAttributeInteger.getOid());
+      methodActor.grantPermission(Operation.DELETE, multiThreadMdBusiness1.getOid());
 
       // System.out.println("Changing permissions");
 

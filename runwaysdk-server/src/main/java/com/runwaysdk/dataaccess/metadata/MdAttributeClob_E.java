@@ -68,7 +68,7 @@ public class MdAttributeClob_E extends MdAttributeConcrete_E
     else
     {
       AttributeEnumerationIF index = (AttributeEnumerationIF)this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-      if (!index.dereference()[0].getId().equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+      if (!index.dereference()[0].getOid().equalsIgnoreCase(IndexTypes.NO_INDEX.getOid()))
       {
         isValid = false;
       }

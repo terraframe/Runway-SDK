@@ -36,7 +36,7 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
   
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String ID = "oid";
   public static java.lang.String MOVEOPERATION = "moveOperation";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   public static java.lang.String UNIVERSAL = "universal";
@@ -176,7 +176,7 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
     }
     else
     {
-      setValue(PARENTUNIVERSAL, value.getId());
+      setValue(PARENTUNIVERSAL, value.getOid());
     }
   }
   
@@ -225,7 +225,7 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -249,9 +249,9 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(UNIVERSAL).getAttributeMdDTO();
   }
   
-  public static UniversalInputDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static UniversalInputDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (UniversalInputDTO) dto;
   }
@@ -269,7 +269,7 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

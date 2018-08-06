@@ -100,7 +100,7 @@ public class RelationshipGenTest
     ceo.setValue(MdBusinessInfo.NAME, "CEO");
     ceo.setValue(MdBusinessInfo.PACKAGE, pack);
     ceo.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    ceo.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getId());
+    ceo.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getOid());
     ceo.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "CEO");
     ceo.apply();
 
@@ -108,7 +108,7 @@ public class RelationshipGenTest
     manager.setValue(MdBusinessInfo.NAME, "Manager");
     manager.setValue(MdBusinessInfo.PACKAGE, pack);
     manager.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    manager.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getId());
+    manager.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getOid());
     manager.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Manager");
     manager.apply();
 
@@ -116,7 +116,7 @@ public class RelationshipGenTest
     peon.setValue(MdBusinessInfo.NAME, "Peon");
     peon.setValue(MdBusinessInfo.PACKAGE, pack);
     peon.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    peon.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getId());
+    peon.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, employee.getOid());
     peon.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Peon");
     peon.apply();
 
@@ -131,10 +131,10 @@ public class RelationshipGenTest
     promotes.setValue(MdRelationshipInfo.NAME, "Promotes");
     promotes.setValue(MdRelationshipInfo.PACKAGE, pack);
     promotes.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Promotion");
-    promotes.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, ceo.getId());
+    promotes.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, ceo.getOid());
     promotes.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     promotes.setValue(MdRelationshipInfo.PARENT_METHOD, "PromotedBy");
-    promotes.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, employee.getId());
+    promotes.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, employee.getOid());
     promotes.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     promotes.setValue(MdRelationshipInfo.CHILD_METHOD, "PromotedEmployee");
     promotes.apply();
@@ -143,10 +143,10 @@ public class RelationshipGenTest
     assigns.setValue(MdGraphInfo.NAME, "Assigns");
     assigns.setValue(MdGraphInfo.PACKAGE, pack);
     assigns.setStructValue(MdGraphInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Task Assignment");
-    assigns.setValue(MdGraphInfo.PARENT_MD_BUSINESS, manager.getId());
+    assigns.setValue(MdGraphInfo.PARENT_MD_BUSINESS, manager.getOid());
     assigns.setValue(MdGraphInfo.PARENT_CARDINALITY, "1");
     assigns.setValue(MdGraphInfo.PARENT_METHOD, "AssignedBy");
-    assigns.setValue(MdGraphInfo.CHILD_MD_BUSINESS, task.getId());
+    assigns.setValue(MdGraphInfo.CHILD_MD_BUSINESS, task.getOid());
     assigns.setValue(MdGraphInfo.CHILD_CARDINALITY, "*");
     assigns.setValue(MdRelationshipInfo.CHILD_METHOD, "AssignedTask");
     assigns.apply();
@@ -155,10 +155,10 @@ public class RelationshipGenTest
     completes.setValue(MdTreeInfo.NAME, "Completes");
     completes.setValue(MdTreeInfo.PACKAGE, pack);
     completes.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Task Completion");
-    completes.setValue(MdTreeInfo.PARENT_MD_BUSINESS, peon.getId());
+    completes.setValue(MdTreeInfo.PARENT_MD_BUSINESS, peon.getOid());
     completes.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     completes.setValue(MdTreeInfo.PARENT_METHOD, "CompletedBy");
-    completes.setValue(MdTreeInfo.CHILD_MD_BUSINESS, task.getId());
+    completes.setValue(MdTreeInfo.CHILD_MD_BUSINESS, task.getOid());
     completes.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     completes.setValue(MdTreeInfo.CHILD_METHOD, "CompletedTask");
     completes.apply();
@@ -189,25 +189,25 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) ceoClass.getMethod("addPromotedEmployee", employeeClass).invoke(mom, kid);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
     Relationship rel2 = (Relationship) ceoClass.getMethod("addPromotedEmployee", employeeClass).invoke(mom, kid);
     rel2.apply();
-    RelationshipDAOIF oracle2 = RelationshipDAO.get(rel2.getId());
+    RelationshipDAOIF oracle2 = RelationshipDAO.get(rel2.getOid());
 
-    if (oracle2.getId().equals(oracle.getId()))
-      Assert.fail("Two Relationships created with the same id");
+    if (oracle2.getOid().equals(oracle.getOid()))
+      Assert.fail("Two Relationships created with the same oid");
 
-    if (!oracle.getParentId().equals(mom.getId()))
+    if (!oracle.getParentId().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(kid.getId()))
+    if (!oracle.getChildId().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
 
-    if (!oracle2.getParentId().equals(mom.getId()))
+    if (!oracle2.getParentId().equals(mom.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle2.getChildId().equals(kid.getId()))
+    if (!oracle2.getChildId().equals(kid.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -263,12 +263,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) peonClass.getMethod("addPromotedBy", ceoClass).invoke(child, parent);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -291,12 +291,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) taskClass.getMethod("addAssignedBy", managerClass).invoke(child, parent);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -319,12 +319,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) taskClass.getMethod("addCompletedBy", peonClass).invoke(child, parent);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addParent");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addParent");
   }
 
@@ -348,12 +348,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) ceoClass.getMethod("addPromotedEmployee", employeeClass).invoke(parent, child);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -376,12 +376,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) managerClass.getMethod("addAssignedTask", taskClass).invoke(parent, child);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -404,12 +404,12 @@ public class RelationshipGenTest
 
     Relationship rel = (Relationship) peonClass.getMethod("addCompletedTask", taskClass).invoke(parent, child);
     rel.apply();
-    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getId());
+    RelationshipDAOIF oracle = RelationshipDAO.get(rel.getOid());
 
-    if (!oracle.getParentId().equals(parent.getId()))
+    if (!oracle.getParentId().equals(parent.getOid()))
       Assert.fail("Parent reference mismatch in addChild");
 
-    if (!oracle.getChildId().equals(child.getId()))
+    if (!oracle.getChildId().equals(child.getOid()))
       Assert.fail("Child reference mismatch in addChild");
   }
 
@@ -626,8 +626,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!id.equals(oracle) && !id.equals(oracle2) && !id.equals(oracle3))
+      String oid = relationship.getOid();
+      if (!oid.equals(oracle) && !oid.equals(oracle2) && !oid.equals(oracle3))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -683,8 +683,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!id.equals(oracle) && !id.equals(oracle2) && !id.equals(oracle3))
+      String oid = relationship.getOid();
+      if (!oid.equals(oracle) && !oid.equals(oracle2) && !oid.equals(oracle3))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -731,7 +731,7 @@ public class RelationshipGenTest
     Business task = (Business) taskClass.getMethod("get", String.class).invoke(null, taskID);
     Relationship test = (Relationship) managerClass.getMethod("getAssignedTaskRel", taskClass).invoke(manager, task);
 
-    if (!test.getId().equals(oracle))
+    if (!test.getOid().equals(oracle))
       Assert.fail("getRelationship returned the wrong relationship");
   }
 
@@ -776,7 +776,7 @@ public class RelationshipGenTest
     Business task = (Business) taskClass.getMethod("get", String.class).invoke(null, taskID);
     Relationship test = (Relationship) taskClass.getMethod("getAssignedByRel", managerClass).invoke(task, manager);
 
-    if (!test.getId().equals(oracle))
+    if (!test.getOid().equals(oracle))
       Assert.fail("getRelationship returned the wrong relationship");
   }
 
@@ -821,7 +821,7 @@ public class RelationshipGenTest
     Business task = (Business) taskClass.getMethod("get", String.class).invoke(null, taskID);
     Relationship test = (Relationship) peonClass.getMethod("getCompletedTaskRel", taskClass).invoke(peon, task);
 
-    if (!test.getId().equals(oracle))
+    if (!test.getOid().equals(oracle))
       Assert.fail("getRelationship returned the wrong relationship");
   }
 
@@ -866,7 +866,7 @@ public class RelationshipGenTest
     Business task = (Business) taskClass.getMethod("get", String.class).invoke(null, taskID);
     Relationship test = (Relationship) taskClass.getMethod("getCompletedByRel", peonClass).invoke(task, peon);
 
-    if (!test.getId().equals(oracle))
+    if (!test.getOid().equals(oracle))
       Assert.fail("getRelationship returned the wrong relationship");
   }
 
@@ -921,8 +921,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -974,8 +974,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -1032,8 +1032,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -1082,8 +1082,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -1138,8 +1138,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -1190,8 +1190,8 @@ public class RelationshipGenTest
 
     for (Relationship relationship : list)
     {
-      String id = relationship.getId();
-      if (!oracle.remove(id))
+      String oid = relationship.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of Relationships is not one of the expected ids");
     }
   }
@@ -1246,8 +1246,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of children is not one of the expected ids");
     }
   }
@@ -1298,8 +1298,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of children is not one of the expected ids");
     }
   }
@@ -1352,8 +1352,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of children is not one of the expected ids");
     }
   }
@@ -1405,8 +1405,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of parents is not one of the expected ids");
     }
   }
@@ -1456,8 +1456,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of parents is not one of the expected ids");
     }
   }
@@ -1509,8 +1509,8 @@ public class RelationshipGenTest
 
     for (Business object : list)
     {
-      String id = object.getId();
-      if (!oracle.remove(id))
+      String oid = object.getOid();
+      if (!oracle.remove(oid))
         Assert.fail("ID in list of parents is not one of the expected ids");
     }
   }

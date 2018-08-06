@@ -82,9 +82,9 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   @Test
   public void testMethodActorReadPermissions() throws Exception
   {
-    clientRequest.grantTypePermission(methodActor.getId(), collection.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(methodActor.getId(), collection.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(methodActor.getId(), mdAttributeLong.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(methodActor.getOid(), collection.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(methodActor.getOid(), collection.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(methodActor.getOid(), mdAttributeLong.getOid(), Operation.READ.name());
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
@@ -96,13 +96,13 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.revokeTypePermission(methodActor.getId(), collection.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(methodActor.getId(), collection.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(methodActor.getId(), mdAttributeLong.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(methodActor.getOid(), collection.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(methodActor.getOid(), collection.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(methodActor.getOid(), mdAttributeLong.getOid(), Operation.READ.name());
 
       if (businessDTO != null)
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
     }
@@ -112,7 +112,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
   @Test
   public void testMethodActorNoReadPermissions() throws Exception
   {
-    clientRequest.grantTypePermission(methodActor.getId(), collection.getId(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(methodActor.getOid(), collection.getOid(), Operation.CREATE.name());
 
     Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
@@ -124,11 +124,11 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.revokeTypePermission(methodActor.getId(), collection.getId(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(methodActor.getOid(), collection.getOid(), Operation.CREATE.name());
 
       if (businessDTO != null)
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
     }
@@ -192,8 +192,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.delete(collectionObj1.getId());
-      clientRequest.delete(collectionObj2.getId());
+      clientRequest.delete(collectionObj1.getOid());
+      clientRequest.delete(collectionObj2.getOid());
     }
   }
 
@@ -238,8 +238,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.delete(collectionObj1.getId());
-      clientRequest.delete(collectionObj2.getId());
+      clientRequest.delete(collectionObj1.getOid());
+      clientRequest.delete(collectionObj2.getOid());
     }
   }
 
@@ -255,10 +255,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
@@ -293,15 +293,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", input);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -324,15 +324,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -364,15 +364,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 0);
@@ -401,15 +401,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -449,15 +449,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     bagClass.getMethod("lock").invoke(object);
@@ -481,15 +481,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Class<?> arrayClass = Array.newInstance(collectionClass, 0).getClass();
@@ -536,8 +536,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     for (RelationshipDTO dto : output)
     {
-      Assert.assertEquals(businessDAO.getId(), dto.getParentId());
-      Assert.assertEquals(businessDAO2.getId(), dto.getChildId());
+      Assert.assertEquals(businessDAO.getOid(), dto.getParentId());
+      Assert.assertEquals(businessDAO2.getOid(), dto.getChildId());
     }
   }
 
@@ -587,8 +587,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     for (RelationshipDTO dto : output)
     {
-      Assert.assertEquals(businessDAO.getId(), dto.getParentId());
-      Assert.assertEquals(businessDAO2.getId(), dto.getChildId());
+      Assert.assertEquals(businessDAO.getOid(), dto.getParentId());
+      Assert.assertEquals(businessDAO2.getOid(), dto.getChildId());
     }
   }
 
@@ -602,7 +602,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO colBusDTO = (BusinessDTO) stateClass.getMethod("item", ClientRequestIF.class).invoke(enumerationDTOIF, clientRequest);
 
-    Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getId(), colBusDTO.getId());
+    Assert.assertEquals("item method on the enum returned the wrong object.", colorado.getOid(), colBusDTO.getOid());
 
     Assert.assertEquals("item method on the enum returned an object of the wrong class.", colorado.getType() + "DTO", colBusDTO.getClass().getName());
 
@@ -625,7 +625,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.delete(businessDTO.getId());
+      clientRequest.delete(businessDTO.getOid());
     }
   }
 
@@ -677,15 +677,15 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", input);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -725,16 +725,16 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     businessDTO.setValue("aLong", "11");
     collectionClass.getMethod("apply").invoke(businessDTO);
 
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     BusinessDTO inputDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     inputDTO.setValue("aLong", "22");
     collectionClass.getMethod("apply").invoke(inputDTO);
 
-    inputDTO = (BusinessDTO) get.invoke(null, clientRequest, inputDTO.getId());
+    inputDTO = (BusinessDTO) get.invoke(null, clientRequest, inputDTO.getOid());
 
     collectionClass.getMethod("lock").invoke(object);
     collectionClass.getMethod("lock").invoke(inputDTO);
@@ -768,10 +768,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
@@ -806,10 +806,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", "142");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     collectionClass.getMethod("poopNothing").invoke(object);
 
@@ -872,10 +872,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, noPermissionRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, noPermissionRequest, oid);
 
     Boolean bool = Boolean.TRUE;
     Long[] array = new Long[] { 3L, 4L, 8L, 9L, 10923012910L };
@@ -1012,9 +1012,9 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDTO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
-    BusinessDTO output = (BusinessDTO) collectionClass.getMethod("sortNumbers", ClientRequestIF.class, String.class, array.getClass(), Boolean.class).invoke(null, clientRequest, id, array, bool);
+    BusinessDTO output = (BusinessDTO) collectionClass.getMethod("sortNumbers", ClientRequestIF.class, String.class, array.getClass(), Boolean.class).invoke(null, clientRequest, oid, array, bool);
 
     Assert.assertTrue(collectionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), collectionClass.getMethod("getABoolean").invoke(output));
@@ -1030,10 +1030,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
+    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     String someCharValue = "Some Char Value";
 
@@ -1042,14 +1042,14 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     Object input = utilClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     utilClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
     utilClass.getMethod("apply").invoke(input);
-    String inputId = (String) utilClass.getMethod("getId").invoke(input);
+    String inputId = (String) utilClass.getMethod("getOid").invoke(input);
 
     collectionClass.getMethod("lock").invoke(businessDTO);
     Object output = collectionClass.getMethod("getUtil", utilClass).invoke(businessDTO, input);
 
     String someCharValue2 = (String) utilClass.getMethod("getACharacter").invoke(input);
 
-    String outputId = (String) utilClass.getMethod("getId").invoke(output);
+    String outputId = (String) utilClass.getMethod("getOid").invoke(output);
 
     Assert.assertEquals(inputId, outputId);
 
@@ -1068,10 +1068,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
+    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     String someCharValue = "Some Char Value";
 
@@ -1080,14 +1080,14 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     Object input = viewClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     viewClass.getMethod("setACharacter", String.class).invoke(input, someCharValue);
     viewClass.getMethod("apply").invoke(input);
-    String inputId = (String) viewClass.getMethod("getId").invoke(input);
+    String inputId = (String) viewClass.getMethod("getOid").invoke(input);
 
     collectionClass.getMethod("lock").invoke(businessDTO);
     Object output = collectionClass.getMethod("getView", viewClass).invoke(businessDTO, input);
 
     String someCharValue2 = (String) viewClass.getMethod("getACharacter").invoke(input);
 
-    String outputId = (String) viewClass.getMethod("getId").invoke(output);
+    String outputId = (String) viewClass.getMethod("getOid").invoke(output);
 
     Assert.assertEquals(inputId, outputId);
 
@@ -1106,10 +1106,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
+    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     Class<?> utilClass = LoaderDecorator.load(utilDTO);
     UtilDTO[] array = (UtilDTO[]) Array.newInstance(utilClass, 5);
@@ -1156,10 +1156,10 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO businessDTO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     collectionClass.getMethod("apply").invoke(businessDTO);
-    String id = businessDTO.getId();
+    String oid = businessDTO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, id);
+    businessDTO = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
     Class<?> viewClass = LoaderDecorator.load(viewDTO);
     ViewDTO[] array = (ViewDTO[]) Array.newInstance(viewClass, 5);
@@ -1274,8 +1274,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     try
     {
-      clientRequest.grantTypePermission(user.getId(), collection.getId(), Operation.READ.name());
-      clientRequest.grantTypePermission(user.getId(), collection.getId(), Operation.READ_ALL.name());
+      clientRequest.grantTypePermission(user.getOid(), collection.getOid(), Operation.READ.name());
+      clientRequest.grantTypePermission(user.getOid(), collection.getOid(), Operation.READ_ALL.name());
 
       ClientSession session = ClientSession.createUserSession("default", "Test", "Test", new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -1314,7 +1314,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
     finally
     {
-      clientRequest.delete(user.getId());
+      clientRequest.delete(user.getOid());
     }
   }
 

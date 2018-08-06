@@ -56,9 +56,9 @@ public abstract class TypeMethodDTOBase extends com.runwaysdk.system.metadata.Me
     return com.runwaysdk.system.metadata.MdMethodDTO.get(getRequest(), super.getChildId());
   }
   
-  public static com.runwaysdk.system.metadata.TypeMethodDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.TypeMethodDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.TypeMethodDTO) dto;
   }
@@ -88,7 +88,7 @@ public abstract class TypeMethodDTOBase extends com.runwaysdk.system.metadata.Me
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.TypeMethodQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -101,10 +101,10 @@ public abstract class TypeMethodDTOBase extends com.runwaysdk.system.metadata.Me
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.TypeMethodDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.TypeMethodDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.TypeMethodDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.TypeMethodDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -114,10 +114,10 @@ public abstract class TypeMethodDTOBase extends com.runwaysdk.system.metadata.Me
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.TypeMethodDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.TypeMethodDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.TypeMethodDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.TypeMethodDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

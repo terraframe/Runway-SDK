@@ -316,7 +316,7 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
     
     this.checkDuplicateKey();
     
-    String id = super.apply();
+    String oid = super.apply();
     
     // This relationship should not be created, as it will be imported
     if (this.isNew() && !isAlreadyAppliedToDB)
@@ -388,7 +388,7 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
 
@@ -403,7 +403,7 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
     BusinessDAOQuery query = queryFactory.businessDAOQuery(MdIndexInfo.CLASS);
 
     query.WHERE(query.aCharacter(MdIndexInfo.KEY).EQ(this.getAttributeIF(MdIndexInfo.KEY).getValue()).
-        AND(query.id().NE(this.getId())));
+        AND(query.oid().NE(this.getOid())));
 
     OIterator<BusinessDAOIF> i = query.getIterator();
 
@@ -635,14 +635,14 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
   }
 
   /**
-   * Returns an instance of MdIndexIF with the given id.
+   * Returns an instance of MdIndexIF with the given oid.
    *
-   * @param id
-   * @return an instance of MdIndexIF with the given id.
+   * @param oid
+   * @return an instance of MdIndexIF with the given oid.
    */
-  public static MdIndexDAOIF get(String id)
+  public static MdIndexDAOIF get(String oid)
   {
-    return (MdIndexDAOIF) BusinessDAO.get(id);
+    return (MdIndexDAOIF) BusinessDAO.get(oid);
   }
 
   /**
