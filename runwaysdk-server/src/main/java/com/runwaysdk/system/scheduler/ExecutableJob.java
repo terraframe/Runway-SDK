@@ -19,6 +19,7 @@
 package com.runwaysdk.system.scheduler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,7 +40,6 @@ import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
 import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.util.IDGenerator;
 
 public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, ExecutableJobIF
 {
@@ -49,12 +49,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
   public static final String       JOB_ID_PREPEND   = "_JOB_";
 
-  final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
+  private final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
   public ExecutableJob()
   {
     super();
-
+    
     this.listeners = new LinkedHashMap<String, JobListener>();
   }
 
@@ -74,6 +74,16 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public Map<String, JobListener> getJobListeners()
   {
     return this.listeners;
+  }
+  
+  public List<AllJobOperation> getSupportedOperations()
+  {
+    ArrayList<AllJobOperation> ops = new ArrayList<AllJobOperation>();
+    
+    ops.add(AllJobOperation.START);
+//    ops.add(AllJobOperation.CANCEL);
+    
+    return ops;
   }
   
   /**
@@ -147,6 +157,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       {
         executeAsUser(sessionId, job, history, record);
       }
+      catch (Throwable t)
+      {
+        logger.error("An error occurred while executing job " + job.toString() + ".", t);
+        throw t;
+      }
       finally
       {
         logOut(sessionId);
@@ -201,6 +216,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     catch (Throwable t)
     {
+      logger.error("An error occurred while executing job " + job.toString() + ".", t);
       errorMessage = getMessageFromException(t);
     }
     
