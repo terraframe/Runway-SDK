@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>2.0.40</version>
+    <version>2.0.41-SNAPSHOT</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
