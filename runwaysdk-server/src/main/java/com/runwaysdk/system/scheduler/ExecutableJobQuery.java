@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1435441145)
+@com.runwaysdk.business.ClassSignature(hash = -1441929661)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -77,57 +59,6 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.ExecutableJob.DESCRIPTION);
 
     return (com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.ExecutableJob.DESCRIPTION, mdAttributeIF, this, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableMoment getEntryDate()
-  {
-    return getEntryDate(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory()
-  {
-    return getRecordHistory(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()
@@ -591,15 +522,6 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription();
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias);
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableMoment getEntryDate();
-    public com.runwaysdk.query.SelectableMoment getEntryDate(String alias);
-    public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getJobId();
-    public com.runwaysdk.query.SelectableChar getJobId(String alias);
-    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory();
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension();
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias);
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel);
@@ -736,57 +658,6 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.ExecutableJob.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableMoment getEntryDate()
-  {
-    return getEntryDate(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory()
-  {
-    return getRecordHistory(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()
@@ -1215,15 +1086,6 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription();
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias);
     public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableMoment getEntryDate();
-    public com.runwaysdk.query.SelectableMoment getEntryDate(String alias);
-    public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getJobId();
-    public com.runwaysdk.query.SelectableChar getJobId(String alias);
-    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory();
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
-    public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension();
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias);
     public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension(String alias, String displayLabel);
@@ -1329,57 +1191,6 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.ExecutableJob.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableMoment getEntryDate()
-  {
-    return getEntryDate(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory()
-  {
-    return getRecordHistory(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.scheduler.ExecutableJob.RECORDHISTORY, alias, displayLabel);
 
   }
   public com.runwaysdk.system.metadata.MdDimensionQuery.MdDimensionQueryReferenceIF getRunAsDimension()

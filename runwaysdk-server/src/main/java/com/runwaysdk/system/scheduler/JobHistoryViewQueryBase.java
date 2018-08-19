@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1079902618)
+@com.runwaysdk.business.ClassSignature(hash = -833728963)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -97,6 +79,24 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
 
   }
  
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel()
+  {
+    return getDisplayLabel(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.DISPLAYLABEL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQuery.AbstractJobDisplayLabelQueryStructIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.DISPLAYLABEL, alias, displayLabel);
+
+  }
+ 
   public com.runwaysdk.query.SelectableMoment getEndTime()
   {
     return getEndTime(null);
@@ -169,24 +169,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
 
   }
  
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.JOBID, alias, displayLabel);
-
-  }
- 
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
   {
     return getJobOperation(null);
@@ -219,42 +201,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
   public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableMoment)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.LASTRUN, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries()
-  {
-    return getMaxRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.MAXRETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getMaxRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.MAXRETRIES, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries()
-  {
-    return getRetries(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.RETRIES, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableInteger getRetries(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableInteger)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.RETRIES, alias, displayLabel);
 
   }
  
@@ -308,24 +254,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
   public com.runwaysdk.query.SelectableChar getStatusLabel(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUSLABEL, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout()
-  {
-    return getTimeout(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.TIMEOUT, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableLong getTimeout(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableLong)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.TIMEOUT, alias, displayLabel);
 
   }
  

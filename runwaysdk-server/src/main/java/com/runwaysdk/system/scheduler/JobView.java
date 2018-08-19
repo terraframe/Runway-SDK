@@ -75,7 +75,7 @@ public class JobView extends JobViewBase
       
       view.setTriggerOnFailure(rel.getTriggerOnFailure());
       view.setDownstreamJob(downstreamJob);
-      view.setDownstreamJobDisplayLabel(downstreamJob.getJobId());
+      view.setDownstreamJobDisplayLabel(downstreamJob.getDisplayLabel().getValue());
     }
     
     return view;

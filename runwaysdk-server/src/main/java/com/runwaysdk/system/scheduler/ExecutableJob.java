@@ -19,6 +19,7 @@
 package com.runwaysdk.system.scheduler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,9 +40,8 @@ import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
 import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.util.IDGenerator;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, ExecutableJobIF
 {
   private static final long        serialVersionUID = 328266996;
 
@@ -49,24 +49,13 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
   public static final String       JOB_ID_PREPEND   = "_JOB_";
 
-  final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
+  private final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
   public ExecutableJob()
   {
     super();
-
+    
     this.listeners = new LinkedHashMap<String, JobListener>();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.business.Entity#buildKey()
-   */
-  @Override
-  protected String buildKey()
-  {
-    return this.getJobId();
   }
 
   /**
@@ -85,6 +74,16 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public Map<String, JobListener> getJobListeners()
   {
     return this.listeners;
+  }
+  
+  public List<AllJobOperation> getSupportedOperations()
+  {
+    ArrayList<AllJobOperation> ops = new ArrayList<AllJobOperation>();
+    
+    ops.add(AllJobOperation.START);
+//    ops.add(AllJobOperation.CANCEL);
+    
+    return ops;
   }
   
   /**
@@ -110,12 +109,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     ExecutableJob job;
     JobHistory history;
     
-    String oid = context.getJobDetail().getKey().getName();
-    if (oid.startsWith(JOB_ID_PREPEND))
+    String id = context.getJobDetail().getKey().getName();
+    if (id.startsWith(JOB_ID_PREPEND))
     {
-      oid = oid.replaceFirst(JOB_ID_PREPEND, "");
+      id = id.replaceFirst(JOB_ID_PREPEND, "");
 
-      job = ExecutableJob.get(oid);
+      job = ExecutableJob.get(id);
 
       history = createNewHistory();
 
@@ -124,7 +123,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     else
     { 
-      record = JobHistoryRecord.get(oid);
+      record = JobHistoryRecord.get(id);
       job = record.getParent();
       history = record.getChild();
     }
@@ -157,6 +156,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       try
       {
         executeAsUser(sessionId, job, history, record);
+      }
+      catch (Throwable t)
+      {
+        logger.error("An error occurred while executing job " + job.toString() + ".", t);
+        throw t;
       }
       finally
       {
@@ -212,12 +216,13 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     catch (Throwable t)
     {
+      logger.error("An error occurred while executing job " + job.toString() + ".", t);
       errorMessage = getMessageFromException(t);
     }
     
     // Configure the history
 
-    JobHistory jh = JobHistory.get(history.getOid());
+    JobHistory jh = JobHistory.get(history.getId());
 
     jh.appLock();
     jh.setEndTime(new Date());
@@ -301,12 +306,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   abstract public void execute(ExecutionContext executionContext);
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.system.scheduler.JobIF#getLocalizedDisplayLabel()
-   */
-  @Override
   public String getLocalizedDescription()
   {
     return this.getDescription().getValue();
@@ -329,7 +328,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     JobHistoryRecord rec = new JobHistoryRecord(this, jh);
     rec.apply();
 
-    SchedulerManager.schedule(this, rec.getOid());
+    SchedulerManager.schedule(this, rec.getId());
 
     return jh;
   }
@@ -364,34 +363,17 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   public void apply()
   {
-
-    // If a job oid is not set generate a unique oid in its place.
-    String jobId = this.getJobId();
-    if (jobId == null || jobId.trim().length() == 0)
-    {
-      String oid = IDGenerator.nextID();
-      this.setJobId(oid);
-    }
-
-    // Set the display label to the job oid if one is not set already
-    ExecutableJobDescription desc = this.getDescription();
-    String value = desc.getDefaultValue();
-    if (value == null || value.trim().length() == 0)
-    {
-      desc.setDefaultValue(this.getJobId());
-    }
-
     super.apply();
 
     if (this.isModified(CRONEXPRESSION))
     {
       if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
       {
-        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getOid(), this.getCronExpression());
+        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getId(), this.getCronExpression());
       }
       else
       {
-        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
+        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
       }
     }
   }
@@ -405,7 +387,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public void delete()
   {
     // Remove all scheduled jobs
-    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
+    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
 
     super.delete();
   }
@@ -419,20 +401,20 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public String toString()
   {
     String clazz = this.getClassDisplayLabel();
-    String oid = this.getJobId();
+    String id = this.getDisplayLabel().getValue();
     String desc = this.getDescription().getValue();
 
-    if (oid != null && desc != null && oid == desc)
+    if (id != null && desc != null && id == desc)
     {
       return "[" + clazz + "] - " + desc;
     }
-    else if (oid != null && desc != null)
+    else if (id != null && desc != null)
     {
-      return "[" + clazz + "] - " + desc + " (" + oid + ")";
+      return "[" + clazz + "] - " + desc + " (" + id + ")";
     }
     else
     {
-      return "[" + clazz + "] - " + this.getOid();
+      return "[" + clazz + "] - " + this.getId();
     }
   }
 

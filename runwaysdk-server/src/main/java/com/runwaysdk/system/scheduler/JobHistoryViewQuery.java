@@ -130,15 +130,12 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
       q.map(JobHistoryView.HISTORYCOMMENT, historyQ.getHistoryComment().localize());
       q.map(JobHistoryView.HISTORYINFORMATION, historyQ.getHistoryInformation().localize());
       q.map(JobHistoryView.DESCRIPTION, execJobQ.getDescription().localize());
-      q.map(JobHistoryView.JOBID, execJobQ.getJobId());
+      q.map(JobHistoryView.DISPLAYLABEL, execJobQ.getDisplayLabel().localize());
       q.map(JobHistoryView.CRONEXPRESSION, execJobQ.getCronExpression());
       q.map(JobHistoryView.STARTTIME, historyQ.getStartTime());
       q.map(JobHistoryView.ENDTIME, historyQ.getEndTime());
-      q.map(JobHistoryView.MAXRETRIES, execJobQ.getMaxRetries());
-      q.map(JobHistoryView.RETRIES, historyQ.getRetries());
-      q.map(JobHistoryView.TIMEOUT, execJobQ.getTimeout());
       q.map(JobHistoryView.WORKPROGRESS, historyQ.getWorkProgress());
-      q.map(JobHistoryView.WORKTOTAL, execJobQ.getWorkTotal());
+      q.map(JobHistoryView.WORKTOTAL, historyQ.getWorkTotal());
       q.map(JobHistoryView.STATUS, historyQ.getStatus());
       q.map(JobHistoryView.STATUSLABEL, historyQ.getStatus().getDisplayLabel().getDefaultLocale());
     }

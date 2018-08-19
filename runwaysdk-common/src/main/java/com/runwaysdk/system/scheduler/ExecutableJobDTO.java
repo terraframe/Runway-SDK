@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-public abstract class ExecutableJobDTO extends ExecutableJobDTOBase implements Job
+public abstract class ExecutableJobDTO extends ExecutableJobDTOBase
 {
   private static final long serialVersionUID = 1231291252;
   
@@ -38,10 +38,6 @@ public abstract class ExecutableJobDTO extends ExecutableJobDTOBase implements J
     super(businessDTO, clientRequest);
   }
   
-  /* (non-Javadoc)
-   * @see com.runwaysdk.system.scheduler.JobIF#getLocalizedDescription()
-   */
-  @Override
   public String getLocalizedDescription()
   {
     return this.getDescription().getValue();

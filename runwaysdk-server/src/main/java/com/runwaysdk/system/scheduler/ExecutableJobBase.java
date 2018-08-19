@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1550433758)
+@com.runwaysdk.business.ClassSignature(hash = 994465420)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -32,12 +14,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   public static java.lang.String DESCRIPTION = "description";
   private com.runwaysdk.business.Struct description = null;
   
-  public static java.lang.String ENTRYDATE = "entryDate";
-  public static java.lang.String JOBID = "jobId";
-  public static java.lang.String RECORDHISTORY = "recordHistory";
   public static java.lang.String RUNASDIMENSION = "runAsDimension";
   public static java.lang.String RUNASUSER = "runAsUser";
-  private static final long serialVersionUID = 1550433758;
+  private static final long serialVersionUID = 994465420;
   
   public ExecutableJobBase()
   {
@@ -59,90 +38,6 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DESCRIPTION);
-  }
-  
-  public java.util.Date getEntryDate()
-  {
-    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(ENTRYDATE));
-  }
-  
-  public void validateEntryDate()
-  {
-    this.validateAttribute(ENTRYDATE);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getEntryDateMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(ENTRYDATE);
-  }
-  
-  public void setEntryDate(java.util.Date value)
-  {
-    if(value == null)
-    {
-      setValue(ENTRYDATE, "");
-    }
-    else
-    {
-      setValue(ENTRYDATE, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
-    }
-  }
-  
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void validateJobId()
-  {
-    this.validateAttribute(JOBID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getJobIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
-  }
-  
-  public Boolean getRecordHistory()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(RECORDHISTORY));
-  }
-  
-  public void validateRecordHistory()
-  {
-    this.validateAttribute(RECORDHISTORY);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getRecordHistoryMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(RECORDHISTORY);
-  }
-  
-  public void setRecordHistory(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(RECORDHISTORY, "");
-    }
-    else
-    {
-      setValue(RECORDHISTORY, java.lang.Boolean.toString(value));
-    }
   }
   
   public com.runwaysdk.system.metadata.MdDimension getRunAsDimension()
