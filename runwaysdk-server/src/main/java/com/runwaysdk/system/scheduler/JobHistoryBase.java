@@ -155,15 +155,15 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
   }
   
-  public void setEntityDomainId(java.lang.String id)
+  public void setEntityDomainId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(ENTITYDOMAIN, "");
     }
     else
     {
-      setValue(ENTITYDOMAIN, id);
+      setValue(ENTITYDOMAIN, oid);
     }
   }
   
@@ -355,15 +355,15 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
   }
   
-  public void setOwnerId(java.lang.String id)
+  public void setOwnerId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(OWNER, "");
     }
     else
     {
-      setValue(OWNER, id);
+      setValue(OWNER, oid);
     }
   }
   

@@ -116,9 +116,9 @@ public class SchedulerTest extends TestCase
     private static Map<String, TestRecord> records = new ConcurrentHashMap<String, TestRecord>();
 
     /**
-     * The id of the Job that this is recorded against.
+     * The oid of the Job that this is recorded against.
      */
-    private final String                   id;
+    private final String                   oid;
 
     /**
      * The number of executions.
@@ -130,19 +130,19 @@ public class SchedulerTest extends TestCase
      */
     private boolean                        executed;
 
-    private TestRecord(String id)
+    private TestRecord(String oid)
     {
-      this.id = id;
+      this.oid = oid;
       this.count = 0;
       this.executed = false;
     }
 
     /**
-     * @return the id
+     * @return the oid
      */
     public String getId()
     {
-      return id;
+      return oid;
     }
 
     /**
@@ -165,7 +165,7 @@ public class SchedulerTest extends TestCase
     {
       if (this.count > 0)
       {
-        throw new ProgrammingErrorException("Job [" + id + "] has already executed.");
+        throw new ProgrammingErrorException("Job [" + oid + "] has already executed.");
       }
       else
       {
@@ -181,17 +181,17 @@ public class SchedulerTest extends TestCase
 
     private static TestRecord newRecord(ExecutableJob job)
     {
-      String id = job.getDisplayLabel().getValue();
+      String oid = job.getDisplayLabel().getValue();
       synchronized (records)
       {
-        if (records.containsKey(id))
+        if (records.containsKey(oid))
         {
-          throw new ProgrammingErrorException("Job [" + id + "] already recorded.");
+          throw new ProgrammingErrorException("Job [" + oid + "] already recorded.");
         }
         else
         {
-          TestRecord tr = new TestRecord(id);
-          records.put(id, tr);
+          TestRecord tr = new TestRecord(oid);
+          records.put(oid, tr);
           return tr;
         }
 
@@ -211,7 +211,7 @@ public class SchedulerTest extends TestCase
     public void execute(ExecutionContext executionContext)
     {
       ExecutableJob job = executionContext.getJob();
-      String id = job.getDisplayLabel().getValue();
+      String oid = job.getDisplayLabel().getValue();
       
       JobHistory history = executionContext.getJobHistory();
       history.lock();
@@ -225,7 +225,7 @@ public class SchedulerTest extends TestCase
       }
       history.unlock();
  
-      TestRecord testRecord = TestRecord.records.get(id);
+      TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.recordOnce();
     }
   }

@@ -26,7 +26,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String STARTTIME = "startTime";
@@ -195,18 +195,18 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   
   public String getId()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   @SuppressWarnings("unchecked")
@@ -430,9 +430,9 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return CLASS;
   }
   
-  public static JobHistoryView get(String id)
+  public static JobHistoryView get(String oid)
   {
-    return (JobHistoryView) com.runwaysdk.business.View.get(id);
+    return (JobHistoryView) com.runwaysdk.business.View.get(oid);
   }
   
   public static com.runwaysdk.system.scheduler.JobHistoryViewQuery getJobHistories(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber)

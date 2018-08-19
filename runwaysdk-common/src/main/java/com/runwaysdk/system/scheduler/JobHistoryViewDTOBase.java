@@ -23,7 +23,7 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String STARTTIME = "startTime";
@@ -527,9 +527,9 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.system.scheduler.JobHistoryViewQueryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static JobHistoryViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static JobHistoryViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (JobHistoryViewDTO) dto;
   }

@@ -62,13 +62,13 @@ public  class AbstractJobDisplayLabelQuery extends com.runwaysdk.query.Generated
  
   public com.runwaysdk.query.SelectableChar getId(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -188,13 +188,13 @@ public  class AbstractJobDisplayLabelQuery extends com.runwaysdk.query.Generated
  
   public com.runwaysdk.query.SelectableChar getId(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.ID, alias, null);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

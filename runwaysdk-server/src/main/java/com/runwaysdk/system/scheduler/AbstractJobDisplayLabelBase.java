@@ -12,7 +12,7 @@ public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJobDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1704609613;
@@ -27,9 +27,9 @@ public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business
     super(component, structName);
   }
   
-  public static AbstractJobDisplayLabel get(String id)
+  public static AbstractJobDisplayLabel get(String oid)
   {
-    return (AbstractJobDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (AbstractJobDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static AbstractJobDisplayLabel getByKey(String key)
@@ -39,18 +39,18 @@ public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business
   
   public String getId()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
   public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

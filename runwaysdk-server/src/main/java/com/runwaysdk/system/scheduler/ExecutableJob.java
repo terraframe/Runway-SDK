@@ -109,12 +109,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     ExecutableJob job;
     JobHistory history;
     
-    String id = context.getJobDetail().getKey().getName();
-    if (id.startsWith(JOB_ID_PREPEND))
+    String oid = context.getJobDetail().getKey().getName();
+    if (oid.startsWith(JOB_ID_PREPEND))
     {
-      id = id.replaceFirst(JOB_ID_PREPEND, "");
+      oid = oid.replaceFirst(JOB_ID_PREPEND, "");
 
-      job = ExecutableJob.get(id);
+      job = ExecutableJob.get(oid);
 
       history = createNewHistory();
 
@@ -123,7 +123,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     else
     { 
-      record = JobHistoryRecord.get(id);
+      record = JobHistoryRecord.get(oid);
       job = record.getParent();
       history = record.getChild();
     }
@@ -401,16 +401,16 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public String toString()
   {
     String clazz = this.getClassDisplayLabel();
-    String id = this.getDisplayLabel().getValue();
+    String oid = this.getDisplayLabel().getValue();
     String desc = this.getDescription().getValue();
 
-    if (id != null && desc != null && id == desc)
+    if (oid != null && desc != null && oid == desc)
     {
       return "[" + clazz + "] - " + desc;
     }
-    else if (id != null && desc != null)
+    else if (oid != null && desc != null)
     {
-      return "[" + clazz + "] - " + desc + " (" + id + ")";
+      return "[" + clazz + "] - " + desc + " (" + oid + ")";
     }
     else
     {
