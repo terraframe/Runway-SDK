@@ -32,7 +32,7 @@ public class GeoNodeEntity extends GeoNodeEntityBase
   }
 
   @Override
-  public MdAttribute getOidentifierAttribute()
+  public MdAttribute getIdentifierAttribute()
   {
     return MdAttribute.get(GeoEntity.getGeoIdMd().getOid());
   }

@@ -45,7 +45,7 @@ public abstract class GeoNode extends GeoNodeBase
     return this.getOid();
   }
 
-  public abstract MdAttribute getOidentifierAttribute();
+  public abstract MdAttribute getIdentifierAttribute();
 
   public abstract MdAttribute getDisplayLabelAttribute();
 

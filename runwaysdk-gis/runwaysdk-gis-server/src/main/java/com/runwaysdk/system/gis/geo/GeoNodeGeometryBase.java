@@ -121,7 +121,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
   }
   
-  public com.runwaysdk.system.metadata.MdAttribute getOidentifierAttribute()
+  public com.runwaysdk.system.metadata.MdAttribute getIdentifierAttribute()
   {
     if (getValue(IDENTIFIERATTRIBUTE).trim().equals(""))
     {
@@ -133,7 +133,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
   }
   
-  public String getOidentifierAttributeId()
+  public String getIdentifierAttributeId()
   {
     return getValue(IDENTIFIERATTRIBUTE);
   }
@@ -143,13 +143,13 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     this.validateAttribute(IDENTIFIERATTRIBUTE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getOidentifierAttributeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getIdentifierAttributeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoNodeGeometry.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(IDENTIFIERATTRIBUTE);
   }
   
-  public void setOidentifierAttribute(com.runwaysdk.system.metadata.MdAttribute value)
+  public void setIdentifierAttribute(com.runwaysdk.system.metadata.MdAttribute value)
   {
     if(value == null)
     {

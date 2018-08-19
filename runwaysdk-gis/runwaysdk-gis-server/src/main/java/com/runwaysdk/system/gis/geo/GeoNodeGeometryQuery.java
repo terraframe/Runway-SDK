@@ -102,13 +102,13 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.GeoNodeGeometry.GEOMETRYATTRIBUTE, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute()
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute()
   {
-    return getOidentifierAttribute(null);
+    return getIdentifierAttribute(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE);
@@ -117,7 +117,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias, String displayLabel)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias, String displayLabel)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE);
@@ -239,9 +239,9 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute(String alias, String displayLabel);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute();
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias);
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias, String displayLabel);
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute();
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute(String alias);
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute(String alias, String displayLabel);
@@ -317,19 +317,19 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.GEOMETRYATTRIBUTE,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute()
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute()
   {
-    return getOidentifierAttribute(null);
+    return getIdentifierAttribute(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE, alias, null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias, String displayLabel)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE,  alias, displayLabel);
 
@@ -413,9 +413,9 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getGeometryAttribute(String alias, String displayLabel);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute();
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias);
-    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute();
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias);
+    public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias, String displayLabel);
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute();
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute(String alias);
     public com.runwaysdk.system.gis.metadata.MdAttributeMultiPolygonQuery.MdAttributeMultiPolygonQueryReferenceIF getMultiPolygonAttribute(String alias, String displayLabel);
@@ -540,19 +540,19 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.GEOMETRYATTRIBUTE,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute()
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute()
   {
-    return getOidentifierAttribute(null);
+    return getIdentifierAttribute(null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE, alias, null);
 
   }
  
-  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getOidentifierAttribute(String alias, String displayLabel)
+  public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getIdentifierAttribute(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoNodeGeometry.IDENTIFIERATTRIBUTE,  alias, displayLabel);
 
