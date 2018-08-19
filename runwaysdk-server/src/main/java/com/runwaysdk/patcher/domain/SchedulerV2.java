@@ -47,7 +47,7 @@ public class SchedulerV2
      */
     MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
     displayLabel.setValue(MdAttributeLocalCharacterInfo.NAME, MdTermInfo.DISPLAY_LABEL);
-    displayLabel.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, MdClass.get(MdBusiness.CLASS, AbstractJob.CLASS).getId());
+    displayLabel.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, MdClass.get(MdBusiness.CLASS, AbstractJob.CLASS).getOid());
     displayLabel.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
     displayLabel.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     displayLabel.apply();

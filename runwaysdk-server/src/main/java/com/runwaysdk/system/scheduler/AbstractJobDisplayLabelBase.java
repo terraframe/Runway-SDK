@@ -37,7 +37,7 @@ public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business
     return (AbstractJobDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(OID);
   }
@@ -47,7 +47,7 @@ public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJobDisplayLabel.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);

@@ -222,7 +222,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     
     // Configure the history
 
-    JobHistory jh = JobHistory.get(history.getId());
+    JobHistory jh = JobHistory.get(history.getOid());
 
     jh.appLock();
     jh.setEndTime(new Date());
@@ -328,7 +328,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     JobHistoryRecord rec = new JobHistoryRecord(this, jh);
     rec.apply();
 
-    SchedulerManager.schedule(this, rec.getId());
+    SchedulerManager.schedule(this, rec.getOid());
 
     return jh;
   }
@@ -369,11 +369,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
       {
-        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getId(), this.getCronExpression());
+        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getOid(), this.getCronExpression());
       }
       else
       {
-        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
+        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
       }
     }
   }
@@ -387,7 +387,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public void delete()
   {
     // Remove all scheduled jobs
-    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
+    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
 
     super.delete();
   }
@@ -414,7 +414,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     else
     {
-      return "[" + clazz + "] - " + this.getId();
+      return "[" + clazz + "] - " + this.getOid();
     }
   }
 

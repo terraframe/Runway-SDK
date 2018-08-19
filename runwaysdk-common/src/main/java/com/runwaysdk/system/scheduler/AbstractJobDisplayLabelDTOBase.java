@@ -113,7 +113,7 @@ public abstract class AbstractJobDisplayLabelDTOBase extends com.runwaysdk.busin
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.scheduler.AbstractJobDisplayLabelQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

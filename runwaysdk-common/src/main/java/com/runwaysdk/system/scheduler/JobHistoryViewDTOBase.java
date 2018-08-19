@@ -547,7 +547,7 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

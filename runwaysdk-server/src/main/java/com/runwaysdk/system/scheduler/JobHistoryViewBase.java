@@ -193,7 +193,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(HISTORYINFORMATION);
   }
   
-  public String getId()
+  public String getOid()
   {
     return getValue(OID);
   }
@@ -203,7 +203,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
@@ -219,7 +219,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      addEnumItem(JOBOPERATION, value.getId());
+      addEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -227,7 +227,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      removeEnumItem(JOBOPERATION, value.getId());
+      removeEnumItem(JOBOPERATION, value.getOid());
     }
   }
   
@@ -313,7 +313,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      addEnumItem(STATUS, value.getId());
+      addEnumItem(STATUS, value.getOid());
     }
   }
   
@@ -321,7 +321,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     if(value != null)
     {
-      removeEnumItem(STATUS, value.getId());
+      removeEnumItem(STATUS, value.getOid());
     }
   }
   

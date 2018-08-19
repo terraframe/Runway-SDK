@@ -192,7 +192,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -460,7 +460,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -554,7 +554,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.scheduler.AbstractJobQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

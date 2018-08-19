@@ -140,7 +140,7 @@ public class SchedulerTest extends TestCase
     /**
      * @return the oid
      */
-    public String getId()
+    public String getOid()
     {
       return oid;
     }
@@ -273,7 +273,7 @@ public class SchedulerTest extends TestCase
       {
         if (runs > maxWaits)
         {
-          fail("The record [" + tr.getId() + "] took longer than [" + maxWaits + "] retries to complete.");
+          fail("The record [" + tr.getOid() + "] took longer than [" + maxWaits + "] retries to complete.");
         }
 
         // Let's wait a while and try again.
@@ -329,7 +329,7 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -374,7 +374,7 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -412,7 +412,7 @@ public class SchedulerTest extends TestCase
       }
       
       // Modify the CRON string to never run while the job is currently executing.
-      job = ExecutableJob.get(job.getId());
+      job = ExecutableJob.get(job.getOid());
       job.setCronExpression("");
       job.apply();
       
@@ -431,7 +431,7 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -484,8 +484,8 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      ExecutableJob.get(job1.getId()).delete();
-      ExecutableJob.get(job2.getId()).delete();
+      ExecutableJob.get(job1.getOid()).delete();
+      ExecutableJob.get(job2.getOid()).delete();
       clearHistory();
     }
   }
@@ -732,7 +732,7 @@ public class SchedulerTest extends TestCase
   // // Make sure the ExecutableJob DB record was removed
   // try
   // {
-  // ExecutableJob.get(job.getId());
+  // ExecutableJob.get(job.getOid());
   //
   // fail("The ExecutableJob was not deleted with removeOnComplete set to true.");
   // }
@@ -752,7 +752,7 @@ public class SchedulerTest extends TestCase
   // {
   // try
   // {
-  // ExecutableJob.get(job.getId()).delete();
+  // ExecutableJob.get(job.getOid()).delete();
   // }
   // catch(DataNotFoundException e)
   // {
