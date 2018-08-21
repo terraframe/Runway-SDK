@@ -49,23 +49,6 @@ import com.runwaysdk.util.IDGenerator;
 public class ServerIDGenerator extends IDGenerator
 {
   /**
-   * Instantiates the singleton
-   */
-  protected synchronized static void setUp()
-  {
-    IDGenerator.setUp();
-
-    space = CommonProperties.getDomain();
-
-    // The user MUST change this property value
-    if (space.equalsIgnoreCase("www.Change_me_to_your_unique_domain.com"))
-    {
-      String error = "[domain] property  in server.properties not been set.";
-      throw new ConfigurationException(error);
-    }
-  }
-
-  /**
    * Generates a unique database identifier.
    *
    * @return unique database identifier.
@@ -102,6 +85,6 @@ public class ServerIDGenerator extends IDGenerator
    */
   public synchronized static String hashedId(String input)
   {
-    return "i"+IDGenerator.hash(input);
+    return IDGenerator.generateId(input);
   }
 }

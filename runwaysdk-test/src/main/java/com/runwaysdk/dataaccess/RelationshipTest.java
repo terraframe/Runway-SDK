@@ -1646,7 +1646,7 @@ public class RelationshipTest
       // correctly
       relationshipDAO = RelationshipDAO.get(relationshipDAO.getOid()).getRelationshipDAO();
 
-      if (!relationshipDAO.getValue("someCharacter").equals("value 2"))
+      if (!relationshipDAO.getAttribute("someCharacter").getValue().equals("value 2"))
       {
         Assert.fail("An attribute was modified on an instance of a relationship whose type is cached.  The ObjectCache did not contain the right value.");
       }
