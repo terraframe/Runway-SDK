@@ -171,7 +171,8 @@ public class AttributeColumn extends ExcelColumn
     }
     else if (type.equals(Integer.class.getName()))
     {
-      return new Integer(new Double(cell.getNumericCellValue()).intValue());
+      return ExcelUtil.getInteger(cell);
+//      return new Integer(new Double(cell.getNumericCellValue()).intValue());
     }
     else if (type.equals(Boolean.class.getName()))
     {
