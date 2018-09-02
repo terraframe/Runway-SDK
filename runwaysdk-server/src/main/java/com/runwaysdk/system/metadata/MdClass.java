@@ -29,6 +29,8 @@ public abstract class MdClass extends MdClassBase
   {
     super();
   }
+  
+  
  
   public static MdClass getMdClass(String type)
   {

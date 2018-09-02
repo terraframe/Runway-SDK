@@ -28,7 +28,7 @@ public interface MdTableInfo extends MdClassInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                   = "imleaq8bumv0cvrtwtct36s4vcl5qqpa00000000000000000000000000000001";  
+  public static final String ID_VALUE                   = "imleaq8bumv0cvrtwtct36s4vcl5qqpa0058";  
   
   /**
    * Name of the attribute that stores the name of the the database table used

@@ -28,7 +28,7 @@ public interface ImportLogInfo extends BusinessInfo
   /**uence
    * OID of the metadata that defines this class.
    */
-   public static final String ID_VALUE                 = "r2fcr7wbdal05dc99a6l81a6wwpy2g3b00000000000000000000000000000001";
+   public static final String ID_VALUE                 = "r2fcr7wbdal05dc99a6l81a6wwpy2g3b0058";
   
    /**
     * Source site.

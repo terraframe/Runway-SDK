@@ -28,7 +28,7 @@ public interface MdClassInfo extends MdTypeInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "20070920NM000000000000000000000100000000000000000000000000000001";  
+  public static final String ID_VALUE  = "20070920NM00000000000000000000010058";  
   
   /**
    * A published class has a representation in the DTO layer.

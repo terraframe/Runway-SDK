@@ -30,6 +30,6 @@ public interface IndicatorElementInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE          = "in5q49sp4ysp566txfog13xfvpjpjrnb00000000000000000000000000000001";
+  public static final String ID_VALUE          = "in5q49sp4ysp566txfog13xfvpjpjrnb0058";
    
 }

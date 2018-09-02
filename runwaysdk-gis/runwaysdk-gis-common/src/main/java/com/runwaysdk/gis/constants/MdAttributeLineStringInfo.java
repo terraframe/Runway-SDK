@@ -28,5 +28,5 @@ public interface MdAttributeLineStringInfo extends MdAttributeGeometryInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "NM20090302000000000000000000000100000000000000000000000000000001";
+  public static final String ID_VALUE  = "NM2009030200000000000000000000010058";
 }

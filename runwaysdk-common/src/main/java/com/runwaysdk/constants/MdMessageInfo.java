@@ -28,6 +28,6 @@ public interface MdMessageInfo extends MdNotificationInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "20071130NM000000000000000000001100000000000000000000000000000001";
+  public static final String ID_VALUE  = "20071130NM00000000000000000000110058";
 
 }

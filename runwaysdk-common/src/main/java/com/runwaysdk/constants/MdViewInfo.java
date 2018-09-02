@@ -28,7 +28,7 @@ public interface MdViewInfo extends MdSessionInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE               = "20071129NM000000000000000000000500000000000000000000000000000001"; 
+  public static final String ID_VALUE               = "20071129NM00000000000000000000050058"; 
 
   /**
    * Super defining class.

@@ -28,7 +28,7 @@ public interface MdExceptionInfo extends MdLocalizableInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                  = "20071129NM000000000000000000000300000000000000000000000000000001"; 
+  public static final String ID_VALUE                  = "20071129NM00000000000000000000030058"; 
 
   /**
    * Super defining class

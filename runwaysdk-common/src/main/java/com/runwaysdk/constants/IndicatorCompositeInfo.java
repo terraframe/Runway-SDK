@@ -30,7 +30,7 @@ public interface IndicatorCompositeInfo extends IndicatorElementInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE      = "ijx2qpvkmeubmt67o8t8ac0a5nd4x8pc00000000000000000000000000000001";
+  public static final String ID_VALUE      = "ijx2qpvkmeubmt67o8t8ac0a5nd4x8pc0058";
 
   /**
    * The left operand that references a {@link IndicatorElementInfo}

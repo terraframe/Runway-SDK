@@ -23,7 +23,7 @@ public enum EntityTypes
   /**
    * Class that defines enumeration items for caching types.
    */
-  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "0000000000000000000000000000022200000000000000000000000000000001"),
+  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "000000000000000000000000000002220058"),
 
   /**
    * Type that defines relationships.
@@ -33,12 +33,12 @@ public enum EntityTypes
   /**
    * Class that defines the symmetric encryption methods
    */
-  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "0000000000000000000000000000062600000000000000000000000000000001"),
+  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "000000000000000000000000000006260058"),
 
   /**
    * Class that defines the hash encryption methods
    */
-  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "0000000000000000000000000000064000000000000000000000000000000001"),
+  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "000000000000000000000000000006400058"),
 
   /**
    * Class that defines the localized metadata fields

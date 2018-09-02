@@ -30,6 +30,9 @@ public class MdBusiness extends MdBusinessBase
     super();
   }  
   
+  
+  
+  
   public static MdBusiness getMdBusiness(String type)
   {
     return (MdBusiness) BusinessFacade.get(MdBusinessDAO.getMdBusinessDAO(type));

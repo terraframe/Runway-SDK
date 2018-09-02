@@ -371,7 +371,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
         if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getOid()))
         {          
           String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
-          String newRootId = ServerIDGenerator.hashedId(keyValue);
+          String newRootId = ServerIDGenerator.generateId(keyValue);
           String newId = IdParser.buildId(newRootId, mdTypeRootId);
           String currentId = entityDAO.getOid();
           

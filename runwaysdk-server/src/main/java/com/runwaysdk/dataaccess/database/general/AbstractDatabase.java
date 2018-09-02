@@ -1455,7 +1455,7 @@ public abstract class AbstractDatabase
     // db identifier.
     int maxBaseHashLength = Database.MAX_DB_IDENTIFIER_SIZE - 1;
 
-    String hashString = ServerIDGenerator.hash(stringToHash);
+    String hashString = ServerIDGenerator.generateId(stringToHash);
 
     if (hashString.length() < maxBaseHashLength)
     {

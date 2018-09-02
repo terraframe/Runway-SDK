@@ -28,7 +28,7 @@ public interface MdElementInfo extends MdEntityInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                   = "0000000000000000000000000000035700000000000000000000000000000001";
+  public static final String ID_VALUE                   = "000000000000000000000000000003570058";
 
   /**
    * Name of the attribute that indicates if this type is extendable or not.

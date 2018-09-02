@@ -29,7 +29,7 @@ public interface MdAttributeConcreteInfo extends MdAttributeInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "0000000000000000000000000000000200000000000000000000000000000001";
+  public static final String ID_VALUE  = "000000000000000000000000000000020058";
   /**
    * Name of the attribute that references the meta data type to which this
    * attribute belongs.

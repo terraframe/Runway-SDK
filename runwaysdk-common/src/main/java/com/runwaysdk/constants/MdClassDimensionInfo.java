@@ -23,7 +23,7 @@ public interface MdClassDimensionInfo extends MetadataInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE              = "JS06222010000000000000000000000500000000000000000000000000000001";
+  public static final String ID_VALUE              = "JS0622201000000000000000000000050058";
 
   /**
    * Class MetaData.

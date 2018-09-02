@@ -27,7 +27,7 @@ public interface MdRelationshipInfo extends MdElementInfo
    */
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdRelationship";
   
-  public static final String ID_VALUE                   = "0000000000000000000000000000006100000000000000000000000000000001";
+  public static final String ID_VALUE                   = "000000000000000000000000000000610058";
   
   /**
    * Name of the attribute that stores the oid of the super class.

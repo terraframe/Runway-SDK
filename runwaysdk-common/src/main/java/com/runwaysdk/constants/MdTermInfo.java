@@ -30,7 +30,7 @@ public interface MdTermInfo extends MdBusinessInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE = "xl2eqz5dv2cq2hoogeb43gg0ohakvvsp00000000000000000000000000000001";
+  public static final String ID_VALUE = "xl2eqz5dv2cq2hoogeb43gg0ohakvvsp0058";
 
 //  public static final String STRATEGY = "strategy";
   
