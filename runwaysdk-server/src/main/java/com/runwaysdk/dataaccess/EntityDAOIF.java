@@ -49,7 +49,7 @@ public interface EntityDAOIF extends ComponentIF
    * 
    * @return root oid of this component.
    */
-  public String getRootId();
+  public String getBaseOid();
   
   /**
    * Returns true if this object originated from a cache, false otherwise.

@@ -119,7 +119,7 @@ public class XMLImporter
 
   static final String                DOMAIN_TAG = "@@domain";
 
-  Pattern                            idPattern  = Pattern.compile("\\w{64}");
+  Pattern                            idPattern  = Pattern.compile("\\w{36}");
 
   public static void main(String args[])
   {
@@ -988,7 +988,8 @@ public class XMLImporter
         }
         else if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL) || name.equals(MdAttributeConcreteInfo.DESCRIPTION))
         {
-          value = ServerIDGenerator.nextID() + "NM200904120000000000000000000030";
+//          value = ServerIDGenerator.nextID() + "NM200904120000000000000000000030";
+          value = ServerIDGenerator.nextID() + "0287";
 
           NodeList nextChildren = next.getChildNodes();
 

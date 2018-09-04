@@ -90,6 +90,8 @@ public interface MdTypeDAOIF extends MetadataDAOIF
    * @return the name of the type that this MdType definess.
    */
   public String getTypeName();
+  
+  public String getRootId();
 
   /**
    * Returns the name of the package of the class that this object defines.

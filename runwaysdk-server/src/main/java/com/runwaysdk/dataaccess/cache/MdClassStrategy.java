@@ -288,7 +288,8 @@ public class MdClassStrategy extends MetaDataObjectStrategy
       MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
 
       this.mdClassTypeMap.put(mdClassDAO.definesType(), mdClassDAO);
-      this.mdClassRootIdMap.put(IdParser.parseRootFromId(mdClassDAO.getOid()), mdClassDAO);
+//      this.mdClassRootIdMap.put(IdParser.parseRootFromId(mdClassDAO.getOid()), mdClassDAO);
+      this.mdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO);
 
       if (mdClassDAO instanceof MdEntityDAO)
       {

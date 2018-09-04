@@ -451,7 +451,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
    * 
    * This is a spoofed oid.
    */
-  public String getRootId()
+  public String getBaseOid()
   {
     return this.getOid();
   }

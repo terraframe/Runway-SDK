@@ -17,4 +17,4 @@
 -- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 --
 
-UPDATE class_cache SET item_id = ‘0000000000000000000000000000023000000000000000000000000000000222’ WHERE set_id = ‘t147vg0yvicg48y82dyhugaoixdsv0aa’;
+UPDATE class_cache SET item_id = ‘000000000000000000000000000002300077’ WHERE set_id = ‘t147vg0yvicg48y82dyhugaoixdsv0aa’;

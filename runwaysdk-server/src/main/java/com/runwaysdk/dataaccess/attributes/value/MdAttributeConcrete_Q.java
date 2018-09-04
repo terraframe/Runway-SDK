@@ -618,11 +618,11 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getRootId()
+   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getBaseOid()
    */
-  public String getRootId()
+  public String getBaseOid()
   {
-    return this.mdAttributeConcreteIF.getRootId();
+    return this.mdAttributeConcreteIF.getBaseOid();
   }
 
   /**

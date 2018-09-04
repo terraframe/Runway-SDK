@@ -84,7 +84,7 @@ public class Database
   /**
    * The size, in characters, of the OID strings for each object in the database.
    */
-  public static final String DATABASE_ID_SIZE                 = "64";
+  public static final String DATABASE_ID_SIZE                 = "36";
 
   /**
    * Magic number for an unlimited text length on clob attributes

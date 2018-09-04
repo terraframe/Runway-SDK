@@ -108,7 +108,7 @@ public class EntityGenerator
 
     mdAttributeCharacter = MdAttributeCharacter.newInstance();
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.NAME,                "testChar64");
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.SIZE,                "64");
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.SIZE,                "36");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,       "Character Length 64");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,       "");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.REQUIRED,            MdAttributeBooleanIF.FALSE);

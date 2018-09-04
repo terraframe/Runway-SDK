@@ -82,7 +82,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    *
    * @return root oid of this component.
    */
-  public String getRootId()
+  public String getBaseOid()
   {
     return IdParser.parseRootFromId(this.getOid());
   }

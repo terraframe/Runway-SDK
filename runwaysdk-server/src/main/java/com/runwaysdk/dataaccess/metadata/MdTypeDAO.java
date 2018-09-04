@@ -133,6 +133,12 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     return this.getAttributeIF(MdTypeInfo.NAME).getValue();
   }
+  
+  public String getRootId()
+  {
+    return this.getAttribute(MdTypeInfo.ROOT_ID).getValue();
+  }
+
 
   /**
    * Returns the name of the package of the type that this object defines.

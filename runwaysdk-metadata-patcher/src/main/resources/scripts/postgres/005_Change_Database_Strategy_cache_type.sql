@@ -18,8 +18,8 @@
 --
 
 DELETE FROM class_cache WHERE set_id='xd1o3kqe5423wghcfq073b1phfqpysse';
-INSERT INTO class_cache (set_id, item_id)  VALUES  ('xd1o3kqe5423wghcfq073b1phfqpysse', '0000000000000000000000000000023000000000000000000000000000000222');
-UPDATE md_business SET cache_algorithm= 'xd1o3kqe5423wghcfq073b1phfqpysse' , cache_algorithm_c= '0000000000000000000000000000023000000000000000000000000000000222' , oid= '7ao1aea6z1zl99p7k824dfzcssmp3htq0058'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
+INSERT INTO class_cache (set_id, item_id)  VALUES  ('xd1o3kqe5423wghcfq073b1phfqpysse', '000000000000000000000000000002300077');
+UPDATE md_business SET cache_algorithm= 'xd1o3kqe5423wghcfq073b1phfqpysse' , cache_algorithm_c= '000000000000000000000000000002300077' , oid= '7ao1aea6z1zl99p7k824dfzcssmp3htq0058'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
 UPDATE metadata SET seq= 4848 , last_update_date= '2016-11-06 18:47:22'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
-UPDATE md_business SET cache_algorithm= 'xd1o3kqe5423wghcfq073b1phfqpysse' , cache_algorithm_c= '0000000000000000000000000000023000000000000000000000000000000222' , oid= '7ao1aea6z1zl99p7k824dfzcssmp3htq0058'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
+UPDATE md_business SET cache_algorithm= 'xd1o3kqe5423wghcfq073b1phfqpysse' , cache_algorithm_c= '000000000000000000000000000002300077' , oid= '7ao1aea6z1zl99p7k824dfzcssmp3htq0058'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
 UPDATE metadata SET seq= 4849 , last_update_date= '2016-11-06 18:47:22'  WHERE oid='7ao1aea6z1zl99p7k824dfzcssmp3htq0058';
