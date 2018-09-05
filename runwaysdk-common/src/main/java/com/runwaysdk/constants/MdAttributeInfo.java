@@ -30,7 +30,7 @@ public interface MdAttributeInfo extends MetadataInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE          = "NM2008101900000000000000000000030058";
+  public static final String ID_VALUE          = "ea49d7f8-aedf-3ae2-83d4-f82c33b30058";
 
   public static final String GENERATE_ACCESSOR = "generateAccessor";
 }

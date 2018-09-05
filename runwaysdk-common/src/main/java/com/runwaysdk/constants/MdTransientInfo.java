@@ -28,7 +28,7 @@ public interface MdTransientInfo extends MdClassInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "20071129NM00000000000000000000010058"; 
+  public static final String ID_VALUE  = "94e5d4bb-4a0d-3c2d-b464-176abd160058"; 
   
   /**
    * Name of the attribute that indicates if this type is extendable or not.

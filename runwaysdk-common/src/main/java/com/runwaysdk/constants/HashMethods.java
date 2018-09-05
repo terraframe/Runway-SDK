@@ -20,9 +20,9 @@ package com.runwaysdk.constants;
 
 public enum HashMethods
 {
-  MD5   ("0000000000000000000000000000062800000000000000000000000000000640", "MD5"),
+  MD5   ("188cd5ce-a5c1-3ecd-a76c-e40416fb0093", "MD5"),
   
-  SHA   ("0000000000000000000000000000063400000000000000000000000000000640", "SHA");
+  SHA   ("07019643-5238-39ba-bc66-fc559ec40093", "SHA");
   
   /**
    * The name of the attribute that specifies what kind of hash 

@@ -20,9 +20,9 @@ package com.runwaysdk.constants;
 
 public enum SymmetricMethods
 {
-  AES   ("0000000000000000000000000000062400000000000000000000000000000626", "AES/CBC/PKCS5Padding"),
+  AES   ("723bf8eb-8203-33eb-9e56-eea069db0090", "AES/CBC/PKCS5Padding"),
   
-  DES   ("0000000000000000000000000000063500000000000000000000000000000626", "DES/CBC/PKCS5Padding");
+  DES   ("640ed017-8798-3cc9-8c20-faa0b9270090", "DES/CBC/PKCS5Padding");
   
   /**
    * The name of the attribute that specifies what kind of symmetric 

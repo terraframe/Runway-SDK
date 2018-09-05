@@ -22,17 +22,17 @@ public enum AssociationType {
   /**
    * Index type of no index.
    */
-  RELATIONSHIP("8xocp8btq463ajmetk3lv41u9ttvxtwrzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g"),
+  RELATIONSHIP("ac0ed8ec-7d6a-3181-9512-d0864ed30212"),
 
   /**
    * Index type of non unique index.
    */
-  TREE("stdq297fiutlafkxcefcn7ffgv823bqmzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g"),
+  TREE("ddad29c9-dfc8-3cad-8140-e43355660212"),
 
   /**
    * Index type of unique index.
    */
-  GRAPH("zgfz3p6f1453bmestyd6yzjreu46ds9kzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g");
+  GRAPH("8f9cd2b8-8554-38db-b72d-47a5a5ff0212");
 
   /**
    * Index type of unique group index.

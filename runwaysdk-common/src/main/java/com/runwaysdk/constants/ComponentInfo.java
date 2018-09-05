@@ -22,7 +22,7 @@ public interface ComponentInfo
 {
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Component";
 
-  public static final String ID_VALUE          = "20080305NM00000000000000000000010058";
+  public static final String ID_VALUE          = "cc684982-29e2-3f29-b930-5598b2630058";
 
   public static final String TABLE             = "component";
 

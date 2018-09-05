@@ -20,7 +20,7 @@ package com.runwaysdk.constants;
 
 public interface MdDomainInfo extends MetadataInfo
 {
-  public static final String ID_VALUE              = "NM2008101100000000000000000001110058";
+  public static final String ID_VALUE              = "3c66088e-7d70-3cfd-b1ee-7a34e5e00058";
   
   /**
    * Class MdBusiness.

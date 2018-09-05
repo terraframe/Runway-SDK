@@ -26,17 +26,17 @@ public enum IndexTypes
   /**
    * Index type of no index.
    */
-  NO_INDEX                              ("000000000000000000000000000004010085"),
+  NO_INDEX                              ("328b6a77-c37c-3e8d-b35c-a15c0e210085"),
   
   /**
    * Index type of non unique index.
    */
-  NON_UNIQUE_INDEX                      ("000000000000000000000000000004000085"),
+  NON_UNIQUE_INDEX                      ("9ebbb1e6-7746-321d-97bd-344a323e0085"),
   
   /**
    * Index type of unique index.
    */
-  UNIQUE_INDEX                          ("000000000000000000000000000004090085");
+  UNIQUE_INDEX                          ("44284f74-6d1b-3921-87b1-32d866a30085");
 
   
   /**

@@ -1,14 +1,21 @@
 package com.runwaysdk;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -28,17 +35,17 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class MetadataUUIDFixer implements Runnable
+public class MetadataUUIDFixer
 {
-  @Override
-  public void run()
+  public Map<String, String> run()
   {
     String dir = "C:/Users/admin/git/Runway-SDK/runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata/";
-    this.run(dir, "metadata.xml.bak", "metadata.xml");
+    return this.run(dir, "metadata.xml.bak", "metadata.xml");
   }
 
-  public void run(String dir, String infile, String outfile)
+  public Map<String, String> run(String dir, String infile, String outfile)
   {
+    Map<String, String> ids = new HashMap<String, String>();
 
     try
     {
@@ -58,7 +65,7 @@ public class MetadataUUIDFixer implements Runnable
       XPath xPath = XPathFactory.newInstance().newXPath();
       NodeList results = (NodeList) xPath.compile("//name[.=\"rootId\"]").evaluate(doc, XPathConstants.NODESET);
 
-      Map<String, String> ids = new HashMap<String, String>();
+      Map<String, String> typeIds = new HashMap<String, String>();
 
       for (int i = 0; i < results.getLength(); i++)
       {
@@ -70,11 +77,11 @@ public class MetadataUUIDFixer implements Runnable
 
         // System.out.println(result.getNodeName() + " - " +
         // result.getTextContent());
-        System.out.println(oldId + " : " + uuid);
+        // System.out.println(oldId + " : " + uuid);
 
         sibling.setTextContent(uuid);
 
-        ids.put(oldId, uuid);
+        typeIds.put(oldId, uuid);
       }
 
       // Update the database oid size
@@ -115,7 +122,7 @@ public class MetadataUUIDFixer implements Runnable
       {
         results = (NodeList) xPath.compile("//" + tag).evaluate(doc, XPathConstants.NODESET);
         // Update references
-        Set<Entry<String, String>> entries = ids.entrySet();
+        Set<Entry<String, String>> entries = typeIds.entrySet();
         for (Entry<String, String> entry : entries)
         {
           String oid = entry.getKey();
@@ -129,16 +136,17 @@ public class MetadataUUIDFixer implements Runnable
 
             if (oldId.endsWith(oid))
             {
-              int index = oldId.lastIndexOf(oid);
-              String tail = oldId.substring(index).replaceFirst(oid, value);
-              String newId = oldId.substring(0, index) + tail;
+              UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
+              String newId = uuid.toString().substring(0, 32) + value;
 
-              System.out.println("Setting " + tag + " from [" + oldId + "] to [" + newId + "]");
+              // System.out.println("Setting " + tag + " from [" + oldId + "] to
+              // [" + newId + "]");
 
               result.setTextContent(newId);
+
+              ids.putIfAbsent(oldId, newId);
             }
           }
-
         }
       }
 
@@ -151,16 +159,71 @@ public class MetadataUUIDFixer implements Runnable
       StringWriter sw = new StringWriter();
       DOMSource source = new DOMSource(doc);
       transformer.transform(source, new StreamResult(new File(dir, outfile)));
+
     }
     catch (SAXException | IOException | XPathExpressionException | TransformerException e)
     {
       e.printStackTrace();
     }
 
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
+
+    for (Entry<String, String> entry : ids.entrySet())
+    {
+      System.out.println(entry.getKey() + "," + entry.getValue());
+    }
+
+    return ids;
   }
 
-  public static void main(String[] args)
+  public void updateIDs(Map<String, String> ids, File directory) throws IOException
   {
-    new MetadataUUIDFixer().run();
+    Charset charset = StandardCharsets.UTF_8;
+
+    File[] files = directory.listFiles(new FileFilter()
+    {
+      @Override
+      public boolean accept(File pathname)
+      {
+        return pathname.isDirectory() || pathname.getName().endsWith(".java") || pathname.getName().endsWith(".sql");
+      }
+    });
+
+    for (File file : files)
+    {
+      if (file.isDirectory())
+      {
+        this.updateIDs(ids, file);
+      }
+      else
+      {
+        System.out.println("Updating ids in file: " + file.getAbsolutePath());
+        Path path = Paths.get(file.toURI());
+
+        String content = new String(Files.readAllBytes(path), charset);
+
+        for (Entry<String, String> entry : ids.entrySet())
+        {
+          content = content.replaceAll(entry.getKey(), entry.getValue());
+        }
+
+        Files.write(path, content.getBytes(charset));
+      }
+    }
+  }
+
+  public static void main(String[] args) throws IOException
+  {
+    // new MetadataUUIDFixer().run();
+
+    File file = new File("C:\\Users\\admin\\git\\Runway-SDK");
+//    File file = new File("C:\\Users\\admin\\git\\Runway-SDK\\runwaysdk-common\\src\\main\\java\\com\\runwaysdk\\constants");
+
+    MetadataUUIDFixer fixer = new MetadataUUIDFixer();
+    Map<String, String> ids = fixer.run();
+    fixer.updateIDs(ids, file);
   }
 }

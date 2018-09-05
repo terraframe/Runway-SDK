@@ -23,7 +23,7 @@ public interface MdDimensionInfo extends MetadataInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "6nyuo8p2bb4now7x8owuvvhhekl28k730058";  
+  public static final String ID_VALUE  = "f462d0eb-d815-3c97-b5d6-310842240058";  
   
   /**
    * Class MetaData.

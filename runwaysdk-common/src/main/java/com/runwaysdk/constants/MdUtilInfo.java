@@ -28,7 +28,7 @@ public interface MdUtilInfo extends MdSessionInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE       = "20080226NM00000000000000000000030058"; 
+  public static final String ID_VALUE       = "f0bf2355-0179-3490-8766-4a625a6d0058"; 
   
   /**
    * OID.

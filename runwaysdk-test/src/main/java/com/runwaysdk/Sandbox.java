@@ -18,6 +18,8 @@
  */
 package com.runwaysdk;
 
+import java.util.UUID;
+
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.patcher.domain.SchedulerV2;
 import com.runwaysdk.session.Request;
@@ -48,7 +50,8 @@ public class Sandbox
 {
   public static void main(String[] args)
   {
-    inRequest();
+    System.out.println(UUID.randomUUID().toString());
+//    inRequest();
   }
   
   @Request

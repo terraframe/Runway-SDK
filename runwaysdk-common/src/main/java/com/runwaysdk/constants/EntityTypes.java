@@ -23,32 +23,32 @@ public enum EntityTypes
   /**
    * Class that defines enumeration items for caching types.
    */
-  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "000000000000000000000000000002220058"),
+  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "28f858a7-c5f8-3b30-b7fb-b58357950058"),
 
   /**
    * Type that defines relationships.
    */
-  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "0000000000000000000000000000031800000000000000000000000000000979"),
+  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "a1d1fedd-943d-3366-8a39-766c50620100"),
 
   /**
    * Class that defines the symmetric encryption methods
    */
-  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "000000000000000000000000000006260058"),
+  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "dc7d6734-738c-32a8-827b-b5ca5cc60058"),
 
   /**
    * Class that defines the hash encryption methods
    */
-  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "000000000000000000000000000006400058"),
+  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "e5af71db-08d8-3c65-9d9b-ee6cb5400058"),
 
   /**
    * Class that defines the localized metadata fields
    */
-  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "NM2009041200000000000000000000300000000000000000000MdLocalStruct"),
+  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "9ed3ec54-7e79-3d17-9389-45cd7f2c0134"),
   
   /**
    * Class that defines the localized metadata fields
    */
-  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "NM2009041200000000000000000000300000000000000000000MdLocalStruct");
+  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "9ed3ec54-7e79-3d17-9389-45cd7f2c0134");
 
   private String classType;
   private String tableName;

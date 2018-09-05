@@ -31,7 +31,7 @@ public interface RelationshipInfo extends ElementInfo
    */
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Relationship";
 
-  public static final String ID_VALUE          = "000000000000000000000000000000620062";
+  public static final String ID_VALUE          = "c9ad88f7-2401-31fa-9a4f-7cee4c620062";
 
   public static final String TABLE             = "relationship";
 

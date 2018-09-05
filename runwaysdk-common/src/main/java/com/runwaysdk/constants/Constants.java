@@ -95,7 +95,7 @@ public class Constants
 
   public static final String SESSION_PACKAGE               = ROOT_PACKAGE + ".session";
 
-  public static final String NATHAN_USER_ID                = "000000000000000000000000000001310060";
+  public static final String NATHAN_USER_ID                = "0000000000000000000000000000013100000000000000000000000000000003";
 
   public static final String TIME_FORMAT                   = "HH:mm:ss";
 
