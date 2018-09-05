@@ -62,7 +62,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
     if (this.getFilePath().trim().equals(""))
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(type);
-      this.setFilePath(this.parsePath(IdParser.buildId(ServerIDGenerator.nextID(), mdClassIF.getOid())));
+      this.setFilePath(this.parsePath(IdParser.buildId(ServerIDGenerator.nextID(), mdClassIF.getRootId())));
     }
   }
   

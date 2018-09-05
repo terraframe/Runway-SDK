@@ -320,7 +320,7 @@ public class RelationshipDAOFactory
 
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getOid());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getRootId());
     newRelationshipObject.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newRelationshipObject;

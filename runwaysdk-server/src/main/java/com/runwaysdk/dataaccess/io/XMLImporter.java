@@ -119,7 +119,7 @@ public class XMLImporter
 
   static final String                DOMAIN_TAG = "@@domain";
 
-  Pattern                            idPattern  = Pattern.compile("\\w{36}");
+  Pattern                            idPattern  = Pattern.compile("[\\w-]{36}");
 
   public static void main(String args[])
   {

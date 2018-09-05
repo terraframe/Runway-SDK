@@ -25,25 +25,25 @@ public enum ActionEnumDAO
    * Create Action
    */
   CREATE
-  ("stitl8uzd1t2v6xgbhmiqyl2dcwy6i4nz62bgzkm0p8s4i08714kboipputg2pty"),
+  ("a5706271-b915-30e0-bfd4-ac03ed4e0137"),
 
   /**
    *  Update Action
    */
   UPDATE
-  ("xqcb4i3nlkdd4ipji5y5ifg308sozkbhz62bgzkm0p8s4i08714kboipputg2pty"),
+  ("9865578f-e05b-3362-8b3b-64676f070137"),
 
   /**
    *  Delete Action
    */
   DELETE
-  ("2dkmcf9bsv3mhwl8ij97rsap4nnaq236z62bgzkm0p8s4i08714kboipputg2pty"),
+  ("ffdb5810-652f-3010-95c6-187290b80137"),
 
   /**
    *  No Operation Action
    */
   NO_OPERATION
-  ("0oiyrpw65ysskspuxxml8gpoi1iuxiquz62bgzkm0p8s4i08714kboipputg2pty");
+  ("be2184e3-1d2e-36fa-b105-1d7bf59a0137");
 
   private String oid;
 

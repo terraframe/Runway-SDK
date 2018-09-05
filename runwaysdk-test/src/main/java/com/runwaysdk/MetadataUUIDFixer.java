@@ -14,6 +14,8 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,15 +39,20 @@ import org.xml.sax.SAXException;
 
 public class MetadataUUIDFixer
 {
-  public Map<String, String> run()
+  private Map<String, String> ids     = new HashMap<String, String>();
+
+  private Map<String, String> typeIds = new HashMap<String, String>();
+
+  private Pattern             pattern = Pattern.compile("'(\\w{64})'");
+
+  public void run()
   {
     String dir = "C:/Users/admin/git/Runway-SDK/runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata/";
-    return this.run(dir, "metadata.xml.bak", "metadata.xml");
+    this.run(dir, "metadata.xml.bak", "metadata.xml");
   }
 
-  public Map<String, String> run(String dir, String infile, String outfile)
+  public void run(String dir, String infile, String outfile)
   {
-    Map<String, String> ids = new HashMap<String, String>();
 
     try
     {
@@ -64,8 +71,6 @@ public class MetadataUUIDFixer
 
       XPath xPath = XPathFactory.newInstance().newXPath();
       NodeList results = (NodeList) xPath.compile("//name[.=\"rootId\"]").evaluate(doc, XPathConstants.NODESET);
-
-      Map<String, String> typeIds = new HashMap<String, String>();
 
       for (int i = 0; i < results.getLength(); i++)
       {
@@ -156,7 +161,6 @@ public class MetadataUUIDFixer
       // transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
       // "2");
 
-      StringWriter sw = new StringWriter();
       DOMSource source = new DOMSource(doc);
       transformer.transform(source, new StreamResult(new File(dir, outfile)));
 
@@ -175,11 +179,9 @@ public class MetadataUUIDFixer
     {
       System.out.println(entry.getKey() + "," + entry.getValue());
     }
-
-    return ids;
   }
 
-  public void updateIDs(Map<String, String> ids, File directory) throws IOException
+  public void updateIDs(File directory) throws IOException
   {
     Charset charset = StandardCharsets.UTF_8;
 
@@ -196,11 +198,12 @@ public class MetadataUUIDFixer
     {
       if (file.isDirectory())
       {
-        this.updateIDs(ids, file);
+        this.updateIDs(file);
       }
       else
       {
-        System.out.println("Updating ids in file: " + file.getAbsolutePath());
+        // System.out.println("Updating ids in file: " +
+        // file.getAbsolutePath());
         Path path = Paths.get(file.toURI());
 
         String content = new String(Files.readAllBytes(path), charset);
@@ -208,6 +211,29 @@ public class MetadataUUIDFixer
         for (Entry<String, String> entry : ids.entrySet())
         {
           content = content.replaceAll(entry.getKey(), entry.getValue());
+        }
+
+        if (file.getName().endsWith(".sql"))
+        {
+          Matcher matcher = pattern.matcher(content);
+          Map<String, String> temp = new HashMap<String, String>();
+
+          while (matcher.find())
+          {
+            String oldId = matcher.group(1);
+            String key = oldId.substring(32);
+            String value = this.typeIds.get(key);
+
+            UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
+            String newId = uuid.toString().substring(0, 32) + value;
+            
+            temp.put(oldId, newId);
+          }
+          
+          for (Entry<String, String> entry : temp.entrySet())
+          {
+            content = content.replaceAll(entry.getKey(), entry.getValue());
+          }
         }
 
         Files.write(path, content.getBytes(charset));
@@ -220,10 +246,11 @@ public class MetadataUUIDFixer
     // new MetadataUUIDFixer().run();
 
     File file = new File("C:\\Users\\admin\\git\\Runway-SDK");
-//    File file = new File("C:\\Users\\admin\\git\\Runway-SDK\\runwaysdk-common\\src\\main\\java\\com\\runwaysdk\\constants");
+    // File file = new
+    // File("C:\\Users\\admin\\git\\Runway-SDK\\runwaysdk-common\\src\\main\\java\\com\\runwaysdk\\constants");
 
     MetadataUUIDFixer fixer = new MetadataUUIDFixer();
-    Map<String, String> ids = fixer.run();
-    fixer.updateIDs(ids, file);
+    fixer.run();
+    fixer.updateIDs(file);
   }
 }

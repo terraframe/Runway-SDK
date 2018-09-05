@@ -60,7 +60,7 @@ public interface RoleDAOIF extends ActorDAOIF
    */
   public static String PUBLIC_ROLE = "PUBLIC";
 
-  public static String PUBLIC_ROLE_ID = "0000000000000000000000000000097500000000000000000000000000000507";
+  public static String PUBLIC_ROLE_ID = "6f98fbd4-915d-3111-a233-05d90a240086";
 
   /**
    * The name of the role that allows a User to access the admin screen.
@@ -72,28 +72,28 @@ public interface RoleDAOIF extends ActorDAOIF
    */
   public static String ADMIN_ROLE = "Administrator";
 
-  public static String ADMIN_ROLE_ID = "0000000000000000000000000000070100000000000000000000000000000507";
+  public static String ADMIN_ROLE_ID = "0cd593b3-f7c1-3bf3-b4c7-b503b39a0086";
 
   /**
    * The name of the role adminstrator role.
    */
   public static String ROLE_ADMIN_ROLE = "RoleAdministrator";
 
-  public static String ROLE_ADMIN_ROLE_ID = "NM20080620000000000000000000000200000000000000000000000000000507";
+  public static String ROLE_ADMIN_ROLE_ID = "67f77648-5feb-3dd3-aaf1-d696809f0086";
 
   /**
    * The name of the developer role.
    */
   public static String DEVELOPER_ROLE = "Developer";
 
-  public static String DEVELOPER_ROLE_ID = "NM20080620000000000000000000000100000000000000000000000000000507";
+  public static String DEVELOPER_ROLE_ID = "c3172cf5-bb05-3652-812e-ae4091840086";
 
   /**
    * The name of the owner role, The owner role represents the permisisons entitled to the owner of an instance
    */
   public static String OWNER_ROLE = "OWNER";
 
-  public static String OWNER_ID = "0000000000000000000000000000070300000000000000000000000000000507";
+  public static String OWNER_ID = "25cc2dde-5d76-3c02-8847-15fdae5d0086";
 
 
   /* (non-Javadoc)

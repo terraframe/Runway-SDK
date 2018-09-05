@@ -70,7 +70,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
 
     if (this.isNew() && this.isAppliedToDB() == false && !this.isImport())
     {
-      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getOid());
+      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getRootId());
       this.getAttribute(EntityInfo.OID).setValue(newId);
     }
 

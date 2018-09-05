@@ -17,4 +17,4 @@
 -- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 --
 
-UPDATE md_business SET cache_algorithm_c = '0000000000000000000000000000023000000000000000000000000000000222' WHERE oid = 'NM20081011000000000000000000011300000000000000000000000000000001';
+UPDATE md_business SET cache_algorithm_c = '1ec01232-2324-34ab-a993-af7eeb330077' WHERE oid = 'ef6696ba-2990-34df-9e74-0ad95ab20058';

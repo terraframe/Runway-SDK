@@ -20,11 +20,11 @@ package com.runwaysdk.constants;
 
 public class ServerConstants
 {
-  public static final String SYSTEM_USER_ID                  = "0000000000000000000000000000001000000000000000000000000000000003";
+  public static final String SYSTEM_USER_ID                  = "a18798db-4bc4-3584-ad5e-844b7b760060";
   public static final String SYSTEM_USER_NAME                = "SYSTEM";
   public static final String SYSTEM_DEFAULT_PASSWORD         = "SYSTEM";
 
-  public static final String PUBLIC_USER_ID                  = "0000000000000000000000000000070500000000000000000000000000000003";
+  public static final String PUBLIC_USER_ID                  = "65c86e94-4e19-364a-84d2-367953300060";
   /**
    * The password of the public user.
    */

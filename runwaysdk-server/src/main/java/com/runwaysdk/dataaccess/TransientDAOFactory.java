@@ -90,7 +90,7 @@ public class TransientDAOFactory
       attributeMap.putAll(TransientDAOFactory.createRecordsForTransient(superMdTransientIF));
     }
 
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdTransientIF.getOid());
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdTransientIF.getRootId());
 
     // Create the transientDAO
     TransientDAO newTransientDAO = factoryMethod(attributeMap, mdTransientIF.definesType());

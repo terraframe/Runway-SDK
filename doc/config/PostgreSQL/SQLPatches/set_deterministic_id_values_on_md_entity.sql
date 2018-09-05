@@ -8,7 +8,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'sgq0n2svhtj4ci1la64knwymty
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '28oi9qf3idd5rdmnnsvyzx2eis0t62r00058'  WHERE oid='28oi9qf3idd5rdmnnsvyzx2eis0t62r00058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000150103'  WHERE oid='20071130NM00000000000000000000150103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000000610058'  WHERE oid='000000000000000000000000000000610058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'xt0vdqqydrwlpyfum9s1a92ty1xkwz560000000000000000000MdLocalStruct'  WHERE oid='xt0vdqqydrwlpyfum9s1a92ty1xkwz560000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'f87a7f9c-f946-36c7-9ecf-522608d10134'  WHERE oid='f87a7f9c-f946-36c7-9ecf-522608d10134';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8ur2ybsvotytfkh9zedkv3n8v8gtzfx70058'  WHERE oid='8ur2ybsvotytfkh9zedkv3n8v8gtzfx70058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000006290058'  WHERE oid='000000000000000000000000000006290058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'qw3orcndphag3pbm1a8vsxygok725za30058'  WHERE oid='qw3orcndphag3pbm1a8vsxygok725za30058';
@@ -26,7 +26,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '0if6s9v1c6nk3601fon7cgwk5s
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000006310058'  WHERE oid='000000000000000000000000000006310058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 't1v0l14duwoq9comvmt6qn6r69ik67xl0058'  WHERE oid='t1v0l14duwoq9comvmt6qn6r69ik67xl0058';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'yww7u0dy8tqokn7ajm0uedf9x9dtu9jt0058'  WHERE oid='yww7u0dy8tqokn7ajm0uedf9x9dtu9jt0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '7ghgjxwrdkz9m3kwz9bcw2d3ydxrmcf90000000000000000000MdLocalStruct'  WHERE oid='7ghgjxwrdkz9m3kwz9bcw2d3ydxrmcf90000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'f5578f99-7bf1-3399-ac65-1a2697960134'  WHERE oid='f5578f99-7bf1-3399-ac65-1a2697960134';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001740058'  WHERE oid='000000000000000000000000000001740058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zf6hol4750q5yldcc56ychbsxc93texn0058'  WHERE oid='zf6hol4750q5yldcc56ychbsxc93texn0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS2007110600000000000000001111110103'  WHERE oid='JS2007110600000000000000001111110103';
@@ -44,11 +44,11 @@ UPDATE md_entity SET has_deterministic_ids= 0 , oid= '00000000000000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS2007072300000000000000000015600058'  WHERE oid='JS2007072300000000000000000015600058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001400058'  WHERE oid='000000000000000000000000000001400058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS0622201000000000000000000000070103'  WHERE oid='JS0622201000000000000000000000070103';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'rdm83br7s5513apx7vtg6xu7mr0odjwy0000000000000000000MdLocalStruct'  WHERE oid='rdm83br7s5513apx7vtg6xu7mr0odjwy0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '7dbd4221-5481-37f5-af78-8331f0fc0134'  WHERE oid='7dbd4221-5481-37f5-af78-8331f0fc0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '8rprhvi6wvv8bwd4b6au4eudw29i60z40058'  WHERE oid='8rprhvi6wvv8bwd4b6au4eudw29i60z40058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000004030058'  WHERE oid='000000000000000000000000000004030058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '90pshnxlac44htsy385e6a6y9gjfkkmm0058'  WHERE oid='90pshnxlac44htsy385e6a6y9gjfkkmm0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'xox4feeesezr4kr18adyz3v3h2ntja5s0000000000000000000MdLocalStruct'  WHERE oid='xox4feeesezr4kr18adyz3v3h2ntja5s0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '13ed65e7-9227-30e6-b20f-5010e9180134'  WHERE oid='13ed65e7-9227-30e6-b20f-5010e9180134';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '6tg4df9ithltkvcohkj9wkey6byx9rv50058'  WHERE oid='6tg4df9ithltkvcohkj9wkey6byx9rv50058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071109NM00000000000000000000010058'  WHERE oid='20071109NM00000000000000000000010058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '79642qc7w30kf52rahoydii6t9fjnb180058'  WHERE oid='79642qc7w30kf52rahoydii6t9fjnb180058';
@@ -78,7 +78,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xopjx24axlb2jkkc192qiw6dy9
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 't04fi26tc7dqo6ljuoh53je4svkuysah0058'  WHERE oid='t04fi26tc7dqo6ljuoh53je4svkuysah0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071129NM00000000000000000000030058'  WHERE oid='20071129NM00000000000000000000030058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'quhfj557nkshlz7lr0ptoe0uyv1r16mr0058'  WHERE oid='quhfj557nkshlz7lr0ptoe0uyv1r16mr0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '0000000000000000000000000000037600000000000000000000000000000979'  WHERE oid='0000000000000000000000000000037600000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '23184701-74f5-3252-b322-aa716eec0100'  WHERE oid='23184701-74f5-3252-b322-aa716eec0100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '00naxq4hadewwho2qgop2sxqaff7z1rx0058'  WHERE oid='00naxq4hadewwho2qgop2sxqaff7z1rx0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000009790058'  WHERE oid='000000000000000000000000000009790058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071228NM00000000000000000000010058'  WHERE oid='20071228NM00000000000000000000010058';
@@ -91,7 +91,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zha6nh8rgh8me2mpoe6i1eaw2z
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '91ppdddefmlxh4komyyjdnmnepaj0btf0058'  WHERE oid='91ppdddefmlxh4komyyjdnmnepaj0btf0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS2007072300000000000000000015620058'  WHERE oid='JS2007072300000000000000000015620058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'saxnig5cgwl3hcamgql1soz6rb5g5bfz0058'  WHERE oid='saxnig5cgwl3hcamgql1soz6rb5g5bfz0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'NM2009041200000000000000000000300000000000000000000MdLocalStruct'  WHERE oid='NM2009041200000000000000000000300000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '9ed3ec54-7e79-3d17-9389-45cd7f2c0134'  WHERE oid='9ed3ec54-7e79-3d17-9389-45cd7f2c0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '000000000000000000000000000005500103'  WHERE oid='000000000000000000000000000005500103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'sp2wq4sdo8wa72zc958pd0aexfr1dlg90058'  WHERE oid='sp2wq4sdo8wa72zc958pd0aexfr1dlg90058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20101231NM00000000000000000000100058'  WHERE oid='20101231NM00000000000000000000100058';
@@ -145,8 +145,8 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM200704180000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8mo9yxmv916zjsqqlraen62vg2xzm9ia0058'  WHERE oid='8mo9yxmv916zjsqqlraen62vg2xzm9ia0058';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'syf39y24fzdk2nwdyjrzdu5bawe8b6nt0103'  WHERE oid='syf39y24fzdk2nwdyjrzdu5bawe8b6nt0103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xcmpj7feoalqwilw6w415vai27ukhdjc0058'  WHERE oid='xcmpj7feoalqwilw6w415vai27ukhdjc0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '8ual4o5g20fv0rl7dqgfe54tghwhmx8j0000000000000000000MdLocalStruct'  WHERE oid='8ual4o5g20fv0rl7dqgfe54tghwhmx8j0000000000000000000MdLocalStruct';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'JN20080616000000000000000000000400000000000000000000000000000979'  WHERE oid='JN20080616000000000000000000000400000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '664db27d-fae2-3e6a-8ae7-fc91ec240134'  WHERE oid='664db27d-fae2-3e6a-8ae7-fc91ec240134';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'a3407e35-6d5c-3540-b905-57c843700100'  WHERE oid='a3407e35-6d5c-3540-b905-57c843700100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '2ehqmsj8m735crg3kue4dghqp1ycflrk0058'  WHERE oid='2ehqmsj8m735crg3kue4dghqp1ycflrk0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20070926NM00000000000000000000040103'  WHERE oid='20070926NM00000000000000000000040103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xzkltau8trzmy68o1sw1t8ij0dsn2hij0058'  WHERE oid='xzkltau8trzmy68o1sw1t8ij0dsn2hij0058';
@@ -158,7 +158,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'skmvar4ubw31tx9ku5bpeevk14
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM2008081500000000000000000000010058'  WHERE oid='NM2008081500000000000000000000010058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000030103'  WHERE oid='20071130NM00000000000000000000030103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '1p8imi9p4g6xmfg82cskzb95veiiu78r0058'  WHERE oid='1p8imi9p4g6xmfg82cskzb95veiiu78r0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '20080403NM000000000000000000008500000000000000000000000000000979'  WHERE oid='20080403NM000000000000000000008500000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'b7e7be31-a694-3d5b-949d-a4a30a5e0100'  WHERE oid='b7e7be31-a694-3d5b-949d-a4a30a5e0100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001390058'  WHERE oid='000000000000000000000000000001390058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xml77x183o19a69gonigdfahfnflihum0058'  WHERE oid='xml77x183o19a69gonigdfahfnflihum0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM2008110600000000000000000000010058'  WHERE oid='NM2008110600000000000000000000010058';
@@ -182,7 +182,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20070322JN0000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000009720103'  WHERE oid='000000000000000000000000000009720103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000005050103'  WHERE oid='000000000000000000000000000005050103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zo86ttx2qfhw4ayiqelfr3igdjhd90eu0058'  WHERE oid='zo86ttx2qfhw4ayiqelfr3igdjhd90eu0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'shr1qm2wz147w6o1gxsgcg4drg1dh93l0000000000000000000MdLocalStruct'  WHERE oid='shr1qm2wz147w6o1gxsgcg4drg1dh93l0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '3e42330e-7091-3dea-9d86-de33929d0134'  WHERE oid='3e42330e-7091-3dea-9d86-de33929d0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '000000000000000000000000000000720103'  WHERE oid='000000000000000000000000000000720103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000070103'  WHERE oid='20071130NM00000000000000000000070103';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'rc4drkfjsx7p2vahgh7zfthsjlzu40ja0058'  WHERE oid='rc4drkfjsx7p2vahgh7zfthsjlzu40ja0058';
@@ -216,7 +216,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '1p2oppzbugg5ersznpkcsy3opl
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zgld5upl3f35kcjr1au0d16u9btqwjvx0058'  WHERE oid='zgld5upl3f35kcjr1au0d16u9btqwjvx0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000002060058'  WHERE oid='000000000000000000000000000002060058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '942tps9sc9ais5t9qa3fhr2q0nksf4pl0058'  WHERE oid='942tps9sc9ais5t9qa3fhr2q0nksf4pl0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '0000000000000000000000000000031800000000000000000000000000000979'  WHERE oid='0000000000000000000000000000031800000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'a1d1fedd-943d-3366-8a39-766c50620100'  WHERE oid='a1d1fedd-943d-3366-8a39-766c50620100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zlh9ev85l10442ji8z9ync4di5f53zz10058'  WHERE oid='zlh9ev85l10442ji8z9ync4di5f53zz10058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8ly7txjoeukxryprlj53cy0uuj0z2ml20058'  WHERE oid='8ly7txjoeukxryprlj53cy0uuj0z2ml20058';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'syoxfzsiy5ktxuf31tke315ontk7bozz0103'  WHERE oid='syoxfzsiy5ktxuf31tke315ontk7bozz0103';
@@ -231,7 +231,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'sgq0n2svhtj4ci1la64knwymty
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '28oi9qf3idd5rdmnnsvyzx2eis0t62r00058'  WHERE oid='28oi9qf3idd5rdmnnsvyzx2eis0t62r00058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000000610058'  WHERE oid='000000000000000000000000000000610058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000150103'  WHERE oid='20071130NM00000000000000000000150103';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'xt0vdqqydrwlpyfum9s1a92ty1xkwz560000000000000000000MdLocalStruct'  WHERE oid='xt0vdqqydrwlpyfum9s1a92ty1xkwz560000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'f87a7f9c-f946-36c7-9ecf-522608d10134'  WHERE oid='f87a7f9c-f946-36c7-9ecf-522608d10134';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8ur2ybsvotytfkh9zedkv3n8v8gtzfx70058'  WHERE oid='8ur2ybsvotytfkh9zedkv3n8v8gtzfx70058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'qw3orcndphag3pbm1a8vsxygok725za30058'  WHERE oid='qw3orcndphag3pbm1a8vsxygok725za30058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zgkseu7as85l9zfwaawq8k3wid4vd17v0058'  WHERE oid='zgkseu7as85l9zfwaawq8k3wid4vd17v0058';
@@ -248,7 +248,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '0o1f5l4k04l4eebr1d4457aib5
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '0if6s9v1c6nk3601fon7cgwk5spcsmfh0058'  WHERE oid='0if6s9v1c6nk3601fon7cgwk5spcsmfh0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000006310058'  WHERE oid='000000000000000000000000000006310058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 't1v0l14duwoq9comvmt6qn6r69ik67xl0058'  WHERE oid='t1v0l14duwoq9comvmt6qn6r69ik67xl0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '7ghgjxwrdkz9m3kwz9bcw2d3ydxrmcf90000000000000000000MdLocalStruct'  WHERE oid='7ghgjxwrdkz9m3kwz9bcw2d3ydxrmcf90000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'f5578f99-7bf1-3399-ac65-1a2697960134'  WHERE oid='f5578f99-7bf1-3399-ac65-1a2697960134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'yww7u0dy8tqokn7ajm0uedf9x9dtu9jt0058'  WHERE oid='yww7u0dy8tqokn7ajm0uedf9x9dtu9jt0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zf6hol4750q5yldcc56ychbsxc93texn0058'  WHERE oid='zf6hol4750q5yldcc56ychbsxc93texn0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001740058'  WHERE oid='000000000000000000000000000001740058';
@@ -267,11 +267,11 @@ UPDATE md_entity SET has_deterministic_ids= 0 , oid= '00000000000000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS2007072300000000000000000015600058'  WHERE oid='JS2007072300000000000000000015600058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001400058'  WHERE oid='000000000000000000000000000001400058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS0622201000000000000000000000070103'  WHERE oid='JS0622201000000000000000000000070103';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'rdm83br7s5513apx7vtg6xu7mr0odjwy0000000000000000000MdLocalStruct'  WHERE oid='rdm83br7s5513apx7vtg6xu7mr0odjwy0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '7dbd4221-5481-37f5-af78-8331f0fc0134'  WHERE oid='7dbd4221-5481-37f5-af78-8331f0fc0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '8rprhvi6wvv8bwd4b6au4eudw29i60z40058'  WHERE oid='8rprhvi6wvv8bwd4b6au4eudw29i60z40058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000004030058'  WHERE oid='000000000000000000000000000004030058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '90pshnxlac44htsy385e6a6y9gjfkkmm0058'  WHERE oid='90pshnxlac44htsy385e6a6y9gjfkkmm0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'xox4feeesezr4kr18adyz3v3h2ntja5s0000000000000000000MdLocalStruct'  WHERE oid='xox4feeesezr4kr18adyz3v3h2ntja5s0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '13ed65e7-9227-30e6-b20f-5010e9180134'  WHERE oid='13ed65e7-9227-30e6-b20f-5010e9180134';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '6tg4df9ithltkvcohkj9wkey6byx9rv50058'  WHERE oid='6tg4df9ithltkvcohkj9wkey6byx9rv50058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071109NM00000000000000000000010058'  WHERE oid='20071109NM00000000000000000000010058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '79642qc7w30kf52rahoydii6t9fjnb180058'  WHERE oid='79642qc7w30kf52rahoydii6t9fjnb180058';
@@ -301,7 +301,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xopjx24axlb2jkkc192qiw6dy9
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 't04fi26tc7dqo6ljuoh53je4svkuysah0058'  WHERE oid='t04fi26tc7dqo6ljuoh53je4svkuysah0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071129NM00000000000000000000030058'  WHERE oid='20071129NM00000000000000000000030058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'quhfj557nkshlz7lr0ptoe0uyv1r16mr0058'  WHERE oid='quhfj557nkshlz7lr0ptoe0uyv1r16mr0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '0000000000000000000000000000037600000000000000000000000000000979'  WHERE oid='0000000000000000000000000000037600000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '23184701-74f5-3252-b322-aa716eec0100'  WHERE oid='23184701-74f5-3252-b322-aa716eec0100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '00naxq4hadewwho2qgop2sxqaff7z1rx0058'  WHERE oid='00naxq4hadewwho2qgop2sxqaff7z1rx0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000009790058'  WHERE oid='000000000000000000000000000009790058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071228NM00000000000000000000010058'  WHERE oid='20071228NM00000000000000000000010058';
@@ -314,7 +314,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zha6nh8rgh8me2mpoe6i1eaw2z
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '91ppdddefmlxh4komyyjdnmnepaj0btf0058'  WHERE oid='91ppdddefmlxh4komyyjdnmnepaj0btf0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'JS2007072300000000000000000015620058'  WHERE oid='JS2007072300000000000000000015620058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'saxnig5cgwl3hcamgql1soz6rb5g5bfz0058'  WHERE oid='saxnig5cgwl3hcamgql1soz6rb5g5bfz0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'NM2009041200000000000000000000300000000000000000000MdLocalStruct'  WHERE oid='NM2009041200000000000000000000300000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '9ed3ec54-7e79-3d17-9389-45cd7f2c0134'  WHERE oid='9ed3ec54-7e79-3d17-9389-45cd7f2c0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '000000000000000000000000000005500103'  WHERE oid='000000000000000000000000000005500103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'sp2wq4sdo8wa72zc958pd0aexfr1dlg90058'  WHERE oid='sp2wq4sdo8wa72zc958pd0aexfr1dlg90058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20101231NM00000000000000000000100058'  WHERE oid='20101231NM00000000000000000000100058';
@@ -368,8 +368,8 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM200704180000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8mo9yxmv916zjsqqlraen62vg2xzm9ia0058'  WHERE oid='8mo9yxmv916zjsqqlraen62vg2xzm9ia0058';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'syf39y24fzdk2nwdyjrzdu5bawe8b6nt0103'  WHERE oid='syf39y24fzdk2nwdyjrzdu5bawe8b6nt0103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xcmpj7feoalqwilw6w415vai27ukhdjc0058'  WHERE oid='xcmpj7feoalqwilw6w415vai27ukhdjc0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '8ual4o5g20fv0rl7dqgfe54tghwhmx8j0000000000000000000MdLocalStruct'  WHERE oid='8ual4o5g20fv0rl7dqgfe54tghwhmx8j0000000000000000000MdLocalStruct';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'JN20080616000000000000000000000400000000000000000000000000000979'  WHERE oid='JN20080616000000000000000000000400000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '664db27d-fae2-3e6a-8ae7-fc91ec240134'  WHERE oid='664db27d-fae2-3e6a-8ae7-fc91ec240134';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'a3407e35-6d5c-3540-b905-57c843700100'  WHERE oid='a3407e35-6d5c-3540-b905-57c843700100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '2ehqmsj8m735crg3kue4dghqp1ycflrk0058'  WHERE oid='2ehqmsj8m735crg3kue4dghqp1ycflrk0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20070926NM00000000000000000000040103'  WHERE oid='20070926NM00000000000000000000040103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xzkltau8trzmy68o1sw1t8ij0dsn2hij0058'  WHERE oid='xzkltau8trzmy68o1sw1t8ij0dsn2hij0058';
@@ -381,7 +381,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'skmvar4ubw31tx9ku5bpeevk14
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM2008081500000000000000000000010058'  WHERE oid='NM2008081500000000000000000000010058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000030103'  WHERE oid='20071130NM00000000000000000000030103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '1p8imi9p4g6xmfg82cskzb95veiiu78r0058'  WHERE oid='1p8imi9p4g6xmfg82cskzb95veiiu78r0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '20080403NM000000000000000000008500000000000000000000000000000979'  WHERE oid='20080403NM000000000000000000008500000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'b7e7be31-a694-3d5b-949d-a4a30a5e0100'  WHERE oid='b7e7be31-a694-3d5b-949d-a4a30a5e0100';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000001390058'  WHERE oid='000000000000000000000000000001390058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'xml77x183o19a69gonigdfahfnflihum0058'  WHERE oid='xml77x183o19a69gonigdfahfnflihum0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'NM2008110600000000000000000000010058'  WHERE oid='NM2008110600000000000000000000010058';
@@ -405,7 +405,7 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20070322JN0000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000009720103'  WHERE oid='000000000000000000000000000009720103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '000000000000000000000000000005050103'  WHERE oid='000000000000000000000000000005050103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zo86ttx2qfhw4ayiqelfr3igdjhd90eu0058'  WHERE oid='zo86ttx2qfhw4ayiqelfr3igdjhd90eu0058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'shr1qm2wz147w6o1gxsgcg4drg1dh93l0000000000000000000MdLocalStruct'  WHERE oid='shr1qm2wz147w6o1gxsgcg4drg1dh93l0000000000000000000MdLocalStruct';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= '3e42330e-7091-3dea-9d86-de33929d0134'  WHERE oid='3e42330e-7091-3dea-9d86-de33929d0134';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= '000000000000000000000000000000720103'  WHERE oid='000000000000000000000000000000720103';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '20071130NM00000000000000000000070103'  WHERE oid='20071130NM00000000000000000000070103';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'rc4drkfjsx7p2vahgh7zfthsjlzu40ja0058'  WHERE oid='rc4drkfjsx7p2vahgh7zfthsjlzu40ja0058';
@@ -441,6 +441,6 @@ UPDATE md_entity SET has_deterministic_ids= 1 , oid= '00000000000000000000000000
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '942tps9sc9ais5t9qa3fhr2q0nksf4pl0058'  WHERE oid='942tps9sc9ais5t9qa3fhr2q0nksf4pl0058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= '8ly7txjoeukxryprlj53cy0uuj0z2ml20058'  WHERE oid='8ly7txjoeukxryprlj53cy0uuj0z2ml20058';
 UPDATE md_entity SET has_deterministic_ids= 1 , oid= 'zlh9ev85l10442ji8z9ync4di5f53zz10058'  WHERE oid='zlh9ev85l10442ji8z9ync4di5f53zz10058';
-UPDATE md_entity SET has_deterministic_ids= 0 , oid= '0000000000000000000000000000031800000000000000000000000000000979'  WHERE oid='0000000000000000000000000000031800000000000000000000000000000979';
+UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'a1d1fedd-943d-3366-8a39-766c50620100'  WHERE oid='a1d1fedd-943d-3366-8a39-766c50620100';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'syoxfzsiy5ktxuf31tke315ontk7bozz0103'  WHERE oid='syoxfzsiy5ktxuf31tke315ontk7bozz0103';
 UPDATE md_entity SET has_deterministic_ids= 0 , oid= 'r2fcr7wbdal05dc99a6l81a6wwpy2g3b0058'  WHERE oid='r2fcr7wbdal05dc99a6l81a6wwpy2g3b0058';

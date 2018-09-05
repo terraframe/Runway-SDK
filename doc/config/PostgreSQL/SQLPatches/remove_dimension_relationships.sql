@@ -135,9 +135,9 @@ DELETE FROM metadata_display_label WHERE oid = 'r9lctoq4cqrr8vo01or8wti4amcrg65b
 DELETE FROM md_controller WHERE oid = '2b4uxaqdexo959ti9fos8bdp4gbjyiwm0130';
 DELETE FROM md_type WHERE oid = '2b4uxaqdexo959ti9fos8bdp4gbjyiwm0130';
 DELETE FROM metadata WHERE oid = '2b4uxaqdexo959ti9fos8bdp4gbjyiwm0130' AND seq = 3823;
-DELETE FROM relationship_inheritance WHERE oid = 'r3xq7183ub2y2zhlewldct1ju1lok8oq20070926NM0000000000000000000010';
-DELETE FROM class_inheritance WHERE oid = 'r3xq7183ub2y2zhlewldct1ju1lok8oq20070926NM0000000000000000000010';
-DELETE FROM metadata_relationship WHERE oid = 'r3xq7183ub2y2zhlewldct1ju1lok8oq20070926NM0000000000000000000010' AND seq = 1701;
+DELETE FROM relationship_inheritance WHERE oid = '55a0938f-3f34-354c-87f6-eb5ff1c30258';
+DELETE FROM class_inheritance WHERE oid = '55a0938f-3f34-354c-87f6-eb5ff1c30258';
+DELETE FROM metadata_relationship WHERE oid = '55a0938f-3f34-354c-87f6-eb5ff1c30258' AND seq = 1701;
 DELETE FROM relationship_cache WHERE set_id='8fd8bhw6o0rgtdv542joiz93rxqtoro4';
 DELETE FROM visibilitymodifier WHERE set_id='6oc6zhy950rn97uh3y9gqns1o0nt9wls';
 DELETE FROM metadata_display_label WHERE oid = '79o2g0ym65q8dp1sl00ta53atq6vlbh80287';
@@ -290,9 +290,9 @@ DELETE FROM metadata_display_label WHERE oid = 'z4zzfq8kuxilp5o6hkx5j9rr1ai06iyb
 DELETE FROM md_controller WHERE oid = 'qq8ws0ytjgl47unx6nrftdb5t547z5ro0130';
 DELETE FROM md_type WHERE oid = 'qq8ws0ytjgl47unx6nrftdb5t547z5ro0130';
 DELETE FROM metadata WHERE oid = 'qq8ws0ytjgl47unx6nrftdb5t547z5ro0130' AND seq = 3822;
-DELETE FROM relationship_inheritance WHERE oid = '0b26saqee0b2az5oir8eehphwaygrq1520070926NM0000000000000000000010';
-DELETE FROM class_inheritance WHERE oid = '0b26saqee0b2az5oir8eehphwaygrq1520070926NM0000000000000000000010';
-DELETE FROM metadata_relationship WHERE oid = '0b26saqee0b2az5oir8eehphwaygrq1520070926NM0000000000000000000010' AND seq = 1702;
+DELETE FROM relationship_inheritance WHERE oid = 'e693a17e-23f5-3139-a812-828932f40258';
+DELETE FROM class_inheritance WHERE oid = 'e693a17e-23f5-3139-a812-828932f40258';
+DELETE FROM metadata_relationship WHERE oid = 'e693a17e-23f5-3139-a812-828932f40258' AND seq = 1702;
 DELETE FROM relationship_cache WHERE set_id='xtho4tt8ymwlym34fk4x0huksqgbl3m8';
 DELETE FROM visibilitymodifier WHERE set_id='284fpy84z9lemyipbapq7ccj7nsq53lp';
 DELETE FROM metadata_display_label WHERE oid = '1w99922sx153riu7tl2tmt6ci79701xu0287';

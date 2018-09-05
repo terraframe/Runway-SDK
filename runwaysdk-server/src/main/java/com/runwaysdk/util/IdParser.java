@@ -75,7 +75,8 @@ public class IdParser
    */
   public static String buildId(String rootId, String mdClassId)
   {
-    return rootId+parseRootFromId(mdClassId);
+//    return rootId+parseRootFromId(mdClassId);
+    return rootId+mdClassId; //parseRootFromId(mdClassId);
   }
 
   public static boolean validId(String oid)

@@ -62,46 +62,46 @@ public class IDGenerator
   {
     UUID uuid = UUID.nameUUIDFromBytes(key.getBytes());
     String value = uuid.toString();
-    
+
     return value.replaceAll("-", "");
 
-//    // Singleton management
-//    if (random == null)
-//      setUp();
-//
-//    // Prep the SHA-1 hashing object
-//    hasher.reset();
-//
-//    // Prepare the input, and hash it
-//    byte[] digest = hasher.digest(key.getBytes());
-//
-//    // Get an extra byte of randomness to prepend the hash with.
-//    byte[] rand = new byte[1];
-//    rand[0] = (byte) ( 0x11 );
-//    rand[0] = (byte) ( rand[0] & 0x2A );
-//
-//    // The only practical conversion of bits is a hex string.
-//    StringBuffer buff = new StringBuffer(42);
-//
-//    buff.append(hexChar[ ( rand[0] & 0xf0 ) >>> 4]);
-//    buff.append(hexChar[rand[0] & 0x0f]);
-//
-//    for (byte b : digest)
-//    {
-//      buff.append(hexChar[ ( b & 0xf0 ) >>> 4]);
-//      buff.append(hexChar[b & 0x0f]);
-//    }
-//
-//    // Now convert the hex string to base36
-//    String base36id = new BigInteger(buff.toString(), 16).toString(36);
-//
-//    // And left-pad any zeros we need (shouldn't be more than 1)
-//    while (base36id.length() < 32)
-//    {
-//      base36id = "0" + base36id;
-//    }
-//
-//    return base36id;
+    // // Singleton management
+    // if (random == null)
+    // setUp();
+    //
+    // // Prep the SHA-1 hashing object
+    // hasher.reset();
+    //
+    // // Prepare the input, and hash it
+    // byte[] digest = hasher.digest(key.getBytes());
+    //
+    // // Get an extra byte of randomness to prepend the hash with.
+    // byte[] rand = new byte[1];
+    // rand[0] = (byte) ( 0x11 );
+    // rand[0] = (byte) ( rand[0] & 0x2A );
+    //
+    // // The only practical conversion of bits is a hex string.
+    // StringBuffer buff = new StringBuffer(42);
+    //
+    // buff.append(hexChar[ ( rand[0] & 0xf0 ) >>> 4]);
+    // buff.append(hexChar[rand[0] & 0x0f]);
+    //
+    // for (byte b : digest)
+    // {
+    // buff.append(hexChar[ ( b & 0xf0 ) >>> 4]);
+    // buff.append(hexChar[b & 0x0f]);
+    // }
+    //
+    // // Now convert the hex string to base36
+    // String base36id = new BigInteger(buff.toString(), 16).toString(36);
+    //
+    // // And left-pad any zeros we need (shouldn't be more than 1)
+    // while (base36id.length() < 32)
+    // {
+    // base36id = "0" + base36id;
+    // }
+    //
+    // return base36id;
   }
 
   /**
@@ -112,7 +112,6 @@ public class IDGenerator
   public synchronized static String nextID()
   {
     UUID uuid = UUID.randomUUID();
-    String value = uuid.toString();
-    return value.replaceAll("-", "");
+    return uuid.toString().substring(0, 32);
   }
 }

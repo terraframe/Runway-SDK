@@ -1491,6 +1491,7 @@ public abstract class AbstractDatabase
     }
 
     dbIdentifier = dbIdentifier.substring(0, maxBaseHashLength);
+    dbIdentifier = dbIdentifier.replaceAll("-", "");
 
     dbIdentifier = "a" + dbIdentifier;
 
