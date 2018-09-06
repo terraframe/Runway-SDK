@@ -350,7 +350,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
       super.removeCache(mdClassDAO);
 
       this.mdClassTypeMap.remove( ( (MdClassDAOIF) mdClassDAO ).definesType());
-      this.mdClassRootIdMap.remove(IdParser.parseRootFromId(mdClassDAO.getOid()));
+      this.mdClassRootIdMap.remove(( (MdClassDAOIF) mdClassDAO ).getRootId());
       
       if (mdClassDAO instanceof MdEntityDAO)
       {

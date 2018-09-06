@@ -682,6 +682,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
       maxBaseHashLength = autoGenId.length();
     }
 
+    autoGenId = autoGenId.replaceAll("-", "");
     autoGenId = autoGenId.substring(0, maxBaseHashLength);
 
     autoGenId = MdRelationshipDAOIF.INDEX_PREFIX+autoGenId;

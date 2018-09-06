@@ -829,7 +829,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         {
           MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
           this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getOid());
-          this.updatedMdClassRootIdMap.put(mdEntityDAO.getBaseOid(), mdEntityDAO.getOid());
+          this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getOid());
 
           if (mdEntityDAO instanceof MdRelationshipDAO)
           {
@@ -2177,7 +2177,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
         String oldRootId = IdParser.parseRootFromId(oldId);
         this.updatedMdClassRootIdMap.remove(oldRootId);
-        this.updatedMdClassRootIdMap.put(mdEntityDAO.getBaseOid(), mdEntityDAO.getOid());
+        this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getOid());
 
         Set<String> parentRelationshipSet = this.mdBusinessParentMdRelationships.get(oldId);
         if (parentRelationshipSet != null)
@@ -2281,7 +2281,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
 
           this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getOid());
-          this.updatedMdClassRootIdMap.put(mdClassDAO.getBaseOid(), mdClassDAO.getOid());
+          this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getOid());
 
           if (mdClassDAO instanceof MdRelationshipDAO)
           {

@@ -1456,6 +1456,7 @@ public abstract class AbstractDatabase
     int maxBaseHashLength = Database.MAX_DB_IDENTIFIER_SIZE - 1;
 
     String hashString = ServerIDGenerator.generateId(stringToHash);
+    hashString = hashString.replace("-", "");
 
     if (hashString.length() < maxBaseHashLength)
     {
@@ -1463,6 +1464,7 @@ public abstract class AbstractDatabase
     }
 
     hashString = hashString.substring(0, maxBaseHashLength);
+
 
     hashString = "a" + hashString;
 

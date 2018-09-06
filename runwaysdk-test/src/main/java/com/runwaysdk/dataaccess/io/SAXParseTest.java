@@ -4076,7 +4076,7 @@ public class SAXParseTest
       SAXImporter.runImport(new File(tempXMLFile));
 
       UserDAOIF userIF = UserDAO.findUser("testUser");
-      
+
       Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
       Assert.assertEquals(1, assignedRoles.size());
       Assert.assertTrue(assignedRoles.contains(role));
@@ -4171,7 +4171,7 @@ public class SAXParseTest
     SAXImporter.runImport(new File(tempXMLFile));
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
-    
+
     Set<RoleDAOIF> assignedRoles = userIF.assignedRoles();
     Assert.assertEquals(1, assignedRoles.size());
     Assert.assertTrue(assignedRoles.contains(role));
@@ -5964,20 +5964,26 @@ public class SAXParseTest
     mdEnumeration = MdEnumerationDAO.getMdEnumerationDAO(FILTER).getBusinessDAO();
     mdEnumeration2 = MdEnumerationDAO.getMdEnumerationDAO(FILTER2).getBusinessDAO();
 
-    items = mdEnumeration.getAllEnumItems();
+    try
+    {
+      items = mdEnumeration.getAllEnumItems();
 
-    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
-    Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
-    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
-    Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
+      Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Enumeration Filter Test");
+      Assert.assertEquals(mdEnumeration.getStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Filter Set Test");
+      Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.REMOVE), MdAttributeBooleanInfo.FALSE);
+      Assert.assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
 
-    // Check that the instance of the filter are correctly mapped
-    Assert.assertEquals(2, items.size());
-    Assert.assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("NY"));
-    Assert.assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
-
-    mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.apply();
+      // Check that the instance of the filter are correctly mapped
+      Assert.assertEquals(2, items.size());
+      BusinessDAOIF item = items.get(0);
+      Assert.assertTrue(item.getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("NY"));
+      Assert.assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
+    }
+    finally
+    {
+      mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      mdEnumeration.apply();
+    }
   }
 
   /**

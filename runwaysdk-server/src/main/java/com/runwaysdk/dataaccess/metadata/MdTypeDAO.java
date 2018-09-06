@@ -136,7 +136,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   
   public String getRootId()
   {
-    return this.getAttribute(MdTypeInfo.ROOT_ID).getValue();
+    String value = this.getAttribute(MdTypeInfo.ROOT_ID).getValue();
+    
+    if(value.length() == 0)
+    {
+      return this.generateRootId();
+    }
+    
+    return value;
   }
 
 
@@ -281,7 +288,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public String apply()
   {
     this.setKey(buildKey(this.definesType()));
-
+    
     return super.apply();
   }
 
@@ -636,7 +643,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     if (this.isNew())
     {
-      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getOid()));
+      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(generateRootId());
     }
 
     if (!this.isNew() || this.isAppliedToDB())
@@ -656,6 +663,11 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     }
 
     return super.save(validateRequired);
+  }
+
+  private String generateRootId()
+  {
+    return this.getOid().substring(0,4);
   }
 
   public static MdTypeDAOIF get(String oid)

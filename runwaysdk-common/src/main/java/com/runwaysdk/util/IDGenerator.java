@@ -61,9 +61,7 @@ public class IDGenerator
   public synchronized static String generateId(String key)
   {
     UUID uuid = UUID.nameUUIDFromBytes(key.getBytes());
-    String value = uuid.toString();
-
-    return value.replaceAll("-", "");
+    return uuid.toString().substring(0, 32);
 
     // // Singleton management
     // if (random == null)
