@@ -58,6 +58,7 @@ import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
@@ -1003,6 +1004,13 @@ public class LocalizationTest
   @Test
   public void testLocaleAttributesWithDefaultLocaleStruct()
   {
+    testLocaleAttributesWithDefaultLocaleStruct_Transaction();
+
+  }
+
+  @Transaction
+  private void testLocaleAttributesWithDefaultLocaleStruct_Transaction()
+  {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
 
@@ -1032,7 +1040,6 @@ public class LocalizationTest
     {
       TestFixtureFactory.delete(mdDimension);
     }
-
   }
 
   // ///////////////////////////////////////////////////////////////////////////
