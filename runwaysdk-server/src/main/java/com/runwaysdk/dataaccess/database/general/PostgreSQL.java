@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Sep 17, 2005
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -104,8 +105,8 @@ import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
  */
 public class PostgreSQL extends AbstractDatabase
 {
-  private Logger logger = LoggerFactory.getLogger(PostgreSQL.class);
-  
+  private Logger       logger                 = LoggerFactory.getLogger(PostgreSQL.class);
+
   private String       databaseNamespace;
 
   public static String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
@@ -160,13 +161,18 @@ public class PostgreSQL extends AbstractDatabase
       this.dataSource = (DataSource) pgDataSource;
     }
   }
-  
+
   /**
-   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * Creates a temporary table that lasts for at most the duration of the
+   * session. The behavior on transaction commit is configurable with the
+   * onCommit parameter.
    * 
-   * @param tableName The name of the temp table.
-   * @param columns An array of vendor-specific formatted columns.
-   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   * @param tableName
+   *          The name of the temp table.
+   * @param columns
+   *          An array of vendor-specific formatted columns.
+   * @param onCommit
+   *          Decides the fate of the temporary table upon transaction commit.
    */
   @Override
   public void createTempTable(String tableName, List<String> columns, String onCommit)
@@ -179,35 +185,28 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Closes all active connections to the database and cleans up any resources. Depending on your context, you may
-   * wish to revoke connect permissions before invoking this.
+   * Closes all active connections to the database and cleans up any resources.
+   * Depending on your context, you may wish to revoke connect permissions
+   * before invoking this.
    */
   public void close()
   {
     if (this.dataSource instanceof PGPoolingDataSource)
     {
-      ((PGPoolingDataSource)this.dataSource).close();
+      ( (PGPoolingDataSource) this.dataSource ).close();
     }
     else
     {
       // Terminate all connections manually.
       LinkedList<String> statements = new LinkedList<String>();
       String dbName = DatabaseProperties.getDatabaseName();
-      
-      statements.add(
-          "SELECT \n" + 
-          "    pg_terminate_backend(pid) \n" + 
-          "FROM \n" + 
-          "    pg_stat_activity \n" + 
-          "WHERE \n" + 
-          "    pid <> pg_backend_pid()\n" + 
-          "    AND datname = '" + dbName + "'\n" + 
-          "    ;");
-      
+
+      statements.add("SELECT \n" + "    pg_terminate_backend(pid) \n" + "FROM \n" + "    pg_stat_activity \n" + "WHERE \n" + "    pid <> pg_backend_pid()\n" + "    AND datname = '" + dbName + "'\n" + "    ;");
+
       executeAsRoot(statements, true);
     }
   }
-  
+
   /**
    * True if a PosgreSQL namespace has been defined, false otherwise.
    * 
@@ -1029,6 +1028,17 @@ public class PostgreSQL extends AbstractDatabase
     return "ALTER TABLE " + table + " ADD COLUMN " + columnName + "  " + formattedColumnType;
   }
 
+  @Override
+  public String formatCharacterField(String type, String length)
+  {
+    if (type.equals("uuid"))
+    {
+      return type;
+    }
+
+    return super.formatCharacterField(type, length);
+  }
+
   /**
    * 
    * @see com.runwaysdk.dataaccess.AbstractDatabase#buildDropColumnString(java.lang.String,
@@ -1673,7 +1683,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     String statement = buildAddColumnString(table, columnName, type);
 
-    if (size != null)
+    if (size != null && !type.equalsIgnoreCase("uuid"))
     {
       statement += "(" + size + ")";
     }
@@ -1681,6 +1691,34 @@ public class PostgreSQL extends AbstractDatabase
     String undo = "ALTER TABLE " + table + " DROP " + columnName;
 
     new DDLCommand(statement, undo, false).doIt();
+  }
+
+  public void bindPreparedStatementValue(PreparedStatement prepStmt, int index, Object value, String dataType)
+  {
+    try
+    {
+      if (dataType.equals(MdAttributeReferenceInfo.CLASS))
+      {
+        String string = (String) value;
+        if (string.equals(""))
+        {
+          prepStmt.setNull(index, java.sql.Types.OTHER);
+        }
+        else
+        {
+          prepStmt.setObject(index, UUID.fromString(string));
+        }
+      }
+      else
+      {
+        super.bindPreparedStatementValue(prepStmt, index, value, dataType);
+      }
+    }
+    catch (SQLException ex)
+    {
+      this.throwDatabaseException(ex);
+    }
+
   }
 
   /*
@@ -1694,7 +1732,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     String statement = columnName + "  " + type;
 
-    if (size != null)
+    if (size != null && !type.equalsIgnoreCase("uuid"))
     {
       statement += "(" + size + ")";
     }
@@ -1770,25 +1808,11 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-          dataType.equals(MdAttributeCharacterInfo.CLASS) || 
-          dataType.equals(MdAttributeDateTimeInfo.CLASS) || 
-          dataType.equals(MdAttributeDateInfo.CLASS) || 
-          dataType.equals(MdAttributeTimeInfo.CLASS) || 
-          dataType.equals(MdAttributeTextInfo.CLASS) || 
-          dataType.equals(MdAttributeClobInfo.CLASS) || 
-          dataType.equals(MdAttributeStructInfo.CLASS) || 
-          dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
-          dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeDateTimeInfo.CLASS) || dataType.equals(MdAttributeDateInfo.CLASS) || dataType.equals(MdAttributeTimeInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
     // Encryption
-          dataType.equals(MdAttributeHashInfo.CLASS) || 
-          dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-          dataType.equals(MdAttributeReferenceInfo.CLASS) || 
-          dataType.equals(MdAttributeTermInfo.CLASS) || 
-          dataType.equals(MdAttributeFileInfo.CLASS) || 
-          dataType.equals(MdAttributeEnumerationInfo.CLASS) || 
-          dataType.equals(MdAttributeMultiReferenceInfo.CLASS) ||
-          dataType.equals(MdAttributeIndicatorInfo.CLASS))
+        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -1800,12 +1824,7 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-       dataType.equals(MdAttributeBooleanInfo.CLASS) || 
-       dataType.equals(MdAttributeIntegerInfo.CLASS) || 
-       dataType.equals(MdAttributeLongInfo.CLASS) || 
-       dataType.equals(MdAttributeFloatInfo.CLASS) || 
-       dataType.equals(MdAttributeDoubleInfo.CLASS) || 
-       dataType.equals(MdAttributeDecimalInfo.CLASS) ||
+    dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
     // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1822,9 +1841,8 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.String
-   * )
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.
+   * String )
    */
   public String formatColumnAlias(String columnAlias)
   {
@@ -1851,21 +1869,11 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-       dataType.equals(MdAttributeCharacterInfo.CLASS) || 
-       dataType.equals(MdAttributeTextInfo.CLASS) || 
-       dataType.equals(MdAttributeClobInfo.CLASS) || 
-       dataType.equals(MdAttributeStructInfo.CLASS) || 
-       dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
-       dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
     // Encryption
-        dataType.equals(MdAttributeHashInfo.CLASS) || 
-        dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || 
-        dataType.equals(MdAttributeTermInfo.CLASS) || 
-        dataType.equals(MdAttributeFileInfo.CLASS) || 
-        dataType.equals(MdAttributeEnumerationInfo.CLASS) ||
-        dataType.equals(MdAttributeIndicatorInfo.CLASS)
+        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS)
     // Non Primitives
     )
     {
@@ -2736,7 +2744,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Imports the given SQL file into the database. The password will be read from a pgpass file, so make sure it exists there before running this.
+   * Imports the given SQL file into the database. The password will be read
+   * from a pgpass file, so make sure it exists there before running this.
    * 
    * @param restoreSQLFile
    * @param printStream
@@ -2762,9 +2771,9 @@ public class PostgreSQL extends AbstractDatabase
     argList.add(restoreSQLFile);
     argList.add("--no-password");
     argList.add("--quiet");
-    
+
     logger.info("Importing SQL file with command [" + StringUtils.join(argList, " ") + "] in a new process and waiting for the process to exit.");
-    
+
     ProcessBuilder pb = new ProcessBuilder(argList);
 
     try
@@ -2787,9 +2796,8 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.database.general.AbstractDatabase#validateClobLength
-   * (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
+   * @see com.runwaysdk.dataaccess.database.general.AbstractDatabase#
+   * validateClobLength (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
    */
   @Override
   public void validateClobLength(String value, AttributeIF attributeIF)

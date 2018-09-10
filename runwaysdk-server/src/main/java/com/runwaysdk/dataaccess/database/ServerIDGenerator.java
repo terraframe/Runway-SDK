@@ -3,31 +3,32 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.database;
+
+import java.util.UUID;
 
 import com.runwaysdk.ConfigurationException;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.util.IDGenerator;
 
-
 /**
  * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the
- * runway. The algorithm is an improvement on the Leach-Salz standard <a
- * href="http://www.ietf.org/rfc/rfc4122.txt">(IETF RFC 4122)</a>, specifically
- * the name-based (Type 3) variant.
+ * runway. The algorithm is an improvement on the Leach-Salz standard
+ * <a href="http://www.ietf.org/rfc/rfc4122.txt">(IETF RFC 4122)</a>,
+ * specifically the name-based (Type 3) variant.
  *
  * Our algorithm uses a domain URL as the namespace, and a combination of the
  * system time (in milliseconds), a sequence number, and random input from
@@ -55,7 +56,8 @@ public class ServerIDGenerator extends IDGenerator
    */
   public static String generateUniqueDatabaseIdentifier()
   {
-    String autoGenId = ServerIDGenerator.nextID();
+    String autoGenId = UUID.randomUUID().toString();
+    autoGenId = autoGenId.replaceAll("-", "");
 
     int maxBaseHashLength = Database.MAX_DB_IDENTIFIER_SIZE - 1;
 

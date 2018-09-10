@@ -50,7 +50,7 @@ public class TransactionStore implements TransactionStoreIF
 
   public TransactionStore(int memorySize)
   {
-    this.storeName = IDGenerator.nextID();
+    this.storeName = IDGenerator.nextID().replaceAll("-", "");
     this.memorySize = memorySize;
     this.store = new TransactionMemorystore();
   }

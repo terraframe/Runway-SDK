@@ -144,7 +144,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
     // Get a new session Id
-    this.oid = ServerIDGenerator.nextID();
+    this.oid = ServerIDGenerator.nextID().replaceAll("-", "");
     this.user = publicUser;
     this.closeOnEndOfRequest = false;
     this.locale = locale;
