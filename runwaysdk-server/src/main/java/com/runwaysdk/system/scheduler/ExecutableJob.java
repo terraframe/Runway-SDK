@@ -276,8 +276,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       SmartException se = ( (SmartException) t );
       
-      errorMessage = se.getLocalizedMessage();
+      errorMessage = se.localize(com.runwaysdk.session.Session.getCurrentLocale());
       
+      if (errorMessage == null)
+      {
+        errorMessage = se.getLocalizedMessage();
+      }
       if (errorMessage == null)
       {
         errorMessage = se.getClassDisplayLabel();
