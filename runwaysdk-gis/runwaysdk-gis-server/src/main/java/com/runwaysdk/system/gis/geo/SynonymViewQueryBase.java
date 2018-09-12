@@ -69,13 +69,13 @@ public  abstract  class SynonymViewQueryBase extends com.runwaysdk.query.Generat
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.SynonymView.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.SynonymView.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.SynonymView.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.SynonymView.OID, alias, displayLabel);
 
   }
  

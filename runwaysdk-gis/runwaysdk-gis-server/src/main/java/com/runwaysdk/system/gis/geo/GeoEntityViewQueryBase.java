@@ -105,13 +105,13 @@ public  abstract  class GeoEntityViewQueryBase extends com.runwaysdk.query.Gener
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityView.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityView.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityView.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityView.OID, alias, displayLabel);
 
   }
  

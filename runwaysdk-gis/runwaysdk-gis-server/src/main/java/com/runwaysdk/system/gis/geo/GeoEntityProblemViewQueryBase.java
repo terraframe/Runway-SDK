@@ -87,13 +87,13 @@ public  abstract  class GeoEntityProblemViewQueryBase extends com.runwaysdk.quer
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityProblemView.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityProblemView.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityProblemView.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.gis.geo.GeoEntityProblemView.OID, alias, displayLabel);
 
   }
  

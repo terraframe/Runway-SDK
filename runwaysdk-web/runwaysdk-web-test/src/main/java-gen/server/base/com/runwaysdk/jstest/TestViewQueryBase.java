@@ -52,13 +52,13 @@ private static final long serialVersionUID = 969856748;
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.jstest.TestView.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.jstest.TestView.OID, alias, null);
 
   }
  
   public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.jstest.TestView.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.jstest.TestView.OID, alias, displayLabel);
 
   }
  
