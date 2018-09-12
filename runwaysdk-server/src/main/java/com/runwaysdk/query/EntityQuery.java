@@ -28,6 +28,7 @@ import java.util.Set;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 
@@ -88,7 +89,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    *          name of the attribute.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter oid()
+  public AttributeUUID oid()
   {
     return this.oid(null);
   }
@@ -99,7 +100,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
-  public AttributeCharacter oid(String userDefinedAlias)
+  public AttributeUUID oid(String userDefinedAlias)
   {
     String name = EntityInfo.OID;
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
@@ -109,7 +110,7 @@ public abstract class EntityQuery extends TableClassQuery implements HasAttribut
 
     Set<Join> attributeTableJoinSet = new HashSet<Join>();
 
-    return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, null);
+    return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, null);
   }
 
   /**

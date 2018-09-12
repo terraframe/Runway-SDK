@@ -20,8 +20,11 @@ package com.runwaysdk.dataaccess.attributes.value;
 
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeUUIDDAO;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeUUIDDAO;
 import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -99,5 +102,30 @@ public class MdAttributeUUID_Q extends MdAttributePrimitive_Q implements MdAttri
   public AttributeMdSession getAttributeMdSession()
   {
     throw new UnsupportedOperationException();
+  }
+  
+  /**
+   * Precondition: assumes this character attribute is an OID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference();
+  }
+  
+  /**
+   * This is used by the query API to allow for parent ids and child ids of relationships to
+   * be used in queries.
+   * 
+   * Precondition: assumes this character attribute is an OID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   * 
+   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference(mdReferenecedBusinessDAOIF);
   }
 }

@@ -85,7 +85,7 @@ public class GenericTableQuery extends GeneratedTableClassQuery
   }
 
 //  @Override
-//  protected SelectableChar getOid()
+//  protected SelectableUUID getOid()
 //  {
 //    // TODO Auto-generated method stub
 //    return null;

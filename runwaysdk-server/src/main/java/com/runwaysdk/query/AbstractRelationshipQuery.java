@@ -27,6 +27,7 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -127,7 +128,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    * attribute is the Relationship.PARENT_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentOid()
+  public AttributeUUID parentOid()
   {
     return this.parentOid(null, null);
   }
@@ -139,7 +140,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentOid(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeUUID parentOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
@@ -150,10 +151,10 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_OID has no medadata that defines it.
     // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_OID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
+    MdAttributeUUIDDAOIF mdAttributeIF = (MdAttributeUUIDDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
-    AttributeCharacter attributeCharacter =
-      new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    AttributeUUID attributeCharacter =
+      new AttributeUUID(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     attributeCharacter.setAttributeName(RelationshipInfo.PARENT_OID);
     attributeCharacter.setColumnName(RelationshipDAOIF.PARENT_OID_COLUMN);
     attributeCharacter.recomputeColumnAlias();
@@ -167,7 +168,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    * attribute is the Relationship.CHILD_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childOid()
+  public AttributeUUID childOid()
   {
     return this.childOid(null, null);
   }
@@ -179,7 +180,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childOid(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeUUID childOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
@@ -190,10 +191,10 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_OID has no metadata that defines it.
     // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to CHILD_OID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
+    MdAttributeUUIDDAOIF mdAttributeIF = (MdAttributeUUIDDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
-    AttributeCharacter attributeCharacter =
-      new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    AttributeUUID attributeCharacter =
+      new AttributeUUID(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
     attributeCharacter.setAttributeName(RelationshipInfo.CHILD_OID);
     attributeCharacter.setColumnName(RelationshipDAOIF.CHILD_OID_COLUMN);

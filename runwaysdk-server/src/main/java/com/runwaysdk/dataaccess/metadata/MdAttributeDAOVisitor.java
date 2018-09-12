@@ -39,7 +39,6 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeUUIDDAO;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 
 public interface MdAttributeDAOVisitor

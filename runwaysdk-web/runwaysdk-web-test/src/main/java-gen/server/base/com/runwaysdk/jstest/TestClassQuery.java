@@ -166,21 +166,21 @@ private static final long serialVersionUID = -537065038;
     return (com.runwaysdk.system.PhoneNumberQuery.PhoneNumberQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.jstest.TestClass.HOMEPHONE, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getOid()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
     return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getOid(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.TestClass.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.jstest.TestClass.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.TestClass.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.jstest.TestClass.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -873,9 +873,9 @@ private static final long serialVersionUID = -537065038;
     public com.runwaysdk.system.PhoneNumberQuery.PhoneNumberQueryStructIF getHomePhone();
     public com.runwaysdk.system.PhoneNumberQuery.PhoneNumberQueryStructIF getHomePhone(String alias);
     public com.runwaysdk.system.PhoneNumberQuery.PhoneNumberQueryStructIF getHomePhone(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getOid();
-    public com.runwaysdk.query.SelectableChar getOid(String alias);
-    public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1097,21 +1097,21 @@ private static final long serialVersionUID = 1294579792;
     return (com.runwaysdk.system.PhoneNumberQuery.PhoneNumberQueryStructIF)this.attributeFactory(com.runwaysdk.jstest.TestClass.HOMEPHONE, com.runwaysdk.system.metadata.MdAttributeStruct.CLASS, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getOid()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
     return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getOid(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.TestClass.OID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.jstest.TestClass.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getOid(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.TestClass.OID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.jstest.TestClass.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

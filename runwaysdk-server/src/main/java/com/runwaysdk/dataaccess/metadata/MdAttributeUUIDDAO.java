@@ -1,15 +1,18 @@
-package com.runwaysdk.dataaccess;
+package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 import java.util.UUID;
 
+import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.EntityDAO;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_S;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_T;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
-import com.runwaysdk.dataaccess.metadata.MdAttributePrimitiveDAO;
 import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeUUIDMdSession;
@@ -183,4 +186,55 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     return MdAttributeUUIDDAOIF.class.getName();
   }
+  
+  /**
+   * If a default value has been defined for a dimension attached to this
+   * session, then that value is returned, otherwise the default value assigned
+   * to the attribute definition is returned.
+   * 
+   * @return default value
+   */
+  public String getAttributeInstanceDefaultValue()
+  {
+    return "";
+  }
+  
+  /**
+   * Precondition: assumes this character attribute is an OID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
+    
+    mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
+    
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getOid());
+    
+    return mdAttributeReferenceDAO;
+  }
+  
+  /**
+   * This is used by the query API to allow for parent ids and child ids of relationships to
+   * be used in queries.
+   * 
+   * Precondition: assumes this character attribute is an OID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   * 
+   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
+    
+    mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
+    
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getOid());
+    
+    return mdAttributeReferenceDAO;
+  }
+  
+  
 }

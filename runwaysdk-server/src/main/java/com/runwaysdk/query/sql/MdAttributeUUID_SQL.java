@@ -23,8 +23,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
-import com.runwaysdk.dataaccess.MdAttributeUUIDDAO;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdAttributeUUIDDAO;
 import com.runwaysdk.query.ValueQuery;
 
 public class MdAttributeUUID_SQL extends MdAttributePrimitive_SQL implements MdAttributeUUIDDAOIF
@@ -69,5 +71,22 @@ public class MdAttributeUUID_SQL extends MdAttributePrimitive_SQL implements MdA
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
+
+  /**
+   * @throws UnsupportedOperationException
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
+  }
+  
+  /**
+   * @throws UnsupportedOperationException
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
+  }
+  
 
 }

@@ -20,6 +20,7 @@ package com.runwaysdk.query;
 
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 
 /**
@@ -64,7 +65,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
     return this.getComponentQuery().oid();
   }
 
-  public SelectableChar getOid()
+  public SelectableUUID getOid()
   {
     return this.getComponentQuery().oid();
   }
@@ -77,9 +78,9 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public Condition EQ(SelectableReference _attributeIF)
   {
-    AttributeCharacter idCharacter = this.getComponentQuery().oid();
+    AttributeUUID idCharacter = this.getComponentQuery().oid();
 
-    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF) idCharacter.getMdAttributeIF();
+    MdAttributeUUIDDAOIF mdAttributeCharacterDAOIF = (MdAttributeUUIDDAOIF) idCharacter.getMdAttributeIF();
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference();
 
     AttributeReference idReference = (AttributeReference) this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, idCharacter.getUserDefinedAlias(), idCharacter.getUserDefinedDisplayLabel());

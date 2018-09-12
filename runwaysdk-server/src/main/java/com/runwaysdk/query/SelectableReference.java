@@ -28,7 +28,7 @@ public interface SelectableReference extends Selectable
    * @param attributeName name of the attribute.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter oid();
+  public AttributeUUID oid();
 
 
   // Equals

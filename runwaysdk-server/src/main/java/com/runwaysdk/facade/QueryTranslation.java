@@ -66,6 +66,7 @@ import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableChar;
 import com.runwaysdk.query.SelectableNumber;
 import com.runwaysdk.query.SelectablePrimitive;
+import com.runwaysdk.query.SelectableUUID;
 import com.runwaysdk.query.ValueQuery;
 
 public class QueryTranslation
@@ -156,12 +157,12 @@ public class QueryTranslation
         if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.PARENT_OID))
         {
           RelationshipQuery relationshipQuery = (RelationshipQuery) query;
-          translateCondition = translateCharCondition(relationshipQuery.parentOid(), condition, conditionValue);
+          translateCondition = translateUUIDCondition(relationshipQuery.parentOid(), condition, conditionValue);
         }
         else if (queryDTO instanceof RelationshipQueryDTO && attributeName.equals(RelationshipInfo.CHILD_OID))
         {
           RelationshipQuery relationshipQuery = (RelationshipQuery) query;
-          translateCondition = translateCharCondition(relationshipQuery.childOid(), condition, conditionValue);
+          translateCondition = translateUUIDCondition(relationshipQuery.childOid(), condition, conditionValue);
         }
         else
         {
@@ -463,6 +464,58 @@ public class QueryTranslation
     }
   }
 
+  /**
+   * Translates conditions specific to AttributeUUID objects.
+   * 
+   * @param attribute
+   * @param condition
+   * @param conditionValue
+   * @return
+   */
+  private static Condition translateUUIDCondition(SelectableUUID attribute, String condition, String conditionValue)
+  {
+    // Use LIKE if the conditionValue contains a wildcard. Otherwise, use EQUALS
+    SelectableUUID attributeCharIF = (SelectableUUID) attribute;
+    
+    if (condition.equals(QueryConditions.EQUALS))
+    {
+      return attributeCharIF.EQ(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.EQUALS_IGNORE_CASE))
+    {
+      return attributeCharIF.EQi(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.NOT_EQUALS))
+    {
+      return attributeCharIF.NE(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.NOT_EQUALS_IGNORE_CASE))
+    {
+      return attributeCharIF.NEi(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.IN))
+    {
+      return attributeCharIF.IN(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.IN_IGNORES_CASE))
+    {
+      return attributeCharIF.INi(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.NOT_IN))
+    {
+      return attributeCharIF.NI(conditionValue);
+    }
+    else if (condition.equals(QueryConditions.NOT_IN_IGNORES_CASE))
+    {
+      return attributeCharIF.NIi(conditionValue);
+    }
+    else
+    {
+      String message = "A query cannot translate the condition [" + condition + "] for attribute characters.";
+      throw new QueryException(message);
+    }
+  }
+  
   /**
    * Translates conditions specific to AttributeNumber objects.
    * 
