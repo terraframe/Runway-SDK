@@ -45,6 +45,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 
@@ -125,6 +126,10 @@ public class AttributeFactory
     else if (attributeType.equals(MdAttributeBooleanInfo.CLASS))
     {
       attribute = new AttributeBoolean(attributeName, mdAttributeKey, definingType, (String) attributeValue);
+    }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      attribute = new AttributeUUID(attributeName, mdAttributeKey, definingType, (String) attributeValue);
     }
     else if (attributeType.equals(MdAttributeTimeInfo.CLASS))
     {

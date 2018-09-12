@@ -76,6 +76,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -1094,7 +1095,7 @@ public class PostgreSQL extends AbstractDatabase
    */
   public String startCreateClassTable(String tableName)
   {
-    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY";
+    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " UUID NOT NULL PRIMARY KEY";
   }
 
   /*
@@ -1230,7 +1231,7 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public String startCreateRelationshipTableBatch(String tableName)
   {
-    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n" + RelationshipDAOIF.CHILD_OID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL";
+    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " UUID NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN + " UUID NOT NULL, \n" + RelationshipDAOIF.CHILD_OID_COLUMN + " UUID NOT NULL";
   }
 
   /**
@@ -1812,7 +1813,7 @@ public class PostgreSQL extends AbstractDatabase
     // Encryption
         dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
+        dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -1824,7 +1825,7 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-    dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
+    dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
     // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1869,15 +1870,19 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) ||
     // Encryption
         dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS)
+        dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS)
     // Non Primitives
     )
     {
       bogusValue = "''";
+    }
+    else if(dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
+    {
+      bogusValue = "'99999999-9999-9999-9999-999999999999'::uuid";      
     }
     else if (dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1897,7 +1902,7 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-    dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS))
+    dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS))
     {
       bogusValue = "0";
     }

@@ -81,6 +81,7 @@ import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -498,6 +499,61 @@ public abstract class TableClassQuery extends ComponentQuery
     }
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name)
+  {
+    return this.aUUID(name, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias)
+  {
+    return this.aUUID(name, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    Set<Join> attributeTableJoinSet = new HashSet<Join>();
+    
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    
+    if (name.equals(EntityInfo.OID))
+    {
+      String definingTableName = this.getMdTableClassIF().getTableName();
+      String definingTableAlias = this.getTableAlias("", definingTableName);
+      
+      return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else
+    {
+      this.checkValidAttributeRequest(name, this.getMdTableClassIF(), mdAttributeIF, MdAttributeCharacterInfo.CLASS);
+      
+      return (AttributeUUID) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+  
 
   /**
    * Returns an attribute CLOB statement object.
@@ -2243,6 +2299,10 @@ public abstract class TableClassQuery extends ComponentQuery
     if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
       attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, mdTableClass.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      attribute = new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, mdTableClass.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {

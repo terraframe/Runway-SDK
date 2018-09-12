@@ -226,10 +226,10 @@ public class MetadataUUIDFixer
 
             UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
             String newId = uuid.toString().substring(0, 32) + value;
-            
+
             temp.put(oldId, newId);
           }
-          
+
           for (Entry<String, String> entry : temp.entrySet())
           {
             content = content.replaceAll(entry.getKey(), entry.getValue());
@@ -241,6 +241,83 @@ public class MetadataUUIDFixer
     }
   }
 
+  public void fixType()
+  {
+
+    String dir = "C:/Users/admin/git/Runway-SDK/runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata/";
+    String infile = "metadata.xml.bak";
+    String outfile = "metadata.xml";
+
+    try
+    {
+      DOMParser parser = new DOMParser();
+      parser.parse(new InputSource(new FileReader(new File(dir, infile))));
+      Document doc = parser.getDocument();
+
+      XPath xPath = XPathFactory.newInstance().newXPath();
+      NodeList results = (NodeList) xPath.compile("//attributeName[.=\"oid\"]").evaluate(doc, XPathConstants.NODESET);
+
+      for (int i = 0; i < results.getLength(); i++)
+      {
+        Node result = results.item(i);
+        Element parent = (Element) result.getParentNode();
+        String tagName = parent.getTagName();
+
+        if (tagName.equalsIgnoreCase("mdattributecharacter"))
+        {
+          doc.renameNode(parent, "", "mdattributeuuid");
+        }
+
+        Node type = parent.getElementsByTagName("type").item(0);
+        type.setTextContent("com.runwaysdk.system.metadata.MdAttributeUUID");
+
+        Node oid = parent.getElementsByTagName("oid").item(0);
+        String oldId = oid.getTextContent();
+        String newId = oldId.substring(0, 32) + "a9b9";
+
+        this.ids.put(oldId, newId);
+
+        oid.setTextContent(newId);
+
+        parent.removeChild(parent.getElementsByTagName("databaseSize").item(0));
+        parent.removeChild(parent.getElementsByTagName("defaultValue").item(0));
+      }
+
+      String[] tags = new String[] { "parent_oid", "child_oid" };
+
+      for (String tag : tags)
+      {
+        results = (NodeList) xPath.compile("//" + tag).evaluate(doc, XPathConstants.NODESET);
+        // Update references
+
+        for (int i = 0; i < results.getLength(); i++)
+        {
+          Node result = results.item(i);
+
+          String oldId = result.getTextContent();
+
+          if (this.ids.containsKey(oldId))
+          {
+            String newId = this.ids.get(oldId);
+            result.setTextContent(newId);
+          }
+        }
+      }
+
+      TransformerFactory tFactory = TransformerFactory.newInstance();
+      Transformer transformer = tFactory.newTransformer();
+
+      DOMSource source = new DOMSource(doc);
+      transformer.transform(source, new StreamResult(new File(dir, outfile)));
+
+    }
+    catch (SAXException | IOException | XPathExpressionException | TransformerException e)
+    {
+      e.printStackTrace();
+    }
+
+  }
+
   public static void main(String[] args) throws IOException
   {
     // new MetadataUUIDFixer().run();
@@ -250,7 +327,10 @@ public class MetadataUUIDFixer
     // File("C:\\Users\\admin\\git\\Runway-SDK\\runwaysdk-common\\src\\main\\java\\com\\runwaysdk\\constants");
 
     MetadataUUIDFixer fixer = new MetadataUUIDFixer();
-    fixer.run();
+    // fixer.run();
+    // fixer.updateIDs(file);
+
+    fixer.fixType();
     fixer.updateIDs(file);
   }
 }

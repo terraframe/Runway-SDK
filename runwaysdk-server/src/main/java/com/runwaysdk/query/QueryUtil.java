@@ -378,7 +378,26 @@ public class QueryUtil
       return new SubSelectBasicConditionEq(leftSelectable, rightSelectable, true);
     }
   }
-
+  
+  public static Condition EQi(AttributeUUID leftSelectable, SelectableUUID rightSelectable)
+  {
+    if (rightSelectable.isAggregateFunction())
+    {
+      return new SubSelectFunctionConditionEq(leftSelectable, (AggregateFunction) rightSelectable, true);
+    }
+    else if (leftSelectable.getRootQuery() == rightSelectable.getRootQuery())
+    {
+      return new BasicConditionEq(leftSelectable, rightSelectable, true);
+    }
+    else if (rightSelectable.getRootQuery().isUsedInValueQuery() || leftSelectable.getRootQuery().isUsedInValueQuery())
+    {
+      return new ValueJoinConditionEq(leftSelectable, rightSelectable, true);
+    }
+    else
+    {
+      return new SubSelectBasicConditionEq(leftSelectable, rightSelectable, true);
+    }
+  }
 
   /**
    * Not Equal comparitor between selectables.
@@ -435,6 +454,33 @@ public class QueryUtil
     }
   }
 
+  /**
+   * Character != comparison case insensitive.
+   *
+   * @param leftSelectable
+   * @param rightSelectable
+   * @return Basic Condition object
+   */
+  protected static Condition NEi(Selectable leftSelectable, SelectableUUID rightSelectable)
+  {
+    if (rightSelectable.isAggregateFunction())
+    {
+      return new SubSelectFunctionConditionNotEq(leftSelectable, (AggregateFunction) rightSelectable);
+    }
+    else if (leftSelectable.getRootQuery() == rightSelectable.getRootQuery())
+    {
+      return new BasicConditionNotEq(leftSelectable, rightSelectable, true);
+    }
+    else if (rightSelectable.getRootQuery().isUsedInValueQuery() || leftSelectable.getRootQuery().isUsedInValueQuery())
+    {
+      return new ValueJoinConditionNotEq(leftSelectable, rightSelectable, true);
+    }
+    else
+    {
+      return new SubSelectBasicConditionNotEq(leftSelectable, rightSelectable, true);
+    }
+  }
+  
 
   /**
    * Greater Than
@@ -846,5 +892,6 @@ public class QueryUtil
 
     throw new InvalidComparisonOperator(errMsg, trimmedOperator, InvalidComparisonOperator.Enum.STRUCT);
   }
+
 
 }

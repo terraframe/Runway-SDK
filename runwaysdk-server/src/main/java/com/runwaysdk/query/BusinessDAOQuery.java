@@ -55,7 +55,7 @@ public class BusinessDAOQuery extends AbstractObjectQuery
   {
     MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     BusinessDAOQuery businessDAOquery = new QueryFactory().businessDAOQuery(mdClassIF.definesType());
-    businessDAOquery.WHERE(businessDAOquery.aCharacter(EntityInfo.OID).EQ(oid));
+    businessDAOquery.WHERE(businessDAOquery.aUUID(EntityInfo.OID).EQ(oid));
     businessDAOquery.instanceQuery = true;
 
     return businessDAOquery;

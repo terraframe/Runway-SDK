@@ -51,6 +51,7 @@ import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeBlob_Q;
@@ -78,6 +79,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeSymmetric_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeTerm_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeText_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeTime_Q;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeUUID_Q;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
@@ -202,6 +204,10 @@ public abstract class Attribute implements SelectableSingle, Statement
     if (_mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
       mdAttribute_Q = new MdAttributeBoolean_Q(_mdAttributeIF);
+    }
+    else if (_mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      mdAttribute_Q = new MdAttributeUUID_Q(_mdAttributeIF);
     }
     else if (_mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {

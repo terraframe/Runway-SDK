@@ -93,6 +93,8 @@ public class SqlServer extends ListResourceBundle
     hashtable.put(MdAttributeLocalTextInfo.CLASS, "char");
     hashtable.put(MdAttributeHashInfo.CLASS, "varchar");
     hashtable.put(MdAttributeSymmetricInfo.CLASS, "nvarchar(max)");
+    hashtable.put(MdAttributeUUIDInfo.CLASS, "uuid");
+
     return hashtable;
   }
 }

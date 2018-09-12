@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 23, 2005
@@ -84,6 +84,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -199,7 +200,7 @@ public abstract class AbstractDatabase
    * Creates the database user.
    */
   public abstract void createUser();
-  
+
   /**
    * Closes all active connections to the database and cleans up resources.
    */
@@ -312,7 +313,7 @@ public abstract class AbstractDatabase
       throw new DatabaseException(ex);
     }
   }
-  
+
   public Connection getConnectionRaw()
   {
     this.connlock.lock();
@@ -334,9 +335,9 @@ public abstract class AbstractDatabase
         statement.execute();
         /*
          * java.util.Date endTime = new java.util.Date(); long totalTime =
-         * endTime.getTime() - startTime.getTime();
-         * System.out.println("\n----------------------\nTotal Connection Time: "
-         * + totalTime+"\n----------------------");
+         * endTime.getTime() - startTime.getTime(); System.out.
+         * println("\n----------------------\nTotal Connection Time: " +
+         * totalTime+"\n----------------------");
          */
       }
       catch (SQLException ex)
@@ -366,10 +367,11 @@ public abstract class AbstractDatabase
   {
     RequestState currentRequestState = RequestState.getCurrentRequestState();
 
-    if (currentRequestState == null) {
+    if (currentRequestState == null)
+    {
       throw new CoreException("Request state expected.");
     }
-    
+
     return this.getConnectionRaw();
   }
 
@@ -518,7 +520,7 @@ public abstract class AbstractDatabase
 
     return superTypeMap;
   }
-  
+
   public void dropAll()
   {
     throw new UnsupportedOperationException();
@@ -772,8 +774,8 @@ public abstract class AbstractDatabase
   {
     List<String> subClassTypeList = new LinkedList<String>();
 
-    String sqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n " + "   AND " + MdTypeDAOIF.TABLE
-        + "." + EntityDAOIF.ID_COLUMN + " = '" + mdEntityId + "'";
+    String sqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n " + "   AND "
+        + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = '" + mdEntityId + "'";
 
     ResultSet resultSet = this.query(sqlSelect);
 
@@ -1149,11 +1151,17 @@ public abstract class AbstractDatabase
   public abstract void addTempFieldsToTable(String tableName, String columnName, String columnType, Integer numberOfTempFields);
 
   /**
-   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * Creates a temporary table that lasts for at most the duration of the
+   * session. The behavior on transaction commit is configurable with the
+   * onCommit parameter.
    * 
-   * @param tableName The name of the temp table.
-   * @param columns An array of MdAttribute class names that represent the columns in the table.
-   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   * @param tableName
+   *          The name of the temp table.
+   * @param columns
+   *          An array of MdAttribute class names that represent the columns in
+   *          the table.
+   * @param onCommit
+   *          Decides the fate of the temporary table upon transaction commit.
    */
   public abstract void createTempTable(String tableName, List<String> columns, String onCommit);
 
@@ -1594,8 +1602,8 @@ public abstract class AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.OID field as
-   * the primary key.
+   * minus the closing parenthesis. Automatically adds the Component.OID field
+   * as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1889,7 +1897,8 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Builds a JDBC prepared <code>INSERT</code> statement for the given fields. <br>
+   * Builds a JDBC prepared <code>INSERT</code> statement for the given fields.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -2032,7 +2041,8 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -2159,7 +2169,8 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
+   * <br>
    * 
    * @param table
    *          The table to insert into.
@@ -3320,19 +3331,22 @@ public abstract class AbstractDatabase
     try
     {
       statement = conx.createStatement();
-      
+
       boolean isResultSet = statement.execute(selectStatement);
-      
-      while(true) {
-        if (isResultSet) {
+
+      while (true)
+      {
+        if (isResultSet)
+        {
           resultSet = statement.getResultSet();
 
           return resultSet;
         }
-        else if (statement.getUpdateCount() == -1) {
+        else if (statement.getUpdateCount() == -1)
+        {
           throw new SQLException("No results were returned by the query.");
         }
-        
+
         isResultSet = statement.getMoreResults();
       }
     }
@@ -3390,14 +3404,14 @@ public abstract class AbstractDatabase
   }
 
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
-   * null, then all objects are returned. Otherwise, the
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid
+   * is null, then all objects are returned. Otherwise, the
    * <code>MdAttributeDimensionDAOIF</code>s for the
    * <code>MdDimensionDAOIF</code> with the given oid.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
-   *         null, then all objects are returned. Otherwise, the
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid
+   *         is null, then all objects are returned. Otherwise, the
    *         <code>MdAttributeDimensionDAOIF</code>s for the
    *         <code>MdDimensionDAOIF</code> with the given oid.
    */
@@ -3593,7 +3607,7 @@ public abstract class AbstractDatabase
   {
     try
     {
-      if (dataType.equals(MdAttributeReferenceInfo.CLASS))
+      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
       {
         String va = (String) value;
         if (va.equals(""))
@@ -5316,18 +5330,18 @@ public abstract class AbstractDatabase
   {
     return 28;
   }
-  
+
   /**
-   * Casts the given sql to a decimal. 
+   * Casts the given sql to a decimal.
    * 
    * Note, this has only been tested against Postgres
    * 
    * @param sql
-   * @return Casts the given sql to a decimal. 
+   * @return Casts the given sql to a decimal.
    */
   public String castToDecimal(String sql)
   {
-    return sql+"::dec";
+    return sql + "::dec";
   }
 
 }

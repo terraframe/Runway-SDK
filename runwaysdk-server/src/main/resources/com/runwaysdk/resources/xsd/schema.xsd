@@ -183,6 +183,7 @@
   <xs:complexType>
 	<xs:choice minOccurs="0" maxOccurs="unbounded">
 	  <xs:element name="mdattributeboolean" type="mdattributeboolean"/>
+	  <xs:element name="mdattributeuuid" type="mdattributeuuid"/>
 	  <xs:element name="mdattributeinteger" type="mdattributeinteger"/>
 	  <xs:element name="mdattributelong" type="mdattributelong"/>
 	  <xs:element name="mdattributefloat" type="mdattributefloat"/>
@@ -333,6 +334,13 @@
    	    </xs:element>
 	  </xs:sequence>
 	</xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="mdattributeuuid">
+  <xs:complexContent>
+    <xs:extension base="mdattributeprimitive">
+  	</xs:extension>
   </xs:complexContent>
 </xs:complexType>
 

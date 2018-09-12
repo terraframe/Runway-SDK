@@ -83,6 +83,8 @@ public class Oracle extends ListResourceBundle
     hashtable.put(MdAttributeLocalTextInfo.CLASS, "char");
     hashtable.put(MdAttributeHashInfo.CLASS, "varchar2");
     hashtable.put(MdAttributeSymmetricInfo.CLASS, "clob");
+    hashtable.put(MdAttributeUUIDInfo.CLASS, "uuid");
+
     return hashtable;
   }
 }

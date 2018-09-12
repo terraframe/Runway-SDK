@@ -72,6 +72,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -756,7 +757,7 @@ public class XMLImporter
       fields.add(EntityDAOIF.ID_COLUMN);
       prepSmtVars.add("?");
       values.add(oid);
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       columnNameList.add(fields);
       prepSmtVarList.add(prepSmtVars);
@@ -852,12 +853,12 @@ public class XMLImporter
         columnNames.add(RelationshipDAOIF.PARENT_OID_COLUMN);
         prepSmtVars.add("?");
         values.add(parentOid);
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
         columnNames.add(RelationshipDAOIF.CHILD_OID_COLUMN);
         prepSmtVars.add("?");
         values.add(childOid);
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
       }
 
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
@@ -912,7 +913,7 @@ public class XMLImporter
       validateId(oid);
       prepSmtVars.add("?");
       values.add(oid);
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       fieldList.add(fields);
       prepSmtVarList.add(prepSmtVars);
@@ -1002,7 +1003,7 @@ public class XMLImporter
           columnNames.add(MdAttributeConcreteDAOIF.ID_COLUMN);
           prepSmtVars.add("?");
           values.add(value);
-          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+          attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
           columnNames.add(MdAttributeConcreteDAOIF.KEY_COLUMN);
           prepSmtVars.add("?");
