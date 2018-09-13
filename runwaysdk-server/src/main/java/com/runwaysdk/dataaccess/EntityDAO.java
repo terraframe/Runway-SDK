@@ -1529,7 +1529,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       }
 
       // Exclude this object from the database
-      entityQuery.WHERE(entityQuery.aCharacter(EntityInfo.OID).NE(this.getOid()));
+      entityQuery.WHERE(entityQuery.aUUID(EntityInfo.OID).NE(this.getOid()));
 
       if (entityQuery.getCount() > 0)
       {

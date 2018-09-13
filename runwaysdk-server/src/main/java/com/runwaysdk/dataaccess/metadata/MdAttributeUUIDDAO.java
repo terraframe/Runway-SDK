@@ -63,7 +63,7 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_E(this));
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeUUID_E(this));
     }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
@@ -74,6 +74,7 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
     }
   }
+
 
   /**
    * Called for java class generation. Returns the java type of this attribute

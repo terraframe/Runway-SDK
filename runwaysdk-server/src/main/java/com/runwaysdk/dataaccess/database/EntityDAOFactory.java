@@ -33,6 +33,7 @@ import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -476,7 +477,7 @@ public class EntityDAOFactory
         columnNames.add(EntityDAOIF.ID_COLUMN);
         prepStmtVars.add("?");
         values.add(entityDAO.getOid());
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
         addedId = true;
       }
 
@@ -486,11 +487,11 @@ public class EntityDAOFactory
         columnNames.add(RelationshipDAOIF.PARENT_OID_COLUMN);
         prepStmtVars.add("?");
         values.add(relationshipDAO.getParentOid());
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
         columnNames.add(RelationshipDAOIF.CHILD_OID_COLUMN);
         prepStmtVars.add("?");
         values.add(relationshipDAO.getChildOid());
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
       }
 
       PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(mdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes);

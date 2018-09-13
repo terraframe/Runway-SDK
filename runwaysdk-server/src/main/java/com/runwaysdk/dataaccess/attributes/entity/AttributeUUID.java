@@ -3,31 +3,33 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 17, 2005
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
+import java.util.UUID;
+
 import com.runwaysdk.dataaccess.AttributeUUIDIF;
 
-
 /**
- * <code>AttributeUUID</code> represents <code><b>boolean</b></code> attributes in
- * classes in the database. It standardizes database-level boolean representation through
- * Strings, and translates results to Java <code><b>boolean</code></b>s.
+ * <code>AttributeUUID</code> represents <code><b>boolean</b></code> attributes
+ * in classes in the database. It standardizes database-level boolean
+ * representation through Strings, and translates results to Java
+ * <code><b>boolean</code></b>s.
  * 
  * @author Eric
  * @version $Revision 1.0 $
@@ -42,11 +44,15 @@ public class AttributeUUID extends Attribute implements AttributeUUIDIF
   private static final long serialVersionUID = -8176997715088266656L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and <code>definingEntityType</code>.
+   * Inherited constrcutor, sets <code>name</code> and
+   * <code>definingEntityType</code>.
    * 
-   * @param name The name of this boolean attribute.
-   * @param mdAttributeKey key of the defining attribute metadata
-   * @param definingEntityType The class that defines this attribute.
+   * @param name
+   *          The name of this boolean attribute.
+   * @param mdAttributeKey
+   *          key of the defining attribute metadata
+   * @param definingEntityType
+   *          The class that defines this attribute.
    */
   public AttributeUUID(String name, String mdAttributeKey, String definingEntityType)
   {
@@ -54,30 +60,49 @@ public class AttributeUUID extends Attribute implements AttributeUUIDIF
   }
 
   /**
-   * Inherited constructor, sets <code>name</code>, <code>definingEntityType</code>, and
-   * <code>value</code>.
+   * Inherited constructor, sets <code>name</code>,
+   * <code>definingEntityType</code>, and <code>value</code>.
    * 
-   * @param name The name of this boolean attribute.
-   * @param mdAttributeKey key of the defining attribute metadata
-   * @param definingEntityType The class that defines this attribute.
-   * @param value The value of this boolean. "<code>true</code>" or "<code>false</code>"
+   * @param name
+   *          The name of this boolean attribute.
+   * @param mdAttributeKey
+   *          key of the defining attribute metadata
+   * @param definingEntityType
+   *          The class that defines this attribute.
+   * @param value
+   *          The value of this boolean. "<code>true</code>" or
+   *          "<code>false</code>"
    */
   public AttributeUUID(String name, String mdAttributeKey, String definingEntityType, String value)
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
 
-  
   /**
    * Returns a deep clone of this attribute.
    * 
-   * <br/><b>Precondition: </b> true <br/><b>Postcondition: </b> true
+   * <br/>
+   * <b>Precondition: </b> true <br/>
+   * <b>Postcondition: </b> true
    * 
    * @return a deep clone of this Attribute
    */
   public AttributeUUID attributeClone()
   {
-    return new AttributeUUID(this.getName(), this.mdAttributeKey, this.getDefiningClassType(),  new String(this.getRawValue()));
+    return new AttributeUUID(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
   }
+
+//  @Override
+//  public Object getRawValueObject()
+//  {
+//    String value = this.getValue();
+//
+//    if (value != null && value.length() == 36)
+//    {
+//      return UUID.fromString(value);
+//    }
+//
+//    return null;
+//  }
 
 }

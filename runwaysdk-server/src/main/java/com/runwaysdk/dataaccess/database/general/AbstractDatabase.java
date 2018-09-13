@@ -3610,7 +3610,7 @@ public abstract class AbstractDatabase
       if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
       {
         String va = (String) value;
-        if (va.equals(""))
+        if (value == null || va.equals(""))
         {
           prepStmt.setNull(index, java.sql.Types.OTHER);
         }
