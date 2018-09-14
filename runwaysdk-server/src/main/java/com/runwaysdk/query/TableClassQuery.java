@@ -293,7 +293,7 @@ public abstract class TableClassQuery extends ComponentQuery
       String definingTableName = this.getMdTableClassIF().getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
 
-      return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     return this.internalAttributeFactory(attributeName, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);

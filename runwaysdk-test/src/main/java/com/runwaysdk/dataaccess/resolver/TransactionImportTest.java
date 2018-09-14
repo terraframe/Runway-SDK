@@ -609,7 +609,7 @@ public class TransactionImportTest
   }
 
   @Request
-  @Test
+   @Test
   public void testImportOfLocalText()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
