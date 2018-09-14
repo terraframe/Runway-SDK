@@ -38,6 +38,7 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -515,10 +516,10 @@ public class RelationshipDAOFactory
     ColumnInfo childOidColumnInfo = columnInfoMap.get(childAttributeQualifiedName);
 
     String parentColumnAlias = parentOidColumnInfo.getColumnAlias();
-    String parentOidValue = (String) AttributeFactory.getColumnValueFromRow(results, parentColumnAlias, MdAttributeCharacterInfo.CLASS, false);
+    String parentOidValue = (String) AttributeFactory.getColumnValueFromRow(results, parentColumnAlias, MdAttributeUUIDInfo.CLASS, false);
 
     String childColumnAlias = childOidColumnInfo.getColumnAlias();
-    String childOidValue = (String) AttributeFactory.getColumnValueFromRow(results, childColumnAlias, MdAttributeCharacterInfo.CLASS, false);
+    String childOidValue = (String) AttributeFactory.getColumnValueFromRow(results, childColumnAlias, MdAttributeUUIDInfo.CLASS, false);
 
     RelationshipDAO relationshipDAO = factoryMethod(parentOidValue, childOidValue, attributeMap, type, true);
     return relationshipDAO;

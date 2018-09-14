@@ -106,7 +106,7 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
    */
   public String queryAttributeClass()
   {
-    return com.runwaysdk.query.SelectableChar.class.getName();
+    return com.runwaysdk.query.SelectableUUID.class.getName();
   }
 
   @Override

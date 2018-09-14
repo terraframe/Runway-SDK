@@ -1566,7 +1566,7 @@ public class MdAttributeTest
     mdAttrRef.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, MdClassInfo.ID_VALUE);
-    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "An invalid reference");
+    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "99999999-9999-9999-9999-999999999999");
     mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try

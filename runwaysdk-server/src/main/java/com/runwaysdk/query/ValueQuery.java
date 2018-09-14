@@ -48,6 +48,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
@@ -73,6 +74,7 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
@@ -1915,6 +1917,49 @@ public class ValueQuery extends ComponentQuery
   }
 
   /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String userDefinedAlias)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+    
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+    
+    if (! ( mdAttributeIF instanceof MdAttributeUUIDDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeUUIDInfo.CLASS, userDefinedAlias);
+    }
+    return (AttributeUUID) this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, selectable.getUserDefinedDisplayLabel());
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+    
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+    
+    if (! ( mdAttributeIF instanceof MdAttributeUUIDDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeUUIDInfo.CLASS, userDefinedAlias);
+    }
+    return (AttributeUUID) this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
+  /**
    * Returns an attribute text statement object.
    * 
    * @param name
@@ -2877,6 +2922,48 @@ public class ValueQuery extends ComponentQuery
     return new SelectableSQLCharacter(false, this, attributeName, sql, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql);
+  }
+  
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * @param userDefinedAlias
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql, String userDefinedAlias)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns a custom SQL character selectable.
    * 

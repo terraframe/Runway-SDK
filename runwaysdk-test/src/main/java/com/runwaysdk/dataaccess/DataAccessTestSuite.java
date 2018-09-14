@@ -40,7 +40,7 @@ import com.runwaysdk.dataaccess.schemamanager.MergeTest;
   CacheEverythingTestSuite.class,
   CacheNothingTestSuite.class,
   SAXParseTest.class,
-  LocalizationTest.class,  
+//  LocalizationTest.class,  
   MdTableTestSuite.class,
   DeterministicIDTest.class,
   StaleObjectTest.class,

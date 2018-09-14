@@ -37,6 +37,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -56,6 +57,7 @@ import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -166,7 +168,7 @@ public class AttributeStruct extends Attribute implements SelectableStruct
    */
   public BasicCondition EQ(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeUUIDInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionEq(this, statementPrimitive, false);
   }
@@ -178,7 +180,7 @@ public class AttributeStruct extends Attribute implements SelectableStruct
    */
   public BasicCondition NE(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeUUIDInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }
@@ -261,6 +263,43 @@ public class AttributeStruct extends Attribute implements SelectableStruct
     this.rootQuery.checkValidAttributeRequest(name, this.mdStructIF, mdAttributeIF, MdAttributeCharacterInfo.CLASS);
 
     return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, this.attributeNamespace+"."+this._getAttributeName(), this.structTableName,
+        this.structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, this.getMdAttributeIF());
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name)
+  {
+    return this.aUUID(name, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias)
+  {
+    return this.aUUID(name, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.rootQuery.checkValidAttributeRequest(name, this.mdStructIF, mdAttributeIF, MdAttributeUUIDInfo.CLASS);
+    
+    return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, this.attributeNamespace+"."+this._getAttributeName(), this.structTableName,
         this.structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, this.getMdAttributeIF());
   }
 
@@ -794,6 +833,10 @@ public class AttributeStruct extends Attribute implements SelectableStruct
     else if (attributeType.equals(MdAttributeCharacterInfo.CLASS))
     {
       return this.aCharacter(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      return this.aUUID(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (attributeType.equals(MdAttributeTextInfo.CLASS))
     {

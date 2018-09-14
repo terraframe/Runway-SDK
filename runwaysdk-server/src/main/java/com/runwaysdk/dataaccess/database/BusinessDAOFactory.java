@@ -937,7 +937,7 @@ public class BusinessDAOFactory
             // Write the field to the database
             List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getOid(), mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getOid(), mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeUUIDInfo.CLASS);
             preparedStatementList.add(preparedStmt);
             Database.executeStatementBatch(preparedStatementList);
 

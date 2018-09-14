@@ -379,7 +379,7 @@ public class QueryUtil
     }
   }
   
-  public static Condition EQi(AttributeUUID leftSelectable, SelectableUUID rightSelectable)
+  public static Condition EQi(Selectable leftSelectable, SelectableUUID rightSelectable)
   {
     if (rightSelectable.isAggregateFunction())
     {

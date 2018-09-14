@@ -571,7 +571,7 @@ public class MdDimensionTest
       try
       {
         MdAttributeDimensionDAO mdAttributeDimensionDAO = mdAttributeReference.getMdAttributeDimension(mdDimension).getBusinessDAO();
-        mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, "INVALID_REFERENCE");
+        mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, "99999999-9999-9999-9999-999999999999");
         mdAttributeDimensionDAO.apply();
 
         Assert.fail("A reference attribute was defined with an invalid value.");

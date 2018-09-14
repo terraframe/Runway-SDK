@@ -45,6 +45,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -468,6 +469,51 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return (AttributeCharacter) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusineessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String attributeName)
+  {
+    return aUUID(attributeName, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String attributeName, String userDefinedAlias)
+  {
+    return aUUID(attributeName, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
+    
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeUUIDInfo.CLASS);
+    
+    MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
+    
+    return (AttributeUUID) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusineessIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns an attribute text statement object.
    * 
@@ -1558,6 +1604,10 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     else if (attributeType.equals(MdAttributeCharacterInfo.CLASS))
     {
       return this.aCharacter(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      return this.aUUID(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (attributeType.equals(MdAttributeTextInfo.CLASS))
     {

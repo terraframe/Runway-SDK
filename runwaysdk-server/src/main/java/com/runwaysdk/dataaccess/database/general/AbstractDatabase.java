@@ -2352,7 +2352,7 @@ public abstract class AbstractDatabase
 
     // Bind the variables
     this.bindPreparedStatementValue(prepared, 1, newValue, attributeType);
-    this.bindPreparedStatementValue(prepared, 2, entityId, MdAttributeCharacterInfo.CLASS);
+    this.bindPreparedStatementValue(prepared, 2, entityId, MdAttributeUUIDInfo.CLASS);
 
     return prepared;
   }
@@ -2386,7 +2386,7 @@ public abstract class AbstractDatabase
 
     if (entityId != null)
     {
-      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + this.formatJavaToSQL(entityId, MdAttributeCharacterInfo.CLASS, false) + " ";
+      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + this.formatJavaToSQL(entityId, MdAttributeUUIDInfo.CLASS, false) + " ";
     }
 
     return sqlStmt;

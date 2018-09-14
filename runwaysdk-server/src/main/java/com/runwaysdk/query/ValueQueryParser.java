@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -221,126 +221,128 @@ public class ValueQueryParser
     }
   }
 
-  public static final String                ENTITIES_TAG               = "entities";
+  public static final String                    ENTITIES_TAG               = "entities";
 
-  public static final String                ENTITY_TAG                 = "entity";
+  public static final String                    ENTITY_TAG                 = "entity";
 
-  public static final String                ENTITY_TYPE_TAG            = "type";
+  public static final String                    ENTITY_TYPE_TAG            = "type";
 
-  public static final String                ENTITY_ALIAS_TAG           = "alias";
+  public static final String                    ENTITY_ALIAS_TAG           = "alias";
 
-  public static final String                ENTITY_CRITERIA_TAG        = "criteria";
+  public static final String                    ENTITY_CRITERIA_TAG        = "criteria";
 
-  public static final String                BASICCONDITION_TAG         = "basicCondition";
+  public static final String                    BASICCONDITION_TAG         = "basicCondition";
 
-  public static final String                OPERATOR_TAG               = "operator";
+  public static final String                    OPERATOR_TAG               = "operator";
 
-  public static final String                VALUE_TAG                  = "value";
+  public static final String                    VALUE_TAG                  = "value";
 
-  public static final String                COMPOSITECONDITION_TAG     = "compositeCondition";
+  public static final String                    COMPOSITECONDITION_TAG     = "compositeCondition";
 
-  public static final String                AND_TAG                    = "and";
+  public static final String                    AND_TAG                    = "and";
 
-  public static final String                OR_TAG                     = "or";
+  public static final String                    OR_TAG                     = "or";
 
-  public static final String                SELECTABLE_TAG             = "selectable";
+  public static final String                    SELECTABLE_TAG             = "selectable";
 
-  public static final String                SQLBOOLEAN_TAG             = "sqlboolean";
+  public static final String                    SQLBOOLEAN_TAG             = "sqlboolean";
 
-  public static final String                SQLCHARACTER_TAG           = "sqlcharacter";
+  public static final String                    SQLCHARACTER_TAG           = "sqlcharacter";
 
-  public static final String                SQLTEXT_TAG                = "sqltext";
+  public static final String                    SQLUUID_TAG                = "sqluuid";
 
-  public static final String                SQLCLOB_TAG                = "sqltext";
+  public static final String                    SQLTEXT_TAG                = "sqltext";
 
-  public static final String                SQLDATE_TAG                = "sqldate";
+  public static final String                    SQLCLOB_TAG                = "sqltext";
 
-  public static final String                SQLDATETIME_TAG            = "sqldatetime";
+  public static final String                    SQLDATE_TAG                = "sqldate";
 
-  public static final String                SQLTIME_TAG                = "sqltime";
+  public static final String                    SQLDATETIME_TAG            = "sqldatetime";
 
-  public static final String                SQLDECIMAL_TAG             = "sqldecimal";
+  public static final String                    SQLTIME_TAG                = "sqltime";
 
-  public static final String                SQLDOUBLE_TAG              = "sqldouble";
+  public static final String                    SQLDECIMAL_TAG             = "sqldecimal";
 
-  public static final String                SQLFLOAT_TAG               = "sqlfloat";
+  public static final String                    SQLDOUBLE_TAG              = "sqldouble";
 
-  public static final String                SQLINTEGER_TAG             = "sqlinteger";
+  public static final String                    SQLFLOAT_TAG               = "sqlfloat";
 
-  public static final String                SQLLONG_TAG                = "sqllong";
+  public static final String                    SQLINTEGER_TAG             = "sqlinteger";
 
-  public static final String                ISAGGREGETE_TAG            = "isaggregate";
+  public static final String                    SQLLONG_TAG                = "sqllong";
 
-  public static final String                ATTRIBUTE_TAG              = "attribute";
+  public static final String                    ISAGGREGETE_TAG            = "isaggregate";
 
-  public static final String                ATTRIBUTENAME_TAG          = "name";
+  public static final String                    ATTRIBUTE_TAG              = "attribute";
 
-  public static final String                ATTRIBUTE_ENTITY_ALIAS_TAG = "entityAlias";
+  public static final String                    ATTRIBUTENAME_TAG          = "name";
 
-  public static final String                SELECTABLE_USER_ALIAS_TAG  = "userAlias";
+  public static final String                    ATTRIBUTE_ENTITY_ALIAS_TAG = "entityAlias";
 
-  public static final String                SELECTABLE_USER_LABEL_TAG  = "userDisplayLabel";
+  public static final String                    SELECTABLE_USER_ALIAS_TAG  = "userAlias";
 
-  public static final String                AVG_TAG                    = "avg";
+  public static final String                    SELECTABLE_USER_LABEL_TAG  = "userDisplayLabel";
 
-  public static final String                COUNT_TAG                  = "count";
+  public static final String                    AVG_TAG                    = "avg";
 
-  public static final String                MAX_TAG                    = "max";
+  public static final String                    COUNT_TAG                  = "count";
 
-  public static final String                MIN_TAG                    = "min";
+  public static final String                    MAX_TAG                    = "max";
 
-  public static final String                STDDEV_TAG                 = "stddev";
+  public static final String                    MIN_TAG                    = "min";
 
-  public static final String                SUM_TAG                    = "sum";
+  public static final String                    STDDEV_TAG                 = "stddev";
 
-  public static final String                VARIANCE_TAG               = "variance";
+  public static final String                    SUM_TAG                    = "sum";
 
-  public static final String                SELECT_TAG                 = "select";
+  public static final String                    VARIANCE_TAG               = "variance";
 
-  public static final String                GROUPBY_TAG                = "groupby";
+  public static final String                    SELECT_TAG                 = "select";
 
-  public static final String                HAVING_TAG                 = "having";
+  public static final String                    GROUPBY_TAG                = "groupby";
 
-  public static final String                ORDERBY_TAG                = "orderby";
+  public static final String                    HAVING_TAG                 = "having";
 
-  public static final String                ORDER_TAG                  = "order";
+  public static final String                    ORDERBY_TAG                = "orderby";
 
-  public static final String                DIRECTION_TAG              = "direction";
+  public static final String                    ORDER_TAG                  = "order";
 
-  public static final String                ASC_TAG                    = "asc";
+  public static final String                    DIRECTION_TAG              = "direction";
 
-  public static final String                DESC_TAG                   = "desc";
+  public static final String                    ASC_TAG                    = "asc";
 
-  private Document                          document;
+  public static final String                    DESC_TAG                   = "desc";
 
-  private ValueQuery                        valueQuery;
+  private Document                              document;
+
+  private ValueQuery                            valueQuery;
 
   // Key is the entity alias defined in the XML
-  private Map<String, TableClassQuery>      tableQueryMap;
+  private Map<String, TableClassQuery>          tableQueryMap;
 
   // Key is the selectable name
-  private Map<String, SelectableSQL>        selectableSQLMap;
+  private Map<String, SelectableSQL>            selectableSQLMap;
 
   private Map<String, GeneratedTableClassQuery> generatedTableClassQueryMap;
 
-  private QueryFactory                      queryFactory;
+  private QueryFactory                          queryFactory;
 
-  private List<CustomAttributeSelect>       customAttributeSelects;
+  private List<CustomAttributeSelect>           customAttributeSelects;
 
-  private Map<String, CustomColumnAlias>    customColumnAliases;
+  private Map<String, CustomColumnAlias>        customColumnAliases;
 
-  private Map<String, ValueQuery>           valueQueryMap;
+  private Map<String, ValueQuery>               valueQueryMap;
 
-  private InterceptorChain                  chain;
+  private InterceptorChain                      chain;
 
   /**
    * This is a hack for DDMS. We're doing this now because its easier than
    * adding support to the ValueQuery API for WITH entries (which we need for
    * adding geo columns, see DDMS ticket #3306)
    */
-  private List<String>                      ignoreSelectables;
+  private List<String>                          ignoreSelectables;
 
-  private Map<String, String>               ignoreDisplayLabels;
+  private Map<String, String>                   ignoreDisplayLabels;
 
   public ValueQueryParser(Document document, ValueQuery valueQuery)
   {
@@ -493,7 +495,7 @@ public class ValueQueryParser
   {
     this.customAttributeSelects.add(new CustomAttributeSelect(entityAlias, attribute, userAlias, columnAlias, data));
   }
-  
+
   public void setValueQuery(String alias, ValueQuery valueQuery)
   {
     // JN change
@@ -588,7 +590,7 @@ public class ValueQueryParser
       }
       else if (tableClassQuery instanceof TableQuery)
       {
-        MdTableDAOIF mdTableDAOIF = (MdTableDAOIF)tableClassQuery.getMdTableClassIF();
+        MdTableDAOIF mdTableDAOIF = (MdTableDAOIF) tableClassQuery.getMdTableClassIF();
         this.generatedTableClassQueryMap.put(alias, new GenericTableQuery(mdTableDAOIF, this.queryFactory));
       }
 
@@ -695,8 +697,8 @@ public class ValueQueryParser
       {
         selectable.setColumnAlias(custom.columnAlias);
       }
-      
-      if(custom.data != null)
+
+      if (custom.data != null)
       {
         selectable.setData(custom.data);
       }
@@ -1116,6 +1118,12 @@ public class ValueQueryParser
           else if (tagName.equals(SQLCHARACTER_TAG))
           {
             SelectableSQL selectableSQL = new SelectableSQLCharacter(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
+            this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
+            return selectableSQL;
+          }
+          else if (tagName.equals(SQLUUID_TAG))
+          {
+            SelectableSQL selectableSQL = new SelectableSQLUUID(isAggregate, this.valueQuery, attributeName, attributeName, userAlias, userLabel);
             this.selectableSQLMap.put(resultSetAttrName, selectableSQL);
             return selectableSQL;
           }

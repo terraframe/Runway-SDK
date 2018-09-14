@@ -44,6 +44,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -260,6 +261,45 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return (AttributeCharacter)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name)
+  {
+    return this.aUUID(name, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias user defined alias.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias)
+  {
+    return this.aUUID(name, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias user defined alias.
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    
+    this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeUUIDInfo.CLASS);
+    
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    
+    return (AttributeUUID)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns an attribute text statement object.
    * @param name name of the attribute.
@@ -1270,6 +1310,10 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     else if (attributeType.equals(MdAttributeCharacterInfo.CLASS))
     {
       return this.aCharacter(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      return this.aUUID(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (attributeType.equals(MdAttributeTextInfo.CLASS))
     {

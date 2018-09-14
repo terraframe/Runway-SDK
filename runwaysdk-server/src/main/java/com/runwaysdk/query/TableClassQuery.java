@@ -50,6 +50,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -548,7 +549,7 @@ public abstract class TableClassQuery extends ComponentQuery
     }
     else
     {
-      this.checkValidAttributeRequest(name, this.getMdTableClassIF(), mdAttributeIF, MdAttributeCharacterInfo.CLASS);
+      this.checkValidAttributeRequest(name, this.getMdTableClassIF(), mdAttributeIF, MdAttributeUUIDInfo.CLASS);
       
       return (AttributeUUID) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
     }

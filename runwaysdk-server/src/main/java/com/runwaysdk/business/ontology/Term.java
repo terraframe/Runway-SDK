@@ -34,6 +34,7 @@ import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -65,8 +66,10 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
   public static final String TEMP_DEPTH_COL = "depth";
   public static final String INDEX_NAME = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP_INDEX";
   public static final List<String> TEMP_TABLE_COLUMNS = Arrays.asList(
-      TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
-      TEMP_PARENT_OID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
+//      TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
+//      TEMP_PARENT_OID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
+      TEMP_TERM_ID_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeUUIDInfo.CLASS),
+      TEMP_PARENT_OID_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeUUIDInfo.CLASS),
       TEMP_DEPTH_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeIntegerInfo.CLASS)
   );
   private static final List<String> TEMP_TABLE_ATTRS = Arrays.asList(
