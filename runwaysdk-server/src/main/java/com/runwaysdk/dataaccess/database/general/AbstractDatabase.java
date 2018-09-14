@@ -2304,7 +2304,7 @@ public abstract class AbstractDatabase
 
     if (entityId != null)
     {
-      this.bindPreparedStatementValue(prepared, 3, entityId, MdAttributeCharacterInfo.CLASS);
+      this.bindPreparedStatementValue(prepared, 3, entityId, MdAttributeUUIDInfo.CLASS);
     }
 
     return prepared;

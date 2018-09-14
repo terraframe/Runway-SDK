@@ -3791,7 +3791,7 @@ public class SAXParseTest
   }
 
   @Request
-  @Test
+   @Test
   public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();

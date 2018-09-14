@@ -56,7 +56,7 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
   {
     MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(mdClassIF.definesType());
-    relationshipQuery.WHERE(relationshipQuery.aCharacter(EntityInfo.OID).EQ(oid));
+    relationshipQuery.WHERE(relationshipQuery.aUUID(EntityInfo.OID).EQ(oid));
     relationshipQuery.instanceQuery = true;
 
     return relationshipQuery;

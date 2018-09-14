@@ -1880,7 +1880,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       bogusValue = "''";
     }
-    else if(dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
+    else if(dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
     {
       bogusValue = "'99999999-9999-9999-9999-999999999999'::uuid";      
     }
@@ -1902,7 +1902,7 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-    dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS))
+    dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS))
     {
       bogusValue = "0";
     }

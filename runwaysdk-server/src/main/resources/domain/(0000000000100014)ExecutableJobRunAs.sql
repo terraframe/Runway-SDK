@@ -31,6 +31,6 @@ INSERT INTO metadata ( create_date, seq, type, created_by, last_update_date, las
 INSERT INTO class_attribute_concrete ( oid, parent_oid, child_oid) VALUES ('655dccc7-19af-3727-b31c-2bd81aec0245', 'b12fe228-95fc-389e-9c08-826d148b0058', '3d6a38b9-b30a-3334-bdb4-838015d20218');
 INSERT INTO class_attribute ( oid, parent_oid, child_oid) VALUES ('655dccc7-19af-3727-b31c-2bd81aec0245', 'b12fe228-95fc-389e-9c08-826d148b0058', '3d6a38b9-b30a-3334-bdb4-838015d20218');
 INSERT INTO metadata_relationship ( oid, created_by, type, last_update_date, site_master, owner, seq, key_name, entity_domain, locked_by, create_date, last_updated_by, parent_oid, child_oid) VALUES ('655dccc7-19af-3727-b31c-2bd81aec0245', 'a18798db-4bc4-3584-ad5e-844b7b760060', 'com.runwaysdk.system.metadata.ClassAttributeConcrete', '2018-01-18 18:13:53', 'www.runwaysdk.com', 'a18798db-4bc4-3584-ad5e-844b7b760060', 4925, 'com.runwaysdk.system.scheduler.ExecutableJob.runAsUser', NULL, NULL, '2018-01-18 18:13:53', 'a18798db-4bc4-3584-ad5e-844b7b760060', 'b12fe228-95fc-389e-9c08-826d148b0058', '3d6a38b9-b30a-3334-bdb4-838015d20218');
-ALTER TABLE executable_job ADD COLUMN run_as_user  char(64);
+ALTER TABLE executable_job ADD COLUMN run_as_user  uuid;
 CREATE INDEX af8ca4oqw223k7hcshd9utmpyix0in ON executable_job (run_as_user);
 UPDATE metadata SET seq= 4926 , last_update_date= '2018-01-18 18:13:53'  WHERE oid='b12fe228-95fc-389e-9c08-826d148b0058';

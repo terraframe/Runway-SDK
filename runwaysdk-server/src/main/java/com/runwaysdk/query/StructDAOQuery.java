@@ -54,7 +54,7 @@ public class StructDAOQuery extends EntityQuery
   {
     MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     StructDAOQuery structDAOQuery = new QueryFactory().structDAOQuery(mdClassIF.definesType());
-    structDAOQuery.WHERE(structDAOQuery.aCharacter(EntityInfo.OID).EQ(oid));
+    structDAOQuery.WHERE(structDAOQuery.aUUID(EntityInfo.OID).EQ(oid));
     structDAOQuery.instanceQuery = true;
 
     return structDAOQuery;

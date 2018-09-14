@@ -1333,6 +1333,10 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     {
       attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      attribute = new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (mdAttributeIF instanceof MdAttributeTextDAOIF)
     {
       attribute = new AttributeText((MdAttributeTextDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);

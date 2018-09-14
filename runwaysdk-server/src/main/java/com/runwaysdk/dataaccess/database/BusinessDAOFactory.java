@@ -1056,7 +1056,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.PARENT_OID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.PARENT_OID, "?", oldId, newId, MdAttributeUUIDInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 
@@ -1117,7 +1117,7 @@ public class BusinessDAOFactory
           for (MdRelationshipDAOIF parentMdRelationshipDAOIF : superMdRelationshipDAOIF)
           {
             PreparedStatement preparedStmt = null;
-            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.CHILD_OID, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(parentMdRelationshipDAOIF.getTableName(), relationshipDAO.getOid(), RelationshipInfo.CHILD_OID, "?", oldId, newId, MdAttributeUUIDInfo.CLASS);
             preparedStatementList.add(preparedStmt);
           }
 

@@ -31,6 +31,6 @@ INSERT INTO metadata ( create_date, seq, type, created_by, last_update_date, las
 INSERT INTO class_attribute_concrete ( oid, parent_oid, child_oid) VALUES ('32083781-c249-3ae7-b3f0-967429500245', 'fa678780-f2c4-336b-bfc7-bf724ceb0058', '73bfd2ed-bf7f-3ea6-9968-db73217e0218');
 INSERT INTO class_attribute ( oid, parent_oid, child_oid) VALUES ('32083781-c249-3ae7-b3f0-967429500245', 'fa678780-f2c4-336b-bfc7-bf724ceb0058', '73bfd2ed-bf7f-3ea6-9968-db73217e0218');
 INSERT INTO metadata_relationship ( oid, created_by, type, last_update_date, site_master, owner, seq, key_name, entity_domain, locked_by, create_date, last_updated_by, parent_oid, child_oid) VALUES ('32083781-c249-3ae7-b3f0-967429500245', 'a18798db-4bc4-3584-ad5e-844b7b760060', 'com.runwaysdk.system.metadata.ClassAttributeConcrete', '2018-02-15 16:19:07', 'www.runwaysdk.com', 'a18798db-4bc4-3584-ad5e-844b7b760060', 4925, 'com.runwaysdk.system.metadata.MdForm.dimension', NULL, NULL, '2018-02-15 16:19:07', 'a18798db-4bc4-3584-ad5e-844b7b760060', 'fa678780-f2c4-336b-bfc7-bf724ceb0058', '73bfd2ed-bf7f-3ea6-9968-db73217e0218');
-ALTER TABLE md_form ADD COLUMN dimension  char(64);
+ALTER TABLE md_form ADD COLUMN dimension uuid;
 CREATE INDEX a6g4k7fkv3t0er1u3v8rhhzm72cmk1 ON md_form (dimension);
 UPDATE metadata SET seq= 4926 , last_update_date= '2018-02-15 16:19:07'  WHERE oid='fa678780-f2c4-336b-bfc7-bf724ceb0058';

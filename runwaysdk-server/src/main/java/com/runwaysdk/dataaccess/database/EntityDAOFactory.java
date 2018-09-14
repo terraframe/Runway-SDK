@@ -770,7 +770,7 @@ public class EntityDAOFactory
         columnNames.add(EntityDAOIF.ID_COLUMN);
         prepStmtVars.add("?");
         values.add(entityDAO.getOid());
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
         addedId = true;
       }
 
@@ -1104,7 +1104,7 @@ public class EntityDAOFactory
     for (MdEntityDAOIF currMdEntity : superMdEntityList)
     {
       PreparedStatement preparedStmt = null;
-      preparedStmt = Database.buildPreparedUpdateFieldStatement(currMdEntity.getTableName(), null, EntityDAOIF.ID_COLUMN, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+      preparedStmt = Database.buildPreparedUpdateFieldStatement(currMdEntity.getTableName(), null, EntityDAOIF.ID_COLUMN, "?", oldId, newId, MdAttributeUUIDInfo.CLASS);
       preparedStatementList.add(preparedStmt);
     }
 
