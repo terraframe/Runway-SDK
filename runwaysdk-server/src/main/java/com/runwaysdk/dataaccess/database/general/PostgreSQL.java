@@ -1698,16 +1698,16 @@ public class PostgreSQL extends AbstractDatabase
   {
     try
     {
-      if (dataType.equals(MdAttributeReferenceInfo.CLASS))
+      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
       {
-        String string = (String) value;
-        if (string.equals(""))
+        String va = (String) value;
+        if (value == null || va.equals(""))
         {
           prepStmt.setNull(index, java.sql.Types.OTHER);
         }
         else
         {
-          prepStmt.setObject(index, UUID.fromString(string));
+          prepStmt.setObject(index, UUID.fromString(va));
         }
       }
       else

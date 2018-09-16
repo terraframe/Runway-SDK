@@ -84,7 +84,7 @@ public class PostgreSQL extends ListResourceBundle
     hashtable.put(MdAttributeDateTimeInfo.CLASS, "timestamp");
     hashtable.put(MdAttributeReferenceInfo.CLASS, "uuid");
 //    hashtable.put(MdAttributeReferenceInfo.CLASS, "char");
-    hashtable.put(MdAttributeTermInfo.CLASS, "char");
+    hashtable.put(MdAttributeTermInfo.CLASS, "uuid");
     hashtable.put(MdAttributeEnumerationInfo.CLASS, "char");
     hashtable.put(MdAttributeMultiReferenceInfo.CLASS, "char");
     hashtable.put(MdAttributeMultiTermInfo.CLASS, "char");

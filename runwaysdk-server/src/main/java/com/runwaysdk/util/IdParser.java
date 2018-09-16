@@ -81,7 +81,7 @@ public class IdParser
 
   public static boolean validId(String oid)
   {
-    return (oid != null && oid.length() == 64);
+    return (oid != null && oid.length() == 36);
   }
 
 }

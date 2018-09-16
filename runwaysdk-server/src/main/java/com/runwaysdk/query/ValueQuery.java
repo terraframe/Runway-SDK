@@ -4077,6 +4077,10 @@ public class ValueQuery extends ComponentQuery
     {
       attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      attribute = new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
       attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);

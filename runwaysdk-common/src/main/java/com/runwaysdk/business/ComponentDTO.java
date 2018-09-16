@@ -47,8 +47,10 @@ import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
 import com.runwaysdk.transport.attributes.AttributeTermDTO;
+import com.runwaysdk.transport.attributes.AttributeUUIDDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
+import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.transport.metadata.TypeMd;
 
 public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Serializable
@@ -237,9 +239,9 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
     return oid;
   }
 
-  public AttributeCharacterMdDTO getOidMd()
+  public AttributeUUIDMdDTO getOidMd()
   {
-    return this.getAttributeCharacterDTO(ComponentInfo.OID).getAttributeMdDTO();
+    return this.getAttributeUUIDDTO(ComponentInfo.OID).getAttributeMdDTO();
   }
 
   /**
@@ -498,6 +500,14 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
     return (AttributeCharacterDTO) getAttributeDTO(attributeName);
   }
 
+  /**
+   *
+   */
+  protected AttributeUUIDDTO getAttributeUUIDDTO(String attributeName)
+  {
+    return (AttributeUUIDDTO) getAttributeDTO(attributeName);
+  }
+  
   /**
    *
    */

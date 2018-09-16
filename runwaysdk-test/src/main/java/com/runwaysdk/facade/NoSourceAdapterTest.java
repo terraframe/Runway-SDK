@@ -197,6 +197,7 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
+import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.vault.VaultDAO;
@@ -5277,7 +5278,7 @@ public class NoSourceAdapterTest
   public void testIdMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
-    AttributeCharacterMdDTO md = instance.getOidMd();
+    AttributeUUIDMdDTO md = instance.getOidMd();
 
     Assert.assertEquals(md.getName(), EntityInfo.OID);
     Assert.assertEquals(md.isRequired(), true);

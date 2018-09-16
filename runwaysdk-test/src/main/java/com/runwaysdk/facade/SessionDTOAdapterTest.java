@@ -121,6 +121,7 @@ import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
+import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 
 public abstract class SessionDTOAdapterTest
 {
@@ -1470,7 +1471,7 @@ public abstract class SessionDTOAdapterTest
   public void testIdMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeCharacterMdDTO md = instance.getOidMd();
+    AttributeUUIDMdDTO md = instance.getOidMd();
 
     Assert.assertEquals(md.getName(), EntityInfo.OID);
     Assert.assertEquals(md.isRequired(), true);

@@ -3607,19 +3607,7 @@ public abstract class AbstractDatabase
   {
     try
     {
-      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
-      {
-        String va = (String) value;
-        if (value == null || va.equals(""))
-        {
-          prepStmt.setNull(index, java.sql.Types.OTHER);
-        }
-        else
-        {
-          prepStmt.setObject(index, UUID.fromString(va));
-        }
-      }
-      else if (dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeMultiTermInfo.CLASS) || dataType.equals(MdAttributeHashInfo.CLASS))
+      if (dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeMultiTermInfo.CLASS) || dataType.equals(MdAttributeHashInfo.CLASS))
       {
         if ( ( (String) value ).equals(""))
         {
