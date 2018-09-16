@@ -103,6 +103,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
+import com.runwaysdk.system.metadata.MdAttributeUUID;
 import com.runwaysdk.util.Base64;
 
 /**
@@ -516,7 +517,7 @@ public class XMLImporter
       prepSmtVars.add("?");
       values.add(itemId);
       String tableName = ( inheritanceMap.get(enumerationType) ).getTableName();
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
       preparedStatementList.add(preparedStmt);

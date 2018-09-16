@@ -9822,7 +9822,7 @@ public class ValueQueryTest
     ValueQuery valueQuery1 = new ValueQuery(queryFactory);
     ValueQuery valueQuery2 = new ValueQuery(queryFactory);
 
-    valueQuery1.SELECT(bq.aCharacter(MdBusinessInfo.OID));
+    valueQuery1.SELECT(bq.aUUID(MdBusinessInfo.OID));
 
     valueQuery2.SELECT(bq.aCharacter(MdBusinessInfo.NAME), valueQuery1.getSubSelect());
 
@@ -9854,7 +9854,7 @@ public class ValueQueryTest
     ValueQuery valueQuery1 = new ValueQuery(queryFactory);
     ValueQuery valueQuery2 = new ValueQuery(queryFactory);
 
-    valueQuery1.SELECT(F.COUNT(bq.aCharacter(MdBusinessInfo.OID)));
+    valueQuery1.SELECT(F.COUNT(bq.aUUID(MdBusinessInfo.OID)));
 
     valueQuery2.SELECT(bq.aCharacter(MdBusinessInfo.NAME), valueQuery1.getSubSelect());
 

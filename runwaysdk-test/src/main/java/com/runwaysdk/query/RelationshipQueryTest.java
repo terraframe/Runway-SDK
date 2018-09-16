@@ -773,7 +773,7 @@ public class RelationshipQueryTest
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childOid").invoke(relQueryObject);
+      AttributeUUID attributeCharacter = (AttributeUUID) relQueryClass.getMethod("childOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       // Load the iterator class
@@ -798,7 +798,7 @@ public class RelationshipQueryTest
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("childOid").invoke(relQueryObject);
+      attributeCharacter = (AttributeUUID) relQueryClass.getMethod("childOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       resultIterator = relQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(relQueryObject);
@@ -873,7 +873,7 @@ public class RelationshipQueryTest
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      AttributeCharacter attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
+      AttributeUUID attributeCharacter = (AttributeUUID) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       // Load the iterator class
@@ -898,7 +898,7 @@ public class RelationshipQueryTest
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (AttributeCharacter) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
+      attributeCharacter = (AttributeUUID) relQueryClass.getMethod("parentOid").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeCharacter.EQ(QueryMasterSetup.relQueryObject1.getOid()));
 
       resultIterator = relQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(relQueryObject);

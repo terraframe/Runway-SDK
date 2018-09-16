@@ -1272,7 +1272,7 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void createEnumerationTable(String tableName, String oid)
   {
-    String statement = "CREATE TABLE " + tableName + " \n" + "(" + MdEnumerationDAOIF.SET_ID_COLUMN + "                CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n" + MdEnumerationDAOIF.ITEM_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL)";
+    String statement = "CREATE TABLE " + tableName + " \n" + "(" + MdEnumerationDAOIF.SET_ID_COLUMN + "                CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n" + MdEnumerationDAOIF.ITEM_ID_COLUMN + " UUID NOT NULL)";
 
     String undo = "DROP TABLE " + tableName;
     new DDLCommand(statement, undo, false).doIt();

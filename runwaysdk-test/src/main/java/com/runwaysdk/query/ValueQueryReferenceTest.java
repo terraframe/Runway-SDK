@@ -180,7 +180,7 @@ public class ValueQueryReferenceTest
       vQ = qf.valueQuery();
 
       vQ.SELECT(query.aReference("reference"));
-      vQ.WHERE(query.aReference("reference").IN("purple monkey dishwasher", QueryMasterSetup.childRefQueryObject2.getOid(), ""));
+      vQ.WHERE(query.aReference("reference").IN("99999999-9999-9999-9999-999999999999", QueryMasterSetup.childRefQueryObject2.getOid(), ""));
 
       i = vQ.getIterator();
 
