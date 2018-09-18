@@ -142,13 +142,16 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String createdById = sessionIF != null ? sessionIF.getUser().getOid() : ServerConstants.SYSTEM_USER_ID;
 
     sql.append("SELECT" + NL);
+    
+    //    uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p.oid::text || c.oid::text))::text from 0 for 33), '5b04')) AS oid,
+
 
     // standard metadata fields
-    sql.append("  MD5(nextval('" + sequenceName + "') || p." + oid + " || c." + oid + " ) || '" + allPathsRootTypeId + "' AS " + oid + "," + NL);
+    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "')) AS " + oid + "," + NL);
     sql.append("  '" + siteMasterValue + "'  AS " + siteMaster + "," + NL);
-    sql.append("  MD5(nextval('" + sequenceName + "') || p." + oid + " || c." + oid + " ) || '" + allPathsRootTypeId + "' AS " + key + "," + NL);
+    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "')) AS " + key + "," + NL);
     sql.append("  '" + termAllPaths.definesType() + "' AS " + type + "," + NL);
-    sql.append("  '' AS " + domain + "," + NL);
+    sql.append("  NULL AS " + domain + "," + NL);
     sql.append("  ? AS " + lastUpdateDate + "," + NL);
     sql.append("  NEXTVAL('" + PostgreSQL.OBJECT_UPDATE_SEQUENCE + "') AS " + sequence + "," + NL);
     sql.append("  '" + createdById + "'  AS " + createdBy + "," + NL);
@@ -243,7 +246,9 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String childOid = child.getOid();
     String parentOid = parent.getOid();
 
-    String identifierSQL = "MD5(nextval('" + sequenceName + "') || allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "'";
+//    uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p.oid::text || c.oid::text))::text from 0 for 33), '5b04')) AS oid,
+
+    String identifierSQL = "uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (allpaths_parent." + parentTerm + "::text || allpaths_child." + childTerm + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "'))";
 
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO " + tableName + " (" + insertColumns + ") " + NL);
@@ -252,7 +257,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     sql.append("   '" + CommonProperties.getDomain() + "' AS " + siteMaster + "," + NL);
     sql.append("   " + identifierSQL + " AS newKey," + NL);
     sql.append("    '" + allPaths.definesType() + "' AS \"" + type + "\"," + NL);
-    sql.append("    '' AS " + domain + "," + NL);
+    sql.append("    NULL AS " + domain + "," + NL);
     sql.append("    ? AS " + lastUpdateDate + "," + NL);
     sql.append("    NEXTVAL('" + PostgreSQL.OBJECT_UPDATE_SEQUENCE + "') AS " + sequence + "," + NL);
     sql.append("    '" + createdById + "' AS " + createdBy + "," + NL);
@@ -320,7 +325,8 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
    */
   private String getAllPathsTypeIdRoot(MdBusiness allPaths)
   {
-    return IdParser.parseRootFromId(allPaths.getOid());
+//    return IdParser.parseRootFromId(allPaths.getOid());
+    return ((MdBusinessDAOIF)BusinessFacade.getEntityDAO(allPaths)).getRootId();
   }
 
   /**
@@ -399,11 +405,12 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String sequenceName = this.getSequenceName(allPaths);
 
     List<String> statements = new LinkedList<String>();
-    statements.add("CREATE SEQUENCE " + sequenceName + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+    statements.add("CREATE SEQUENCE IF NOT EXISTS " + sequenceName + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
     
     String allPathsTN = allPaths.getTableName();
     String childCol = allpathsDAO.definesAttribute(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).getColumnName();
     String parentCol = allpathsDAO.definesAttribute(DatabaseAllPathsStrategy.PARENT_TERM_ATTR).getColumnName();
+    statements.add("ALTER TABLE " + allPathsTN + " DROP CONSTRAINT IF EXISTS " + allPathsTN + "_unique_constraint");
     statements.add("ALTER TABLE " + allPathsTN + " ADD CONSTRAINT " + allPathsTN + "_unique_constraint UNIQUE(" + parentCol + ", " + childCol + ")");
 
     Database.executeBatch(statements);

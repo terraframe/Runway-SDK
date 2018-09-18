@@ -34,14 +34,14 @@ import com.runwaysdk.vault.VaultTestSuite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   DataAccessTestSuite.class, 
-  SessionTestSuite.class,
   BusinessTestSuite.class,
   FacadeTestSuite.class,
   VaultTestSuite.class,
   QueryTestSuite.class,
   MultiThreadTestSuite.class,
   LoggingTest.class,
-  OntologyTestSuite.class
+  OntologyTestSuite.class,
+  SessionTestSuite.class
 })
 public class UeberTestSuite
 {

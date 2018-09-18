@@ -119,7 +119,6 @@ public abstract class AbstractOntologyStrategyTest
 
   public AbstractOntologyStrategyTest() throws Exception
   {
-    didDoSetUp = false;
   }
 
   /**
@@ -151,21 +150,27 @@ public abstract class AbstractOntologyStrategyTest
 
   public static void initStrat(MdTermDAO mdTerm, String mdTermRelationshipDefinesType)
   {
-    OntologyStrategyIF strategy = DatabaseAllPathsStrategy.factory(mdTerm.definesType());
+    OntologyStrategyIF strategy = getStrategy(mdTerm.definesType());
     strategy.configure(mdTerm.definesType());
     strategy.initialize(mdTermRelationshipDefinesType);
   }
 
-  public static OntologyStrategyIF getStrategy(String mdTermDefinesType)
+  public static OntologyStrategyIF getStrategy(String mdTermType)
   {
-    return DatabaseAllPathsStrategy.factory(mdTermDefinesType);    
-
-//    return Term.getStrategy(mdTermDefinesType);
+    OntologyStrategyIF strategy = OntologyStrategyFactory.get(mdTermType, new OntologyStrategyBuilderIF()
+    {
+      @Override
+      public OntologyStrategyIF build()
+      {
+        return DatabaseAllPathsStrategy.factory(mdTermType);
+      }
+    });
+    return strategy;
   }
 
-  public static void shutDownStrat(String mdTermDefinesType)
+  public static void shutDownStrat(String mdTermType)
   {
-    DatabaseAllPathsStrategy.factory(mdTermDefinesType).shutdown();
+    getStrategy(mdTermType).shutdown();
   }
 
   @Transaction
@@ -238,8 +243,6 @@ public abstract class AbstractOntologyStrategyTest
 
     MdRelationship.get(mdTermRelationshipId).delete();
     MdBusiness.get(mdTermId).delete();
-
-    didDoSetUp = false;
   }
 
   // @Request @Test public void testInitialized() {

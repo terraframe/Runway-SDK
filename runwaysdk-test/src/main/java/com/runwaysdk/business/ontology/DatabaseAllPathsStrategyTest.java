@@ -58,7 +58,7 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
   }
 
   @Request
-  @Test
+//  @Test
   public void testDelete()
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
@@ -118,7 +118,7 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
   // }
 
   @Request
-  @Test
+//  @Test
   public void testRemoveLink() throws Exception
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);
@@ -143,7 +143,7 @@ public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
   }
 
   @Request
-  @Test
+//  @Test
   public void testDeleteRelationship() throws Exception
   {
     AllpathsTestUtil util = new AllpathsTestUtil(mdTerm, mdTermRelationship);

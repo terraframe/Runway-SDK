@@ -73,7 +73,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
       TEMP_DEPTH_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeIntegerInfo.CLASS)
   );
   private static final List<String> TEMP_TABLE_ATTRS = Arrays.asList(
-      MdAttributeCharacterInfo.CLASS, MdAttributeCharacterInfo.CLASS, MdAttributeIntegerInfo.CLASS
+      MdAttributeUUIDInfo.CLASS, MdAttributeUUIDInfo.CLASS, MdAttributeIntegerInfo.CLASS
   );
   
   /**
@@ -273,6 +273,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     // When deleting with multiple relationships we won't have exited the transaction yet and thus this table will still exist.
     Database.dropTables(Arrays.asList("runway_allpaths_multiparent_temp"));
   }
+  
   private void insertIntoTemp(String termId, List<String> parentOids, Integer depth)
   {
     List<PreparedStatement> statements = new ArrayList<PreparedStatement>();

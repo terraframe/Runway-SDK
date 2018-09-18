@@ -197,12 +197,13 @@ public class AllpathsTestUtil
     l.apply();
     k.addChild(l, mdTermRel.definesType()).apply();
 
-    Term.getStrategy(mdTerm.definesType()).reinitialize(mdTermRel.definesType());
+    this.getStrategy().reinitialize(mdTermRel.definesType());
   }
 
   public void destroyTestData()
   {
-    OntologyStrategyIF strategy = Term.getStrategy(mdTerm.definesType());
+    
+    OntologyStrategyIF strategy = this.getStrategy();
     strategy.shutdown();
 
     BusinessQuery q = new QueryFactory().businessQuery(mdTerm.definesType());
@@ -296,7 +297,7 @@ public class AllpathsTestUtil
 
   public void enforceAPExist(Term child, Term parent)
   {
-    OntologyStrategyIF strategy = Term.getStrategy(mdTerm.definesType());
+    OntologyStrategyIF strategy = this.getStrategy();
 
     if (strategy instanceof DatabaseAllPathsStrategy)
     {
@@ -324,7 +325,7 @@ public class AllpathsTestUtil
 
   public void assertNumChildEntries(Term child, int num)
   {
-    OntologyStrategyIF strategy = Term.getStrategy(mdTerm.definesType());
+    OntologyStrategyIF strategy = this.getStrategy();
 
     if (strategy instanceof DatabaseAllPathsStrategy)
     {
@@ -342,7 +343,7 @@ public class AllpathsTestUtil
 
   public void ensureNoTestDataExists()
   {
-    OntologyStrategyIF strategy = Term.getStrategy(mdTerm.definesType());
+    OntologyStrategyIF strategy = this.getStrategy();
 
     if (strategy instanceof DatabaseAllPathsStrategy)
     {
@@ -366,6 +367,20 @@ public class AllpathsTestUtil
       throw new UnsupportedOperationException();
     }
   }
+  
+  private OntologyStrategyIF getStrategy()
+  {
+    OntologyStrategyIF strategy = OntologyStrategyFactory.get(mdTerm.definesType(), new OntologyStrategyBuilderIF()
+    {
+      @Override
+      public OntologyStrategyIF build()
+      {
+        return DatabaseAllPathsStrategy.factory(mdTerm.definesType());
+      }
+    });
+    strategy.configure(mdTerm.definesType());
+    return strategy;
+  }  
 
   // private void checkDB()
   // {
