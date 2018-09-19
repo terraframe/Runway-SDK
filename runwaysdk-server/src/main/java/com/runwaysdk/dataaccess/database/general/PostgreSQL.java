@@ -260,6 +260,8 @@ public class PostgreSQL extends AbstractDatabase
     {
       this.createNamespace(rootUser, rootPass);
     }
+    
+    this.createExtension(rootUser, rootPass);
   }
 
   /**
@@ -283,7 +285,7 @@ public class PostgreSQL extends AbstractDatabase
     String dbName = DatabaseProperties.getDatabaseName();
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
-    executeAsRoot(statements, true);
+    executeAsRoot(statements, true);    
   }
 
   /**
@@ -397,6 +399,54 @@ public class PostgreSQL extends AbstractDatabase
     }
   }
 
+  /**
+   * Creates a namespace in the database.
+   * 
+   * <b>Postcondition:</b>Assumes {@link this.hasNamespace()} == true
+   * 
+   */
+  public void createExtension(String rootUser, String rootPass)
+  {
+    // root needs to log into the application database to create the schema.
+    PGSimpleDataSource tempRootDatasource = new PGSimpleDataSource();
+    tempRootDatasource.setServerName(DatabaseProperties.getServerName());
+    tempRootDatasource.setPortNumber(DatabaseProperties.getPort());
+    tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
+    tempRootDatasource.setUser(rootUser);
+    tempRootDatasource.setPassword(rootPass);
+    
+    Connection conn = null;
+    Statement statement = null;
+    
+    try
+    {
+      conn = tempRootDatasource.getConnection();
+      statement = conn.createStatement();
+      statement.execute("CREATE EXTENSION \"uuid-ossp\";");
+    }
+    catch (SQLException e)
+    {
+      throw new DatabaseException(e);
+    }
+    finally
+    {
+      try
+      {
+        if (statement != null)
+        {
+          statement.close();
+        }
+        if (conn != null)
+        {
+          conn.close();
+        }
+      }
+      catch (Exception exception)
+      {
+      }
+    }
+  }
+  
   /**
    * Drops the database user.
    */
