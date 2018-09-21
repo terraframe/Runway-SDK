@@ -111,7 +111,7 @@ public class MdAttributeUUID_Q extends MdAttributePrimitive_Q implements MdAttri
    */
   public MdAttributeReferenceDAOIF convertToReference()
   {
-    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference();
+    return ((MdAttributeUUIDDAO)mdAttributeConcreteIF).convertToReference();
   }
   
   /**
@@ -126,6 +126,6 @@ public class MdAttributeUUID_Q extends MdAttributePrimitive_Q implements MdAttri
    */
   public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
   {
-    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference(mdReferenecedBusinessDAOIF);
+    return ((MdAttributeUUIDDAO)mdAttributeConcreteIF).convertToReference(mdReferenecedBusinessDAOIF);
   }
 }

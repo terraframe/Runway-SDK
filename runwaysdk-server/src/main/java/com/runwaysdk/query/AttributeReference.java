@@ -197,7 +197,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition EQ(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar) genBusinessQuery.getOid();
+    AttributeUUID attribute = (AttributeUUID) genBusinessQuery.getOid();
 
     return this.refEqCondition(attribute);
   }
@@ -316,7 +316,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    */
   public Condition NE(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar) genBusinessQuery.getOid();
+    AttributeUUID attribute = (AttributeUUID) genBusinessQuery.getOid();
 
     return this.refNotEqCondition(attribute);
   }

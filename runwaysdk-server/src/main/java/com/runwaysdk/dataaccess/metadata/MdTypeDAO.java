@@ -24,8 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -667,7 +669,9 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
   private String generateRootId()
   {
-    return this.getOid().substring(0,4);
+    UUID uuid = UUID.nameUUIDFromBytes((CommonProperties.getDomain() + "." + this.getKey()).getBytes());
+    
+    return uuid.toString().substring(32, 36);
   }
 
   public static MdTypeDAOIF get(String oid)
