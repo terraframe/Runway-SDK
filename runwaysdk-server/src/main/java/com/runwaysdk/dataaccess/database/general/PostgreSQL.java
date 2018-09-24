@@ -97,6 +97,7 @@ import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.database.NumericFieldOverflowException;
 import com.runwaysdk.dataaccess.io.CountingOutputStream;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
 
@@ -106,15 +107,18 @@ import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
  */
 public class PostgreSQL extends AbstractDatabase
 {
-  private Logger       logger                 = LoggerFactory.getLogger(PostgreSQL.class);
+  public static final String ROOT_SEQUENCE          = "root_sequence";
+  
+  public static final String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
+  
+  public static final String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
+  
+  public static final String PRIMARY_KEY_SUFFIX     = "_pkey";
+  
 
-  private String       databaseNamespace;
+  private Logger             logger                 = LoggerFactory.getLogger(PostgreSQL.class);
 
-  public static String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
-
-  public static String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
-
-  public static String PRIMARY_KEY_SUFFIX     = "_pkey";
+  private String             databaseNamespace;
 
   /**
    * Initialize the datasource to point to a PostgreSQL database.
@@ -260,7 +264,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       this.createNamespace(rootUser, rootPass);
     }
-    
+
     this.createExtension(rootUser, rootPass);
   }
 
@@ -285,7 +289,7 @@ public class PostgreSQL extends AbstractDatabase
     String dbName = DatabaseProperties.getDatabaseName();
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
-    executeAsRoot(statements, true);    
+    executeAsRoot(statements, true);
   }
 
   /**
@@ -414,10 +418,10 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
-    
+
     Connection conn = null;
     Statement statement = null;
-    
+
     try
     {
       conn = tempRootDatasource.getConnection();
@@ -446,7 +450,7 @@ public class PostgreSQL extends AbstractDatabase
       }
     }
   }
-  
+
   /**
    * Drops the database user.
    */
@@ -1573,6 +1577,8 @@ public class PostgreSQL extends AbstractDatabase
   public void createObjectSequence()
   {
     this.execute("CREATE SEQUENCE " + OBJECT_UPDATE_SEQUENCE + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+
+    this.execute("CREATE SEQUENCE " + ROOT_SEQUENCE + " INCREMENT 1 START 1280");
   }
 
   /**
@@ -1594,6 +1600,52 @@ public class PostgreSQL extends AbstractDatabase
       resultSet.next();
 
       return resultSet.getString("nextval");
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+
+    return returnResult;
+
+  }
+
+  /**
+   * 
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#getNextSequenceNumber()
+   */
+  @Override
+  public String generateRootId(MdTypeDAO mdTypeDAO)
+  {
+    // get the sequence value
+    String sqlStmt = "SELECT NEXTVAL('" + ROOT_SEQUENCE + "') AS nextval";
+
+    ResultSet resultSet = query(sqlStmt);
+
+    String returnResult = "";
+
+    try
+    {
+      resultSet.next();
+
+      long value = resultSet.getLong("nextval");
+
+      String id = String.format("%04x", ( 0xFFFF & value ));
+
+      return id;
     }
     catch (SQLException sqlEx1)
     {
@@ -1930,9 +1982,9 @@ public class PostgreSQL extends AbstractDatabase
     {
       bogusValue = "''";
     }
-    else if(dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
+    else if (dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
     {
-      bogusValue = "'99999999-9999-9999-9999-999999999999'::uuid";      
+      bogusValue = "'00000000-0000-0000-0000-000000000000'::uuid";
     }
     else if (dataType.equals(MdAttributeBlobInfo.CLASS))
     {

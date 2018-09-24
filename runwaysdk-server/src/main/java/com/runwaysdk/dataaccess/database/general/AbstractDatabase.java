@@ -55,6 +55,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
@@ -125,6 +126,7 @@ import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.session.RequestState;
 import com.runwaysdk.util.IdParser;
 
@@ -5330,6 +5332,13 @@ public abstract class AbstractDatabase
   public String castToDecimal(String sql)
   {
     return sql + "::dec";
+  }
+
+  public String generateRootId(MdTypeDAO mdTypeDAO)
+  {
+    UUID uuid = UUID.nameUUIDFromBytes( ( CommonProperties.getDomain() + "." + mdTypeDAO.getKey() ).getBytes());
+
+    return uuid.toString().substring(32, 36);
   }
 
 }
