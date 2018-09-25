@@ -24,10 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -52,7 +50,6 @@ import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.transaction.TransactionState;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.util.IdParser;
 
 /**
  * Marker class
@@ -138,11 +135,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
   public String getRootId()
   {
-    String value = this.getAttribute(MdTypeInfo.ROOT_ID).getValue();
+    Attribute attribute = this.getAttribute(MdTypeInfo.ROOT_ID);
+    String value = attribute.getValue();
 
     if (value.length() == 0)
-    {
-      return this.generateRootId();
+    {      
+      value = this.generateRootId();
+      
+      attribute.setValue(value);
     }
 
     return value;
