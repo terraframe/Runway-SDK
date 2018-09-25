@@ -143,13 +143,13 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
     sql.append("SELECT" + NL);
     
-    //    uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p.oid::text || c.oid::text))::text from 0 for 33), '5b04')) AS oid,
+    //    uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p.oid::text || c.oid::text))::text from 0 for 31), '5b04')) AS oid,
 
 
     // standard metadata fields
-    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "')) AS " + oid + "," + NL);
+    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 31), '" + allPathsRootTypeId + "')) AS " + oid + "," + NL);
     sql.append("  '" + siteMasterValue + "'  AS " + siteMaster + "," + NL);
-    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "')) AS " + key + "," + NL);
+    sql.append("  uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p." + oid + "::text || c." + oid + "::text))::text from 0 for 31), '" + allPathsRootTypeId + "')) AS " + key + "," + NL);
     sql.append("  '" + termAllPaths.definesType() + "' AS " + type + "," + NL);
     sql.append("  NULL AS " + domain + "," + NL);
     sql.append("  ? AS " + lastUpdateDate + "," + NL);
@@ -248,7 +248,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
 
 //    uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (p.oid::text || c.oid::text))::text from 0 for 33), '5b04')) AS oid,
 
-    String identifierSQL = "uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (allpaths_parent." + parentTerm + "::text || allpaths_child." + childTerm + "::text))::text from 0 for 33), '" + allPathsRootTypeId + "'))";
+    String identifierSQL = "uuid(concat(substring(uuid_generate_v3(uuid_ns_url(), (allpaths_parent." + parentTerm + "::text || allpaths_child." + childTerm + "::text))::text from 0 for 31), '" + allPathsRootTypeId + "'))";
 
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO " + tableName + " (" + insertColumns + ") " + NL);
