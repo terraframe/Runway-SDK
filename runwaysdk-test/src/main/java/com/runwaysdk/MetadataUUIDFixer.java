@@ -138,7 +138,7 @@ public class MetadataUUIDFixer
 
             String oldId = result.getTextContent();
 
-            if (oldId.length() == 36 && oldId.endsWith(oid))
+            if (oldId.length() == 36 && oldId.endsWith(oid) && !this.ids.containsValue(oldId))
             {
               UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
               String newId = uuid.toString().substring(0, 30) + value;
@@ -212,38 +212,38 @@ public class MetadataUUIDFixer
           content = content.replaceAll(entry.getKey(), entry.getValue());
         }
 
-//        if (file.getName().endsWith(".sql"))
-//        {
-//          Matcher matcher = pattern.matcher(content);
-//          Map<String, String> temp = new HashMap<String, String>();
-//
-//          while (matcher.find())
-//          {
-//            String oldId = matcher.group(1);
-//            String current = oldId.substring(30);
-//
-//            if (! ( current.startsWith("0000") || current.startsWith("0001") || current.startsWith("0002") ))
-//            {
-//              String key = current.substring(2);
-//              String value = this.typeIds.get(key);
-//
-//              if (value != null)
-//              {
-//                UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
-//                String newId = uuid.toString().substring(0, 30) + value;
-//
-//                temp.put(oldId, newId);
-//              }
-//            }
-//          }
-//
-//          for (Entry<String, String> entry : temp.entrySet())
-//          {
-//            System.out.println("Changing: " + entry.getKey() + " to " + entry.getValue());
-//
-//            content = content.replaceAll(entry.getKey(), entry.getValue());
-//          }
-//        }
+        if (file.getName().endsWith(".sql"))
+        {
+          Matcher matcher = pattern.matcher(content);
+          Map<String, String> temp = new HashMap<String, String>();
+
+          while (matcher.find())
+          {
+            String oldId = matcher.group(1);
+            String current = oldId.substring(30);
+
+            if (!this.ids.containsValue(oldId) && !( current.startsWith("0000") || current.startsWith("0001") || current.startsWith("0002") ))
+            {
+              String key = current.substring(2);
+              String value = this.typeIds.get(key);
+
+              if (value != null)
+              {
+                UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
+                String newId = uuid.toString().substring(0, 30) + value;
+
+                temp.put(oldId, newId);
+              }
+            }
+          }
+
+          for (Entry<String, String> entry : temp.entrySet())
+          {
+            System.out.println("Changing: " + entry.getKey() + " to " + entry.getValue());
+
+            content = content.replaceAll(entry.getKey(), entry.getValue());
+          }
+        }
 
         Files.write(path, content.getBytes(charset));
       }

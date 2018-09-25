@@ -43,12 +43,12 @@ public enum EntityTypes
   /**
    * Class that defines the localized metadata fields
    */
-  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "8223eb41-d1c0-39ed-8c45-217f69000056"),
+  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "58200659-fe24-38f6-a6fe-ab7c25000086"),
   
   /**
    * Class that defines the localized metadata fields
    */
-  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "8223eb41-d1c0-39ed-8c45-217f69000056");
+  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "58200659-fe24-38f6-a6fe-ab7c25000086");
 
   private String classType;
   private String tableName;

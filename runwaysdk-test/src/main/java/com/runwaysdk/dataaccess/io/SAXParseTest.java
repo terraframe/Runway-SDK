@@ -361,7 +361,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testNoSource()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -374,7 +374,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateLocalText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -413,7 +413,7 @@ public class SAXParseTest
    * overlapping attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateLocalCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -451,7 +451,7 @@ public class SAXParseTest
    * Test setting of attributes on a blob datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -482,7 +482,7 @@ public class SAXParseTest
    * Test setting of attributes on a boolean datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -544,7 +544,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -576,7 +576,7 @@ public class SAXParseTest
    * generated column name collisions.
    */
   @Request
-  // @Test
+  @Test
   public void testColumnNames()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -617,7 +617,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -647,7 +647,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testRequiredForDimension()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -655,7 +655,6 @@ public class SAXParseTest
 
     try
     {
-
       MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
@@ -695,7 +694,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -723,7 +722,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -752,7 +751,7 @@ public class SAXParseTest
    * attributes from the boolean and decimal test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -781,7 +780,7 @@ public class SAXParseTest
    * attributes from the boolean and decimal test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -817,7 +816,7 @@ public class SAXParseTest
    * on setting instance/instance_value tags
    */
   @Request
-  // @Test
+  @Test
   public void testCreateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
@@ -878,7 +877,7 @@ public class SAXParseTest
    * Test setting of attributes on a blob datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -910,7 +909,7 @@ public class SAXParseTest
    * attributes from the boolean, decimal, and double test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -940,7 +939,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -984,7 +983,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1038,7 +1037,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1121,7 +1120,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1204,7 +1203,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1232,7 +1231,7 @@ public class SAXParseTest
    * attributes from the boolean test.
    */
   @Request
-  // @Test
+  @Test
   public void testCreateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1259,7 +1258,7 @@ public class SAXParseTest
    * attributes from the boolean test.
    */
   @Request
-  // @Test
+  @Test
   public void testCreateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1285,7 +1284,7 @@ public class SAXParseTest
    * attributes from the boolean test.
    */
   @Request
-  // @Test
+  @Test
   public void testCreateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1311,7 +1310,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1337,7 +1336,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testCreateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -1394,7 +1393,7 @@ public class SAXParseTest
    * Test setting of symmetric attribute specific value s
    */
   @Request
-  // @Test
+  @Test
   public void testCreateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1422,7 +1421,7 @@ public class SAXParseTest
    * Test setting of mdHash attribute specific values
    */
   @Request
-  // @Test
+  @Test
   public void testCreateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1449,7 +1448,7 @@ public class SAXParseTest
    * Test the setting of cache size on both class and struct.
    */
   @Request
-  // @Test
+  @Test
   public void testCacheAlgorithmSet()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1504,7 +1503,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdBusiness()
   {
     // Create test MdBusiness
@@ -1576,7 +1575,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the struct datatype,
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
@@ -1596,7 +1595,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the relationship datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdRelationship()
   {
     try
@@ -1646,7 +1645,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdProblem()
   {
     // Create test MdBusiness
@@ -1700,7 +1699,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdInformation()
   {
     // Create test MdBusiness
@@ -1754,7 +1753,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdWarning()
   {
     // Create test MdBusiness
@@ -1809,7 +1808,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdException()
   {
     // Create test MdBusiness
@@ -1860,7 +1859,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdView()
   {
     // Create test MdView
@@ -1935,7 +1934,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdUtil()
   {
     // Create test MdView
@@ -2009,7 +2008,7 @@ public class SAXParseTest
     Assert.assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
-  // @Request // @Test public void testCreateMdWebForm()
+  // @Request @Test public void testCreateMdWebForm()
   // {
   // MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
   // mdBusiness2.apply();
@@ -2123,7 +2122,7 @@ public class SAXParseTest
   // }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebDate()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2173,7 +2172,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebText()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2219,7 +2218,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebInteger()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2265,7 +2264,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebLong()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2311,7 +2310,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebDouble()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2359,7 +2358,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebFloat()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2407,7 +2406,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebDecimal()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2455,7 +2454,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebGeo()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2503,7 +2502,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebSingleTermGrid()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2582,7 +2581,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebMultipleTerm()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2630,7 +2629,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebBoolean()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2675,7 +2674,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebDateTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2719,7 +2718,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2763,7 +2762,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebBreak()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2803,7 +2802,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebComment()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2843,7 +2842,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebGroup()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2916,7 +2915,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdWebHeader()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -2956,7 +2955,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateBasicDateCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3019,7 +3018,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateBasicCharacterCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3082,7 +3081,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateBasicLongCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3145,7 +3144,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateBasicDoubleCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3208,7 +3207,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3280,7 +3279,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3364,7 +3363,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateOrUpdateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -3536,7 +3535,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the relationship datatype
    */
   @Request
-  // @Test
+  @Test
   public void testTreeSet()
   {
     SAXImporter.runImport(new File(TREE_SET));
@@ -3580,7 +3579,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the relationship datatype
    */
   @Request
-  // @Test
+  @Test
   public void testGraphSet()
   {
     SAXImporter.runImport(new File(GRAPH_SET));
@@ -3622,7 +3621,7 @@ public class SAXParseTest
    * Test creating Instances that reference other instances
    */
   @Request
-  // @Test
+  @Test
   public void testCreateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3672,7 +3671,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
@@ -3700,7 +3699,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateRelationship()
   {
     // Create the Metadata entities
@@ -3759,7 +3758,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testCreateMdTree()
   {
     // Create the Metadata entities
@@ -3791,7 +3790,7 @@ public class SAXParseTest
   }
 
   @Request
-   // @Test
+   @Test
   public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3839,7 +3838,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testMdMethod()
   {
     SAXImporter.runImport(new File(METHOD_SET_TEST));
@@ -3892,7 +3891,7 @@ public class SAXParseTest
    * Test for a thrown error on circular dependencies in the xml document
    */
   @Request
-  // @Test
+  @Test
   public void testCircularDependency()
   {
     try
@@ -3912,7 +3911,7 @@ public class SAXParseTest
    * the xml
    */
   @Request
-  // @Test
+  @Test
   public void testDuplicateAttribute()
   {
     try
@@ -3936,7 +3935,7 @@ public class SAXParseTest
    * Test for a thrown error on circular dependencies in the xml document
    */
   @Request
-  // @Test
+  @Test
   public void testInvalidSchema()
   {
     try
@@ -3955,7 +3954,7 @@ public class SAXParseTest
    * Test for a thrown error on circular dependencies in the xml document
    */
   @Request
-  // @Test
+  @Test
   public void testInvalidPuesdoId()
   {
     try
@@ -3971,7 +3970,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testSearchingOfDefinitionInAnUpdateTag()
   {
     // Create test MdBusiness
@@ -4009,7 +4008,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUserPermission()
   {
     try
@@ -4111,7 +4110,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRevokeUserPermission()
   {
     // Create a test User
@@ -4193,7 +4192,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testGrantDenyPermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4278,7 +4277,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4363,7 +4362,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRolePermissionsAll()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -4400,7 +4399,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRevokeRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -4473,7 +4472,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -4564,7 +4563,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRevokeMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -4642,7 +4641,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdBusiness()
   {
     // Create test MdBusiness
@@ -4697,7 +4696,7 @@ public class SAXParseTest
    * Test setting of attributes on a boolean datatype
    */
   @Request
-  // @Test
+  @Test
   public void testRenameAttribute()
   {
     String updatedName = "updatedName";
@@ -4740,7 +4739,7 @@ public class SAXParseTest
    * Test setting of attributes on a boolean datatype
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4774,7 +4773,7 @@ public class SAXParseTest
    * Test setting of attributes on a blob datatype
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4811,7 +4810,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4848,7 +4847,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4883,7 +4882,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4913,7 +4912,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4949,7 +4948,7 @@ public class SAXParseTest
    * attributes from the boolean and decimal test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4979,7 +4978,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5013,7 +5012,7 @@ public class SAXParseTest
    * on setting instance/instance_value tags
    */
   @Request
-   // @Test
+   @Test
   public void testUpdateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
@@ -5063,7 +5062,7 @@ public class SAXParseTest
    * Test setting of attributes on a blob datatype
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5100,7 +5099,7 @@ public class SAXParseTest
    * attributes from the boolean, decimal, and double test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5135,7 +5134,7 @@ public class SAXParseTest
    * Test setting of mdHash attribute specific values
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5166,7 +5165,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5198,7 +5197,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5228,7 +5227,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5265,7 +5264,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5311,7 +5310,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5357,7 +5356,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5394,7 +5393,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -5449,7 +5448,7 @@ public class SAXParseTest
    * Test setting of symmetric attribute specific value.
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5482,7 +5481,7 @@ public class SAXParseTest
    * attributes from the boolean test.
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5510,7 +5509,7 @@ public class SAXParseTest
    * attributes from the boolean test.
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5538,7 +5537,7 @@ public class SAXParseTest
    * attributes from the boolean test
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5574,7 +5573,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the relationship datatype
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateMdRelationship()
   {
     SAXImporter.runImport(new File(RELATIONSHIP_SET));
@@ -5635,7 +5634,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the struct datatype,
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
@@ -5676,7 +5675,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateMdException()
   {
     // Create test MdBusiness
@@ -5728,7 +5727,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdProblem()
   {
     // Create test MdBusiness
@@ -5778,7 +5777,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdInformation()
   {
     // Create test MdBusiness
@@ -5830,7 +5829,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdView()
   {
     // Create test MdView
@@ -5882,7 +5881,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdUtil()
   {
     // Create test MdView
@@ -5934,7 +5933,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
@@ -5990,7 +5989,7 @@ public class SAXParseTest
    * Test creating Instances that reference other instances
    */
   @Request
-  // @Test
+  @Test
   public void testUpdateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6067,7 +6066,7 @@ public class SAXParseTest
    * Test creating Instances that reference other instances
    */
   @Request
-  // @Test
+  @Test
   public void testRekeyObject()
   {
     final String newKey = "newKey";
@@ -6124,7 +6123,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateRelationship()
   {
     // Create the Metadata entities
@@ -6204,7 +6203,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testRekeyRelationship()
   {
     final String newKey = "newKey";
@@ -6250,7 +6249,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testReadAndWriteAllPermissions()
   {
     SAXImporter.runImport(new File(TEST_ALL_PERMISSIONS));
@@ -6282,7 +6281,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testMultiRolePermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_ROLE_PERMISSIONS));
@@ -6323,7 +6322,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testMultiUserPermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_USER_PERMISSIONS));
@@ -6367,7 +6366,7 @@ public class SAXParseTest
    * references the other
    */
   @Request
-  // @Test
+  @Test
   public void testImportObjectsWithSameKey()
   {
     String KEY = "KEY";
@@ -6420,7 +6419,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testDimensionAttributePermissions()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -6490,7 +6489,7 @@ public class SAXParseTest
   }
 
   @Request
-  // @Test
+  @Test
   public void testUpdateMdWebForm()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -6553,7 +6552,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdTerm()
   {
     // Create test MdBusiness
@@ -6600,7 +6599,7 @@ public class SAXParseTest
    * Test setting of attributes of and on the class datatype
    */
   @Request
-  // @Test
+  @Test
   public void testCreateMdTermRelationship()
   {
     // Create test MdBusiness

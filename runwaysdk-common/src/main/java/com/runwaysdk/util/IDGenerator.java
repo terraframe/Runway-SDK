@@ -60,7 +60,7 @@ public class IDGenerator
    */
   public synchronized static String generateId(String key)
   {
-    UUID uuid = UUID.nameUUIDFromBytes((CommonProperties.getDomain() + "." + key).getBytes());
+    UUID uuid = UUID.nameUUIDFromBytes(key.getBytes());
     return uuid.toString().substring(0, 30);
   }
 
