@@ -43,7 +43,7 @@ public class MetadataUUIDFixer
 
   private Map<String, String> typeIds = new HashMap<String, String>();
 
-  private Pattern             pattern = Pattern.compile("'(\\w{64})'");
+  private Pattern             pattern = Pattern.compile("'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'");
 
   public void run()
   {
@@ -61,10 +61,6 @@ public class MetadataUUIDFixer
       // <value>xybe6y9kczkjsi3pdmqmqrjcpfd2frwo</value>
       // <definingComponent>com.runwaysdk.system.metadata.MdType</definingComponent>
       // </attribute>
-      NumberFormat format = NumberFormat.getInstance();
-      format.setMinimumIntegerDigits(4);
-      format.setGroupingUsed(false);
-
       DOMParser parser = new DOMParser();
       parser.parse(new InputSource(new FileReader(new File(dir, infile))));
       Document doc = parser.getDocument();
@@ -78,7 +74,7 @@ public class MetadataUUIDFixer
         Node sibling = result.getNextSibling().getNextSibling();
 
         String oldId = sibling.getTextContent();
-        String uuid = format.format(i);
+        String uuid = String.format("%06x", ( 0xFFFFFF & i ));
 
         // System.out.println(result.getNodeName() + " - " +
         // result.getTextContent());
@@ -89,37 +85,40 @@ public class MetadataUUIDFixer
         typeIds.put(oldId, uuid);
       }
 
-      // Update the database oid size
-      results = (NodeList) xPath.compile("//databaseSize[.=\"64\"]").evaluate(doc, XPathConstants.NODESET);
-
-      for (int i = 0; i < results.getLength(); i++)
-      {
-        Node result = results.item(i);
-        boolean isOid = false;
-
-        Node parent = result.getParentNode();
-        NodeList children = parent.getChildNodes();
-
-        for (int j = 0; j < children.getLength(); j++)
-        {
-          Node node = children.item(j);
-
-          if (node instanceof Element)
-          {
-            Element child = (Element) node;
-
-            if (child.getTagName().equals("attributeName") && child.getTextContent().equals("oid"))
-            {
-              isOid = true;
-            }
-          }
-        }
-
-        if (isOid)
-        {
-          result.setTextContent("36");
-        }
-      }
+      // // Update the database oid size
+      // results = (NodeList)
+      // xPath.compile("//databaseSize[.=\"64\"]").evaluate(doc,
+      // XPathConstants.NODESET);
+      //
+      // for (int i = 0; i < results.getLength(); i++)
+      // {
+      // Node result = results.item(i);
+      // boolean isOid = false;
+      //
+      // Node parent = result.getParentNode();
+      // NodeList children = parent.getChildNodes();
+      //
+      // for (int j = 0; j < children.getLength(); j++)
+      // {
+      // Node node = children.item(j);
+      //
+      // if (node instanceof Element)
+      // {
+      // Element child = (Element) node;
+      //
+      // if (child.getTagName().equals("attributeName") &&
+      // child.getTextContent().equals("oid"))
+      // {
+      // isOid = true;
+      // }
+      // }
+      // }
+      //
+      // if (isOid)
+      // {
+      // result.setTextContent("36");
+      // }
+      // }
 
       String[] tags = new String[] { "oid", "parent_oid", "child_oid", "value", "createdBy", "lastUpdatedBy", "definingMdClass", "mdStruct", "mdEnumeration", "mdBusiness", "item_id", "owner", "defaultValue" };
 
@@ -139,12 +138,13 @@ public class MetadataUUIDFixer
 
             String oldId = result.getTextContent();
 
-            if (oldId.endsWith(oid))
+            if (oldId.length() == 36 && oldId.endsWith(oid))
             {
               UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
-              String newId = uuid.toString().substring(0, 32) + value;
+              String newId = uuid.toString().substring(0, 30) + value;
 
-              // System.out.println("Setting " + tag + " from [" + oldId + "] to
+              // System.out.println("Setting " + tag + " from [" + oldId + "]
+              // to
               // [" + newId + "]");
 
               result.setTextContent(newId);
@@ -202,8 +202,7 @@ public class MetadataUUIDFixer
       }
       else
       {
-        // System.out.println("Updating ids in file: " +
-        // file.getAbsolutePath());
+//        System.out.println("Updating ids in file: " + file.getAbsolutePath());
         Path path = Paths.get(file.toURI());
 
         String content = new String(Files.readAllBytes(path), charset);
@@ -213,28 +212,38 @@ public class MetadataUUIDFixer
           content = content.replaceAll(entry.getKey(), entry.getValue());
         }
 
-        if (file.getName().endsWith(".sql"))
-        {
-          Matcher matcher = pattern.matcher(content);
-          Map<String, String> temp = new HashMap<String, String>();
-
-          while (matcher.find())
-          {
-            String oldId = matcher.group(1);
-            String key = oldId.substring(32);
-            String value = this.typeIds.get(key);
-
-            UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
-            String newId = uuid.toString().substring(0, 32) + value;
-
-            temp.put(oldId, newId);
-          }
-
-          for (Entry<String, String> entry : temp.entrySet())
-          {
-            content = content.replaceAll(entry.getKey(), entry.getValue());
-          }
-        }
+//        if (file.getName().endsWith(".sql"))
+//        {
+//          Matcher matcher = pattern.matcher(content);
+//          Map<String, String> temp = new HashMap<String, String>();
+//
+//          while (matcher.find())
+//          {
+//            String oldId = matcher.group(1);
+//            String current = oldId.substring(30);
+//
+//            if (! ( current.startsWith("0000") || current.startsWith("0001") || current.startsWith("0002") ))
+//            {
+//              String key = current.substring(2);
+//              String value = this.typeIds.get(key);
+//
+//              if (value != null)
+//              {
+//                UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
+//                String newId = uuid.toString().substring(0, 30) + value;
+//
+//                temp.put(oldId, newId);
+//              }
+//            }
+//          }
+//
+//          for (Entry<String, String> entry : temp.entrySet())
+//          {
+//            System.out.println("Changing: " + entry.getKey() + " to " + entry.getValue());
+//
+//            content = content.replaceAll(entry.getKey(), entry.getValue());
+//          }
+//        }
 
         Files.write(path, content.getBytes(charset));
       }
@@ -273,7 +282,7 @@ public class MetadataUUIDFixer
 
         Node oid = parent.getElementsByTagName("oid").item(0);
         String oldId = oid.getTextContent();
-        String newId = oldId.substring(0, 32) + "a9b9";
+        String newId = oldId.substring(0, 30) + "000132";
 
         this.ids.put(oldId, newId);
 
@@ -327,10 +336,10 @@ public class MetadataUUIDFixer
     // File("C:\\Users\\admin\\git\\Runway-SDK\\runwaysdk-common\\src\\main\\java\\com\\runwaysdk\\constants");
 
     MetadataUUIDFixer fixer = new MetadataUUIDFixer();
-    // fixer.run();
-    // fixer.updateIDs(file);
-
-    fixer.fixType();
+    fixer.run();
     fixer.updateIDs(file);
+
+    // fixer.fixType();
+    // fixer.updateIDs(file);
   }
 }

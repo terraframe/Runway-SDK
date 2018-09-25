@@ -29,7 +29,7 @@ public interface MdBusinessInfo extends MdElementInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                   = "c8dbb220-1b13-31ba-a18f-4421bdf80058";
+  public static final String ID_VALUE                   = "fdc13711-7b81-39cb-8a64-ebc5ac00003a";
   
   /**
    * Name of the attribute that stores the oid of the super class.

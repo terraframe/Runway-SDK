@@ -23,32 +23,32 @@ public enum EntityTypes
   /**
    * Class that defines enumeration items for caching types.
    */
-  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "28f858a7-c5f8-3b30-b7fb-b58357950058"),
+  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "d845dd9e-9a15-3810-a854-d5ebbb00003a"),
 
   /**
    * Type that defines relationships.
    */
-  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "a1d1fedd-943d-3366-8a39-766c50620100"),
+  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "66e25e6a-a9e1-314f-beff-b032df000064"),
 
   /**
    * Class that defines the symmetric encryption methods
    */
-  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "dc7d6734-738c-32a8-827b-b5ca5cc60058"),
+  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "56cbb77f-b197-3adb-93bc-a0f3b200003a"),
 
   /**
    * Class that defines the hash encryption methods
    */
-  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "e5af71db-08d8-3c65-9d9b-ee6cb5400058"),
+  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "38af38c9-43c9-347c-92b4-d7d14300003a"),
 
   /**
    * Class that defines the localized metadata fields
    */
-  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "9ed3ec54-7e79-3d17-9389-45cd7f2c0134"),
+  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "8223eb41-d1c0-39ed-8c45-217f69000056"),
   
   /**
    * Class that defines the localized metadata fields
    */
-  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "9ed3ec54-7e79-3d17-9389-45cd7f2c0134");
+  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "8223eb41-d1c0-39ed-8c45-217f69000056");
 
   private String classType;
   private String tableName;

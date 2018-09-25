@@ -28,7 +28,7 @@ public interface MdLocalizableInfo extends MdTransientInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                  = "d2701704-aedb-3abc-ba11-e2034c660058"; 
+  public static final String ID_VALUE                  = "faf5d970-5ca3-3e79-9a3a-457ed900003a"; 
   
   /**
    * Attribute that stores localized messages.

@@ -276,7 +276,7 @@ public class GISMetadataUUIDFixer
 
         Node oid = parent.getElementsByTagName("oid").item(0);
         String oldId = oid.getTextContent();
-        String newId = oldId.substring(0, 32) + "a9b9";
+        String newId = oldId.substring(0, 30) + "000132";
 
         this.ids.put(oldId, newId);
 

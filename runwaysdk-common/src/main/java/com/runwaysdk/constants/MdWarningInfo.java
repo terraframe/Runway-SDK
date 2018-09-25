@@ -28,7 +28,7 @@ public interface MdWarningInfo extends MdMessageInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "8c91f910-cda9-3b83-9af6-0c51afe50058";
+  public static final String ID_VALUE  = "687e118f-0292-322d-a475-53f79100003a";
 
   /**
    * Super defining class

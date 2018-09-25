@@ -61,8 +61,7 @@ public class IDGenerator
   public synchronized static String generateId(String key)
   {
     UUID uuid = UUID.nameUUIDFromBytes((CommonProperties.getDomain() + "." + key).getBytes());
-    return uuid.toString().substring(0, 32);
-
+    return uuid.toString().substring(0, 30);
   }
 
   /**
@@ -73,6 +72,6 @@ public class IDGenerator
   public synchronized static String nextID()
   {
     UUID uuid = UUID.randomUUID();
-    return uuid.toString().substring(0, 32);
+    return uuid.toString().substring(0, 30);
   }
 }

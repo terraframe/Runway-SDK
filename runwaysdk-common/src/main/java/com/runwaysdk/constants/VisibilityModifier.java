@@ -20,9 +20,9 @@ package com.runwaysdk.constants;
 
 public enum VisibilityModifier 
 {
-  PUBLIC    ("public", "78a04c02-65e4-3aef-b74c-318f28360113"),
+  PUBLIC    ("public", "02d46938-021e-3bb4-bb8f-4a31c5000071"),
   
-  PROTECTED ("protected", "dfb3d269-f82b-37a6-8a05-a6a72b980113");
+  PROTECTED ("protected", "dc5d2fb0-1cf4-3aad-be4b-f2e901000071");
   
   private String javaModifier;
   

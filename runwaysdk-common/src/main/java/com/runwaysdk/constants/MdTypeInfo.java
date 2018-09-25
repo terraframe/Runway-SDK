@@ -29,7 +29,7 @@ public interface MdTypeInfo extends MetadataInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "e6f09a00-40d7-3194-9412-a7e27e840058";  
+  public static final String ID_VALUE  = "8363586d-9787-3f35-92a7-76c4e100003a";  
   
   /**
    * Name of the attribute that stores the label of this metadata object.

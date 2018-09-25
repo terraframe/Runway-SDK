@@ -29,7 +29,7 @@ public interface MdInformationInfo extends MdMessageInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "0e25b977-4580-3ce2-92c2-a2ba71720058";
+  public static final String ID_VALUE  = "aa032787-7543-3f43-9e09-1717a100003a";
 
   /**
    * Super defining class

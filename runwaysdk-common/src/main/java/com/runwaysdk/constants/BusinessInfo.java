@@ -28,7 +28,7 @@ public interface BusinessInfo extends ElementInfo
    */
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Business";
 
-  public static final String ID_VALUE          = "2523a121-2722-35ab-a04a-6209d5630058";
+  public static final String ID_VALUE          = "6508693a-cfd0-3c54-a03e-8a836900003a";
   
   public static final String TABLE             = "business";
   

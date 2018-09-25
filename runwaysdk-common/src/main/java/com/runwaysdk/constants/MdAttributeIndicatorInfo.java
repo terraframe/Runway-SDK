@@ -30,7 +30,7 @@ public interface MdAttributeIndicatorInfo extends MdAttributeConcreteInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE             = "cb6a5218-334d-350b-bb1f-2e4845160058";
+  public static final String ID_VALUE             = "1b3c4941-ab2f-3961-9599-a9262d00003a";
   
   public static final String INDICATOR_ELEMENT    = "indicatorElement";
 

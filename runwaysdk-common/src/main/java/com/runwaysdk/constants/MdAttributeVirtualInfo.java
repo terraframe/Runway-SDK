@@ -28,7 +28,7 @@ public interface MdAttributeVirtualInfo extends MdAttributeInfo
   /**
    * OID.
    */
-   public static final String ID_VALUE  = "e72de1ef-fc57-3b36-9e07-52d5b20d0058";
+   public static final String ID_VALUE  = "a4068afb-6bfd-32c6-9437-59526300003a";
 
    /**
     * Name of the attribute that this metadata defines.

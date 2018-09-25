@@ -25,7 +25,7 @@ public interface MetadataInfo extends BusinessInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "bf60d4f1-7eb8-3fda-9f9e-3cb7c5750058";  
+  public static final String ID_VALUE  = "64caeed1-63bd-3b78-b834-78bc2300003a";  
   
   /**
    * Class MetaData.

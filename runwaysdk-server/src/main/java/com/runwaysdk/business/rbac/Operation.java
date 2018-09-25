@@ -27,110 +27,110 @@ public enum Operation implements Serializable {
   /**
    * Reads the data from a type
    */
-  READ("a406f02d-faf6-3c0a-bc7e-f0663b180088", "2f656424-e386-34ca-9969-4325a4490088", false),
+  READ("567c687f-cd66-3436-af9f-e54517000058", "475d5b55-eb91-3e36-8e49-24ad37000058", false),
 
-  READ_ALL("8acafd0b-aa11-3501-8287-7f3c2a4e0088"),
+  READ_ALL("064c2c3c-677b-3aee-ade1-e37464000058"),
   
   /**
    * Negation of Read permissions for a type
    */
-  DENY_READ("2f656424-e386-34ca-9969-4325a4490088", "a406f02d-faf6-3c0a-bc7e-f0663b180088", true),
+  DENY_READ("475d5b55-eb91-3e36-8e49-24ad37000058", "567c687f-cd66-3436-af9f-e54517000058", true),
 
   /**
    * Writes the data to a type
    */
-  WRITE("6bb8b23d-1d1d-3ff8-a9cd-62d15ebd0088", "f1694027-3d20-32cf-99b8-b540f09f0088", false),
+  WRITE("e02145d2-afbd-3cec-a330-2ef4b1000058", "cd935282-741f-3880-96f7-d8ac22000058", false),
 
-  WRITE_ALL("2c195ddd-0520-32eb-b1b0-29241eb80088"),
+  WRITE_ALL("46f5b01c-6e0d-3b20-b9a2-e4c8d3000058"),
   
   /**
    * Negation of Write permissions for a type
    */
-  DENY_WRITE("f1694027-3d20-32cf-99b8-b540f09f0088", "6bb8b23d-1d1d-3ff8-a9cd-62d15ebd0088", true),
+  DENY_WRITE("cd935282-741f-3880-96f7-d8ac22000058", "e02145d2-afbd-3cec-a330-2ef4b1000058", true),
 
   /**
    * Alter the state of a type
    */
-  PROMOTE("23c1380c-dc4e-3e15-85f5-9c3bc08f0088"),
+  PROMOTE("17521de8-c361-301f-ae8d-1da789000058"),
 
   /**
    * Create a new instance of a type
    */
-  CREATE("9c05d611-007f-34bb-a1e8-0b30c05d0088", "e24f9c8f-09d9-3b56-9c88-50c73bbd0088", false),
+  CREATE("e3494d59-45b3-3eda-a842-d3e070000058", "8a5d97cd-84c1-3353-b2c2-60ccc3000058", false),
 
   /**
    * Negation of CREATE permissions for a type
    */
-  DENY_CREATE("e24f9c8f-09d9-3b56-9c88-50c73bbd0088", "9c05d611-007f-34bb-a1e8-0b30c05d0088", true),
+  DENY_CREATE("8a5d97cd-84c1-3353-b2c2-60ccc3000058", "e3494d59-45b3-3eda-a842-d3e070000058", true),
 
   /**
    * Delete an existing instance of a type
    */
-  DELETE("e0e56cb0-0519-361c-be86-a28c36870088", "80901ebe-a3e3-393e-93bf-6addb6240088", false),
+  DELETE("8f3764a5-955d-31f3-b778-2ed465000058", "28688129-e5fb-377c-893a-28035e000058", false),
 
   /**
    * Negation of DELETE permissions for a type
    */
-  DENY_DELETE("80901ebe-a3e3-393e-93bf-6addb6240088", "e0e56cb0-0519-361c-be86-a28c36870088", true),
+  DENY_DELETE("28688129-e5fb-377c-893a-28035e000058", "8f3764a5-955d-31f3-b778-2ed465000058", true),
 
   /**
    * Add a parent a given relationship
    */
-  ADD_PARENT("6ea2235f-2f10-3b81-a274-4a40e20a0088"),
+  ADD_PARENT("f8de543d-99a7-3913-b26b-33cc71000058"),
 
   /**
    * Add a child to a given relationship
    */
-  ADD_CHILD("e1996339-2c9c-3d95-ba62-b70fd1800088"),
+  ADD_CHILD("e17c9a0d-80f5-3933-bbf4-ea0488000058"),
 
   /**
    * Delete a parent from a given relationship
    */
-  DELETE_PARENT("48f2a3a8-17c1-3672-969d-5c6364f30088"),
+  DELETE_PARENT("c6870bf7-6962-3f18-8e4a-e5fb31000058"),
 
   /**
    * Delete a child from an existing relationship
    */
-  DELETE_CHILD("2c8da293-42e1-3580-abb1-51bbedc60088"),
+  DELETE_CHILD("957fc46e-91b5-3b09-8fd0-096c6e000058"),
 
   /**
    * The relationship object may be written by the user who is the owner of the
    * parent object.
    */
-  WRITE_PARENT("db312447-66aa-35ec-8b17-a62733400088"),
+  WRITE_PARENT("ace47a8b-a7fb-3709-b176-4ec403000058"),
 
   /**
    * The relationship object may be written by the user who is the owner of the
    * child object.
    */
-  WRITE_CHILD("63623176-50f7-32e2-ba1f-e909a34a0088"),
+  WRITE_CHILD("79a41560-6a3f-380c-b232-01874d000058"),
 
   /**
    * The relationship object may be read by the user who is the owner of the
    * parent object.
    */
-  READ_PARENT("653d0ffd-1514-3549-b127-1ee9ce270088"),
+  READ_PARENT("27a12b26-075a-3681-a227-f0487a000058"),
 
   /**
    * The relationship object may be read by the user who is the owner of the
    * child object.
    */
-  READ_CHILD("cb9e6e5c-0e3b-36bf-a5dc-c60f0f9a0088"),
+  READ_CHILD("227c3e0e-d5a3-336d-85e6-96e424000058"),
 
   /**
    * Grant permission to a given businessDAO to other users
    */
-  GRANT("3f12fef3-f5ad-3c50-8d32-aea04a500088"),
+  GRANT("5d6fb806-1198-3ebb-8e4f-553a4c000058"),
 
   /**
    * Revoke permissions of another user from a given businessDAO
    */
-  REVOKE("ba8da233-0fb0-3d15-bda3-50a7f7950088"),
+  REVOKE("1a9a4641-8626-37df-8d4f-52f590000058"),
 
   /**
    * Execute a Method
    */
-  EXECUTE("a51dd2b7-a181-3d30-b60c-29aa52fb0088");
+  EXECUTE("5607c75d-c3a3-3520-99d5-7de6fa000058");
 
   private String oid;
 
@@ -145,7 +145,7 @@ public enum Operation implements Serializable {
     this.oid = oid;
     this.negationId = null;
     this.isDeny = false;
-    this.mdBusinessId = "d4c16b69-a4e4-32fb-84d5-41f78b450058";
+    this.mdBusinessId = "d0b14aa8-5972-33c5-ae62-09d67e00003a";
   }
 
   private Operation(String oid, String negationId, boolean isDeny)

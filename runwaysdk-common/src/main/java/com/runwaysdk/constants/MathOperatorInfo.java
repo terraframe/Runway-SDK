@@ -26,7 +26,7 @@ public interface MathOperatorInfo extends EnumerationMasterInfo
   
   public static final String TABLE                           = "math_operators";
 
-  public static final String ID_VALUE                        = "40c2c475-7d28-33f8-a37e-c9fd82110058";
+  public static final String ID_VALUE                        = "6d8736af-ba04-35ee-85a2-d391bb00003a";
   
   public static final String OPERATOR_SYMBOL                 = "operatorSymbol";
   
@@ -35,9 +35,9 @@ public interface MathOperatorInfo extends EnumerationMasterInfo
   
   public static final String INDICATOR_ENUM_CLASS            = Constants.METADATA_PACKAGE+"."+INDICATOR_ENUM_CLASS_NAME;
   
-  public static final String INDICATOR_ENUM_CLASS_ID_VALUE   = "8ffda9cc-e149-3ad8-9de2-6bdbf1290075";
+  public static final String INDICATOR_ENUM_CLASS_ID_VALUE   = "c8018f6b-9e6c-3574-af28-f4eb5c00004b";
   
-  public static final String DIVISION_OPERATION_ID           = "fe079d1e-1ccc-3bd4-ad4d-26972bc60237";
+  public static final String DIVISION_OPERATION_ID           = "1a80bebd-86ae-30d5-ace3-e453cb0000ed";
   
   public static final String DIVISION_SYMBOL                 = "/";
   

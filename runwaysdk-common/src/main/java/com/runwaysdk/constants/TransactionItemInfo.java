@@ -28,7 +28,7 @@ public interface TransactionItemInfo extends BusinessInfo
   /**
    * OID of the metadata that defines this class.
    */
-  public static final String ID_VALUE               = "a7ad7f44-f8d5-3a0b-8368-b80702090058";
+  public static final String ID_VALUE               = "5be6841a-3a08-30a2-9837-b40bb800003a";
 
   /**
    * Component Id

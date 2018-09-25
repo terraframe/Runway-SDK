@@ -28,6 +28,6 @@ public interface MdAttributeFileInfo extends MdAttributeConcreteInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "6bd597ee-5b6f-3469-91fd-1eb3edfa0058";
+  public static final String ID_VALUE  = "772bf787-02f3-3003-b6f7-c81e3800003a";
 
 }

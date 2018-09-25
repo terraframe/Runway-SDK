@@ -24,22 +24,22 @@ public enum EntityCacheMaster
   /**
    * Cache all BusinessDAOs of a certain class.
    */
-  CACHE_EVERYTHING                   ("1ec01232-2324-34ab-a993-af7eeb330077", 1),
+  CACHE_EVERYTHING                   ("bfc8ffc0-e021-3746-abaf-6fba7700004d", 1),
 
   /**
    * Cache no BusinessDAOs of a certain type.
    */
-  CACHE_NOTHING                      ("fff98083-3022-3e30-b35f-d2aa3f6f0077", 2),
+  CACHE_NOTHING                      ("53f84de0-954a-3d48-a57f-29b95c00004d", 2),
 
   /**
    * Cache BusinessDAOs that were the most recently accessed.
    */
-  CACHE_MOST_RECENTLY_USED           ("07233e5a-be50-3278-b7f9-a7d253d40077", 3),
+  CACHE_MOST_RECENTLY_USED           ("8ea897b9-393d-3c45-87e7-7d998000004d", 3),
 
   /**
    * Cache BusinessDAO algorithm is hardcoded.
    */
-  CACHE_HARDCODED                    ("9edcc420-03f2-3924-ae14-f3e5332b0077", 4);
+  CACHE_HARDCODED                    ("5bce2da7-3746-301c-8c10-4f420100004d", 4);
 
 
   /**

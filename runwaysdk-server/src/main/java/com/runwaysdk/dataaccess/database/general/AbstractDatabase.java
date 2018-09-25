@@ -5338,7 +5338,7 @@ public abstract class AbstractDatabase
   {
     UUID uuid = UUID.nameUUIDFromBytes( ( CommonProperties.getDomain() + "." + mdTypeDAO.getKey() ).getBytes());
 
-    return uuid.toString().substring(32, 36);
+    return uuid.toString().substring(30, 36);
   }
 
 }

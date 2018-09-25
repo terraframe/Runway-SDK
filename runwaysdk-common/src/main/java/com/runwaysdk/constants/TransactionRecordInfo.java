@@ -28,7 +28,7 @@ public interface TransactionRecordInfo extends BusinessInfo
   /**
    * OID of the metadata that defines this class.
    */
-   public static final String ID_VALUE                   = "fdcae6fa-11c3-3267-ba21-a5e5c4d80058";
+   public static final String ID_VALUE                   = "f39929ee-b5b7-3571-a850-d3afda00003a";
 
   /**
    * Sequence number for transactions

@@ -28,5 +28,5 @@ public interface MdNotificationInfo extends MdLocalizableInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "3cb0cb9a-15d2-307c-8189-7eaf582e0058"; 
+  public static final String ID_VALUE  = "a34975e9-71b6-3cc0-a1ab-40c60400003a"; 
 }

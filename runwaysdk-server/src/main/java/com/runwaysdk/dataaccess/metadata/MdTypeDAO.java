@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -135,19 +135,18 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     return this.getAttributeIF(MdTypeInfo.NAME).getValue();
   }
-  
+
   public String getRootId()
   {
     String value = this.getAttribute(MdTypeInfo.ROOT_ID).getValue();
-    
-    if(value.length() == 0)
+
+    if (value.length() == 0)
     {
       return this.generateRootId();
     }
-    
+
     return value;
   }
-
 
   /**
    * Returns the name of the package of the type that this object defines.
@@ -290,7 +289,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public String apply()
   {
     this.setKey(buildKey(this.definesType()));
-    
+
     return super.apply();
   }
 
@@ -464,8 +463,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public abstract Command getCreateUpdateJavaArtifactCommand(Connection conn);
 
   /**
-   * Returns a command object that deletes Java artifacts for this type or returns null if there are no 
-   * artifacts for this type.
+   * Returns a command object that deletes Java artifacts for this type or
+   * returns null if there are no artifacts for this type.
    * 
    * @param conn
    *          database connection object.
@@ -645,7 +644,13 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     if (this.isNew())
     {
-      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(generateRootId());
+      Attribute attribute = this.getAttribute(MdTypeInfo.ROOT_ID);
+      String value = attribute.getValue();
+
+      if (value == null || value.length() == 0)
+      {
+        attribute.setValue(generateRootId());
+      }
     }
 
     if (!this.isNew() || this.isAppliedToDB())
@@ -669,9 +674,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
   private String generateRootId()
   {
-    UUID uuid = UUID.nameUUIDFromBytes((CommonProperties.getDomain() + "." + this.getKey()).getBytes());
-    
-    return uuid.toString().substring(32, 36);
+    return Database.generateRootId(this);
   }
 
   public static MdTypeDAOIF get(String oid)

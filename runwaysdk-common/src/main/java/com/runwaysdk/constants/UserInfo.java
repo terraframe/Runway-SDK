@@ -35,7 +35,7 @@ public interface UserInfo
   /**
    * The OID of the metadata that defines the users calss.
    */
-  public static final String ID_VALUE = "e1812d3a-b42f-3eec-b528-b3f267cd0058";
+  public static final String ID_VALUE = "932ede2c-14e2-3405-9f3d-9e46d100003a";
 
   /**
    * The name of the database talbe for the users class

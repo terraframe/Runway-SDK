@@ -23,7 +23,7 @@ public interface MdMethodInfo extends MetadataInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "a21411f4-c285-3cda-bf42-0ceda8ce0058";  
+  public static final String ID_VALUE  = "04ec4fb8-2e29-3922-a330-c031cb00003a";  
 
   /**
    * Class.

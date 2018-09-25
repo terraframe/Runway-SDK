@@ -26,7 +26,7 @@ public interface AggregationFunctionInfo extends EnumerationMasterInfo
   
   public static final String TABLE                           = "aggretation_function";
   
-  public static final String ID_VALUE                        = "cd64f0c6-afc9-33dd-b436-fc3fcfc00058";
+  public static final String ID_VALUE                        = "d4bfb61e-775a-3e10-82bf-0a01d000003a";
 
   public static final String FUNCTION                        = "function";
   
@@ -35,7 +35,7 @@ public interface AggregationFunctionInfo extends EnumerationMasterInfo
 
   public static final String INDICATOR_FUNCTION_ENUM_CLASS   = Constants.METADATA_PACKAGE+"."+INDICATOR_FUNCTION_ENUM_CLASS_NAME;
 
-  public static final String INDICATOR_FUNCTION_ENUM_CLASS_ID_VALUE   = "9d5c9425-28c3-3bdd-9484-8c441d700075";
+  public static final String INDICATOR_FUNCTION_ENUM_CLASS_ID_VALUE   = "1c15dccf-5813-3cdb-bf55-e8db0100004b";
 
   public static final String SUM                             = "SUM";
 

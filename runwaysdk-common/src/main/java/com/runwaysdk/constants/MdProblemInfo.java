@@ -28,7 +28,7 @@ public interface MdProblemInfo extends MdNotificationInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE  = "e261d304-435a-3882-a6a8-26cf9f8e0058"; 
+  public static final String ID_VALUE  = "313b3336-ea89-3d17-bb6e-a118bc00003a"; 
   
   /**
    * Super defining class

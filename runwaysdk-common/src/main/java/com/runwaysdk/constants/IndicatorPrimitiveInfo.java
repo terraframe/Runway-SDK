@@ -30,7 +30,7 @@ public interface IndicatorPrimitiveInfo extends IndicatorElementInfo
   /**
    * OID.
    */
-  public static final String ID_VALUE                = "32e6db39-30f7-3214-9b17-2a170d630058";
+  public static final String ID_VALUE                = "3e53fe98-8ac0-34f8-b30d-6b73f700003a";
   
   /**
    * Reference to an attribute definition.

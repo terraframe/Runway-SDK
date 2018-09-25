@@ -1643,7 +1643,7 @@ public class PostgreSQL extends AbstractDatabase
 
       long value = resultSet.getLong("nextval");
 
-      String id = String.format("%04x", ( 0xFFFF & value ));
+      String id = String.format("%06x", ( 0xFFFFFF & value ));
 
       return id;
     }
