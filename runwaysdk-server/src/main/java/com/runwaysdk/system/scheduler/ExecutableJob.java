@@ -32,7 +32,9 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.SmartException;
+import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
+import com.runwaysdk.session.CreatePermissionException;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.SessionFacade;
@@ -49,7 +51,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
   public static final String       JOB_ID_PREPEND   = "_JOB_";
 
-  final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
+  private static final Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
   public ExecutableJob()
   {
@@ -129,7 +131,9 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       history = record.getChild();
     }
     
-    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension()};
+    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
+    
+    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension(), executionContext};
   }
   
   /**
@@ -144,24 +148,40 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
     SingleActor user = (SingleActor) prereqs[3];
     MdDimension dimension = (MdDimension) prereqs[4];
+    ExecutionContext executionContext = (ExecutionContext) prereqs[5];
+    
+    String errorMessage = null;
     
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
-    if (user == null)
+    try
     {
-      executeAsSystem(job, history, record);
+      if (user == null)
+      {
+        errorMessage = executeAsSystem(job, history, record, executionContext);
+      }
+      else
+      {
+        String sessionId = logIn(user, dimension);
+        
+        try
+        {
+          errorMessage = executeAsUser(sessionId, job, history, record, executionContext);
+        }
+        finally
+        {
+          logOut(sessionId);
+        }
+      }
     }
-    else
+    catch (Throwable t)
     {
-      String sessionId = logIn(user, dimension);
+      errorMessage = getMessageFromException(t);
+    }
+    finally
+    {
+      writeHistory(history, executionContext, errorMessage);
       
-      try
-      {
-        executeAsUser(sessionId, job, history, record);
-      }
-      finally
-      {
-        logOut(sessionId);
-      }
+      executeDownstreamJobs(job, errorMessage);
     }
   }
   
@@ -187,23 +207,19 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   }
   
   @Request(RequestType.SESSION)
-  public void executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
+  public String executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
   {
-    executeJobWithinExistingRequest(job, history, record);
+    return executeJobWithinExistingRequest(job, history, record, executionContext);
   }
   
   @Request
-  public void executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
+  public String executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
   {
-    executeJobWithinExistingRequest(job, history, record);
+    return executeJobWithinExistingRequest(job, history, record, executionContext);
   }
   
-  public void executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record)
+  public String executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext)
   {
-    // Execute the job
-    
-    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
-
     String errorMessage = null;
 
     try
@@ -212,11 +228,32 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     catch (Throwable t)
     {
+      logger.error("An error occurred while executing job " + job.toString() + ".", t);
       errorMessage = getMessageFromException(t);
     }
     
-    // Configure the history
+    return errorMessage;
+  }
 
+  @Request
+  protected void executeDownstreamJobs(ExecutableJob job, String errorMessage) {
+    List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
+    if (lDownstreamRel.size() > 0)
+    {
+      DownstreamJobRelationship rel = lDownstreamRel.get(0);
+      ExecutableJob downstream = rel.getChild();
+      
+      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
+      {
+        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
+        downstream.executableJobStart();
+      }
+    }
+  }
+
+  @Request
+  protected void writeHistory(JobHistory history, ExecutionContext executionContext, String errorMessage)
+  {
     JobHistory jh = JobHistory.get(history.getId());
 
     jh.appLock();
@@ -239,21 +276,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       }
     }
     jh.apply();
-    
-    
-    // Invoke Downstream jobs
-    List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
-    if (lDownstreamRel.size() > 0)
-    {
-      DownstreamJobRelationship rel = lDownstreamRel.get(0);
-      ExecutableJob downstream = rel.getChild();
-      
-      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
-      {
-        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
-        downstream.executableJobStart();
-      }
-    }
   }
   
   public static String getMessageFromException(Throwable t)
@@ -271,8 +293,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       SmartException se = ( (SmartException) t );
       
-      errorMessage = se.getLocalizedMessage();
+      errorMessage = se.localize(com.runwaysdk.session.Session.getCurrentLocale());
       
+      if (errorMessage == null)
+      {
+        errorMessage = se.getLocalizedMessage();
+      }
       if (errorMessage == null)
       {
         errorMessage = se.getClassDisplayLabel();

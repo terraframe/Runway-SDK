@@ -18,10 +18,6 @@
  */
 package com.runwaysdk.system.scheduler;
 
-/**
- * @deprecated
- * DO NOT USE, THIS ONLY EXISTS FOR DDMS.
- */
 @com.runwaysdk.business.ClassSignature(hash = 1274316501)
 public enum AllJobOperation implements com.runwaysdk.business.BusinessEnumeration
 {
