@@ -18,7 +18,10 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
+import java.text.Normalizer;
 import java.util.HashSet;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * ReservedWords contains a list of restricted words (generally database related) that other
@@ -731,5 +734,43 @@ public class ReservedWords
   public static synchronized boolean javaContains(String find)
   {
 	return Singleton.Instance.attributeWords.contains(find.toLowerCase());
+  }
+  
+  public static void main(String[] args) {
+//    String dirty = "wiojWEJI`1234567890-=~!@#$%^&*()_+[]\\{}|;':\",./<>?";
+    String dirty = "clean";
+    
+    System.out.println(sanitizeForDatabaseIdentifer(dirty));
+  }
+  
+  /**
+   * Takes in a dirty, (potentially user provided) string and converts it into something which will be a valid postgres identifier, for use in
+   * table names, etc.
+   * 
+   * @param dirty
+   * @return
+   */
+  public static String sanitizeForDatabaseIdentifer(String dirty)
+  {
+    final int POSTGRES_MAX_TABLE_NAME_LEN = 63;
+    
+    String clean = StringUtils.deleteWhitespace(dirty);
+    
+    clean = Normalizer.normalize(clean, Normalizer.Form.NFD); // If its got a weird accent or something then replace it with one that doesn't
+    clean = clean.replaceAll("(?=\\D)(?=(?![a-z]))(?=(?![A-Z])).", ""); // Just numbers and letters. Get rid of the weird stuff
+    clean = clean.toLowerCase();
+    
+    if (clean.length() > POSTGRES_MAX_TABLE_NAME_LEN)
+    {
+      clean = clean.substring(0, POSTGRES_MAX_TABLE_NAME_LEN);
+    }
+    
+    if (sqlContains(clean))
+    {
+      clean.substring(0, clean.length()-1);
+      clean = clean + "4";
+    }
+    
+    return clean;
   }
 }

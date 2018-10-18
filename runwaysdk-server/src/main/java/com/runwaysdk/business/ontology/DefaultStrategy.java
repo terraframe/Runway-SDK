@@ -255,11 +255,11 @@ public class DefaultStrategy implements OntologyStrategyIF
     }
 
     @Override
-    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
+    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s, String tempTableName)
     {
       int count = 0;
 
-      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "'");
+      ResultSet resultSet = Database.selectFromWhere("count(*)", tempTableName, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "'");
       try
       {
         if (resultSet.next())
