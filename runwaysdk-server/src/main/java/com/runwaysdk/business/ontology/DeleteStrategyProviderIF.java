@@ -22,7 +22,7 @@ import java.util.Stack;
 
 public interface DeleteStrategyProviderIF
 {
-  public boolean isTermAlreadyProcessed(Term child, Stack<Term> stack);
+  public boolean isTermAlreadyProcessed(Term child, Stack<Term> stack, String tempTableName);
   
   public boolean doesAncestorHaveMultipleParents(Term child, Stack<Term> stack);
 }

@@ -138,15 +138,15 @@ public class TermUtil extends TermUtilBase
   public static com.runwaysdk.business.ontology.TermAndRel[] getDirectAncestors(String termId, String[] relationshipTypes)
   {
     List<TermAndRel> tnrs = new ArrayList<TermAndRel>();
-    Term parent = Term.get(termId);
+    Term child = Term.get(termId);
 
     for (String relType : relationshipTypes)
     {
-      OIterator<? extends Relationship> parentRels = parent.getParentRelationships(relType);
+      OIterator<? extends Relationship> parentRels = child.getParentRelationships(relType);
 
       for (Relationship rel : parentRels)
       {
-        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getOid()));
+        tnrs.add(new TermAndRel((Term) rel.getParent(), relType, rel.getOid()));
       }
     }
 

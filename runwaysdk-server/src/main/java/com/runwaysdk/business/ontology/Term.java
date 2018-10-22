@@ -40,6 +40,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.metadata.ReservedWords;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
@@ -60,11 +61,11 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     super();
   }
 
-  public static final String TEMP_TABLE = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP";
+  public static final String TEMP_TABLE_PREFIX = "TDEL_";
   public static final String TEMP_TERM_ID_COL = "termId";
   public static final String TEMP_PARENT_OID_COL = "parentOid";
   public static final String TEMP_DEPTH_COL = "depth";
-  public static final String INDEX_NAME = "RUNWAY_ALLPATHS_MULTIPARENT_TEMP_INDEX";
+  public static final String INDEX_NAME_PREFIX = "TDIN_";
   public static final List<String> TEMP_TABLE_COLUMNS = Arrays.asList(
 //      TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
 //      TEMP_PARENT_OID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
@@ -127,6 +128,24 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     super.delete();
   }
   
+  private String caclulateTempTableName()
+  {
+    String name = TEMP_TABLE_PREFIX + this.getOid();
+    
+    String clean = ReservedWords.sanitizeForDatabaseIdentifer(name);
+    
+    return clean;
+  }
+  
+  private String calculateTableIndexName()
+  {
+    String name = INDEX_NAME_PREFIX + this.getOid();
+    
+    String clean = ReservedWords.sanitizeForDatabaseIdentifer(name);
+    
+    return clean;
+  }
+  
   private void exhaustiveDelete(String relationship)
   {
     OntologyStrategyIF strategy = this.getStrategyWithInstance();
@@ -134,147 +153,152 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     DeleteStrategyProviderIF deleteProvider = strategy.getDeleteStrategyProvider(this, relationship);
     
     // Create us a temp table for storing multiple parents that need to be rebuilt on the post step.
-    Database.createTempTable(TEMP_TABLE, TEMP_TABLE_COLUMNS, "DROP");
-    Database.addNonUniqueIndex(TEMP_TABLE, TEMP_TERM_ID_COL, INDEX_NAME);
-    
-    // Depth first search because we're using a stack.
-    Stack<Term> s = new Stack<Term>();
-    s.push(this);
-    
-    stackLoop:
-    while (!s.empty())
+    String tempTableName = caclulateTempTableName();
+    Database.createTempTable(tempTableName, TEMP_TABLE_COLUMNS, "DROP");
+    try
     {
-      Term current = s.pop();
+      Database.addNonUniqueIndex(tempTableName, TEMP_TERM_ID_COL, calculateTableIndexName());
       
-      // Push the first child
-      OIterator<? extends Business> children = current.getChildren(relationship);
-      try
+      // Depth first search because we're using a stack.
+      Stack<Term> s = new Stack<Term>();
+      s.push(this);
+      
+      stackLoop:
+      while (!s.empty())
       {
-        // We're going to save on memory here by only pushing the first (unprocessed) child. When we loop back up to this node hopefully it will be deleted.
-        childLoop:
-        while (children.hasNext())
+        Term current = s.pop();
+        
+        // Push the first child
+        OIterator<? extends Business> children = current.getChildren(relationship);
+        try
         {
-          Term child = (Term) children.next();
-          
-          // If this child is in our temp table, then it has already been processed (and not deleted). We have to do this query here to prevent infinite loops.
-          if (deleteProvider.isTermAlreadyProcessed(child, s))
+          // We're going to save on memory here by only pushing the first (unprocessed) child. When we loop back up to this node hopefully it will be deleted.
+          childLoop:
+          while (children.hasNext())
           {
-            continue childLoop;
+            Term child = (Term) children.next();
+            
+            // If this child is in our temp table, then it has already been processed (and not deleted). We have to do this query here to prevent infinite loops.
+            if (deleteProvider.isTermAlreadyProcessed(child, s, tempTableName))
+            {
+              continue childLoop;
+            }
+            
+            s.push(current);
+            s.push(child);
+            continue stackLoop;
+          }
+        }
+        finally
+        {
+          children.close();
+        }
+        
+        
+        boolean multiParentAncestor = deleteProvider.doesAncestorHaveMultipleParents(current, s);
+        if (multiParentAncestor)
+        {
+          @SuppressWarnings("unchecked")
+          List<Term> parents = (List<Term>) current.getParents(relationship).getAll();
+          
+          List<String> parentOids = new ArrayList<String>();
+          for (Term parent : parents)
+          {
+            parentOids.add(parent.getOid());
           }
           
-          s.push(current);
-          s.push(child);
-          continue stackLoop;
+          insertIntoTemp(current.getOid(), parentOids, s.size(), tempTableName);
         }
+        else
+        {
+          String sql = Database.instance().buildSQLDeleteWhereStatement(tempTableName, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'"));
+          Database.parseAndExecute(sql);
+          
+          // TODO: We can't do this with the standard deleteWhere because it causes:
+          // A SQL DDL operation was performed in a transaction on table [RUNWAY_ALLPATHS_MULTIPARENT_TEMP] after a SQL DML operation had been perfromed on the same table.  DDL statements cannot be performed if DML statements have aleady been performed on the same table within the same transaction.
+          // See ruway apps ticket 558 for more details.
+  //        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'");
+          
+          strategy.removeTerm(current, relationship);
+          if (s.size() != 0)
+          {
+            current.beforeDeleteTerm();
+            EntityDAO.get(current.getOid()).getEntityDAO().delete();
+          }
+        }
+      }
+      
+      
+      // Post step: since we destroyed terms with multiple parents those multiple parents (that aren't our children) must now be rebuilt.
+      //   We have to do 2 loops here because we need two separate phases for deleting any still existing allpaths data and then rebuilding it.
+      String selectSql = Database.selectClause(Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), Arrays.asList(tempTableName),  new ArrayList<String>());
+      ResultSet resultSet = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " DESC");
+      
+      try
+      {
+        while (resultSet.next())
+        {
+          String termId = resultSet.getString(TEMP_TERM_ID_COL);
+          
+          strategy.removeTerm(Term.get(termId), relationship);
+        }
+      }
+      catch (SQLException sqlEx1)
+      {
+        Database.throwDatabaseException(sqlEx1);
       }
       finally
       {
-        children.close();
-      }
-      
-      
-      boolean multiParentAncestor = deleteProvider.doesAncestorHaveMultipleParents(current, s);
-      if (multiParentAncestor)
-      {
-        @SuppressWarnings("unchecked")
-        List<Term> parents = (List<Term>) current.getParents(relationship).getAll();
-        
-        List<String> parentOids = new ArrayList<String>();
-        for (Term parent : parents)
+        try
         {
-          parentOids.add(parent.getOid());
+          java.sql.Statement statement = resultSet.getStatement();
+          resultSet.close();
+          statement.close();
         }
-        
-        insertIntoTemp(current.getOid(), parentOids, s.size());
-      }
-      else
-      {
-        String sql = Database.instance().buildSQLDeleteWhereStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'"));
-        Database.parseAndExecute(sql);
-        
-        // TODO: We can't do this with the standard deleteWhere because it causes:
-        // A SQL DDL operation was performed in a transaction on table [RUNWAY_ALLPATHS_MULTIPARENT_TEMP] after a SQL DML operation had been perfromed on the same table.  DDL statements cannot be performed if DML statements have aleady been performed on the same table within the same transaction.
-        // See ruway apps ticket 558 for more details.
-//        Database.deleteWhere(TEMP_TABLE, TEMP_TERM_ID_COL + " = '" + current.getOid() + "' OR " + TEMP_PARENT_OID_COL + " = '" + current.getOid() + "'");
-        
-        strategy.removeTerm(current, relationship);
-        if (s.size() != 0)
+        catch (SQLException sqlEx2)
         {
-          current.beforeDeleteTerm();
-          EntityDAO.get(current.getOid()).getEntityDAO().delete();
+          Database.throwDatabaseException(sqlEx2);
         }
       }
-    }
-    
-    
-    // Post step: since we destroyed terms with multiple parents those multiple parents (that aren't our children) must now be rebuilt.
-    //   We have to do 2 loops here because we need two separate phases for deleting any still existing allpaths data and then rebuilding it.
-    String selectSql = Database.selectClause(Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), Arrays.asList(TEMP_TABLE),  new ArrayList<String>());
-    ResultSet resultSet = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " DESC");
-    
-    try
-    {
-      while (resultSet.next())
+      
+      // Post Step loop #2: Rebuild the terms with multiple parents.
+      ResultSet resultSet2 = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " ASC");
+      
+      try
       {
-        String termId = resultSet.getString(TEMP_TERM_ID_COL);
-        
-        strategy.removeTerm(Term.get(termId), relationship);
+        while (resultSet2.next())
+        {
+          String termId = resultSet2.getString(TEMP_TERM_ID_COL);
+          String parentOid = resultSet2.getString(TEMP_PARENT_OID_COL);
+          
+          strategy.addLink(Term.get(parentOid), Term.get(termId), relationship);
+        }
       }
-    }
-    catch (SQLException sqlEx1)
-    {
-      Database.throwDatabaseException(sqlEx1);
+      catch (SQLException sqlEx1)
+      {
+        Database.throwDatabaseException(sqlEx1);
+      }
+      finally
+      {
+        try
+        {
+          java.sql.Statement statement = resultSet2.getStatement();
+          resultSet2.close();
+          statement.close();
+        }
+        catch (SQLException sqlEx2)
+        {
+          Database.throwDatabaseException(sqlEx2);
+        }
+      }
     }
     finally
     {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
+      Database.dropTables(Arrays.asList(tempTableName));
     }
-    
-    // Post Step loop #2: Rebuild the terms with multiple parents.
-    ResultSet resultSet2 = Database.query(selectSql + " ORDER BY " + TEMP_DEPTH_COL + " ASC");
-    
-    try
-    {
-      while (resultSet2.next())
-      {
-        String termId = resultSet2.getString(TEMP_TERM_ID_COL);
-        String parentOid = resultSet2.getString(TEMP_PARENT_OID_COL);
-        
-        strategy.addLink(Term.get(parentOid), Term.get(termId), relationship);
-      }
-    }
-    catch (SQLException sqlEx1)
-    {
-      Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet2.getStatement();
-        resultSet2.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
-    }
-    
-    // When deleting with multiple relationships we won't have exited the transaction yet and thus this table will still exist.
-    Database.dropTables(Arrays.asList("runway_allpaths_multiparent_temp"));
   }
   
-  private void insertIntoTemp(String termId, List<String> parentOids, Integer depth)
+  private void insertIntoTemp(String termId, List<String> parentOids, Integer depth, String tempTableName)
   {
     List<PreparedStatement> statements = new ArrayList<PreparedStatement>();
     
@@ -283,7 +307,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
       List<String> bindVals = Arrays.asList("?","?","?");
       List<Object> vals = Arrays.asList(termId, parentOid, String.valueOf(depth));
       
-      PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(TEMP_TABLE, Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), bindVals, vals, TEMP_TABLE_ATTRS);
+      PreparedStatement preparedStmt = Database.buildPreparedSQLInsertStatement(tempTableName, Arrays.asList(TEMP_TERM_ID_COL, TEMP_PARENT_OID_COL, TEMP_DEPTH_COL), bindVals, vals, TEMP_TABLE_ATTRS);
       statements.add(preparedStmt);
     }
     

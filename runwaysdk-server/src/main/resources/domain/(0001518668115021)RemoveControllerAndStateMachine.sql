@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 DELETE FROM controller_action WHERE oid = '83d265b6-d785-3416-9d70-6b3df2000108' AND seq = 1049;
 DELETE FROM metadata_display_label WHERE oid = 'eee42446-ecc1-3c97-bf52-9960be00011f';
 DELETE FROM metadata_display_label WHERE oid = '3d3dd844-7145-31fd-b8fd-6c204600011f';

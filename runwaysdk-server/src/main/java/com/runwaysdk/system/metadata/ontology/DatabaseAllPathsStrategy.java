@@ -601,11 +601,11 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
 
     @Override
-    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s)
+    public boolean isTermAlreadyProcessed(Term child, Stack<Term> s, String tempTableName)
     {
       String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getOid()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
       String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getOid() + "'"));
-      ResultSet resultSet = Database.selectFromWhere("count(*)", Term.TEMP_TABLE, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
+      ResultSet resultSet = Database.selectFromWhere("count(*)", tempTableName, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
       try
       {
         if (resultSet.next())

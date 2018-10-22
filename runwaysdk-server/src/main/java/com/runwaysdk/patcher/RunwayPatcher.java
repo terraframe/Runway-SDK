@@ -261,8 +261,13 @@ public class RunwayPatcher
     {
       logger.info("Bootstrapping Runway into an empty database.");
       
-      if (rootUser != null && rootPass != null && template != null)
+      if (rootUser != null && rootPass != null)
       {
+        if (template == null)
+        {
+          template = "postgres";
+        }
+        
         Database.close(); // Connection pooling leaves connections floating around. We have to make sure everything is closed.
         Database.initialSetup(rootUser, rootPass, template);
       }
