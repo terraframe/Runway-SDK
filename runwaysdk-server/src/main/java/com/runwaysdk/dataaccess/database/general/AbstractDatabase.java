@@ -365,7 +365,7 @@ public abstract class AbstractDatabase
    * 
    * @return java.sql.Connection object
    */
-  public Connection getConnection()
+  public final Connection getConnection()
   {
     RequestState currentRequestState = RequestState.getCurrentRequestState();
 

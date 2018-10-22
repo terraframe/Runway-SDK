@@ -117,12 +117,13 @@ public class Oracle extends AbstractDatabase
    *
    * @see com.runwaysdk.dataaccess.database.general.AbstractDatabase#getConnection()
    */
-  public synchronized Connection getConnection()
+  @Override
+  public Connection getConnectionRaw()
   {
     // Lazily set up the data source
     if (dataSource==null)
       setupDataSource();
-    return super.getConnection();
+    return super.getConnectionRaw();
   }
 
   /**

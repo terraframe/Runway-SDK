@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.dataaccess.database;
 
@@ -88,9 +88,11 @@ public class PostGIS extends PostgreSQL
 
     LinkedList<String> statements = new LinkedList<String>();
 
-    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON "+SPATIAL_REF_SYS+" TO "
+    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON
+    // "+SPATIAL_REF_SYS+" TO "
     // + userName);
-    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON "+GEOMETRY_COLUMNS+" TO "
+    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON
+    // "+GEOMETRY_COLUMNS+" TO "
     // + userName);
 
     statements.add("CREATE EXTENSION IF NOT EXISTS postgis");
@@ -139,9 +141,10 @@ public class PostGIS extends PostgreSQL
    * 
    * @return java.sql.Connection object
    */
-  public Connection getConnection()
+  @Override
+  public Connection getConnectionRaw()
   {
-    Connection conn = super.getConnection();
+    Connection conn = super.getConnectionRaw();
 
     PGConnection pgConn = (PGConnection) conn;
 
@@ -153,6 +156,9 @@ public class PostGIS extends PostgreSQL
     try
     {
       pgConn.addDataType("geometry", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("public.geometry", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("\"public\".\"geometry\"", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("PGgeometry", org.postgis.jts.JtsGeometry.class);
       pgConn.addDataType("box3d", org.postgis.PGbox3d.class);
       pgConn.addDataType("box2d", org.postgis.PGbox2d.class);
     }
@@ -164,19 +170,18 @@ public class PostGIS extends PostgreSQL
 
     return pgConn;
   }
-  
+
   /**
-   * Drops and then remakes the application schema, effectively dropping all tables. If the database is spatially 
-   * enabled and the application schema is 'public' then PostGIS will be recreated as well.
+   * Drops and then remakes the application schema, effectively dropping all
+   * tables. If the database is spatially enabled and the application schema is
+   * 'public' then PostGIS will be recreated as well.
    */
   public void dropAll()
   {
     String schema = this.getApplicationNamespace();
-    
-    this.parseAndExecute("DROP SCHEMA " + schema + " CASCADE;\n" + 
-        "CREATE SCHEMA " + schema + ";\n" + 
-        "GRANT ALL ON SCHEMA " + schema + " TO postgres;");
-    
+
+    this.parseAndExecute("DROP SCHEMA " + schema + " CASCADE;\n" + "CREATE SCHEMA " + schema + ";\n" + "GRANT ALL ON SCHEMA " + schema + " TO postgres;");
+
     if (schema.equals("public"))
     {
       this.parseAndExecute("CREATE EXTENSION postgis");
