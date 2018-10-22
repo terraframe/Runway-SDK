@@ -426,7 +426,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       conn = tempRootDatasource.getConnection();
       statement = conn.createStatement();
-      statement.execute("CREATE EXTENSION \"uuid-ossp\";");
+      statement.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
     }
     catch (SQLException e)
     {

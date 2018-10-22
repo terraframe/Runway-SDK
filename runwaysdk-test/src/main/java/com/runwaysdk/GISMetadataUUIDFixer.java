@@ -53,9 +53,9 @@ public class GISMetadataUUIDFixer
     String dir = "C:/Users/admin/git/Runway-SDK/runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata/";
     String gisdir = "C:/Users/admin/git/Runway-SDK/runwaysdk-gis/runwaysdk-gis-server/src/main/resources/com/runwaysdk/resources/metadata/";
     
-    this.loadRootIds(dir, "metadata.xml.orig");    
-    this.loadRootIds(gisdir, "gismetadata.xml.orig");
-    this.updateIds(gisdir, "gismetadata.xml.orig", "gismetadata.xml");
+    this.loadRootIds(dir, "metadata.xml.bak");    
+    this.loadRootIds(gisdir, "gismetadata.xml.bak");
+    this.updateIds(gisdir, "gismetadata.xml.bak", "gismetadata.xml");
     
 //    try
 //    {
@@ -71,10 +71,6 @@ public class GISMetadataUUIDFixer
   {
     try
     {
-      NumberFormat format = NumberFormat.getInstance();
-      format.setMinimumIntegerDigits(4);
-      format.setGroupingUsed(false);
-
       DOMParser parser = new DOMParser();
       parser.parse(new InputSource(new FileReader(new File(dir, infile))));
       Document doc = parser.getDocument();
@@ -88,7 +84,7 @@ public class GISMetadataUUIDFixer
         Node sibling = result.getNextSibling().getNextSibling();
 
         String oldId = sibling.getTextContent();
-        String uuid = format.format(count);
+        String uuid = String.format("%06x", ( 0xFFFFFF & count ));
 
         if(oldId != null && oldId.length() > 0)
         {
@@ -112,10 +108,6 @@ public class GISMetadataUUIDFixer
   {
     try
     {
-      NumberFormat format = NumberFormat.getInstance();
-      format.setMinimumIntegerDigits(4);
-      format.setGroupingUsed(false);
-      
       DOMParser parser = new DOMParser();
       parser.parse(new InputSource(new FileReader(new File(dir, infile))));
       Document doc = parser.getDocument();
@@ -153,10 +145,10 @@ public class GISMetadataUUIDFixer
 
             String oldId = result.getTextContent();
 
-            if (oldId.endsWith(oid))
+            if (oldId.length() == 36 && oldId.endsWith(oid) && !this.ids.containsValue(oldId))
             {
               UUID uuid = UUID.nameUUIDFromBytes(oldId.getBytes());
-              String newId = uuid.toString().substring(0, 32) + value;
+              String newId = uuid.toString().substring(0, 30) + value;
 
               // System.out.println("Setting " + tag + " from [" + oldId + "] to
               // [" + newId + "]");
