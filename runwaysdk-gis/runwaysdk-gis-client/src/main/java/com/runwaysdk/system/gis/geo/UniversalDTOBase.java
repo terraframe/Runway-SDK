@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK GIS(tm).
- *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -2090690864)
+@com.runwaysdk.business.ClassSignature(hash = -78533470)
 public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.TermDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.Universal";
-  private static final long serialVersionUID = -2090690864;
+  private static final long serialVersionUID = -78533470;
   
   protected UniversalDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -50,11 +32,14 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
+  public static java.lang.String GEOMETRYTYPE = "geometryType";
+  public static java.lang.String ISLEAF = "isLeaf";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String MDBUSINESS = "mdBusiness";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -97,7 +82,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -184,7 +169,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -219,6 +204,89 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getEntityDomainMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(ENTITYDOMAIN).getAttributeMdDTO();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.gis.geo.GeometryTypeDTO> getGeometryType()
+  {
+    return (java.util.List<com.runwaysdk.system.gis.geo.GeometryTypeDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.gis.geo.GeometryTypeDTO.CLASS, getEnumNames(GEOMETRYTYPE));
+  }
+  
+  public java.util.List<String> getGeometryTypeEnumNames()
+  {
+    return getEnumNames(GEOMETRYTYPE);
+  }
+  
+  public void addGeometryType(com.runwaysdk.system.gis.geo.GeometryTypeDTO enumDTO)
+  {
+    addEnumItem(GEOMETRYTYPE, enumDTO.toString());
+  }
+  
+  public void removeGeometryType(com.runwaysdk.system.gis.geo.GeometryTypeDTO enumDTO)
+  {
+    removeEnumItem(GEOMETRYTYPE, enumDTO.toString());
+  }
+  
+  public void clearGeometryType()
+  {
+    clearEnum(GEOMETRYTYPE);
+  }
+  
+  public boolean isGeometryTypeWritable()
+  {
+    return isWritable(GEOMETRYTYPE);
+  }
+  
+  public boolean isGeometryTypeReadable()
+  {
+    return isReadable(GEOMETRYTYPE);
+  }
+  
+  public boolean isGeometryTypeModified()
+  {
+    return isModified(GEOMETRYTYPE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getGeometryTypeMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(GEOMETRYTYPE).getAttributeMdDTO();
+  }
+  
+  public Boolean getIsLeaf()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAF));
+  }
+  
+  public void setIsLeaf(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISLEAF, "");
+    }
+    else
+    {
+      setValue(ISLEAF, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isIsLeafWritable()
+  {
+    return isWritable(ISLEAF);
+  }
+  
+  public boolean isIsLeafReadable()
+  {
+    return isReadable(ISLEAF);
+  }
+  
+  public boolean isIsLeafModified()
+  {
+    return isModified(ISLEAF);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getIsLeafMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ISLEAF).getAttributeMdDTO();
   }
   
   public String getKeyName()
@@ -295,7 +363,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -332,7 +400,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -357,6 +425,55 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(LOCKEDBY).getAttributeMdDTO();
   }
   
+  public com.runwaysdk.system.metadata.MdBusinessDTO getMdBusiness()
+  {
+    if(getValue(MDBUSINESS) == null || getValue(MDBUSINESS).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdBusinessDTO.get(getRequest(), getValue(MDBUSINESS));
+    }
+  }
+  
+  public String getMdBusinessOid()
+  {
+    return getValue(MDBUSINESS);
+  }
+  
+  public void setMdBusiness(com.runwaysdk.system.metadata.MdBusinessDTO value)
+  {
+    if(value == null)
+    {
+      setValue(MDBUSINESS, "");
+    }
+    else
+    {
+      setValue(MDBUSINESS, value.getOid());
+    }
+  }
+  
+  public boolean isMdBusinessWritable()
+  {
+    return isWritable(MDBUSINESS);
+  }
+  
+  public boolean isMdBusinessReadable()
+  {
+    return isReadable(MDBUSINESS);
+  }
+  
+  public boolean isMdBusinessModified()
+  {
+    return isModified(MDBUSINESS);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getMdBusinessMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(MDBUSINESS).getAttributeMdDTO();
+  }
+  
   public com.runwaysdk.system.ActorDTO getOwner()
   {
     if(getValue(OWNER) == null || getValue(OWNER).trim().equals(""))
@@ -369,7 +486,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -493,10 +610,10 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(UNIVERSALID).getAttributeMdDTO();
   }
   
-  public static final com.runwaysdk.business.ontology.TermAndRelDTO create(com.runwaysdk.constants.ClientRequestIF clientRequest, com.runwaysdk.system.gis.geo.UniversalDTO dto, java.lang.String parentOid, java.lang.String relationshipType)
+  public static final com.runwaysdk.business.ontology.TermAndRelDTO create(com.runwaysdk.constants.ClientRequestIF clientRequest, com.runwaysdk.system.gis.geo.UniversalDTO dto, java.lang.String parentId, java.lang.String relationshipType)
   {
     String[] _declaredTypes = new String[]{"com.runwaysdk.system.gis.geo.Universal", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{dto, parentOid, relationshipType};
+    Object[] _parameters = new Object[]{dto, parentId, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalDTO.CLASS, "create", _declaredTypes);
     return (com.runwaysdk.business.ontology.TermAndRelDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

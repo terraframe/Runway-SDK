@@ -149,7 +149,7 @@ public class GeoEntityTest
 
       Assert.assertNotNull(test);
       Assert.assertEquals(entity.getGeoId(), test.getGeoId());
-      Assert.assertEquals(entity.getUniversalId(), test.getUniversalId());
+      Assert.assertEquals(entity.getUniversalOid(), test.getUniversalOid());
       Assert.assertEquals(entity.getDisplayLabel().getValue(), test.getDisplayLabel().getValue());
     }
     finally

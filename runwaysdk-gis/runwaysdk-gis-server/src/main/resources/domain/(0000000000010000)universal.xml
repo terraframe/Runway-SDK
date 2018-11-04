@@ -27,6 +27,58 @@
     <!-- 
           The GIS metadata exporter depends on all of this metadata being in the com.runwaysdk.system.gis.geo package.
      -->
+
+<!-- New Metadata -->
+    <mdLocalStruct name="com.runwaysdk.system.gis.geo.GeometryTypeDescription" label="Description" description="Description" />
+
+    <enumerationMaster name="com.runwaysdk.system.gis.geo.GeometryTypeMaster" label="Geometry Types Master" generateController="false"/>
+    
+    <object key="POINT" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="POINT" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Point" />
+      </attributeStruct>
+    </object>
+    
+    <object key="LINE" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="LINE" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Line" />
+      </attributeStruct>
+    </object> 
+    
+    <object key="POLYGON" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="POLYGON" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Polygon" />
+      </attributeStruct>
+    </object>
+    
+     <object key="MULTIPOINT" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTIPOINT" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiPoint" />
+      </attributeStruct>
+    </object>
+    
+    <object key="MULTILINE" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTILINE" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiLine" />
+      </attributeStruct>
+    </object>
+    
+    <object key="MULTIPOLYGON" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTIPOLYGON" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiPolygon" />
+      </attributeStruct>
+    </object>
+    
+
+    <mdEnumeration name="com.runwaysdk.system.gis.geo.GeometryType" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <includeAll />
+    </mdEnumeration>
   
     <mdTerm isAbstract="false" description="Universal" hasDeterministicId="true" removable="false" name="com.runwaysdk.system.gis.geo.Universal" label="Universal" table="universal" publish="true" extendable="true" generateController="true" cacheAlgorithm="everything">
       <mdMethod static="true" description="Returns the Root Universal" name="getRoot" label="getRoot" returnType="com.runwaysdk.system.gis.geo.Universal">
@@ -37,8 +89,12 @@
         <mdParameter order="2" description="relationshipType" name="relationshipType" label="relationshipType" type="java.lang.String" />
       </mdMethod>
       <attributes>
-        <char removable="true" label="Unique Id" indexType="unique index" description="Universal name" name="universalId" size="100" immutable="false" required="true" />
-        <localChar removable="true" label="Description" description="Description" name="description" immutable="false" required="false" size="255" />
+        <char name="universalId" label="Unique Id" removable="true" indexType="unique index" description="Universal name" size="100" immutable="false" required="true" />
+        <localChar name="description" description="Description" removable="true" label="Description" immutable="false" required="false" size="255" />
+<!-- New Metadata -->
+        <reference name="mdBusiness" label="MdBusiness" required="false" immutable="false" type="com.runwaysdk.system.metadata.MdBusiness" indexType="non-unique index" />
+        <boolean name="isLeaf" required="true" defaultValue="false" label="Is Leaf"/>
+        <enumeration name="geometryType" label="Geometry Type" required="true" type="com.runwaysdk.system.gis.geo.GeometryType" />
       </attributes>
     </mdTerm>
 
@@ -70,7 +126,11 @@
         <char name="geoId" size="50" required="true" indexType="unique index" label="Geo Id" />
         <text name="wkt" required="false" label="WKT" description="The WKT string of the geometry" />
         <reference name="universal" label="Universal" required="true" immutable="false" type="com.runwaysdk.system.gis.geo.Universal" indexType="non-unique index" />
-        <point name="geoPoint" dimension="2" srid="4326" required="false" label="Geo Point" />
+        <point name="geoPoint" dimension="2" srid="4326" required="false" label="Point" />
+        <linestring name="geoLine" dimension="2" srid="4326" required="false" label="Line" />
+        <polygon name="geoPolygon" dimension="2" srid="4326" required="false" label="Polygon" />
+        <multipoint name="geoMultiPoint" dimension="2" srid="4326" required="false" label="Multi Polygon" /> 
+        <multilinestring name="geoMultiLine" dimension="2" srid="4326" required="false" label="Multi Line" /> 
         <multipolygon name="geoMultiPolygon" dimension="2" srid="4326" required="false" label="Geo Multi Polygon" />
       </attributes>
     </mdTerm>
@@ -144,6 +204,10 @@
       <attributeStruct name="description">
         <attribute name="defaultLocale" value="ROOT" />
       </attributeStruct>
+<!-- New Metadata -->
+      <attributeEnumeration name="geometryType">
+          <enumeratedItem name="MULTIPOLYGON"/>
+      </attributeEnumeration>
     </object>
 
     <object key="ROOT" type="com.runwaysdk.system.gis.geo.GeoEntity">
@@ -185,6 +249,7 @@
     <mdEnumeration name="com.runwaysdk.system.gis.geo.GeoEntityProblemType" type="com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster">
       <includeAll />
     </mdEnumeration>
+
 
     <mdBusiness name="com.runwaysdk.system.gis.geo.GeoEntityProblem" label="Geo entity problem" generateController="false">
       <attributes>

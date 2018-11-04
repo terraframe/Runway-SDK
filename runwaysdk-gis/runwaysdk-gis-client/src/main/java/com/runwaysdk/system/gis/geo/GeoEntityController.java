@@ -128,7 +128,7 @@ public class GeoEntityController
 
     GeoEntityDTO parentGeo = GeoEntityDTO.get(request, parentId);
 
-    return Arrays.asList(TermUtilDTO.getAllDescendants(request, parentGeo.getUniversalId(), new String[] { relationshipType }));
+    return Arrays.asList(TermUtilDTO.getAllDescendants(request, parentGeo.getUniversalOid(), new String[] { relationshipType }));
   }
 
   @Endpoint(method = ServletMethod.POST, error = ErrorSerialization.JSON)

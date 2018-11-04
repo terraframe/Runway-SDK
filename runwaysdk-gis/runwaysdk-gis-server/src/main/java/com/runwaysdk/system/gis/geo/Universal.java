@@ -408,7 +408,7 @@ public class Universal extends UniversalBase
         // valid iff its universal is a descendant of the parent geo's universal
         GeoEntity geo = iter.next();
 
-        List<Term> uniAncestors = Arrays.asList(TermUtil.getAllAncestors(geo.getUniversalId(), TermUtil.getAllChildRelationships(geo.getUniversalId())));
+        List<Term> uniAncestors = Arrays.asList(TermUtil.getAllAncestors(geo.getUniversalOid(), TermUtil.getAllChildRelationships(geo.getUniversalOid())));
 
         String[] rels = TermUtil.getAllChildRelationships(geo.getOid());
         for (String rel : rels)

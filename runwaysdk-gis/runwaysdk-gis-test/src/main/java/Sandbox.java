@@ -39,11 +39,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.generation.GenerationManager;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.patcher.RunwayPatcher;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.gis.geo.GeoEntity;
+import com.runwaysdk.system.gis.geo.UniversalBase;
 import com.runwaysdk.system.metadata.MdType;
 import com.runwaysdk.system.metadata.MdTypeQuery;
 
@@ -57,9 +65,32 @@ public class Sandbox
   public static void main(String[] args) throws Exception
   {
     // test();
-    RunwayPatcher.main(new String[] { "postgres", "postgres", "postgres", "true" });
+    // "-- clean = true", "-- rootUser = postgres", "-- rootPass=postgres", "-- templateDb = postgres"
+    
+//    RunwayPatcher.main(new String[] { "--clean=true", "--rootUser=postgres" ,"--rootPass=postgres", "--templateDb=postgres"});
+    
+//    generateSource();
+  
+//    RunwayPatcher.main(new String[] { "postgres", "postgres", "postgres", "true" });
   }
 
+  @Request
+  private static void generateSource()
+  {
+    MdBusinessDAOIF geoEntityMdBusiness = MdBusinessDAO.getMdBusinessDAO(GeoEntity.CLASS);
+    GenerationManager.forceRegenerate(geoEntityMdBusiness);
+    
+    MdBusinessDAOIF geometryTypeMaster = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.gis.geo.GeometryTypeMaster");
+    GenerationManager.forceRegenerate(geometryTypeMaster);
+    
+    MdEnumerationDAOIF geometryTypeEnumeration = MdEnumerationDAO.getMdEnumerationDAO("com.runwaysdk.system.gis.geo.GeometryType");
+    GenerationManager.forceRegenerate(geometryTypeEnumeration);
+    
+    MdTermDAOIF universalMdTermDAOIF = MdTermDAO.getMdTermDAO(UniversalBase.CLASS);
+    GenerationManager.forceRegenerate(universalMdTermDAOIF);
+  }
+  
+  
   @Request
   private static void test()
   {

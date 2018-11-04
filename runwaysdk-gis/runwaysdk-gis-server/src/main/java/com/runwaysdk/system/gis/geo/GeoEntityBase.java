@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK GIS(tm).
- *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -424844422)
+@com.runwaysdk.business.ClassSignature(hash = 828910291)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -41,20 +23,24 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOID = "geoId";
+  public static java.lang.String GEOLINE = "geoLine";
+  public static java.lang.String GEOMULTILINE = "geoMultiLine";
+  public static java.lang.String GEOMULTIPOINT = "geoMultiPoint";
   public static java.lang.String GEOMULTIPOLYGON = "geoMultiPolygon";
   public static java.lang.String GEOPOINT = "geoPoint";
-  public static java.lang.String OID = "oid";
+  public static java.lang.String GEOPOLYGON = "geoPolygon";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSAL = "universal";
   public static java.lang.String WKT = "wkt";
-  private static final long serialVersionUID = -424844422;
+  private static final long serialVersionUID = 828910291;
   
   public GeoEntityBase()
   {
@@ -90,7 +76,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -134,7 +120,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -159,6 +145,18 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     else
     {
       setValue(ENTITYDOMAIN, value.getOid());
+    }
+  }
+  
+  public void setEntityDomainId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
     }
   }
   
@@ -187,6 +185,90 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     else
     {
       setValue(GEOID, value);
+    }
+  }
+  
+  public com.vividsolutions.jts.geom.LineString getGeoLine()
+  {
+    return (com.vividsolutions.jts.geom.LineString)getObjectValue(GEOLINE);
+  }
+  
+  public void validateGeoLine()
+  {
+    this.validateAttribute(GEOLINE);
+  }
+  
+  public static com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF getGeoLineMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
+    return (com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF)mdClassIF.definesAttribute(GEOLINE);
+  }
+  
+  public void setGeoLine(com.vividsolutions.jts.geom.LineString value)
+  {
+    if(value == null)
+    {
+      setValue(GEOLINE, "");
+    }
+    else
+    {
+      setValue(GEOLINE, value);
+    }
+  }
+  
+  public com.vividsolutions.jts.geom.MultiLineString getGeoMultiLine()
+  {
+    return (com.vividsolutions.jts.geom.MultiLineString)getObjectValue(GEOMULTILINE);
+  }
+  
+  public void validateGeoMultiLine()
+  {
+    this.validateAttribute(GEOMULTILINE);
+  }
+  
+  public static com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF getGeoMultiLineMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
+    return (com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF)mdClassIF.definesAttribute(GEOMULTILINE);
+  }
+  
+  public void setGeoMultiLine(com.vividsolutions.jts.geom.MultiLineString value)
+  {
+    if(value == null)
+    {
+      setValue(GEOMULTILINE, "");
+    }
+    else
+    {
+      setValue(GEOMULTILINE, value);
+    }
+  }
+  
+  public com.vividsolutions.jts.geom.MultiPoint getGeoMultiPoint()
+  {
+    return (com.vividsolutions.jts.geom.MultiPoint)getObjectValue(GEOMULTIPOINT);
+  }
+  
+  public void validateGeoMultiPoint()
+  {
+    this.validateAttribute(GEOMULTIPOINT);
+  }
+  
+  public static com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF getGeoMultiPointMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
+    return (com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF)mdClassIF.definesAttribute(GEOMULTIPOINT);
+  }
+  
+  public void setGeoMultiPoint(com.vividsolutions.jts.geom.MultiPoint value)
+  {
+    if(value == null)
+    {
+      setValue(GEOMULTIPOINT, "");
+    }
+    else
+    {
+      setValue(GEOMULTIPOINT, value);
     }
   }
   
@@ -246,20 +328,32 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getOid()
+  public com.vividsolutions.jts.geom.Polygon getGeoPolygon()
   {
-    return getValue(OID);
+    return (com.vividsolutions.jts.geom.Polygon)getObjectValue(GEOPOLYGON);
   }
   
-  public void validateId()
+  public void validateGeoPolygon()
   {
-    this.validateAttribute(OID);
+    this.validateAttribute(GEOPOLYGON);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  public static com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF getGeoPolygonMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF)mdClassIF.definesAttribute(GEOPOLYGON);
+  }
+  
+  public void setGeoPolygon(com.vividsolutions.jts.geom.Polygon value)
+  {
+    if(value == null)
+    {
+      setValue(GEOPOLYGON, "");
+    }
+    else
+    {
+      setValue(GEOPOLYGON, value);
+    }
   }
   
   public String getKeyName()
@@ -318,7 +412,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -346,7 +440,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -362,6 +456,22 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntity.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -374,7 +484,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -399,6 +509,18 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     else
     {
       setValue(OWNER, value.getOid());
+    }
+  }
+  
+  public void setOwnerId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, oid);
     }
   }
   
@@ -462,7 +584,7 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getUniversalId()
+  public String getUniversalOid()
   {
     return getValue(UNIVERSAL);
   }
@@ -487,6 +609,18 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     else
     {
       setValue(UNIVERSAL, value.getOid());
+    }
+  }
+  
+  public void setUniversalId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(UNIVERSAL, "");
+    }
+    else
+    {
+      setValue(UNIVERSAL, oid);
     }
   }
   
@@ -723,13 +857,13 @@ public abstract class GeoEntityBase extends com.runwaysdk.business.ontology.Term
     return strategy;
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityView create(com.runwaysdk.system.gis.geo.GeoEntity dto, java.lang.String parentOid, java.lang.String relationshipType)
+  public static com.runwaysdk.system.gis.geo.GeoEntityView create(com.runwaysdk.system.gis.geo.GeoEntity dto, java.lang.String parentId, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.GeoEntity.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityView[] getDirectDescendants(java.lang.String parentOid, java.lang.String[] relationshipTypes, java.lang.Integer pageNum, java.lang.Integer pageSize)
+  public static com.runwaysdk.system.gis.geo.GeoEntityView[] getDirectDescendants(java.lang.String parentId, java.lang.String[] relationshipTypes, java.lang.Integer pageNum, java.lang.Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.GeoEntity.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

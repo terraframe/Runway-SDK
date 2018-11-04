@@ -391,7 +391,7 @@ public class GeoEntity extends GeoEntityBase
   @Override
   public String getQualifier()
   {
-    return this.getUniversalId();
+    return this.getUniversalOid();
   }
 
   @Override
