@@ -327,7 +327,7 @@ public class RunwayPatcher
         }
         else if (resource.getNameExtension().equals("xml"))
         {
-          if (resource.getName().contains("universal")) // TODO : Don't hardcode this
+          if (resource.getName().equals("(0000000000010000)universal.xml")) // TODO : Don't hardcode this
           {
             SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
           }

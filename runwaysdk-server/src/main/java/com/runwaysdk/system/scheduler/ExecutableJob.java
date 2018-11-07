@@ -133,7 +133,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     
     ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
     
-    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension(), executionContext};
+    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension(), executionContext, job.toString()};
   }
   
   /**
@@ -149,6 +149,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     SingleActor user = (SingleActor) prereqs[3];
     MdDimension dimension = (MdDimension) prereqs[4];
     ExecutionContext executionContext = (ExecutionContext) prereqs[5];
+    String jobts = (String) prereqs[6];
     
     String errorMessage = null;
     
@@ -175,6 +176,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     catch (Throwable t)
     {
+      logger.error("An error occurred while executing job " + jobts + ".", t);
       errorMessage = getMessageFromException(t);
     }
     finally
@@ -295,15 +297,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       
       errorMessage = se.localize(com.runwaysdk.session.Session.getCurrentLocale());
       
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getLocalizedMessage();
       }
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getClassDisplayLabel();
       }
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getType();
       }
@@ -312,10 +314,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       errorMessage = t.getLocalizedMessage();
       
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = t.getMessage();
       }
+    }
+    
+    if (errorMessage == null || errorMessage.length() == 0)
+    {
+      errorMessage = t.getClass().getTypeName();
     }
     
     return errorMessage;
