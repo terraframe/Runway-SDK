@@ -1,6 +1,6 @@
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -299980327)
+@com.runwaysdk.business.ClassSignature(hash = 988913983)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -170,21 +170,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf()
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
   {
-    return getIsLeaf(null);
+    return getIsLeafType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, null);
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1213,9 +1213,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType();
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias);
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf();
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias);
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType();
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1538,21 +1538,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf()
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
   {
-    return getIsLeaf(null);
+    return getIsLeafType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, null);
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -2534,9 +2534,9 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType();
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias);
   public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf();
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias);
-    public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType();
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -2756,21 +2756,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf()
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
   {
-    return getIsLeaf(null);
+    return getIsLeafType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, null);
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getIsLeaf(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAF, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

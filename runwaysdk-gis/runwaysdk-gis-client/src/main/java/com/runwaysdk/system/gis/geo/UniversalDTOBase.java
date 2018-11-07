@@ -1,10 +1,10 @@
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -78533470)
+@com.runwaysdk.business.ClassSignature(hash = -1645996152)
 public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.TermDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.Universal";
-  private static final long serialVersionUID = -78533470;
+  private static final long serialVersionUID = -1645996152;
   
   protected UniversalDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -33,7 +33,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMETRYTYPE = "geometryType";
-  public static java.lang.String ISLEAF = "isLeaf";
+  public static java.lang.String ISLEAFTYPE = "isLeafType";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -252,41 +252,41 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(GEOMETRYTYPE).getAttributeMdDTO();
   }
   
-  public Boolean getIsLeaf()
+  public Boolean getIsLeafType()
   {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAF));
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAFTYPE));
   }
   
-  public void setIsLeaf(Boolean value)
+  public void setIsLeafType(Boolean value)
   {
     if(value == null)
     {
-      setValue(ISLEAF, "");
+      setValue(ISLEAFTYPE, "");
     }
     else
     {
-      setValue(ISLEAF, java.lang.Boolean.toString(value));
+      setValue(ISLEAFTYPE, java.lang.Boolean.toString(value));
     }
   }
   
-  public boolean isIsLeafWritable()
+  public boolean isIsLeafTypeWritable()
   {
-    return isWritable(ISLEAF);
+    return isWritable(ISLEAFTYPE);
   }
   
-  public boolean isIsLeafReadable()
+  public boolean isIsLeafTypeReadable()
   {
-    return isReadable(ISLEAF);
+    return isReadable(ISLEAFTYPE);
   }
   
-  public boolean isIsLeafModified()
+  public boolean isIsLeafTypeModified()
   {
-    return isModified(ISLEAF);
+    return isModified(ISLEAFTYPE);
   }
   
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getIsLeafMd()
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getIsLeafTypeMd()
   {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ISLEAF).getAttributeMdDTO();
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ISLEAFTYPE).getAttributeMdDTO();
   }
   
   public String getKeyName()

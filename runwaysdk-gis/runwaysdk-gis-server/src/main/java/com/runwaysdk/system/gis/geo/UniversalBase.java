@@ -1,6 +1,6 @@
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = 979995426)
+@com.runwaysdk.business.ClassSignature(hash = -1192708600)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -26,7 +26,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMETRYTYPE = "geometryType";
-  public static java.lang.String ISLEAF = "isLeaf";
+  public static java.lang.String ISLEAFTYPE = "isLeafType";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -38,7 +38,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSALID = "universalId";
-  private static final long serialVersionUID = 979995426;
+  private static final long serialVersionUID = -1192708600;
   
   public UniversalBase()
   {
@@ -213,31 +213,31 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(GEOMETRYTYPE);
   }
   
-  public Boolean getIsLeaf()
+  public Boolean getIsLeafType()
   {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAF));
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAFTYPE));
   }
   
-  public void validateIsLeaf()
+  public void validateIsLeafType()
   {
-    this.validateAttribute(ISLEAF);
+    this.validateAttribute(ISLEAFTYPE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsLeafMd()
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsLeafTypeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISLEAF);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISLEAFTYPE);
   }
   
-  public void setIsLeaf(Boolean value)
+  public void setIsLeafType(Boolean value)
   {
     if(value == null)
     {
-      setValue(ISLEAF, "");
+      setValue(ISLEAFTYPE, "");
     }
     else
     {
-      setValue(ISLEAF, java.lang.Boolean.toString(value));
+      setValue(ISLEAFTYPE, java.lang.Boolean.toString(value));
     }
   }
   
