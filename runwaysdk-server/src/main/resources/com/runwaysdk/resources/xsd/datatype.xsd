@@ -1147,7 +1147,8 @@
 
   <!-- referenceName: Must reference a defined enumerationFilter type selectMultiple: Check boxes vs. Radio Buttons -->
   <xs:complexType name="enumeration">
-    <xs:attributeGroup ref="attributeReference" />
+    <xs:attributeGroup ref="attribute" />
+    <xs:attribute name="type" type="xs:string" />
     <!-- selectMultipe: If multiple values of the enumeration can be checked simulataneously -->
     <xs:attribute name="selectMultiple" type="xs:boolean" />
   </xs:complexType>
