@@ -103,6 +103,9 @@ public class Universal extends UniversalBase
     
     if (mdBusiness != null)
     {
+      this.setMdBusiness(null);
+      this.apply();
+      
       this.getMdBusiness().delete();
     }
 
