@@ -101,15 +101,12 @@ public class Universal extends UniversalBase
   {
     MdBusiness mdBusiness = this.getMdBusiness();
     
+    super.delete();
+    
     if (mdBusiness != null)
     {
-      this.setMdBusiness(null);
-      this.apply();
-      
       this.getMdBusiness().delete();
     }
-
-    super.delete();
   }
 
   /**
