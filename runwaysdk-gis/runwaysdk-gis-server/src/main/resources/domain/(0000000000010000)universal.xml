@@ -29,8 +29,6 @@
      -->
 
 <!-- New Metadata -->
-    <mdLocalStruct name="com.runwaysdk.system.gis.geo.GeometryTypeDescription" label="Description" description="Description" />
-
     <enumerationMaster name="com.runwaysdk.system.gis.geo.GeometryTypeMaster" label="Geometry Types Master" generateController="false"/>
     
     <object key="POINT" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
@@ -93,8 +91,8 @@
         <localChar name="description" description="Description" removable="true" label="Description" immutable="false" required="false" size="255" />
 <!-- New Metadata -->
         <reference name="mdBusiness" label="MdBusiness" required="false" immutable="false" type="com.runwaysdk.system.metadata.MdBusiness" indexType="non-unique index" />
-        <boolean name="isLeafType" required="true" defaultValue="false" label="Is Leaf Type"/>
-        <enumeration name="geometryType" label="Geometry Type" required="true" type="com.runwaysdk.system.gis.geo.GeometryType" defaultValue="MULTIPOLYGON"/>
+        <boolean name="isLeafType" required="true" defaultValue="false" label="Is Leaf Type" immutable="true"/>
+        <enumeration name="geometryType" label="Geometry Type" required="true" type="com.runwaysdk.system.gis.geo.GeometryType" defaultValue="MULTIPOLYGON" selectMultiple="false" />
       </attributes>
     </mdTerm>
 

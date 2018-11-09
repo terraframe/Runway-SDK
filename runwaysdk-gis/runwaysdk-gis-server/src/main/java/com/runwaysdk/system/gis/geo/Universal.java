@@ -38,6 +38,7 @@ import com.runwaysdk.logging.LogLevel;
 import com.runwaysdk.query.Condition;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.TermUtil;
 
@@ -93,6 +94,19 @@ public class Universal extends UniversalBase
     // // Update the GeoEntity country.
     // }
     // }
+  }
+  
+  @Override
+  public void delete()
+  {
+    MdBusiness mdBusiness = this.getMdBusiness();
+    
+    if (mdBusiness != null)
+    {
+      this.getMdBusiness().delete();
+    }
+
+    super.delete();
   }
 
   /**
