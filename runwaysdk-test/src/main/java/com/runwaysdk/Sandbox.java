@@ -58,41 +58,40 @@ public class Sandbox
   {
     System.out.println(UUID.randomUUID().toString());
 //    inRequest();
-//    addToMetadata();
   }
   
-  @Request
-  private static void addToMetadata()
-  {
-    addToMetadataTransaction();
-  }
-  @Transaction
-  private static void addToMetadataTransaction()
-  {
-//    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdBusinessInfo.CLASS);
-    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-    
-    // DefaultAttribute.CODE - defined by GeoEntity geoId
-    MdAttributeCharacter codeMdAttr = new MdAttributeCharacter();
-    codeMdAttr.setAttributeName(MdTermRelationshipInfo.CODE);
-    codeMdAttr.getDisplayLabel().setValue("Code");
-    codeMdAttr.getDescription().setValue("A unique and human readle identifier");
-    codeMdAttr.setDatabaseSize(255);
-    codeMdAttr.setDefiningMdClass(mdBusiness);
-    codeMdAttr.setRequired(true);
-    codeMdAttr.addIndexType(MdAttributeIndices.UNIQUE_INDEX);
-    codeMdAttr.apply();
-  }
-  
-  @Request
-  private static void inRequest()
-  {
-    if (!LocalProperties.isRunwayEnvironment())
-    {
-      throw new RuntimeException("Runway environment expected");
-    }
-    LocalProperties.setSkipCodeGenAndCompile(false);
-    
-    SchedulerV2.doIt();
-  }
+//  @Request
+//  private static void addToMetadata()
+//  {
+//    addToMetadataTransaction();
+//  }
+//  @Transaction
+//  private static void addToMetadataTransaction()
+//  {
+////    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdBusinessInfo.CLASS);
+//    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+//    
+//    // DefaultAttribute.CODE - defined by GeoEntity geoId
+//    MdAttributeCharacter codeMdAttr = new MdAttributeCharacter();
+//    codeMdAttr.setAttributeName(MdTermRelationshipInfo.CODE);
+//    codeMdAttr.getDisplayLabel().setValue("Code");
+//    codeMdAttr.getDescription().setValue("A unique and human readle identifier");
+//    codeMdAttr.setDatabaseSize(255);
+//    codeMdAttr.setDefiningMdClass(mdBusiness);
+//    codeMdAttr.setRequired(true);
+//    codeMdAttr.addIndexType(MdAttributeIndices.UNIQUE_INDEX);
+//    codeMdAttr.apply();
+//  }
+//  
+//  @Request
+//  private static void inRequest()
+//  {
+//    if (!LocalProperties.isRunwayEnvironment())
+//    {
+//      throw new RuntimeException("Runway environment expected");
+//    }
+//    LocalProperties.setSkipCodeGenAndCompile(false);
+//    
+//    SchedulerV2.doIt();
+//  }
 }
