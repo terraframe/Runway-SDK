@@ -19,7 +19,6 @@
 package com.runwaysdk.gis;
 
 import java.util.List;
-import java.util.Set;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.CoreException;
@@ -28,6 +27,7 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.io.XMLExporter;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.query.EntityQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -124,11 +124,11 @@ public class GISMetadataExporter
 
   private static boolean isGISMetadata(EntityDAOIF component)
   {
-    return component.getSiteMaster().equals("www.runwaysdk-gis.com") || component.getKey().startsWith("com.runwaysdk.system.gis");
+    return component.getSiteMaster().equals("www.runwaysdk-gis.com") || component.getKey().startsWith(GISConstants.GIS_METADATA_PACKAGE);
   }
 
   private static boolean isUniversalMetadata(EntityDAOIF component)
   {
-    return component.getKey().startsWith("com.runwaysdk.system.gis.geo");
+    return component.getKey().startsWith(GISConstants.GEO_PACKAGE);
   }
 }

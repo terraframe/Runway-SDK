@@ -46,11 +46,12 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.patcher.RunwayPatcher;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.gis.geo.GeoEntity;
+import com.runwaysdk.system.gis.geo.GeometryType;
+import com.runwaysdk.system.gis.geo.GeometryTypeMaster;
 import com.runwaysdk.system.gis.geo.UniversalBase;
 import com.runwaysdk.system.metadata.MdType;
 import com.runwaysdk.system.metadata.MdTypeQuery;
@@ -80,10 +81,10 @@ public class Sandbox
     MdBusinessDAOIF geoEntityMdBusiness = MdBusinessDAO.getMdBusinessDAO(GeoEntity.CLASS);
     GenerationManager.forceRegenerate(geoEntityMdBusiness);
     
-    MdBusinessDAOIF geometryTypeMaster = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.gis.geo.GeometryTypeMaster");
+    MdBusinessDAOIF geometryTypeMaster = MdBusinessDAO.getMdBusinessDAO(GeometryTypeMaster.CLASS);
     GenerationManager.forceRegenerate(geometryTypeMaster);
     
-    MdEnumerationDAOIF geometryTypeEnumeration = MdEnumerationDAO.getMdEnumerationDAO("com.runwaysdk.system.gis.geo.GeometryType");
+    MdEnumerationDAOIF geometryTypeEnumeration = MdEnumerationDAO.getMdEnumerationDAO(GeometryType.CLASS);
     GenerationManager.forceRegenerate(geometryTypeEnumeration);
     
     MdTermDAOIF universalMdTermDAOIF = MdTermDAO.getMdTermDAO(UniversalBase.CLASS);
