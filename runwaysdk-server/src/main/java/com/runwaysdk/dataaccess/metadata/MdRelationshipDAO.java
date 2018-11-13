@@ -534,37 +534,40 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
    */
   protected void validateMethodName()
   {
-    MdBusinessDAOIF child = this.getChildMdBusiness();
-    String childMethod = this.getChildMethod();
-    String childType = this.getChildMdBusiness().definesType();
-
-    MdBusinessDAOIF parent = this.getParentMdBusiness();
-    String parentMethod = this.getParentMethod();
-    String parentType = this.getParentMdBusiness().definesType();
-
-
-    // Do not check for method name conflicts for types we are not generating java classes for.
-    if (GenerationUtil.isSkipCompileAndCodeGeneration(child) ||
-        GenerationUtil.isSkipCompileAndCodeGeneration(parent))
+    if (this.isGenerateSource())
     {
-      return;
-    }
+      MdBusinessDAOIF child = this.getChildMdBusiness();
+      String childMethod = this.getChildMethod();
+      String childType = this.getChildMdBusiness().definesType();
+
+      MdBusinessDAOIF parent = this.getParentMdBusiness();
+      String parentMethod = this.getParentMethod();
+      String parentType = this.getParentMdBusiness().definesType();
 
 
-    if(checkMethod(childMethod, childType, parent))
-    {
-      String error = "Class [" + parent.definesType() + "] already contains a method named ["
-          + childMethod + "] with type ["+childType+"]. Please specify a different method name and type for the child in [" + definesType()
-          + "]";
-      throw new RelationshipDefinitionException(error);
-    }
+      // Do not check for method name conflicts for types we are not generating java classes for.
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(child) ||
+          GenerationUtil.isSkipCompileAndCodeGeneration(parent))
+      {
+        return;
+      }
 
-    if(checkMethod(parentMethod, parentType, child))
-    {
-      String error = "Class [" + child.definesType() + "] already contains a method named ["
-          + parentMethod + "] with type ["+parentType+"]. Please specify a different method name and type for the parent in ["
-          + definesType() + "]";
-      throw new RelationshipDefinitionException(error);
+
+      if(checkMethod(childMethod, childType, parent))
+      {
+        String error = "Class [" + parent.definesType() + "] already contains a method named ["
+            + childMethod + "] with type ["+childType+"]. Please specify a different method name and type for the child in [" + definesType()
+            + "]";
+        throw new RelationshipDefinitionException(error);
+      }
+
+      if(checkMethod(parentMethod, parentType, child))
+      {
+        String error = "Class [" + child.definesType() + "] already contains a method named ["
+            + parentMethod + "] with type ["+parentType+"]. Please specify a different method name and type for the parent in ["
+            + definesType() + "]";
+        throw new RelationshipDefinitionException(error);
+      }
     }
   }
 
