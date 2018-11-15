@@ -1105,6 +1105,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       // load user permissions
       this.user = user;
 
+      this.reloadPermissions();
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  public void reloadPermissions()
+  {
+    this.permissionLock.lock();
+    
+    try
+    {
       // Set the locale to the one configured for the user if no valid locale
       // was set.
       if (this.locale == null)
@@ -1119,19 +1133,19 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         }
       }
 
-      for (RoleDAOIF roleIF : user.authorizedRoles())
+      for (RoleDAOIF roleIF : this.user.authorizedRoles())
       {
         this.authorizedRoleMap.put(roleIF.getRoleName(), roleIF);
       }
 
       // If the user is an administrator there is no need to load permissions
-      if (user.isAdministrator())
+      if (this.user.isAdministrator())
       {
         this.isAdmin = true;
       }
       else
       {
-        PermissionMap map = user.getOperations();
+        PermissionMap map = this.user.getOperations();
         map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
 
         this.permissions = map.getPermissions();
@@ -1142,7 +1156,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       this.permissionLock.unlock();
     }
   }
-
+  
+  
   /*
    * (non-Javadoc)
    * 
