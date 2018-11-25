@@ -18,15 +18,7 @@
  */
 package com.runwaysdk.util;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.UUID;
-
-import com.runwaysdk.constants.CommonProperties;
-
-import sun.security.provider.Sun;
 
 /**
  * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the

@@ -194,7 +194,12 @@ public interface XMLTags
   public static final String   LOCALSTRUCT_ATTRIBUTE            = "localStruct";
 
   /**
-   * The xml tag for an MdAttributeInteger
+   * The xml tag for an {@link MdAttributeUUIDDAOIF}
+   */
+  public static final String   UUID_TAG                         = "uuid";
+  
+  /**
+   * The xml tag for an {@link MdAttributeIntegerDAOIF}
    */
   public static final String   INTEGER_TAG                      = "integer";
 

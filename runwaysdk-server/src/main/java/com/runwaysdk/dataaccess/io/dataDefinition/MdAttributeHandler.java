@@ -56,6 +56,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipInfo;
@@ -841,7 +842,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
 
   }
-
+  
   protected static class AttributeCharacterHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeCharacterHandler(ImportManager manager, String tag, String type)
@@ -1053,6 +1054,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     super(manager);
 
     // Setup default handlers
+ // Heads up: UUID
+    this.addHandler(XMLTags.UUID_TAG, new AttributeConcreteHandler(manager, MdAttributeUUIDInfo.CLASS));
+
     this.addHandler(XMLTags.LOCAL_CHARACTER_TAG, new AttributeLocalHandler(manager, MdAttributeLocalCharacterInfo.CLASS));
     this.addHandler(XMLTags.LOCAL_TEXT_TAG, new AttributeLocalHandler(manager, MdAttributeLocalTextInfo.CLASS));
     this.addHandler(XMLTags.BLOB_TAG, new AttributeConcreteHandler(manager, MdAttributeBlobInfo.CLASS));

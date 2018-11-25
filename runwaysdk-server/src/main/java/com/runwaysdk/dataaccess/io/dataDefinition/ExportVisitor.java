@@ -73,6 +73,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
@@ -2465,6 +2466,7 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributeTags = new HashMap<String, String>();
 
     // attribute types
+    attributeTags.put(MdAttributeUUIDInfo.CLASS, XMLTags.UUID_TAG);
     attributeTags.put(MdAttributeIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdAttributeLongInfo.CLASS, XMLTags.LONG_TAG);
     attributeTags.put(MdAttributeFloatInfo.CLASS, XMLTags.FLOAT_TAG);

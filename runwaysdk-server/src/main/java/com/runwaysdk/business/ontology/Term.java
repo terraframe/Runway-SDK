@@ -32,7 +32,6 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.DatabaseProperties;
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.CoreException;
