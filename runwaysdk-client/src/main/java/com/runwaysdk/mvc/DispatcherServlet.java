@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -154,13 +154,13 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
           }
           else
           {
-            dispatch(manager, clazz, method);
+            dispatch(manager, clazz, method, annotation);
           }
         }
         else if (manager.getMethod().equals(ServletMethod.GET))
         {
           // By default assume that the method only allows GET requests
-          dispatch(manager, clazz, method);
+          dispatch(manager, clazz, method, annotation);
         }
         else
         {
@@ -212,6 +212,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    *          The controller class
    * @param method
    *          The controller method
+   * @param annotation
    * @throws Throwable
    * 
    * @throws NoSuchMethodException
@@ -223,12 +224,12 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
    * @throws IOException
    * @throws FileUploadException
    */
-  private void dispatch(RequestManager manager, Class<?> clazz, Method method) throws Throwable
+  private void dispatch(RequestManager manager, Class<?> clazz, Method method, Endpoint annotation) throws Throwable
   {
     Constructor<?> constructor = clazz.getConstructor();
     Object controller = constructor.newInstance();
 
-    Map<String, ParameterValue> parameters = this.getParameters(manager);
+    Map<String, ParameterValue> parameters = this.getParameters(manager, annotation);
 
     Object[] objects = this.getObjects(manager, method, parameters);
 
@@ -250,12 +251,10 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     }
     catch (Throwable e)
     {
-      Endpoint annotation = method.getAnnotation(Endpoint.class);
-
       if (annotation.error().equals(ErrorSerialization.JSON))
       {
         log.error("JSON handling of error", e);
-        
+
         if (e instanceof InvocationTargetException)
         {
           e = ( (InvocationTargetException) e ).getTargetException();
@@ -296,11 +295,12 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
   }
 
   /**
+   * @param annotation
    * @param req
    * @return
    * @throws FileUploadException
    */
-  private Map<String, ParameterValue> getParameters(RequestManager manager)
+  private Map<String, ParameterValue> getParameters(RequestManager manager, Endpoint annotation)
   {
     ServletRequestIF request = manager.getReq();
 
@@ -308,11 +308,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     {
       Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
 
-      // Create a factory for disk-based file items
-      FileItemFactory factory = new DiskFileItemFactory();
-
-      // Create a new file upload handler
-      ServletFileUpload upload = new ServletFileUpload(factory);
+      ServletFileUpload upload = this.createServletFileUpload(manager, annotation);
 
       try
       {
@@ -359,6 +355,20 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
       {
         return this.getParameterMap(request.getParameterMap());
       }
+    }
+  }
+
+  private ServletFileUpload createServletFileUpload(RequestManager manager, Endpoint annotation)
+  {
+    try
+    {
+      ServletFileUploadFactory factory = annotation.factory().newInstance();
+
+      return factory.instance(manager);
+    }
+    catch (InstantiationException | IllegalAccessException e)
+    {
+      throw new RuntimeException(e);
     }
   }
 
