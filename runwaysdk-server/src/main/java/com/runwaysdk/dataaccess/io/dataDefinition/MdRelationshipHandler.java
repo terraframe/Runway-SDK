@@ -251,6 +251,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
     ImportManager.setLocalizedValue(mdRelationshipDAO, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdRelationshipDAO, MdElementInfo.EXTENDABLE, attributes, XMLTags.EXTENDABLE_ATTRIBUTE);
     ImportManager.setValue(mdRelationshipDAO, MdElementInfo.ABSTRACT, attributes, XMLTags.ABSTRACT_ATTRIBUTE);
+    ImportManager.setValue(mdRelationshipDAO, MdElementInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.COMPOSITION, attributes, XMLTags.COMPOSITION_ATTRIBUTE);
     ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
     ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);

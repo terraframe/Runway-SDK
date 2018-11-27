@@ -1644,7 +1644,8 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.EXTENDABLE_ATTRIBUTE, mdTransient.getValue(MdTransientInfo.EXTENDABLE));
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, mdTransient.getValue(MdTransientInfo.ABSTRACT));
-
+    parameters.put(XMLTags.GENERATE_SOURCE, mdTransient.getValue(MdTransientInfo.GENERATE_SOURCE));
+    
     return parameters;
   }
 
@@ -1817,6 +1818,7 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.EXTENDABLE_ATTRIBUTE, mdElement.getValue(MdElementInfo.EXTENDABLE));
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, mdElement.getValue(MdElementInfo.ABSTRACT));
+    parameters.put(XMLTags.GENERATE_SOURCE, mdElement.getValue(MdElementInfo.GENERATE_SOURCE));
 
     return parameters;
   }

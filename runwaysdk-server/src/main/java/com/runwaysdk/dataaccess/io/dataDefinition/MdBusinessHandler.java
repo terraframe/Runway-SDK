@@ -140,6 +140,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     ImportManager.setLocalizedValue(mdBusinessDAO, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdElementInfo.EXTENDABLE, attributes, XMLTags.EXTENDABLE_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdElementInfo.ABSTRACT, attributes, XMLTags.ABSTRACT_ATTRIBUTE);
+    ImportManager.setValue(mdBusinessDAO, MdElementInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.CACHE_SIZE, attributes, XMLTags.CACHE_SIZE_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);

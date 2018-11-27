@@ -75,7 +75,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       }
       catch (DataNotFoundException e)
       {
-        this.createRelationship(key, type, attributes);
+        relationship = this.createRelationship(key, type, attributes);
       }
     }
     else

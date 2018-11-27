@@ -107,6 +107,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
     ImportManager.setLocalizedValue(mdView, MdViewInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.ABSTRACT, attributes, XMLTags.ABSTRACT_ATTRIBUTE);
+    ImportManager.setValue(mdView, MdViewInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdView, MdViewInfo.EXTENDABLE, attributes, XMLTags.EXTENDABLE_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
 

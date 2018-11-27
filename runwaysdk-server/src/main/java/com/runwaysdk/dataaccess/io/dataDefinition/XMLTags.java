@@ -104,6 +104,11 @@ public interface XMLTags
    * The xml name of the abstract attribute in the class tag
    */
   public static final String   ABSTRACT_ATTRIBUTE               = "isAbstract";
+  
+  /**
+   * The xml name of the generate source attribute in the class tag
+   */
+  public static final String   GENERATE_SOURCE                  = "generateSource";
 
   /**
    * The xml name of the extends attribute in the class tag
