@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -361,7 +361,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   private void generateAndCompileClasses(Collection<MdTypeDAOIF> mdTypeIFGenerateClasses)
   {
-    if (LocalProperties.isSkipCodeGenAndCompile() || ! ( LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment()  || LocalProperties.isTestEnvironment() ))
+    if (LocalProperties.isSkipCodeGenAndCompile() || ! ( LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment() || LocalProperties.isTestEnvironment() ))
     {
       return;
     }
@@ -375,57 +375,61 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // First, generate the source files.
     this.generateJavaFiles(mdTypeDAOIFs);
 
-    try
+    // Only compile if we are in a test environment
+    if (LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment())
     {
-      // Second, compile
-      if (this.getTransactionCache().shouldCompileAll())
+      try
       {
-        // First use the Eclipse CompileAll to check for errors
-        GenerationFacade.compileAllNoOutput();
-        // Then use AspectJ to weave into regenerated classes
-        GenerationFacade.compile(mdTypeDAOIFs);
+        // Second, compile
+        if (this.getTransactionCache().shouldCompileAll())
+        {
+          // First use the Eclipse CompileAll to check for errors
+          GenerationFacade.compileAllNoOutput();
+          // Then use AspectJ to weave into regenerated classes
+          GenerationFacade.compile(mdTypeDAOIFs);
+        }
+        else
+        {
+          GenerationFacade.compile(mdTypeDAOIFs);
+        }
       }
-      else
+      catch (CompilerException e)
       {
-        GenerationFacade.compile(mdTypeDAOIFs);
-      }
-    }
-    catch (CompilerException e)
-    {
-      // If this is a development environment, we do not abort on a compiler
-      // exception.
-      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment())
-      {
-        logger.error("An error occurred while compiling. Your source has not been reverted because the environment is set to develop.", e);
-        System.err.println(e.getMessage());
-        return;
-      }
-      else
-      {
-        throw e;
+        // If this is a development environment, we do not abort on a compiler
+        // exception.
+        if (LocalProperties.isRunwayEnvironment())
+        {
+          logger.error("An error occurred while compiling. Your source has not been reverted because the environment is set to develop.", e);
+          System.err.println(e.getMessage());
+          return;
+        }
+        else
+        {
+          throw e;
+        }
       }
     }
 
-//    // Third, store result in the database
-//    for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
-//    {
-//      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeDAOIF))
-//      {
-//        continue;
-//      }
-//
-//      // Store result in the database
-//      // This cast is OK, as we are not modifying the object itself.
-//      ( (MdTypeDAO) mdTypeDAOIF ).writeFileArtifactsToDatabaseAndObjects(conn);
-//
-//      // Increment the sequence numbers to create a transaction log.
-//      // This cast is OK, as the object has already been copied from the cached
-//      // version (see TransactionCacheIF.addMdTypeToMapForGen(..))
-//      EntityDAOFactory.update((MdTypeDAO) mdTypeDAOIF, false);
-//
-//      // Add the newly updated EntityDAO back into the transaction cache
-//      this.getTransactionCache().put(mdTypeDAOIF);
-//    }
+    // // Third, store result in the database
+    // for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
+    // {
+    // if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeDAOIF))
+    // {
+    // continue;
+    // }
+    //
+    // // Store result in the database
+    // // This cast is OK, as we are not modifying the object itself.
+    // ( (MdTypeDAO) mdTypeDAOIF ).writeFileArtifactsToDatabaseAndObjects(conn);
+    //
+    // // Increment the sequence numbers to create a transaction log.
+    // // This cast is OK, as the object has already been copied from the cached
+    // // version (see TransactionCacheIF.addMdTypeToMapForGen(..))
+    // EntityDAOFactory.update((MdTypeDAO) mdTypeDAOIF, false);
+    //
+    // // Add the newly updated EntityDAO back into the transaction cache
+    // this.getTransactionCache().put(mdTypeDAOIF);
+    // }
   }
 
   /**

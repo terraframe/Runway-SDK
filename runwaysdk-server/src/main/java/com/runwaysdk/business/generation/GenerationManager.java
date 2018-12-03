@@ -95,7 +95,7 @@ public class GenerationManager
             // }
 
           }
-          catch (RuntimeException | ClassNotFoundException | MalformedURLException ex)
+          catch (Throwable ex)
           {
             // if (ex instanceof LoaderDecoratorExceptionIF)
             // {
@@ -144,7 +144,7 @@ public class GenerationManager
               list.add(sourceFiles);
             }
           }
-          catch (RuntimeException | ClassNotFoundException | MalformedURLException ex)
+          catch (Throwable ex)
           {
             // if (ex instanceof LoaderDecoratorExceptionIF)
             // {
@@ -193,7 +193,7 @@ public class GenerationManager
               list.add(sourceFiles);
             }
           }
-          catch (RuntimeException | ClassNotFoundException | MalformedURLException ex)
+          catch (Throwable ex)
           {
             // if (ex instanceof LoaderDecoratorExceptionIF)
             // {
