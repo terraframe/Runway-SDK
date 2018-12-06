@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.io;
 
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import com.runwaysdk.dataaccess.io.excel.ColumnFactory;
 import com.runwaysdk.dataaccess.io.excel.MdFieldFilter;
 
@@ -40,6 +42,14 @@ public class FormExcelExporter extends ExcelExporter
   public FormExcelExporter(MdFieldFilter filter, ColumnFactory factory)
   {
     super();
+
+    this.filter = filter;
+    this.factory = factory;
+  }
+  
+  public FormExcelExporter(MdFieldFilter filter, ColumnFactory factory, Workbook workbook)
+  {
+    super(workbook);
 
     this.filter = filter;
     this.factory = factory;
