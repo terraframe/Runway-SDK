@@ -69,8 +69,13 @@ public class AttributeReference extends Attribute implements AttributeReferenceI
   {
     super.validate(valueToValidate, mdAttribute);
 
+    if (!mdAttribute.isRequired() && valueToValidate.trim().equals(""))
+    {
+      return;
+    }
+    
     MdAttributeReferenceDAOIF mdAttributeReference = (MdAttributeReferenceDAOIF)mdAttribute.getMdAttributeConcrete();
-
+    
     com.runwaysdk.dataaccess.attributes.entity.AttributeReference.validateReference(valueToValidate, mdAttributeReference);
   }
 
