@@ -42,7 +42,9 @@ Runway SDK was built from the ground up to use the MDE paradigm, which treats cl
 Every metamodel class is defined by an instance of MdBusiness.
 
 *MdBusiness* Is the primary abstraction for defining business classes
+
 *MdRelationship* Defines relationships between business classes
+
 *MdAttribute* Defines attributes on MdClasses
 
 ![MetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata.png)
