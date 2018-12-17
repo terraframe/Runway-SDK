@@ -37,9 +37,13 @@ All applications utilize domain models, regardless of whether they are formally 
 
 Runway SDK was built from the ground up to use the MDE paradigm, which treats classes, class attributes, and associations in a domain model as first-order objects through an expressive metamodel API to dynamically manage models and to formally define data integrity and access constraints. This is ideal for applications that require a formal abstraction to manage a dynamic domain model where the datasets modeled in the application cannot be known and programmed up-front and need to continually change. For example, data analysis and integration applications work with datasets that are introduced at runtime, such as spreadsheets and database tables, and those applications needs a formal method, such as the metamodel, for modeling their metadata dynamically. Users also have the ability to define new dataset types on the fly, to specify data integrity constraints on those types, and to specify what user roles are allowed to perform operations on them. The users themselves at runtime are defining and modifying dataset definitions according to the needs of the application. An executable implementation of the model is generated to both decrease software development time and also ensure correctness.
 
-# MetaModel Abstraction
+### MetaModel Abstraction
 
-Every metamodel class is defined by an instance of MdBusiness
+Every metamodel class is defined by an instance of MdBusiness.
+
+*MdBusiness* Is the primary abstraction for defining business classes
+*MdRelationship* Defines relationships between business classes
+*MdAttribute* Defines attributes on MdClasses
 
 ![MetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata.png)
 
