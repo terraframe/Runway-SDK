@@ -49,11 +49,13 @@ Every metamodel class is defined by an instance of MdBusiness.
 
 ![Class MetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata.png)
 
-
 ### Attribute MetaModel Abstraction
 
 ![AttributeMetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/AttributeHierarchy.png)
 
+### Classes, Relationships, and Attributes
+
+![AttributeMetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata%20Objects%20And%20Relationships.png)
 
 ## Model Transactions and Versioning
 
