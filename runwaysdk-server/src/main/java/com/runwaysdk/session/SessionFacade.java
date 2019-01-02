@@ -21,6 +21,7 @@ package com.runwaysdk.session;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -746,10 +747,12 @@ public class SessionFacade
   }
   
   /**
-   * @see com.runwaysdk.session.SessionCache#getIterator()
+   * Returns a map which represents all {@link Session}s in the system at the current
+   * snapshot in time. The key is the sessionId and the value is the {@link Session}.
+   * This map is not used internally and thus can be modified at will. 
    */
-  public static SessionIterator getIterator()
+  public static Map<String, SessionIF> getAllSessions()
   {
-    return SessionFacade.getSessionCache().getIterator();
+    return SessionFacade.getSessionCache().getAllSessions();
   }
 }

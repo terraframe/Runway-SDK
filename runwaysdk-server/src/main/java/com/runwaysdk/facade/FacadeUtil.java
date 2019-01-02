@@ -748,6 +748,10 @@ public class FacadeUtil
     {
       return null;
     }
+    if (object == null)
+    {
+      return null;
+    }
 
     try
     {

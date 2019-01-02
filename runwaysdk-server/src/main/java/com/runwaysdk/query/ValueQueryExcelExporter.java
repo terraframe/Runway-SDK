@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -70,7 +70,7 @@ public class ValueQueryExcelExporter
 
   public ValueQueryExcelExporter(ValueQuery valueQuery, String sheetName, Set<String> includeAliases)
   {
-    this(valueQuery, sheetName, includeAliases, new HSSFWorkbook());
+    this(valueQuery, sheetName, includeAliases, new XSSFWorkbook());
   }
   
   public ValueQueryExcelExporter(ValueQuery valueQuery, String sheetName, Set<String> includeAliases, Workbook workbook)

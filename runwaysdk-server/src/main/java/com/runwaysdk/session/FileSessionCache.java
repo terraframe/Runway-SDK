@@ -720,16 +720,32 @@ public class FileSessionCache extends ManagedUserSessionCache
   {
     return sessions.size();
   }
-
-  /**
-   * @see com.runwaysdk.session.SessionCache#getIterator()
-   */
-  public SessionIterator getIterator()
+  
+  @Override
+  public Map<String, SessionIF> getAllSessions()
   {
-    return new FileSessionIterator();
+    sessionCacheLock.lock();
+    
+    try
+    {
+      Collection<SessionIF> sessions = new FileSessionIterator().getAll();
+      
+      HashMap<String, SessionIF> map = new HashMap<String, SessionIF>();
+      
+      for (SessionIF ses : sessions)
+      {
+        map.put(ses.getId(), ses);
+      }
+      
+      return map;
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
   }
 
-  private class FileSessionIterator implements SessionIterator
+  private class FileSessionIterator
   {
     private Iterator<String> iterator;
 
@@ -739,13 +755,11 @@ public class FileSessionCache extends ManagedUserSessionCache
 
     private FileSessionIterator()
     {
-      sessionCacheLock.lock();
-
       this.initialized = false;
     }
 
     /**
-     * Loads into memmory a list of all the possible session ids
+     * Loads into memory a list of all the possible session ids
      */
     private synchronized void initialize()
     {
@@ -803,7 +817,6 @@ public class FileSessionCache extends ManagedUserSessionCache
     /**
      * @see com.runwaysdk.session.SessionIterator#next()
      */
-    @Override
     public SessionIF next()
     {
       this.initialize();
@@ -816,20 +829,18 @@ public class FileSessionCache extends ManagedUserSessionCache
     /**
      * @see com.runwaysdk.session.SessionIterator#remove()
      */
-    @Override
-    public void remove()
-    {
-      this.initialize();
-
-      this.iterator.remove();
-
-      FileSessionCache.this.closeSession(this.sessionId);
-    }
+//    public void remove()
+//    {
+//      this.initialize();
+//
+//      this.iterator.remove();
+//
+//      FileSessionCache.this.closeSession(this.sessionId);
+//    }
 
     /**
      * @see com.runwaysdk.session.SessionIterator#hasNext()
      */
-    @Override
     public boolean hasNext()
     {
       this.initialize();
@@ -840,19 +851,15 @@ public class FileSessionCache extends ManagedUserSessionCache
     /**
      * @see com.runwaysdk.session.SessionIterator#close()
      */
-    @Override
     public synchronized void close()
     {
       this.iterator = null;
       this.initialized = false;
-
-      sessionCacheLock.unlock();
     }
 
     /**
      * @see com.runwaysdk.session.SessionIterator#getAll()
      */
-    @Override
     public Collection<SessionIF> getAll()
     {
       Collection<SessionIF> sesses = new LinkedList<SessionIF>();
@@ -863,6 +870,8 @@ public class FileSessionCache extends ManagedUserSessionCache
 
         sesses.add(session);
       }
+      
+      this.close();
 
       return sesses;
     }

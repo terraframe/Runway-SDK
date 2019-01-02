@@ -211,4 +211,9 @@ public interface SessionIF
    *         explicitly or implicitly), false otherwise.
    */
   public boolean userHasRole(String roleName);
+  
+  /**
+   * @return The number of miliseconds before this user's session expires.
+   */
+  public long getTimeLeft();
 }

@@ -1604,4 +1604,10 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   {
   }
 
+  @Override
+  public long getTimeLeft()
+  {
+    return getExpiration() - System.currentTimeMillis();
+  }
+
 }

@@ -20,6 +20,7 @@ package com.runwaysdk.configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -112,7 +113,7 @@ public class ProfileReader implements ConfigurationReaderIF
 
   private void inputFromFile() throws IOException
   {
-    List<String> lines = FileIO.readLines(file);
+    List<String> lines = FileIO.readLines(file, Charset.defaultCharset()); // TODO : We're using the default charset? How dumb.
 
     for (String line : lines)
     {

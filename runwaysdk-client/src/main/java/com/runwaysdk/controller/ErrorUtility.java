@@ -49,6 +49,7 @@ import com.runwaysdk.request.ResponseDecorator;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 import com.runwaysdk.session.AttributeReadPermissionExceptionDTO;
+import com.runwaysdk.session.InvalidSessionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
 import com.runwaysdk.util.Base64;
 import com.runwaysdk.web.json.JSONProblemExceptionDTO;
@@ -168,14 +169,26 @@ public class ErrorUtility implements Reloadable
   {
     return ErrorUtility.prepareThrowable(t, req, resp, isAsynchronus, true);
   }
+  
+  private static void throwIfAsyncSessionExpired(Throwable t, Boolean isAsynchronous)
+  {
+    if (t instanceof InvalidSessionExceptionDTO && !isAsynchronous)
+    {
+      throw (InvalidSessionExceptionDTO)t;
+    }
+  }
 
   public static boolean prepareThrowable(Throwable t, HttpServletRequest req, HttpServletResponse resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
   {
+    throwIfAsyncSessionExpired(t, isAsynchronus);
+    
     return prepareThrowable(t, new RequestDecorator(req), resp.getOutputStream(), new ResponseDecorator(resp), isAsynchronus, ignoreNotifications);
   }
 
   public static boolean prepareThrowable(Throwable t, ServletRequestIF req, ServletResponseIF resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
   {
+    throwIfAsyncSessionExpired(t, isAsynchronus);
+    
     return prepareThrowable(t, req, resp.getOutputStream(), resp, isAsynchronus, ignoreNotifications);
   }
 

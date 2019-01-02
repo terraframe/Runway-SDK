@@ -31,11 +31,13 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,46 +54,79 @@ public class FileIO
   private static final int BUFFER = 2048;
 
   /**
+   * Do not use this method. You should always be specifying an encoding when reading/writing files.
+   * 
    * Reads the given file into a String
    * 
    * @param fileName
    *          Name of the file to read
    * @return String containing the file's contents
    */
+  @Deprecated
   public static String readString(String fileName) throws IOException
   {
     return readString(new File(fileName));
   }
 
   /**
+   * Do not use this method. You should always be specifying an encoding when reading/writing files.
+   * 
    * Reads the given file into a String
    * 
    * @param file
    *          File to read
    * @return String containing the file's contents
    */
+  @Deprecated
   public static String readString(File file) throws IOException
   {
     // We read bytes directly and force a utf8 decoding
     return new String(readBytes(file), "utf8");
   }
-
-  public static List<String> readLines(File file) throws IOException
+  
+  public static List<String> readLines(File file, Charset charset) throws IOException
   {
-    BufferedReader reader = null;
+    List<String> lines = new LinkedList<String>();
+    
+    FileInputStream fstream = new FileInputStream(file);
+    BufferedReader br = new BufferedReader(new InputStreamReader(fstream, charset));
+    
     try
     {
-      List<String> lines = new LinkedList<String>();
-      reader = new BufferedReader(new FileReader(file));
-      while (reader.ready())
-        lines.add(reader.readLine());
+      String strLine;
+      while ((strLine = br.readLine()) != null)   {
+        lines.add(strLine);
+      }
       return lines;
     }
     finally
     {
-      if (reader != null)
-        reader.close();
+      br.close();
     }
+  }
+
+  /**
+   * Do not use this method. You should always be specifying an encoding when reading/writing files.
+   */
+  @Deprecated
+  public static List<String> readLines(File file) throws IOException
+  {
+    return FileIO.readLines(file, Charset.forName("UTF-8"));
+    
+//    BufferedReader reader = null;
+//    try
+//    {
+//      List<String> lines = new LinkedList<String>();
+//      reader = new BufferedReader(new FileReader(file));
+//      while (reader.ready())
+//        lines.add(reader.readLine());
+//      return lines;
+//    }
+//    finally
+//    {
+//      if (reader != null)
+//        reader.close();
+//    }
   }
 
   /**
@@ -139,6 +174,8 @@ public class FileIO
   }
 
   /**
+   * Do not use this method. You should be specifying an encoding when reading/writing files.
+   * 
    * Writes a String to a file. Note that this does not change the content of
    * the String. For example, newlines will be written exactly as they are
    * found, not adapted to the current operating system.
@@ -148,17 +185,21 @@ public class FileIO
    * @param data
    *          Content to write into the file
    */
+  @Deprecated
   public static void write(String fileName, String data) throws IOException
   {
     write(new File(fileName), data, false);
   }
 
+  @Deprecated
   public static void write(String fileName, String data, boolean append) throws IOException
   {
     write(new File(fileName), data, append);
   }
 
   /**
+   * Do not use this method. You should be specifying an encoding when reading/writing files.
+   * 
    * Writes a String to a file. Note that this does not change the content of
    * the String. For example, newlines will be written exactly as they are
    * found, not adapted to the current operating system.
@@ -168,37 +209,41 @@ public class FileIO
    * @param data
    *          Content to write into the file
    */
+  @Deprecated
   public static void write(File file, String data) throws IOException
   {
     write(file, data, false);
   }
 
+  @Deprecated
   public static void write(File file, String data, boolean append) throws IOException
   {
-    if (data == null || data.trim().equals(""))
-      return;
-
-    makeDirectories(file);
-    BufferedWriter writer = null;
-    try
-    {
-      writer = new BufferedWriter(new FileWriter(file, append));
-      writer.write(data);
-      writer.flush();
-      writer.close();
-      return;
-    }
-    catch (IOException e)
-    {
-      throw e;
-    }
-    finally
-    {
-      if (writer != null)
-      {
-        writer.close();
-      }
-    }
+    encodedWrite(file, data, append, "UTF-8");
+    
+//    if (data == null || data.trim().equals(""))
+//      return;
+//
+//    makeDirectories(file);
+//    BufferedWriter writer = null;
+//    try
+//    {
+//      writer = new BufferedWriter(new FileWriter(file, append));
+//      writer.write(data);
+//      writer.flush();
+//      writer.close();
+//      return;
+//    }
+//    catch (IOException e)
+//    {
+//      throw e;
+//    }
+//    finally
+//    {
+//      if (writer != null)
+//      {
+//        writer.close();
+//      }
+//    }
   }
 
   /**
