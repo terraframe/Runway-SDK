@@ -544,13 +544,13 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeVirtual mdAttributeVirtual)
     {
       if(mdAttributeVirtual == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeVirtual.getId());
+      return this.EQ(mdAttributeVirtual.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeVirtual mdAttributeVirtual)
     {
       if(mdAttributeVirtual == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeVirtual.getId());
+      return this.NE(mdAttributeVirtual.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getAttributeName()
@@ -957,7 +957,7 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeVirtual.length; i++)
       {
-        itemIdArray[i] = mdAttributeVirtual[i].getId();
+        itemIdArray[i] = mdAttributeVirtual[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -969,7 +969,7 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeVirtual.length; i++)
       {
-        itemIdArray[i] = mdAttributeVirtual[i].getId();
+        itemIdArray[i] = mdAttributeVirtual[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -981,7 +981,7 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeVirtual.length; i++)
       {
-        itemIdArray[i] = mdAttributeVirtual[i].getId();
+        itemIdArray[i] = mdAttributeVirtual[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -993,7 +993,7 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeVirtual.length; i++)
       {
-        itemIdArray[i] = mdAttributeVirtual[i].getId();
+        itemIdArray[i] = mdAttributeVirtual[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1005,7 +1005,7 @@ public  class MdAttributeVirtualQuery extends com.runwaysdk.system.metadata.MdAt
 
       for (int i=0; i<mdAttributeVirtual.length; i++)
       {
-        itemIdArray[i] = mdAttributeVirtual[i].getId();
+        itemIdArray[i] = mdAttributeVirtual[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

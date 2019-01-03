@@ -22,9 +22,9 @@ public abstract class ClassAttributeDTO extends ClassAttributeDTOBase
 {
   private static final long serialVersionUID = -1319197272;
   
-  public ClassAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ClassAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

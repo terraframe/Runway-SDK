@@ -32,7 +32,7 @@ public abstract class IndicatorElementBase extends com.runwaysdk.business.Busine
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -128,24 +128,24 @@ public abstract class IndicatorElementBase extends com.runwaysdk.business.Busine
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.IndicatorElement.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -284,7 +284,7 @@ public abstract class IndicatorElementBase extends com.runwaysdk.business.Busine
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -341,9 +341,9 @@ public abstract class IndicatorElementBase extends com.runwaysdk.business.Busine
     return CLASS;
   }
   
-  public static IndicatorElement get(String id)
+  public static IndicatorElement get(String oid)
   {
-    return (IndicatorElement) com.runwaysdk.business.Business.get(id);
+    return (IndicatorElement) com.runwaysdk.business.Business.get(oid);
   }
   
   public static IndicatorElement getByKey(String key)
@@ -351,17 +351,17 @@ public abstract class IndicatorElementBase extends com.runwaysdk.business.Busine
     return (IndicatorElement) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static IndicatorElement lock(java.lang.String id)
+  public static IndicatorElement lock(java.lang.String oid)
   {
-    IndicatorElement _instance = IndicatorElement.get(id);
+    IndicatorElement _instance = IndicatorElement.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static IndicatorElement unlock(java.lang.String id)
+  public static IndicatorElement unlock(java.lang.String oid)
   {
-    IndicatorElement _instance = IndicatorElement.get(id);
+    IndicatorElement _instance = IndicatorElement.get(oid);
     _instance.unlock();
     
     return _instance;

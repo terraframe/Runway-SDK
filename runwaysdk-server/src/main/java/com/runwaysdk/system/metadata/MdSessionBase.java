@@ -41,9 +41,9 @@ public abstract class MdSessionBase extends com.runwaysdk.system.metadata.MdTran
     return CLASS;
   }
   
-  public static MdSession get(String id)
+  public static MdSession get(String oid)
   {
-    return (MdSession) com.runwaysdk.business.Business.get(id);
+    return (MdSession) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdSession getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdSessionBase extends com.runwaysdk.system.metadata.MdTran
     return (MdSession) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdSession lock(java.lang.String id)
+  public static MdSession lock(java.lang.String oid)
   {
-    MdSession _instance = MdSession.get(id);
+    MdSession _instance = MdSession.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdSession unlock(java.lang.String id)
+  public static MdSession unlock(java.lang.String oid)
   {
-    MdSession _instance = MdSession.get(id);
+    MdSession _instance = MdSession.get(oid);
     _instance.unlock();
     
     return _instance;

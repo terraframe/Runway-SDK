@@ -21,21 +21,23 @@ package com.runwaysdk.controller;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.form.FormObject;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
+import com.runwaysdk.session.Request;
 
-public class MofoParserTest extends TestCase
+public class MofoParserTest
 {
   public final class MockClass
   {
     @ActionParameters(parameters = "com.runwaysdk.form.FormObject:criteria, java.lang.String:type, java.lang.String:sortAttribute, java.lang.Boolean:isAscending, java.lang.Integer:pageSize, java.lang.Integer:pageNumber", post = true)
+    @Request
+    @Test
     public void testMethod(FormObject critiera, String type, String sortAttribute, Boolean isAscending, Integer pageSize, Integer pageNumber)
     {
 
@@ -54,6 +56,8 @@ public class MofoParserTest extends TestCase
     return annotation;
   }
 
+  @Request
+  @Test
   public void testNullFormObject() throws NoSuchMethodException, SecurityException
   {
     ClientSession session = ClientSession.createUserSession("default", "SYSTEM", "SYSTEM", new Locale[] { CommonProperties.getDefaultLocale() });

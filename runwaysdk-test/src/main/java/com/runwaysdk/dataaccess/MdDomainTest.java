@@ -18,11 +18,10 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -31,36 +30,17 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdDomainInfo;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
+import com.runwaysdk.session.Request;
 
-public class MdDomainTest extends TestCase
+public class MdDomainTest
 {
-  private static MdDomainDAO mdDomain;
+  private static MdDomainDAO   mdDomain;
 
   private static MdBusinessDAO mdBusiness;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdDomainTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-
-    };
-
-    return wrapper;
-  }
-
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     mdDomain = MdDomainDAO.newInstance();
     mdDomain.setValue(MdDomainInfo.DOMAIN_NAME, "testDomain");
@@ -72,65 +52,48 @@ public class MdDomainTest extends TestCase
     mdBusiness.setValue(MdBusinessInfo.NAME, "TestBusiness");
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.test");
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Business");
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     mdBusiness.delete();
     mdDomain.delete();
   }
 
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  @Override
-  protected void setUp() throws Exception
-  {
-  }
-
-  @Override
-  protected void tearDown() throws Exception
-  {
-  }
-
+  @Request
+  @Test
   public void testDomainName()
   {
-    assertEquals("testDomain", mdDomain.getValue(MdDomainInfo.DOMAIN_NAME));
+    Assert.assertEquals("testDomain", mdDomain.getValue(MdDomainInfo.DOMAIN_NAME));
   }
 
+  @Request
+  @Test
   public void testSetDomain()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getId());
+    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getOid());
     businessDAO.apply();
 
-    assertEquals(mdDomain.getId(), BusinessDAO.get(businessDAO.getId()).getValue(ElementInfo.DOMAIN));
+    Assert.assertEquals(mdDomain.getOid(), BusinessDAO.get(businessDAO.getOid()).getValue(ElementInfo.DOMAIN));
   }
 
-
+  @Request
+  @Test
   public void testRemoveDomain()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getId());
+    businessDAO.setValue(ElementInfo.DOMAIN, mdDomain.getOid());
     businessDAO.apply();
 
-    BusinessDAO dao = BusinessDAO.get(businessDAO.getId()).getBusinessDAO();
+    BusinessDAO dao = BusinessDAO.get(businessDAO.getOid()).getBusinessDAO();
     dao.setValue(ElementInfo.DOMAIN, "");
     dao.apply();
 
-
-    assertEquals("", BusinessDAO.get(businessDAO.getId()).getValue(ElementInfo.DOMAIN));
+    Assert.assertEquals("", BusinessDAO.get(businessDAO.getOid()).getValue(ElementInfo.DOMAIN));
   }
 }

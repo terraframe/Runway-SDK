@@ -92,7 +92,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.AllOperation.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.AllOperation.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -130,7 +130,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.CharacterOperation.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -149,7 +149,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.CharacterOperation.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -190,13 +190,13 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.FieldOperation fieldOperation)
     {
       if(fieldOperation == null) return this.EQ((java.lang.String)null);
-      return this.EQ(fieldOperation.getId());
+      return this.EQ(fieldOperation.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.FieldOperation fieldOperation)
     {
       if(fieldOperation == null) return this.NE((java.lang.String)null);
-      return this.NE(fieldOperation.getId());
+      return this.NE(fieldOperation.getOid());
     }
 
   }
@@ -271,7 +271,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<allOperation.length; i++)
       {
-        enumIdArray[i] = allOperation[i].getId();
+        enumIdArray[i] = allOperation[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -283,7 +283,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<allOperation.length; i++)
       {
-        enumIdArray[i] = allOperation[i].getId();
+        enumIdArray[i] = allOperation[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -295,7 +295,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<allOperation.length; i++)
       {
-        enumIdArray[i] = allOperation[i].getId();
+        enumIdArray[i] = allOperation[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -307,7 +307,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<allOperation.length; i++)
       {
-        enumIdArray[i] = allOperation[i].getId();
+        enumIdArray[i] = allOperation[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -319,7 +319,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<allOperation.length; i++)
       {
-        enumIdArray[i] = allOperation[i].getId();
+        enumIdArray[i] = allOperation[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -343,7 +343,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<characterOperation.length; i++)
       {
-        enumIdArray[i] = characterOperation[i].getId();
+        enumIdArray[i] = characterOperation[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -355,7 +355,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<characterOperation.length; i++)
       {
-        enumIdArray[i] = characterOperation[i].getId();
+        enumIdArray[i] = characterOperation[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -367,7 +367,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<characterOperation.length; i++)
       {
-        enumIdArray[i] = characterOperation[i].getId();
+        enumIdArray[i] = characterOperation[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -379,7 +379,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<characterOperation.length; i++)
       {
-        enumIdArray[i] = characterOperation[i].getId();
+        enumIdArray[i] = characterOperation[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -391,7 +391,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<characterOperation.length; i++)
       {
-        enumIdArray[i] = characterOperation[i].getId();
+        enumIdArray[i] = characterOperation[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -435,7 +435,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<fieldOperation.length; i++)
       {
-        itemIdArray[i] = fieldOperation[i].getId();
+        itemIdArray[i] = fieldOperation[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<fieldOperation.length; i++)
       {
-        itemIdArray[i] = fieldOperation[i].getId();
+        itemIdArray[i] = fieldOperation[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -459,7 +459,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<fieldOperation.length; i++)
       {
-        itemIdArray[i] = fieldOperation[i].getId();
+        itemIdArray[i] = fieldOperation[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<fieldOperation.length; i++)
       {
-        itemIdArray[i] = fieldOperation[i].getId();
+        itemIdArray[i] = fieldOperation[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -483,7 +483,7 @@ public  class FieldOperationQuery extends com.runwaysdk.system.EnumerationMaster
 
       for (int i=0; i<fieldOperation.length; i++)
       {
-        itemIdArray[i] = fieldOperation[i].getId();
+        itemIdArray[i] = fieldOperation[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

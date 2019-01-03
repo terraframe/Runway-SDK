@@ -102,7 +102,7 @@ public enum JSON {
 
   // ENUM_DTO(RUNWAY_DTO.getLabel()+".EnumDTO"),
 
-  ENUM_DTO_ID("id"),
+  ENUM_DTO_ID("oid"),
 
   ENUM_DTO_TYPE("enumType"),
 
@@ -128,7 +128,7 @@ public enum JSON {
 
   TYPE_MD_DESCRIPTION("description"),
 
-  TYPE_MD_ID("id"),
+  TYPE_MD_ID("oid"),
 
   /*------------------ RelationshipMd -------------*/
 
@@ -145,7 +145,7 @@ public enum JSON {
   /**
      * 
      */
-  ENTITY_DTO_ID("id"),
+  ENTITY_DTO_ID("oid"),
 
   /**
      * 
@@ -229,18 +229,6 @@ public enum JSON {
 
   /*------------------- BusinessDTO ------------------*/
 
-  /**
-   * 
-   BUSINESS_DTO(RUNWAY_DTO.getLabel()+".BusinessDTO"),
-   */
-
-  /**
-     * 
-     */
-  BUSINESS_DTO_STATE("state"),
-
-  BUSINESS_DTO_TRANSITIONS("transitions"),
-
   /*------------------- RelationshipDTO --------------*/
 
   /**
@@ -251,12 +239,12 @@ public enum JSON {
   /**
      * 
      */
-  RELATIONSHIP_DTO_PARENT_ID("parentId"),
+  RELATIONSHIP_DTO_PARENT_OID("parentOid"),
 
   /**
      * 
      */
-  RELATIONSHIP_DTO_CHILD_ID("childId"),
+  RELATIONSHIP_DTO_CHILD_OID("childOid"),
 
   /*------------------- StructDTO -------------------*/
 
@@ -280,7 +268,7 @@ public enum JSON {
 
   ATTRIBUTE_METADATA_REQUIRED("required"),
 
-  ATTRIBUTE_METADATA_ID("id"),
+  ATTRIBUTE_METADATA_ID("oid"),
 
   ATTRIBUTE_METADATA_NAME("name"),
 
@@ -327,7 +315,7 @@ public enum JSON {
 
   STRUCT_METADATA_DEFINING_MDSTRUCT("definingMdStruct"),
 
-  STRUCT_ID("id"),
+  STRUCT_ID("oid"),
 
   /*------------------- Attribute Character ----*/
 
@@ -566,16 +554,5 @@ public enum JSON {
   public String toString()
   {
     return label;
-  }
-
-  public static String createControllerNotifyListenerCall(String qualifiedAction)
-  {
-    String baseAction = qualifiedAction.replaceFirst("\\" + MdActionInfo.ACTION_SUFFIX + "$", "");
-    int ind = baseAction.lastIndexOf(".");
-    String base = baseAction.substring(0, ind);
-    String action = baseAction.substring(ind + 1);
-    String upperActionName = action.substring(0, 1).toUpperCase() + action.substring(1);
-
-    return RUNWAY_PACKAGE_NS.getLabel() + "." + base + "._notify" + upperActionName + "Listener";
   }
 }

@@ -208,18 +208,18 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
 
       for (MdTransientDAOIF subMdTransientIF : this.getAllSubClasses())
       {
-        if (subMdTransientIF.getId() == this.getId())
+        if (subMdTransientIF.getOid() == this.getOid())
         {
           continue;
         }
 
-        LockObject.getLockObject().appLock(subMdTransientIF.getId());
+        LockObject.getLockObject().appLock(subMdTransientIF.getOid());
 
         MdTransientDAO subMdTransient = subMdTransientIF.getBusinessDAO();
         subMdTransient.setIsPublished(this.isPublished());
         subMdTransient.save(true);
 
-        LockObject.getLockObject().releaseAppLock(subMdTransientIF.getId());
+        LockObject.getLockObject().releaseAppLock(subMdTransientIF.getOid());
       }
     }    
     
@@ -241,7 +241,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   {
     boolean applied = this.isAppliedToDB();
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     if (this.isNew() && !applied)
     {
@@ -265,7 +265,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
       this.updateInheritanceRelationshipKey();
     }
 
-    return id;
+    return oid;
   }
 
   /**

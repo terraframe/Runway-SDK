@@ -53,7 +53,7 @@ public class StructEnumerationHandler extends EnumerationHandler
    * @param previousHandler The XMLHandler in which control was passed from
    * @param manager ImportManager which provides communication between handlers for a single import
    * @param attributes The attributes of the instance tag
-   * @param current The EntityDAO which defines the attribute-multiple id mapping     
+   * @param current The EntityDAO which defines the attribute-multiple oid mapping     
    */
   public StructEnumerationHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager, AttributeStruct attributeStruct, Attributes attributes) throws SAXException
   {

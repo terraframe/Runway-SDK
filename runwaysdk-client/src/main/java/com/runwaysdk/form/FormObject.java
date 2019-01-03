@@ -37,12 +37,12 @@ public abstract class FormObject
   private Map<String, FieldIF> fields;
 
   /**
-   * The id of this FormObject.
+   * The oid of this FormObject.
    */
-  private String               id;
+  private String               oid;
 
   /**
-   * The id of the underlying data object.
+   * The oid of the underlying data object.
    */
   private String               dataId;
 
@@ -74,9 +74,9 @@ public abstract class FormObject
     this.fields = fields;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   public Boolean isNewInstance()
@@ -151,9 +151,9 @@ public abstract class FormObject
     return this.writable;
   }
 
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
   protected void setDataId(String dataId)

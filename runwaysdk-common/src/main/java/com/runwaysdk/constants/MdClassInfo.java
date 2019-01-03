@@ -26,9 +26,9 @@ public interface MdClassInfo extends MdTypeInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdClass";
 
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "20070920NM000000000000000000000100000000000000000000000000000001";  
+  public static final String ID_VALUE  = "b84c91fd-00f4-351b-8e23-d9187900003a";  
   
   /**
    * A published class has a representation in the DTO layer.

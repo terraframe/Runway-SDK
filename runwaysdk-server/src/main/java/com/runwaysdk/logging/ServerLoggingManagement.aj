@@ -34,7 +34,7 @@ public aspect ServerLoggingManagement
 
     if (session != null)
     {
-      return session.getId();
+      return session.getOid();
     }
 
     return proceed();

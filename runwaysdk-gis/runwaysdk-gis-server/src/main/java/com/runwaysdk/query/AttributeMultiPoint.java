@@ -20,8 +20,8 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
-import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 
 public class AttributeMultiPoint extends AttributeGeometry
 {

@@ -56,9 +56,9 @@ public interface VaultFileDAOIF extends BusinessDAOIF, FileIF
   public String getVaultFilePath();
   
   /**
-   * Returns the id of the Vault which the file resides within.
+   * Returns the oid of the Vault which the file resides within.
    * 
-   * @return id of the Vault which the file resides within.
+   * @return oid of the Vault which the file resides within.
    */
   public String getVaultReference();
   

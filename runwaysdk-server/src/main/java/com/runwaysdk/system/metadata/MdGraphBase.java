@@ -41,9 +41,9 @@ public abstract class MdGraphBase extends com.runwaysdk.system.metadata.MdRelati
     return CLASS;
   }
   
-  public static MdGraph get(String id)
+  public static MdGraph get(String oid)
   {
-    return (MdGraph) com.runwaysdk.business.Business.get(id);
+    return (MdGraph) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdGraph getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdGraphBase extends com.runwaysdk.system.metadata.MdRelati
     return (MdGraph) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdGraph lock(java.lang.String id)
+  public static MdGraph lock(java.lang.String oid)
   {
-    MdGraph _instance = MdGraph.get(id);
+    MdGraph _instance = MdGraph.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdGraph unlock(java.lang.String id)
+  public static MdGraph unlock(java.lang.String oid)
   {
-    MdGraph _instance = MdGraph.get(id);
+    MdGraph _instance = MdGraph.get(oid);
     _instance.unlock();
     
     return _instance;

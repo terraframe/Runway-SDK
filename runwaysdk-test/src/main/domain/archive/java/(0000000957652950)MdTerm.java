@@ -117,7 +117,7 @@ public class Sandbox
     MdBusinessDAOIF superMdBusiness = MdBusinessDAO.getMdBusinessDAO(MdBusinessInfo.CLASS);
 
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdBusiness.getId());
+    mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdBusiness.getOid());
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
     mdBusiness.setValue(MdBusinessInfo.NAME, "MdTerm");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Business for term definition");
@@ -130,7 +130,7 @@ public class Sandbox
     MdBusinessDAOIF enumerationMaster = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
 
     MdBusinessDAO relationshipTypeEnumerationMaster = MdBusinessDAO.newInstance();
-    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
+    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getOid());
     relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
     relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.NAME, "AssociationTypeEnum");
     relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
@@ -158,7 +158,7 @@ public class Sandbox
     MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
     mdEnumeration.setValue(MdEnumerationInfo.NAME, "AssociationType");
     mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, relationshipTypeEnumerationMaster.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, relationshipTypeEnumerationMaster.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Association type enumeration");
     mdEnumeration.apply();
@@ -166,7 +166,7 @@ public class Sandbox
     MdBusinessDAOIF superMdRelationship = MdBusinessDAO.getMdBusinessDAO(MdRelationshipInfo.CLASS);
 
     MdBusinessDAO mdRelationship = MdBusinessDAO.newInstance();
-    mdRelationship.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdRelationship.getId());
+    mdRelationship.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdRelationship.getOid());
     mdRelationship.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
     mdRelationship.setValue(MdBusinessInfo.NAME, "MdTermRelationship");
     mdRelationship.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata for defining relationships between terms");
@@ -180,8 +180,8 @@ public class Sandbox
     mdAttribute.setValue(MdAttributeEnumerationInfo.NAME, "associationType");
     mdAttribute.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Association type");
     mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
-    mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdRelationship.getId());
+    mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
+    mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
     mdAttribute.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
     
@@ -195,7 +195,7 @@ public class Sandbox
     mdAttributeTerm.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for term attributes");
     mdAttributeTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeTerm");
     mdAttributeTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeReference.getId());
+    mdAttributeTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeReference.getOid());
     mdAttributeTerm.setGenerateMdController(false);
     mdAttributeTerm.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     mdAttributeTerm.apply();

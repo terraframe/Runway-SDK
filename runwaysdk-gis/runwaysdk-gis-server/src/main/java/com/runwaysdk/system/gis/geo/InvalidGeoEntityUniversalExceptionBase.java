@@ -30,7 +30,7 @@ public abstract class InvalidGeoEntityUniversalExceptionBase extends com.runways
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException";
   public static java.lang.String CHILDUNIVERSAL = "childUniversal";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   private static final long serialVersionUID = 1113355236;
   
@@ -82,20 +82,20 @@ public abstract class InvalidGeoEntityUniversalExceptionBase extends com.runways
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getParentUniversal()
@@ -135,7 +135,7 @@ public abstract class InvalidGeoEntityUniversalExceptionBase extends com.runways
   {
     java.lang.String message = super.localize(locale);
     message = replace(message, "{childUniversal}", this.getChildUniversal());
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{parentUniversal}", this.getParentUniversal());
     return message;
   }

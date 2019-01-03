@@ -157,9 +157,9 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeIntegerDAOIF get(String id)
+  public static MdAttributeIntegerDAOIF get(String oid)
   {
-    return (MdAttributeIntegerDAOIF) BusinessDAO.get(id);
+    return (MdAttributeIntegerDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

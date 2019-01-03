@@ -41,9 +41,9 @@ public abstract class DatabaseAllPathsStrategyBase extends com.runwaysdk.system.
     return CLASS;
   }
   
-  public static DatabaseAllPathsStrategy get(String id)
+  public static DatabaseAllPathsStrategy get(String oid)
   {
-    return (DatabaseAllPathsStrategy) com.runwaysdk.business.Business.get(id);
+    return (DatabaseAllPathsStrategy) com.runwaysdk.business.Business.get(oid);
   }
   
   public static DatabaseAllPathsStrategy getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class DatabaseAllPathsStrategyBase extends com.runwaysdk.system.
     return (DatabaseAllPathsStrategy) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static DatabaseAllPathsStrategy lock(java.lang.String id)
+  public static DatabaseAllPathsStrategy lock(java.lang.String oid)
   {
-    DatabaseAllPathsStrategy _instance = DatabaseAllPathsStrategy.get(id);
+    DatabaseAllPathsStrategy _instance = DatabaseAllPathsStrategy.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static DatabaseAllPathsStrategy unlock(java.lang.String id)
+  public static DatabaseAllPathsStrategy unlock(java.lang.String oid)
   {
-    DatabaseAllPathsStrategy _instance = DatabaseAllPathsStrategy.get(id);
+    DatabaseAllPathsStrategy _instance = DatabaseAllPathsStrategy.get(oid);
     _instance.unlock();
     
     return _instance;

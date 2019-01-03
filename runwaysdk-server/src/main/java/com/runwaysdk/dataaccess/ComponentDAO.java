@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -65,27 +64,27 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
 
 
   /**
-   * Returns the ID of this Component.
+   * Returns the OID of this Component.
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> The state of
    * the InfoObject does not change <br/><b>Postcondition:</b> return value !=
    * null
    *
-   * @return The ID of this Component.
+   * @return The OID of this Component.
    */
-  public String getId()
+  public String getOid()
   {
-    return this.getAttributeIF(ComponentInfo.ID).getValue();
+    return this.getAttributeIF(ComponentInfo.OID).getValue();
   }
 
   /**
-   * Returns the root id of this component.
+   * Returns the root oid of this component.
    *
-   * @return root id of this component.
+   * @return root oid of this component.
    */
-  public String getRootId()
+  public String getBaseOid()
   {
-    return IdParser.parseRootFromId(this.getId());
+    return IdParser.parseRootFromId(this.getOid());
   }
 
   /**
@@ -411,11 +410,11 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
 
   public int compareTo(ComponentDAO obj)
   {
-    return this.getId().compareTo(obj.getId());
+    return this.getOid().compareTo(obj.getOid());
   }
 
   /**
-   * Compares the ID field.  Returns true if they are the same value, false otherwise.
+   * Compares the OID field.  Returns true if they are the same value, false otherwise.
    */
   public boolean equals(Object obj)
   {
@@ -425,12 +424,12 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
     }
     else
     {
-      return this.getId().equals(((ComponentDAO)obj).getId());
+      return this.getOid().equals(((ComponentDAO)obj).getOid());
     }
   }
 
   public int hashCode()
   {
-    return this.getId().hashCode();
+    return this.getOid().hashCode();
   }
 }

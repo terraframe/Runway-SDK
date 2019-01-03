@@ -64,7 +64,7 @@ public class LockException extends BusinessException
    *          developer message is saved for later retrieval by the
    *          {@link #getMessage()} method.
    * @param entity entity on which a lock was attempted.
-   * @param userId id of the user attempting a lock.
+   * @param userId oid of the user attempting a lock.
    */
   public LockException(String devMessage, Entity entity, String errorProperty)
   {

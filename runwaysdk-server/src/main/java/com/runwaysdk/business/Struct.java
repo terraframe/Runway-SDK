@@ -239,8 +239,8 @@ public class Struct extends Entity implements StructInfo
   {
     MdAttributeDAOIF mdAttribute = component.getMdAttributeDAO(structName).getMdAttributeConcrete();
 
-    String id = mdAttribute.getValue(MdAttributeStructInfo.MD_STRUCT);
-    String structType = MdStructDAO.get(id).definesType();
+    String oid = mdAttribute.getValue(MdAttributeStructInfo.MD_STRUCT);
+    String structType = MdStructDAO.get(oid).definesType();
 
     try
     {
@@ -384,7 +384,7 @@ public class Struct extends Entity implements StructInfo
    * @param name
    *          String name of the enumerated attribute
    * @param item
-   *          ID of the enumeration item
+   *          OID of the enumeration item
    */
   public void addEnumItem(String name, String item)
   {
@@ -404,7 +404,7 @@ public class Struct extends Entity implements StructInfo
    * @param name
    *          String name of the enumerated attribute
    * @param item
-   *          ID of the enumeration item
+   *          OID of the enumeration item
    */
   public void removeEnumItem(String name, String item)
   {
@@ -446,9 +446,9 @@ public class Struct extends Entity implements StructInfo
   public void appLock(String userId)
   {
     // Wait until this thread attains a lock on this object
-    ( LockObject.getLockObject() ).appLock(this.getId());
+    ( LockObject.getLockObject() ).appLock(this.getOid());
 
-    this.setDataEntity( ( EntityDAO.get(this.entityDAO.getId()) ).getEntityDAO());
+    this.setDataEntity( ( EntityDAO.get(this.entityDAO.getOid()) ).getEntityDAO());
   }
 
   /**
@@ -501,25 +501,25 @@ public class Struct extends Entity implements StructInfo
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database by using reflection. The returned Entity is type safe.
+   * Returns an object of the specified type with the specified oid from the database by using reflection. The returned Entity is type safe.
    *
-   * @param id
-   *          ID of the instance to get.
-   * @return Type safe Struct representing the id in the database.
+   * @param oid
+   *          OID of the instance to get.
+   * @return Type safe Struct representing the oid in the database.
    */
-  public static Struct get(String id)
+  public static Struct get(String oid)
   {
     // An empty string likely indicates the value was never set in the database.
-    if (id == null || id.length() == 0)
+    if (oid == null || oid.length() == 0)
     {
-      String errMsg = "Object with id [" + id + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
+      String errMsg = "Object with oid [" + oid + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
 
-      throw new InvalidIdException(errMsg, id);
+      throw new InvalidIdException(errMsg, oid);
     }
 
     // This cast is OK, as lock checks are in place to prevent this StructDAO
     // from being modified via setters on the business object.
-    StructDAO object = (StructDAO) StructDAO.get(id);
+    StructDAO object = (StructDAO) StructDAO.get(oid);
     Struct struct = (Struct) Struct.instantiate(object);
     struct.entityDAO = object;
 
@@ -534,7 +534,7 @@ public class Struct extends Entity implements StructInfo
    *          type of the instance to get
    * @param key
    *          key of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
   public static Struct get(String type, String key)
   {
@@ -548,15 +548,15 @@ public class Struct extends Entity implements StructInfo
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Struct is not typesafe, meaning that its actual type just a Struct.
+   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Struct is not typesafe, meaning that its actual type just a Struct.
    *
-   * @param id
-   *          ID of the instance to get.
-   * @return Type unsafe Struct representing the id in the database.
+   * @param oid
+   *          OID of the instance to get.
+   * @return Type unsafe Struct representing the oid in the database.
    */
-  public static Struct getStruct(String id)
+  public static Struct getStruct(String oid)
   {
-    StructDAO object = StructDAO.get(id).getStructDAO();
+    StructDAO object = StructDAO.get(oid).getStructDAO();
     return Struct.typeUnsafeStructFactory(object);
   }
 

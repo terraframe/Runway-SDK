@@ -66,7 +66,6 @@
       <xs:element name="mdWarning" type="mdException" />
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
-      <xs:element name="mdController" type="mdController" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
@@ -97,7 +96,6 @@
       <xs:element name="mdWarning" type="mdException" />
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
-      <xs:element name="mdController" type="mdController" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
@@ -233,19 +231,6 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <!--A state in a mdStateMachine -->
-  <xs:complexType name="state">
-    <xs:complexContent>
-      <xs:extension base="metadata">
-        <!--name: The name of the state master -->
-        <xs:attribute name="name" type="xs:string" use="required" />
-        <!--entry: The state entry parameter -->
-        <xs:attribute name="entry" type="entryOptions"></xs:attribute>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-
   <!--Common Attributes of classes that extend MdType -->
   <xs:complexType name="mdType">
     <xs:complexContent>
@@ -271,25 +256,6 @@
           <!--The methods defined for the mdFacade -->
           <xs:element name="mdMethod" type="mdMethod" minOccurs="0" maxOccurs="unbounded" />
           <xs:element name="create" type="mdFacadeOptions" minOccurs="0" maxOccurs="1" />
-          <xs:element name="stubSource" minOccurs="0" maxOccurs="1" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="mdControllerOptions">
-    <xs:sequence>
-      <xs:element name="mdAction" type="mdAction" minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdController">
-    <xs:complexContent>
-      <xs:extension base="mdType">
-        <xs:sequence>
-          <!--The methods defined for the MdControllers -->
-          <xs:element name="mdAction" type="mdAction" minOccurs="0" maxOccurs="unbounded" />
-          <xs:element name="create" type="mdControllerOptions" minOccurs="0" maxOccurs="1" />
           <xs:element name="stubSource" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
@@ -591,6 +557,7 @@
       <xs:extension base="mdClass">
         <xs:attribute name="extendable" type="xs:boolean" use="optional" />
         <xs:attribute name="isAbstract" type="xs:boolean" use="optional" />
+        <xs:attribute name="generateSource" type="xs:boolean" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -665,7 +632,6 @@
           <xs:element name="dtoStubSource" minOccurs="0" maxOccurs="1" />
         </xs:choice>
         <xs:attribute name="table" type="xs:string" use="optional" />
-        <xs:attribute name="generateController" type="xs:boolean" use="optional" />
         <xs:attribute name="enforceSiteMaster" type="xs:boolean" use="optional" />
         <xs:attribute name="hasDeterministicId" type="xs:boolean" use="optional" />
       </xs:extension>
@@ -704,6 +670,7 @@
         <xs:attribute name="extendable" type="xs:boolean" />
         <!--abstract: If the mdBusiness is abstract -->
         <xs:attribute name="isAbstract" type="xs:boolean" />
+        <xs:attribute name="generateSource" type="xs:boolean" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -711,9 +678,6 @@
   <xs:complexType name="mdBusinessOptions">
     <xs:complexContent>
       <xs:extension base="mdEntityOptions">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="mdStateMachine" type="mdStateMachine" minOccurs="0" maxOccurs="1" />
-        </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -735,7 +699,6 @@
     <xs:complexContent>
       <xs:extension base="mdBusinessBase">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="mdStateMachine" type="mdStateMachine" minOccurs="0" maxOccurs="1" />
           <xs:element name="create" type="mdBusinessOptions" minOccurs="0" maxOccurs="1" />
         </xs:choice>
       </xs:extension>
@@ -805,8 +768,8 @@
     <xs:attribute name="extendable" type="xs:boolean" />
     <!--abstract: If the mdBusiness is abstract -->
     <xs:attribute name="isAbstract" type="xs:boolean" />
+    <xs:attribute name="generateSource" type="xs:boolean" use="optional" />
     <xs:attribute name="table" type="xs:string" use="optional" />
-    <xs:attribute name="generateController" type="xs:boolean" use="optional" />
     <xs:attribute name="enforceSiteMaster" type="xs:boolean" use="optional" />
     <xs:attribute name="hasDeterministicId" type="xs:boolean" use="optional" />
     <xs:attribute name="removable" type="xs:string" use="optional" />
@@ -833,50 +796,6 @@
     <xs:attribute name="cardinality" use="required" type="xs:string" />
     <!--method: The name of the call method -->
     <xs:attribute name="method" use="required" type="xs:string" />
-    <xs:anyAttribute processContents="skip" />
-  </xs:complexType>
-
-  <xs:complexType name="states">
-    <xs:sequence minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="state" type="state" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="transitions">
-    <xs:sequence minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="transition" type="transition" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdStateMachineOptions">
-    <xs:sequence>
-      <xs:element name="states" type="states" minOccurs="0" maxOccurs="1" />
-      <xs:element name="transitions" type="transitions" minOccurs="0" maxOccurs="1" />
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="mdStateMachine">
-    <xs:complexContent>
-      <xs:extension base="mdType">
-        <xs:sequence>
-          <xs:element name="states" type="states" />
-          <xs:element name="transitions" type="transitions" />
-          <xs:element name="create" type="mdStateMachineOptions" minOccurs="0" maxOccurs="1" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <!--A transition in an mdStateMachine -->
-  <xs:complexType name="transition">
-    <!--name: The name of the transitionDAO -->
-    <xs:attribute name="name" type="xs:string" use="required" />
-    <!--label: The display label of the transitionDAO -->
-    <xs:attribute name="label" type="xs:string" use="optional" />
-    <!--source: The name of the source state -->
-    <xs:attribute name="source" type="xs:string" />
-    <!--sink: The name of the sink state -->
-    <xs:attribute name="sink" type="xs:string" />
     <xs:anyAttribute processContents="skip" />
   </xs:complexType>
 
@@ -925,9 +844,9 @@
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <!--The attribute-value pairings of the object -->
       <xs:element ref="attribute" />
-      <!--The attribute-xml id pairing of the object -->
+      <!--The attribute-xml oid pairing of the object -->
       <xs:element ref="attributeReference" />
-      <!--The attribute-multi xml id pairing of the object -->
+      <!--The attribute-multi xml oid pairing of the object -->
       <xs:element ref="attributeEnumeration" />
       <!--The struct attribute values -->
       <xs:element ref="attributeStruct" />
@@ -944,9 +863,9 @@
   <xs:complexType name="relationshipCreate">
     <xs:complexContent>
       <xs:extension base="entity">
-        <!--parentKey: The xml id of the object of the parent -->
+        <!--parentKey: The xml oid of the object of the parent -->
         <xs:attribute name="parentKey" type="xs:string" use="required" />
-        <!--childKey: The xml id of the object of the child -->
+        <!--childKey: The xml oid of the object of the child -->
         <xs:attribute name="childKey" type="xs:string" use="required" />
       </xs:extension>
     </xs:complexContent>
@@ -993,9 +912,9 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!--The attribute-value pairings of the object -->
         <xs:element ref="attribute" />
-        <!--The attribute-multi xml id pairing of the object -->
+        <!--The attribute-multi xml oid pairing of the object -->
         <xs:element ref="attributeEnumeration" />
-        <!--The attribute-xml id pairing of the object -->
+        <!--The attribute-xml oid pairing of the object -->
         <xs:element ref="attributeReference" />
       </xs:choice>
       <!--attribute: The name of the struct attribute -->
@@ -1008,6 +927,7 @@
   <!--A list of all possible attributes -->
   <xs:complexType name="attributes">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="uuid" type="char" />
       <xs:element name="char" type="char" />
       <xs:element name="text" type="text" />
       <xs:element name="clob" type="clob" />
@@ -1231,7 +1151,8 @@
 
   <!-- referenceName: Must reference a defined enumerationFilter type selectMultiple: Check boxes vs. Radio Buttons -->
   <xs:complexType name="enumeration">
-    <xs:attributeGroup ref="attributeReference" />
+    <xs:attributeGroup ref="attribute" />
+    <xs:attribute name="type" type="xs:string" />
     <!-- selectMultipe: If multiple values of the enumeration can be checked simulataneously -->
     <xs:attribute name="selectMultiple" type="xs:boolean" />
   </xs:complexType>

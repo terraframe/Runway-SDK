@@ -20,60 +20,49 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.business.Util;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.request.RMIClientRequest;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class RMIInvokeUtilDTOMethodTest extends InvokeUtilDTOMethodTest
 {
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   *
-   * @param args
-   */
-  public static void main(String[] args)
+  @BeforeClass
+  @Request
+  public static void classSetUp()
   {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
+    TestRMIUtil.startServer();
+    systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
 
-    junit.textui.TestRunner.run(RMIInvokeUtilDTOMethodTest.suite());
+    mdSessionDTO = MdUtilDAO.newInstance();
+    bag = MdUtilDAO.newInstance();
+
+    superClassField = MdUtilInfo.SUPER_MD_UTIL;
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + Util.class.getName() + ".get(oid);";
+    
+    modelSetup();
   }
 
-  public static Test suite()
+  @AfterClass
+  @Request  
+  public static void classTearDown()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RMIInvokeUtilDTOMethodTest.class);
+    modelTearDown();
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        TestRMIUtil.startServer();
-        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
+    systemSession.logout();
 
-        moreSetup();
-
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
-        RemoteAdapterServer.stopServer();
-      }
-    };
-
-    return wrapper;
+    ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
+    RemoteAdapterServer.stopServer();
   }
 }

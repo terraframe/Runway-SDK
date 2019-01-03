@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class BefriendsController extends BefriendsControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class BefriendsController extends BefriendsControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/Befriends/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";
@@ -33,20 +33,20 @@ public class BefriendsController extends BefriendsControllerBase implements com.
   public void cancel(com.runwaysdk.jstest.BefriendsDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     dto.unlock();
-    this.view(dto.getId());
+    this.view(dto.getOid());
   }
   public void failCancel(com.runwaysdk.jstest.BefriendsDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.edit(dto.getId());
+    this.edit(dto.getOid());
   }
-  public void childQuery(java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void childQuery(java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.jstest.BefriendsQueryDTO query = com.runwaysdk.jstest.BefriendsDTO.childQuery(clientRequest, childId);
+    com.runwaysdk.jstest.BefriendsQueryDTO query = com.runwaysdk.jstest.BefriendsDTO.childQuery(clientRequest, childOid);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failChildQuery(java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void failChildQuery(java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     resp.sendError(500);
   }
@@ -55,7 +55,7 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -84,24 +84,24 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.jstest.BefriendsDTO dto = com.runwaysdk.jstest.BefriendsDTO.lock(super.getClientRequest(), id);
+    com.runwaysdk.jstest.BefriendsDTO dto = com.runwaysdk.jstest.BefriendsDTO.lock(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(id);
+    this.view(oid);
   }
-  public void newInstance(java.lang.String parentId, java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void newInstance(java.lang.String parentOid, java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.jstest.BefriendsDTO dto = new com.runwaysdk.jstest.BefriendsDTO(clientRequest, parentId, childId);
+    com.runwaysdk.jstest.BefriendsDTO dto = new com.runwaysdk.jstest.BefriendsDTO(clientRequest, parentOid, childOid);
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void failNewInstance(java.lang.String parentId, java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void failNewInstance(java.lang.String parentOid, java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }
@@ -115,14 +115,14 @@ public class BefriendsController extends BefriendsControllerBase implements com.
   {
     resp.sendError(500);
   }
-  public void parentQuery(java.lang.String parentId) throws java.io.IOException, javax.servlet.ServletException
+  public void parentQuery(java.lang.String parentOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.jstest.BefriendsQueryDTO query = com.runwaysdk.jstest.BefriendsDTO.parentQuery(clientRequest, parentId);
+    com.runwaysdk.jstest.BefriendsQueryDTO query = com.runwaysdk.jstest.BefriendsDTO.parentQuery(clientRequest, parentOid);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failParentQuery(java.lang.String parentId) throws java.io.IOException, javax.servlet.ServletException
+  public void failParentQuery(java.lang.String parentOid) throws java.io.IOException, javax.servlet.ServletException
   {
     resp.sendError(500);
   }
@@ -131,7 +131,7 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -143,13 +143,13 @@ public class BefriendsController extends BefriendsControllerBase implements com.
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.jstest.BefriendsDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.jstest.BefriendsDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }

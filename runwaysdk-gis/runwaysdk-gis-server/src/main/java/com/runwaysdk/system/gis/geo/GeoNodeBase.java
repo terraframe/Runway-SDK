@@ -33,7 +33,7 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOENTITYATTRIBUTE = "geoEntityAttribute";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,7 +129,7 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -169,24 +169,24 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(GEOENTITYATTRIBUTE, value.getId());
+      setValue(GEOENTITYATTRIBUTE, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoNode.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -325,7 +325,7 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -382,9 +382,9 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
     return CLASS;
   }
   
-  public static GeoNode get(String id)
+  public static GeoNode get(String oid)
   {
-    return (GeoNode) com.runwaysdk.business.Business.get(id);
+    return (GeoNode) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeoNode getByKey(String key)
@@ -392,17 +392,17 @@ public abstract class GeoNodeBase extends com.runwaysdk.business.Business
     return (GeoNode) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GeoNode lock(java.lang.String id)
+  public static GeoNode lock(java.lang.String oid)
   {
-    GeoNode _instance = GeoNode.get(id);
+    GeoNode _instance = GeoNode.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeoNode unlock(java.lang.String id)
+  public static GeoNode unlock(java.lang.String oid)
   {
-    GeoNode _instance = GeoNode.get(id);
+    GeoNode _instance = GeoNode.get(oid);
     _instance.unlock();
     
     return _instance;

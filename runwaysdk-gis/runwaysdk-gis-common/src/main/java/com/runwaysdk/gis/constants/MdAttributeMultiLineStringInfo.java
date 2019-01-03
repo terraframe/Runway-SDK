@@ -26,7 +26,7 @@ public interface MdAttributeMultiLineStringInfo extends MdAttributeGeometryInfo
   public static final String CLASS   = GISConstants.GIS_METADATA_PACKAGE+".MdAttributeMultiLineString";
 
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "NM20090303020000000000000000000100000000000000000000000000000001";
+  public static final String ID_VALUE  = "NM2009030302000000000000000000010058";
 }

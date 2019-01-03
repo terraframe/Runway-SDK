@@ -22,14 +22,14 @@ public class ExceptionInheritance extends ExceptionInheritanceBase
 {
   private static final long serialVersionUID = 1229405888092L;
   
-  public ExceptionInheritance(String parentId, String childId)
+  public ExceptionInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ExceptionInheritance(com.runwaysdk.system.metadata.MdException parent, com.runwaysdk.system.metadata.MdException child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

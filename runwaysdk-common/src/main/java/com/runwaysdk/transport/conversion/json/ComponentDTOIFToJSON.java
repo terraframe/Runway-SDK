@@ -96,8 +96,8 @@ public abstract class ComponentDTOIFToJSON extends DTOToJSON
    */
   protected void setProperties() throws JSONException
   {
-    // id
-    json.put(JSON.ENTITY_DTO_ID.getLabel(), componentDTOIF.getId());
+    // oid
+    json.put(JSON.ENTITY_DTO_ID.getLabel(), componentDTOIF.getOid());
 
     // type
     json.put(JSON.COMPONENT_DTO_TYPE.getLabel(), componentDTOIF.getType());
@@ -124,7 +124,7 @@ public abstract class ComponentDTOIFToJSON extends DTOToJSON
     JSONObject typeMd = new JSONObject();
     typeMd.put(JSON.TYPE_MD_DISPLAY_LABEL.getLabel(), componentDTOIF.getMd().getDisplayLabel());
     typeMd.put(JSON.TYPE_MD_DESCRIPTION.getLabel(), componentDTOIF.getMd().getDescription());
-    typeMd.put(JSON.TYPE_MD_ID.getLabel(), componentDTOIF.getMd().getId());
+    typeMd.put(JSON.TYPE_MD_ID.getLabel(), componentDTOIF.getMd().getOid());
 
     json.put(JSON.TYPE_MD.getLabel(), typeMd);
   }

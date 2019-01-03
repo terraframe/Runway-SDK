@@ -114,13 +114,13 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeLocalCharacter mdAttributeLocalCharacter)
     {
       if(mdAttributeLocalCharacter == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeLocalCharacter.getId());
+      return this.EQ(mdAttributeLocalCharacter.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeLocalCharacter mdAttributeLocalCharacter)
     {
       if(mdAttributeLocalCharacter == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeLocalCharacter.getId());
+      return this.NE(mdAttributeLocalCharacter.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeLocalCharacter.length; i++)
       {
-        itemIdArray[i] = mdAttributeLocalCharacter[i].getId();
+        itemIdArray[i] = mdAttributeLocalCharacter[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeLocalCharacter.length; i++)
       {
-        itemIdArray[i] = mdAttributeLocalCharacter[i].getId();
+        itemIdArray[i] = mdAttributeLocalCharacter[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeLocalCharacter.length; i++)
       {
-        itemIdArray[i] = mdAttributeLocalCharacter[i].getId();
+        itemIdArray[i] = mdAttributeLocalCharacter[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeLocalCharacter.length; i++)
       {
-        itemIdArray[i] = mdAttributeLocalCharacter[i].getId();
+        itemIdArray[i] = mdAttributeLocalCharacter[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeLocalCharacterQuery extends com.runwaysdk.system.metada
 
       for (int i=0; i<mdAttributeLocalCharacter.length; i++)
       {
-        itemIdArray[i] = mdAttributeLocalCharacter[i].getId();
+        itemIdArray[i] = mdAttributeLocalCharacter[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

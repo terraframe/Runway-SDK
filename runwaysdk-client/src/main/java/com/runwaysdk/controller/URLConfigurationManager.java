@@ -47,9 +47,9 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.ActionMapping;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.mvc.ResponseIF;
-import com.runwaysdk.mvc.Endpoint;
 import com.runwaysdk.mvc.Controller;
+import com.runwaysdk.mvc.Endpoint;
+import com.runwaysdk.mvc.ResponseIF;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 

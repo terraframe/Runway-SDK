@@ -76,20 +76,20 @@ public class AttributeMultiReferenceDTO extends AttributeDTO implements Serializ
     this.itemIdSet = new HashSet<String>();
   }
 
-  public void addItem(String id)
+  public void addItem(String oid)
   {
     if (isWritable())
     {
-      addItemInternal(id);
+      addItemInternal(oid);
       setModified(true);
     }
   }
 
-  void addItemInternal(String id)
+  void addItemInternal(String oid)
   {
     if (isReadable() || isWritable())
     {
-      this.itemIdSet.add(id);
+      this.itemIdSet.add(oid);
     }
   }
 
@@ -98,11 +98,11 @@ public class AttributeMultiReferenceDTO extends AttributeDTO implements Serializ
     this.addItem(value);
   }
 
-  public void removeItem(String id)
+  public void removeItem(String oid)
   {
     if (isWritable())
     {
-      this.itemIdSet.remove(id);
+      this.itemIdSet.remove(oid);
       setModified(true);
     }
   }

@@ -41,9 +41,9 @@ public abstract class MdWebPointBase extends com.runwaysdk.system.gis.metadata.M
     return CLASS;
   }
   
-  public static MdWebPoint get(String id)
+  public static MdWebPoint get(String oid)
   {
-    return (MdWebPoint) com.runwaysdk.business.Business.get(id);
+    return (MdWebPoint) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebPoint getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebPointBase extends com.runwaysdk.system.gis.metadata.M
     return (MdWebPoint) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebPoint lock(java.lang.String id)
+  public static MdWebPoint lock(java.lang.String oid)
   {
-    MdWebPoint _instance = MdWebPoint.get(id);
+    MdWebPoint _instance = MdWebPoint.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebPoint unlock(java.lang.String id)
+  public static MdWebPoint unlock(java.lang.String oid)
   {
-    MdWebPoint _instance = MdWebPoint.get(id);
+    MdWebPoint _instance = MdWebPoint.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -85,10 +85,10 @@ public enum AllOperations implements com.runwaysdk.business.BusinessEnumeration
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -103,11 +103,11 @@ public enum AllOperations implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static AllOperations get(String id)
+  public static AllOperations get(String oid)
   {
     for (AllOperations e : AllOperations.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

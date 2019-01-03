@@ -18,71 +18,42 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-public class MdTermTest extends TestCase
+public class MdTermTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdTermTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * Set the testObject to a new Instance of the TEST type.
    */
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
   }
 
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
   }
 
+  @Request
+  @Test
   public void testCreateAndGetMdTerm()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -92,7 +63,7 @@ public class MdTermTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.apply();
 
     try
@@ -111,6 +82,8 @@ public class MdTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCreateMultiples()
   {
     MdTermDAO mdTerm1 = MdTermDAO.newInstance();
@@ -120,7 +93,7 @@ public class MdTermTest extends TestCase
     mdTerm1.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm1.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm1.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm1.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm1.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm1.apply();
 
     try
@@ -132,7 +105,7 @@ public class MdTermTest extends TestCase
       mdTerm2.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       mdTerm2.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm2.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm2.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm2.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       mdTerm2.apply();
 
       try

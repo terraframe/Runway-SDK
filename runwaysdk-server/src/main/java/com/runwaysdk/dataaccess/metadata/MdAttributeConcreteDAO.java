@@ -598,7 +598,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public boolean isUnique()
   {
     AttributeEnumerationIF unique = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-    if (unique.dereference()[0].getId().equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getId().toLowerCase()))
+    if (unique.dereference()[0].getOid().equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid().toLowerCase()))
       return true;
     else
       return false;
@@ -614,7 +614,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public boolean hasNonUniqueIndex()
   {
     AttributeEnumerationIF unique = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-    if (unique.dereference()[0].getId().equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId().toLowerCase()))
+    if (unique.dereference()[0].getOid().equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getOid().toLowerCase()))
       return true;
     else
       return false;
@@ -664,7 +664,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an ID is created.
+   * BusinessDAO, then records are created in the database and an OID is created.
    * If this is not a new BusinessDAO, then records are modified in the
    * database.
    * 
@@ -679,7 +679,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    *          ture if attributes should be checked for required values, false
    *          otherwise. StructDAOs used for struct attributes may or may not
    *          need required attributes validated.
-   * @return ID of the BusinessDAO.
+   * @return OID of the BusinessDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.
@@ -715,13 +715,13 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       }
     }
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     strategy.setAppliedToDB(isApplied);
 
     strategy.save();
 
-    return id;
+    return oid;
   }
 
   /**
@@ -766,7 +766,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     // Remove virtual attributes that point to this attribute.
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttrVirtualQ = queryFactory.businessDAOQuery(MdAttributeVirtualInfo.CLASS);
-    mdAttrVirtualQ.WHERE(mdAttrVirtualQ.aReference(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE).EQ(this.getId()));
+    mdAttrVirtualQ.WHERE(mdAttrVirtualQ.aReference(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> mdAttrVirtIerator = mdAttrVirtualQ.getIterator();
     try
@@ -815,9 +815,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     }
   }
 
-  public static MdAttributeConcreteDAOIF get(String id)
+  public static MdAttributeConcreteDAOIF get(String oid)
   {
-    return (MdAttributeConcreteDAOIF) BusinessDAO.get(id);
+    return (MdAttributeConcreteDAOIF) BusinessDAO.get(oid);
   }
 
   /**

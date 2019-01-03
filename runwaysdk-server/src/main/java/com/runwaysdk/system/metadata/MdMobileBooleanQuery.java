@@ -114,13 +114,13 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileBoolean mdMobileBoolean)
     {
       if(mdMobileBoolean == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileBoolean.getId());
+      return this.EQ(mdMobileBoolean.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileBoolean mdMobileBoolean)
     {
       if(mdMobileBoolean == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileBoolean.getId());
+      return this.NE(mdMobileBoolean.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileBoolean.length; i++)
       {
-        itemIdArray[i] = mdMobileBoolean[i].getId();
+        itemIdArray[i] = mdMobileBoolean[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileBoolean.length; i++)
       {
-        itemIdArray[i] = mdMobileBoolean[i].getId();
+        itemIdArray[i] = mdMobileBoolean[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileBoolean.length; i++)
       {
-        itemIdArray[i] = mdMobileBoolean[i].getId();
+        itemIdArray[i] = mdMobileBoolean[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileBoolean.length; i++)
       {
-        itemIdArray[i] = mdMobileBoolean[i].getId();
+        itemIdArray[i] = mdMobileBoolean[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileBooleanQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileBoolean.length; i++)
       {
-        itemIdArray[i] = mdMobileBoolean[i].getId();
+        itemIdArray[i] = mdMobileBoolean[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

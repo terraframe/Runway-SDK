@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.mvc;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +43,19 @@ public class RestSerializer implements JsonSerializer
     else if (object instanceof JsonSerializable)
     {
       return ( (JsonSerializable) object ).serialize(this, configuration);
+    }
+    else if (object.getClass().isArray())
+    {
+      JSONArray serialized = new JSONArray();
+      Object[] array = (Object[]) object;
+
+      for (Object obj : array)
+      {
+        Object value = this.serialize(obj, configuration);
+        serialized.put(value);
+      }
+
+      return serialized;
     }
     else
     {

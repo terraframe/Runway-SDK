@@ -34,21 +34,22 @@ public class TypeMd implements Serializable, Cloneable
    */
   private static final long serialVersionUID = 1890119098038816299L;
 
-
   /**
    * The type display label.
    */
-  private String displayLabel;
+  private String            displayLabel;
 
   /**
    * The type description.
    */
-  private String description;
+  private String            description;
 
   /**
-   * The id of the metadata defining the type.
+   * The oid of the metadata defining the type.
    */
-  private String id;
+  private String            oid;
+
+  private Boolean           generateSource;
 
   /**
    * Default constructor.
@@ -57,19 +58,23 @@ public class TypeMd implements Serializable, Cloneable
   {
     displayLabel = "";
     description = "";
-    id = "";
+    oid = "";
+    this.generateSource = true;
   }
 
   /**
    *
    * @param displayLabel
    * @param description
+   * @param generateSource
+   *          TODO
    */
-  public TypeMd(String displayLabel, String description, String id)
+  public TypeMd(String displayLabel, String description, String oid, Boolean generateSource)
   {
     this.displayLabel = displayLabel;
-    this.description  = description;
-    this.id           = id;
+    this.description = description;
+    this.oid = oid;
+    this.generateSource = generateSource;
   }
 
   /**
@@ -113,23 +118,33 @@ public class TypeMd implements Serializable, Cloneable
   }
 
   /**
-   * Returns the id of the metadata that defines this type.
+   * Returns the oid of the metadata that defines this type.
    *
    * @return
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
   /**
-   * Sets the id.
+   * Sets the oid.
    *
-   * @param id
+   * @param oid
    */
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
+  }
+
+  public boolean isGenerateSource()
+  {
+    return this.generateSource;
+  }
+
+  public void setGenerateSource(Boolean generateSource)
+  {
+    this.generateSource = generateSource;
   }
 
   /**
@@ -142,14 +157,14 @@ public class TypeMd implements Serializable, Cloneable
       TypeMd typeMd = (TypeMd) super.clone();
       typeMd.setDescription(description);
       typeMd.setDisplayLabel(displayLabel);
-      typeMd.setId(id);
+      typeMd.setOid(oid);
+      typeMd.setGenerateSource(this.generateSource);
 
       return typeMd;
     }
     catch (CloneNotSupportedException e)
     {
-      CommonExceptionProcessor.processException(
-          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), e.getMessage(), e);
+      CommonExceptionProcessor.processException(ExceptionConstants.ProgrammingErrorException.getExceptionClass(), e.getMessage(), e);
     }
 
     return null;

@@ -18,106 +18,66 @@
  */
 package com.runwaysdk.business;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
+import com.runwaysdk.session.Request;
 
-public class ArabicTest extends TestCase {
-    
-    private static String                  pack = "test.arabic";
-    private static MdBusinessDAO           testMdBusiness;
-    
-    @Override
-    public TestResult run()
-    {
-      return super.run();
-    }
+public class ArabicTest
+{
 
-    @Override
-    public void run(TestResult testResult)
-    {
-      super.run(testResult);
-    }
-	
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite();
-        suite.addTestSuite(ArabicTest.class);
-    
-        TestSetup wrapper = new TestSetup(suite)
-        {
-          protected void setUp()
-          {
-            classSetUp();
-          }
-    
-          protected void tearDown()
-          {
-            classTearDown();
-          }
-        };
-    
-        return wrapper;
-    }
+  private static String        pack = "test.arabic";
 
-	  /**
-	   * Launch-point for the standalone textui JUnit tests in this class.
-	   *
-	   * @param args
-	   */
-	  public static void main(String[] args)
-	  {
-	    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-	      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
+  private static MdBusinessDAO testMdBusiness;
 
-	    junit.textui.TestRunner.run(ArabicTest.suite());
-	  }
+  @Request
+  @BeforeClass
+  public static void classSetUp()
+  {
+    MdBusinessDAOIF enumMasterMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
 
-	protected static void classSetUp() {
-	    MdBusinessDAOIF enumMasterMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
-	    
-	    testMdBusiness = MdBusinessDAO.newInstance();
-	    //testMdBusiness.setValue(MdBusinessInfo.NAME,              "ArabicTest");
-	    testMdBusiness.setValue(MdBusinessInfo.NAME,              "سلام");
-//	    String tableName = testMdBusiness.getValue(MdBusinessInfo.NAME);
-	    testMdBusiness.setValue(MdBusinessInfo.PACKAGE,           pack);
-	    testMdBusiness.setValue(MdBusinessInfo.REMOVE,            MdAttributeBooleanInfo.TRUE);
-	    testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "ArabicTest");
-	    testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE,      "ArabicTest");
-	    testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE,        MdAttributeBooleanInfo.FALSE);
-	    testMdBusiness.setValue(MdBusinessInfo.ABSTRACT,          MdAttributeBooleanInfo.FALSE);
-	    testMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
-	    testMdBusiness.apply();
-	}
+    testMdBusiness = MdBusinessDAO.newInstance();
+    // testMdBusiness.setValue(MdBusinessInfo.NAME, "ArabicTest");
+    testMdBusiness.setValue(MdBusinessInfo.NAME, "سلام");
+    // String tableName = testMdBusiness.getValue(MdBusinessInfo.NAME);
+    testMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
+    testMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "ArabicTest");
+    testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "ArabicTest");
+    testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    testMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
+    testMdBusiness.apply();
+  }
 
-	protected static void classTearDown() {
-	    new MdPackage(pack).delete();
-	}
-	
-	
-	public void testBusinessValueExistence()
-	{
-	    /*
-	    BusinessDAO businessDAO = BusinessDAO.newInstance(testMdBusiness.definesType());
-	    businessDAO.setValue(EnumerationMasterInfo.NAME, "FICTION");
-	    businessDAO.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "EnglishTest");
-	    businessDAO.apply();
-	    */
-	    assertEquals("سلام", testMdBusiness.getTableName());
-	}
+  @Request
+  @AfterClass
+  public static void classTearDown()
+  {
+    new MdPackage(pack).delete();
+  }
+
+  @Request
+  @Test
+  public void testBusinessValueExistence()
+  {
+    /*
+     * BusinessDAO businessDAO =
+     * BusinessDAO.newInstance(testMdBusiness.definesType());
+     * businessDAO.setValue(EnumerationMasterInfo.NAME, "FICTION");
+     * businessDAO.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL,
+     * MdAttributeLocalInfo.DEFAULT_LOCALE, "EnglishTest"); businessDAO.apply();
+     */
+    Assert.assertEquals("سلام", testMdBusiness.getTableName());
+  }
 
 }
-

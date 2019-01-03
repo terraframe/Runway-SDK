@@ -38,7 +38,7 @@ public abstract class Condition implements WebFormComponent
   /**
    * @return the conditionId
    */
-  public String getId()
+  public String getOid()
   {
     return conditionId;
   }
@@ -46,7 +46,7 @@ public abstract class Condition implements WebFormComponent
   /**
    * @param conditionId the conditionId to set
    */
-  public void setId(String conditionId)
+  public void setOid(String conditionId)
   {
     this.conditionId = conditionId;
   }

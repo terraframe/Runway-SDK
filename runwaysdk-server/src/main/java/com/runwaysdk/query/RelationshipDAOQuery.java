@@ -48,15 +48,15 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
   }
 
   /**
-   * Creates a query object with the criteria set to fetch an object with the given id.
-   * @param id ID of the Relationship
-   * @return query object with the criteria set to fetch an object with the given id.
+   * Creates a query object with the criteria set to fetch an object with the given oid.
+   * @param oid OID of the Relationship
+   * @return query object with the criteria set to fetch an object with the given oid.
    */
-  public static RelationshipDAOQuery getRelationshipInstance(String id)
+  public static RelationshipDAOQuery getRelationshipInstance(String oid)
   {
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(mdClassIF.definesType());
-    relationshipQuery.WHERE(relationshipQuery.aCharacter(EntityInfo.ID).EQ(id));
+    relationshipQuery.WHERE(relationshipQuery.aUUID(EntityInfo.OID).EQ(oid));
     relationshipQuery.instanceQuery = true;
 
     return relationshipQuery;
@@ -64,19 +64,19 @@ public class RelationshipDAOQuery extends AbstractRelationshipQuery
 
 
   /**
-   * Creates a query object with the criteria set to fetch an object with the given id.
-   * @param parentId ID of the object in the Relationship
-   * @param childId ID of the object in the Relationship
+   * Creates a query object with the criteria set to fetch an object with the given oid.
+   * @param parentOid OID of the object in the Relationship
+   * @param childOid OID of the object in the Relationship
    * @param relationshipType Type of the Relationship
-   * @return query object with the criteria set to fetch an object with the given id.
+   * @return query object with the criteria set to fetch an object with the given oid.
    */
-  public static RelationshipDAOQuery getRelationshipInstance(String parentId, String childId, String relationshipType)
+  public static RelationshipDAOQuery getRelationshipInstance(String parentOid, String childOid, String relationshipType)
   {
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(relationshipType);
 
     relationshipQuery.
-      WHERE(relationshipQuery.parentId().EQ(parentId).
-      AND(relationshipQuery.childId().EQ(childId))
+      WHERE(relationshipQuery.parentOid().EQ(parentOid).
+      AND(relationshipQuery.childOid().EQ(childOid))
     );
 
     relationshipQuery.instanceQuery = true;

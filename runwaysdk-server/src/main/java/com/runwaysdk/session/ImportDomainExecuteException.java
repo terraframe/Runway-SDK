@@ -24,7 +24,7 @@ import com.runwaysdk.business.BusinessException;
 public class ImportDomainExecuteException extends BusinessException
 {
   /**
-   * Auto generated serial id
+   * Auto generated serial oid
    */
   private static final long serialVersionUID = -2120317742327659958L;
   

@@ -22,9 +22,9 @@ public class UtilInheritanceDTO extends UtilInheritanceDTOBase
 {
   private static final long serialVersionUID = -1637513010;
   
-  public UtilInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public UtilInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

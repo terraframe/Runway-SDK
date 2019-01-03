@@ -174,13 +174,13 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeDouble mdAttributeDouble)
     {
       if(mdAttributeDouble == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeDouble.getId());
+      return this.EQ(mdAttributeDouble.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeDouble mdAttributeDouble)
     {
       if(mdAttributeDouble == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeDouble.getId());
+      return this.NE(mdAttributeDouble.getOid());
     }
 
   public com.runwaysdk.query.SelectableDouble getDefaultValue()
@@ -283,7 +283,7 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeDouble.length; i++)
       {
-        itemIdArray[i] = mdAttributeDouble[i].getId();
+        itemIdArray[i] = mdAttributeDouble[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -295,7 +295,7 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeDouble.length; i++)
       {
-        itemIdArray[i] = mdAttributeDouble[i].getId();
+        itemIdArray[i] = mdAttributeDouble[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -307,7 +307,7 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeDouble.length; i++)
       {
-        itemIdArray[i] = mdAttributeDouble[i].getId();
+        itemIdArray[i] = mdAttributeDouble[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -319,7 +319,7 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeDouble.length; i++)
       {
-        itemIdArray[i] = mdAttributeDouble[i].getId();
+        itemIdArray[i] = mdAttributeDouble[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -331,7 +331,7 @@ public  class MdAttributeDoubleQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeDouble.length; i++)
       {
-        itemIdArray[i] = mdAttributeDouble[i].getId();
+        itemIdArray[i] = mdAttributeDouble[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

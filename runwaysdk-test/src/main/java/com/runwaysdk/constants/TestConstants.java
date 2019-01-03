@@ -22,12 +22,18 @@ import com.runwaysdk.configuration.ConfigurationManager;
 
 public class TestConstants
 {
-  public static class Path {
-    public static String testSrc = "src/main/java";
-    public static String XMLFiles = "src/main/XMLFiles";
-    public static String XLSFiles = "src/main/XLSFiles";
-    public static String schema_xsd = ConfigurationManager.ConfigGroup.XSD.getPath() + "schema.xsd";
-    public static String metadata_xml = ConfigurationManager.ConfigGroup.METADATA.getPath() + "metadata.xml";
+  public static class Path
+  {
+    public static String testSrc                = "src/main/java";
+
+    public static String XMLFiles               = "src/main/XMLFiles";
+
+    public static String XLSFiles               = "src/main/XLSFiles";
+
+    public static String schema_xsd             = ConfigurationManager.ConfigGroup.XSD.getPath() + "schema.xsd";
+
+    public static String metadata_xml           = ConfigurationManager.ConfigGroup.METADATA.getPath() + "metadata.xml";
+
     public static String transactionExportFiles = testSrc + "/TransactionExportFiles";
   }
 }

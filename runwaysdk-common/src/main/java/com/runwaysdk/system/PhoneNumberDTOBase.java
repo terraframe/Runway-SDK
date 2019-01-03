@@ -47,7 +47,7 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
   
   public static java.lang.String AREACODE = "areaCode";
   public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String PREFIX = "prefix";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -262,9 +262,9 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SUFFIX).getAttributeMdDTO();
   }
   
-  public static PhoneNumberDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static PhoneNumberDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (PhoneNumberDTO) dto;
   }
@@ -282,7 +282,7 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.PhoneNumberQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

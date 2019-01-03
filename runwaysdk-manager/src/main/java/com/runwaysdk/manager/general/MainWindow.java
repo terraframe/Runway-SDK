@@ -623,7 +623,7 @@ public class MainWindow extends ApplicationWindow implements IWindow, IAdminModu
 
       public String getKey()
       {
-        return "Search " + entity.getId();
+        return "Search " + entity.getOid();
       }
 
       @Override
@@ -654,7 +654,7 @@ public class MainWindow extends ApplicationWindow implements IWindow, IAdminModu
 
       public String getKey()
       {
-        return "View " + entity.getId();
+        return "View " + entity.getOid();
       }
 
       @Override

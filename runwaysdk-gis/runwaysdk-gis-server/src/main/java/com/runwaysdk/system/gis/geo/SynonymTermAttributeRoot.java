@@ -22,14 +22,14 @@ public class SynonymTermAttributeRoot extends SynonymTermAttributeRootBase
 {
   private static final long serialVersionUID = -1681135371;
   
-  public SynonymTermAttributeRoot(String parentId, String childId)
+  public SynonymTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public SynonymTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.Synonym child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

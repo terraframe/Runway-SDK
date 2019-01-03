@@ -32,7 +32,7 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -44,9 +44,9 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -662995173;
   
-  public TypePermissionBase(String parentId, String childId)
+  public TypePermissionBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()
@@ -129,24 +129,24 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.TypePermission.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -259,7 +259,7 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
   {
     if(value != null)
     {
-      addEnumItem(OPERATIONS, value.getId());
+      addEnumItem(OPERATIONS, value.getOid());
     }
   }
   
@@ -267,7 +267,7 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
   {
     if(value != null)
     {
-      removeEnumItem(OPERATIONS, value.getId());
+      removeEnumItem(OPERATIONS, value.getOid());
     }
   }
   
@@ -323,7 +323,7 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -390,9 +390,9 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
     return (com.runwaysdk.system.metadata.Metadata) super.getChild();
   }
   
-  public static TypePermission get(String id)
+  public static TypePermission get(String oid)
   {
-    return (TypePermission) com.runwaysdk.business.Relationship.get(id);
+    return (TypePermission) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static TypePermission getByKey(String key)
@@ -400,17 +400,17 @@ public abstract class TypePermissionBase extends com.runwaysdk.business.Relation
     return (TypePermission) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static TypePermission lock(java.lang.String id)
+  public static TypePermission lock(java.lang.String oid)
   {
-    TypePermission _instance = TypePermission.get(id);
+    TypePermission _instance = TypePermission.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TypePermission unlock(java.lang.String id)
+  public static TypePermission unlock(java.lang.String oid)
   {
-    TypePermission _instance = TypePermission.get(id);
+    TypePermission _instance = TypePermission.get(oid);
     _instance.unlock();
     
     return _instance;

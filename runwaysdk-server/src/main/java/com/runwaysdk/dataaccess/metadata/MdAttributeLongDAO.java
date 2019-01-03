@@ -156,9 +156,9 @@ public class MdAttributeLongDAO extends MdAttributeNumberDAO implements MdAttrib
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeLongDAOIF get(String id)
+  public static MdAttributeLongDAOIF get(String oid)
   {
-    return (MdAttributeLongDAOIF) BusinessDAO.get(id);
+    return (MdAttributeLongDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

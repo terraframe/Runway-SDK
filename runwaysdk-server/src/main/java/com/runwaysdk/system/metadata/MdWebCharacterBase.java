@@ -128,9 +128,9 @@ public abstract class MdWebCharacterBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdWebCharacter get(String id)
+  public static MdWebCharacter get(String oid)
   {
-    return (MdWebCharacter) com.runwaysdk.business.Business.get(id);
+    return (MdWebCharacter) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebCharacter getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdWebCharacterBase extends com.runwaysdk.system.metadata.M
     return (MdWebCharacter) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebCharacter lock(java.lang.String id)
+  public static MdWebCharacter lock(java.lang.String oid)
   {
-    MdWebCharacter _instance = MdWebCharacter.get(id);
+    MdWebCharacter _instance = MdWebCharacter.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebCharacter unlock(java.lang.String id)
+  public static MdWebCharacter unlock(java.lang.String oid)
   {
-    MdWebCharacter _instance = MdWebCharacter.get(id);
+    MdWebCharacter _instance = MdWebCharacter.get(oid);
     _instance.unlock();
     
     return _instance;

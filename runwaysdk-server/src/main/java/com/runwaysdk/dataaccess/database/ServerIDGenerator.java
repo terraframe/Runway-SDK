@@ -18,16 +18,17 @@
  */
 package com.runwaysdk.dataaccess.database;
 
+import java.util.UUID;
+
 import com.runwaysdk.ConfigurationException;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.util.IDGenerator;
 
-
 /**
  * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the
- * runway. The algorithm is an improvement on the Leach-Salz standard <a
- * href="http://www.ietf.org/rfc/rfc4122.txt">(IETF RFC 4122)</a>, specifically
- * the name-based (Type 3) variant.
+ * runway. The algorithm is an improvement on the Leach-Salz standard
+ * <a href="http://www.ietf.org/rfc/rfc4122.txt">(IETF RFC 4122)</a>,
+ * specifically the name-based (Type 3) variant.
  *
  * Our algorithm uses a domain URL as the namespace, and a combination of the
  * system time (in milliseconds), a sequence number, and random input from
@@ -49,30 +50,14 @@ import com.runwaysdk.util.IDGenerator;
 public class ServerIDGenerator extends IDGenerator
 {
   /**
-   * Instantiates the singleton
-   */
-  protected synchronized static void setUp()
-  {
-    IDGenerator.setUp();
-
-    space = CommonProperties.getDomain();
-
-    // The user MUST change this property value
-    if (space.equalsIgnoreCase("www.Change_me_to_your_unique_domain.com"))
-    {
-      String error = "[domain] property  in server.properties not been set.";
-      throw new ConfigurationException(error);
-    }
-  }
-
-  /**
    * Generates a unique database identifier.
    *
    * @return unique database identifier.
    */
   public static String generateUniqueDatabaseIdentifier()
   {
-    String autoGenId = ServerIDGenerator.nextID();
+    String autoGenId = UUID.randomUUID().toString();
+    autoGenId = autoGenId.replaceAll("-", "");
 
     int maxBaseHashLength = Database.MAX_DB_IDENTIFIER_SIZE - 1;
 
@@ -86,22 +71,5 @@ public class ServerIDGenerator extends IDGenerator
     autoGenId = "a" + autoGenId;
 
     return autoGenId;
-  }
-  
-  /**
-   * WARNING! Do not change the implementation of this method! Existing records
-   * depend on this implementation. As of this writing, there is only one client
-   * for this method. If the implementation needs to change, then fork the code.
-   * 
-   * Uses the SHA-1 hasher to produce the 160-bit hash encoded as a base 36
-   * String, which is 31 characters.
-   * 
-   * @param input
-   *          String to be hashed
-   * @return a base36 SHA hash of the input
-   */
-  public synchronized static String hashedId(String input)
-  {
-    return "i"+IDGenerator.hash(input);
   }
 }

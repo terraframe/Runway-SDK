@@ -135,7 +135,7 @@ public abstract class MutableToMutableDTO extends ComponentIFtoComponentDTOIF
     {
       Locale locale = Session.getCurrentLocale();
 
-      return new TypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getId());
+      return new TypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getOid(), this.getMdTypeIF().isGenerateSource());
     }
     else
     {

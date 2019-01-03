@@ -18,11 +18,8 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
@@ -33,59 +30,16 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.NameConventionException;
+import com.runwaysdk.session.Request;
 
-public class RegexTest extends TestCase
+public class RegexTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(RegexTest.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RegexTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  public static void classSetUp()
-  {
-  }
-
-  public static void classTearDown()
-  {
-  }
-
   /**
    * Creates a bunch of valid class types and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidClassTypes()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -103,14 +57,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo my_ClassInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "My_Class");
@@ -126,14 +80,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo mYCLASSInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MYCLASS");
@@ -149,14 +103,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TypeInfo mClassInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "L");
@@ -172,14 +126,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
@@ -204,11 +158,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -228,11 +182,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch _MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -252,11 +206,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch myClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch myClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -276,11 +230,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch My%Class as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch My%Class as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -300,11 +254,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to catch 3MyClass as an invalid class type.");
+      Assert.fail("MdBusiness.validate() failed to catch 3MyClass as an invalid class type.");
     }
     catch (NameConventionException e)
     {
@@ -316,6 +270,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of valid attribute names and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidAttributeNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -333,7 +289,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
 
@@ -344,7 +300,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -353,7 +309,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -362,7 +318,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -371,14 +327,14 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
     }
     catch (DataAccessException e)
     {
       if (testMdBusiness != null)
         testMdBusiness.delete();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     TestFixtureFactory.delete(testMdBusiness);
@@ -388,6 +344,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of invalid Attribute names and makes sure they fail regex
    * filtering.
    */
+  @Request
+  @Test
   public void testInvalidAttributeNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -405,7 +363,7 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
 
@@ -416,7 +374,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -425,7 +383,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
 
       attribute = MdAttributeIntegerDAO.newInstance();
@@ -434,7 +392,7 @@ public class RegexTest extends TestCase
       attribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
       attribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       attribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
+      attribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
       attribute.apply();
     }
     catch (DataAccessException e)
@@ -450,13 +408,15 @@ public class RegexTest extends TestCase
     {
       TestFixtureFactory.delete(testMdBusiness);
     }
-    fail("MdAttribute.validate() accepted incorrect attribute names.");
+    Assert.fail("MdAttribute.validate() accepted incorrect attribute names.");
   }
 
   /**
    * Creates a bunch of valid package names and makes sure they pass regex
    * filtering.
    */
+  @Request
+  @Test
   public void testValidPackageNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -472,14 +432,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
 
     // mr._sparkle_
@@ -493,14 +453,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail("MdBusiness.validate() failed to valid the package, mr._sparkle_");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr._sparkle_");
     }
 
     // mr
@@ -514,14 +474,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (DataAccessException e)
     {
-      fail("MdBusiness.validate() failed to valid the package, mr.");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.");
     }
 
     // stateBlah
@@ -535,14 +495,13 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
     }
     catch (NameConventionException e)
     {
-      fail("Created a package with an invalid name state");
+      Assert.fail("Created a package with an invalid name state");
     }
   }
 
@@ -550,6 +509,8 @@ public class RegexTest extends TestCase
    * Creates a bunch of invalid package names and makes sure they fail regex
    * filtering.
    */
+  @Request
+  @Test
   public void testInvalidPackageNames()
   {
     MdBusinessDAO testMdBusiness = null;
@@ -565,11 +526,10 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package ''");
+      Assert.fail("MdBusiness.validate() failed to valid the package ''");
     }
     catch (NameConventionException e)
     {
@@ -586,11 +546,10 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr..sparkle");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr..sparkle");
     }
     catch (NameConventionException e)
     {
@@ -608,11 +567,10 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, .mr.sparkle");
+      Assert.fail("MdBusiness.validate() failed to valid the package, .mr.sparkle");
     }
     catch (NameConventionException e)
     {
@@ -630,11 +588,11 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
+
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr.sparkle.");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.sparkle.");
     }
     catch (NameConventionException e)
     {
@@ -652,11 +610,10 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("MdBusiness.validate() failed to valid the package, mr.spark&le");
+      Assert.fail("MdBusiness.validate() failed to valid the package, mr.spark&le");
     }
     catch (NameConventionException e)
     {
@@ -674,59 +631,14 @@ public class RegexTest extends TestCase
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       testMdBusiness.apply();
       testMdBusiness.delete();
-      fail("Created a package with an invalid name 6mr5.1sparkle5");
+      Assert.fail("Created a package with an invalid name 6mr5.1sparkle5");
     }
     catch (NameConventionException e)
     {
       // This is expected
-    }
-
-    // state
-    try
-    {
-      testMdBusiness = MdBusinessDAO.newInstance();
-      testMdBusiness.setValue(MdBusinessInfo.NAME, "MyClass");
-      testMdBusiness.setValue(MdBusinessInfo.PACKAGE, "state");
-      testMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MyClass Test Type");
-      testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
-      testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
-      testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.apply();
-      testMdBusiness.delete();
-      fail("Created a package with an invalid name state");
-    }
-    catch (NameConventionException e)
-    {
-      // this is expected
-    }
-
-    // state.test
-    try
-    {
-      testMdBusiness = MdBusinessDAO.newInstance();
-      testMdBusiness.setValue(MdBusinessInfo.NAME, "MyClass");
-      testMdBusiness.setValue(MdBusinessInfo.PACKAGE, "state.test");
-      testMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MyClass Test Type");
-      testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
-      testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
-      testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.apply();
-      testMdBusiness.delete();
-      fail("Created a package with an invalid name state");
-    }
-    catch (NameConventionException e)
-    {
-      // this is expected
     }
   }
 }

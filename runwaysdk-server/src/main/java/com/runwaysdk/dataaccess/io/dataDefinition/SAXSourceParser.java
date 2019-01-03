@@ -74,17 +74,17 @@ public class SAXSourceParser extends DefaultHandler
   }
 
   /**
-   * ID to use Xerces SAX parser
+   * OID to use Xerces SAX parser
    */
   protected static final String READER                       = "org.apache.xerces.parsers.SAXParser";
 
   /**
-   * ID to enable xml validation
+   * OID to enable xml validation
    */
   protected static final String VALIDATION_FEATURE_ID        = "http://xml.org/sax/features/validation";
 
   /**
-   * ID to ensure a .xml document is valid with respect to its .xsd document
+   * OID to ensure a .xml document is valid with respect to its .xsd document
    */
   protected static final String SCHEMA_VALIDATION_FEATURE_ID = "http://apache.org/xml/features/validation/schema";
 

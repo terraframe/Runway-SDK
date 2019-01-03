@@ -36,7 +36,7 @@ public abstract class UniversalViewDTOBase extends com.runwaysdk.business.ViewDT
   
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String UNIVERSAL = "universal";
   public String getDescription()
   {
@@ -137,7 +137,7 @@ public abstract class UniversalViewDTOBase extends com.runwaysdk.business.ViewDT
     }
     else
     {
-      setValue(UNIVERSAL, value.getId());
+      setValue(UNIVERSAL, value.getOid());
     }
   }
   
@@ -161,9 +161,9 @@ public abstract class UniversalViewDTOBase extends com.runwaysdk.business.ViewDT
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(UNIVERSAL).getAttributeMdDTO();
   }
   
-  public static UniversalViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static UniversalViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (UniversalViewDTO) dto;
   }
@@ -181,7 +181,7 @@ public abstract class UniversalViewDTOBase extends com.runwaysdk.business.ViewDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

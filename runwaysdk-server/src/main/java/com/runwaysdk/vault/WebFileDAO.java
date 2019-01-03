@@ -41,7 +41,7 @@ import com.runwaysdk.util.IdParser;
 public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, SpecializedDAOImplementationIF
 {
   /**
-   * An auto-generated eclipse unique id
+   * An auto-generated eclipse unique oid
    */
   private static final long serialVersionUID = 627578319131662925L;
 
@@ -62,7 +62,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
     if (this.getFilePath().trim().equals(""))
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(type);
-      this.setFilePath(this.parsePath(IdParser.buildId(ServerIDGenerator.nextID(), mdClassIF.getId())));
+      this.setFilePath(this.parsePath(IdParser.buildId(ServerIDGenerator.nextID(), mdClassIF.getRootId())));
     }
   }
   
@@ -108,7 +108,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
 
 //    WebFile file = (WebFile) BusinessDAO.newInstance(WebFileIF.CLASS);
 //
-//    file.setFilePath(file.parsePath(file.getId()));
+//    file.setFilePath(file.parsePath(file.getOid()));
 //
 //    return file;
   }
@@ -236,22 +236,22 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
   }
 
   /**
-   * Parses the last VAULT_DEPTH characters of the given id into a path
+   * Parses the last VAULT_DEPTH characters of the given oid into a path
    *
-   * @param id The id to parse
-   * @return The path resulting from the parse of the id
+   * @param oid The oid to parse
+   * @return The path resulting from the parse of the oid
    */
-  private String parsePath(String id)
+  private String parsePath(String oid)
   {
     //Load the new path
     StringBuffer newPath = new StringBuffer();
 
-    int length = id.length();
+    int length = oid.length();
 
     for(int i = 0; i < DEPTH; i++)
     {
       int index = length-i-1;
-      newPath.append(id.charAt(index) + "/");
+      newPath.append(oid.charAt(index) + "/");
     }
 
     return newPath.toString();

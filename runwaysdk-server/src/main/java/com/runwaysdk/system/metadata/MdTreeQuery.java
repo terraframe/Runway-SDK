@@ -114,13 +114,13 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTree mdTree)
     {
       if(mdTree == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdTree.getId());
+      return this.EQ(mdTree.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdTree mdTree)
     {
       if(mdTree == null) return this.NE((java.lang.String)null);
-      return this.NE(mdTree.getId());
+      return this.NE(mdTree.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
 
       for (int i=0; i<mdTree.length; i++)
       {
-        itemIdArray[i] = mdTree[i].getId();
+        itemIdArray[i] = mdTree[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
 
       for (int i=0; i<mdTree.length; i++)
       {
-        itemIdArray[i] = mdTree[i].getId();
+        itemIdArray[i] = mdTree[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
 
       for (int i=0; i<mdTree.length; i++)
       {
-        itemIdArray[i] = mdTree[i].getId();
+        itemIdArray[i] = mdTree[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
 
       for (int i=0; i<mdTree.length; i++)
       {
-        itemIdArray[i] = mdTree[i].getId();
+        itemIdArray[i] = mdTree[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdTreeQuery extends com.runwaysdk.system.metadata.MdGraphQuery
 
       for (int i=0; i<mdTree.length; i++)
       {
-        itemIdArray[i] = mdTree[i].getId();
+        itemIdArray[i] = mdTree[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

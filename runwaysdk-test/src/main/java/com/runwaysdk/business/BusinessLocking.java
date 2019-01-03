@@ -20,12 +20,13 @@ package com.runwaysdk.business;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -43,71 +44,35 @@ import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 
-public class BusinessLocking extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class BusinessLocking
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static final TypeInfo lockTestInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "LockTest");
 
-  private static Business testMdEntity = null;
+  private static Business       testMdEntity = null;
 
   /**
-   *  The test user object
+   * The test user object
    */
-  private static UserDAO newUser;
+  private static UserDAO        newUser;
 
   /**
    * The username for the user
    */
-  private final static String username = "johndoe";
+  private final static String   username     = "johndoe";
 
   /**
    * The password for the user
    */
-  private final static String password = "12345";
+  private final static String   password     = "12345";
 
   /**
    * The maximum number of sessions for the user
    */
-  private final static int sessionLimit = 1;
+  private final static int      sessionLimit = 1;
 
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(BusinessLocking.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(BusinessLocking.class.getSimpleName());
-    suite.addTestSuite(BusinessLocking.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     testMdEntity = BusinessFacade.newBusiness(MdBusinessInfo.CLASS);
@@ -126,43 +91,46 @@ public class BusinessLocking extends TestCase
     integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     integerMdAttribute.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     integerMdAttribute.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdEntity.getId());
+    integerMdAttribute.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdEntity.getOid());
     integerMdAttribute.apply();
 
-    //Create a new user
+    // Create a new user
     newUser = UserDAO.newInstance();
-    newUser.setValue(UserInfo.USERNAME,  username);
-    newUser.setValue(UserInfo.PASSWORD,  password);
+    newUser.setValue(UserInfo.USERNAME, username);
+    newUser.setValue(UserInfo.PASSWORD, password);
     newUser.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
     newUser.apply();
 
     RoleDAOIF adminRoleIF = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE);
-    (adminRoleIF.getBusinessDAO()).assignMember(newUser);
+    ( adminRoleIF.getBusinessDAO() ).assignMember(newUser);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     testMdEntity.delete();
     newUser.delete();
   }
 
-
   /**
    * Makes sure you cannot delete an object unless the object has a user lock.
    *
    */
+  @Request
+  @Test
   public void testDeleteWithUserLock()
   {
     String sessionId = null;
     try
     {
-      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       deleteWithUserLock(sessionId);
     }
     catch (LockException e)
     {
-      fail("Unable to delete an object even though a proper lock was attained.\n"+e.getMessage());
+      Assert.fail("Unable to delete an object even though a proper lock was attained.\n" + e.getMessage());
     }
     finally
     {
@@ -180,23 +148,24 @@ public class BusinessLocking extends TestCase
     instance.delete();
   }
 
-
   /**
    * Makes sure you cannot delete an object unless the object has a user lock.
    *
    */
+  @Request
+  @Test
   public void testDeleteWithAppLock()
   {
     String sessionId = null;
     try
     {
-      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       deleteWithAppLock(sessionId);
     }
     catch (LockException e)
     {
-      fail("Unable to delete an object even though a proper lock was attained.\n"+e.getMessage());
+      Assert.fail("Unable to delete an object even though a proper lock was attained.\n" + e.getMessage());
     }
     finally
     {
@@ -217,18 +186,20 @@ public class BusinessLocking extends TestCase
   /**
    * Tests a correct use of locking an object.
    */
+  @Request
+  @Test
   public void testCorrectLocking()
   {
     String sessionId = null;
     try
     {
-      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       correctLocking(sessionId);
     }
     catch (LockException e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -264,12 +235,14 @@ public class BusinessLocking extends TestCase
    * Tests an incorrect use of locking by unlocking the object before it's
    * applied.
    */
+  @Request
+  @Test
   public void testApplyNoUserLock()
   {
     String sessionId = null;
     try
     {
-      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       applyNoUserLock(sessionId);
 
@@ -281,7 +254,7 @@ public class BusinessLocking extends TestCase
 
       if (e instanceof RunwayExceptionDTO)
       {
-        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO)e;
+        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO) e;
         if (runwayExceptionDTO.getType().equals(LockException.class.getName()))
         {
           fail = false;
@@ -290,7 +263,7 @@ public class BusinessLocking extends TestCase
 
       if (fail)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -316,7 +289,7 @@ public class BusinessLocking extends TestCase
 
       instance.apply();
 
-      fail("An object was able to be applied without being locked.");
+      Assert.fail("An object was able to be applied without being locked.");
     }
     finally
     {
@@ -331,12 +304,14 @@ public class BusinessLocking extends TestCase
    * Tests an incorrect use of locking by not locking an object before setting
    * attribute values.
    */
+  @Request
+  @Test
   public void testSetValueNoUserLock()
   {
     String sessionId = null;
     try
     {
-      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       setValueNoUserLock(sessionId);
     }
@@ -346,7 +321,7 @@ public class BusinessLocking extends TestCase
 
       if (e instanceof RunwayExceptionDTO)
       {
-        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO)e;
+        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO) e;
         if (runwayExceptionDTO.getType().equals(LockException.class.getName()))
         {
           fail = false;
@@ -355,7 +330,7 @@ public class BusinessLocking extends TestCase
 
       if (fail)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -376,7 +351,7 @@ public class BusinessLocking extends TestCase
 
       instance.setValue("integerAttr", "53");
 
-      fail("An object was able to set an attribute value without being locked.");
+      Assert.fail("An object was able to set an attribute value without being locked.");
     }
     finally
     {
@@ -388,10 +363,12 @@ public class BusinessLocking extends TestCase
   }
 
   /**
-   *Make sure you cannot attain an application lock on an object that does not have
-   *an application lock, but has a user lock.
+   * Make sure you cannot attain an application lock on an object that does not
+   * have an application lock, but has a user lock.
    *
    */
+  @Request
+  @Test
   public void testUserAppLockInterferrence()
   {
     String systemSessionId = null;
@@ -399,10 +376,10 @@ public class BusinessLocking extends TestCase
 
     try
     {
-      systemSessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      systemSessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
       String objectId = systemLockSomeObject(systemSessionId);
 
-      userSessionId = Facade.login(username, password, new Locale[]{CommonProperties.getDefaultLocale()});
+      userSessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
       tryAppLock(userSessionId, objectId);
 
       // delete the object that was created
@@ -414,7 +391,7 @@ public class BusinessLocking extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -437,8 +414,9 @@ public class BusinessLocking extends TestCase
 
     instance.lock();
 
-    return instance.getId();
+    return instance.getOid();
   }
+
   /**
    *
    * @param sessionId
@@ -451,22 +429,24 @@ public class BusinessLocking extends TestCase
     {
       Business instance = Business.get(objectId);
       instance.appLock();
-      fail("One user was able to get an application lock on the object that has a user lock from another user.");
+      Assert.fail("One user was able to get an application lock on the object that has a user lock from another user.");
     }
-    catch(LockException e)
+    catch (LockException e)
     {
       // we want to be here
     }
   }
 
-
-
   private String testSessionId;
-  private String testObjectId ;
+
+  private String testObjectId;
+
   /**
    * Tests an incorrect use of locking by not locking an object before setting
    * attribute values.
    */
+  @Request
+  @Test
   public void testSetValueExistingOtherAppLock()
   {
     String userSessionId = null;
@@ -475,9 +455,8 @@ public class BusinessLocking extends TestCase
 
     try
     {
-      testSessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+      testSessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
       testObjectId = createSomeObject(testSessionId);
-
 
       thread = new Thread()
       {
@@ -491,9 +470,9 @@ public class BusinessLocking extends TestCase
       // Make sure the thread has an opportunity to set the lock;
       Thread.sleep(2000);
 
-      userSessionId = Facade.login(username, password, new Locale[]{CommonProperties.getDefaultLocale()});
+      userSessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
       setValueWithExistingAppLock(userSessionId, testObjectId);
-      fail("Able to set the value of an object that has an active application lock set by another thread.");
+      Assert.fail("Able to set the value of an object that has an active application lock set by another thread.");
     }
     catch (Throwable e)
     {
@@ -501,7 +480,7 @@ public class BusinessLocking extends TestCase
 
       if (e instanceof RunwayExceptionDTO)
       {
-        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO)e;
+        RunwayExceptionDTO runwayExceptionDTO = (RunwayExceptionDTO) e;
         if (runwayExceptionDTO.getType().equals(LockException.class.getName()))
         {
           fail = false;
@@ -510,7 +489,7 @@ public class BusinessLocking extends TestCase
 
       if (fail)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -521,9 +500,9 @@ public class BusinessLocking extends TestCase
         // give the other thread a chance to finish
         Thread.sleep(2000);
       }
-      catch(InterruptedException e)
+      catch (InterruptedException e)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
       deleteSomeObject(testSessionId, testObjectId);
 
@@ -531,14 +510,16 @@ public class BusinessLocking extends TestCase
       Facade.logout(userSessionId);
     }
   }
+
   @Request(RequestType.SESSION)
   private String createSomeObject(String sessionId)
   {
     Business instance = new Business(lockTestInfo.getType());
     instance.apply();
 
-    return instance.getId();
+    return instance.getOid();
   }
+
   @Request(RequestType.SESSION)
   private synchronized void setAppLockAndSleep(String sessionId, String objectid)
   {
@@ -548,18 +529,20 @@ public class BusinessLocking extends TestCase
       instance.appLock();
       this.wait();
     }
-    catch(InterruptedException e)
+    catch (InterruptedException e)
     {
       // This thread will be interrupted, in which case we will let it continue.
     }
 
   }
+
   @Request(RequestType.SESSION)
   private void setValueWithExistingAppLock(String sessionId, String objectid)
   {
     Business instance = Business.get(objectid);
     instance.setValue("integerAttr", "53");
   }
+
   @Request(RequestType.SESSION)
   private void deleteSomeObject(String sessionId, String objectid)
   {

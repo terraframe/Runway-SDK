@@ -150,7 +150,7 @@ class LocalIdGenerator implements Serializable {
       
       try {
         if (!iterator.hasNext()) {
-          throw new IdConversionException("Attempting to load the LocalIdGenerator for the mobile id [" + mobileId + "] failed.");
+          throw new IdConversionException("Attempting to load the LocalIdGenerator for the mobile oid [" + mobileId + "] failed.");
         }
         
         thisDAO = iterator.next();
@@ -207,7 +207,7 @@ class LocalIdGenerator implements Serializable {
       
       try {
         if (!iterator.hasNext()) {
-          throw new IdConversionException("Attempting to load the stack for the mobile id [" + mobileId + "] with index [" + currentStackIndex + "] failed.");
+          throw new IdConversionException("Attempting to load the stack for the mobile oid [" + mobileId + "] with index [" + currentStackIndex + "] failed.");
         }
         
         stackDAO = iterator.next();
@@ -258,7 +258,7 @@ class LocalIdGenerator implements Serializable {
     
     try {
       if (!iterator.hasNext()) {
-        //throw new IdConversionException("Attempting to load the LocalIdGenerator for the mobile id [" + mobileId + "] failed.");
+        //throw new IdConversionException("Attempting to load the LocalIdGenerator for the mobile oid [" + mobileId + "] failed.");
         return null;
       }
       

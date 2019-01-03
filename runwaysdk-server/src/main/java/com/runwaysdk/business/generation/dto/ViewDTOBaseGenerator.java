@@ -59,9 +59,9 @@ public class ViewDTOBaseGenerator extends SessionDTOBaseGenerator
    */
   private void writeGet()
   {
-    getWriter().writeLine("public static " + this.getDTOStubClassName() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
+    getWriter().writeLine("public static " + this.getDTOStubClassName() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine(ViewDTOInfo.CLASS + " dto = ("+ViewDTOInfo.CLASS+")clientRequest.get(id);");
+    getWriter().writeLine(ViewDTOInfo.CLASS + " dto = ("+ViewDTOInfo.CLASS+")clientRequest.get(oid);");
     getWriter().writeLine("");    
     getWriter().writeLine("return (" + this.getDTOStubClassName() + ") dto;");
     getWriter().closeBracket();

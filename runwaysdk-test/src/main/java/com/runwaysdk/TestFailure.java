@@ -18,21 +18,15 @@
  */
 package com.runwaysdk;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.session.Request;
-
-public class TestFailure extends TestCase implements DoNotWeave
+public class TestFailure implements DoNotWeave
 {
+  @Test
   public void testFailure()
   {
-    fail("This test failed");
+    Assert.fail("This test failed");
   }
 
-  @Request
-  @Transaction
-  public static void main(String[] args) throws Exception
-  {
-  }
 }

@@ -56,12 +56,12 @@ public class RelationshipDTOToJSON extends ElementDTOToJSON
     RelationshipDTO relationshipDTO = getComponentDTO();
 
     // parent
-    String parentId = relationshipDTO.getParentId();
-    json.put(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel(), parentId);
+    String parentOid = relationshipDTO.getParentOid();
+    json.put(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel(), parentOid);
 
     // child
-    String childId = relationshipDTO.getChildId();
-    json.put(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel(), childId);
+    String childOid = relationshipDTO.getChildOid();
+    json.put(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel(), childOid);
   }
 
   /**
@@ -76,7 +76,7 @@ public class RelationshipDTOToJSON extends ElementDTOToJSON
     JSONObject typeMd = new JSONObject();
     typeMd.put(JSON.TYPE_MD_DISPLAY_LABEL.getLabel(), relationshipDTO.getMd().getDisplayLabel());
     typeMd.put(JSON.TYPE_MD_DESCRIPTION.getLabel(), relationshipDTO.getMd().getDescription());
-    typeMd.put(JSON.TYPE_MD_ID.getLabel(), relationshipDTO.getMd().getId());
+    typeMd.put(JSON.TYPE_MD_ID.getLabel(), relationshipDTO.getMd().getOid());
     typeMd.put(JSON.RELATIONSHIP_MD_PARENT_MD_BUSINESS.getLabel(), relationshipDTO.getMd().getParentMdBusiness());
     typeMd.put(JSON.RELATIONSHIP_MD_CHILD_MD_BUSINESS.getLabel(), relationshipDTO.getMd().getChildMdBusiness());
 

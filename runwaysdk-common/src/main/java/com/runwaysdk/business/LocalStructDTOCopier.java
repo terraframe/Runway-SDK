@@ -35,7 +35,7 @@ public class LocalStructDTOCopier extends StructDTOCopier
   {
     this(clientRequest, source, null, typeSafe, typeSafeAttributes);
 
-    if (typeSafe)
+    if (typeSafe && source.getMd().isGenerateSource())
     {
       this.dest = ConversionFacade.createDynamicStructDTO(null, source.getType());
       this.dest.setClientRequest(clientRequest);

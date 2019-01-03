@@ -145,7 +145,7 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
      */
     protected void buildWhereClause()
     {
-      this.getViewQuery().WHERE(jobHistoryRecordQ.childId().EQ(historyQ.getId()).AND(jobHistoryRecordQ.parentId().EQ(execJobQ.getId())));
+      this.getViewQuery().WHERE(jobHistoryRecordQ.childOid().EQ(historyQ.getOid()).AND(jobHistoryRecordQ.parentOid().EQ(execJobQ.getOid())));
       
       if (this.typeExcludes != null)
       {

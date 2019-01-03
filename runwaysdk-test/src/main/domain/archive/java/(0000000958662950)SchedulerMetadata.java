@@ -134,7 +134,7 @@ public class Sandbox implements Job
       jobOperation.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
       jobOperation.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Job Operation");
       jobOperation.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Job Operation");
-      jobOperation.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      jobOperation.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
       jobOperation.setValue(MdBusinessInfo.EXTENDABLE, "false");
       String jobOperationMdId = jobOperation.apply();
 
@@ -164,7 +164,7 @@ public class Sandbox implements Job
       abstractJob.setValue(MdBusinessInfo.EXTENDABLE, "true");
       abstractJob.apply();
 
-      MdBusiness abstractJobMd = MdBusiness.get(abstractJob.getId());
+      MdBusiness abstractJobMd = MdBusiness.get(abstractJob.getOid());
 
       // lastRun::dt
       MdAttributeDateTime lastRun = new MdAttributeDateTime();
@@ -368,8 +368,8 @@ public class Sandbox implements Job
       currentJobOperation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "The current Job Operation called on the Job.");
       currentJobOperation.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       currentJobOperation.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      currentJobOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, abstractJobMd.getId());
-      currentJobOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allJobOperation.getId());
+      currentJobOperation.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, abstractJobMd.getOid());
+      currentJobOperation.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, allJobOperation.getOid());
       currentJobOperation.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
       currentJobOperation.apply();
 
@@ -385,8 +385,8 @@ public class Sandbox implements Job
        * NOTE: Cache everything to avoid frequent DB fetches as events are fired
        * and need to reference the job.
        */
-      executableJob.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      executableJob.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getId());
+      executableJob.setValue(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
+      executableJob.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getOid());
       String executableJobMdId = executableJob.apply();
 
       MdBusiness jobMd = MdBusiness.get(executableJobMdId);
@@ -450,7 +450,7 @@ public class Sandbox implements Job
       jobId.getDescription().setDefaultValue("Job Id");
       jobId.setRequired(true);
       jobId.setDatabaseSize(64);
-      jobId.setValue(MdAttributeCharacter.INDEXTYPE, MdAttributeIndices.UNIQUE_INDEX.getId());
+      jobId.setValue(MdAttributeCharacter.INDEXTYPE, MdAttributeIndices.UNIQUE_INDEX.getOid());
       jobId.setDefiningMdClass(jobMd);
       jobId.apply();
 
@@ -465,7 +465,7 @@ public class Sandbox implements Job
       qualifiedTypeJob.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, executableJobMdId);
       qualifiedTypeJob.apply();
 
-      MdBusiness qualifiedTypeJobMd = MdBusiness.get(qualifiedTypeJob.getId());
+      MdBusiness qualifiedTypeJobMd = MdBusiness.get(qualifiedTypeJob.getOid());
 
       // className::s
       MdAttributeCharacter className = new MdAttributeCharacter();
@@ -497,10 +497,10 @@ public class Sandbox implements Job
       snapshot.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JobSnapshot");
       snapshot.setValue(MdBusinessInfo.ABSTRACT, "false");
       snapshot.setValue(MdBusinessInfo.EXTENDABLE, "true");
-      snapshot.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getId());
+      snapshot.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getOid());
       snapshot.apply();
 
-      // MdBusiness snapshotMd = MdBusiness.get(snapshot.getId());
+      // MdBusiness snapshotMd = MdBusiness.get(snapshot.getOid());
 
       // JobHistory
       MdBusinessDAO jobHistory = MdBusinessDAO.newInstance();
@@ -512,7 +512,7 @@ public class Sandbox implements Job
       jobHistory.setValue(MdBusinessInfo.EXTENDABLE, "true");
       jobHistory.apply();
 
-      MdBusiness jobHistoryMd = MdBusiness.get(jobHistory.getId());
+      MdBusiness jobHistoryMd = MdBusiness.get(jobHistory.getOid());
 
       // entryDate::datetime
       MdAttributeDateTime entryDate = new MdAttributeDateTime();
@@ -546,7 +546,7 @@ public class Sandbox implements Job
       jobSnapshot.getDisplayLabel().setDefaultValue("Job Snapshot");
       jobSnapshot.getDescription().setDefaultValue("Job Snapshot");
       jobSnapshot.setRequired(false);
-      jobSnapshot.setValue(MdAttributeReference.MDBUSINESS, snapshot.getId());
+      jobSnapshot.setValue(MdAttributeReference.MDBUSINESS, snapshot.getOid());
       jobSnapshot.setDefiningMdClass(jobHistoryMd);
       jobSnapshot.apply();
 

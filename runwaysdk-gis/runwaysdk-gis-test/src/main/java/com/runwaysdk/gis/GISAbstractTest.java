@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.gis;
 
-
 public class GISAbstractTest extends GISMasterTestSetup
 {
   /*
@@ -27,8 +26,8 @@ public class GISAbstractTest extends GISMasterTestSetup
    */
   static
   {
-//    GISClientInitializer.init();
-//    new GISServerInitializer().init();
+    // GISClientInitializer.init();
+    // new GISServerInitializer().init();
   }
 
 }

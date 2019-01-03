@@ -22,9 +22,9 @@ public class TypePermissionDTO extends TypePermissionDTOBase
 {
   private static final long serialVersionUID = 445654745;
   
-  public TypePermissionDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public TypePermissionDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -34,12 +34,7 @@ public class ConnectionLabel
     /**
      * The allowed value (in XML) to denote an RMI ClientRequest
      */
-    RMI("RMI"),
-
-    /**
-     * The allowed value (in XML) to denote a Web Service ClientRequest
-     */
-    WEB_SERVICE("WebService");
+    RMI("RMI");
 
     private String type;
 
@@ -59,8 +54,6 @@ public class ConnectionLabel
         return JAVA;
       else if(type.equals(RMI.getType()))
         return RMI;
-      else if(type.equals(WEB_SERVICE.getType()))
-        return WEB_SERVICE;
       else
       {
         String error = "The type of clientRequest ["+type+"] is invalid";

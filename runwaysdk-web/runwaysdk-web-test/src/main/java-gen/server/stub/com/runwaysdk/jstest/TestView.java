@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.jstest;
-public class TestView extends TestViewBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestView extends TestViewBase implements com.runwaysdk.generation.loader.
 {
 public TestView()
 {
@@ -25,11 +25,11 @@ super();
 }
 public String toString()
 {
-  return "TestView: "+getId();
+  return "TestView: "+getOid();
 }
-public static TestView get(String id)
+public static TestView get(String oid)
 {
-return (TestView) com.runwaysdk.business.View.get(id);
+return (TestView) com.runwaysdk.business.View.get(oid);
 }
 @com.runwaysdk.business.rbac.Authenticate
 public com.runwaysdk.jstest.TestView returnView(com.runwaysdk.jstest.TestView view)

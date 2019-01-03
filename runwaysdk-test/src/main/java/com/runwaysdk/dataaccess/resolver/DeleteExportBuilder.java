@@ -21,9 +21,12 @@ package com.runwaysdk.dataaccess.resolver;
 import java.io.File;
 import java.util.List;
 
+import org.junit.Before;
+
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.transaction.TransactionImportManager;
+import com.runwaysdk.session.Request;
 
 public class DeleteExportBuilder extends ExportBuilder<Void>
 {
@@ -31,17 +34,19 @@ public class DeleteExportBuilder extends ExportBuilder<Void>
 
   private File          file;
 
-  private String        id;
+  private String        oid;
 
-  public DeleteExportBuilder(List<UserDAO> list, File file, String id)
+  public DeleteExportBuilder(List<UserDAO> list, File file, String oid)
   {
     this.list = list;
     this.file = file;
-    this.id = id;
+    this.oid = oid;
   }
-  
+
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }
@@ -50,7 +55,7 @@ public class DeleteExportBuilder extends ExportBuilder<Void>
   protected Void doIt()
   {
 
-    UserDAO.get(id).getBusinessDAO().delete();
+    UserDAO.get(oid).getBusinessDAO().delete();
 
     return null;
   }

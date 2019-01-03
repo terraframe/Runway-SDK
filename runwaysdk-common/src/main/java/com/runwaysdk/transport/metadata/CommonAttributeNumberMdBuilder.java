@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 public class CommonAttributeNumberMdBuilder extends CommonAttributeMdBuilder
 {
 
@@ -58,28 +48,6 @@ public class CommonAttributeNumberMdBuilder extends CommonAttributeMdBuilder
     this.rejectZero = source.rejectZero();
     this.rejectNegative = source.rejectNegative();
     this.rejectPositive = source.rejectPositive();
-  }
-
-  /**
-   *
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeNumberMdBuilder(Node metadata, Node properties, AttributeNumberMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      this.rejectZero = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.NUMBER_METADATA_REJECT_ZERO.getLabel(), metadata, XPathConstants.STRING));
-      this.rejectNegative = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.NUMBER_METADATA_REJECT_NEGATIVE.getLabel(), metadata, XPathConstants.STRING));
-      this.rejectPositive = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.NUMBER_METADATA_REJECT_POSITIVE.getLabel(), metadata, XPathConstants.STRING));
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**

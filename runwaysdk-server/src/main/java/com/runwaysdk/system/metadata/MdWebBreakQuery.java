@@ -114,13 +114,13 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebBreak mdWebBreak)
     {
       if(mdWebBreak == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebBreak.getId());
+      return this.EQ(mdWebBreak.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebBreak mdWebBreak)
     {
       if(mdWebBreak == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebBreak.getId());
+      return this.NE(mdWebBreak.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebBreak.length; i++)
       {
-        itemIdArray[i] = mdWebBreak[i].getId();
+        itemIdArray[i] = mdWebBreak[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebBreak.length; i++)
       {
-        itemIdArray[i] = mdWebBreak[i].getId();
+        itemIdArray[i] = mdWebBreak[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebBreak.length; i++)
       {
-        itemIdArray[i] = mdWebBreak[i].getId();
+        itemIdArray[i] = mdWebBreak[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebBreak.length; i++)
       {
-        itemIdArray[i] = mdWebBreak[i].getId();
+        itemIdArray[i] = mdWebBreak[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebBreakQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebBreak.length; i++)
       {
-        itemIdArray[i] = mdWebBreak[i].getId();
+        itemIdArray[i] = mdWebBreak[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

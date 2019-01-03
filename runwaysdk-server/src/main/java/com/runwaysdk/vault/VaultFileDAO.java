@@ -37,7 +37,7 @@ import com.runwaysdk.util.IdParser;
 public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, SpecializedDAOImplementationIF
 {
   /**
-   * An eclipse auto-generated id
+   * An eclipse auto-generated oid
    */
   private static final long serialVersionUID = 3176705241297763253L;
 
@@ -87,13 +87,13 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
     if (this.isNew() && !this.isAppliedToDB())
     {
       VaultDAOIF vault = VaultManager.nextVault();
-      String rootId = IdParser.parseRootFromId(this.getId());
+      String rootId = IdParser.parseRootFromId(this.getOid());
       this.getAttribute(VaultFileInfo.VAULT_FILE_NAME).setValue(rootId);
       this.getAttribute(VaultFileInfo.VAULT_FILE_PATH).setValue(this.parsePath(rootId));
-      this.getAttribute(VaultFileInfo.VAULT_REF).setValue(vault.getId());
+      this.getAttribute(VaultFileInfo.VAULT_REF).setValue(vault.getOid());
 
       // Set the key value: The key = Id
-      this.setKey(this.getId());
+      this.setKey(this.getOid());
     }
 
     return super.apply();
@@ -312,23 +312,23 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
   }
 
   /**
-   * Parses the last VAULT_DEPTH characters of the given id into a path
+   * Parses the last VAULT_DEPTH characters of the given oid into a path
    * 
-   * @param id
-   *          The id to parse
-   * @return The path resulting from the parse of the id
+   * @param oid
+   *          The oid to parse
+   * @return The path resulting from the parse of the oid
    */
-  private String parsePath(String id)
+  private String parsePath(String oid)
   {
     // Load the new path
     StringBuffer newPath = new StringBuffer();
 
-    int length = id.length();
+    int length = oid.length();
 
     for (int i = 0; i < DEPTH; i++)
     {
       int index = length - i - 1;
-      newPath.append(id.charAt(index) + "/");
+      newPath.append(oid.charAt(index) + "/");
     }
 
     return newPath.toString();

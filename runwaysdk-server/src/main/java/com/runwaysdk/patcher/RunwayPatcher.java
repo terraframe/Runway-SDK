@@ -20,7 +20,6 @@ package com.runwaysdk.patcher;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -51,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ClasspathResource;
+import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.CoreException;
@@ -260,11 +260,23 @@ public class RunwayPatcher
     
     if (clean == true || !tableExist)
     {
-      logger.info("Bootstrapping Runway into an empty database.");
-      
-      if (rootUser != null && rootPass != null && template != null)
+      if (clean == true)
       {
-        Database.close(); // Connection pooling leaves connections floating around. We have to make sure everything is closed.
+        logger.info("Destroying ALL data in the [" + DatabaseProperties.getDatabaseName() + "] database and reinstalling Runway.");
+      }
+      else
+      {
+        logger.info("Bootstrapping Runway into an empty database.");
+      }
+      
+      if (rootUser != null && rootPass != null)
+      {
+        if (template == null)
+        {
+          template = "postgres";
+        }
+        
+        Database.close();
         Database.initialSetup(rootUser, rootPass, template);
       }
       
@@ -327,7 +339,7 @@ public class RunwayPatcher
         }
         else if (resource.getNameExtension().equals("xml"))
         {
-          if (resource.getName().contains("universal")) // TODO : Don't hardcode this
+          if (resource.getName().equals("(0000000000010000)universal.xml")) // TODO : Don't hardcode this
           {
             SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
           }

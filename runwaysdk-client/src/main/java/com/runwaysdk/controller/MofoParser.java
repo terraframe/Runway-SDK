@@ -124,7 +124,7 @@ public class MofoParser implements JSONWebFieldConstants
       JSONObject formMd = json.getJSONObject(FORM_MD);
 
       WebFormObject formObject;
-      String mdFormId = formMd.getString(ID);
+      String mdFormId = formMd.getString(OID);
 
       MdFormDTO mdFormDTO = MdFormDTO.get(manager.getClientRequest(), mdFormId);
 

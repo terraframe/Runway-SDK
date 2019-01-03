@@ -18,11 +18,7 @@
  */
 package com.runwaysdk.business.generation.dto;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.business.generation.ClassStubGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EntityDTOInfo;
@@ -31,10 +27,7 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
-import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
 /**
@@ -87,7 +80,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     writeChildMethods();
     writeParentMethods();
-    writeTransitions();
     writeGet();
   }
 
@@ -96,9 +88,9 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   private void writeGet()
   {
-    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
+    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine(EntityDTOInfo.CLASS + " dto = (" + EntityDTOInfo.CLASS + ")clientRequest.get(id);");
+    getWriter().writeLine(EntityDTOInfo.CLASS + " dto = (" + EntityDTOInfo.CLASS + ")clientRequest.get(oid);");
     getWriter().writeLine("");
     getWriter().writeLine("return (" + this.getDTOStubClassType() + ") dto;");
     getWriter().closeBracket();
@@ -161,11 +153,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
         continue;
       }
 
-      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel))
-      {
-        continue;
-      }
-
       writeGetAllChildren(rel);
       writeGetAllChildrenRelationships(rel);
       writeAddChild(rel);
@@ -188,14 +175,14 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships()");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) getRequest().getChildRelationships(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) getRequest().getChildRelationships(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getChildRelationships(id, " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getChildRelationships(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -214,14 +201,14 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + childType + "> getAll" + methodName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + childType + ">) getRequest().getChildren(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + childType + ">) getRequest().getChildren(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + childType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + childType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + childType + ">) clientRequestIF.getChildren(id, " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + childType + ">) clientRequestIF.getChildren(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
@@ -256,13 +243,13 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public " + reltionshipDTOType + " " + methodName + "(" + childType + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addChild(this.getId(), child.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addChild(this.getOid(), child.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id, " + childType + " child)");
+    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid, " + childType + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addChild(id, child.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addChild(oid, child.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -279,13 +266,13 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public void " + methodName + "(" + relationshipName + " relationship)");
     getWriter().openBracket();
-    getWriter().writeLine("getRequest().deleteChild(relationship.getId());");
+    getWriter().writeLine("getRequest().deleteChild(relationship.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, " + relationshipName + " relationship)");
     getWriter().openBracket();
-    getWriter().writeLine("clientRequestIF.deleteChild(relationship.getId());");
+    getWriter().writeLine("clientRequestIF.deleteChild(relationship.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -297,13 +284,13 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public void " + methodName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("getRequest().deleteChildren(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("getRequest().deleteChildren(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("clientRequestIF.deleteChildren(id, " + relTypeClass + ");");
+    getWriter().writeLine("clientRequestIF.deleteChildren(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -327,9 +314,6 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
         continue;
       }
 
-      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel))
-        continue;
-
       writeGetAllParent(rel);
       writeGetAllParentRelationships(rel);
       writeAddParent(rel);
@@ -352,14 +336,14 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships()");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) getRequest().getParentRelationships(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) getRequest().getParentRelationships(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getParentRelationships(id, " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getParentRelationships(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -378,14 +362,14 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + parentType + "> getAll" + methodName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + parentType + ">) getRequest().getParents(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + parentType + ">) getRequest().getParents(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + parentType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + parentType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (java.util.List<? extends " + parentType + ">) clientRequestIF.getParents(id, " + relTypeClass + ");");
+    getWriter().writeLine("return (java.util.List<? extends " + parentType + ">) clientRequestIF.getParents(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -405,13 +389,13 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public " + reltionshipDTOType + " " + methodName + "(" + parentType + " parent)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addParent(parent.getId(), this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addParent(parent.getOid(), this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id, " + parentType + " parent)");
+    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid, " + parentType + " parent)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addParent(parent.getId(), id, " + relTypeClass + ");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addParent(parent.getOid(), oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -428,13 +412,13 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public void " + methodName + "(" + relationshipType + " relationship)");
     getWriter().openBracket();
-    getWriter().writeLine("getRequest().deleteParent(relationship.getId());");
+    getWriter().writeLine("getRequest().deleteParent(relationship.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, " + relationshipType + " relationship)");
     getWriter().openBracket();
-    getWriter().writeLine("clientRequestIF.deleteParent(relationship.getId());");
+    getWriter().writeLine("clientRequestIF.deleteParent(relationship.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -446,39 +430,15 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
     getWriter().writeLine("public void " + methodName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("getRequest().deleteParents(this.getId(), " + relTypeClass + ");");
+    getWriter().writeLine("getRequest().deleteParents(this.getOid(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("clientRequestIF.deleteParents(id, " + relTypeClass + ");");
+    getWriter().writeLine("clientRequestIF.deleteParents(oid, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
-  }
-
-  /**
-   * Write all of the Transition method for this type
-   */
-  private void writeTransitions()
-  {
-    if (!this.getMdTypeDAOIF().hasStateMachine())
-      return;
-
-    for (TransitionDAOIF transistion : this.getMdTypeDAOIF().definesMdStateMachine().definesTransitions())
-    {
-      String methodName = CommonGenerationUtil.lowerFirstCharacter(transistion.getName());
-      getWriter().writeLine("public void " + methodName + "()");
-      getWriter().openBracket();
-      getWriter().writeLine("getRequest().promoteObject(this, \"" + transistion.getName() + "\");");
-      getWriter().closeBracket();
-      getWriter().writeLine("");
-
-      List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
-      list.add(GenerationUtil.getMdParameterId());
-
-      writeMdMethod(this.getDTOStubClassType() + ".CLASS", list, methodName, new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF())), true, true);
-    }
   }
 
   /*

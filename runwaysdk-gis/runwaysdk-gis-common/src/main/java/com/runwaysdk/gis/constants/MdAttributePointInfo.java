@@ -28,7 +28,7 @@ public interface MdAttributePointInfo extends MdAttributeGeometryInfo
   public static final String CLASS   = GISConstants.GIS_METADATA_PACKAGE+".MdAttributePoint";
 
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "NM20090219000000000000000000010100000000000000000000000000000001";
+  public static final String ID_VALUE  = "NM2009021900000000000000000001010058";
 }

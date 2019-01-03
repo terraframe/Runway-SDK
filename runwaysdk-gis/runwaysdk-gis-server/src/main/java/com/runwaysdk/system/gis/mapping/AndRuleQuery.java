@@ -114,13 +114,13 @@ public  class AndRuleQuery extends com.runwaysdk.system.gis.mapping.CompositeRul
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.AndRule andRule)
     {
       if(andRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(andRule.getId());
+      return this.EQ(andRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.AndRule andRule)
     {
       if(andRule == null) return this.NE((java.lang.String)null);
-      return this.NE(andRule.getId());
+      return this.NE(andRule.getOid());
     }
 
   }

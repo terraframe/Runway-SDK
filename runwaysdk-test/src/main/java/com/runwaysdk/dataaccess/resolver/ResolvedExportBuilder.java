@@ -70,11 +70,11 @@ public class ResolvedExportBuilder extends ExportBuilder<List<String>>
     // Delete all roles
     List<String> ids = RoleDAO.getEntityIdsDB(Roles.CLASS);
 
-    for (String id : ids)
+    for (String oid : ids)
     {
-      if (!existing.contains(id))
+      if (!existing.contains(oid))
       {
-        RoleDAO.get(id).getBusinessDAO().delete();
+        RoleDAO.get(oid).getBusinessDAO().delete();
       }
     }
   }

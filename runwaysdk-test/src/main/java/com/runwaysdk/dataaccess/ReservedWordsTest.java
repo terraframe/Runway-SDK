@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -30,34 +30,18 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
+import com.runwaysdk.session.Request;
 
-public class ReservedWordsTest extends TestCase
+public class ReservedWordsTest
 {
   private static MdBusinessDAO mdAttTest;
-  private static final String TESTNAME = "ReservedWordType";
-  private static final String PACKAGENAME = "com.runwaysdk.test";
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ReservedWordsTest.class);
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
+  private static final String  TESTNAME    = "ReservedWordType";
 
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
+  private static final String  PACKAGENAME = "com.runwaysdk.test";
 
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdAttTest = MdBusinessDAO.newInstance();
@@ -67,56 +51,54 @@ public class ReservedWordsTest extends TestCase
     mdAttTest.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdAttTest.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
     mdAttTest.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
-    mdAttTest.setGenerateMdController(false);
     mdAttTest.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdAttTest.apply();
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     MdBusinessDAOIF md = MdBusinessDAO.getMdBusinessDAO(PACKAGENAME + "." + TESTNAME);
     md.getBusinessDAO().delete();
   }
 
-  public static void main(String args[])
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(ReservedWordsTest.suite());
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(ReservedWordsTest.suite()));
-  }
-
+  @Request
+  @Test
   public void testSQL() throws Exception
   {
     // Words in lists
-    assertTrue ( ReservedWords.sqlContains("add") );
-    assertTrue ( ReservedWords.sqlContains("float4") );
-    assertTrue ( ReservedWords.sqlContains("blob") );
-    assertTrue ( ReservedWords.sqlContains("as") );
+    Assert.assertTrue(ReservedWords.sqlContains("add"));
+    Assert.assertTrue(ReservedWords.sqlContains("float4"));
+    Assert.assertTrue(ReservedWords.sqlContains("blob"));
+    Assert.assertTrue(ReservedWords.sqlContains("as"));
 
     // Words not in lists
-    assertTrue ( !ReservedWords.sqlContains("person") );
-    assertTrue ( !ReservedWords.sqlContains("tree") );
-    assertTrue ( !ReservedWords.sqlContains("apple") );
-    assertTrue ( !ReservedWords.sqlContains("purple") );
+    Assert.assertTrue(!ReservedWords.sqlContains("person"));
+    Assert.assertTrue(!ReservedWords.sqlContains("tree"));
+    Assert.assertTrue(!ReservedWords.sqlContains("apple"));
+    Assert.assertTrue(!ReservedWords.sqlContains("purple"));
   }
 
+  @Request
+  @Test
   public void testJava() throws Exception
   {
     // Words in lists
-    assertTrue ( ReservedWords.javaContains("abstract") );
-    assertTrue ( ReservedWords.javaContains("try") );
-    assertTrue ( ReservedWords.javaContains("export") );
-    assertTrue ( ReservedWords.javaContains("void") );
+    Assert.assertTrue(ReservedWords.javaContains("abstract"));
+    Assert.assertTrue(ReservedWords.javaContains("try"));
+    Assert.assertTrue(ReservedWords.javaContains("export"));
+    Assert.assertTrue(ReservedWords.javaContains("void"));
 
     // Words not in lists
-    assertTrue ( !ReservedWords.javaContains("person") );
-    assertTrue ( !ReservedWords.javaContains("tree") );
-    assertTrue ( !ReservedWords.javaContains("apple") );
-    assertTrue ( !ReservedWords.javaContains("purple") );
+    Assert.assertTrue(!ReservedWords.javaContains("person"));
+    Assert.assertTrue(!ReservedWords.javaContains("tree"));
+    Assert.assertTrue(!ReservedWords.javaContains("apple"));
+    Assert.assertTrue(!ReservedWords.javaContains("purple"));
   }
 
+  @Request
+  @Test
   public void testBadTablename() throws Exception
   {
     try
@@ -128,21 +110,22 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception
       mdBusiness.delete();
-      fail("Reserved word allowed for table name in new type");
+      Assert.fail("Reserved word allowed for table name in new type");
     }
     catch (ReservedWordException e)
     {
       // This is expected
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.TABLE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.TABLE);
     }
   }
-  
+
+  @Request
+  @Test
   public void testGoodTablename() throws Exception
   {
     try
@@ -154,7 +137,6 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -164,10 +146,12 @@ public class ReservedWordsTest extends TestCase
     catch (ReservedWordException e)
     {
       // The test failed
-      fail("Reserved java word 'abstract' was not allowed for table name in new type.");
+      Assert.fail("Reserved java word 'abstract' was not allowed for table name in new type.");
     }
   }
-  
+
+  @Request
+  @Test
   public void testBadTypename() throws Exception
   {
     try
@@ -179,21 +163,22 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
       mdBusiness.delete();
-      fail("Reserved Java word 'if' was allowed for type name in new type.");
+      Assert.fail("Reserved Java word 'if' was allowed for type name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.TYPE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.TYPE);
     }
   }
-  
+
+  @Request
+  @Test
   public void testGoodTypename() throws Exception
   {
     try
@@ -205,7 +190,6 @@ public class ReservedWordsTest extends TestCase
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Reserved Words");
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -215,9 +199,12 @@ public class ReservedWordsTest extends TestCase
     catch (ReservedWordException e)
     {
       // The test failed
-      fail("Reserved SQL word 'blob' was not allowed for type name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was not allowed for type name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testBadColumnName() throws Exception
   {
     try
@@ -228,18 +215,21 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getId());
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getOid());
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved SQL word 'blob' was allowed for a column name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was allowed for a column name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
     }
   }
+
+  @Request
+  @Test
   public void testGoodColumnName() throws Exception
   {
     try
@@ -250,16 +240,19 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getId());
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getOid());
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test passed
     }
     catch (ReservedWordException e)
     {
-      fail("Reserved Java word 'abstract' was not allowed for a column name in new type.");
+      Assert.fail("Reserved Java word 'abstract' was not allowed for a column name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testBadAttributeName() throws Exception
   {
     try
@@ -270,18 +263,21 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getId());
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getOid());
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved Java word 'if' was allowed for an attribute name in new type.");
+      Assert.fail("Reserved Java word 'if' was allowed for an attribute name in new type.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.ATTRIBUTE);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.ATTRIBUTE);
     }
   }
+
+  @Request
+  @Test
   public void testGoodAttributeName() throws Exception
   {
     try
@@ -292,16 +288,19 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getId());
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getOid());
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test passed
     }
     catch (ReservedWordException e)
     {
-      fail("Reserved SQL word 'blob' was not allowed for an attribute name in new type.");
+      Assert.fail("Reserved SQL word 'blob' was not allowed for an attribute name in new type.");
     }
   }
+
+  @Request
+  @Test
   public void testInvalidCopiedColumnName() throws Exception
   {
     try
@@ -311,16 +310,16 @@ public class ReservedWordsTest extends TestCase
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getId());
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdAttTest.getOid());
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      fail("Reserved SQL attribute name 'Access' was copied to the missing column name and was accepted by the system.");
+      Assert.fail("Reserved SQL attribute name 'Access' was copied to the missing column name and was accepted by the system.");
     }
     catch (ReservedWordException e)
     {
       // The test passed
-      assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
+      Assert.assertTrue(e.getOrigin() == ReservedWordException.Origin.COLUMN);
     }
   }
 }

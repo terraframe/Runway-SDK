@@ -46,7 +46,7 @@ public class RunwayLog implements Log
 
   private static String sessionIdKeyName = "Session"; // setting this to
                                                       // "SessionID" or
-                                                      // "Session ID" seems to
+                                                      // "Session OID" seems to
                                                       // glitch out Chainsaw
   
   public RunwayLog(String name)

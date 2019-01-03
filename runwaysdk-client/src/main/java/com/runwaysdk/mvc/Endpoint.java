@@ -31,6 +31,8 @@ public @interface Endpoint {
   public String url() default "[unassigned]";
 
   public ServletMethod method() default ServletMethod.GET;
-  
+
   public ErrorSerialization error() default ErrorSerialization.NONE;
+
+  public Class<? extends ServletFileUploadFactory> factory() default com.runwaysdk.mvc.DefaultServletFileUploadFactory.class;
 }

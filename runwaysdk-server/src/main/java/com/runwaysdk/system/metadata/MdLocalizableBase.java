@@ -61,9 +61,9 @@ public abstract class MdLocalizableBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static MdLocalizable get(String id)
+  public static MdLocalizable get(String oid)
   {
-    return (MdLocalizable) com.runwaysdk.business.Business.get(id);
+    return (MdLocalizable) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdLocalizable getByKey(String key)
@@ -71,17 +71,17 @@ public abstract class MdLocalizableBase extends com.runwaysdk.system.metadata.Md
     return (MdLocalizable) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdLocalizable lock(java.lang.String id)
+  public static MdLocalizable lock(java.lang.String oid)
   {
-    MdLocalizable _instance = MdLocalizable.get(id);
+    MdLocalizable _instance = MdLocalizable.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdLocalizable unlock(java.lang.String id)
+  public static MdLocalizable unlock(java.lang.String oid)
   {
-    MdLocalizable _instance = MdLocalizable.get(id);
+    MdLocalizable _instance = MdLocalizable.get(oid);
     _instance.unlock();
     
     return _instance;

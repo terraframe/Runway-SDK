@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -471,16 +470,7 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
   {
     return this.mdAttributeConcreteIF.isRemovable();
   }
-
-  /**
-   * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#currentState()
-   */
-  public StateMasterDAOIF currentState()
-  {
-    return this.mdAttributeConcreteIF.currentState();
-  }
-
+  
   /**
    * 
    * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getAllChildren()
@@ -556,15 +546,6 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#hasState()
-   */
-  public boolean hasState()
-  {
-    return this.mdAttributeConcreteIF.hasState();
-  }
-
-  /**
-   * 
    * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getAttributeArrayIF()
    */
   public AttributeIF[] getAttributeArrayIF()
@@ -628,20 +609,20 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getId()
+   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getOid()
    */
-  public String getId()
+  public String getOid()
   {
-    return this.mdAttributeConcreteIF.getId();
+    return this.mdAttributeConcreteIF.getOid();
   }
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getRootId()
+   * @see com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF#getBaseOid()
    */
-  public String getRootId()
+  public String getBaseOid()
   {
-    return this.mdAttributeConcreteIF.getRootId();
+    return this.mdAttributeConcreteIF.getBaseOid();
   }
 
   /**
@@ -740,7 +721,7 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
 
   public String getPermissionKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDimensionDAOIF getMdAttributeDimension(MdDimensionDAOIF mdDimension)

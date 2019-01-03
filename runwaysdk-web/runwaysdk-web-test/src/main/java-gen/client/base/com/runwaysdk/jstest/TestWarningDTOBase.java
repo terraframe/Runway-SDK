@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1884108763)
-public abstract class TestWarningDTOBase extends com.runwaysdk.business.WarningDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class TestWarningDTOBase extends com.runwaysdk.business.WarningDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestWarning";
   private static final long serialVersionUID = -1884108763;
@@ -34,7 +34,7 @@ public abstract class TestWarningDTOBase extends com.runwaysdk.business.WarningD
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String WARNINGCHAR = "warningChar";
   public static java.lang.String WARNINGINT = "warningInt";
   public String getWarningChar()

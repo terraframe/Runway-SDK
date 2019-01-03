@@ -120,7 +120,7 @@ public abstract class MdAttributeEnumerationBase extends com.runwaysdk.system.me
     }
     else
     {
-      setValue(MDENUMERATION, value.getId());
+      setValue(MDENUMERATION, value.getOid());
     }
   }
   
@@ -157,9 +157,9 @@ public abstract class MdAttributeEnumerationBase extends com.runwaysdk.system.me
     return CLASS;
   }
   
-  public static MdAttributeEnumeration get(String id)
+  public static MdAttributeEnumeration get(String oid)
   {
-    return (MdAttributeEnumeration) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeEnumeration) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeEnumeration getByKey(String key)
@@ -167,17 +167,17 @@ public abstract class MdAttributeEnumerationBase extends com.runwaysdk.system.me
     return (MdAttributeEnumeration) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeEnumeration lock(java.lang.String id)
+  public static MdAttributeEnumeration lock(java.lang.String oid)
   {
-    MdAttributeEnumeration _instance = MdAttributeEnumeration.get(id);
+    MdAttributeEnumeration _instance = MdAttributeEnumeration.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeEnumeration unlock(java.lang.String id)
+  public static MdAttributeEnumeration unlock(java.lang.String oid)
   {
-    MdAttributeEnumeration _instance = MdAttributeEnumeration.get(id);
+    MdAttributeEnumeration _instance = MdAttributeEnumeration.get(oid);
     _instance.unlock();
     
     return _instance;

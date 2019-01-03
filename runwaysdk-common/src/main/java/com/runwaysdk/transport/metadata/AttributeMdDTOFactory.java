@@ -48,6 +48,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 
 /**
  * Factory to create an AttributeMdDTO
@@ -167,6 +168,10 @@ public class AttributeMdDTOFactory
     else if (attributeType.equals(MdAttributeBooleanInfo.CLASS))
     {
       attributeMdDTO = new AttributeBooleanMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeUUIDMdDTO();
     }
     else if (attributeType.equals(MdAttributeIndicatorInfo.CLASS))
     {

@@ -18,88 +18,19 @@
  */
 package com.runwaysdk.query;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.dataaccess.EntityAttributeIndicatorTest;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.query.function.AggregateFunctionTestSuite;
 
-public class QueryTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ 
+  ParentQueryTestSuite.class,
+  ChildQueryTestSuite.class,
+  AggregateFunctionTestSuite.class,
+  EntityQueryTestSuite.class,
+  StandaloneStructQueryTest.class,
+})
+public class QueryTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(QueryTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite totalSuite = new TestSuite();
-
-    TestSuite suite = new TestSuite();
-
-    // run all tests using the defined parent entity
-    suite.addTest(ViewQueryTest.suite());
-    suite.addTest(ExtraQueryTest.suite());
-    suite.addTest(AttributeComparisonTest.suite());
-    suite.addTest(AttributeQueryTest.suite());
-    suite.addTest(EnumerationQueryTest.suite());
-    suite.addTest(ReferenceQueryTest.suite());
-    suite.addTest(StructQueryTest.suite());
-    suite.addTest(RelationshipQueryTest.suite());
-    suite.addTest(RelationshipAttributeQuery.suite());
-    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
-    TestSuite parentSuite = new TestSuite();
-    parentSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
-    totalSuite.addTest(parentSuite);
-
-    // run all tests using the defined child entity
-    suite = new TestSuite();
-    // This test only needs to be executed once
-    suite.addTest(EnumerationMasterQueryTest.suite());
-
-    suite.addTest(ValueQueryTest.suite());
-    suite.addTest(ValueQueryReferenceTest.suite());
-    suite.addTest(ValueQueryMultiReferenceTest.suite());
-    suite.addTest(ValueQueryMultiTermTest.suite());
-    suite.addTest(ValueQueryEnumTest.suite());
-    suite.addTest(ValueQueryStructTest.suite());
-    
-    suite.addTest(MdTableQueryTest.suite());
-    
-    suite.addTest(ViewQueryTest.suite());    
-    suite.addTest(ExtraQueryTest.suite());
-    suite.addTest(AttributeComparisonTest.suite());
-    suite.addTest(AttributeQueryTest.suite());
-    suite.addTest(EnumerationQueryTest.suite());
-    suite.addTest(MultiReferenceQueryTest.suite());
-    suite.addTest(MultiTermQueryTest.suite());
-    suite.addTest(ReferenceQueryTest.suite());
-    suite.addTest(StructQueryTest.suite());
-    suite.addTest(RelationshipQueryTest.suite());
-    suite.addTest(RelationshipAttributeQuery.suite());
-    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
-    
-    TestSuite childSuite = new TestSuite();
-    childSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.childQueryInfo.getType(), QueryMasterSetup.childRefQueryInfo.getType()));
-    totalSuite.addTest(childSuite);
-
-    totalSuite.addTest(StandaloneStructQueryTest.suite());
-    totalSuite.addTest(AggregateFunctionTestSuite.suite());
-    
-    TestSuite noCaching = new TestSuite("Not Cached Tests");
-    noCaching.addTest(EntityAttributeIndicatorTest.suite());
-    totalSuite.addTest(new EntityMasterTestSetup(noCaching, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
-
-
-    return totalSuite;
-  }
 }

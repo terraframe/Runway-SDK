@@ -34,7 +34,7 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
   public static java.lang.String DEFAULTSTYLE = "defaultStyle";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String FORCEREFRESH = "forceRefresh";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -136,7 +136,7 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(DEFAULTSTYLE, value.getId());
+      setValue(DEFAULTSTYLE, value.getOid());
     }
   }
   
@@ -176,7 +176,7 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -208,20 +208,20 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.Layer.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -376,7 +376,7 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -476,7 +476,7 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(SQLBUILDER, value.getId());
+      setValue(SQLBUILDER, value.getOid());
     }
   }
   
@@ -557,9 +557,9 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.mapping.HasLayer>) getRelationshipsWithParent(generatedMap, com.runwaysdk.system.gis.mapping.HasLayer.CLASS);
   }
   
-  public static Layer get(String id)
+  public static Layer get(String oid)
   {
-    return (Layer) com.runwaysdk.business.Business.get(id);
+    return (Layer) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Layer getByKey(String key)
@@ -567,17 +567,17 @@ public abstract class LayerBase extends com.runwaysdk.business.Business
     return (Layer) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Layer lock(java.lang.String id)
+  public static Layer lock(java.lang.String oid)
   {
-    Layer _instance = Layer.get(id);
+    Layer _instance = Layer.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Layer unlock(java.lang.String id)
+  public static Layer unlock(java.lang.String oid)
   {
-    Layer _instance = Layer.get(id);
+    Layer _instance = Layer.get(oid);
     _instance.unlock();
     
     return _instance;

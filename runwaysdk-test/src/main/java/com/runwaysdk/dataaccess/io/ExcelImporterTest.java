@@ -20,23 +20,21 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
@@ -79,41 +77,9 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.FieldOperation;
 
-public class ExcelImporterTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class ExcelImporterTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ExcelImporterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   private static MdBusinessDAO           mdBusiness;
 
   private static MdBusinessDAO           mdBusiness2;
@@ -130,8 +96,9 @@ public class ExcelImporterTest extends TestCase
    * The setup done before the test suite is run
    */
   @Request
+  @BeforeClass
   public static void classSetUp()
-  {
+  { 
     mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
 
@@ -157,12 +124,16 @@ public class ExcelImporterTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
   }
 
+  @Request
+  @Test
   public void testImport() throws IOException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -182,19 +153,19 @@ public class ExcelImporterTest extends TestCase
     ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
     byte[] results = importer.read();
 
-    assertEquals(0, results.length);
+    Assert.assertEquals(0, results.length);
 
     List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
     try
     {
-      assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-      assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+      Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+      Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
     finally
     {
@@ -202,6 +173,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testError() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -218,13 +191,13 @@ public class ExcelImporterTest extends TestCase
     ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
     byte[] results = importer.read();
 
-    assertFalse(results.length == 0);
+    Assert.assertFalse(results.length == 0);
 
     ExcelExporterTest.writeFile(results);
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
-    assertEquals(2, workbook.getNumberOfSheets());
+    Assert.assertEquals(2, workbook.getNumberOfSheets());
 
     Sheet importSheet = workbook.getSheetAt(0);
 
@@ -233,7 +206,7 @@ public class ExcelImporterTest extends TestCase
     Row labelRow = importSheet.getRow(2);
     Row row = importSheet.getRow(3);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -245,19 +218,21 @@ public class ExcelImporterTest extends TestCase
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
       String value = ExcelUtil.getString(row.getCell(i));
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
-      assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
     }
 
     Sheet errorSheet = workbook.getSheetAt(1);
 
     Row errorRow = errorSheet.getRow(1);
 
-    assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
-    assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
+    Assert.assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
+    Assert.assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
   }
 
+  @Request
+  @Test
   public void testSuccessAndError() throws IOException, InvalidFormatException
   {
     BusinessDAO valid = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -280,13 +255,13 @@ public class ExcelImporterTest extends TestCase
     ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
     byte[] results = importer.read();
 
-    assertFalse(results.length == 0);
+    Assert.assertFalse(results.length == 0);
 
     ExcelExporterTest.writeFile(results);
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
-    assertEquals(2, workbook.getNumberOfSheets());
+    Assert.assertEquals(2, workbook.getNumberOfSheets());
 
     Sheet importSheet = workbook.getSheetAt(0);
 
@@ -295,7 +270,7 @@ public class ExcelImporterTest extends TestCase
     Row labelRow = importSheet.getRow(2);
     Row row = importSheet.getRow(3);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -307,29 +282,29 @@ public class ExcelImporterTest extends TestCase
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
       String value = ExcelUtil.getString(row.getCell(i));
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
-      assertEquals(invalid.getValue(mdAttribute.definesAttribute()), value);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(invalid.getValue(mdAttribute.definesAttribute()), value);
     }
 
     Sheet errorSheet = workbook.getSheetAt(1);
 
     Row errorRow = errorSheet.getRow(1);
 
-    assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
-    assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
+    Assert.assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
+    Assert.assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
 
     List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
     try
     {
-      assertEquals(valid.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertEquals(valid.getValue("testDouble"), test.getValue("testDouble"));
-      assertEquals(valid.getValue("testInteger"), test.getValue("testInteger"));
+      Assert.assertEquals(valid.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertEquals(valid.getValue("testDouble"), test.getValue("testDouble"));
+      Assert.assertEquals(valid.getValue("testInteger"), test.getValue("testInteger"));
     }
     finally
     {
@@ -337,6 +312,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testContextBuilder()
   {
     final String TRANSFORMED_VALUE = "Transformed Value";
@@ -377,19 +354,19 @@ public class ExcelImporterTest extends TestCase
 
     byte[] results = importer.read();
 
-    assertEquals(0, results.length);
+    Assert.assertEquals(0, results.length);
 
     List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
     try
     {
-      assertEquals(TRANSFORMED_VALUE, test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-      assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+      Assert.assertEquals(TRANSFORMED_VALUE, test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+      Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
     finally
     {
@@ -397,6 +374,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultipleSheets() throws IOException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -420,19 +399,19 @@ public class ExcelImporterTest extends TestCase
     ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
     byte[] results = importer.read();
 
-    assertEquals(0, results.length);
+    Assert.assertEquals(0, results.length);
 
     List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
     try
     {
-      assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-      assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+      Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+      Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
     finally
     {
@@ -441,13 +420,13 @@ public class ExcelImporterTest extends TestCase
 
     ids = BusinessDAO.getEntityIdsFromDB(mdBusiness2);
 
-    assertEquals(1, ids.size());
+    Assert.assertEquals(1, ids.size());
 
     test = BusinessDAO.get(ids.get(0));
 
     try
     {
-      assertEquals(business2.getValue(TestFixConst.ATTRIBUTE_BOOLEAN), test.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+      Assert.assertEquals(business2.getValue(TestFixConst.ATTRIBUTE_BOOLEAN), test.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
     }
     finally
     {
@@ -455,6 +434,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultipleSheetsWithErrors() throws IOException, InvalidFormatException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -477,13 +458,13 @@ public class ExcelImporterTest extends TestCase
     ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
     byte[] results = importer.read();
 
-    assertFalse(results.length == 0);
+    Assert.assertFalse(results.length == 0);
 
     ExcelExporterTest.writeFile(results);
 
     Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(results));
 
-    assertEquals(3, workbook.getNumberOfSheets());
+    Assert.assertEquals(3, workbook.getNumberOfSheets());
 
     Sheet importSheet = workbook.getSheetAt(0);
 
@@ -492,7 +473,7 @@ public class ExcelImporterTest extends TestCase
     Row labelRow = importSheet.getRow(2);
     Row row = importSheet.getRow(3);
 
-    assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
+    Assert.assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -504,19 +485,21 @@ public class ExcelImporterTest extends TestCase
       String label = labelRow.getCell(i).getRichStringCellValue().toString();
       String value = ExcelUtil.getString(row.getCell(i));
 
-      assertEquals(mdAttribute.definesAttribute(), attributeName);
-      assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
-      assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
+      Assert.assertEquals(mdAttribute.definesAttribute(), attributeName);
+      Assert.assertEquals(mdAttribute.getDisplayLabel(Session.getCurrentLocale()), label);
+      Assert.assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
     }
 
     Sheet errorSheet = workbook.getSheetAt(2);
 
     Row errorRow = errorSheet.getRow(1);
 
-    assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
-    assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
+    Assert.assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
+    Assert.assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
   }
 
+  @Request
+  @Test
   public void testWebFormContextBuilder() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -542,19 +525,19 @@ public class ExcelImporterTest extends TestCase
       ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
 
       List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-      assertEquals(1, ids.size());
+      Assert.assertEquals(1, ids.size());
 
       BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-        assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-        assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+        Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+        Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
       finally
       {
@@ -567,6 +550,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -583,13 +568,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -614,19 +599,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -644,6 +629,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailCharacterEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -660,13 +647,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -694,7 +681,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -707,6 +694,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNoValueValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -723,13 +712,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -754,19 +743,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -784,6 +773,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -800,13 +791,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -831,19 +822,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -861,6 +852,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -877,13 +870,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -911,7 +904,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -924,6 +917,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -940,13 +935,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "24");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -969,19 +964,19 @@ public class ExcelImporterTest extends TestCase
 
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
 
       List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-      assertEquals(1, ids.size());
+      Assert.assertEquals(1, ids.size());
 
       BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-        assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-        assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+        Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+        Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
       finally
       {
@@ -994,6 +989,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1010,13 +1007,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "34");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1041,7 +1038,7 @@ public class ExcelImporterTest extends TestCase
 
       ExcelExporterTest.writeFile(results);
 
-      assertTrue(results.length > 0);
+      Assert.assertTrue(results.length > 0);
     }
     finally
     {
@@ -1049,6 +1046,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateEQValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -1071,13 +1070,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1100,19 +1099,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -1130,6 +1129,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateEQValidation() throws IOException
   {
 
@@ -1153,13 +1154,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -1184,7 +1185,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -1197,6 +1198,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1213,13 +1216,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1244,19 +1247,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -1275,6 +1278,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailCharacterNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1291,13 +1296,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
-      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+      condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
       condition.setValue(CharacterConditionInfo.VALUE, "Test Character Value");
-      condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+      condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1324,7 +1329,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -1337,6 +1342,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1353,13 +1360,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "11.00");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1384,19 +1391,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -1415,6 +1422,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1431,13 +1440,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "11");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1466,7 +1475,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -1479,6 +1488,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1495,13 +1506,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "22");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1526,19 +1537,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -1557,6 +1568,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongNEQValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1573,13 +1586,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "23");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1606,7 +1619,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -1620,6 +1633,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateNEQValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -1641,13 +1656,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -1672,19 +1687,19 @@ public class ExcelImporterTest extends TestCase
 
           byte[] results = importer.read();
 
-          assertEquals(0, results.length);
+          Assert.assertEquals(0, results.length);
 
           List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-          assertEquals(1, ids.size());
+          Assert.assertEquals(1, ids.size());
 
           BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-            assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-            assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+            Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+            Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
           finally
           {
@@ -1708,6 +1723,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateNEQValidation() throws IOException
   {
 
@@ -1731,13 +1748,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "NEQ");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -1764,7 +1781,7 @@ public class ExcelImporterTest extends TestCase
 
           ExcelExporterTest.writeFile(results);
 
-          assertTrue(results.length > 0);
+          Assert.assertTrue(results.length > 0);
         }
         finally
         {
@@ -1782,6 +1799,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1798,13 +1817,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1830,19 +1849,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -1860,6 +1879,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleGTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1876,13 +1897,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1909,7 +1930,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -1923,6 +1944,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -1939,13 +1962,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -1970,19 +1993,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -2001,6 +2024,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongGTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2017,13 +2042,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2050,7 +2075,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -2064,6 +2089,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -2086,13 +2113,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2117,19 +2144,19 @@ public class ExcelImporterTest extends TestCase
 
           byte[] results = importer.read();
 
-          assertEquals(0, results.length);
+          Assert.assertEquals(0, results.length);
 
           List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-          assertEquals(1, ids.size());
+          Assert.assertEquals(1, ids.size());
 
           BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-            assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-            assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+            Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+            Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
           finally
           {
@@ -2153,6 +2180,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateGTValidation() throws IOException
   {
 
@@ -2176,13 +2205,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2209,7 +2238,7 @@ public class ExcelImporterTest extends TestCase
 
           ExcelExporterTest.writeFile(results);
 
-          assertTrue(results.length > 0);
+          Assert.assertTrue(results.length > 0);
         }
         finally
         {
@@ -2228,6 +2257,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleGTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2244,13 +2275,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2275,19 +2306,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -2306,6 +2337,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleGTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2322,13 +2355,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2355,7 +2388,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -2369,6 +2402,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongGTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2385,13 +2420,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2416,19 +2451,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -2447,6 +2482,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongGTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2463,13 +2500,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2496,7 +2533,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -2509,6 +2546,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateGTEValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -2531,13 +2570,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2562,19 +2601,19 @@ public class ExcelImporterTest extends TestCase
 
           byte[] results = importer.read();
 
-          assertEquals(0, results.length);
+          Assert.assertEquals(0, results.length);
 
           List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-          assertEquals(1, ids.size());
+          Assert.assertEquals(1, ids.size());
 
           BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-            assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-            assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+            Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+            Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
           finally
           {
@@ -2597,6 +2636,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateGTEValidation() throws IOException
   {
 
@@ -2620,13 +2661,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -2653,7 +2694,7 @@ public class ExcelImporterTest extends TestCase
 
           ExcelExporterTest.writeFile(results);
 
-          assertTrue(results.length > 0);
+          Assert.assertTrue(results.length > 0);
         }
         finally
         {
@@ -2672,6 +2713,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2688,13 +2731,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       try
@@ -2719,19 +2762,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -2750,6 +2793,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleLTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2766,13 +2811,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2797,7 +2842,7 @@ public class ExcelImporterTest extends TestCase
 
       ExcelExporterTest.writeFile(results);
 
-      assertTrue(results.length > 0);
+      Assert.assertTrue(results.length > 0);
     }
     finally
     {
@@ -2805,6 +2850,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2821,13 +2868,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2850,19 +2897,19 @@ public class ExcelImporterTest extends TestCase
 
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
 
       List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-      assertEquals(1, ids.size());
+      Assert.assertEquals(1, ids.size());
 
       BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-        assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-        assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+        Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+        Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
       finally
       {
@@ -2875,6 +2922,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongLTValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -2891,13 +2940,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2922,7 +2971,7 @@ public class ExcelImporterTest extends TestCase
 
       ExcelExporterTest.writeFile(results);
 
-      assertTrue(results.length > 0);
+      Assert.assertTrue(results.length > 0);
     }
     finally
     {
@@ -2930,6 +2979,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -2952,13 +3003,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -2981,19 +3032,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -3011,6 +3062,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateLTValidation() throws IOException
   {
 
@@ -3034,13 +3087,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-09");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3065,7 +3118,7 @@ public class ExcelImporterTest extends TestCase
 
         ExcelExporterTest.writeFile(results);
 
-        assertTrue(results.length > 0);
+        Assert.assertTrue(results.length > 0);
       }
       finally
       {
@@ -3078,6 +3131,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleLTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -3094,13 +3149,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "12.12");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3123,19 +3178,19 @@ public class ExcelImporterTest extends TestCase
 
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
 
       List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-      assertEquals(1, ids.size());
+      Assert.assertEquals(1, ids.size());
 
       BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-        assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
-        assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+        Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
+        Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
       finally
       {
@@ -3148,6 +3203,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDoubleLTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -3164,13 +3221,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
       condition.setValue(DoubleConditionInfo.VALUE, "3.4");
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3195,7 +3252,7 @@ public class ExcelImporterTest extends TestCase
 
       ExcelExporterTest.writeFile(results);
 
-      assertTrue(results.length > 0);
+      Assert.assertTrue(results.length > 0);
     }
     finally
     {
@@ -3203,6 +3260,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongLTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -3219,13 +3278,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3248,19 +3307,19 @@ public class ExcelImporterTest extends TestCase
 
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
 
       List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-      assertEquals(1, ids.size());
+      Assert.assertEquals(1, ids.size());
 
       BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-        assertEquals(business.getValue("testLong"), test.getValue("testLong"));
-        assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+        Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertEquals(business.getValue("testLong"), test.getValue("testLong"));
+        Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
       finally
       {
@@ -3273,6 +3332,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailLongLTEValidation() throws IOException
   {
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness);
@@ -3289,13 +3350,13 @@ public class ExcelImporterTest extends TestCase
       EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
       LongConditionDAO condition = LongConditionDAO.newInstance();
-      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+      condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getOid());
       condition.setValue(LongConditionInfo.VALUE, "10");
-      condition.addItem(LongConditionInfo.OPERATION, item.getId());
+      condition.addItem(LongConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3320,7 +3381,7 @@ public class ExcelImporterTest extends TestCase
 
       ExcelExporterTest.writeFile(results);
 
-      assertTrue(results.length > 0);
+      Assert.assertTrue(results.length > 0);
     }
     finally
     {
@@ -3328,6 +3389,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateLTEValidation() throws IOException
   {
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
@@ -3350,13 +3413,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-10-11");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -3379,19 +3442,19 @@ public class ExcelImporterTest extends TestCase
 
         byte[] results = importer.read();
 
-        assertEquals(0, results.length);
+        Assert.assertEquals(0, results.length);
 
         List<String> ids = BusinessDAO.getEntityIdsFromDB(mdBusiness);
 
-        assertEquals(1, ids.size());
+        Assert.assertEquals(1, ids.size());
 
         BusinessDAOIF test = BusinessDAO.get(ids.get(0));
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
-          assertEquals(business.getValue("testDate"), test.getValue("testDate"));
-          assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
+          Assert.assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          Assert.assertEquals(business.getValue("testDate"), test.getValue("testDate"));
+          Assert.assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
         finally
         {
@@ -3409,6 +3472,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateLTEValidation() throws IOException
   {
 
@@ -3432,13 +3497,13 @@ public class ExcelImporterTest extends TestCase
         EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LTE");
 
         DateConditionDAO condition = DateConditionDAO.newInstance();
-        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+        condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
         condition.setValue(DateConditionInfo.VALUE, "2001-02-05");
-        condition.addItem(DateConditionInfo.OPERATION, item.getId());
+        condition.addItem(DateConditionInfo.OPERATION, item.getOid());
         condition.apply();
 
         MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+        mdWebInteger.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
         mdWebInteger.apply();
 
         try
@@ -3465,7 +3530,7 @@ public class ExcelImporterTest extends TestCase
 
           ExcelExporterTest.writeFile(results);
 
-          assertTrue(results.length > 0);
+          Assert.assertTrue(results.length > 0);
         }
         finally
         {
@@ -3483,6 +3548,8 @@ public class ExcelImporterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportView() throws IOException
   {
     MdViewDAO mdView = TestFixtureFactory.createMdView1();
@@ -3508,7 +3575,7 @@ public class ExcelImporterTest extends TestCase
       ExcelImporter importer = new ExcelImporter(new ByteArrayInputStream(bytes));
       byte[] results = importer.read();
 
-      assertEquals(0, results.length);
+      Assert.assertEquals(0, results.length);
     }
     finally
     {

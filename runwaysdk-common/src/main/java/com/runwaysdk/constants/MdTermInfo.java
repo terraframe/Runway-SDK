@@ -28,9 +28,9 @@ public interface MdTermInfo extends MdBusinessInfo
   public static final String DTO_CLASS = Constants.SYSTEM_BUSINESS_PACKAGE + ".TermDTO";
 
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE = "xl2eqz5dv2cq2hoogeb43gg0ohakvvsp00000000000000000000000000000001";
+  public static final String ID_VALUE = "85a39b1f-871a-3b8e-9d8b-3a741600003a";
 
 //  public static final String STRATEGY = "strategy";
   

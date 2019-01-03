@@ -92,7 +92,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.scheduler.AllJobStatus.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.scheduler.AllJobStatus.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -152,13 +152,13 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.JobStatus jobStatus)
     {
       if(jobStatus == null) return this.EQ((java.lang.String)null);
-      return this.EQ(jobStatus.getId());
+      return this.EQ(jobStatus.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.JobStatus jobStatus)
     {
       if(jobStatus == null) return this.NE((java.lang.String)null);
-      return this.NE(jobStatus.getId());
+      return this.NE(jobStatus.getOid());
     }
 
   }
@@ -220,7 +220,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<allJobStatus.length; i++)
       {
-        enumIdArray[i] = allJobStatus[i].getId();
+        enumIdArray[i] = allJobStatus[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -232,7 +232,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<allJobStatus.length; i++)
       {
-        enumIdArray[i] = allJobStatus[i].getId();
+        enumIdArray[i] = allJobStatus[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -244,7 +244,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<allJobStatus.length; i++)
       {
-        enumIdArray[i] = allJobStatus[i].getId();
+        enumIdArray[i] = allJobStatus[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -256,7 +256,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<allJobStatus.length; i++)
       {
-        enumIdArray[i] = allJobStatus[i].getId();
+        enumIdArray[i] = allJobStatus[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -268,7 +268,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<allJobStatus.length; i++)
       {
-        enumIdArray[i] = allJobStatus[i].getId();
+        enumIdArray[i] = allJobStatus[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -312,7 +312,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<jobStatus.length; i++)
       {
-        itemIdArray[i] = jobStatus[i].getId();
+        itemIdArray[i] = jobStatus[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -324,7 +324,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<jobStatus.length; i++)
       {
-        itemIdArray[i] = jobStatus[i].getId();
+        itemIdArray[i] = jobStatus[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -336,7 +336,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<jobStatus.length; i++)
       {
-        itemIdArray[i] = jobStatus[i].getId();
+        itemIdArray[i] = jobStatus[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -348,7 +348,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<jobStatus.length; i++)
       {
-        itemIdArray[i] = jobStatus[i].getId();
+        itemIdArray[i] = jobStatus[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -360,7 +360,7 @@ public  class JobStatusQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<jobStatus.length; i++)
       {
-        itemIdArray[i] = jobStatus[i].getId();
+        itemIdArray[i] = jobStatus[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -30,13 +30,13 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
 {
   public final static String CLASS = "com.runwaysdk.business.Relationship";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   private static final long serialVersionUID = -373742517;
   
-  public RelationshipSystemBase(String parentId, String childId)
+  public RelationshipSystemBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
@@ -75,24 +75,24 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -138,9 +138,9 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     return (com.runwaysdk.business.Business) super.getChild();
   }
   
-  public static RelationshipSystem get(String id)
+  public static RelationshipSystem get(String oid)
   {
-    return (RelationshipSystem) com.runwaysdk.business.Relationship.get(id);
+    return (RelationshipSystem) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static RelationshipSystem getByKey(String key)
@@ -148,17 +148,17 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     return (RelationshipSystem) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static RelationshipSystem lock(java.lang.String id)
+  public static RelationshipSystem lock(java.lang.String oid)
   {
-    RelationshipSystem _instance = RelationshipSystem.get(id);
+    RelationshipSystem _instance = RelationshipSystem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static RelationshipSystem unlock(java.lang.String id)
+  public static RelationshipSystem unlock(java.lang.String oid)
   {
-    RelationshipSystem _instance = RelationshipSystem.get(id);
+    RelationshipSystem _instance = RelationshipSystem.get(oid);
     _instance.unlock();
     
     return _instance;

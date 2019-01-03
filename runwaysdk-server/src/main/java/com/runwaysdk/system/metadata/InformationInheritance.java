@@ -22,14 +22,14 @@ public class InformationInheritance extends InformationInheritanceBase
 {
   private static final long serialVersionUID = 1229405888132L;
   
-  public InformationInheritance(String parentId, String childId)
+  public InformationInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public InformationInheritance(com.runwaysdk.system.metadata.MdInformation parent, com.runwaysdk.system.metadata.MdInformation child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

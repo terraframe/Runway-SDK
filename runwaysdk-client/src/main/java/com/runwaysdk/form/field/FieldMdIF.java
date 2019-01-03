@@ -29,10 +29,10 @@ public interface FieldMdIF
   public String getDefiningMdForm();
   
   /**
-   * The id of the MdField that defines this Field.
+   * The oid of the MdField that defines this Field.
    * @return
    */
-  public String getId();
+  public String getOid();
   
   public Boolean isRequired();
 }

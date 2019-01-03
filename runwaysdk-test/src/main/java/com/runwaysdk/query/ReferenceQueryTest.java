@@ -24,12 +24,11 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.StructQueryAPIGenerator;
@@ -38,7 +37,6 @@ import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -46,45 +44,13 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-public class ReferenceQueryTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class ReferenceQueryTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(ReferenceQueryTest.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ReferenceQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-      }
-
-      protected void tearDown()
-      {
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testNullReference()
   {
     try
@@ -114,14 +80,16 @@ public class ReferenceQueryTest extends TestCase
 
       Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      assertFalse(hasNext);
+      Assert.assertFalse(hasNext);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testNotNullReference()
   {
     try
@@ -151,14 +119,16 @@ public class ReferenceQueryTest extends TestCase
 
       Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      assertTrue(hasNext);
+      Assert.assertTrue(hasNext);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEnumerationContainsAll()
   {
     try
@@ -172,14 +142,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -191,16 +161,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEnumerationContainsAll_Generated()
   {
     try
@@ -240,16 +211,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -267,15 +238,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEnumerationContainsAny()
   {
     try
@@ -289,14 +262,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -308,16 +281,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEnumerationContainsAny_Generated()
   {
     try
@@ -358,16 +332,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -385,15 +359,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEnumerationContainsExactly()
   {
     try
@@ -407,14 +383,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -426,16 +402,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEnumerationContainsExactly_Generated()
   {
     try
@@ -476,16 +453,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -503,15 +480,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEnumerationNotContainsAll()
   {
     try
@@ -525,14 +504,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -544,16 +523,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEnumerationNotContainsAll_Generated()
   {
     try
@@ -594,16 +574,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -621,15 +601,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEnumerationNotContainsAny()
   {
     try
@@ -643,14 +625,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -662,16 +644,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEnumerationNotContainsAny_Generated()
   {
     try
@@ -712,16 +695,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -739,15 +722,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEqString()
   {
     try
@@ -755,41 +740,42 @@ public class ReferenceQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aReference("reference").EQ(QueryMasterSetup.childRefQueryObject.getId()));
+      query.WHERE(query.aReference("reference").EQ(QueryMasterSetup.childRefQueryObject.getOid()));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aReference("reference").EQ(QueryMasterSetup.testQueryObject1.getId()));
+      query.WHERE(query.aReference("reference").EQ(QueryMasterSetup.testQueryObject1.getOid()));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEqString_Generated()
   {
     try
@@ -807,7 +793,7 @@ public class ReferenceQueryTest extends TestCase
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableReference attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
-      Condition condition = (Condition) refQueryObjIFClass.getMethod("EQ", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject.getId());
+      Condition condition = (Condition) refQueryObjIFClass.getMethod("EQ", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject.getOid());
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -819,22 +805,22 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
-      condition = (Condition) refQueryObjIFClass.getMethod("EQ", String.class).invoke(attributeReference, QueryMasterSetup.testQueryObject1.getId());
+      condition = (Condition) refQueryObjIFClass.getMethod("EQ", String.class).invoke(attributeReference, QueryMasterSetup.testQueryObject1.getOid());
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -843,15 +829,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceEqComponent()
   {
     try
@@ -865,14 +853,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -884,16 +872,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceEqComponent_Generated()
   {
     try
@@ -910,7 +899,7 @@ public class ReferenceQueryTest extends TestCase
 
       // Instantiate a business object of type Users of the system user.
       Class<?> referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
-      Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject.getId());
+      Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject.getOid());
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -927,20 +916,20 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
-      reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject2.getId());
+      reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject2.getOid());
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
@@ -953,16 +942,18 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
         ;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceNotEqString()
   {
     try
@@ -970,41 +961,42 @@ public class ReferenceQueryTest extends TestCase
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aReference("reference").NE(QueryMasterSetup.testQueryObject1.getId()));
+      query.WHERE(query.aReference("reference").NE(QueryMasterSetup.testQueryObject1.getOid()));
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aReference("reference").NE(QueryMasterSetup.childRefQueryObject.getId()));
+      query.WHERE(query.aReference("reference").NE(QueryMasterSetup.childRefQueryObject.getOid()));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceNotEqString_Generated()
   {
     try
@@ -1022,7 +1014,7 @@ public class ReferenceQueryTest extends TestCase
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableReference attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
-      Condition condition = (Condition) refQueryObjIFClass.getMethod("NE", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject2.getId());
+      Condition condition = (Condition) refQueryObjIFClass.getMethod("NE", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject2.getOid());
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       // Load the iterator class
@@ -1034,22 +1026,22 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
-      condition = (Condition) refQueryObjIFClass.getMethod("NE", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject.getId());
+      condition = (Condition) refQueryObjIFClass.getMethod("NE", String.class).invoke(attributeReference, QueryMasterSetup.childRefQueryObject.getOid());
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, condition);
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -1058,15 +1050,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceNotEqComponent()
   {
     try
@@ -1080,14 +1074,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1099,16 +1093,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceNotEqComponent_Generated()
   {
     try
@@ -1125,7 +1120,7 @@ public class ReferenceQueryTest extends TestCase
 
       // Instantiate a business object of type Users of the system user.
       Class<?> referenceClass = LoaderDecorator.load(QueryMasterSetup.childRefQueryObject.getType());
-      Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject2.getId());
+      Object reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject2.getOid());
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -1142,20 +1137,20 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
-      reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject.getId());
+      reference = referenceClass.getMethod("get", String.class).invoke(null, QueryMasterSetup.childRefQueryObject.getOid());
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeReference = (SelectableReference) queryClass.getMethod("getReference").invoke(queryObject);
@@ -1168,15 +1163,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceStructBooleanEq()
   {
     try
@@ -1189,14 +1186,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1208,16 +1205,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceStructBooleanEq_Generated()
   {
     try
@@ -1253,16 +1251,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1278,15 +1276,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceReferenceEqString()
   {
     try
@@ -1300,35 +1300,36 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-      query.WHERE(query.aReference("reference").aReference(ElementInfo.CREATED_BY).id().EQ(ServerConstants.PUBLIC_USER_ID));
+      query.WHERE(query.aReference("reference").aReference(ElementInfo.CREATED_BY).oid().EQ(ServerConstants.PUBLIC_USER_ID));
 
       iterator = query.getIterator();
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceReferenceEqString_Generated()
   {
     try
@@ -1358,16 +1359,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1382,15 +1383,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceBooleanEqBoolean()
   {
     try
@@ -1404,14 +1407,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1423,16 +1426,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceBooleanEqBoolean_Generated()
   {
     try
@@ -1462,16 +1466,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1486,15 +1490,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceBooleanEqString()
   {
     try
@@ -1508,14 +1514,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1527,15 +1533,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceBooleanNotEqString()
   {
     try
@@ -1549,14 +1557,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1568,15 +1576,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceBooleanNotEqBoolean()
   {
     try
@@ -1590,14 +1600,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1609,16 +1619,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceBooleanNotEqBoolean_Generated()
   {
     try
@@ -1648,16 +1659,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1672,15 +1683,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterEqString()
   {
     try
@@ -1694,14 +1707,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -1713,16 +1726,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterEqString_Generated()
   {
     try
@@ -1752,16 +1766,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1776,15 +1790,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterEqIgnoreCaseString()
   {
     try
@@ -1798,14 +1814,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -1817,16 +1833,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterEqIgnoreCaseString_Generated()
   {
     try
@@ -1856,16 +1873,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1880,15 +1897,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterInIgnoreCaseStringArray()
   {
     try
@@ -1902,14 +1921,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -1921,16 +1940,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterInIgnoreCaseStringArray_Generated()
   {
     try
@@ -1960,16 +1980,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -1984,15 +2004,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterInStringArray()
   {
     try
@@ -2006,14 +2028,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2025,16 +2047,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterInStringArray_Generated()
   {
     try
@@ -2064,16 +2087,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2088,15 +2111,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterLikeIgnoreCaseString()
   {
     try
@@ -2110,14 +2135,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2129,16 +2154,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterLikeIgnoreCaseString_Generated()
   {
     try
@@ -2168,16 +2194,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2192,15 +2218,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterLikeString()
   {
     try
@@ -2214,14 +2242,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2233,16 +2261,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute referencecharacter values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute referencecharacter values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterLikeString_Generated()
   {
     try
@@ -2272,16 +2301,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2296,15 +2325,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotEqIgnoreCaseString()
   {
     try
@@ -2318,14 +2349,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2337,16 +2368,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotEqIgnoreCaseString_Generated()
   {
     try
@@ -2376,16 +2408,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2400,15 +2432,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotEqString()
   {
     try
@@ -2422,14 +2456,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2441,16 +2475,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotEqString_Generated()
   {
     try
@@ -2480,16 +2515,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2504,15 +2539,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotInIgnoreCaseStringArray()
   {
     try
@@ -2526,14 +2563,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2545,16 +2582,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2584,16 +2622,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2608,15 +2646,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotInStringArray()
   {
     try
@@ -2630,14 +2670,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2649,16 +2689,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotInStringArray_Generated()
   {
     try
@@ -2688,16 +2729,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2712,15 +2753,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotLikeIgnoreCaseString()
   {
     try
@@ -2734,14 +2777,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2753,16 +2796,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -2792,16 +2836,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2816,15 +2860,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceCharacterNotLikeString()
   {
     try
@@ -2838,14 +2884,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference character values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference character values are incorrect.");
         }
       }
 
@@ -2857,16 +2903,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference character values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference character values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceCharacterNotLikeString_Generated()
   {
     try
@@ -2896,16 +2943,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference values are incorrect.");
         }
       }
 
@@ -2920,15 +2967,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateEqString()
   {
     try
@@ -2942,14 +2991,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -2961,15 +3010,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateEq()
   {
     try
@@ -2985,14 +3036,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3006,16 +3057,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateEq_Generated()
   {
     try
@@ -3047,16 +3099,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3073,15 +3125,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateGtEqString()
   {
     try
@@ -3095,14 +3149,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3114,14 +3168,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3133,15 +3187,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateGtEq()
   {
     try
@@ -3157,14 +3213,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3178,14 +3234,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3199,16 +3255,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateGtEq_Generated()
   {
     try
@@ -3241,16 +3298,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3267,16 +3324,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3293,15 +3350,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateGtString()
   {
     try
@@ -3315,14 +3374,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3334,15 +3393,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateGt()
   {
     try
@@ -3358,14 +3419,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3379,16 +3440,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateGt_Generated()
   {
     try
@@ -3421,16 +3483,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3447,15 +3509,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateLtEqString()
   {
     try
@@ -3469,14 +3533,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3488,14 +3552,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3507,15 +3571,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateLtEq()
   {
     try
@@ -3531,14 +3597,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3552,14 +3618,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3573,16 +3639,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateLtEq_Generated()
   {
     try
@@ -3615,16 +3682,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3641,16 +3708,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3667,15 +3734,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateLtString()
   {
     try
@@ -3689,14 +3758,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3708,15 +3777,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateLt()
   {
     try
@@ -3732,14 +3803,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3753,16 +3824,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateLt_Generated()
   {
     try
@@ -3795,16 +3867,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3821,15 +3893,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateNotEqString()
   {
     try
@@ -3843,14 +3917,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3862,15 +3936,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateNotEq()
   {
     try
@@ -3886,14 +3962,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3907,16 +3983,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateNotEq_Generated()
   {
     try
@@ -3949,16 +4026,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -3975,15 +4052,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeEqString()
   {
     try
@@ -3997,14 +4076,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4016,15 +4095,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeEq()
   {
     try
@@ -4040,14 +4121,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4061,16 +4142,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeEq_Generated()
   {
     try
@@ -4103,16 +4185,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4129,15 +4211,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeGtEqString()
   {
     try
@@ -4151,14 +4235,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4170,14 +4254,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4189,15 +4273,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeGtEq()
   {
     try
@@ -4213,14 +4299,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4234,14 +4320,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4255,16 +4341,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeGtEq_Generated()
   {
     try
@@ -4297,16 +4384,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4324,16 +4411,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4350,15 +4437,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeGtString()
   {
     try
@@ -4372,14 +4461,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4391,15 +4480,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeGt()
   {
     try
@@ -4415,14 +4506,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4436,16 +4527,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeGt_Generated()
   {
     try
@@ -4478,16 +4570,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4504,15 +4596,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeLtEqString()
   {
     try
@@ -4526,14 +4620,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4545,14 +4639,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4564,15 +4658,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeLtEq()
   {
     try
@@ -4588,14 +4684,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4609,14 +4705,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4630,16 +4726,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeLtEq_Generated()
   {
     try
@@ -4672,16 +4769,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4699,16 +4796,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4725,15 +4822,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeLtString()
   {
     try
@@ -4747,14 +4846,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4766,15 +4865,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeLt()
   {
     try
@@ -4790,14 +4891,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4811,16 +4912,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeLt_Generated()
   {
     try
@@ -4853,16 +4955,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -4879,15 +4981,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeNotEqString()
   {
     try
@@ -4901,14 +5005,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4920,15 +5024,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDateTimeNotEq()
   {
     try
@@ -4944,14 +5050,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference datetime values are incorrect.");
         }
       }
 
@@ -4965,16 +5071,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference datetime values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDateTimeNotEq_Generated()
   {
     try
@@ -5007,16 +5114,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -5033,15 +5140,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalEqString()
   {
     try
@@ -5055,14 +5164,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -5074,15 +5183,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalEq()
   {
     try
@@ -5096,14 +5207,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute decimal values are incorrect.");
         }
       }
 
@@ -5115,16 +5226,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalEq_Generated()
   {
     try
@@ -5155,16 +5267,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5179,15 +5291,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalGtString()
   {
     try
@@ -5201,14 +5315,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5220,15 +5334,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalGt()
   {
     try
@@ -5242,14 +5358,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5261,16 +5377,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalGt_Generated()
   {
     try
@@ -5301,16 +5418,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5325,15 +5442,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalGtEqString()
   {
     try
@@ -5347,14 +5466,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5366,14 +5485,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5385,15 +5504,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalGtEq()
   {
     try
@@ -5407,14 +5528,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5426,14 +5547,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5445,16 +5566,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalGtEq_Generated()
   {
     try
@@ -5485,16 +5607,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5510,16 +5632,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5534,15 +5656,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalLtString()
   {
     try
@@ -5556,14 +5680,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5575,15 +5699,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalLt()
   {
     try
@@ -5597,14 +5723,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5616,16 +5742,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalLt_Generated()
   {
     try
@@ -5656,16 +5783,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
@@ -5679,15 +5806,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalLtEqString()
   {
     try
@@ -5701,14 +5830,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5720,14 +5849,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5739,15 +5868,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalLtEq()
   {
     try
@@ -5761,14 +5892,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5780,14 +5911,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5799,16 +5930,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalLtEq_Generated()
   {
     try
@@ -5839,16 +5971,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5864,16 +5996,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5888,15 +6020,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalNotEqString()
   {
     try
@@ -5910,14 +6044,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5929,15 +6063,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDecimalNotEq()
   {
     try
@@ -5951,14 +6087,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -5970,16 +6106,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDecimalNotEq_Generated()
   {
     try
@@ -6009,16 +6146,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference decimal values are incorrect.");
         }
       }
 
@@ -6033,15 +6170,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object decimal values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleEqString()
   {
     try
@@ -6055,14 +6194,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6074,15 +6213,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleEq()
   {
     try
@@ -6096,14 +6237,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6115,16 +6256,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleEq_Generated()
   {
     try
@@ -6154,16 +6296,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6178,15 +6320,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleGtString()
   {
     try
@@ -6200,14 +6344,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6219,15 +6363,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleGt()
   {
     try
@@ -6241,14 +6387,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6260,16 +6406,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleGt_Generated()
   {
     try
@@ -6299,16 +6446,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6323,15 +6470,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleGtEqString()
   {
     try
@@ -6345,14 +6494,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6364,14 +6513,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6383,15 +6532,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleGtEq()
   {
     try
@@ -6405,14 +6556,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6424,14 +6575,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6443,16 +6594,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleGtEq_Generated()
   {
     try
@@ -6483,16 +6635,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6507,16 +6659,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6531,15 +6683,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleLtString()
   {
     try
@@ -6553,14 +6707,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6572,15 +6726,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleLt()
   {
     try
@@ -6594,14 +6750,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6613,16 +6769,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleLt_Generated()
   {
     try
@@ -6653,16 +6810,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6677,15 +6834,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleLtEqString()
   {
     try
@@ -6699,14 +6858,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6718,14 +6877,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6737,15 +6896,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleLtEq()
   {
     try
@@ -6759,14 +6920,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6778,14 +6939,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6797,16 +6958,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleLtEq_Generated()
   {
     try
@@ -6837,16 +6999,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6862,16 +7024,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6886,15 +7048,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleNotEqString()
   {
     try
@@ -6908,14 +7072,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6927,15 +7091,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceDoubleNotEq()
   {
     try
@@ -6949,14 +7115,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -6968,16 +7134,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceDoubleNotEq_Generated()
   {
     try
@@ -7008,16 +7175,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference double values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference double values are incorrect.");
         }
       }
 
@@ -7032,15 +7199,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object double values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatEqString()
   {
     try
@@ -7054,14 +7223,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7073,15 +7242,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatEq()
   {
     try
@@ -7095,14 +7266,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7114,16 +7285,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatEq_Generated()
   {
     try
@@ -7154,16 +7326,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7178,15 +7350,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatGtString()
   {
     try
@@ -7200,14 +7374,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7219,15 +7393,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatGt()
   {
     try
@@ -7241,14 +7417,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7260,16 +7436,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatGt_Generated()
   {
     try
@@ -7300,16 +7477,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7324,15 +7501,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatGtEqString()
   {
     try
@@ -7346,14 +7525,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7365,14 +7544,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7384,15 +7563,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatGtEq()
   {
     try
@@ -7406,14 +7587,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7425,14 +7606,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7444,16 +7625,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatGtEq_Generated()
   {
     try
@@ -7484,16 +7666,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7509,16 +7691,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7533,15 +7715,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatLtString()
   {
     try
@@ -7555,14 +7739,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7574,15 +7758,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatLt()
   {
     try
@@ -7596,14 +7782,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7615,16 +7801,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatLt_Generated()
   {
     try
@@ -7655,16 +7842,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7679,15 +7866,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatLtEqString()
   {
     try
@@ -7701,14 +7890,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7720,14 +7909,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7739,15 +7928,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatLtEq()
   {
     try
@@ -7761,14 +7952,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7780,14 +7971,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7799,16 +7990,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatLtEq_Generated()
   {
     try
@@ -7839,16 +8031,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7864,16 +8056,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7888,15 +8080,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatNotEqString()
   {
     try
@@ -7910,14 +8104,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7929,15 +8123,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceFloatNotEq()
   {
     try
@@ -7951,14 +8147,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -7970,16 +8166,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceFloatNotEq_Generated()
   {
     try
@@ -8010,16 +8207,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference float values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference float values are incorrect.");
         }
       }
 
@@ -8034,15 +8231,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference float values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference float values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerEqString()
   {
     try
@@ -8056,14 +8255,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8075,15 +8274,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerEq()
   {
     try
@@ -8097,14 +8298,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8116,16 +8317,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerEq_Generated()
   {
     try
@@ -8156,16 +8358,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8180,15 +8382,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerGtString()
   {
     try
@@ -8202,14 +8406,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8221,15 +8425,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerGt()
   {
     try
@@ -8243,14 +8449,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8262,16 +8468,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerGt_Generated()
   {
     try
@@ -8302,16 +8509,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8326,15 +8533,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerGtEqString()
   {
     try
@@ -8348,14 +8557,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8367,14 +8576,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8386,15 +8595,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerGtEq()
   {
     try
@@ -8408,14 +8619,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8427,14 +8638,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8446,16 +8657,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerGtEq_Generated()
   {
     try
@@ -8486,16 +8698,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8511,16 +8723,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8535,15 +8747,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerLtString()
   {
     try
@@ -8557,14 +8771,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8576,15 +8790,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerLt()
   {
     try
@@ -8598,14 +8814,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8617,16 +8833,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerLt_Generated()
   {
     try
@@ -8657,16 +8874,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8681,15 +8898,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerLtEqString()
   {
     try
@@ -8703,14 +8922,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8722,14 +8941,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8741,15 +8960,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerLtEq()
   {
     try
@@ -8763,14 +8984,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8782,14 +9003,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8801,16 +9022,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerLtEq_Generated()
   {
     try
@@ -8841,16 +9063,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8866,16 +9088,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8890,15 +9112,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerNotEqString()
   {
     try
@@ -8912,14 +9136,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8931,15 +9155,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceIntegerNotEq()
   {
     try
@@ -8953,14 +9179,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -8972,16 +9198,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceIntegerNotEq_Generrated()
   {
     try
@@ -9012,16 +9239,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -9036,15 +9263,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object integer values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongEqString()
   {
     try
@@ -9058,14 +9287,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9077,15 +9306,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongEq()
   {
     try
@@ -9099,14 +9330,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9118,16 +9349,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongEq_Generated()
   {
     try
@@ -9158,16 +9390,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9182,15 +9414,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongGtString()
   {
     try
@@ -9204,14 +9438,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9223,15 +9457,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongGt()
   {
     try
@@ -9245,14 +9481,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9264,16 +9500,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongGt_Generated()
   {
     try
@@ -9304,16 +9541,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9328,15 +9565,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongGtEqString()
   {
     try
@@ -9350,14 +9589,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9369,14 +9608,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9388,15 +9627,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongGtEq()
   {
     try
@@ -9410,14 +9651,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9429,14 +9670,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9448,16 +9689,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongGtEq_Generated()
   {
     try
@@ -9488,16 +9730,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference integer values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference integer values are incorrect.");
         }
       }
 
@@ -9513,16 +9755,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9537,15 +9779,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongLtString()
   {
     try
@@ -9559,14 +9803,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9578,15 +9822,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongLt()
   {
     try
@@ -9600,14 +9846,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9619,16 +9865,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongLt_Generated()
   {
     try
@@ -9659,16 +9906,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9683,15 +9930,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongLtEqString()
   {
     try
@@ -9705,14 +9954,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9724,14 +9973,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9743,15 +9992,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongLtEq()
   {
     try
@@ -9765,14 +10016,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9784,14 +10035,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9803,16 +10054,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongLtEq_Generated()
   {
     try
@@ -9843,16 +10095,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9868,16 +10120,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9892,15 +10144,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongNotEqString()
   {
     try
@@ -9914,14 +10168,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9933,15 +10187,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceLongNotEq()
   {
     try
@@ -9955,14 +10211,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -9974,16 +10230,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceLongNotEq_Generated()
   {
     try
@@ -10014,16 +10271,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference long values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference long values are incorrect.");
         }
       }
 
@@ -10038,15 +10295,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object long values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextEqString()
   {
     try
@@ -10060,14 +10319,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10079,15 +10338,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobEqString()
   {
     try
@@ -10101,14 +10362,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10120,16 +10381,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextEqString_Generated()
   {
     try
@@ -10160,16 +10422,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10184,16 +10446,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobEqString_Generated()
   {
     try
@@ -10224,16 +10487,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10248,16 +10511,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextEqIgnoreCaseString()
   {
     try
@@ -10271,14 +10535,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10290,15 +10554,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobEqIgnoreCaseString()
   {
     try
@@ -10312,14 +10578,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10331,17 +10597,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testReferenceTextEqIgnoreCaseString_Generated()
   {
     try
@@ -10372,16 +10638,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10396,16 +10662,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobEqIgnoreCaseString_Generated()
   {
     try
@@ -10436,16 +10703,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10460,16 +10727,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextInStringArray()
   {
     try
@@ -10483,14 +10751,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10502,15 +10770,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobInStringArray()
   {
     try
@@ -10524,14 +10794,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10543,17 +10813,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testReferenceTextInStringArray_Generated()
   {
     try
@@ -10584,16 +10854,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10608,16 +10878,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobInStringArray_Generated()
   {
     try
@@ -10648,16 +10919,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10672,16 +10943,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextInIgnoreCaseStringArray()
   {
     try
@@ -10695,14 +10967,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10714,15 +10986,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobInIgnoreCaseStringArray()
   {
     try
@@ -10736,14 +11010,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10755,16 +11029,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextInIgnoreCaseStringArray_Generated()
   {
     try
@@ -10795,16 +11070,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10819,16 +11094,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobInIgnoreCaseStringArray_Generated()
   {
     try
@@ -10859,16 +11135,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10883,15 +11159,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextLikeString()
   {
     try
@@ -10905,14 +11183,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -10924,15 +11202,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobLikeString()
   {
     try
@@ -10946,14 +11226,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -10965,16 +11245,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextLikeString_Generated()
   {
     try
@@ -11005,16 +11286,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11029,16 +11310,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobLikeString_Generated()
   {
     try
@@ -11069,16 +11351,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11093,15 +11375,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextLikeIgnoreCaseString()
   {
     try
@@ -11115,14 +11399,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11134,15 +11418,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobLikeIgnoreCaseString()
   {
     try
@@ -11156,14 +11442,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11175,17 +11461,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testReferenceTextLikeIgnoreCaseString_Generated()
   {
     try
@@ -11216,16 +11502,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11240,16 +11526,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobLikeIgnoreCaseString_Generated()
   {
     try
@@ -11280,16 +11567,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11304,16 +11591,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextNotEqString()
   {
     try
@@ -11327,14 +11615,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11346,15 +11634,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotEqString()
   {
     try
@@ -11368,14 +11658,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11387,16 +11677,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextNotEqString_Generated()
   {
     try
@@ -11427,16 +11718,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11451,16 +11742,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotEqString_Generated()
   {
     try
@@ -11491,16 +11783,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11515,15 +11807,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextNotEqIgnoreCaseString()
   {
     try
@@ -11537,14 +11831,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11556,15 +11850,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotEqIgnoreCaseString()
   {
     try
@@ -11578,14 +11874,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11597,16 +11893,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextNotEqIgnoreCaseString_Generated()
   {
     try
@@ -11637,16 +11934,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11661,16 +11958,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotEqIgnoreCaseString_Generated()
   {
     try
@@ -11701,16 +11999,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11725,15 +12023,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextNotInStringArray()
   {
     try
@@ -11747,14 +12047,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11766,15 +12066,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotInStringArray()
   {
     try
@@ -11788,14 +12090,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11807,16 +12109,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextNotInStringArray_Generated()
   {
     try
@@ -11847,16 +12150,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11871,16 +12174,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotInStringArray_Generated()
   {
     try
@@ -11911,16 +12215,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -11935,16 +12239,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextNotInIgnoreCaseStringArray()
   {
     try
@@ -11958,14 +12263,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -11977,15 +12282,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotInIgnoreCaseStringArray()
   {
     try
@@ -11999,14 +12306,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12018,16 +12325,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -12058,16 +12366,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -12082,16 +12390,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -12122,16 +12431,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12146,15 +12455,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTextNotLikeString()
   {
     try
@@ -12168,14 +12479,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -12187,15 +12498,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotLikeString()
   {
     try
@@ -12209,14 +12522,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12228,16 +12541,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTextNotLikeString_Generated()
   {
     try
@@ -12268,16 +12582,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -12292,16 +12606,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotLikeString_Generated()
   {
     try
@@ -12332,16 +12647,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12356,16 +12671,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTextNotLikeIgnoreCaseString()
   {
     try
@@ -12379,14 +12695,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -12398,15 +12714,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceClobNotLikeIgnoreCaseString()
   {
     try
@@ -12420,14 +12738,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12439,17 +12757,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
-  
+  @Request
+  @Test
   public void testReferenceTextNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -12480,16 +12798,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference text values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference text values are incorrect.");
         }
       }
 
@@ -12504,16 +12822,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference text values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference text values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceClobNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -12544,16 +12863,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference Clob values are incorrect.");
         }
       }
 
@@ -12568,16 +12887,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference Clob values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testReferenceTimeEqString()
   {
     try
@@ -12591,14 +12911,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12610,15 +12930,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeEq()
   {
     try
@@ -12634,14 +12956,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12655,16 +12977,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeEq_Generated()
   {
     try
@@ -12697,16 +13020,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -12723,15 +13046,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeGtString()
   {
     try
@@ -12745,14 +13070,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12764,15 +13089,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeGt()
   {
     try
@@ -12788,14 +13115,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12809,16 +13136,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeGt_Generated()
   {
     try
@@ -12851,16 +13179,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -12877,15 +13205,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeGtEqString()
   {
     try
@@ -12899,14 +13229,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12918,14 +13248,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12937,15 +13267,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeGtEq()
   {
     try
@@ -12961,14 +13293,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -12982,14 +13314,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13003,16 +13335,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeGtEq_Generated()
   {
     try
@@ -13045,16 +13378,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13070,16 +13403,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13096,15 +13429,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeLtString()
   {
     try
@@ -13118,14 +13453,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13137,15 +13472,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeLt()
   {
     try
@@ -13161,14 +13498,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13182,16 +13519,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeLt_Generated()
   {
     try
@@ -13224,16 +13562,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13250,15 +13588,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeLtEqString()
   {
     try
@@ -13272,14 +13612,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13290,14 +13630,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13309,15 +13649,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeLtEq()
   {
     try
@@ -13333,14 +13675,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13353,14 +13695,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13374,16 +13716,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeLtEq_Generated()
   {
     try
@@ -13416,16 +13759,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13443,16 +13786,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13469,15 +13812,17 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeNotEqString()
   {
     try
@@ -13491,14 +13836,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13510,15 +13855,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testReferenceTimeNotEq()
   {
     try
@@ -13534,14 +13881,14 @@ public class ReferenceQueryTest extends TestCase
 
       if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference time values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference time values are incorrect.");
         }
       }
 
@@ -13555,16 +13902,17 @@ public class ReferenceQueryTest extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on attribute reference time values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute reference time values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testReferenceTimeNotEq_Generated()
   {
     try
@@ -13597,16 +13945,16 @@ public class ReferenceQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String) objectClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String objectId = (String) objectClass.getMethod("getOid").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on attribute reference date values are incorrect.");
+          Assert.fail("The objects returned by a query based on attribute reference date values are incorrect.");
         }
       }
 
@@ -13623,12 +13971,12 @@ public class ReferenceQueryTest extends TestCase
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
+        Assert.fail("A query based on attribute refernce Object date values returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 

@@ -224,7 +224,7 @@ public class JavaArtifactMdClassCommand extends JavaArtifactMdTypeCommand
    */
   private void restoreToFileSystem_StubClassFile()
   {
-    byte[] stubClassBytes = Database.getMdClassStubClass(this.getMdTypeIF().getId(), conn);
+    byte[] stubClassBytes = Database.getMdClassStubClass(this.getMdTypeIF().getOid(), conn);
     ClassManager.writeClasses(businessStubClassDirectory, stubClassBytes);
   }
 
@@ -233,7 +233,7 @@ public class JavaArtifactMdClassCommand extends JavaArtifactMdTypeCommand
    */
   private void restoreToFileSystem_StubSourceFile()
   {
-    String stubSource = Database.getMdClassStubSource(this.getMdTypeIF().getId(), conn);
+    String stubSource = Database.getMdClassStubSource(this.getMdTypeIF().getOid(), conn);
     try
     {
       FileIO.write(businessStubSourceFile, stubSource);
@@ -249,7 +249,7 @@ public class JavaArtifactMdClassCommand extends JavaArtifactMdTypeCommand
    */
   private void restoreToFileSystem_DTOStubClassFile()
   {
-    byte[] dtoStubClassBytes = Database.getMdClassDTOStubClass(this.getMdTypeIF().getId(), conn);
+    byte[] dtoStubClassBytes = Database.getMdClassDTOStubClass(this.getMdTypeIF().getOid(), conn);
     ClassManager.writeClasses(dtoStubClassDirectory, dtoStubClassBytes);
   }
 
@@ -258,7 +258,7 @@ public class JavaArtifactMdClassCommand extends JavaArtifactMdTypeCommand
    */
   private void restoreToFileSystem_DTOStubSourceFile()
   {
-    String stubSource = Database.getMdClassDTOStubSource(this.getMdTypeIF().getId(), conn);
+    String stubSource = Database.getMdClassDTOStubSource(this.getMdTypeIF().getOid(), conn);
     try
     {
       FileIO.write(dtoStubSourceFile, stubSource);

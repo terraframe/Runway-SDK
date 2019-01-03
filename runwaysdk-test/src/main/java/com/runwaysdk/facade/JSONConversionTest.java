@@ -24,18 +24,16 @@ package com.runwaysdk.facade;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.DoNotWeave;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -52,13 +50,15 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.web.json.JSONController;
 
-public class JSONConversionTest extends TestCase implements DoNotWeave
+
+public class JSONConversionTest implements DoNotWeave
 {
   protected static String          pack                         = "com.test.controller";
 
@@ -88,29 +88,6 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
   protected static String          termType                     = null;
 
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(JSONConversionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   protected ClientSession createAnonymousSession()
   {
     return ClientSession.createAnonymousSession("default", new Locale[] { CommonProperties.getDefaultLocale() });
@@ -126,7 +103,17 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     return clientSession.getRequest();
   }
 
+  @BeforeClass
   public static void classSetUp()
+  {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    
+    classSetUpRequest();
+  }
+  
+  @Request
+  public static void classSetUpRequest()
   {
     // create a new TestUser type with a phone number struct
     testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
@@ -177,8 +164,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getOid());
     clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
 
     mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
@@ -187,8 +174,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getOid());
     clientRequest.createBusiness(mdAttributeMultiTermDTO);
 
     mdAttributeTermDTO = clientRequest.newBusiness(MdAttributeTermInfo.CLASS);
@@ -197,8 +184,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeTermDTO.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getId());
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getOid());
     clientRequest.createBusiness(mdAttributeTermDTO);
 
     parentMdBusinessType = definesType(parentMdBusiness);
@@ -211,21 +198,25 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     return pack + "." + mdBusinessDTO.getValue(MdTypeInfo.NAME);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
-    clientRequest.delete(parentMdBusiness.getId());
+    clientRequest.delete(parentMdBusiness.getOid());
 
-    clientRequest.delete(termClass.getId());
+    clientRequest.delete(termClass.getOid());
 
-    clientRequest.delete(littleBillyTables.getId());
+    clientRequest.delete(littleBillyTables.getOid());
 
-    clientRequest.delete(tommyUser.getId());
+    clientRequest.delete(tommyUser.getOid());
 
-    clientRequest.delete(testUserMd.getId());
+    clientRequest.delete(testUserMd.getOid());
 
     systemSession.logout();
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReference() throws JSONException
   {
     String attributeName = "aMultiReference";
@@ -238,7 +229,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
       BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
 
       String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
 
@@ -252,7 +243,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
 
         // Validate the metadata
         Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiReferenceMdDTO);
@@ -260,16 +251,18 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       finally
       {
         clientRequest.lock(test);
-        clientRequest.delete(test.getId());
+        clientRequest.delete(test.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceBrowserResponse() throws JSONException
   {
     String attributeName = "aMultiReference";
@@ -282,7 +275,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
       BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
 
       String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
 
@@ -316,7 +309,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
 
         // Validate the metadata
         Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiReferenceMdDTO);
@@ -324,16 +317,18 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       finally
       {
         clientRequest.lock(test);
-        clientRequest.delete(test.getId());
+        clientRequest.delete(test.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeTerm() throws JSONException
   {
     String attributeName = "aTerm";
@@ -345,7 +340,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     {
 
       BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
-      instance.setValue(attributeName, term.getId());
+      instance.setValue(attributeName, term.getOid());
 
       String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
 
@@ -356,7 +351,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       try
       {
         // Validate the value
-        Assert.assertEquals(term.getId(), test.getValue(attributeName));
+        Assert.assertEquals(term.getOid(), test.getValue(attributeName));
 
         // Validate the metadata
         Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeTermMdDTO);
@@ -364,16 +359,18 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       finally
       {
         clientRequest.lock(test);
-        clientRequest.delete(test.getId());
+        clientRequest.delete(test.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws JSONException
   {
     String javascript = JSONController.importTypes(clientRequest.getSessionId(), new String[] { parentMdBusinessType });
@@ -384,6 +381,8 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
     Assert.assertTrue(javascript.contains("addAMultiReference : function(item)"));
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm() throws JSONException
   {
     String attributeName = "aMultiTerm";
@@ -396,7 +395,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
       BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
 
       String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
 
@@ -410,7 +409,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
 
         // Validate the metadata
         Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiTermMdDTO);
@@ -418,16 +417,18 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       finally
       {
         clientRequest.lock(test);
-        clientRequest.delete(test.getId());
+        clientRequest.delete(test.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermBrowserResponse() throws JSONException
   {
     String attributeName = "aMultiTerm";
@@ -440,7 +441,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
 
       BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
 
       String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
 
@@ -474,7 +475,7 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
 
         // Validate the metadata
         Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiTermMdDTO);
@@ -482,16 +483,18 @@ public class JSONConversionTest extends TestCase implements DoNotWeave
       finally
       {
         clientRequest.lock(test);
-        clientRequest.delete(test.getId());
+        clientRequest.delete(test.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws JSONException
   {
     String javascript = JSONController.importTypes(clientRequest.getSessionId(), new String[] { parentMdBusinessType });

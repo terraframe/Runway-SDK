@@ -36,9 +36,9 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    */
   private static final long serialVersionUID = -5872127334611967892L;
 
-  public IndexAttributeDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public IndexAttributeDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
   /**
@@ -48,7 +48,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    */
   private String buildKey()
   {
-    return this.getParentId()+"-"+this.getChildId();
+    return this.getParentOid()+"-"+this.getChildOid();
   }
   
   public String apply()
@@ -105,7 +105,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
       mdIndex.dropIndex(false);
     }
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
     
     if (mdIndex.isActive() &&
         (this.isNew() || this.isImport() || this.getAttributeIF(IndexAttributeInfo.INDEX_ORDER).isModified()))
@@ -113,7 +113,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
       mdIndex.buildIndex();
     }
     
-    return id;
+    return oid;
   }
 
   public Integer getIndexOrder()
@@ -136,7 +136,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    */
   public MdIndexDAOIF getMdIndexDAO()
   {
-    return MdIndexDAO.get(this.getParentId());
+    return MdIndexDAO.get(this.getParentOid());
   }
 
   /**
@@ -145,7 +145,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    */
   public MdAttributeConcreteDAOIF getMdAttributeDAO()
   {
-    return (MdAttributeConcreteDAOIF)MdAttributeConcreteDAO.get(this.getChildId());
+    return (MdAttributeConcreteDAOIF)MdAttributeConcreteDAO.get(this.getChildOid());
   }
 
   /**

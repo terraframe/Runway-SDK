@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 875214753)
+@com.runwaysdk.business.ClassSignature(hash = -1100616346)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,10 +30,10 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdFieldDisplayLabel";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
-  private static final long serialVersionUID = 875214753;
+  private static final long serialVersionUID = -1100616346;
   
   public MdFieldDisplayLabelBase()
   {
@@ -45,30 +45,14 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
     super(component, structName);
   }
   
-  public static MdFieldDisplayLabel get(String id)
+  public static MdFieldDisplayLabel get(String oid)
   {
-    return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(id);
+    return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdFieldDisplayLabel getByKey(String key)
   {
     return (MdFieldDisplayLabel) com.runwaysdk.business.Struct.get(CLASS, key);
-  }
-  
-  public String getId()
-  {
-    return getValue(ID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(ID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdFieldDisplayLabel.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -97,6 +81,22 @@ public abstract class MdFieldDisplayLabelBase extends com.runwaysdk.business.Loc
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdFieldDisplayLabel.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getSiteMaster()

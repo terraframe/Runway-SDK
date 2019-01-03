@@ -27,7 +27,7 @@ import com.runwaysdk.business.rbac.UserDAOIF;
 public class InactiveUserException extends LoginException
 {
   /**
-   * Auto-generated serial id 
+   * Auto-generated serial oid 
    */
   private static final long serialVersionUID = -7834718176116381571L;
   

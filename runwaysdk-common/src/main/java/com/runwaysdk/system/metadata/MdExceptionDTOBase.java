@@ -71,7 +71,7 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(SUPERMDEXCEPTION, value.getId());
+      setValue(SUPERMDEXCEPTION, value.getOid());
     }
   }
   
@@ -98,114 +98,114 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllChildExceptions()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllChildExceptionsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllChildExceptionsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllChildExceptionsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ExceptionInheritanceDTO addChildExceptions(com.runwaysdk.system.metadata.MdExceptionDTO child)
   {
-    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ExceptionInheritanceDTO addChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdExceptionDTO child)
+  public static com.runwaysdk.system.metadata.ExceptionInheritanceDTO addChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdExceptionDTO child)
   {
-    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   public void removeChildExceptions(com.runwaysdk.system.metadata.ExceptionInheritanceDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ExceptionInheritanceDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllChildExceptions()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
-  public static void removeAllChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllChildExceptions(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllParentException()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO> getAllParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdExceptionDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllParentExceptionRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllParentExceptionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO> getAllParentExceptionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ExceptionInheritanceDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ExceptionInheritanceDTO addParentException(com.runwaysdk.system.metadata.MdExceptionDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ExceptionInheritanceDTO addParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdExceptionDTO parent)
+  public static com.runwaysdk.system.metadata.ExceptionInheritanceDTO addParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdExceptionDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ExceptionInheritanceDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
   public void removeParentException(com.runwaysdk.system.metadata.ExceptionInheritanceDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ExceptionInheritanceDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllParentException()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
-  public static void removeAllParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllParentException(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.ExceptionInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdExceptionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdExceptionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdExceptionDTO) dto;
   }
@@ -223,7 +223,7 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdExceptionQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -236,10 +236,10 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdExceptionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdExceptionDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdExceptionDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdExceptionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -249,10 +249,10 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdExceptionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdExceptionDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdExceptionDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdExceptionDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

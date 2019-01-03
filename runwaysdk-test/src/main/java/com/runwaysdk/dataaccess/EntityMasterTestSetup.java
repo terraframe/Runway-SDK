@@ -21,12 +21,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
-import com.runwaysdk.ClientSession;
-import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -52,14 +46,8 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
  * @version $Revision 1.0 $
  * @since
  */
-public class EntityMasterTestSetup extends TestSetup
+public class EntityMasterTestSetup
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String   JUNIT_PACKAGE   = "temporary.junit.test";
 
   public static final TypeInfo TEST_CLASS      = new TypeInfo(JUNIT_PACKAGE, "Test");
@@ -67,14 +55,14 @@ public class EntityMasterTestSetup extends TestSetup
   public static final TypeInfo REFERENCE_CLASS = new TypeInfo(JUNIT_PACKAGE, "Reference");
 
   /**
-   * <code>testMdBusinessId</code> is the ID for the metadata object that
+   * <code>testMdBusinessId</code> is the OID for the metadata object that
    * describes the Test class. It's used to delete the type after tests are
    * completed.
    */
   private String               testMdBusinessId;
 
   /**
-   * <code>referenceMdBusinessId</code> is the ID for the metadata object that
+   * <code>referenceMdBusinessId</code> is the OID for the metadata object that
    * describes the MasterTestSetup.REFERENCE_CLASS class. It's used to delete
    * the type after tests are completed.
    */
@@ -88,9 +76,8 @@ public class EntityMasterTestSetup extends TestSetup
    * 
    * @param suite
    */
-  public EntityMasterTestSetup(Test suite)
+  public EntityMasterTestSetup()
   {
-    super(suite);
     cache_code = EntityCacheMaster.CACHE_EVERYTHING.getCacheCode();
   }
 
@@ -105,9 +92,8 @@ public class EntityMasterTestSetup extends TestSetup
    *          Specifies the desired caching on the
    *          EntityMasterTestSetup.TEST_CLASS class
    */
-  public EntityMasterTestSetup(Test suite, int c)
+  public EntityMasterTestSetup(int c)
   {
-    super(suite);
     cache_code = c;
   }
 
@@ -118,7 +104,7 @@ public class EntityMasterTestSetup extends TestSetup
    * can then be used to run tests on.
    */
   @Transaction
-  protected void setUp() throws Exception
+  public void setUp()
   {
 
     try
@@ -133,7 +119,6 @@ public class EntityMasterTestSetup extends TestSetup
       referenceBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
       referenceBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       referenceBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      referenceBusiness.setGenerateMdController(false);
       referenceBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
       referenceMdBusinessId = referenceBusiness.apply();
@@ -147,21 +132,20 @@ public class EntityMasterTestSetup extends TestSetup
       testMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      testMdBusiness.setGenerateMdController(false);
       testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
       // Switching on cache_code determines the caching of the class
       if (cache_code == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       else if (cache_code == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
       else if (cache_code == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode())
       {
-        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       }
       testMdBusinessId = testMdBusiness.apply();
     }
@@ -180,7 +164,7 @@ public class EntityMasterTestSetup extends TestSetup
    * transitively deletes all of the attributes as well.
    */
   @Transaction
-  protected void tearDown()
+  public void tearDown()
   {
     try
     {

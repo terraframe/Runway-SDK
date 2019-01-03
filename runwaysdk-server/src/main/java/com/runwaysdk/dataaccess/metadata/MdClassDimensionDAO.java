@@ -70,8 +70,8 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
 
     if (this.isNew() && this.isAppliedToDB() == false && !this.isImport())
     {
-      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getId());
-      this.getAttribute(EntityInfo.ID).setValue(newId);
+      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getRootId());
+      this.getAttribute(EntityInfo.OID).setValue(newId);
     }
 
     return super.apply();
@@ -93,14 +93,14 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
       return mdDimension.getKey() + "-" + mdClass.getKey();
     }
 
-    return this.getId();
+    return this.getOid();
   }
 
   public String save(boolean businessContext)
   {
     boolean applied = !this.isNew() || this.isAppliedToDB();
 
-    String id = super.save(businessContext);
+    String oid = super.save(businessContext);
     
     // Create the MdDimension relationship
     MdDimensionDAOIF mdDimension = this.definingMdDimension();
@@ -113,20 +113,20 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
         // Create the MdDimension - to - MdClassDimension relationship      
         String mdDimensionRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
         
-        RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+        RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getOid(), oid, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
         mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
         mdDimensionRelationship.apply();       
 
         // Create the MdClass - to - MdClassDimension relationship       
         String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
-        RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+        RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getOid(), oid, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
         mdClassRelationship.setKey(mdClassRelationshipKey);
         mdClassRelationship.save(true); 
       }
     }
     else
     {
-      List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+      List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getOid(), oid, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
       
       String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
         
@@ -137,7 +137,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
         mdClassRelationshipDAO.save(true); 
       }
         
-      relList = RelationshipDAO.get(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+      relList = RelationshipDAO.get(mdDimension.getOid(), oid, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
         
       mdClassRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
       
@@ -149,7 +149,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
       }
     }
 
-    return id;
+    return oid;
   }
 
   
@@ -209,7 +209,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
 
   public void setDefiningMdClass(MdClassDAOIF mdClassDAOIF)
   {
-    this.getAttribute(MdClassDimensionInfo.DEFINING_MD_CLASS).setValue(mdClassDAOIF.getId());
+    this.getAttribute(MdClassDimensionInfo.DEFINING_MD_CLASS).setValue(mdClassDAOIF.getOid());
   }
 
   public MdDimensionDAOIF definingMdDimension()
@@ -219,7 +219,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
 
   public void setDefiningMdDimension(MdDimensionDAOIF mdDimensionDAOIF)
   {
-    this.getAttribute(MdClassDimensionInfo.DEFINING_MD_DIMENSION).setValue(mdDimensionDAOIF.getId());
+    this.getAttribute(MdClassDimensionInfo.DEFINING_MD_DIMENSION).setValue(mdDimensionDAOIF.getOid());
   }
 
   /**
@@ -235,9 +235,9 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdClassDimensionDAOIF get(String id)
+  public static MdClassDimensionDAOIF get(String oid)
   {
-    return (MdClassDimensionDAOIF) BusinessDAO.get(id);
+    return (MdClassDimensionDAOIF) BusinessDAO.get(oid);
   }
 
   public static MdClassDimensionDAO newInstance()

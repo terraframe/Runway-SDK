@@ -128,9 +128,9 @@ public abstract class MdAttributeIntegerBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static MdAttributeInteger get(String id)
+  public static MdAttributeInteger get(String oid)
   {
-    return (MdAttributeInteger) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeInteger) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeInteger getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdAttributeIntegerBase extends com.runwaysdk.system.metada
     return (MdAttributeInteger) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeInteger lock(java.lang.String id)
+  public static MdAttributeInteger lock(java.lang.String oid)
   {
-    MdAttributeInteger _instance = MdAttributeInteger.get(id);
+    MdAttributeInteger _instance = MdAttributeInteger.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeInteger unlock(java.lang.String id)
+  public static MdAttributeInteger unlock(java.lang.String oid)
   {
-    MdAttributeInteger _instance = MdAttributeInteger.get(id);
+    MdAttributeInteger _instance = MdAttributeInteger.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -114,13 +114,13 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy databaseAllPathsStrategy)
     {
       if(databaseAllPathsStrategy == null) return this.EQ((java.lang.String)null);
-      return this.EQ(databaseAllPathsStrategy.getId());
+      return this.EQ(databaseAllPathsStrategy.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy databaseAllPathsStrategy)
     {
       if(databaseAllPathsStrategy == null) return this.NE((java.lang.String)null);
-      return this.NE(databaseAllPathsStrategy.getId());
+      return this.NE(databaseAllPathsStrategy.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
 
       for (int i=0; i<databaseAllPathsStrategy.length; i++)
       {
-        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+        itemIdArray[i] = databaseAllPathsStrategy[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
 
       for (int i=0; i<databaseAllPathsStrategy.length; i++)
       {
-        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+        itemIdArray[i] = databaseAllPathsStrategy[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
 
       for (int i=0; i<databaseAllPathsStrategy.length; i++)
       {
-        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+        itemIdArray[i] = databaseAllPathsStrategy[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
 
       for (int i=0; i<databaseAllPathsStrategy.length; i++)
       {
-        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+        itemIdArray[i] = databaseAllPathsStrategy[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
 
       for (int i=0; i<databaseAllPathsStrategy.length; i++)
       {
-        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+        itemIdArray[i] = databaseAllPathsStrategy[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

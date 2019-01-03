@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = -314573267)
-public abstract class AlphabetDisplayLabelDTOBase extends com.runwaysdk.business.LocalStructDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class AlphabetDisplayLabelDTOBase extends com.runwaysdk.business.LocalStructDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel";
   private static final long serialVersionUID = -314573267;
@@ -46,7 +46,7 @@ public abstract class AlphabetDisplayLabelDTOBase extends com.runwaysdk.business
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
@@ -111,9 +111,9 @@ public abstract class AlphabetDisplayLabelDTOBase extends com.runwaysdk.business
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static AlphabetDisplayLabelDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static AlphabetDisplayLabelDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (AlphabetDisplayLabelDTO) dto;
   }
@@ -131,7 +131,7 @@ public abstract class AlphabetDisplayLabelDTOBase extends com.runwaysdk.business
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

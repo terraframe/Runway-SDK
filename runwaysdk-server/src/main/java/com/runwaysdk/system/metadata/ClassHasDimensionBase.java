@@ -31,9 +31,9 @@ public abstract class ClassHasDimensionBase extends com.runwaysdk.system.metadat
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassHasDimension";
   private static final long serialVersionUID = -1847162271;
   
-  public ClassHasDimensionBase(String parentId, String childId)
+  public ClassHasDimensionBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class ClassHasDimensionBase extends com.runwaysdk.system.metadat
     return (com.runwaysdk.system.metadata.MdClassDimension) super.getChild();
   }
   
-  public static ClassHasDimension get(String id)
+  public static ClassHasDimension get(String oid)
   {
-    return (ClassHasDimension) com.runwaysdk.business.Relationship.get(id);
+    return (ClassHasDimension) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ClassHasDimension getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ClassHasDimensionBase extends com.runwaysdk.system.metadat
     return (ClassHasDimension) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ClassHasDimension lock(java.lang.String id)
+  public static ClassHasDimension lock(java.lang.String oid)
   {
-    ClassHasDimension _instance = ClassHasDimension.get(id);
+    ClassHasDimension _instance = ClassHasDimension.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ClassHasDimension unlock(java.lang.String id)
+  public static ClassHasDimension unlock(java.lang.String oid)
   {
-    ClassHasDimension _instance = ClassHasDimension.get(id);
+    ClassHasDimension _instance = ClassHasDimension.get(oid);
     _instance.unlock();
     
     return _instance;

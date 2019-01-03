@@ -94,7 +94,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Initializes the setId, which is the value of this attribute.
+   * Initializes the setOid, which is the value of this attribute.
    * 
    */
   private void initSetId()
@@ -108,7 +108,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   /**
    * Returns a cached list of mappings between this object and enumeration
    * items. If an enumeration item is removed from the master list, this cache
-   * may still contain an ID to the item.
+   * may still contain an OID to the item.
    * 
    * @return Returns the enumItemIdList.
    */
@@ -263,7 +263,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
    * 
    * @param enumItemID
-   *          The ID of the item to be added to the enumerated attribute
+   *          The OID of the item to be added to the enumerated attribute
    * @return <code>true</code> if the item is successfully added
    */
   public synchronized boolean addItem(String enumItemID)
@@ -329,7 +329,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    * Removes an item from an enumerated attribute
    * 
    * @param enumItemID
-   *          The ID of the item to be removed from the enumerated attribute
+   *          The OID of the item to be removed from the enumerated attribute
    */
   public synchronized void removeItem(String enumItemID)
   {

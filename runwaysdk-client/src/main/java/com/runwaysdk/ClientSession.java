@@ -106,7 +106,7 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id.
+   * Connects to an existing session with the given session oid.
    *
    * @param sessionId
    */
@@ -123,7 +123,7 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id.
+   * Connects to an existing session with the given session oid.
    *
    * @param sessionId
    */
@@ -133,7 +133,7 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point
+   * Connects to an existing session with the given session oid at the end point
    * with the given label.
    *
    * @param connectionLabel
@@ -150,7 +150,7 @@ public class ClientSession
   }
 
   /**
-   * Connects to an existing session with the given session id at the end point
+   * Connects to an existing session with the given session oid at the end point
    * with the given label.
    *
    * @param label
@@ -250,7 +250,7 @@ public class ClientSession
   }
 
   /**
-   * Logs a user out with the specified session id.
+   * Logs a user out with the specified session oid.
    *
    */
   public ClientRequestIF logout()
@@ -266,10 +266,10 @@ public class ClientSession
   }
 
   /**
-   * Returns the session id used by the clientRequest to connect to the
+   * Returns the session oid used by the clientRequest to connect to the
    * back-end.
    * 
-   * @return session id used by the clientRequest to connect to the back-end.
+   * @return session oid used by the clientRequest to connect to the back-end.
    */
   public synchronized String getSessionId()
   {

@@ -18,42 +18,25 @@
  */
 package com.runwaysdk.session;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class SessionTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ 
+  MemorySessionTest.class,
+  IntegratedMemorySessionTest.class,
+  OverflowSessionTest.class,
+  IntegratedOverflowTest.class,  
+  FileSessionTest.class,
+  IntegratedFileSessionTest.class,
+  BufferedSessionTest.class,
+  IntegratedBufferedSessionTest.class,  
+  MethodTest.class,
+  IntegratedMethodTest.class,
+  LocaleManagerTest.class,
+//  IntegratedSessionTest.class,
+  SessionTest.class,
+})
+public class SessionTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(SessionTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(SessionTest.suite());
-    suite.addTest(IntegratedSessionTest.suite());
-    suite.addTest(FileSessionTest.suite());
-    suite.addTest(IntegratedFileSessionTest.suite());
-    suite.addTest(BufferedSessionTest.suite());
-    suite.addTest(IntegratedBufferedSessionTest.suite());
-    suite.addTest(OverflowSessionTest.suite());
-    suite.addTest(IntegratedOverflowTest.suite());
-    suite.addTest(MemorySessionTest.suite());
-    suite.addTest(IntegratedMemorySessionTest.suite());
-    suite.addTest(MethodTest.suite());
-    suite.addTest(IntegratedMethodTest.suite());
-    suite.addTest(LocaleManagerTest.suite());
-
-    return suite;
-  }
-
 }

@@ -182,13 +182,13 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
   
   /**
    * 
-   * @return the string ID of the structDAO object. precondition: this.structDAO
+   * @return the string OID of the structDAO object. precondition: this.structDAO
    *         is initialized.
    */
   protected String save(boolean validateRequired)
   {
     StructDAO structDAO = this.getStructDAO();
-    structDAO.setKey(structDAO.getId());
+    structDAO.setKey(structDAO.getOid());
     
     if (!this.isImport())
     {

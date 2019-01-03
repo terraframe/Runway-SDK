@@ -32,7 +32,7 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -43,9 +43,9 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 230863338;
   
-  public MetadataParameterBase(String parentId, String childId)
+  public MetadataParameterBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()
@@ -128,24 +128,24 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.MetadataParameter.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -284,7 +284,7 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
     return (com.runwaysdk.system.metadata.MdParameter) super.getChild();
   }
   
-  public static MetadataParameter get(String id)
+  public static MetadataParameter get(String oid)
   {
-    return (MetadataParameter) com.runwaysdk.business.Relationship.get(id);
+    return (MetadataParameter) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static MetadataParameter getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class MetadataParameterBase extends com.runwaysdk.business.Relat
     return (MetadataParameter) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static MetadataParameter lock(java.lang.String id)
+  public static MetadataParameter lock(java.lang.String oid)
   {
-    MetadataParameter _instance = MetadataParameter.get(id);
+    MetadataParameter _instance = MetadataParameter.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MetadataParameter unlock(java.lang.String id)
+  public static MetadataParameter unlock(java.lang.String oid)
   {
-    MetadataParameter _instance = MetadataParameter.get(id);
+    MetadataParameter _instance = MetadataParameter.get(oid);
     _instance.unlock();
     
     return _instance;

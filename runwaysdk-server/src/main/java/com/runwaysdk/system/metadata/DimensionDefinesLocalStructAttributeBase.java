@@ -31,9 +31,9 @@ public abstract class DimensionDefinesLocalStructAttributeBase extends com.runwa
   public final static String CLASS = "com.runwaysdk.system.metadata.DimensionDefinesLocalStructAttribute";
   private static final long serialVersionUID = -97944126;
   
-  public DimensionDefinesLocalStructAttributeBase(String parentId, String childId)
+  public DimensionDefinesLocalStructAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class DimensionDefinesLocalStructAttributeBase extends com.runwa
     return (com.runwaysdk.system.metadata.MdAttributeConcrete) super.getChild();
   }
   
-  public static DimensionDefinesLocalStructAttribute get(String id)
+  public static DimensionDefinesLocalStructAttribute get(String oid)
   {
-    return (DimensionDefinesLocalStructAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (DimensionDefinesLocalStructAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static DimensionDefinesLocalStructAttribute getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class DimensionDefinesLocalStructAttributeBase extends com.runwa
     return (DimensionDefinesLocalStructAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static DimensionDefinesLocalStructAttribute lock(java.lang.String id)
+  public static DimensionDefinesLocalStructAttribute lock(java.lang.String oid)
   {
-    DimensionDefinesLocalStructAttribute _instance = DimensionDefinesLocalStructAttribute.get(id);
+    DimensionDefinesLocalStructAttribute _instance = DimensionDefinesLocalStructAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static DimensionDefinesLocalStructAttribute unlock(java.lang.String id)
+  public static DimensionDefinesLocalStructAttribute unlock(java.lang.String oid)
   {
-    DimensionDefinesLocalStructAttribute _instance = DimensionDefinesLocalStructAttribute.get(id);
+    DimensionDefinesLocalStructAttribute _instance = DimensionDefinesLocalStructAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

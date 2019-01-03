@@ -22,33 +22,31 @@ import java.util.ResourceBundle;
 
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.generation.loader.Reloadable;
 
-public class GISProperties implements Reloadable
+public class GISProperties
 {
-  private static final String          PROPERTIES_FILE = "gis";
-  
-  private ResourceBundle               bundle;
-  
+  private static final String PROPERTIES_FILE = "gis";
+
+  private ResourceBundle      bundle;
+
   private GISProperties()
   {
-    bundle = ResourceBundle.getBundle(PROPERTIES_FILE, CommonProperties.getDefaultLocale(),
-        BusinessDTO.class.getClassLoader());
+    bundle = ResourceBundle.getBundle(PROPERTIES_FILE, CommonProperties.getDefaultLocale(), BusinessDTO.class.getClassLoader());
   }
-  
-  private static class Singleton implements Reloadable
+
+  private static class Singleton
   {
     private static GISProperties INSTANCE = new GISProperties();
   }
-  
+
   private static ResourceBundle getBundle()
   {
     return Singleton.INSTANCE.bundle;
   }
-  
+
   /**
-   * Returns the package that will hold the generated MdBusiness artifacts
-   * when a new Universal is defined.
+   * Returns the package that will hold the generated MdBusiness artifacts when
+   * a new Universal is defined.
    * 
    * @return
    */

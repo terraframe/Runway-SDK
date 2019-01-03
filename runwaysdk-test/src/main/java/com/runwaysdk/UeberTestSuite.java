@@ -18,68 +18,82 @@
  */
 package com.runwaysdk;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 import com.runwaysdk.business.BusinessTestSuite;
 import com.runwaysdk.business.MultiThreadTestSuite;
 import com.runwaysdk.business.ontology.OntologyTestSuite;
-import com.runwaysdk.constants.DatabaseProperties;
-import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.DataAccessTestSuite;
-import com.runwaysdk.dataaccess.database.general.HsqlDB;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.facade.FacadeTestSuite;
 import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
 import com.runwaysdk.vault.VaultTestSuite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ 
+  DataAccessTestSuite.class, 
+  BusinessTestSuite.class,
+  FacadeTestSuite.class,
+  VaultTestSuite.class,
+  QueryTestSuite.class,
+  MultiThreadTestSuite.class,
+  LoggingTest.class,
+  OntologyTestSuite.class,
+  SessionTestSuite.class
+})
 public class UeberTestSuite
 {
-
-  public static void main(String args[])
-  {
-    if (DatabaseProperties.getDatabaseClass().equals(HsqlDB.class))
-    {
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-    }
-
-    junit.textui.TestRunner.run(UeberTestSuite.suite());
-  }
-
-  public static void HsqlTestRun()
-  {
-    junit.textui.TestRunner.run(UeberTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite("UeberTestSuite");
-
-    suite.addTest(DataAccessTestSuite.suite());
-
-    suite.addTest(SessionTestSuite.suite());
-
-    suite.addTest(BusinessTestSuite.suite());
-
-    suite.addTest(FacadeTestSuite.suite());
-
-    suite.addTest(VaultTestSuite.suite());
-
-    suite.addTest(QueryTestSuite.suite());
-
-    suite.addTest(MultiThreadTestSuite.suite());
-
-    suite.addTestSuite(CommonExceptionTest.class);
-
-    suite.addTestSuite(LoggingTest.class);
-
-    // suite.addTestSuite(SchedulerTest.class);
-
-    suite.addTest(OntologyTestSuite.suite());
-
-    return suite;
-  }
-
+  // nothing
 }
+
+// public class UeberTestSuite
+// {
+//
+// public static void main(String args[])
+// {
+// if (DatabaseProperties.getDatabaseClass().equals(HsqlDB.class))
+// {
+// XMLImporter.main(new String[] { TestConstants.Path.schema_xsd,
+// TestConstants.Path.metadata_xml });
+// }
+//
+// junit.textui.TestRunner.run(UeberTestSuite.suite());
+// }
+//
+// public static void HsqlTestRun()
+// {
+// junit.textui.TestRunner.run(UeberTestSuite.suite());
+// }
+//
+// public static Test suite()
+// {
+// TestSuite suite = new TestSuite("UeberTestSuite");
+//
+// suite.addTest(DataAccessTestSuite.suite());
+//
+//// suite.addTest(SessionTestSuite.suite());
+////
+//// suite.addTest(BusinessTestSuite.suite());
+////
+//// suite.addTest(FacadeTestSuite.suite());
+////
+//// suite.addTest(VaultTestSuite.suite());
+////
+//// suite.addTest(QueryTestSuite.suite());
+////
+//// suite.addTest(MultiThreadTestSuite.suite());
+////
+//// suite.addTestSuite(CommonExceptionTest.class);
+////
+//// suite.addTestSuite(LoggingTest.class);
+////
+//// // suite.addTestSuite(SchedulerTest.class);
+////
+//// suite.addTest(OntologyTestSuite.suite());
+//
+// return suite;
+// }
+//
+// }

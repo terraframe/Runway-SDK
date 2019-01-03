@@ -50,6 +50,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -81,6 +82,7 @@ import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -284,14 +286,14 @@ public abstract class TableClassQuery extends ComponentQuery
       throw new AttributeDoesNotExistException(error, attributeName, this.getMdTableClassIF());
     }
 
-    if (mdAttributeIF.definesAttribute().equals(EntityInfo.ID))
+    if (mdAttributeIF.definesAttribute().equals(EntityInfo.OID))
     {
       Set<Join> attributeTableJoinSet = new HashSet<Join>();
 
       String definingTableName = this.getMdTableClassIF().getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
 
-      return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     return this.internalAttributeFactory(attributeName, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
@@ -483,7 +485,7 @@ public abstract class TableClassQuery extends ComponentQuery
 
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
 
-    if (name.equals(EntityInfo.ID))
+    if (name.equals(EntityInfo.OID))
     {
       String definingTableName = this.getMdTableClassIF().getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
@@ -498,6 +500,61 @@ public abstract class TableClassQuery extends ComponentQuery
     }
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name)
+  {
+    return this.aUUID(name, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias)
+  {
+    return this.aUUID(name, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    Set<Join> attributeTableJoinSet = new HashSet<Join>();
+    
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    
+    if (name.equals(EntityInfo.OID))
+    {
+      String definingTableName = this.getMdTableClassIF().getTableName();
+      String definingTableAlias = this.getTableAlias("", definingTableName);
+      
+      return new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else
+    {
+      this.checkValidAttributeRequest(name, this.getMdTableClassIF(), mdAttributeIF, MdAttributeUUIDInfo.CLASS);
+      
+      return (AttributeUUID) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+  
 
   /**
    * Returns an attribute CLOB statement object.
@@ -1490,12 +1547,12 @@ public abstract class TableClassQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1513,11 +1570,11 @@ public abstract class TableClassQuery extends ComponentQuery
         continue;
       }
       
-      MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+      MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getOid());
       if (mdTableClassIF == null)
       {
         mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
-        mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+        mdTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
       }
       String attributeNameSpace = mdTableClassIF.definesType();
 
@@ -1532,7 +1589,7 @@ public abstract class TableClassQuery extends ComponentQuery
         selectString.append(",\n");
       }
 
-      if (mdAttributeIDMap.get(mdAttributeIF.getId()) != null)
+      if (mdAttributeIDMap.get(mdAttributeIF.getOid()) != null)
       {
         selectString.append(selectIndent + columnInfo.getSelectClauseString(mdAttributeIF));
 
@@ -1668,7 +1725,7 @@ public abstract class TableClassQuery extends ComponentQuery
         firstIteration = false;
       }
 
-      typeRestrictionClause += rootTableAlias + "." + EntityInfo.ID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.ID + " FROM " + definingTableName + ")";
+      typeRestrictionClause += rootTableAlias + "." + EntityInfo.OID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.OID + " FROM " + definingTableName + ")";
     }
     return typeRestrictionClause;
   }
@@ -1695,7 +1752,7 @@ public abstract class TableClassQuery extends ComponentQuery
       String attributeQualifiedName = definingTableClassIF.definesType() + "." + mdAttributeIF.definesAttribute();
 
       String columnNameAlias = null;
-      if (mdAttributeIF.definesAttribute().equals(EntityInfo.ID))
+      if (mdAttributeIF.definesAttribute().equals(EntityInfo.OID))
       {
         columnNameAlias = EntityDAOIF.ID_COLUMN;
       }
@@ -1829,12 +1886,12 @@ public abstract class TableClassQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap)
   {
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1867,18 +1924,18 @@ public abstract class TableClassQuery extends ComponentQuery
 
       if (componentQuery instanceof EntityQuery)
       {
-        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
+        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getOid());
         if (mdEntityIF == null)
         {
           mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
-          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+          mdEntityMap.put(mdAttributeIF.getOid(), mdEntityIF);
         }
 
         fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
 
         String baseTableName = mdEntityIF.getTableName();
         if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
-            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
+            // For functions, sometimes they are applying either to the OID or to the type itself, and therefore do not need to be joined with the table that defines the OID in metadata
             && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
         {
           String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
@@ -1962,7 +2019,7 @@ public abstract class TableClassQuery extends ComponentQuery
 
     for (Selectable selectable : leftAttributeSubSelectSet)
     {
-      // Do not exclude the join if the selectable is for the ID attribute, as
+      // Do not exclude the join if the selectable is for the OID attribute, as
       // of right now there is no guarantee that a join has been defined between
       // the selectable's table and the base table for this query.
       if (!baseTableName.equals(selectable.getDefiningTableName()))
@@ -2232,7 +2289,7 @@ public abstract class TableClassQuery extends ComponentQuery
     // that table does not
     // need to join with itself.
     String thisTypeTable = this.getMdTableClassIF().getTableName();
-    if (!mdAttributeIF.definesAttribute().equals(EntityInfo.ID) && !definingTableName.equals(thisTypeTable))
+    if (!mdAttributeIF.definesAttribute().equals(EntityInfo.OID) && !definingTableName.equals(thisTypeTable))
     {
       Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, thisTypeTable, this.getTableAlias(), EntityDAOIF.ID_COLUMN, definingTableName, definingTableAlias);
       attrTableJoinSet.add(tableJoin);
@@ -2243,6 +2300,10 @@ public abstract class TableClassQuery extends ComponentQuery
     if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
       attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, mdTableClass.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      attribute = new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, mdTableClass.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
@@ -2368,9 +2429,9 @@ public abstract class TableClassQuery extends ComponentQuery
       String referenceTableName = referenceMdBusinessIF.getTableName();
       String referenceTableAlias = this.getTableAlias(name, referenceTableName);
 
-      // This is a special case where the ID field is treated like a reference. We want the generic attribute reference to be instantiated
+      // This is a special case where the OID field is treated like a reference. We want the generic attribute reference to be instantiated
       // as we do not have a concrete attribute reference class defined for treating IDs as references.
-      if (genTableClassQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.ID))
+      if (genTableClassQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.OID))
       {
         attribute = genTableClassQuery.referenceFactory(mdAttributeRefIF, mdTableClass.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
@@ -2489,7 +2550,7 @@ public abstract class TableClassQuery extends ComponentQuery
       // A convoluted way to get system attributes directly from the global cache, which is not affected by the transaction.
       CacheAllRelationshipDAOStrategy relationshipStrategy = (CacheAllRelationshipDAOStrategy)ObjectCache.getTypeCollection(RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
-      List<RelationshipDAOIF> mdAttributeRels = relationshipStrategy.getChildren(_mdTableClassIF.getId(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      List<RelationshipDAOIF> mdAttributeRels = relationshipStrategy.getChildren(_mdTableClassIF.getOid(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
       for (RelationshipDAOIF relationshipDAOIF : mdAttributeRels)
       {

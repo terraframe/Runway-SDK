@@ -18,51 +18,23 @@
  */
 package com.runwaysdk.query;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-public class ViewQueryTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class ViewQueryTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ViewQueryTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-      }
-
-      protected void tearDown()
-      {
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testSomething()
   {
     BusinessDAO someChildRefQueryObject = BusinessDAO.newInstance(QueryMasterSetup.childRefQueryInfo.getType());
@@ -96,7 +68,7 @@ public class ViewQueryTest extends TestCase
     someTestQueryObject.setValue("queryFloat", "400.5");
     someTestQueryObject.setValue("queryDecimal", "400.5");
     someTestQueryObject.setValue("queryDouble", "400.5");
-    someTestQueryObject.setValue("reference", someChildRefQueryObject.getId());
+    someTestQueryObject.setValue("reference", someChildRefQueryObject.getOid());
     someTestQueryObject.apply();
 
     try
@@ -119,7 +91,7 @@ public class ViewQueryTest extends TestCase
 
       if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (Object object : (Iterable<?>) resultIterator)
@@ -129,15 +101,15 @@ public class ViewQueryTest extends TestCase
         String queryText = (String) objectClass.getMethod("getRefQueryText").invoke(object);
         String queryClob = (String) objectClass.getMethod("getRefQueryClob").invoke(object);
 
-        assertEquals(queryCharacter, "other character value");
-        assertEquals(queryText, "other ref text value");
-        assertEquals(queryClob, "other ref clob value");
+        Assert.assertEquals(queryCharacter, "other character value");
+        Assert.assertEquals(queryText, "other ref text value");
+        Assert.assertEquals(queryClob, "other ref clob value");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {

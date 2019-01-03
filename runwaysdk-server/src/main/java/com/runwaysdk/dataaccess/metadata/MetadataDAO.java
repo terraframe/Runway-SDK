@@ -93,9 +93,9 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
    * 
    * <br/>
    * <b>Postcondition:</b> child relationships are removed
-   * (RelationshipFactory.getChildren(this.getId(), "")).length == 0 <br/>
+   * (RelationshipFactory.getChildren(this.getOid(), "")).length == 0 <br/>
    * <b>Postcondition:</b> parent relationships are removed
-   * (RelationshipFactory.getParents(this.getId(), "")).length == 0
+   * (RelationshipFactory.getParents(this.getOid(), "")).length == 0
    * 
    * @param businessContext
    *          true if this is being called from a business context, false
@@ -114,7 +114,7 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
   {
     if (enforceRemovable && !this.isRemovable() && !this.isImport())
     {
-      String error = "Metadata [" + this.getId() + "] is not allowed to be deleted.";
+      String error = "Metadata [" + this.getOid() + "] is not allowed to be deleted.";
       throw new MetadataCannotBeDeletedException(error, this);
     }
 
@@ -319,6 +319,6 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
 
   public String getPermissionKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 }

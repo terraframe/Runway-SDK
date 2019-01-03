@@ -26,7 +26,7 @@ public abstract class WebFieldMd implements FieldMdIF
   private String displayLabel;
   private String fieldName;
   private Integer fieldOrder;
-  private String id;
+  private String oid;
   private Boolean required;
   private String description;
   
@@ -38,7 +38,7 @@ public abstract class WebFieldMd implements FieldMdIF
     this.description = null;
     this.fieldName = null;
     this.fieldOrder = null;
-    this.id = null;
+    this.oid = null;
     this.required = null;
   }
   
@@ -47,9 +47,9 @@ public abstract class WebFieldMd implements FieldMdIF
     this.required = required;
   }
   
-  protected void setId(String id)
+  protected void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
   protected void setDefiningMdForm(String definingMdForm)
@@ -97,9 +97,9 @@ public abstract class WebFieldMd implements FieldMdIF
   }
   
   @Override
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
   
   @Override

@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 public class CommonAttributeReferenceMdBuilder extends CommonAttributeMdBuilder
 {
   /**
@@ -49,27 +39,6 @@ public class CommonAttributeReferenceMdBuilder extends CommonAttributeMdBuilder
 
     referencedMdBusiness = source.getReferencedMdBusiness();
     referencedDisplayLabel = source.getReferencedDisplayLabel();
-  }
-
-  /**
-   *
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeReferenceMdBuilder(Node metadata, Node properties, AttributeReferenceMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      referencedMdBusiness = (String)ConversionFacade.getXPath().evaluate(Elements.REFERENCE_METADATA_REFERENCED_MD_BUSINESS.getLabel(), metadata, XPathConstants.STRING);
-      referencedDisplayLabel = (String)ConversionFacade.getXPath().evaluate(Elements.REFERENCE_METADATA_REFERENCED_LABEL.getLabel(), metadata, XPathConstants.STRING);
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**

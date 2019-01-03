@@ -154,13 +154,13 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileComment mdMobileComment)
     {
       if(mdMobileComment == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileComment.getId());
+      return this.EQ(mdMobileComment.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileComment mdMobileComment)
     {
       if(mdMobileComment == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileComment.getId());
+      return this.NE(mdMobileComment.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdMobileCommentCommentTextQuery.MdMobileCommentCommentTextQueryStructIF getCommentText()
@@ -237,7 +237,7 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileComment.length; i++)
       {
-        itemIdArray[i] = mdMobileComment[i].getId();
+        itemIdArray[i] = mdMobileComment[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileComment.length; i++)
       {
-        itemIdArray[i] = mdMobileComment[i].getId();
+        itemIdArray[i] = mdMobileComment[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileComment.length; i++)
       {
-        itemIdArray[i] = mdMobileComment[i].getId();
+        itemIdArray[i] = mdMobileComment[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileComment.length; i++)
       {
-        itemIdArray[i] = mdMobileComment[i].getId();
+        itemIdArray[i] = mdMobileComment[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdMobileCommentQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileComment.length; i++)
       {
-        itemIdArray[i] = mdMobileComment[i].getId();
+        itemIdArray[i] = mdMobileComment[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1202882271)
+@com.runwaysdk.business.ClassSignature(hash = -1097114650)
 public abstract class MdFieldDisplayLabelDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdFieldDisplayLabel";
-  private static final long serialVersionUID = -1202882271;
+  private static final long serialVersionUID = -1097114650;
   
   protected MdFieldDisplayLabelDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -46,8 +46,8 @@ public abstract class MdFieldDisplayLabelDTOBase extends com.runwaysdk.business.
   }
   
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {
@@ -111,9 +111,9 @@ public abstract class MdFieldDisplayLabelDTOBase extends com.runwaysdk.business.
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static MdFieldDisplayLabelDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static MdFieldDisplayLabelDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (MdFieldDisplayLabelDTO) dto;
   }
@@ -131,7 +131,7 @@ public abstract class MdFieldDisplayLabelDTOBase extends com.runwaysdk.business.
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdFieldDisplayLabelQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

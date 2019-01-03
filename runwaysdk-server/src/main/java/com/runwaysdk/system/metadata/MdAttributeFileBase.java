@@ -41,9 +41,9 @@ public abstract class MdAttributeFileBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeFile get(String id)
+  public static MdAttributeFile get(String oid)
   {
-    return (MdAttributeFile) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeFile) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeFile getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeFileBase extends com.runwaysdk.system.metadata.
     return (MdAttributeFile) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeFile lock(java.lang.String id)
+  public static MdAttributeFile lock(java.lang.String oid)
   {
-    MdAttributeFile _instance = MdAttributeFile.get(id);
+    MdAttributeFile _instance = MdAttributeFile.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeFile unlock(java.lang.String id)
+  public static MdAttributeFile unlock(java.lang.String oid)
   {
-    MdAttributeFile _instance = MdAttributeFile.get(id);
+    MdAttributeFile _instance = MdAttributeFile.get(oid);
     _instance.unlock();
     
     return _instance;

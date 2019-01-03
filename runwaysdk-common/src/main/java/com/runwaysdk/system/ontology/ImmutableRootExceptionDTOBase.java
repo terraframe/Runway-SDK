@@ -69,7 +69,7 @@ public abstract class ImmutableRootExceptionDTOBase extends com.runwaysdk.busine
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String ROOTNAME = "rootName";
   public String getRootName()
   {
@@ -116,7 +116,7 @@ public abstract class ImmutableRootExceptionDTOBase extends com.runwaysdk.busine
   {
     java.lang.String template = super.getMessage();
     
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{rootName}", this.getRootName().toString());
     
     return template;

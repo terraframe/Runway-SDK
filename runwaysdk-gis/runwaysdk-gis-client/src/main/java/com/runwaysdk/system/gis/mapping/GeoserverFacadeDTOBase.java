@@ -34,7 +34,7 @@ public abstract class GeoserverFacadeDTOBase extends com.runwaysdk.business.Util
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static final void initializeGeoServer(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     String[] _declaredTypes = new String[]{};
@@ -43,9 +43,9 @@ public abstract class GeoserverFacadeDTOBase extends com.runwaysdk.business.Util
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static GeoserverFacadeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static GeoserverFacadeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.UtilDTO dto = (com.runwaysdk.business.UtilDTO)clientRequest.get(id);
+    com.runwaysdk.business.UtilDTO dto = (com.runwaysdk.business.UtilDTO)clientRequest.get(oid);
     
     return (GeoserverFacadeDTO) dto;
   }
@@ -63,7 +63,7 @@ public abstract class GeoserverFacadeDTOBase extends com.runwaysdk.business.Util
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

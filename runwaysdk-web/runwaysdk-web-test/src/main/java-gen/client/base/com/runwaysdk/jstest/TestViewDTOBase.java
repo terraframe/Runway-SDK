@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -425969227)
-public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestView";
   private static final long serialVersionUID = -425969227;
@@ -34,7 +34,7 @@ public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO imp
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String VIEWCHARACTER = "viewCharacter";
   public static java.lang.String VIEWPHONE = "viewPhone";
   public static java.lang.String VIEWREFERENCEOBJECT = "viewReferenceObject";
@@ -126,7 +126,7 @@ public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO imp
     }
     else
     {
-      setValue(VIEWREFERENCEOBJECT, value.getId());
+      setValue(VIEWREFERENCEOBJECT, value.getOid());
     }
   }
   
@@ -212,17 +212,17 @@ public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO imp
     return (com.runwaysdk.jstest.TestViewDTO) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final com.runwaysdk.jstest.TestViewDTO returnView(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id, com.runwaysdk.jstest.TestViewDTO input)
+  public static final com.runwaysdk.jstest.TestViewDTO returnView(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid, com.runwaysdk.jstest.TestViewDTO input)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "com.runwaysdk.jstest.TestView"};
-    Object[] _parameters = new Object[]{id, input};
+    Object[] _parameters = new Object[]{oid, input};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.TestViewDTO.CLASS, "returnView", _declaredTypes);
     return (com.runwaysdk.jstest.TestViewDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static TestViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static TestViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (TestViewDTO) dto;
   }
@@ -240,7 +240,7 @@ public abstract class TestViewDTOBase extends com.runwaysdk.business.ViewDTO imp
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

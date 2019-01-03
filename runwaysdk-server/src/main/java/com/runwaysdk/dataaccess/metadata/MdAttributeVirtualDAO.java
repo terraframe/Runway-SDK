@@ -500,7 +500,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   {
     boolean isApplied = isAppliedToDB();
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     if (this.isNew() && !isApplied)
     {
@@ -538,7 +538,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
       }
     }
 
-    return id;
+    return oid;
   }
 
   /**

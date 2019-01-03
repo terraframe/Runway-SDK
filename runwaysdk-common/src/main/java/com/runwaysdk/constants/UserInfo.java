@@ -33,9 +33,9 @@ public interface UserInfo
   public static final String CLASS = Constants.SYSTEM_PACKAGE +"."+TYPENAME;
 
   /**
-   * The ID of the metadata that defines the users calss.
+   * The OID of the metadata that defines the users calss.
    */
-  public static final String ID_VALUE = "0000000000000000000000000000000300000000000000000000000000000001";
+  public static final String ID_VALUE = "932ede2c-14e2-3405-9f3d-9e46d100003a";
 
   /**
    * The name of the database talbe for the users class

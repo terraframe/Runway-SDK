@@ -49,7 +49,6 @@ import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -73,7 +72,7 @@ import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.util.IdParser;
 
 /**
- * Captures the session id and executes authentication.
+ * Captures the session oid and executes authentication.
  */
 privileged public abstract aspect AbstractRequestManagement percflow(topLevelSession())
 {
@@ -257,13 +256,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
      ) && args(_sessionId, ..);
 
   // these objects should be unlocked at the end of the session request
-  protected pointcut setAppLock(String id)
-    : (execution (* com.runwaysdk.dataaccess.transaction.LockObject.recordAppLock(String)) && args(id))
+  protected pointcut setAppLock(String oid)
+    : (execution (* com.runwaysdk.dataaccess.transaction.LockObject.recordAppLock(String)) && args(oid))
   && cflow(topLevelSession());
 
-  before(String id) :  setAppLock(id)
+  before(String oid) :  setAppLock(oid)
   {
-    setAppLocksSet.add(id);
+    setAppLocksSet.add(oid);
   }
 
   protected pointcut throwProblem(ProblemIF problemIF)
@@ -457,7 +456,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     if (!access)
     {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getId() + "]";
+      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
       throw new DomainErrorException(errorMsg);
     }
   }
@@ -475,18 +474,18 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   private void checkMethodExecutePermission_INSTANCE(SingleActorDAOIF userIF, Mutable mutable, MdMethodDAOIF mdMethodToExecute)
   {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mutable, mdMethodToExecute);
+    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mutable, mdMethodToExecute);
 
     if (!access)
     {
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getId() + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
       throw new ExecuteInstancePermissionException(errorMsg, mutable, mdMethodToExecute, userIF);
     }
   }
 
   private void checkMethodExecutePermission_STATIC(SingleActorDAOIF userIF, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodToExecute)
   {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getId(), Operation.EXECUTE, mdMethodToExecute);
+    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mdMethodToExecute);
 
     if (!access)
     {
@@ -594,7 +593,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         if (!entityDAO.isImport() && entityDAO.hasAttribute(ElementInfo.OWNER)
             && ( entityDAO.getAttributeIF(ElementInfo.OWNER).getValue().trim().equals("") ))
         {
-          entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getId());
+          entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getOid());
         }
 
         if (this.mdMethodIFStack.size() > 0)
@@ -624,7 +623,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       {
 
         if (this.mdMethodIFStack.size() > 0 && entity.hasAttribute(ElementInfo.LOCKED_BY)
-            && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getId()))
+            && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getOid()))
         {
           MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
           MethodActorDAOIF methodActorIF = MethodFacade.getMethodActorIF(mdMethodIF);
@@ -635,7 +634,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
             if (!entityDAO.isImport() &&
                 (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
             {
-              entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getId());
+              entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getOid());
             }
           }
         }
@@ -644,7 +643,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
           if (!entityDAO.isImport() &&
               (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
           {
-            entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getId());
+            entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getOid());
           }
         }
       }
@@ -791,19 +790,19 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       // IMPORTANT: If the method does not have access check if the user has permissions.
       if(!access)
       {
-        access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, mutable, mdAttribute);
+        access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
       }
 
       if (!access)
       {
         String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute ["
-            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with id [" + mutable.getId() + "]";
+            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with oid [" + mutable.getOid() + "]";
         throw new DomainErrorException(errorMsg);
       }
     }
     else
     {
-      boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, mutable, mdAttribute);
+      boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
 
       if (!access)
       {
@@ -838,13 +837,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
         if (!access)
         {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "] with id [" + struct.getId() + "]";
+          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "] with oid [" + struct.getOid() + "]";
           throw new DomainErrorException(errorMsg);
         }
       }
       else
       {
-        boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getId(), Operation.WRITE, struct, mdAttribute);
+        boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, struct, mdAttribute);
 
         if (!access)
         {
@@ -873,7 +872,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
         if (!access && !checkUserDeletePermissions(mutable, userIF))
         {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to delete [" + mutable.getType() + "] instance with id [" + mutable.getId() + "].";
+          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to delete [" + mutable.getType() + "] instance with oid [" + mutable.getOid() + "].";
           throw new DomainErrorException(errorMsg);
         }
       }
@@ -897,24 +896,24 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     {
       Element element = (Element) mutable;
 
-      ( LockObject.getLockObject() ).appLock(mutable.getId());
+      ( LockObject.getLockObject() ).appLock(mutable.getOid());
 
-      element.setDataEntity( ( EntityDAO.get(element.getId()).getEntityDAO() ));
+      element.setDataEntity( ( EntityDAO.get(element.getOid()).getEntityDAO() ));
 
       String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
 
       // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getId()) && !lockedBy.trim().equals(""))
+      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
       {
         // Release the lock on this object
-        ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
         String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object in order to delete it.";
         throw new LockException(err, element, "ExistingLockException");
       }
     }
 
-    return SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.DELETE, mutable);
+    return SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.DELETE, mutable);
   }
 
   // Check permission for adding a child to an object
@@ -926,20 +925,20 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddChildObject(parentBusiness, childBusiness.getId(), relationshipType);
+      this.checkAddChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
     }
   }
 
   // Check permission for adding a child to an object
-  pointcut addChildId(Business parentBusiness, String childId, String relationshipType)
+  pointcut addChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addChild(String, String))
-      && args(childId, relationshipType) && this(parentBusiness);
-  before(Business parentBusiness, String childId, String relationshipType)
-    : addChildId(parentBusiness, childId, relationshipType)
+      && args(childOid, relationshipType) && this(parentBusiness);
+  before(Business parentBusiness, String childOid, String relationshipType)
+    : addChildOid(parentBusiness, childOid, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddChildObject(parentBusiness, childId, relationshipType);
+      this.checkAddChildObject(parentBusiness, childOid, relationshipType);
     }
   }
 
@@ -949,12 +948,12 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param parentBusiness
    *          object that the child object is added to.
-   * @param childId
+   * @param childOid
    *          reference to the child object.
    * @param relationship
    *          type of involved.
    */
-  private void checkAddChildObject(Business parentBusiness, String childId, String relationshipType)
+  private void checkAddChildObject(Business parentBusiness, String childOid, String relationshipType)
   {
     BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
 
@@ -963,7 +962,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -974,11 +973,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
-        Business childBusiness = Business.get(childId);
+        Business childBusiness = Business.get(childOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
@@ -996,21 +995,21 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildId(), relationship.getType());
+      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), relationship.getType());
     }
   }
 
-  pointcut removeChildId(Business parentBusiness, String relationshipId)
+  pointcut removeChildOid(Business parentBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeChild(String))
       && args(relationshipId) && this(parentBusiness);
   before(Business parentBusiness, String relationshipId)
-    : removeChildId(parentBusiness, relationshipId)
+    : removeChildOid(parentBusiness, relationshipId)
   {
     if (this.isSessionInitialized())
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
       Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildId(), mdClassIF.definesType());
+      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), mdClassIF.definesType());
     }
   }
 
@@ -1022,38 +1021,38 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, childBusiness.getId(), relationshipType);
+      this.checkRemoveChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
     }
   }
 
-  pointcut removeAllChildId(Business parentBusiness, String childId, String relationshipType)
+  pointcut removeAllChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllChildren(String, String))
-      && args(childId, relationshipType) && this(parentBusiness);
-  before(Business parentBusiness, String childId, String relationshipType)
-    : removeAllChildId(parentBusiness, childId, relationshipType)
+      && args(childOid, relationshipType) && this(parentBusiness);
+  before(Business parentBusiness, String childOid, String relationshipType)
+    : removeAllChildOid(parentBusiness, childOid, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveChildObject(parentBusiness, childId, relationshipType);
+      this.checkRemoveChildObject(parentBusiness, childOid, relationshipType);
     }
   }
 
   /**
    * Checks if session userIF has permission to remove the given child object
-   * from the given parent object. Either childId or relationshipId is null, but
+   * from the given parent object. Either childOid or relationshipId is null, but
    * not both.
    *
    *
    * @param parentBusiness
    *          object that the child object is removed from.
-   * @param childId
-   *          id to the child object.
+   * @param childOid
+   *          oid to the child object.
    * @param relationshipType
    *          name of the relationship type.
    * @param relationshipId
-   *          id to the relationship.
+   *          oid to the relationship.
    */
-  private void checkRemoveChildObject(Business parentBusiness, String childId, String relationshipType)
+  private void checkRemoveChildObject(Business parentBusiness, String childOid, String relationshipType)
   {
     BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
 
@@ -1062,7 +1061,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1074,11 +1073,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
-        Business childBusiness = Business.get(childId);
+        Business childBusiness = Business.get(childOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
@@ -1096,20 +1095,20 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddParentObject(childBusiness, parentBusiness.getId(), relationshipType);
+      this.checkAddParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
     }
   }
 
   // Check permission for adding a parent to an object
-  pointcut addParentId(String parentId, Business childBusiness, String relationshipType)
+  pointcut addParentOid(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addParent(String, String))
-      && args(parentId, relationshipType) && this(childBusiness);
-  before(String parentId, Business childBusiness, String relationshipType)
-    : addParentId(parentId, childBusiness, relationshipType)
+      && args(parentOid, relationshipType) && this(childBusiness);
+  before(String parentOid, Business childBusiness, String relationshipType)
+    : addParentOid(parentOid, childBusiness, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      this.checkAddParentObject(childBusiness, parentId, relationshipType);
+      this.checkAddParentObject(childBusiness, parentOid, relationshipType);
     }
   }
 
@@ -1119,12 +1118,12 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param childBusiness
    *          object that the parent object is added to.
-   * @param parentId
-   *          id to the child object.
+   * @param parentOid
+   *          oid to the child object.
    * @param relationship
    *          type of relationship involved.
    */
-  private void checkAddParentObject(Business childBusiness, String parentId, String relationshipType)
+  private void checkAddParentObject(Business childBusiness, String parentOid, String relationshipType)
   {
     BusinessDAO childBusinessDAO = childBusiness.businessDAO();
 
@@ -1133,7 +1132,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1143,11 +1142,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
-        Business parentBusiness = Business.get(parentId);
+        Business parentBusiness = Business.get(parentOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
@@ -1165,21 +1164,21 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      this.checkRemoveParentObject(childBusiness, relationship.getParentId(), relationship.getType());
+      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), relationship.getType());
     }
   }
 
-  pointcut removeParentId(Business childBusiness, String relationshipId)
+  pointcut removeParentOid(Business childBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeParent(String))
       && args(relationshipId) && this(childBusiness);
   before(Business childBusiness, String relationshipId)
-    : removeParentId(childBusiness, relationshipId)
+    : removeParentOid(childBusiness, relationshipId)
   {
     if (this.isSessionInitialized())
     {
       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
       Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveParentObject(childBusiness, relationship.getParentId(), mdClassIF.definesType());
+      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), mdClassIF.definesType());
     }
   }
 
@@ -1191,20 +1190,20 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (this.isSessionInitialized())
     {
-      checkRemoveParentObject(childBusiness, parentBusiness.getId(), relationshipType);
+      checkRemoveParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
     }
   }
 
   // Check permission for adding a parent to an object
-  pointcut removeAllParentIds(String parentId, Business childBusiness, String relationshipType)
+  pointcut removeAllParentOids(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllParents(String, String))
-      && args(parentId, relationshipType) && this(childBusiness);
-  before(String parentId, Business childBusiness, String relationshipType)
-    : removeAllParentIds(parentId, childBusiness, relationshipType)
+      && args(parentOid, relationshipType) && this(childBusiness);
+  before(String parentOid, Business childBusiness, String relationshipType)
+    : removeAllParentOids(parentOid, childBusiness, relationshipType)
   {
     if (this.isSessionInitialized())
     {
-      checkRemoveParentObject(childBusiness, parentId, relationshipType);
+      checkRemoveParentObject(childBusiness, parentOid, relationshipType);
     }
   }
 
@@ -1214,14 +1213,14 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param childBusiness
    *          object that the parent object is removed from.
-   * @param parentId
+   * @param parentOid
    *          reference to the child object.
    * @param relationshipType
    *          name of the relationship type.
    * @param relationshipId
    *          reference to the relationship.
    */
-  private void checkRemoveParentObject(Business childBusiness, String parentId, String relationshipType)
+  private void checkRemoveParentObject(Business childBusiness, String parentOid, String relationshipType)
   {
     BusinessDAO childBusinessDAO = childBusiness.businessDAO();
 
@@ -1230,7 +1229,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (this.mdMethodIFStack.size() > 0)
     {
       MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
@@ -1240,11 +1239,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
     else
     {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getId(), Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getId());
+      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
 
       if (!access)
       {
-        Business parentBusiness = Business.get(parentId);
+        Business parentBusiness = Business.get(parentOid);
         SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
         String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
@@ -1252,47 +1251,6 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       }
     }
   }
-
-  pointcut promote(Business business, String transitionName)
-  : ( execution (* com.runwaysdk.business.Business.promote(String)) &&
-      args(transitionName)) && target(business);
-  before(Business business, String transitionName)
-  : promote(business, transitionName)
-  {
-    if (this.isSessionInitialized())
-    {
-      // Check if userIF has a lock on the object.
-      checkLock(business);
-
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        boolean access = MethodFacade.checkPromoteAccess(mdMethodIF, business, transitionName);
-
-        if (!access)
-        {
-          MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(business.getType());
-
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to promote type [" + mdBusinessIF.definesType() + "] using transition [" + transitionName + "]";
-          throw new DomainErrorException(errorMsg);
-        }
-      }
-      else
-      {
-        boolean access = SessionFacade.checkPromoteAccess(this.getRequestState().getSession().getId(), business, transitionName);
-
-        if (!access)
-        {
-          MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(business.getType());
-          SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-          String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to promote type [" + mdBusinessIF.definesType() + "] using transition [" + transitionName + "]";
-          throw new PromotePermissionException(errorMsg, business, transitionName, userIF);
-        }
-      }
-    }
-  }
-
 
 
   /**
@@ -1309,7 +1267,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
 
     // If a thread has a lock on it, it could be an application or a user lock.
-    Thread threadThatLocksObject = ( LockObject.getLockObject() ).getThreadForAppLock(element.getId());
+    Thread threadThatLocksObject = ( LockObject.getLockObject() ).getThreadForAppLock(element.getOid());
 
     if (threadThatLocksObject != null)
     {
@@ -1320,11 +1278,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       }
       else
       {
-        String err = "You must obtain an application lock before modifying an object. " + "Another thread has a lock on the object with id [" + element.getId() + "].";
+        String err = "You must obtain an application lock before modifying an object. " + "Another thread has a lock on the object with oid [" + element.getOid() + "].";
         throw new LockException(err);
       }
     }
-    ( LockObject.getLockObject() ).appLock(element.getId());
+    ( LockObject.getLockObject() ).appLock(element.getOid());
 
     SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
@@ -1333,23 +1291,23 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     {
       String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
       // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getId()) && !lockedBy.trim().equals(""))
+      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
       {
-        ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
-        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with id [" + element.getId() + "] in order to modify it. " + "It is currently locked by someone else.";
+        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. " + "It is currently locked by someone else.";
         throw new LockException(err, element, "ExistingLockException");
       }
       // User has a user lock
-      else if (lockedBy.equals(userIF.getId()))
+      else if (lockedBy.equals(userIF.getOid()))
       {
         return;
       }
     }
 
-    ( LockObject.getLockObject() ).releaseAppLock(element.getId());
+    ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
 
-    String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with id [" + element.getId() + "] in order to modify it. ";
+    String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. ";
     throw new LockException(err, element, "NeedLockException");
   }
 
@@ -1360,7 +1318,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityCreatePermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.CREATE, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.CREATE, entity);
 
     if (!access)
     {
@@ -1395,7 +1353,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityReadPermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.READ, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.READ, entity);
 
     if (!access)
     {
@@ -1430,7 +1388,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    */
   private void checkEntityWritePermission(Entity entity)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.WRITE, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity);
 
     if (!access)
     {
@@ -1451,9 +1409,9 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.WRITE, entity);
 
-    if (!access && !SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.WRITE, entity))
+    if (!access && !SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity))
     {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to write to [" + entity.getType() + "] instance with id [" + entity.getId() + "].";
+      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to write to [" + entity.getType() + "] instance with oid [" + entity.getOid() + "].";
       throw new DomainErrorException(errorMsg);
     }
   }

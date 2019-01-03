@@ -92,9 +92,9 @@ public abstract class MdTermRelationshipDTOBase extends com.runwaysdk.system.met
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(ASSOCIATIONTYPE).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdTermRelationshipDTO) dto;
   }
@@ -112,7 +112,7 @@ public abstract class MdTermRelationshipDTOBase extends com.runwaysdk.system.met
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdTermRelationshipQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -125,10 +125,10 @@ public abstract class MdTermRelationshipDTOBase extends com.runwaysdk.system.met
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdTermRelationshipDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdTermRelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -138,10 +138,10 @@ public abstract class MdTermRelationshipDTOBase extends com.runwaysdk.system.met
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdTermRelationshipDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdTermRelationshipDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdTermRelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

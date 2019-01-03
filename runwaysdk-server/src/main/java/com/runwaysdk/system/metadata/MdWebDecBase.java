@@ -99,9 +99,9 @@ public abstract class MdWebDecBase extends com.runwaysdk.system.metadata.MdWebNu
     return CLASS;
   }
   
-  public static MdWebDec get(String id)
+  public static MdWebDec get(String oid)
   {
-    return (MdWebDec) com.runwaysdk.business.Business.get(id);
+    return (MdWebDec) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebDec getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdWebDecBase extends com.runwaysdk.system.metadata.MdWebNu
     return (MdWebDec) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebDec lock(java.lang.String id)
+  public static MdWebDec lock(java.lang.String oid)
   {
-    MdWebDec _instance = MdWebDec.get(id);
+    MdWebDec _instance = MdWebDec.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebDec unlock(java.lang.String id)
+  public static MdWebDec unlock(java.lang.String oid)
   {
-    MdWebDec _instance = MdWebDec.get(id);
+    MdWebDec _instance = MdWebDec.get(oid);
     _instance.unlock();
     
     return _instance;

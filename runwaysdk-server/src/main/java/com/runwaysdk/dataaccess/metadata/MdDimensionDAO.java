@@ -51,7 +51,6 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.system.metadata.MdAction;
 
 public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
 {
@@ -205,9 +204,9 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdDimensionDAOIF get(String id)
+  public static MdDimensionDAOIF get(String oid)
   {
-    return (MdDimensionDAOIF) BusinessDAO.get(id);
+    return (MdDimensionDAOIF) BusinessDAO.get(oid);
   }
 
   /**
@@ -265,7 +264,7 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
       }
     }
 
-    String id = super.save(businessContext);
+    String oid = super.save(businessContext);
 
     // Add columns to the local struct classes
     if (this.isNew() && !isAppliedToDB)
@@ -336,7 +335,7 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   @Override
@@ -395,15 +394,15 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
 
   public MdClassDimensionDAOIF getMdClassDimension(MdClassDAOIF mdClass)
   {
-    String id = mdClass.getId();
+    String oid = mdClass.getOid();
 
     List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
     {
-      String _id = mdClassDimension.definingMdClass().getId();
+      String _id = mdClassDimension.definingMdClass().getOid();
 
-      if (_id.equals(id))
+      if (_id.equals(oid))
       {
         return mdClassDimension;
       }
@@ -416,13 +415,13 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   {
     List<MdAttributeDimensionDAOIF> returnList = new ArrayList<MdAttributeDimensionDAOIF>();
    
-    ResultSet resultSet = Database.getMdAttributeDimensionIds(this.getId());
+    ResultSet resultSet = Database.getMdAttributeDimensionIds(this.getOid());
     
     try
     {
       while (resultSet.next())
       {
-        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
+        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.OID);
         returnList.add(MdAttributeDimensionDAO.get(mdAttrDimensionId));
       }
     }
@@ -472,9 +471,9 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   {
     List<MdDimensionDAOIF> dimensionList = new LinkedList<MdDimensionDAOIF>();
 
-    for (String id : EntityDAO.getEntityIdsDB(MdDimensionInfo.CLASS))
+    for (String oid : EntityDAO.getEntityIdsDB(MdDimensionInfo.CLASS))
     {
-      dimensionList.add(MdDimensionDAO.get(id));
+      dimensionList.add(MdDimensionDAO.get(oid));
     }
 
     return dimensionList;

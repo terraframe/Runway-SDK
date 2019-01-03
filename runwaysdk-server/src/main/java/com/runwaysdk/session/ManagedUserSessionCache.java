@@ -78,7 +78,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
   protected String logIn(String username, String password, Locale[] locales)
   {
     Session session = logInCommon(username, password, locales);
-    return session.getId();
+    return session.getOid();
   }
 
   @Override
@@ -86,14 +86,14 @@ public abstract class ManagedUserSessionCache extends SessionCache
   {
     Session session = logInCommon(username, password, locales);
     session.setDimension(dimensionKey);
-    return session.getId();
+    return session.getOid();
   }
   
   @Override
   protected String logIn(SingleActorDAOIF user, Locale[] locales)
   {
     Session session = this.logInCommon(user, locales);
-    return session.getId();
+    return session.getOid();
   }
   
   @Override
@@ -102,7 +102,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
     Session session = this.logInCommon(user, locales);
     session.setDimension(dimensionKey);
     
-    return session.getId();
+    return session.getOid();
   }
 
   private Session logInCommon(String username, String password, Locale[] locales)
@@ -119,17 +119,17 @@ public abstract class ManagedUserSessionCache extends SessionCache
     }
     catch (InvalidLoginException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (InactiveUserException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (MaximumSessionsException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     return session;
@@ -149,17 +149,17 @@ public abstract class ManagedUserSessionCache extends SessionCache
     }
     catch (InvalidLoginException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (InactiveUserException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (MaximumSessionsException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     return session;
@@ -176,7 +176,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
    * @param password The password of the user
    * @param session The {@link Session} to log into.
    *
-   * @return The id of the {@link Session} which was logged into.
+   * @return The oid of the {@link Session} which was logged into.
    */
   protected void changeLogIn(String username, String password, Session session)
   {
@@ -211,7 +211,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
         throw new InvalidLoginException(devMessage);
       }
 
-      String userId = user.getId();
+      String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -239,7 +239,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getId(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
       }
 
       session.setUser(user);
@@ -261,7 +261,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
    * @param password The password of the user
    * @param session The {@link Session} to log into.
    *
-   * @return The id of the {@link Session} which was logged into.
+   * @return The oid of the {@link Session} which was logged into.
    */
   protected void changeLogIn(SingleActorDAOIF user, Session session)
   {
@@ -269,7 +269,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
     
     try
     {                  
-      String userId = user.getId();
+      String userId = user.getOid();
       
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
@@ -306,7 +306,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getId(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
       }
       
       session.setUser(user);
@@ -341,18 +341,18 @@ public abstract class ManagedUserSessionCache extends SessionCache
     sessionCacheLock.lock();
     try
     {
-      int currentAmount = getUserSessionCount(user.getId());
+      int currentAmount = getUserSessionCount(user.getOid());
 
       currentAmount--;
 
       // Remove from the map
       if (currentAmount <= 0)
       {
-        userSessions.remove(user.getId());
+        userSessions.remove(user.getOid());
       }
       else
       {
-        userSessions.put(user.getId(), currentAmount);
+        userSessions.put(user.getOid(), currentAmount);
       }
     }
     finally
@@ -375,7 +375,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
     SingleActorDAOIF user = session.getUser();
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    if (!user.getId().equals(publicUser.getId()))
+    if (!user.getOid().equals(publicUser.getOid()))
     {
       decrementUserLoginCount(user);
     }
@@ -424,10 +424,10 @@ public abstract class ManagedUserSessionCache extends SessionCache
 
       if (!user.equals(publicUser))
       {
-        int currentAmount = this.getUserSessionCount(user.getId());
+        int currentAmount = this.getUserSessionCount(user.getOid());
 
         // Add 1 to the session count for the user
-        userSessions.put(user.getId(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
       }
     }
     finally
@@ -450,7 +450,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
         throw new InactiveUserException(devMessage, user);
       }
 
-      String userId = user.getId();
+      String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -478,7 +478,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getId(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
       }
 
       session.setUser(user);

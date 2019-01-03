@@ -59,7 +59,7 @@ public class MdExceptionHandler extends MdLocalizableHandler implements TagHandl
       }
 
       MdExceptionDAOIF superException = MdExceptionDAO.getMdException(extend);
-      mdLocalizable.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, superException.getId());
+      mdLocalizable.setValue(MdExceptionInfo.SUPER_MD_EXCEPTION, superException.getOid());
     }
   }
 

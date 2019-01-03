@@ -32,9 +32,9 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
    */
   private static final long serialVersionUID = 238176507795865128L;
 
-  public EnumerationAttributeItem(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public EnumerationAttributeItem(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
 
@@ -43,13 +43,13 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
    */
   public String save(boolean validateRequired)
   {
-    String id = this.getId();
+    String oid = this.getOid();
 
     Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      this.setKey(id);
+      this.setKey(oid);
     }
 
     return super.save(validateRequired);

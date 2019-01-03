@@ -20,8 +20,8 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
-import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
 
 public class AttributeMultiLineString extends AttributeGeometry
 {

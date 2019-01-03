@@ -159,21 +159,21 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.EnumerationMaster.ENUMNAME, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.EnumerationMaster.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.EnumerationMaster.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.EnumerationMaster.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.EnumerationMaster.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -539,9 +539,9 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.SelectableChar getEnumName();
     public com.runwaysdk.query.SelectableChar getEnumName(String alias);
     public com.runwaysdk.query.SelectableChar getEnumName(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -616,13 +616,13 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.EnumerationMaster enumerationMaster)
     {
       if(enumerationMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(enumerationMaster.getId());
+      return this.EQ(enumerationMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.EnumerationMaster enumerationMaster)
     {
       if(enumerationMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(enumerationMaster.getId());
+      return this.NE(enumerationMaster.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -710,21 +710,21 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ENUMNAME, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1049,9 +1049,9 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.SelectableChar getEnumName();
     public com.runwaysdk.query.SelectableChar getEnumName(String alias);
     public com.runwaysdk.query.SelectableChar getEnumName(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1178,21 +1178,21 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ENUMNAME, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1401,9 +1401,9 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     public com.runwaysdk.query.SelectableChar getEnumName();
     public com.runwaysdk.query.SelectableChar getEnumName(String alias);
     public com.runwaysdk.query.SelectableChar getEnumName(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1459,7 +1459,7 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<enumerationMaster.length; i++)
       {
-        itemIdArray[i] = enumerationMaster[i].getId();
+        itemIdArray[i] = enumerationMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1471,7 +1471,7 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<enumerationMaster.length; i++)
       {
-        itemIdArray[i] = enumerationMaster[i].getId();
+        itemIdArray[i] = enumerationMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1483,7 +1483,7 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<enumerationMaster.length; i++)
       {
-        itemIdArray[i] = enumerationMaster[i].getId();
+        itemIdArray[i] = enumerationMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1495,7 +1495,7 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<enumerationMaster.length; i++)
       {
-        itemIdArray[i] = enumerationMaster[i].getId();
+        itemIdArray[i] = enumerationMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1507,7 +1507,7 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
 
       for (int i=0; i<enumerationMaster.length; i++)
       {
-        itemIdArray[i] = enumerationMaster[i].getId();
+        itemIdArray[i] = enumerationMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1597,21 +1597,21 @@ public  class EnumerationMasterQuery extends com.runwaysdk.query.GeneratedBusine
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ENUMNAME, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.EnumerationMaster.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.EnumerationMaster.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

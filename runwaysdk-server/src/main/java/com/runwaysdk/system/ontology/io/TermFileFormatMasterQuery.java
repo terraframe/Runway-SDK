@@ -92,7 +92,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.ontology.io.TermFileFormat.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.ontology.io.TermFileFormat.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -152,13 +152,13 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.ontology.io.TermFileFormatMaster termFileFormatMaster)
     {
       if(termFileFormatMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(termFileFormatMaster.getId());
+      return this.EQ(termFileFormatMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.ontology.io.TermFileFormatMaster termFileFormatMaster)
     {
       if(termFileFormatMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(termFileFormatMaster.getId());
+      return this.NE(termFileFormatMaster.getOid());
     }
 
   }
@@ -220,7 +220,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormat.length; i++)
       {
-        enumIdArray[i] = termFileFormat[i].getId();
+        enumIdArray[i] = termFileFormat[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -232,7 +232,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormat.length; i++)
       {
-        enumIdArray[i] = termFileFormat[i].getId();
+        enumIdArray[i] = termFileFormat[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -244,7 +244,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormat.length; i++)
       {
-        enumIdArray[i] = termFileFormat[i].getId();
+        enumIdArray[i] = termFileFormat[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -256,7 +256,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormat.length; i++)
       {
-        enumIdArray[i] = termFileFormat[i].getId();
+        enumIdArray[i] = termFileFormat[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -268,7 +268,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormat.length; i++)
       {
-        enumIdArray[i] = termFileFormat[i].getId();
+        enumIdArray[i] = termFileFormat[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -312,7 +312,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormatMaster.length; i++)
       {
-        itemIdArray[i] = termFileFormatMaster[i].getId();
+        itemIdArray[i] = termFileFormatMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -324,7 +324,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormatMaster.length; i++)
       {
-        itemIdArray[i] = termFileFormatMaster[i].getId();
+        itemIdArray[i] = termFileFormatMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -336,7 +336,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormatMaster.length; i++)
       {
-        itemIdArray[i] = termFileFormatMaster[i].getId();
+        itemIdArray[i] = termFileFormatMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -348,7 +348,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormatMaster.length; i++)
       {
-        itemIdArray[i] = termFileFormatMaster[i].getId();
+        itemIdArray[i] = termFileFormatMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -360,7 +360,7 @@ public  class TermFileFormatMasterQuery extends com.runwaysdk.system.Enumeration
 
       for (int i=0; i<termFileFormatMaster.length; i++)
       {
-        itemIdArray[i] = termFileFormatMaster[i].getId();
+        itemIdArray[i] = termFileFormatMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

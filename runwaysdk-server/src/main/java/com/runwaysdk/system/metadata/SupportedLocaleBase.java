@@ -70,9 +70,9 @@ public abstract class SupportedLocaleBase extends com.runwaysdk.system.Enumerati
     return CLASS;
   }
   
-  public static SupportedLocale get(String id)
+  public static SupportedLocale get(String oid)
   {
-    return (SupportedLocale) com.runwaysdk.business.Business.get(id);
+    return (SupportedLocale) com.runwaysdk.business.Business.get(oid);
   }
   
   public static SupportedLocale getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class SupportedLocaleBase extends com.runwaysdk.system.Enumerati
     return (SupportedLocale) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.SupportedLocale.CLASS ,enumName);
   }
   
-  public static SupportedLocale lock(java.lang.String id)
+  public static SupportedLocale lock(java.lang.String oid)
   {
-    SupportedLocale _instance = SupportedLocale.get(id);
+    SupportedLocale _instance = SupportedLocale.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static SupportedLocale unlock(java.lang.String id)
+  public static SupportedLocale unlock(java.lang.String oid)
   {
-    SupportedLocale _instance = SupportedLocale.get(id);
+    SupportedLocale _instance = SupportedLocale.get(oid);
     _instance.unlock();
     
     return _instance;

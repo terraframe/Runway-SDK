@@ -26,10 +26,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ElementInfo;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
@@ -39,7 +37,6 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.DuplicateDataException;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -53,7 +50,6 @@ import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.transaction.TransactionState;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.util.IdParser;
 
 /**
  * Marker class
@@ -135,6 +131,21 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public String getTypeName()
   {
     return this.getAttributeIF(MdTypeInfo.NAME).getValue();
+  }
+
+  public String getRootId()
+  {
+    Attribute attribute = this.getAttribute(MdTypeInfo.ROOT_ID);
+    String value = attribute.getValue();
+
+    if (value.length() == 0)
+    {      
+      value = this.generateRootId();
+      
+      attribute.setValue(value);
+    }
+
+    return value;
   }
 
   /**
@@ -350,46 +361,6 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     // package name
     String pack = this.getPackage();
 
-    // no package can start with "state." unless it takes part in a state
-    // machine
-    String[] chunks = pack.split("[.]");
-    if (chunks[0].equalsIgnoreCase(MdStateMachineDAO.STATE_PACKAGE) && this instanceof MdElementDAOIF)
-    {
-      MdElementDAOIF superEntity = ( (MdElementDAOIF) this ).getSuperClass();
-
-      if (superEntity != null)
-      {
-        if (superEntity.definesType().equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) || superEntity.definesType().equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) || superEntity.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE + "."))
-        {
-          // Allowed: defined by a transition, state machine, or state master
-        }
-        else
-        {
-          String error = "[" + pack + "] is not a proper package name.";
-          throw new NameConventionException(error, pack);
-        }
-      }
-      else if (this instanceof MdTreeDAO)
-      {
-        MdBusinessDAOIF mdChild = ( (MdTreeDAO) this ).getChildMdBusiness();
-
-        if (this.getTypeName().endsWith(MdStateMachineDAO.STATUS_SUFFIX) && mdChild instanceof MdStateMachineDAO)
-        {
-          // MdStateMachine status (this is allowed)
-        }
-        else
-        {
-          String error = "[" + pack + "] is not a proper package name.";
-          throw new NameConventionException(error, pack);
-        }
-      }
-      else
-      {
-        String error = "[" + pack + "] is not a proper package name.";
-        throw new NameConventionException(error, pack);
-      }
-    }
-
     if (!packagePattern.matcher(pack).matches())
     {
       String error = "[" + pack + "] is not a proper package name.";
@@ -492,8 +463,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public abstract Command getCreateUpdateJavaArtifactCommand(Connection conn);
 
   /**
-   * Returns a command object that deletes Java artifacts for this type or returns null if there are no 
-   * artifacts for this type.
+   * Returns a command object that deletes Java artifacts for this type or
+   * returns null if there are no artifacts for this type.
    * 
    * @param conn
    *          database connection object.
@@ -656,8 +627,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
       String dtoClassColumn = MdTypeDAOIF.DTO_BASE_CLASS_COLUMN;
       String dtoSourceColumn = MdTypeDAOIF.DTO_BASE_SOURCE_COLUMN;
 
-      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
-      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
+      Database.updateClassAndSource(this.getOid(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
+      Database.updateClassAndSource(this.getOid(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
 
       // Only update the source. The blob attributes just point to the database
       // anyway.
@@ -673,7 +644,13 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   {
     if (this.isNew())
     {
-      this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getId()));
+      Attribute attribute = this.getAttribute(MdTypeInfo.ROOT_ID);
+      String value = attribute.getValue();
+
+      if (value == null || value.length() == 0)
+      {
+        attribute.setValue(generateRootId());
+      }
     }
 
     if (!this.isNew() || this.isAppliedToDB())
@@ -695,9 +672,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     return super.save(validateRequired);
   }
 
-  public static MdTypeDAOIF get(String id)
+  private String generateRootId()
   {
-    return (MdTypeDAOIF) BusinessDAO.get(id);
+    return Database.generateRootId(this);
+  }
+
+  public static MdTypeDAOIF get(String oid)
+  {
+    return (MdTypeDAOIF) BusinessDAO.get(oid);
   }
 
   /**

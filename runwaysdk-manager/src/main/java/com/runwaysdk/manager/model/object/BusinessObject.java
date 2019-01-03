@@ -39,7 +39,7 @@ public class BusinessObject extends ElementObject implements IBusinessObject
   {
     if (!this.isNew() || this.isAppliedToDB())
     {
-      return PersistanceFacade.get(this.getId()).getEntityDAO();
+      return PersistanceFacade.get(this.getOid()).getEntityDAO();
     }
     else
     {
@@ -59,7 +59,7 @@ public class BusinessObject extends ElementObject implements IBusinessObject
   {
     if (!this.isNew())
     {
-      return PersistanceFacade.getChildren(this.getId(), relationshipType);
+      return PersistanceFacade.getChildren(this.getOid(), relationshipType);
     }
 
     return new LinkedList<RelationshipDAOIF>();
@@ -70,7 +70,7 @@ public class BusinessObject extends ElementObject implements IBusinessObject
   {
     if (!this.isNew())
     {
-      return PersistanceFacade.getParents(this.getId(), relationshipType);
+      return PersistanceFacade.getParents(this.getOid(), relationshipType);
     }
 
     return new LinkedList<RelationshipDAOIF>();

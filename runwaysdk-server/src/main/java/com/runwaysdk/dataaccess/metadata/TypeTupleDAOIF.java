@@ -18,13 +18,12 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 
 
 public interface TypeTupleDAOIF extends MetadataDAOIF
-{
+{ 
   /**
    * The type of the TypeTuple Class
    */
@@ -44,12 +43,6 @@ public interface TypeTupleDAOIF extends MetadataDAOIF
    * The name of the attribute on the TypeTuple which references the StateMaster
    */
   public static final String STATE_MASTER                = "stateMaster";
-
-  /**
-   * Get the StateMaster of the pairing
-   * @return StateMasterIF of the State-MetaData pairing
-   */
-  public StateMasterDAOIF getStateMaster();
 
   /**
    * Get the MetaData of the pairing.  The MetaData must be an instance of MdAttribute or MdRelationship.

@@ -218,7 +218,7 @@ public class QueryVisitor implements MdAttributeDAOVisitor
     String value = entity.getValue(name);
     if (value != null && value.length() > 0)
     {
-      // EQ on AttributeReference is overridden to expect an ID
+      // EQ on AttributeReference is overridden to expect an OID
       query.WHERE(query.aReference(name).EQ(value));
     }
   }
@@ -296,7 +296,7 @@ public class QueryVisitor implements MdAttributeDAOVisitor
     String value = entity.getValue(name);
     if (value != null && value.length() > 0)
     {
-      // EQ on AttributeReference is overridden to expect an ID
+      // EQ on AttributeReference is overridden to expect an OID
       query.WHERE(query.aMultiReference(name).containsExactly(value));
     }
   }

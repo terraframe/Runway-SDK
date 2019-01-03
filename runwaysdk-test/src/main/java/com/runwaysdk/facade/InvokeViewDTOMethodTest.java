@@ -20,68 +20,43 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.View;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class InvokeViewDTOMethodTest extends InvokeSessionComponentMethodTest
 {
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   *
-   * @param args
-   */
-  public static void main(String[] args)
+  @BeforeClass
+  @Request
+  public static void classSetUp()
   {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-
-    junit.textui.TestRunner.run(InvokeViewDTOMethodTest.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(InvokeViewDTOMethodTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession =
-          ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
-        clientRequest = systemSession.getRequest();
-
-        moreSetup();
-
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  public static void moreSetup()
-  {
-    mdSessionDTO = clientRequest.newBusiness(MdViewInfo.CLASS);
-    bag = clientRequest.newBusiness(MdViewInfo.CLASS);
-
+    systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    
+    mdSessionDTO = MdViewDAO.newInstance();
+    bag = MdViewDAO.newInstance();
+    
     superClassField = MdViewInfo.SUPER_MD_VIEW;
-    getterMethodImplementation = "    return ("+sessionTypeName+") "+View.class.getName()+".get(id);";
+    getterMethodImplementation = "    return (" + sessionTypeName + ") " + View.class.getName() + ".get(oid);";    
+    
+    modelSetup();
+  }
+  
+  @AfterClass
+  @Request  
+  public static void classTearDown()
+  {
+    modelTearDown();    
+    systemSession.logout();
   }
 }

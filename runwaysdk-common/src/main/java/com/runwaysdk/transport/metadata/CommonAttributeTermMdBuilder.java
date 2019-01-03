@@ -21,8 +21,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import org.w3c.dom.Node;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
@@ -52,16 +50,6 @@ public class CommonAttributeTermMdBuilder extends CommonAttributeReferenceMdBuil
   protected CommonAttributeTermMdBuilder(AttributeTermMdDTO source, AttributeTermMdDTO dest)
   {
     super(source, dest);
-  }
-
-  /**
-   * 
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeTermMdBuilder(Node metadata, Node properties, AttributeTermMdDTO dest)
-  {
-    super(metadata, properties, dest);
   }
 
 }

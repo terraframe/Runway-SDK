@@ -31,9 +31,9 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
@@ -65,15 +65,15 @@ public class StructDAOFactory
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  public static StructDAOIF get(String id)
+  public static StructDAOIF get(String oid)
   {
-    StructDAOQuery structDAOQuery = StructDAOQuery.getObjectInstance(id);
+    StructDAOQuery structDAOQuery = StructDAOQuery.getObjectInstance(oid);
     List<StructDAO> structDAOList = queryStructDAOs(structDAOQuery);
 
-    // If the BusinessDAO list is null, then a BusinessDAO with the given ID does not exist.
+    // If the BusinessDAO list is null, then a BusinessDAO with the given OID does not exist.
     if (structDAOList.size() == 0)
     {
       return null;
@@ -86,9 +86,9 @@ public class StructDAOFactory
 
   /**
    * Returns a StructDAO of the given type with the given key in the database. This
-   * method does the same thing as get(String id), but is faster. If you
-   * know the type of the id, use this method. Otherwise use the
-   * get(String id) method.
+   * method does the same thing as get(String oid), but is faster. If you
+   * know the type of the oid, use this method. Otherwise use the
+   * get(String oid) method.
    *
    * <br/><b>Precondition:</b> key != null
    * <br/><b>Precondition:</b> !key.trim().equals("")
@@ -153,7 +153,7 @@ public class StructDAOFactory
     ResultSet results = Database.query(sqlStmt);
 
     // ThreadRefactor: get rid of this map.
-    // Key: ID of an MdAttribute  Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute  Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the type has.
@@ -210,7 +210,7 @@ public class StructDAOFactory
    * Builds a StructDAO from a row from the given resultset.
    * @param type
    * @param columnInfoMap         contains information about attributes used in the query
-   * @param definedTableClassMap  sort of a hack.  It is a map where the key is the id of an MdAttribute and the value is the
+   * @param definedTableClassMap  sort of a hack.  It is a map where the key is the oid of an MdAttribute and the value is the
    *                              MdEntity that defines the attribute.  This is used to improve performance.
    * @param MdAttributeIFList     contains MdAttribute objects for the attributes used in this query
    * @param resultSet             ResultSet object from a query.
@@ -278,8 +278,8 @@ public class StructDAOFactory
     newStructDAO.setTypeName(mdStructIF.definesType());
 
     // This used to be in EntityDAO.save(), but has been moved here to help with distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(),mdEntityIF.getId());
-    newStructDAO.getAttribute(EntityInfo.ID).setValue(newId);
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(),mdEntityIF.getRootId());
+    newStructDAO.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newStructDAO;
   }

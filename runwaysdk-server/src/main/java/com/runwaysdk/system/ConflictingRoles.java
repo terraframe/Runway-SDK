@@ -22,14 +22,14 @@ public class ConflictingRoles extends ConflictingRolesBase
 {
   private static final long serialVersionUID = 1229405888055L;
   
-  public ConflictingRoles(String parentId, String childId)
+  public ConflictingRoles(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ConflictingRoles(com.runwaysdk.system.Roles parent, com.runwaysdk.system.SDuty child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

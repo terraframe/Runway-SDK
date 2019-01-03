@@ -46,7 +46,6 @@ import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -253,11 +252,6 @@ public class JSONFacade
         InformationJSGenerator generator = new InformationJSGenerator(sessionId, (MdInformationDAOIF) mdTypeIF);
         definitions += generator.getDefinition();
       }
-      else if (mdTypeIF instanceof MdControllerDAOIF)
-      {
-        ControllerJSGenerator generator = new ControllerJSGenerator(sessionId, (MdControllerDAOIF) mdTypeIF);
-        definitions += generator.getDefinition();
-      }
       else
       {
         String error = "The JSON for type [" + mdTypeIF.definesType() + "] cannot be generated.";
@@ -339,7 +333,7 @@ public class JSONFacade
         String[] ids = new String[hierarchy.size()];
         for (int i = 0; i < hierarchy.size(); i++)
         {
-          ids[i] = hierarchy.get(i).getId();
+          ids[i] = hierarchy.get(i).getOid();
         }
 
         // FIXME optimize this
@@ -347,7 +341,7 @@ public class JSONFacade
         MdMethodQuery q = new MdMethodQuery(f);
         ValueQuery v = new ValueQuery(f);
 
-        v.SELECT(q.getId(MdMethodInfo.ID));
+        v.SELECT(q.getOid(MdMethodInfo.OID));
         v.WHERE(q.getMethodName().EQ(methodName));
         v.WHERE(q.getMdType().IN(ids)); // FIXME write tests for IN/NI on
                                         // AttributeReference
@@ -358,7 +352,7 @@ public class JSONFacade
         {
           if (iter.hasNext())
           {
-            declaredTypes = GenerationUtil.getDeclaredTypes(iter.next().getValue(MdMethodInfo.ID));
+            declaredTypes = GenerationUtil.getDeclaredTypes(iter.next().getValue(MdMethodInfo.OID));
           }
           else
           {

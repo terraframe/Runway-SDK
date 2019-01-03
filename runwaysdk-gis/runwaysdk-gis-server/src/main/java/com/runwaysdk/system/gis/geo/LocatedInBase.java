@@ -32,7 +32,7 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -43,9 +43,9 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -908351832;
   
-  public LocatedInBase(String parentId, String childId)
+  public LocatedInBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()
@@ -128,24 +128,24 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.LocatedIn.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -284,7 +284,7 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
     return (com.runwaysdk.system.gis.geo.GeoEntity) super.getChild();
   }
   
-  public static LocatedIn get(String id)
+  public static LocatedIn get(String oid)
   {
-    return (LocatedIn) com.runwaysdk.business.Relationship.get(id);
+    return (LocatedIn) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static LocatedIn getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class LocatedInBase extends com.runwaysdk.business.ontology.Term
     return (LocatedIn) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static LocatedIn lock(java.lang.String id)
+  public static LocatedIn lock(java.lang.String oid)
   {
-    LocatedIn _instance = LocatedIn.get(id);
+    LocatedIn _instance = LocatedIn.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static LocatedIn unlock(java.lang.String id)
+  public static LocatedIn unlock(java.lang.String oid)
   {
-    LocatedIn _instance = LocatedIn.get(id);
+    LocatedIn _instance = LocatedIn.get(oid);
     _instance.unlock();
     
     return _instance;

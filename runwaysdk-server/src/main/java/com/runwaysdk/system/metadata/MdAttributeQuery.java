@@ -254,13 +254,13 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttribute mdAttribute)
     {
       if(mdAttribute == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttribute.getId());
+      return this.EQ(mdAttribute.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttribute mdAttribute)
     {
       if(mdAttribute == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttribute.getId());
+      return this.NE(mdAttribute.getOid());
     }
 
 
@@ -419,7 +419,7 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdAttribute.length; i++)
       {
-        itemIdArray[i] = mdAttribute[i].getId();
+        itemIdArray[i] = mdAttribute[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -431,7 +431,7 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdAttribute.length; i++)
       {
-        itemIdArray[i] = mdAttribute[i].getId();
+        itemIdArray[i] = mdAttribute[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -443,7 +443,7 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdAttribute.length; i++)
       {
-        itemIdArray[i] = mdAttribute[i].getId();
+        itemIdArray[i] = mdAttribute[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -455,7 +455,7 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdAttribute.length; i++)
       {
-        itemIdArray[i] = mdAttribute[i].getId();
+        itemIdArray[i] = mdAttribute[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -467,7 +467,7 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdAttribute.length; i++)
       {
-        itemIdArray[i] = mdAttribute[i].getId();
+        itemIdArray[i] = mdAttribute[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

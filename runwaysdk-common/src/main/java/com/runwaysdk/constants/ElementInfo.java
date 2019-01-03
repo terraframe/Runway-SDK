@@ -28,7 +28,7 @@ public interface ElementInfo extends EntityInfo
    */
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Element";
 
-  public static final String ID_VALUE          = "0000000000000000000000000000001100000000000000000000000000000001";
+  public static final String ID_VALUE          = "196d26b5-da1f-3d10-9774-c4f56100003a";
 
   public static final String TABLE             = "elements";
 

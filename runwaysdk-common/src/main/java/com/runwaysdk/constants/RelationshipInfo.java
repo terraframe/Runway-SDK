@@ -31,17 +31,17 @@ public interface RelationshipInfo extends ElementInfo
    */
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Relationship";
 
-  public static final String ID_VALUE          = "0000000000000000000000000000006200000000000000000000000000000061";
+  public static final String ID_VALUE          = "4e74c410-2e00-317b-bba2-6bafc600003e";
 
   public static final String TABLE             = "relationship";
 
   /**
    * Attribute of relationship table.
    */
-  public static final String PARENT_ID                          = "parent_id";
+  public static final String PARENT_OID                          = "parent_oid";
 
   /**
    * Attribute of relationship table.
    */
-  public static final String CHILD_ID                            = "child_id";
+  public static final String CHILD_OID                            = "child_oid";
 }

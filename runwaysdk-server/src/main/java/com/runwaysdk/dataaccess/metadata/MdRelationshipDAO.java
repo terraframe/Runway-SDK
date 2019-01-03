@@ -39,12 +39,8 @@ import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.GeneratedActions;
-import com.runwaysdk.constants.MdActionInfo;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdElementInfo;
-import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
@@ -63,7 +59,6 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.CacheCodeException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -539,37 +534,40 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
    */
   protected void validateMethodName()
   {
-    MdBusinessDAOIF child = this.getChildMdBusiness();
-    String childMethod = this.getChildMethod();
-    String childType = this.getChildMdBusiness().definesType();
-
-    MdBusinessDAOIF parent = this.getParentMdBusiness();
-    String parentMethod = this.getParentMethod();
-    String parentType = this.getParentMdBusiness().definesType();
-
-
-    // Do not check for method name conflicts for types we are not generating java classes for.
-    if (GenerationUtil.isSkipCompileAndCodeGeneration(child) ||
-        GenerationUtil.isSkipCompileAndCodeGeneration(parent))
+    if (this.isGenerateSource())
     {
-      return;
-    }
+      MdBusinessDAOIF child = this.getChildMdBusiness();
+      String childMethod = this.getChildMethod();
+      String childType = this.getChildMdBusiness().definesType();
+
+      MdBusinessDAOIF parent = this.getParentMdBusiness();
+      String parentMethod = this.getParentMethod();
+      String parentType = this.getParentMdBusiness().definesType();
 
 
-    if(checkMethod(childMethod, childType, parent))
-    {
-      String error = "Class [" + parent.definesType() + "] already contains a method named ["
-          + childMethod + "] with type ["+childType+"]. Please specify a different method name and type for the child in [" + definesType()
-          + "]";
-      throw new RelationshipDefinitionException(error);
-    }
+      // Do not check for method name conflicts for types we are not generating java classes for.
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(child) ||
+          GenerationUtil.isSkipCompileAndCodeGeneration(parent))
+      {
+        return;
+      }
 
-    if(checkMethod(parentMethod, parentType, child))
-    {
-      String error = "Class [" + child.definesType() + "] already contains a method named ["
-          + parentMethod + "] with type ["+parentType+"]. Please specify a different method name and type for the parent in ["
-          + definesType() + "]";
-      throw new RelationshipDefinitionException(error);
+
+      if(checkMethod(childMethod, childType, parent))
+      {
+        String error = "Class [" + parent.definesType() + "] already contains a method named ["
+            + childMethod + "] with type ["+childType+"]. Please specify a different method name and type for the child in [" + definesType()
+            + "]";
+        throw new RelationshipDefinitionException(error);
+      }
+
+      if(checkMethod(parentMethod, parentType, child))
+      {
+        String error = "Class [" + child.definesType() + "] already contains a method named ["
+            + parentMethod + "] with type ["+parentType+"]. Please specify a different method name and type for the parent in ["
+            + definesType() + "]";
+        throw new RelationshipDefinitionException(error);
+      }
     }
   }
 
@@ -638,9 +636,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
 
     for(MdAttributeConcreteDAOIF attribute:attributes)
     {
-      String attributeName = attribute.getId();
+      String attributeName = attribute.getOid();
 
-      //Check if the id of the attribute equals the sort attribute
+      //Check if the oid of the attribute equals the sort attribute
       if(attributeName.equals(sortOrder))
       {
         valid = true;
@@ -667,9 +665,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
       this.getAttribute(MdRelationshipDAOIF.INDEX2_NAME).setValue(generateIndexName());
     }
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
-    return id;
+    return oid;
   }
 
   /**
@@ -687,6 +685,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
       maxBaseHashLength = autoGenId.length();
     }
 
+    autoGenId = autoGenId.replaceAll("-", "");
     autoGenId = autoGenId.substring(0, maxBaseHashLength);
 
     autoGenId = MdRelationshipDAOIF.INDEX_PREFIX+autoGenId;
@@ -1111,9 +1110,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdRelationshipDAOIF get(String id)
+  public static MdRelationshipDAOIF get(String oid)
   {
-    return (MdRelationshipDAOIF) BusinessDAO.get(id);
+    return (MdRelationshipDAOIF) BusinessDAO.get(oid);
   }
 
   /**
@@ -1149,102 +1148,5 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   public String toString()
   {
     return '[' + definesType() + " definition]";
-  }
-
-  @Override
-  protected void defineControllerActions(MdControllerDAO mdController)
-  {
-    super.defineControllerActions(mdController);
-
-    defineNewRelationshipAction(mdController);
-
-    defineParentQuery(mdController);
-
-    defineChildQuery(mdController);
-  }
-
-  private void defineParentQuery(MdControllerDAO mdController)
-  {
-    MdActionDAO parentQuery = MdActionDAO.newInstance();
-    parentQuery.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    parentQuery.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.PARENT_QUERY_ACTION.getName());
-    parentQuery.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    parentQuery.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    parentQuery.getAttribute(MdActionInfo.DESCRIPTION).setValue("Returns all instances of this relationship with the given parent");
-    ((AttributeLocal)parentQuery.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Query");
-    parentQuery.apply();
-
-    MdParameterDAO parentParam = MdParameterDAO.newInstance();
-    parentParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(parentQuery.getId());
-    parentParam.getAttribute(MdParameterInfo.NAME).setValue( "parentId");
-    parentParam.getAttribute(MdParameterInfo.ORDER).setValue( "0");
-    parentParam.getAttribute(MdParameterInfo.TYPE).setValue( String.class.getName());
-    parentParam.getAttribute(MdParameterInfo.DESCRIPTION).setValue( "Id of the parent of the Relationship");
-    ((AttributeLocal)parentParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Parameter: " + this.definesType());
-    parentParam.apply();
-  }
-
-  private void defineChildQuery(MdControllerDAO mdController)
-  {
-    MdActionDAO childQuery = MdActionDAO.newInstance();
-    childQuery.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    childQuery.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.CHILD_QUERY_ACTION.getName());
-    childQuery.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    childQuery.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)childQuery.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Returns all instances of this relationship with the given child");
-    ((AttributeLocal)childQuery.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Query");
-    childQuery.apply();
-
-    MdParameterDAO childParam = MdParameterDAO.newInstance();
-    childParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(childQuery.getId());
-    childParam.getAttribute(MdParameterInfo.NAME).setValue("childId");
-    childParam.getAttribute(MdParameterInfo.ORDER).setValue("1");
-    childParam.getAttribute(MdParameterInfo.TYPE).setValue( String.class.getName());
-    ((AttributeLocal)childParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Child of the Relationship");
-    ((AttributeLocal)childParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Parameter: " + this.definesType());
-    childParam.apply();
-  }
-
-  private void defineNewRelationshipAction(MdControllerDAO mdController)
-  {
-    MdActionDAO newRelationship = MdActionDAO.newInstance();
-    newRelationship.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    newRelationship.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.NEW_RELATIONSHIP_ACTION.getName());
-    newRelationship.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    newRelationship.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)newRelationship.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads all relavent Parent and Child references into the request attribute for a new relationship");
-    ((AttributeLocal)newRelationship.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "New Relationship");
-    newRelationship.apply();
-  }
-
-  @Override
-  protected void defineNewInstanceAction(MdControllerDAO mdController)
-  {
-    MdActionDAO newInstance = MdActionDAO.newInstance();
-    newInstance.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).setValue(mdController.getId());
-    newInstance.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.NEW_INSTANCE_ACTION.getName());
-    newInstance.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
-    newInstance.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ((AttributeLocal)newInstance.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE,"Loads a new instance of " + this.definesType() + " into the request object");
-    ((AttributeLocal)newInstance.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "New Instance");
-    newInstance.apply();
-
-    MdParameterDAO parentParam = MdParameterDAO.newInstance();
-    parentParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue( newInstance.getId());
-    parentParam.getAttribute(MdParameterInfo.NAME).setValue( "parentId");
-    parentParam.getAttribute(MdParameterInfo.ORDER).setValue( "0");
-    parentParam.getAttribute(MdParameterInfo.TYPE).setValue( String.class.getName());
-    ((AttributeLocal)parentParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Id of the parent of the Relationship");
-    ((AttributeLocal)parentParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE,  "Parent Parameter: " + this.definesType());
-    parentParam.apply();
-
-    MdParameterDAO childParam = MdParameterDAO.newInstance();
-    childParam.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(newInstance.getId());
-    childParam.getAttribute(MdParameterInfo.NAME).setValue("childId");
-    childParam.getAttribute(MdParameterInfo.ORDER).setValue("1");
-    childParam.getAttribute(MdParameterInfo.TYPE).setValue( String.class.getName());
-    ((AttributeLocal)childParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Child of the Relationship");
-    ((AttributeLocal)childParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Parameter: " + this.definesType());
-    childParam.apply();
   }
 }

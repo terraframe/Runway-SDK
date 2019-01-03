@@ -652,13 +652,13 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
     {
       if(executableJob == null) return this.EQ((java.lang.String)null);
-      return this.EQ(executableJob.getId());
+      return this.EQ(executableJob.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.ExecutableJob executableJob)
     {
       if(executableJob == null) return this.NE((java.lang.String)null);
-      return this.NE(executableJob.getId());
+      return this.NE(executableJob.getOid());
     }
 
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionQuery.ExecutableJobDescriptionQueryStructIF getDescription()
@@ -1141,7 +1141,7 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
 
       for (int i=0; i<executableJob.length; i++)
       {
-        itemIdArray[i] = executableJob[i].getId();
+        itemIdArray[i] = executableJob[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1153,7 +1153,7 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
 
       for (int i=0; i<executableJob.length; i++)
       {
-        itemIdArray[i] = executableJob[i].getId();
+        itemIdArray[i] = executableJob[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1165,7 +1165,7 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
 
       for (int i=0; i<executableJob.length; i++)
       {
-        itemIdArray[i] = executableJob[i].getId();
+        itemIdArray[i] = executableJob[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1177,7 +1177,7 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
 
       for (int i=0; i<executableJob.length; i++)
       {
-        itemIdArray[i] = executableJob[i].getId();
+        itemIdArray[i] = executableJob[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1189,7 +1189,7 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
 
       for (int i=0; i<executableJob.length; i++)
       {
-        itemIdArray[i] = executableJob[i].getId();
+        itemIdArray[i] = executableJob[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

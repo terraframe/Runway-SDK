@@ -60,9 +60,9 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
       this.labels = new HashMap<String, String>(5);
     }
 
-    public void add(String id, String label)
+    public void add(String oid, String label)
     {
-      this.labels.put(id, label);
+      this.labels.put(oid, label);
     }
 
     public String getUniversal()
@@ -78,9 +78,9 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
   public static final String ORIGINAL_CHILD = "original_child";
 
-  public static final String CHILD_ID       = "child_id";
+  public static final String CHILD_OID       = "child_oid";
 
-  public static final String PARENT_ID      = "parent_id";
+  public static final String PARENT_OID      = "parent_oid";
 
   public static final String LABEL          = "label";
 
@@ -110,34 +110,34 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
     StringBuilder builder = new StringBuilder();
     builder.append("WITH RECURSIVE quick_paths (original_child) AS (");
-    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.parent_id, ge.universal, gdl.default_locale AS label, sy.id AS synonym_id, sdl.default_locale AS synonym");
+    builder.append("  SELECT li.child_oid AS original_child, li.child_oid, li.parent_oid, ge.universal, gdl.default_locale AS label, sy.oid AS synonym_id, sdl.default_locale AS synonym");
     builder.append("  FROM located_in AS li");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = li.parent_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = li.parent_oid");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_oid");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_oid");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
     builder.append("  UNION");
-    builder.append("  SELECT li.child_id AS original_child, li.child_id, li.child_id AS parent_id, ge.universal, gdl.default_locale AS label, sy.id AS synonym_id, sdl.default_locale AS synonym");
+    builder.append("  SELECT li.child_oid AS original_child, li.child_oid, li.child_oid AS parent_oid, ge.universal, gdl.default_locale AS label, sy.oid AS synonym_id, sdl.default_locale AS synonym");
     builder.append("  FROM located_in AS li");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = li.child_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = li.child_oid");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_oid");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_oid");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
     builder.append("  UNION");
-    builder.append("  SELECT original_child, l.child_id, l.parent_id, ge.universal, gdl.default_locale, sy.id, sdl.default_locale");
+    builder.append("  SELECT original_child, l.child_oid, l.parent_oid, ge.universal, gdl.default_locale, sy.oid, sdl.default_locale");
     builder.append("  FROM located_in AS l");
-    builder.append("  JOIN geo_entity AS ge ON ge.id = l.parent_id");
-    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.id = ge.display_label");
-    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.id = sr.parent_id");
-    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.id = sr.child_id");
-    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.id = sy.display_label");
-    builder.append("  INNER JOIN quick_paths ON (l.child_id  = quick_paths.parent_id)");
+    builder.append("  JOIN geo_entity AS ge ON ge.oid = l.parent_oid");
+    builder.append("  JOIN geo_entity_display_label AS gdl ON gdl.oid = ge.display_label");
+    builder.append("  LEFT OUTER JOIN synonym_relationship AS sr ON ge.oid = sr.parent_oid");
+    builder.append("  LEFT OUTER JOIN rwsynonym AS sy ON sy.oid = sr.child_oid");
+    builder.append("  LEFT OUTER JOIN synonym_display_label AS sdl ON sdl.oid = sy.display_label");
+    builder.append("  INNER JOIN quick_paths ON (l.child_oid  = quick_paths.parent_oid)");
     builder.append(")");
     builder.append("  SELECT *");
     builder.append("  FROM quick_paths");
-    builder.append("  order by original_child, parent_id");
+    builder.append("  order by original_child, parent_oid");
 
     try
     {
@@ -159,15 +159,15 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
 
         while (results.next())
         {
-          String id = results.getString(ORIGINAL_CHILD);
-          String parentId = results.getString(PARENT_ID);
-          String childId = results.getString(CHILD_ID);
+          String oid = results.getString(ORIGINAL_CHILD);
+          String parentOid = results.getString(PARENT_OID);
+          String childOid = results.getString(CHILD_OID);
           String label = results.getString(LABEL);
           String synonym = results.getString(SYNONYM);
           String synonymId = results.getString(SYNONYM_ID);
           String universal = results.getString(UNIVERSAL);
 
-          if (prevId != null && !prevId.equals(id))
+          if (prevId != null && !prevId.equals(oid))
           {
             // Process Entry
 
@@ -221,25 +221,25 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
           // Just add a synonym
           if (synonym != null && synonym.length() > 0)
           {
-            locations.putIfAbsent(parentId, new Location(universal));
+            locations.putIfAbsent(parentOid, new Location(universal));
 
-            locations.get(parentId).add(synonymId, synonym);
+            locations.get(parentOid).add(synonymId, synonym);
           }
 
           if (label != null && label.length() > 0)
           {
-            locations.putIfAbsent(parentId, new Location(universal));
+            locations.putIfAbsent(parentOid, new Location(universal));
 
-            locations.get(parentId).add(parentId, label);
+            locations.get(parentOid).add(parentOid, label);
           }
 
-          if (!childId.equals(parentId))
+          if (!childOid.equals(parentOid))
           {
-            relationships.putIfAbsent(childId, new TreeSet<String>());
-            relationships.get(childId).add(parentId);
+            relationships.putIfAbsent(childOid, new TreeSet<String>());
+            relationships.get(childOid).add(parentOid);
           }
 
-          prevId = id;
+          prevId = oid;
         }
 
         logger.info("GeoEntitySolrOntologyStrategy Finished Index: " + System.currentTimeMillis());
@@ -265,13 +265,13 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
   private List<List<QualifiedOntologyEntryIF>> getPaths(String entityId, Map<String, Set<String>> relationships, Map<String, Location> locations)
   {
     List<List<QualifiedOntologyEntryIF>> paths = new LinkedList<>();
-    Set<String> parentIds = relationships.get(entityId);
+    Set<String> parentOids = relationships.get(entityId);
 
-    if (parentIds != null && parentIds.size() > 0)
+    if (parentOids != null && parentOids.size() > 0)
     {
-      for (String parentId : parentIds)
+      for (String parentOid : parentOids)
       {
-        List<List<QualifiedOntologyEntryIF>> pp = this.getPaths(parentId, relationships, locations);
+        List<List<QualifiedOntologyEntryIF>> pp = this.getPaths(parentOid, relationships, locations);
 
         paths.addAll(pp);
       }

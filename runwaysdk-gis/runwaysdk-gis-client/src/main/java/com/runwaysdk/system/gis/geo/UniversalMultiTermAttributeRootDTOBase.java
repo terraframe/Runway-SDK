@@ -24,9 +24,9 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot";
   private static final long serialVersionUID = 531152318;
   
-  public UniversalMultiTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public UniversalMultiTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -49,7 +49,7 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -146,7 +146,7 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -331,7 +331,7 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -444,31 +444,31 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
   
   public com.runwaysdk.system.metadata.MdAttributeMultiTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeMultiTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeMultiTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.UniversalDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.UniversalDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.UniversalDTO.get(getRequest(), super.getChildOid());
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()
@@ -484,7 +484,7 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -497,10 +497,10 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -510,10 +510,10 @@ public abstract class UniversalMultiTermAttributeRootDTOBase extends com.runways
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

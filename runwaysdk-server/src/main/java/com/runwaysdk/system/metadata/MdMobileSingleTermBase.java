@@ -41,9 +41,9 @@ public abstract class MdMobileSingleTermBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static MdMobileSingleTerm get(String id)
+  public static MdMobileSingleTerm get(String oid)
   {
-    return (MdMobileSingleTerm) com.runwaysdk.business.Business.get(id);
+    return (MdMobileSingleTerm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileSingleTerm getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileSingleTermBase extends com.runwaysdk.system.metada
     return (MdMobileSingleTerm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileSingleTerm lock(java.lang.String id)
+  public static MdMobileSingleTerm lock(java.lang.String oid)
   {
-    MdMobileSingleTerm _instance = MdMobileSingleTerm.get(id);
+    MdMobileSingleTerm _instance = MdMobileSingleTerm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileSingleTerm unlock(java.lang.String id)
+  public static MdMobileSingleTerm unlock(java.lang.String oid)
   {
-    MdMobileSingleTerm _instance = MdMobileSingleTerm.get(id);
+    MdMobileSingleTerm _instance = MdMobileSingleTerm.get(oid);
     _instance.unlock();
     
     return _instance;

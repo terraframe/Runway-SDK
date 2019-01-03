@@ -18,32 +18,17 @@
  */
 package com.runwaysdk.transport.conversion;
 
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFactoryConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.RunwayExceptionDTO;
@@ -54,11 +39,9 @@ import com.runwaysdk.business.ComponentDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentDTOIFCopier;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.EnumerationDTOIF;
 import com.runwaysdk.business.InformationDTO;
-import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.ProblemDTO;
 import com.runwaysdk.business.RelationshipDTO;
@@ -69,38 +52,13 @@ import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.WarningDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
-import com.runwaysdk.configuration.ConfigurationManager;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
-import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.transport.conversion.dom.ArrayConverter;
-import com.runwaysdk.transport.conversion.dom.ComponentDTOIFtoDoc;
-import com.runwaysdk.transport.conversion.dom.ComponentQueryDTOtoDoc;
-import com.runwaysdk.transport.conversion.dom.DateConverter;
-import com.runwaysdk.transport.conversion.dom.DocToBusinessDTO;
-import com.runwaysdk.transport.conversion.dom.DocToBusinessQueryDTO;
-import com.runwaysdk.transport.conversion.dom.DocToComponentDTOIF;
-import com.runwaysdk.transport.conversion.dom.DocToComponentQueryDTO;
-import com.runwaysdk.transport.conversion.dom.DocToExceptionDTO;
-import com.runwaysdk.transport.conversion.dom.DocToRelationshipDTO;
-import com.runwaysdk.transport.conversion.dom.DocToRelationshipQueryDTO;
-import com.runwaysdk.transport.conversion.dom.DocToStructDTO;
-import com.runwaysdk.transport.conversion.dom.DocToStructQueryDTO;
-import com.runwaysdk.transport.conversion.dom.DocToUtilDTO;
-import com.runwaysdk.transport.conversion.dom.DocToViewDTO;
-import com.runwaysdk.transport.conversion.dom.DocToViewQueryDTO;
-import com.runwaysdk.transport.conversion.dom.Elements;
-import com.runwaysdk.transport.conversion.dom.EnumDTOConverter;
-import com.runwaysdk.transport.conversion.dom.MethodMetaDataConverter;
-import com.runwaysdk.transport.conversion.dom.NullConverter;
-import com.runwaysdk.transport.conversion.dom.PrimitiveConverter;
-import com.runwaysdk.util.XMLPrinter;
 
 public class ConversionFacade
 {
@@ -192,509 +150,6 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a new document.
-   * 
-   * @return
-   * @throws ParserConfigurationException
-   */
-  public static Document initializeDocument()
-  {
-    // get the factory and builder to create a Document
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = null;
-
-    try
-    {
-      builder = factory.newDocumentBuilder();
-    }
-    catch (ParserConfigurationException e)
-    {
-      String error = "A DOM Document could not be created to represent an object for Web Services";
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), error, e);
-    }
-
-    Document document = builder.newDocument();
-
-    document.setStrictErrorChecking(false);
-    document.setXmlStandalone(true);
-
-    Element rootNode = document.createElement(Elements.RUNWAY_WEBSERVICE.getLabel());
-
-    document.appendChild(rootNode);
-
-    return document;
-  }
-
-  /**
-   * Validates the given document against the xsd.
-   * 
-   * @param document
-   */
-  public static void validateDocument(Document document)
-  {
-    SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA);
-
-    try
-    {
-      boolean go = false;
-      if (go)
-      {
-        XMLPrinter.serialize(document);
-      }
-
-      Schema schema = schemaFactory.newSchema(ConfigurationManager.getResource(ConfigGroup.XSD, "webservice.xsd"));
-      Validator validator = schema.newValidator();
-      validator.validate(new DOMSource(document));
-    }
-    catch (SAXException e)
-    {
-      String errMsg = "XML document is invalid: " + e.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errMsg, e);
-    }
-    catch (IOException e)
-    {
-      String errMsg = "Error finding web service XSD file: " + e.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errMsg, e);
-    }
-    catch (NullPointerException e)
-    {
-      // Some out-of-date XML parser library we are using has an
-      // internal bug
-      // that sometimes causes a null-pointer exception. Get a new version of an
-      // XML parser.
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * 
-   * @param componentDTOIF
-   * @return
-   */
-  public static Document getDocumentFromComponentDTO(ComponentDTOIF componentDTOIF, boolean convertMetaData)
-  {
-    Document document = initializeDocument();
-
-    ComponentDTOIFtoDoc componentDTOIFtoDoc = ComponentDTOIFtoDoc.getConverter(componentDTOIF, document, convertMetaData);
-    document.getDocumentElement().appendChild(componentDTOIFtoDoc.populate());
-
-    ConversionFacade.validateDocument(document);
-
-    return document;
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static BusinessDTO getBusinessDTOFromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-
-    try
-    {
-      Element businessDTONode = (Element) xpath.evaluate(Elements.BUSINESS_DTO.getLabel(), document.getDocumentElement(), XPathConstants.NODE);
-      DocToBusinessDTO docToBusinessDTO = new DocToBusinessDTO(clientRequest, businessDTONode);
-      return docToBusinessDTO.populate();
-    }
-    catch (XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: " + ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
-
-    return null;
-  }
-
-  public static StructDTO getStructDTOFromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-
-    try
-    {
-      Element structDTONode = (Element) xpath.evaluate(Elements.STRUCT_DTO.getLabel(), document.getDocumentElement(), XPathConstants.NODE);
-
-      DocToStructDTO docToStructDTO = new DocToStructDTO(clientRequest, structDTONode);
-      return docToStructDTO.populate();
-    }
-    catch (XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: " + ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
-
-    return null;
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static RelationshipDTO getRelationshipDTOFromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-
-    try
-    {
-      Element relationshipDTONode = (Element) xpath.evaluate(Elements.RELATIONSHIP_DTO.getLabel(), document.getDocumentElement(), XPathConstants.NODE);
-
-      DocToRelationshipDTO docToRelationshipDTO = new DocToRelationshipDTO(clientRequest, relationshipDTONode);
-      return docToRelationshipDTO.populate();
-    }
-    catch (XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: " + ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
-
-    return null;
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static ComponentDTOIF getComponentDTOIFfromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-    DocToComponentDTOIF docToComponentDTOIF = DocToComponentDTOIF.getConverter(clientRequest, (Element) document.getDocumentElement().getFirstChild());
-    return docToComponentDTOIF.populate();
-  }
-
-  /**
-   * 
-   * @param businessDTOs
-   * @return
-   */
-  public static Document[] getDocumentArrayFromBusinessDTOs(List<? extends BusinessDTO> businessDTOs, boolean convertMetaData)
-  {
-    Document[] documents = new Document[businessDTOs.size()];
-    int count = 0;
-    for (BusinessDTO busDTO : businessDTOs)
-    {
-      Document document = getDocumentFromComponentDTO(busDTO, convertMetaData);
-      documents[count] = document;
-      ConversionFacade.validateDocument(document);
-      count++;
-    }
-
-    return documents;
-  }
-
-  /**
-   * 
-   * @param relationshipDTOs
-   * @return
-   */
-  public static Document[] getDocumentArrayFromRelationshipDTOs(List<? extends RelationshipDTO> relationshipDTOs, boolean convertMetaData)
-  {
-    Document[] documents = new Document[relationshipDTOs.size()];
-    int count = 0;
-    for (RelationshipDTO relDTO : relationshipDTOs)
-    {
-      Document document = getDocumentFromComponentDTO(relDTO, convertMetaData);
-      documents[count] = document;
-      ConversionFacade.validateDocument(document);
-      count++;
-    }
-
-    return documents;
-  }
-
-  /**
-   * @param objects
-   * @return
-   */
-  public static Document[] getDocumentArrayFromObjects(Object[] objects, boolean convertMetaData)
-  {
-    Document[] documents = new Document[objects.length];
-
-    for (int i = 0; i < objects.length; i++)
-    {
-      Document document = getDocumentFromObject(objects[i], convertMetaData);
-      documents[i] = document;
-      ConversionFacade.validateDocument(document);
-    }
-
-    return documents;
-  }
-
-  /**
-   * 
-   * @param queryDTO
-   * @return
-   */
-  public static Document getDocumentFromQueryDTO(ComponentQueryDTO queryDTO)
-  {
-    Document document = initializeDocument();
-
-    ComponentQueryDTOtoDoc queryDTOToDoc = (ComponentQueryDTOtoDoc) ComponentQueryDTOtoDoc.getConverter(queryDTO, document);
-    document.getDocumentElement().appendChild(queryDTOToDoc.populate());
-
-    ConversionFacade.validateDocument(document);
-    return document;
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static ComponentQueryDTO getQueryDTOFromDocument(ClientRequestIF clientRequest, Document document, boolean typeSafe)
-  {
-    ConversionFacade.validateDocument(document);
-
-    return getQueryDTOFromElement(clientRequest, (Element) document.getDocumentElement().getFirstChild(), typeSafe);
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static ComponentQueryDTO getQueryDTOFromElement(ClientRequestIF clientRequest, Element element, boolean typeSafe)
-  {
-    DocToComponentQueryDTO docToQueryDTO = DocToComponentQueryDTO.getConverter(clientRequest, element, typeSafe);
-    return docToQueryDTO.populate();
-  }
-
-  /**
-   * 
-   * @param object
-   * @param convertMetaData
-   * @return
-   */
-  public static Document getDocumentFromObject(Object object, boolean convertMetaData)
-  {
-    Document document = initializeDocument();
-    document.getDocumentElement().appendChild(getElementFromObject(document, object, convertMetaData));
-    return document;
-  }
-
-  /**
-   * 
-   * @param object
-   * @param convertMetaData
-   * @return
-   */
-  public static Element getElementFromObject(Document document, Object object, boolean convertMetaData)
-  {
-    Element element = null;
-
-    if (object == null)
-    {
-      // create a null document
-      element = NullConverter.getNullDOM(document);
-    }
-    else if (object instanceof List)
-    {
-      // create an array document
-      Object[] objects = ( (List<?>) object ).toArray();
-      element = ArrayConverter.getArrayDOM(objects, document, convertMetaData);
-    }
-    else if (object.getClass().isArray())
-    {
-      // create an array document
-      Object[] objects = (Object[]) object;
-      element = ArrayConverter.getArrayDOM(objects, document, convertMetaData);
-    }
-    else if (object instanceof ComponentDTOIF)
-    {
-      // create a ComponentDTOIF document
-      ComponentDTOIF componentDTOIF = (ComponentDTOIF) object;
-
-      ComponentDTOIFtoDoc componentDTOIFtoDoc = ComponentDTOIFtoDoc.getConverter(componentDTOIF, document, convertMetaData);
-      element = (Element) componentDTOIFtoDoc.populate();
-    }
-    else if (object instanceof ComponentQueryDTO)
-    {
-      // create a queryDTO document
-      ComponentQueryDTO queryDTO = (ComponentQueryDTO) object;
-
-      ComponentQueryDTOtoDoc queryDTOToDoc = (ComponentQueryDTOtoDoc) ComponentQueryDTOtoDoc.getConverter(queryDTO, document);
-      element = (Element) queryDTOToDoc.populate();
-    }
-    else if (object instanceof EnumDTO)
-    {
-      EnumDTO enumDTO = (EnumDTO) object;
-      element = EnumDTOConverter.getDocument(enumDTO, document, convertMetaData);
-    }
-    else if (object instanceof Number || object instanceof String || object instanceof Character || object instanceof Boolean || object instanceof Byte[] || object instanceof byte[])
-    {
-      // create a primitive document
-      element = PrimitiveConverter.getPrimitiveDOM(object, document);
-    }
-    else if (object instanceof Date)
-    {
-      Date date = (Date) object;
-      element = DateConverter.getDocument(date, document);
-    }
-    else
-    {
-      String error = "Objects of type [" + object.getClass().getName() + "] are not supported for DOM Document conversion.";
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), error);
-    }
-
-    return element;
-  }
-
-  public static Document getDocumentFromEnumDTO(EnumDTO enumDTO, boolean convertMetaData)
-  {
-    Document document = initializeDocument();
-
-    document.getFirstChild().appendChild(EnumDTOConverter.getDocument(enumDTO, document, convertMetaData));
-
-    ConversionFacade.validateDocument(document);
-
-    return document;
-  }
-
-  public static EnumDTO getEnumDTOFromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-    return EnumDTOConverter.getEnumDTO(clientRequest, document.getFirstChild());
-  }
-
-  /**
-   * 
-   * @param document
-   * @return
-   */
-  public static Object getObjectFromDocument(ClientRequestIF clientRequest, Document document)
-  {
-    ConversionFacade.validateDocument(document);
-
-    // get the root element that tells us what is in the document
-    Element root = (Element) document.getDocumentElement().getFirstChild();
-
-    return getObjectFromElement(clientRequest, root);
-  }
-
-  /**
-   * 
-   * @param element
-   * @return
-   */
-  public static Object getObjectFromElement(ClientRequestIF clientRequest, Element element)
-  {
-    return getObjectFromElement(clientRequest, element, false);
-  }
-
-  /**
-   * Param <code>typeSafe</code> only applies to query objects. All other
-   * objects are generic and are type unsafe.
-   * 
-   * @param element
-   * @param typeSafe
-   *          only applies to query objects.
-   * @return
-   */
-  public static Object getObjectFromElement(ClientRequestIF clientRequest, Element element, boolean typeSafe)
-  {
-    Object object = null;
-
-    String rootName = element.getNodeName();
-
-    if (rootName.equals(Elements.NULL.getLabel()))
-    {
-      object = NullConverter.getNull(element);
-    }
-    else if (rootName.equals(Elements.PRIMITIVE.getLabel()))
-    {
-      object = PrimitiveConverter.getPrimitiveObject(element);
-    }
-    else if (rootName.equals(Elements.BUSINESS_DTO.getLabel()))
-    {
-      DocToBusinessDTO docToBusinessDTO = new DocToBusinessDTO(clientRequest, element);
-      object = docToBusinessDTO.populate();
-    }
-    else if (rootName.equals(Elements.RELATIONSHIP_DTO.getLabel()))
-    {
-      DocToRelationshipDTO docToRelationshipDTO = new DocToRelationshipDTO(clientRequest, element);
-      object = docToRelationshipDTO.populate();
-    }
-    else if (rootName.equals(Elements.STRUCT_DTO.getLabel()))
-    {
-      DocToStructDTO docToStructDTO = new DocToStructDTO(clientRequest, element);
-      object = docToStructDTO.populate();
-    }
-    else if (rootName.equals(Elements.BUSINESS_QUERY_DTO.getLabel()))
-    {
-      DocToBusinessQueryDTO docToQueryDTO = (DocToBusinessQueryDTO) DocToComponentQueryDTO.getConverter(clientRequest, element, typeSafe);
-      object = docToQueryDTO.populate();
-    }
-    else if (rootName.equals(Elements.RELATIONSHIP_QUERY_DTO.getLabel()))
-    {
-      DocToRelationshipQueryDTO docToQueryDTO = (DocToRelationshipQueryDTO) DocToComponentQueryDTO.getConverter(clientRequest, element, typeSafe);
-      object = docToQueryDTO.populate();
-    }
-    else if (rootName.equals(Elements.STRUCT_QUERY_DTO.getLabel()))
-    {
-      DocToStructQueryDTO docToQueryDTO = (DocToStructQueryDTO) DocToComponentQueryDTO.getConverter(clientRequest, element, typeSafe);
-      object = docToQueryDTO.populate();
-    }
-    else if (rootName.equals(Elements.VIEW_QUERY_DTO.getLabel()))
-    {
-      DocToViewQueryDTO docToQueryDTO = (DocToViewQueryDTO) DocToComponentQueryDTO.getConverter(clientRequest, element, typeSafe);
-      object = docToQueryDTO.populate();
-    }
-    else if (rootName.equals(Elements.ARRAY.getLabel()))
-    {
-      object = ArrayConverter.getArray(clientRequest, element);
-    }
-    else if (rootName.equals(Elements.ENUM_DTO.getLabel()))
-    {
-      object = EnumDTOConverter.getEnumDTO(clientRequest, element);
-    }
-    else if (rootName.equals(Elements.DATE.getLabel()))
-    {
-      object = DateConverter.getDate(element);
-    }
-    else if (rootName.equals(Elements.UTIL_DTO.getLabel()))
-    {
-      DocToUtilDTO docToUtilDTO = new DocToUtilDTO(clientRequest, element);
-      object = docToUtilDTO.populate();
-    }
-    else if (rootName.equals(Elements.VIEW_DTO.getLabel()))
-    {
-      DocToViewDTO docToViewDTO = new DocToViewDTO(clientRequest, element);
-      object = docToViewDTO.populate();
-    }
-    else if (rootName.equals(Elements.EXCEPTION_DTO.getLabel()))
-    {
-      DocToExceptionDTO docToSmartExceptionDTO = new DocToExceptionDTO(clientRequest, element);
-      object = docToSmartExceptionDTO.populate();
-    }
-    else
-    {
-      String error = "DOM Documents containing a [" + rootName + "] root are not supported for Object conversion.";
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), error);
-    }
-
-    return object;
-  }
-
-  /**
-   * @param documents
-   * @return
-   */
-  public static Object[] getObjectArrayFromDocuments(ClientRequestIF clientRequest, Document[] documents)
-  {
-    Object[] objects = new Object[documents.length];
-
-    for (int i = 0; i < objects.length; i++)
-    {
-      ConversionFacade.validateDocument(documents[i]);
-      objects[i] = getObjectFromDocument(clientRequest, documents[i]);
-    }
-
-    return objects;
-  }
-
-  /**
    * Creates a typeSafe DTO with values copied from the given source into
    * typesafe values.
    * 
@@ -740,17 +195,6 @@ public class ConversionFacade
   public static ComponentDTOIF createGenericCopy(ComponentDTOIF source)
   {
     return ComponentDTOIFCopier.create(null, source, false, false);
-  }
-
-  /**
-   * Copies the values from one DTO into another.
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void genericCopy(ClientRequestIF clientRequest, MutableDTO source, MutableDTO dest)
-  {
-    ComponentDTOIFCopier.copy(clientRequest, source, dest, false, false);
   }
 
   /**
@@ -1080,50 +524,6 @@ public class ConversionFacade
   }
 
   /**
-   * Converts a MethodMetaData object into a Document object.
-   * 
-   * @param metadata
-   *          The metadata to generate a document from.
-   * @return A Document object representation of the provided MethodMetaData.
-   */
-  public static Document getDocumentFromMethodMetaData(MethodMetaData metadata)
-  {
-    Document document = initializeDocument();
-
-    MethodMetaDataConverter.getDocument(metadata, document);
-    ConversionFacade.validateDocument(document);
-
-    return document;
-  }
-
-  /**
-   * Converts a MethodMetaData object into a Document object.
-   * 
-   * @param metadata
-   *          The metadata to generate a document from.
-   * @return A Document object representation of the provided MethodMetaData.
-   */
-  public static MethodMetaData getMethodMetaDataFromDocument(Document document)
-  {
-    ConversionFacade.validateDocument(document);
-    return MethodMetaDataConverter.getMethodMetaData(document);
-  }
-
-  public static Document getDocumentFromDate(Date date)
-  {
-    Document document = initializeDocument();
-    document.appendChild(DateConverter.getDocument(date, document));
-    ConversionFacade.validateDocument(document);
-    return document;
-  }
-
-  public static Date getDateFromDocument(Document document)
-  {
-    ConversionFacade.validateDocument(document);
-    return DateConverter.getDate(document.getFirstChild());
-  }
-
-  /**
    * Creates type safe BusinessDTO for the given type. If clientRequest is not
    * null then a trip is made to the server. If a type safe BusinessDTO is not
    * possible then it returns the generic BusinessDTO.
@@ -1140,7 +540,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (BusinessDTO) constructor.newInstance(clientRequest);
@@ -1180,6 +580,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildBusinessDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1204,57 +608,68 @@ public class ConversionFacade
 
   public static BusinessDTO createTypeSafeCopy(BusinessDTO businessDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = businessDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    BusinessDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (businessDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (BusinessDTO) constructor.newInstance(businessDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, businessDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = businessDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      BusinessDTO retDTO = null;
+      Class<?> clazz;
+      try
+      {
+        clazz = LoaderDecorator.loadClass(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (BusinessDTO) constructor.newInstance(businessDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, businessDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return businessDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+      catch (ClassNotFoundException e)
       {
         return businessDTO;
       }
-      else
-      {
-        throw e;
-      }
+
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return businessDTO;
   }
 
   /**
@@ -1268,17 +683,17 @@ public class ConversionFacade
    * @return
    */
 
-  public static RelationshipDTO createDynamicRelationshipDTO(ClientRequestIF clientRequest, String type, String parentId, String childId)
+  public static RelationshipDTO createDynamicRelationshipDTO(ClientRequestIF clientRequest, String type, String parentOid, String childOid)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
     RelationshipDTO retDTO = null;
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class, String.class, String.class);
 
-      retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentId, childId);
+      retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentOid, childOid);
     }
     catch (SecurityException e)
     {
@@ -1315,13 +730,18 @@ public class ConversionFacade
     {
       if (e instanceof LoaderDecoratorExceptionIF)
       {
-        retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentId, childId);
+        retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentOid, childOid);
       }
       else
       {
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildRelationshipDTO(clientRequest, type, parentOid, childOid);
+    }
+    
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1347,57 +767,66 @@ public class ConversionFacade
 
   public static RelationshipDTO createTypeSafeCopy(RelationshipDTO relationshipDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = relationshipDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    RelationshipDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (relationshipDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
+      String dtoType = relationshipDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      RelationshipDTO retDTO = null;
+      Class<?> clazz;
+      try
+      {
+        clazz = LoaderDecorator.loadClass(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
 
-      retDTO = (RelationshipDTO) constructor.newInstance(relationshipDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, relationshipDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+        retDTO = (RelationshipDTO) constructor.newInstance(relationshipDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, relationshipDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return relationshipDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+      catch (ClassNotFoundException e)
       {
         return relationshipDTO;
       }
-      else
-      {
-        throw e;
-      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return relationshipDTO;
   }
 
   /**
@@ -1418,7 +847,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (StructDTO) constructor.newInstance(clientRequest);
@@ -1458,6 +887,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildStructDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1483,57 +916,66 @@ public class ConversionFacade
 
   public static StructDTO createTypeSafeCopy(StructDTO structDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = structDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    StructDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (structDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (StructDTO) constructor.newInstance(structDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, structDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = structDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      StructDTO retDTO = null;
+      Class<?> clazz;
+      try
+      {
+        clazz = LoaderDecorator.loadClass(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (StructDTO) constructor.newInstance(structDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, structDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return structDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+      catch (ClassNotFoundException e)
       {
         return structDTO;
       }
-      else
-      {
-        throw e;
-      }
-    }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
+    }
+    return structDTO;
   }
 
   /**
@@ -1554,7 +996,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (ViewDTO) constructor.newInstance(clientRequest);
@@ -1594,6 +1036,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildViewDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1618,57 +1064,67 @@ public class ConversionFacade
 
   public static ViewDTO createTypeSafeCopy(ViewDTO viewDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = viewDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    ViewDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (viewDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (ViewDTO) constructor.newInstance(viewDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, viewDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = viewDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      ViewDTO retDTO = null;
+      Class<?> clazz;
+      try
+      {
+        clazz = LoaderDecorator.loadClass(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (ViewDTO) constructor.newInstance(viewDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, viewDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return viewDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+      catch (ClassNotFoundException e)
       {
         return viewDTO;
       }
-      else
-      {
-        throw e;
-      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return viewDTO;
   }
 
   /**
@@ -1689,7 +1145,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (UtilDTO) constructor.newInstance(clientRequest);
@@ -1729,6 +1185,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildUtilDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1753,57 +1213,67 @@ public class ConversionFacade
 
   public static UtilDTO createTypeSafeCopy(UtilDTO utilDTO, ClientRequestIF clientRequest)
   {
-    String dtoType = utilDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
-    UtilDTO retDTO = null;
-    Class<?> clazz;
-    try
+    if (utilDTO.getMd().isGenerateSource())
     {
-      clazz = LoaderDecorator.load(dtoType);
-      Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
-      constructor.setAccessible(true);
 
-      retDTO = (UtilDTO) constructor.newInstance(utilDTO, clientRequest);
-      ConversionFacade.typeSafeCopy(clientRequest, utilDTO, retDTO);
-    }
-    catch (SecurityException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalArgumentException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InstantiationException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (IllegalAccessException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (NoSuchMethodException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (InvocationTargetException e)
-    {
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
-    }
-    catch (RuntimeException e)
-    {
-      if (e instanceof LoaderDecoratorExceptionIF)
+      String dtoType = utilDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
+      UtilDTO retDTO = null;
+      Class<?> clazz;
+      try
+      {
+        clazz = LoaderDecorator.loadClass(dtoType);
+        Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
+        constructor.setAccessible(true);
+
+        retDTO = (UtilDTO) constructor.newInstance(utilDTO, clientRequest);
+        ConversionFacade.typeSafeCopy(clientRequest, utilDTO, retDTO);
+      }
+      catch (SecurityException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalArgumentException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InstantiationException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (IllegalAccessException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (InvocationTargetException e)
+      {
+        CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), e.getMessage(), e);
+      }
+      catch (RuntimeException e)
+      {
+        if (e instanceof LoaderDecoratorExceptionIF)
+        {
+          return utilDTO;
+        }
+        else
+        {
+          throw e;
+        }
+      }
+      catch (ClassNotFoundException e)
       {
         return utilDTO;
       }
-      else
-      {
-        throw e;
-      }
+
+      // reset the type since this method mucks with the type for the sake of
+      // avoiding infinite recursion.
+      return retDTO;
     }
 
-    // reset the type since this method mucks with the type for the sake of
-    // avoiding infinite recursion.
-    return retDTO;
+    return utilDTO;
   }
 
   /**
@@ -1825,7 +1295,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (SmartExceptionDTO) constructor.newInstance(clientRequest);
@@ -1865,6 +1335,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildSmartExceptionDTO(clientRequest);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1895,7 +1369,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
@@ -1937,6 +1411,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      return smartExceptionDTO;
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -1962,7 +1440,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(String.class, String.class, String.class);
 
       runwayExceptionDTO = (RunwayExceptionDTO) constructor.newInstance(type, localizedMessage, developerMessage);
@@ -2002,6 +1480,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      return new RunwayExceptionDTO(type, localizedMessage, developerMessage);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2026,7 +1508,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (ProblemDTO) constructor.newInstance(clientRequest);
@@ -2066,6 +1548,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildProblemDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2090,7 +1576,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (WarningDTO) constructor.newInstance(clientRequest);
@@ -2130,6 +1616,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildWarningDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2154,7 +1644,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (InformationDTO) constructor.newInstance(clientRequest);
@@ -2194,6 +1684,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      retDTO = ComponentDTOFacade.buildInformationDTO(clientRequest, type);
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2223,7 +1717,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getDeclaredConstructor(ProblemDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
@@ -2265,6 +1759,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      return problemDTO;
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2292,7 +1790,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
       constructor.setAccessible(true);
 
@@ -2335,6 +1833,10 @@ public class ConversionFacade
         throw e;
       }
     }
+    catch (ClassNotFoundException e)
+    {
+      return attributeProblemDTO;
+    }
 
     // reset the type since this method mucks with the type for the sake of
     // avoiding infinite recursion.
@@ -2367,7 +1869,7 @@ public class ConversionFacade
     Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(dtoType);
+      clazz = LoaderDecorator.loadClass(dtoType);
       Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
       constructor.setAccessible(true);
 
@@ -2411,6 +1913,12 @@ public class ConversionFacade
       {
         throw e;
       }
+    }
+    catch (ClassNotFoundException e)
+    {
+      AttributeProblemDTO attributeProblemDTO = new AttributeProblemDTO(type, componentId, definingType, definingTypeDisplayLabel, attributeName, attributeId, attributeDisplayLabel, localizedMessage);
+      attributeProblemDTO.setDeveloperMessage(developerMessage);
+      return attributeProblemDTO;
     }
 
     // reset the type since this method mucks with the type for the sake of

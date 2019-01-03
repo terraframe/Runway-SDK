@@ -23,6 +23,9 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
@@ -56,16 +59,16 @@ public class UniversalTest
     }
   }
 
-  @AfterClass
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     OntologyStrategyIF strategy = Universal.getStrategy();
     strategy.shutdown();
   }
 
-  @Test
   @Request
+  @Test
   public void testGetRoot()
   {
     Universal root = Universal.getRoot();
@@ -74,8 +77,8 @@ public class UniversalTest
     Assert.assertEquals(Universal.ROOT, root.getUniversalId());
   }
 
-  @Test
   @Request
+  @Test
   public void testUniversalCRUD()
   {
     Universal universal = new Universal();
@@ -86,7 +89,7 @@ public class UniversalTest
 
     try
     {
-      Universal test = Universal.get(universal.getId());
+      Universal test = Universal.get(universal.getOid());
 
       // TEST THE VALUE FROM THE READ
       Assert.assertNotNull(test);
@@ -100,8 +103,8 @@ public class UniversalTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testAllowedInCRUD()
   {
     Universal parent = new Universal();
@@ -126,12 +129,12 @@ public class UniversalTest
         List<? extends Universal> children = parent.getAllContains().getAll();
 
         Assert.assertEquals(1, children.size());
-        Assert.assertEquals(child.getId(), children.get(0).getId());
+        Assert.assertEquals(child.getOid(), children.get(0).getOid());
 
         List<? extends Universal> parents = child.getAllAllowedIn().getAll();
 
         Assert.assertEquals(1, parents.size());
-        Assert.assertEquals(parent.getId(), parents.get(0).getId());
+        Assert.assertEquals(parent.getOid(), parents.get(0).getOid());
       }
       finally
       {
@@ -144,8 +147,8 @@ public class UniversalTest
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testCycle()
   {
     Universal parent = new Universal();
@@ -192,8 +195,8 @@ public class UniversalTest
   /**
    * Tests all recursive descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllDescendants()
   {
     try
@@ -227,8 +230,8 @@ public class UniversalTest
   /**
    * Tests all recursive ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testAllAncestors()
   {
     try
@@ -261,8 +264,8 @@ public class UniversalTest
   /**
    * Tests all direct ancestors of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectAncestors()
   {
     try
@@ -296,8 +299,8 @@ public class UniversalTest
   /**
    * Tests all direct descendants of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectDescendants()
   {
     try
@@ -332,8 +335,8 @@ public class UniversalTest
   /**
    * Tests that multiple parents are supported.
    */
-  @Test
   @Request
+  @Test
   public void testMulitpleParents()
   {
     try
@@ -360,8 +363,8 @@ public class UniversalTest
   /**
    * Appends a Universal leaf node to D that is then deleted.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteLeaf()
   {
     try
@@ -401,8 +404,8 @@ public class UniversalTest
    * Appends a sub tree whose root is deleted then checks to make sure the
    * orphaned Universal objects are placed beneath the root.
    */
-  @Test
   @Request
+  @Test
   public void testDeleteNonLeaf()
   {
     try
@@ -443,36 +446,36 @@ public class UniversalTest
     }
   }
 
-//  /**
-//   * Ensures that the Root universal exists as the default parent of created
-//   * Universals A and E.
-//   */
-//  @Test
-//  @Request
-//  public void tesRootUniversalAsDefault()
-//  {
-//    try
-//    {
-//      Universal uA = GISTestFactory.createAndApplyUniversal("A");
-//
-//      Universal root = Universal.getRoot();
-//
-//      List<Term> ancestors = uA.getAllAncestors(AllowedIn.CLASS);
-//
-//      Assert.assertEquals(1, ancestors.size());
-//      Assert.assertEquals(root.getId(), ancestors.get(0).getId());
-//    }
-//    finally
-//    {
-//      GISTestFactory.deleteUniversals("A", "B", "C", "D", "E");
-//    }
-//  }
+  // /**
+  // * Ensures that the Root universal exists as the default parent of created
+  // * Universals A and E.
+  // */
+  // @Test
+  // @Request
+  // public void tesRootUniversalAsDefault()
+  // {
+  // try
+  // {
+  // Universal uA = GISTestFactory.createAndApplyUniversal("A");
+  //
+  // Universal root = Universal.getRoot();
+  //
+  // List<Term> ancestors = uA.getAllAncestors(AllowedIn.CLASS);
+  //
+  // Assert.assertEquals(1, ancestors.size());
+  // Assert.assertEquals(root.getOid(), ancestors.get(0).getOid());
+  // }
+  // finally
+  // {
+  // GISTestFactory.deleteUniversals("A", "B", "C", "D", "E");
+  // }
+  // }
 
   /**
    * Tests the direct parent of a universal.
    */
-  @Test
   @Request
+  @Test
   public void testDirectParents()
   {
     try
@@ -512,8 +515,8 @@ public class UniversalTest
   /**
    * Tests that the root universal cannot have a parent.
    */
-  @Test
   @Request
+  @Test
   public void testAddParentToRoot()
   {
     try
@@ -573,8 +576,8 @@ public class UniversalTest
   private void assertAllowedIn(Universal child, Universal parent)
   {
     AllowedInQuery q = new AllowedInQuery(new QueryFactory());
-    q.WHERE(q.childId().EQ(child.getId()));
-    q.AND(q.parentId().EQ(parent.getId()));
+    q.WHERE(q.childOid().EQ(child.getOid()));
+    q.AND(q.parentOid().EQ(parent.getOid()));
 
     OIterator<? extends AllowedIn> iter = q.getIterator();
     try
@@ -590,5 +593,5 @@ public class UniversalTest
       iter.close();
     }
   }
-  
+
 }

@@ -24,4 +24,6 @@ public class GISConstants
   public static final String GIS_SYSTEM_PACKAGE   = com.runwaysdk.constants.Constants.SYSTEM_PACKAGE+".gis";
 
   public static final String GIS_METADATA_PACKAGE = GIS_SYSTEM_PACKAGE+".metadata";
+  
+  public static final String GEO_PACKAGE = GIS_SYSTEM_PACKAGE+".geo";
 }

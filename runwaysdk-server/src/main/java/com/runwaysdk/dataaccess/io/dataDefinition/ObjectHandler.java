@@ -95,20 +95,20 @@ public class ObjectHandler extends TagHandler implements TagHandlerIF, HandlerFa
       {
         try
         {
-          EntityDAO.getIdFromKey(object.getType(), object.getKey());
+          EntityDAO.getOidFromKey(object.getType(), object.getKey());
         }
         catch (DataNotFoundException e)
         {
           object.apply();
 
-          this.getManager().addImportedObject(object.getId());
+          this.getManager().addImportedObject(object.getOid());
         }
       }
       else
       {
         object.apply();
 
-        this.getManager().addImportedObject(object.getId());
+        this.getManager().addImportedObject(object.getOid());
       }
     }
   }

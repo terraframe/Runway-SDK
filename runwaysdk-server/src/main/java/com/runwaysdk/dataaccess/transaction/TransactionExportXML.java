@@ -126,7 +126,7 @@ public class TransactionExportXML
   {
     String filePathLocation = transactionRecordDAOIF.getFilePath();
 
-    String fileLocation = filePathLocation + IdParser.parseRootFromId(transactionRecordDAOIF.getId()) + ".xml";
+    String fileLocation = filePathLocation + IdParser.parseRootFromId(transactionRecordDAOIF.getOid()) + ".xml";
 
     HashMap<String, String> parameters = new HashMap<String, String>();
 

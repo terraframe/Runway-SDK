@@ -21,8 +21,6 @@ package com.runwaysdk.dataaccess;
 import java.util.List;
 import java.util.Map;
 
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-
 /**
  * Metadata classes that implement this interface reference a database table.
  * 
@@ -61,7 +59,7 @@ public interface MdTableClassIF extends MdClassDAOIF
   
   /**
    * Returns a complete list of {@link MdAttributeConcreteDAOIF} objects for this
-   * instance of {@link MdBusinessDAOIF}. This list includes attributes inherited
+   * instance of {@link MdTableDAOIF}. This list includes attributes inherited
    * from supertypes.
    *
    * @return a list of MdAttributeIF objects

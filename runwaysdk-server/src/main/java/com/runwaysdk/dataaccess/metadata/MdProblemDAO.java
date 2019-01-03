@@ -235,9 +235,9 @@ public class MdProblemDAO extends MdNotificationDAO implements MdProblemDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdProblemDAOIF get(String id)
+  public static MdProblemDAOIF get(String oid)
   {
-    return (MdProblemDAOIF) BusinessDAO.get(id);
+    return (MdProblemDAOIF) BusinessDAO.get(oid);
   }
   
   /* (non-Javadoc)

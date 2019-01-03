@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -32,9 +31,9 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
@@ -76,7 +75,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
   }
 
   /**
-   * The object's id is the hash code.
+   * The object's oid is the hash code.
    * 
    */
   public int hashCode()
@@ -360,11 +359,6 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
 
-  public StateMasterDAOIF currentState()
-  {
-    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
-  }
-
   public List<RelationshipDAOIF> getAllChildren()
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
@@ -446,25 +440,25 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
   }
 
   /**
-   * This is a spoofed id.
+   * This is a spoofed oid.
    */
-  public String getId()
+  public String getOid()
   {
     return this.spoofedId;
   }
 
   /**
    * 
-   * This is a spoofed id.
+   * This is a spoofed oid.
    */
-  public String getRootId()
+  public String getBaseOid()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public String getKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDAOIF getMdAttributeDAO(String name)
@@ -505,7 +499,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
 
   public String getPermissionKey()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public MdAttributeDimensionDAOIF getMdAttributeDimension(MdDimensionDAOIF mdDimension)

@@ -48,60 +48,60 @@ public abstract class MdMobilePrimitiveDTOBase extends com.runwaysdk.system.meta
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO> getAllGrid()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO> getAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO> getAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO> getAllGridRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO> getAllGridRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO> getAllGridRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MobileGridFieldDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.MobileGridFieldDTO addGrid(com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MobileGridFieldDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MobileGridFieldDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MobileGridFieldDTO addGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO parent)
+  public static com.runwaysdk.system.metadata.MobileGridFieldDTO addGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdMobileSingleTermGridDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MobileGridFieldDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MobileGridFieldDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
   public void removeGrid(com.runwaysdk.system.metadata.MobileGridFieldDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.MobileGridFieldDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllGrid()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
-  public static void removeAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.MobileGridFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdMobilePrimitiveDTO) dto;
   }
@@ -119,7 +119,7 @@ public abstract class MdMobilePrimitiveDTOBase extends com.runwaysdk.system.meta
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdMobilePrimitiveQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -132,10 +132,10 @@ public abstract class MdMobilePrimitiveDTOBase extends com.runwaysdk.system.meta
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdMobilePrimitiveDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdMobilePrimitiveDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -145,10 +145,10 @@ public abstract class MdMobilePrimitiveDTOBase extends com.runwaysdk.system.meta
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdMobilePrimitiveDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdMobilePrimitiveDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdMobilePrimitiveDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

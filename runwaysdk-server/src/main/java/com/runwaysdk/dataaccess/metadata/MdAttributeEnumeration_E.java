@@ -190,7 +190,7 @@ public class MdAttributeEnumeration_E extends MdAttributeConcrete_E
     {
       AttributeEnumerationIF index = (AttributeEnumerationIF) this.getMdAttribute().getAttributeIF(
           MdAttributeConcreteInfo.INDEX_TYPE);
-      if (!index.dereference()[0].getId().equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+      if (!index.dereference()[0].getOid().equalsIgnoreCase(IndexTypes.NO_INDEX.getOid()))
       {
         isValid = false;
       }

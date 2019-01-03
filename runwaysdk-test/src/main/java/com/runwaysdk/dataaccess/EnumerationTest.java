@@ -24,11 +24,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -63,21 +64,10 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.session.Request;
 
-public class EnumerationTest extends TestCase
+public class EnumerationTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static final TypeInfo            stateClass           = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State");
 
   private static final TypeInfo            stateEnum            = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State_Enum");
@@ -124,27 +114,27 @@ public class EnumerationTest extends TestCase
   private static MdAttributeStructDAOIF    mdAttributeStructIF;
 
   /**
-   * ID of the MD_ATTRIBUTE that describes the multi-select attribute
+   * OID of the MD_ATTRIBUTE that describes the multi-select attribute
    */
   private static String                    multiAttrMdID;
 
   /**
-   * ID of the MD_ATTRIBUTE that describes the single-select attribute
+   * OID of the MD_ATTRIBUTE that describes the single-select attribute
    */
   private static String                    singleAttrMdID;
 
   /**
-   * The ID of the California option of the STATE enumeration.
+   * The OID of the California option of the STATE enumeration.
    */
   private static String                    californiaItemId;
 
   /**
-   * The ID of the Colorado option of the STATE enumeration.
+   * The OID of the Colorado option of the STATE enumeration.
    */
   private static String                    coloradoItemId;
 
   /**
-   * The ID of the Connecticut option of the STATE enumeration.
+   * The OID of the Connecticut option of the STATE enumeration.
    */
   private static String                    connecticutItemId;
 
@@ -169,49 +159,12 @@ public class EnumerationTest extends TestCase
   private static final String              SINGLE               = "enumStateSingle";
 
   /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(EnumerationTest.suite()));
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>EnumerationTest.class</code> and wraps
-   * it in <code>MasterTestSetup</code>. The returned class is a suite of all
-   * the tests in <code>EnumerationTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(EnumerationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    * Provides setup operations required for all of the tests in this class.
    * Specifically, <code>classSetUp()</code> defines a new Enumerated Type
    * (STATE) and adds it as an attribute on the MasterTestSetup.TEST_CLASS type.
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     BusinessDAO businessDAO;
@@ -229,8 +182,7 @@ public class EnumerationTest extends TestCase
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
-    stateEnumMdBusiness.setGenerateMdController(false);
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
 
@@ -244,7 +196,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumerationIF = mdEnumeration;
@@ -256,9 +208,9 @@ public class EnumerationTest extends TestCase
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
@@ -267,7 +219,7 @@ public class EnumerationTest extends TestCase
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttributeInteger.apply();
 
     // Define the options for the enumeration
@@ -299,8 +251,8 @@ public class EnumerationTest extends TestCase
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     multiAttrMdID = mdAttrEnumMultiple.apply();
 
@@ -311,8 +263,8 @@ public class EnumerationTest extends TestCase
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     singleAttrMdID = mdAttrEnumSingle.apply();
 
@@ -332,8 +284,8 @@ public class EnumerationTest extends TestCase
     mdAttrEnumSingleBasic.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Single select state attribute");
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getId());
-    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdStruct.getOid());
+    mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnumSingleBasic.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumSingleBasic.apply();
 
@@ -342,8 +294,8 @@ public class EnumerationTest extends TestCase
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Struct");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getOid());
     mdAttrStruct.apply();
     mdAttributeStructIF = mdAttrStruct;
   }
@@ -352,6 +304,8 @@ public class EnumerationTest extends TestCase
    * Deletes the previously defined STATE Enumeration after all tests have
    * completed.
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     BusinessDAO.get(singleAttrMdID).getBusinessDAO().delete();
@@ -367,20 +321,22 @@ public class EnumerationTest extends TestCase
    * Set the testObject to a new Instance of the MasterTestSetup.TEST_CLASS
    * class.
    */
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
-    super.setUp();
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
   }
 
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
-    super.tearDown();
     if (testObject != null && !testObject.isNew())
     {
       testObject.delete();
@@ -415,7 +371,7 @@ public class EnumerationTest extends TestCase
     voltronMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Voltron Lion Force");
     voltronMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    voltronMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    voltronMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     voltronMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     voltronMdBusiness.apply();
     voltronMdBusinessIF = voltronMdBusiness;
@@ -427,9 +383,9 @@ public class EnumerationTest extends TestCase
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Name");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, voltronMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, voltronMdBusiness.getOid());
     mdAttrChar.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(voltronClass.getType());
@@ -474,7 +430,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, voltronMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, voltronMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     voltronMdEnumerationIF = mdEnumeration;
@@ -486,35 +442,37 @@ public class EnumerationTest extends TestCase
    * 
    * @throws Exception
    */
+  @Request
+  @Test
   public void testGetStructEnumeration() throws Exception
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(testObject.getType());
     businessDAO.addStructItem("someStruct", SINGLE, californiaItemId);
-    String id = businessDAO.apply();
+    String oid = businessDAO.apply();
 
     try
     {
-      BusinessDAOIF entity = BusinessDAO.get(id);
+      BusinessDAOIF entity = BusinessDAO.get(oid);
       StructDAOIF structDAO = ( (AttributeStructIF) entity.getAttributeIF("someStruct") ).getStructDAO();
       AttributeEnumerationIF attrEnumIF = (AttributeEnumerationIF) structDAO.getAttributeIF(SINGLE);
 
       // Make sure the enumeration item can be dereferenced.
       BusinessDAOIF[] out = attrEnumIF.dereference();
-      assertEquals("Unable to dereference an enumeration item on an attribute that belongs to a struct.", 1, out.length);
-      assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getId());
+      Assert.assertEquals("Unable to dereference an enumeration item on an attribute that belongs to a struct.", 1, out.length);
+      Assert.assertEquals("Dereferenced the wront enumeration item on an attribute that belongs to a struct.", californiaItemId, out[0].getOid());
 
       Set<String> cachedList = attrEnumIF.getCachedEnumItemIdSet();
-      assertEquals("The size of the enumItem cache on an AttributeEnumeration is wrong.", 1, cachedList.size());
-      assertEquals("The enumItem cache on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, cachedList.iterator().next());
+      Assert.assertEquals("The size of the enumItem cache on an AttributeEnumeration is wrong.", 1, cachedList.size());
+      Assert.assertEquals("The enumItem cache on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, cachedList.iterator().next());
 
       String cacheColumnName = ( (MdAttributeEnumerationDAOIF) attrEnumIF.getMdAttribute() ).getCacheColumnName();
-      String databaseCachedStates = Database.getEnumCacheFieldInTable(mdStructIF.getTableName(), cacheColumnName, structDAO.getId());
+      String databaseCachedStates = Database.getEnumCacheFieldInTable(mdStructIF.getTableName(), cacheColumnName, structDAO.getOid());
 
-      assertEquals("The enumItem cache database column on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, databaseCachedStates);
+      Assert.assertEquals("The enumItem cache database column on an AttributeEnumeration references the wrong enumeration item.", californiaItemId, databaseCachedStates);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -525,6 +483,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests a single value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testSingle()
   {
     try
@@ -536,13 +496,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Sets and tests multiple values on an enumerated attribute
    */
+  @Request
+  @Test
   public void testAddMultiple()
   {
     try
@@ -556,13 +518,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the default value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testDefault()
   {
     try
@@ -573,13 +537,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testAdd()
   {
     try
@@ -591,13 +557,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplace()
   {
     try
@@ -614,7 +582,7 @@ public class EnumerationTest extends TestCase
 
       testObject.replaceItems(MULTIPLE, values);
 
-      assertTrue(testObject.getAttributeIF(MULTIPLE).isModified());
+      Assert.assertTrue(testObject.getAttributeIF(MULTIPLE).isModified());
 
       testObject.apply();
 
@@ -622,13 +590,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplaceNoChange()
   {
     try
@@ -644,7 +614,7 @@ public class EnumerationTest extends TestCase
 
       testObject.replaceItems(MULTIPLE, values);
 
-      assertFalse(testObject.getAttributeIF(MULTIPLE).isModified());
+      Assert.assertFalse(testObject.getAttributeIF(MULTIPLE).isModified());
 
       testObject.apply();
 
@@ -652,13 +622,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testReplaceSingle()
   {
     try
@@ -670,16 +642,16 @@ public class EnumerationTest extends TestCase
 
       Set<String> list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(connecticutItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
 
       Collection<String> values = new TreeSet<String>();
       values.add(coloradoItemId);
 
       testObject.replaceItems(SINGLE, values);
 
-      assertTrue(testObject.getAttributeIF(SINGLE).isModified());
+      Assert.assertTrue(testObject.getAttributeIF(SINGLE).isModified());
 
       testObject.apply();
 
@@ -687,19 +659,21 @@ public class EnumerationTest extends TestCase
 
       list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(coloradoItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testInvalidReplaceSingle()
   {
     try
@@ -711,9 +685,9 @@ public class EnumerationTest extends TestCase
 
       Set<String> list = attribute.getCachedEnumItemIdSet();
       if (list.size() != 1)
-        fail("Single-select Enumeration allowed multiple items.");
+        Assert.fail("Single-select Enumeration allowed multiple items.");
       if (!list.contains(connecticutItemId))
-        fail("Single-select Enumeration did not update item selection.");
+        Assert.fail("Single-select Enumeration did not update item selection.");
 
       Collection<String> values = new TreeSet<String>();
       values.add(coloradoItemId);
@@ -724,7 +698,7 @@ public class EnumerationTest extends TestCase
         testObject.replaceItems(SINGLE, values);
         testObject.apply();
 
-        fail("Able to replace a single select enumerated item with a multiple enumerated ids");
+        Assert.fail("Able to replace a single select enumerated item with a multiple enumerated ids");
       }
       catch (DataAccessException e)
       {
@@ -734,13 +708,15 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deletion of an item (with other items still remaining)
    */
+  @Request
+  @Test
   public void testDelete()
   {
     try
@@ -754,7 +730,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -762,6 +738,8 @@ public class EnumerationTest extends TestCase
    * Tests adding an enumeration to a class with existing instances. Make sure
    * this does not break anything.
    */
+  @Request
+  @Test
   public void testEnumAttrToClassWithInstances()
   {
     MdBusinessDAOIF testMdBusiness = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -779,12 +757,12 @@ public class EnumerationTest extends TestCase
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getId());
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusiness.getOid());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
       mdAttrEnum.apply();
 
-      testObject = BusinessDAO.get(testObject.getId()).getBusinessDAO();
+      testObject = BusinessDAO.get(testObject.getOid()).getBusinessDAO();
 
       testObject.addItem("someTestStateEnum", californiaItemId);
       testObject.apply();
@@ -800,7 +778,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -815,6 +793,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteDefault()
   {
     try
@@ -826,20 +806,22 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteRequired()
   {
     try
     {
       testObject.removeItem(SINGLE, coloradoItemId);
       testObject.apply();
-      fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
+      Assert.fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
     }
     catch (ProblemException e)
     {
@@ -851,7 +833,7 @@ public class EnumerationTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -859,6 +841,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests explicitly adding the default item to the enumeration
    */
+  @Request
+  @Test
   public void testAddDefault()
   {
     try
@@ -870,7 +854,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -878,6 +862,8 @@ public class EnumerationTest extends TestCase
    * Tests adding an item to a single-select enumeration, which changes the
    * selection to the added item.
    */
+  @Request
+  @Test
   public void testAddToSingle()
   {
     testObject.apply();
@@ -889,14 +875,16 @@ public class EnumerationTest extends TestCase
     AttributeEnumeration attribute = (AttributeEnumeration) testObject.getAttribute(SINGLE);
     Set<String> list = attribute.getCachedEnumItemIdSet();
     if (list.size() != 1)
-      fail("Single-select Enumeration allowed multiple items.");
+      Assert.fail("Single-select Enumeration allowed multiple items.");
     if (!list.contains(californiaItemId))
-      fail("Single-select Enumeration did not update item selection.");
+      Assert.fail("Single-select Enumeration did not update item selection.");
   }
 
   /**
    * Tests adding the same items repeatedly to the enumeration
    */
+  @Request
+  @Test
   public void testRepeatedAdd()
   {
     try
@@ -918,7 +906,7 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -926,6 +914,8 @@ public class EnumerationTest extends TestCase
    * Tests deleting the same item multiple times (thus deleting an item that
    * isn't present)
    */
+  @Request
+  @Test
   public void testRepeatedDelete()
   {
     try
@@ -945,42 +935,46 @@ public class EnumerationTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidDelete()
   {
     try
     {
       testObject.apply();
-      testObject.removeItem(MULTIPLE, "Not an ID");
+      testObject.removeItem(MULTIPLE, "Not an OID");
       testObject.apply();
 
       checkEnumState(coloradoItemId);
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidAdd()
   {
     try
     {
       testObject.apply();
-      testObject.addItem(MULTIPLE, "Not an ID");
+      testObject.addItem(MULTIPLE, "Not an OID");
       testObject.apply();
 
       checkEnumState(coloradoItemId);
-      fail("State accepted an invalid item.");
+      Assert.fail("State accepted an invalid item.");
     }
     catch (AttributeValueException e)
     {
@@ -994,48 +988,50 @@ public class EnumerationTest extends TestCase
    * enumeration. Checks to make sure STATE_ENUM is deleted correctly, then
    * return the class to a testable state.
    */
+  @Request
+  @Test
   public void testDeleteAttribute()
   {
     BusinessDAO testObjects[] = new BusinessDAO[4];
     String testIDs[] = new String[4];
-    List<String> setIds = new LinkedList<String>();
-    setIds.add(testObject.getAttribute(SINGLE).getValue());
-    setIds.add(testObject.getAttribute(MULTIPLE).getValue());
+    List<String> setOids = new LinkedList<String>();
+    setOids.add(testObject.getAttribute(SINGLE).getValue());
+    setOids.add(testObject.getAttribute(MULTIPLE).getValue());
 
     try
     {
       // Count the number of enumerated items in the test object
       int origEnumNum = 0;
 
-      for (String setId : setIds)
+      for (String setOid : setOids)
       {
-        Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setId).size();
+        Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setOid).size();
       }
 
       testObjects[0] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testIDs[0] = testObjects[0].apply();
-      setIds.add(testObjects[0].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[0].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[0].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[0].getAttribute(MULTIPLE).getValue());
 
       testObjects[1] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[1].addItem(MULTIPLE, californiaItemId);
       testIDs[1] = testObjects[1].apply();
-      setIds.add(testObjects[1].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[1].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[1].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[1].getAttribute(MULTIPLE).getValue());
 
       testObjects[2] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[2].removeItem(MULTIPLE, coloradoItemId);
       testObjects[2].addItem(MULTIPLE, connecticutItemId);
       testIDs[2] = testObjects[2].apply();
-      setIds.add(testObjects[2].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[2].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[2].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[2].getAttribute(MULTIPLE).getValue());
 
       testObjects[3] = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
       testObjects[3].addItem(MULTIPLE, californiaItemId);
       testObjects[3].addItem(MULTIPLE, connecticutItemId);
       testIDs[3] = testObjects[3].apply();
-      setIds.add(testObjects[3].getAttribute(SINGLE).getValue());
-      setIds.add(testObjects[3].getAttribute(MULTIPLE).getValue());
+      setOids.add(testObjects[3].getAttribute(SINGLE).getValue());
+      setOids.add(testObjects[3].getAttribute(MULTIPLE).getValue());
 
       testObject = testObjects[0];
       checkEnumState(coloradoItemId);
@@ -1050,34 +1046,34 @@ public class EnumerationTest extends TestCase
 
       List<String> db = BusinessDAO.getEntityIdsFromDB(mdBusinessIF);
       if (db.size() != 4)
-        fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
+        Assert.fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
 
       BusinessDAO.get(multiAttrMdID).getBusinessDAO().delete();
 
       db = EntityDAO.getEntityIdsDB(mdBusinessIF.definesType());
       if (db.size() != 4)
-        fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
+        Assert.fail("Expected 4 entres in the " + mdBusinessIF.getTableName() + " table, found " + db.size());
 
       List<String> fields = Database.getColumnNames(mdBusinessIF.getTableName());
       if (fields.contains(MULTIPLE))
-        fail("Table ENUM_STATE was not deleted");
+        Assert.fail("Table ENUM_STATE was not deleted");
 
       // Count the number of rows in the stateMdEnumerationIF table
       int count = 0;
 
-      for (String setId : setIds)
+      for (String setOid : setOids)
       {
-        count += Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setId).size();
+        count += Database.getEnumItemIds(stateMdEnumerationIF.getTableName(), setOid).size();
       }
 
       // We expect 4 entries in the link table - 1 for each object's instance of
       // the multi-select enum
       if (count != origEnumNum + testObjects.length)
-        fail(stateMdEnumerationIF.getTableName() + " table still contains entries for deleted attribute");
+        Assert.fail(stateMdEnumerationIF.getTableName() + " table still contains entries for deleted attribute");
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1094,8 +1090,8 @@ public class EnumerationTest extends TestCase
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusinessIF.getId());
-        mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+        mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusinessIF.getOid());
+        mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
         mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
         multiAttrMdID = mdAttrEnum.apply();
       }
@@ -1117,6 +1113,8 @@ public class EnumerationTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeEnmeration()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1126,10 +1124,10 @@ public class EnumerationTest extends TestCase
     mdAttrEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attriubte Enumeration");
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.addItem(MdAttributeEnumerationInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrEnum.addItem(MdAttributeEnumerationInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
 
     try
@@ -1143,13 +1141,15 @@ public class EnumerationTest extends TestCase
     }
 
     mdAttrEnum.delete();
-    fail("An enumeration attribute was defined to be unique.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
+    Assert.fail("An enumeration attribute was defined to be unique.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
   }
 
   /**
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeGroupEnumeration()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1160,13 +1160,13 @@ public class EnumerationTest extends TestCase
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1175,7 +1175,7 @@ public class EnumerationTest extends TestCase
     {
       // add the unique group index
       mdIndex.addAttribute(mdAttrEnum, 0);
-      fail("An enumeration attribute was defined to be part of a unique attribute group.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
+      Assert.fail("An enumeration attribute was defined to be part of a unique attribute group.  Enumeraiton attributes cannot participate in a uniqueness constraint.");
     }
     catch (AttributeInvalidUniquenessConstraintException e)
     {
@@ -1192,6 +1192,8 @@ public class EnumerationTest extends TestCase
    * Make sure that enumerations only use a subclass of
    * Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS to define the master item list.
    */
+  @Request
+  @Test
   public void testEnumerationUsesValidClass()
   {
     MdBusinessDAOIF mdBusinessTestIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1205,7 +1207,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessTestIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessTestIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -1219,13 +1221,15 @@ public class EnumerationTest extends TestCase
     }
     // should this test fail, delete this object
     mdEnumeration.delete();
-    fail("An enumeration was defined that did not use a class that is a subclass of " + EnumerationMasterInfo.CLASS + ".");
+    Assert.fail("An enumeration was defined that did not use a class that is a subclass of " + EnumerationMasterInfo.CLASS + ".");
   }
 
   /**
    * Make sure that enumerations only use a subclass of
    * Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS to define the master item list.
    */
+  @Request
+  @Test
   public void testNoDuplicateEnumerationTypeName()
   {
     TypeInfo classInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TEST_ENUMERATION_DEF");
@@ -1239,7 +1243,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     mdEnumeration.apply();
@@ -1251,7 +1255,7 @@ public class EnumerationTest extends TestCase
     mdEnumeration2.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Definition");
     mdEnumeration2.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration2.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getId());
+    mdEnumeration2.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessIF.getOid());
     mdEnumeration2.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -1274,12 +1278,14 @@ public class EnumerationTest extends TestCase
       }
     }
 
-    fail("An enumeration was defined that did not use a class that is a subclass of [" + EnumerationMasterInfo.CLASS + "].");
+    Assert.fail("An enumeration was defined that did not use a class that is a subclass of [" + EnumerationMasterInfo.CLASS + "].");
   }
 
   /**
    * Tests to make sure that any Enumeration master list cannot be extended.
    */
+  @Request
+  @Test
   public void testEnumerationExtendable()
   {
     MdBusinessDAO mdBusiness1 = null;
@@ -1297,11 +1303,11 @@ public class EnumerationTest extends TestCase
       mdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
-      fail("An enumerated type was (incorrectly) marked as extendable.");
+      Assert.fail("An enumerated type was (incorrectly) marked as extendable.");
     }
     catch (InheritanceException e)
     {
@@ -1319,6 +1325,8 @@ public class EnumerationTest extends TestCase
   /**
    * Tests to make sure that any Enumeration master list cannot be extended.
    */
+  @Request
+  @Test
   public void testEnumerationExtended()
   {
     MdBusinessDAO mdBusiness1 = null;
@@ -1337,7 +1345,7 @@ public class EnumerationTest extends TestCase
       mdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
       mdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+      mdBusiness1.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
       mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness1.apply();
 
@@ -1350,11 +1358,11 @@ public class EnumerationTest extends TestCase
       mdBusiness2.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test enum extending master list");
       mdBusiness2.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getId());
+      mdBusiness2.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness1.getOid());
       mdBusiness2.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness2.apply();
 
-      fail("An enumerated type was (incorrectly) able to extend an enumerated masterlist");
+      Assert.fail("An enumerated type was (incorrectly) able to extend an enumerated masterlist");
     }
     catch (InheritanceException e)
     {
@@ -1377,6 +1385,8 @@ public class EnumerationTest extends TestCase
    * Tests to make sure that any MdEnumerations are deleted whenever their
    * master lists are deleted.
    */
+  @Request
+  @Test
   public void testDeleteMdEnumerationFromDeleteMasterList()
   {
     createVoltronMasterList();
@@ -1386,7 +1396,7 @@ public class EnumerationTest extends TestCase
 
     if (MdTypeDAO.isDefined(voltronMdEnumeration.getType()))
     {
-      fail("Deleting the enumeration master list class failed to delete an MdEnumeration that uses it.");
+      Assert.fail("Deleting the enumeration master list class failed to delete an MdEnumeration that uses it.");
     }
 
   }
@@ -1395,6 +1405,8 @@ public class EnumerationTest extends TestCase
    * Tests to make sure that any MdAttributeEnumerations are deleted whenever
    * its MdEnumeration is deleted.
    */
+  @Request
+  @Test
   public void testDeleteMdAttributeEnumerationFromDeleteMdEnumeration()
   {
     createVoltronMasterList();
@@ -1409,8 +1421,8 @@ public class EnumerationTest extends TestCase
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "");
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, voltronMdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, voltronMdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     String mdAttrEnumID = mdAttrEnum.apply();
 
@@ -1444,7 +1456,7 @@ public class EnumerationTest extends TestCase
   }
 
   /**
-   * Gets a new instance of the testObject and checks for the number and id of
+   * Gets a new instance of the testObject and checks for the number and oid of
    * each state passed in (varibale number of arguments).
    * 
    * @param states
@@ -1452,27 +1464,27 @@ public class EnumerationTest extends TestCase
    */
   private void checkNewInstance(String field, MdAttributeEnumerationDAO mdAttrEnum, String... states)
   {
-    BusinessDAOIF check = BusinessDAO.get(testObject.getId());
+    BusinessDAOIF check = BusinessDAO.get(testObject.getOid());
     AttributeEnumerationIF enumr = (AttributeEnumerationIF) check.getAttributeIF(field);
     Set<String> l = enumr.getCachedEnumItemIdSet();
 
     if (l.size() != states.length)
     {
-      fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
+      Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
     }
 
     for (String state : states)
     {
       if (!l.contains(state))
       {
-        fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
+        Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
       }
     }
 
     MdBusinessDAOIF mdBusinessIF = check.getMdBusinessDAO();
     String tableName = mdBusinessIF.getTableName();
     String cachedColumnName = mdAttrEnum.getCacheColumnName();
-    String databaseCachedStates = Database.getEnumCacheFieldInTable(tableName, cachedColumnName, testObject.getId());
+    String databaseCachedStates = Database.getEnumCacheFieldInTable(tableName, cachedColumnName, testObject.getOid());
 
     String[] databaseCachedStateArray = null;
 
@@ -1487,13 +1499,13 @@ public class EnumerationTest extends TestCase
 
     if (databaseCachedStateArray.length != states.length)
     {
-      fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in cached database column for " + field + ", found " + databaseCachedStateArray.length);
+      Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in cached database column for " + field + ", found " + databaseCachedStateArray.length);
     }
 
   }
 
   /**
-   * Checks for the number and id of each state passed in (varibale number of
+   * Checks for the number and oid of each state passed in (varibale number of
    * arguments) directly against the database.
    * 
    * 
@@ -1509,14 +1521,14 @@ public class EnumerationTest extends TestCase
     Set<String> dbEnumItemIDs = Database.getEnumItemIds(tableName, testObject.getAttribute(field).getValue());
     if (dbEnumItemIDs.size() != states.length)
     {
-      fail(tableName + " table in an unexpected state.  Expected " + states.length + " rows, found " + dbEnumItemIDs.size());
+      Assert.fail(tableName + " table in an unexpected state.  Expected " + states.length + " rows, found " + dbEnumItemIDs.size());
     }
 
     for (String state : states)
     {
       if (!dbEnumItemIDs.contains(state))
       {
-        fail(tableName + " table in an unexpected state.  Did not find an expected value in the set.");
+        Assert.fail(tableName + " table in an unexpected state.  Did not find an expected value in the set.");
       }
     }
   }

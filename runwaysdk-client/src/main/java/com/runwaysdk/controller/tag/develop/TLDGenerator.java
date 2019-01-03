@@ -23,37 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import com.runwaysdk.controller.tag.AttributeColumnTagSupport;
-import com.runwaysdk.controller.tag.BooleanTagSupport;
-import com.runwaysdk.controller.tag.ColumnsTagSupport;
-import com.runwaysdk.controller.tag.CommandLinkTagSupport;
-import com.runwaysdk.controller.tag.CommandTagSupport;
-import com.runwaysdk.controller.tag.ComponentTagSupport;
-import com.runwaysdk.controller.tag.ComponentsTagSupport;
-import com.runwaysdk.controller.tag.ContextTagSupport;
-import com.runwaysdk.controller.tag.DTTagSupport;
-import com.runwaysdk.controller.tag.FieldPropertyTagSupport;
-import com.runwaysdk.controller.tag.FooterTagSupport;
-import com.runwaysdk.controller.tag.FormTagSupport;
-import com.runwaysdk.controller.tag.FreeColumnTagSupport;
-import com.runwaysdk.controller.tag.FunctionSupport;
-import com.runwaysdk.controller.tag.GroupOptionTagSupport;
-import com.runwaysdk.controller.tag.GroupTagSupport;
-import com.runwaysdk.controller.tag.HeaderTagSupport;
-import com.runwaysdk.controller.tag.InputTagSupport;
-import com.runwaysdk.controller.tag.MessageTagSupport;
-import com.runwaysdk.controller.tag.MessagesTagSupport;
-import com.runwaysdk.controller.tag.OptionTagSupport;
-import com.runwaysdk.controller.tag.PageTagSupport;
-import com.runwaysdk.controller.tag.PaginationTagSupport;
-import com.runwaysdk.controller.tag.PropertyTagSupport;
-import com.runwaysdk.controller.tag.RowTagSupport;
-import com.runwaysdk.controller.tag.SelectTagSupport;
-import com.runwaysdk.controller.tag.StandardTagSupport;
-import com.runwaysdk.controller.tag.StructColumnTagSupport;
-import com.runwaysdk.controller.tag.StructTagSupport;
-import com.runwaysdk.controller.tag.TableTagSupport;
-import com.runwaysdk.controller.tag.TextAreaTagSupport;
 import com.runwaysdk.dataaccess.io.FileMarkupWriter;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
@@ -189,23 +158,23 @@ public class TLDGenerator
 
   public static void main(String[] args)
   {
-    try
-    {
-      // Generate runway form tags
-      new TLDGenerator(new File(args[0]), new Class<?>[] { SelectTagSupport.class,
-          CommandTagSupport.class, ComponentTagSupport.class, FormTagSupport.class,
-          InputTagSupport.class, TextAreaTagSupport.class, BooleanTagSupport.class, OptionTagSupport.class,
-          StandardTagSupport.class, GroupTagSupport.class, GroupOptionTagSupport.class, MessagesTagSupport.class,
-          MessageTagSupport.class, ComponentsTagSupport.class, StructTagSupport.class,
-          PropertyTagSupport.class, CommandLinkTagSupport.class, FunctionSupport.class,
-          TableTagSupport.class, ColumnsTagSupport.class, AttributeColumnTagSupport.class,
-          FreeColumnTagSupport.class, StructColumnTagSupport.class, HeaderTagSupport.class, RowTagSupport.class,
-          FooterTagSupport.class, ContextTagSupport.class, DTTagSupport.class,
-          PaginationTagSupport.class, PageTagSupport.class, FieldPropertyTagSupport.class}, "Runway").generate();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+//    try
+//    {
+//      // Generate runway form tags
+//      new TLDGenerator(new File(args[0]), new Class<?>[] { SelectTagSupport.class,
+//          CommandTagSupport.class, ComponentTagSupport.class, FormTagSupport.class,
+//          InputTagSupport.class, TextAreaTagSupport.class, BooleanTagSupport.class, OptionTagSupport.class,
+//          StandardTagSupport.class, GroupTagSupport.class, GroupOptionTagSupport.class, MessagesTagSupport.class,
+//          MessageTagSupport.class, ComponentsTagSupport.class, StructTagSupport.class,
+//          PropertyTagSupport.class, CommandLinkTagSupport.class, FunctionSupport.class,
+//          TableTagSupport.class, ColumnsTagSupport.class, AttributeColumnTagSupport.class,
+//          FreeColumnTagSupport.class, StructColumnTagSupport.class, HeaderTagSupport.class, RowTagSupport.class,
+//          FooterTagSupport.class, ContextTagSupport.class, DTTagSupport.class,
+//          PaginationTagSupport.class, PageTagSupport.class, FieldPropertyTagSupport.class}, "Runway").generate();
+//    }
+//    catch (IOException e)
+//    {
+//      e.printStackTrace();
+//    }
   }
 }

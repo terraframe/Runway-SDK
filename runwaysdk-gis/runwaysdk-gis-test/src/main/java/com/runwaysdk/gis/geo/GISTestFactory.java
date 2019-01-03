@@ -45,7 +45,7 @@ public class GISTestFactory
     Universal uni = new Universal();
     uni.getDisplayLabel().setValue(name);
 
-    return Universal.create(uni, allowedInParents[0].getUniversal().getId(), AllowedIn.CLASS);
+    return Universal.create(uni, allowedInParents[0].getUniversal().getOid(), AllowedIn.CLASS);
   }
 
   public static UniversalInput convertToInput(UniversalView view)
@@ -101,12 +101,12 @@ public class GISTestFactory
 
     return universal;
   }
-  
+
   public static Universal createAndApplyUniversal(String name, Universal parent)
   {
     Universal universal = GISTestFactory.createUniversal(name);
     universal.apply();
-    
+
     universal.addLink(parent, AllowedIn.CLASS);
 
     return universal;
@@ -121,7 +121,8 @@ public class GISTestFactory
     {
       try
       {
-        Universal.getByKey(name).delete();;
+        Universal.getByKey(name).delete();
+        ;
       }
       catch (DataNotFoundException e)
       {
@@ -150,13 +151,13 @@ public class GISTestFactory
 
     return entity;
   }
-  
+
   public static GeoEntity createAndApplyGeoEntity(String geoId, Universal universal, GeoEntity parent)
   {
     GeoEntity retGeo = createAndApplyGeoEntity(geoId, universal);
-    
+
     retGeo.addLink(parent, LocatedIn.CLASS);
-    
+
     return retGeo;
   }
 

@@ -27,9 +27,9 @@ public interface MdInformationInfo extends MdMessageInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdInformation";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "NM20080815000000000000000000000100000000000000000000000000000001";
+  public static final String ID_VALUE  = "aa032787-7543-3f43-9e09-1717a100003a";
 
   /**
    * Super defining class

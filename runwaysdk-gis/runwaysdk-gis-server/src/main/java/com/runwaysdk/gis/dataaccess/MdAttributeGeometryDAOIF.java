@@ -28,8 +28,8 @@ public interface MdAttributeGeometryDAOIF extends MdAttributeConcreteDAOIF
   public static final String TABLE   = "md_attribute_geometry";
   
   /**
-   * Returns the projection ID used for this geometry attribute;
-   * @return projection ID used for this geometry attribute;
+   * Returns the projection OID used for this geometry attribute;
+   * @return projection OID used for this geometry attribute;
    */
   public int getSRID();
   

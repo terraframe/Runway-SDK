@@ -75,7 +75,7 @@ public abstract class DateConditionBase extends com.runwaysdk.system.metadata.Fi
     }
     else
     {
-      setValue(DEFININGMDFIELD, value.getId());
+      setValue(DEFININGMDFIELD, value.getOid());
     }
   }
   
@@ -89,7 +89,7 @@ public abstract class DateConditionBase extends com.runwaysdk.system.metadata.Fi
   {
     if(value != null)
     {
-      addEnumItem(OPERATION, value.getId());
+      addEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -97,7 +97,7 @@ public abstract class DateConditionBase extends com.runwaysdk.system.metadata.Fi
   {
     if(value != null)
     {
-      removeEnumItem(OPERATION, value.getId());
+      removeEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -150,9 +150,9 @@ public abstract class DateConditionBase extends com.runwaysdk.system.metadata.Fi
     return CLASS;
   }
   
-  public static DateCondition get(String id)
+  public static DateCondition get(String oid)
   {
-    return (DateCondition) com.runwaysdk.business.Business.get(id);
+    return (DateCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static DateCondition getByKey(String key)
@@ -160,17 +160,17 @@ public abstract class DateConditionBase extends com.runwaysdk.system.metadata.Fi
     return (DateCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static DateCondition lock(java.lang.String id)
+  public static DateCondition lock(java.lang.String oid)
   {
-    DateCondition _instance = DateCondition.get(id);
+    DateCondition _instance = DateCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static DateCondition unlock(java.lang.String id)
+  public static DateCondition unlock(java.lang.String oid)
   {
-    DateCondition _instance = DateCondition.get(id);
+    DateCondition _instance = DateCondition.get(oid);
     _instance.unlock();
     
     return _instance;

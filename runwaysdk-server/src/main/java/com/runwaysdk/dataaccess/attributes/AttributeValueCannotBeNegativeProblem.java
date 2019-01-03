@@ -35,7 +35,7 @@ public class AttributeValueCannotBeNegativeProblem extends AttributeValueProblem
    * Constructs a new EmptyValueException with the specified developer message.
    * 
    * @param componentId
-   *          id of the containing component.
+   *          oid of the containing component.
    * @param mdClassIF
    *          defines the type of the containing component.
    * @param mdAttributeIF

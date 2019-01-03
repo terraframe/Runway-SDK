@@ -22,14 +22,14 @@ public class HasThematicRule extends HasThematicRuleBase
 {
   private static final long serialVersionUID = -210217135;
   
-  public HasThematicRule(String parentId, String childId)
+  public HasThematicRule(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public HasThematicRule(com.runwaysdk.system.gis.mapping.ThematicAttribute parent, com.runwaysdk.system.gis.mapping.ThematicRule child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

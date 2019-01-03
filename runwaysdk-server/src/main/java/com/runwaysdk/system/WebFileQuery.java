@@ -170,21 +170,21 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.WebFile.FILEPATH, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.WebFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.WebFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.WebFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.WebFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -422,9 +422,9 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getFilePath();
     public com.runwaysdk.query.SelectableChar getFilePath(String alias);
     public com.runwaysdk.query.SelectableChar getFilePath(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -475,13 +475,13 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.WebFile webFile)
     {
       if(webFile == null) return this.EQ((java.lang.String)null);
-      return this.EQ(webFile.getId());
+      return this.EQ(webFile.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.WebFile webFile)
     {
       if(webFile == null) return this.NE((java.lang.String)null);
-      return this.NE(webFile.getId());
+      return this.NE(webFile.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -586,21 +586,21 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.FILEPATH, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.WebFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.WebFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -797,9 +797,9 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getFilePath();
     public com.runwaysdk.query.SelectableChar getFilePath(String alias);
     public com.runwaysdk.query.SelectableChar getFilePath(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -855,7 +855,7 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<webFile.length; i++)
       {
-        itemIdArray[i] = webFile[i].getId();
+        itemIdArray[i] = webFile[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -867,7 +867,7 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<webFile.length; i++)
       {
-        itemIdArray[i] = webFile[i].getId();
+        itemIdArray[i] = webFile[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -879,7 +879,7 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<webFile.length; i++)
       {
-        itemIdArray[i] = webFile[i].getId();
+        itemIdArray[i] = webFile[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -891,7 +891,7 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<webFile.length; i++)
       {
-        itemIdArray[i] = webFile[i].getId();
+        itemIdArray[i] = webFile[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -903,7 +903,7 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<webFile.length; i++)
       {
-        itemIdArray[i] = webFile[i].getId();
+        itemIdArray[i] = webFile[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1010,21 +1010,21 @@ public  class WebFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.FILEPATH, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.WebFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.WebFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.WebFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

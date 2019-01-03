@@ -18,13 +18,10 @@
  */
 package com.runwaysdk.business.ontology;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
@@ -46,58 +43,30 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.RelationshipDefinitionException;
+import com.runwaysdk.session.Request;
 
-public class MdTermRelationshipTest extends TestCase
+public class MdTermRelationshipTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdTermRelationshipTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * Set the testObject to a new Instance of the TEST type.
    */
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
   }
 
   /**
    * If testObject was applied, it is removed from the database.
-   * 
-   * @see TestCase#tearDown()
    */
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
   }
 
+  @Request
+  @Test
   public void testCreateAndGetMdTermRelationship()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -107,8 +76,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -118,17 +86,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.setGenerateMdController(false);
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -153,10 +119,11 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidParentType()
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
-    parentMdBusiness.setGenerateMdController(false);
     parentMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.apply();
 
@@ -169,8 +136,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setGenerateMdController(false);
+      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
@@ -180,16 +146,15 @@ public class MdTermRelationshipTest extends TestCase
         mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
         mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
         mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-        mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, parentMdBusiness.getId());
+        mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, parentMdBusiness.getOid());
         mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
         mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-        mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+        mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
         mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
         mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
         mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-        mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-        mdTermRelationship.setGenerateMdController(false);
+        mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
         mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
@@ -212,10 +177,11 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidChildType()
   {
     MdBusinessDAO childMdBusiness = TestFixtureFactory.createMdBusiness1();
-    childMdBusiness.setGenerateMdController(false);
     childMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.apply();
 
@@ -228,8 +194,7 @@ public class MdTermRelationshipTest extends TestCase
       mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
       mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setGenerateMdController(false);
+      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTerm.apply();
 
@@ -239,16 +204,15 @@ public class MdTermRelationshipTest extends TestCase
         mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
         mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
         mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-        mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+        mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
         mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
         mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-        mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, childMdBusiness.getId());
+        mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, childMdBusiness.getOid());
         mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
         mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
         mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
         mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-        mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-        mdTermRelationship.setGenerateMdController(false);
+        mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
         mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
         mdTermRelationship.apply();
 
@@ -271,6 +235,8 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -280,8 +246,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -291,16 +256,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -314,14 +278,14 @@ public class MdTermRelationshipTest extends TestCase
         child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
-        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType());
         relationship.apply();
 
-        RelationshipDAOIF result = RelationshipDAO.get(relationship.getId());
+        RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getId(), result.getParentId());
-        Assert.assertNotNull(child.getId(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {
@@ -334,6 +298,8 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testTreeAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -343,8 +309,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -354,16 +319,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -377,14 +341,14 @@ public class MdTermRelationshipTest extends TestCase
         child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
-        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType());
         relationship.apply();
 
-        RelationshipDAOIF result = RelationshipDAO.get(relationship.getId());
+        RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getId(), result.getParentId());
-        Assert.assertNotNull(child.getId(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {
@@ -397,6 +361,8 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGraphAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -406,8 +372,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -417,16 +382,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -440,14 +404,14 @@ public class MdTermRelationshipTest extends TestCase
         child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
-        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType());
         relationship.apply();
 
-        RelationshipDAOIF result = RelationshipDAO.get(relationship.getId());
+        RelationshipDAOIF result = RelationshipDAO.get(relationship.getOid());
 
         Assert.assertNotNull(result);
-        Assert.assertNotNull(parent.getId(), result.getParentId());
-        Assert.assertNotNull(child.getId(), result.getChildId());
+        Assert.assertNotNull(parent.getOid(), result.getParentOid());
+        Assert.assertNotNull(child.getOid(), result.getChildOid());
       }
       finally
       {
@@ -460,6 +424,8 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailGraphAssociationValidation()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -469,8 +435,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -480,16 +445,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -503,12 +467,12 @@ public class MdTermRelationshipTest extends TestCase
         child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
-        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType());
         relationship.apply();
 
         try
         {
-          RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType()).apply();
+          RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType()).apply();
 
           Assert.fail("Able to create a MdTermRelationship with an association type of Graph where the parent and child exist multiple times");
         }
@@ -528,6 +492,8 @@ public class MdTermRelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailTreeAssociationValidation()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
@@ -537,8 +503,7 @@ public class MdTermRelationshipTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -548,17 +513,15 @@ public class MdTermRelationshipTest extends TestCase
       mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
       mdTermRelationship.setValue(MdTreeInfo.PACKAGE, "com.test");
       mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
-      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
-      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+      mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
       mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
       mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
       mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
-      mdTermRelationship.setGenerateMdController(false);
-      mdTermRelationship.setGenerateMdController(false);
+      mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getOid());
       mdTermRelationship.setValue(MdTermRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdTermRelationship.apply();
 
@@ -572,12 +535,12 @@ public class MdTermRelationshipTest extends TestCase
         child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
-        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+        RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), mdTermRelationship.definesType());
         relationship.apply();
 
         try
         {
-          RelationshipDAO.newInstance(child.getId(), parent.getId(), mdTermRelationship.definesType()).apply();
+          RelationshipDAO.newInstance(child.getOid(), parent.getOid(), mdTermRelationship.definesType()).apply();
 
           Assert.fail("Able to create a MdTermRelationship with an association type of Graph where the parent and child exist multiple times");
         }

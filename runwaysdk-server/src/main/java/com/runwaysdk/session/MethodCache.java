@@ -74,7 +74,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      MethodSession methodSession = cache.get(mdMethodIF.getId());
+      MethodSession methodSession = cache.get(mdMethodIF.getOid());
     
       if (methodSession == null)
       {
@@ -110,7 +110,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      String key = mdMethodIF.getId();
+      String key = mdMethodIF.getOid();
 
       //If the cache does not contain the permissions for the 
       //MdMethod then load the permissions.
@@ -162,18 +162,6 @@ public class MethodCache
     }
     
     return methodSession.checkAccess(operation, component);
-  }
-  
-  protected boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation o, String stateId)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkAccess(o, stateId);
   }
   
   /**
@@ -298,18 +286,6 @@ public class MethodCache
   }
 
   
-  protected boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkAttributeAccess(operation, stateId, mdAttribute);
-  }
-  
   protected boolean checkAttributeTypeAccess(MdMethodDAOIF mdMethod, Operation operation, MdAttributeDAOIF mdAttribute)
   {
     MethodSession methodSession = getMethod(mdMethod);
@@ -369,32 +345,6 @@ public class MethodCache
   }
 
   /**
-   * Check if a MdMethod of a given session has promote access on a transition
-   * 
-   * @pre o == Operation.PROMOTE
-   * 
-   * @param mdMethod
-   *            The MdMethodIF to check
-   * @param entity
-   *            The entity object ot check acces on
-   * @param transitionName
-   *            The name of the transition to check promotion on
-   * @return If a MdMethod has the permission to execute the given
-   *         operation on the given transition
-   */
-  protected boolean checkPromoteAccess(MdMethodDAOIF mdMethod, Business business, String transitionName)
-  {
-    MethodSession methodSession = getMethod(mdMethod);
-    
-    if(methodSession == null)
-    {
-      return false;
-    }
-    
-    return methodSession.checkPromoteAccess(business, transitionName);
-  }
-
-  /**
    * Removes the permissions of a MdMethod from the cache
    * 
    * @param MdMethodDAOIF
@@ -405,7 +355,7 @@ public class MethodCache
     methodCacheLock.lock();
     try
     {
-      String key = mdMethod.getId();
+      String key = mdMethod.getOid();
       if(cache.containsKey(key))
       {
         MethodSession method = cache.get(key);
@@ -453,7 +403,7 @@ public class MethodCache
     
     try
     {
-      return cache.containsKey(mdMethod.getId());
+      return cache.containsKey(mdMethod.getOid());
     }
     finally
     {

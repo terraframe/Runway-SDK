@@ -41,9 +41,9 @@ public abstract class MdWebIntegerBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static MdWebInteger get(String id)
+  public static MdWebInteger get(String oid)
   {
-    return (MdWebInteger) com.runwaysdk.business.Business.get(id);
+    return (MdWebInteger) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebInteger getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebIntegerBase extends com.runwaysdk.system.metadata.MdW
     return (MdWebInteger) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebInteger lock(java.lang.String id)
+  public static MdWebInteger lock(java.lang.String oid)
   {
-    MdWebInteger _instance = MdWebInteger.get(id);
+    MdWebInteger _instance = MdWebInteger.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebInteger unlock(java.lang.String id)
+  public static MdWebInteger unlock(java.lang.String oid)
   {
-    MdWebInteger _instance = MdWebInteger.get(id);
+    MdWebInteger _instance = MdWebInteger.get(oid);
     _instance.unlock();
     
     return _instance;

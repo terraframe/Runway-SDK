@@ -34,11 +34,11 @@ public interface Mutable extends ComponentIF
   public void customReadCheck();
 
   /**
-   * Returns the Universally Unique ID (UUID) for this entity.
+   * Returns the Universally Unique OID (UUID) for this entity.
    * 
    * @return <b>this</b> entity's UUID
    */
-  public String getId();
+  public String getOid();
 
   /**
    * Returns true if the object has an attribute with the given name, false

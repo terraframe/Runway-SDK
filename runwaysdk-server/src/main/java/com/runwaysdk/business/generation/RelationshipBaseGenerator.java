@@ -56,9 +56,9 @@ public class RelationshipBaseGenerator extends ElementBaseGenerator
 
     String subClassName = this.getSubClassName();
 
-    getWriter().writeLine("public static " + subClassName + " get(String id)");
+    getWriter().writeLine("public static " + subClassName + " get(String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + subClassName + ") " + RelationshipInfo.CLASS + ".get(id);");
+    getWriter().writeLine("return (" + subClassName + ") " + RelationshipInfo.CLASS + ".get(oid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
@@ -98,9 +98,9 @@ public class RelationshipBaseGenerator extends ElementBaseGenerator
   {
     String baseTypeName = this.getBaseClassName();
 
-    getWriter().writeLine("public " + baseTypeName + "(String parentId, String childId)");
+    getWriter().writeLine("public " + baseTypeName + "(String parentOid, String childOid)");
     getWriter().openBracket();
-    getWriter().writeLine("super(parentId, childId);");
+    getWriter().writeLine("super(parentOid, childOid);");
     addStructInitializers();
     getWriter().closeBracket();
     getWriter().writeLine("");

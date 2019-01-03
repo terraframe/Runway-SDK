@@ -32,7 +32,6 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implements StubMarker
 {
@@ -178,11 +177,6 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
     }
 
     getWriter().writeLine(prefix + " " + getFileName() + " extends " + baseName);
-
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
 
     getWriter().openBracket();
   }

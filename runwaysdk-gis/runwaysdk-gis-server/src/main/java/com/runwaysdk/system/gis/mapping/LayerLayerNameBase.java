@@ -30,7 +30,7 @@ public abstract class LayerLayerNameBase extends com.runwaysdk.business.LocalStr
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.LayerLayerName";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -811256529;
@@ -45,9 +45,9 @@ public abstract class LayerLayerNameBase extends com.runwaysdk.business.LocalStr
     super(component, structName);
   }
   
-  public static LayerLayerName get(String id)
+  public static LayerLayerName get(String oid)
   {
-    return (LayerLayerName) com.runwaysdk.business.Struct.get(id);
+    return (LayerLayerName) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static LayerLayerName getByKey(String key)
@@ -55,20 +55,20 @@ public abstract class LayerLayerNameBase extends com.runwaysdk.business.LocalStr
     return (LayerLayerName) com.runwaysdk.business.Struct.get(CLASS, key);
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.LayerLayerName.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()

@@ -158,7 +158,7 @@ public class SchedulerManager
 
         if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
         {
-          schedule(job, ExecutableJob.JOB_ID_PREPEND + job.getId(), job.getCronExpression());
+          schedule(job, ExecutableJob.JOB_ID_PREPEND + job.getOid(), job.getCronExpression());
         }
       }
     }
@@ -182,7 +182,7 @@ public class SchedulerManager
     JobHistoryRecordQuery jhrq = new JobHistoryRecordQuery(qf);
 
     jhq.WHERE(jhq.getStatus().containsExactly(AllJobStatus.RUNNING));
-    ejq.WHERE(ejq.getId().EQ(jhrq.parentId()));
+    ejq.WHERE(ejq.getOid().EQ(jhrq.parentOid()));
     jhrq.WHERE(jhrq.hasChild(jhq));
 
     OIterator<? extends JobHistoryRecord> it = jhrq.getIterator();
@@ -202,15 +202,15 @@ public class SchedulerManager
     return records;
   }
 
-  public synchronized static void schedule(ExecutableJob job, String id, String... expressions)
+  public synchronized static void schedule(ExecutableJob job, String oid, String... expressions)
   {
     try
     {
-      JobDetail detail = getJobDetail(job, id);
+      JobDetail detail = getJobDetail(job, oid);
 
       if (expressions.length > 0)
       {
-        SchedulerManager.removeTriggers(id);
+        SchedulerManager.removeTriggers(oid);
 
         // specify the running period of the job
         for (String expression : expressions)
@@ -238,9 +238,9 @@ public class SchedulerManager
    * @param job
    * @throws SchedulerException
    */
-  public static void removeTriggers(String id) throws SchedulerException
+  public static void removeTriggers(String oid) throws SchedulerException
   {
-    JobKey key = JobKey.jobKey(id);
+    JobKey key = JobKey.jobKey(oid);
 
     // Remove any existing triggers
     List<? extends Trigger> triggers = scheduler().getTriggersOfJob(key);
@@ -268,11 +268,11 @@ public class SchedulerManager
     }
   }
 
-  public synchronized static void remove(ExecutableJob job, String id)
+  public synchronized static void remove(ExecutableJob job, String oid)
   {
     try
     {
-      JobKey key = JobKey.jobKey(id);
+      JobKey key = JobKey.jobKey(oid);
 
       if (scheduler().checkExists(key))
       {
@@ -306,16 +306,16 @@ public class SchedulerManager
    * @param job
    * @throws SchedulerException
    */
-  private synchronized static JobDetail getJobDetail(ExecutableJob job, String id) throws SchedulerException
+  private synchronized static JobDetail getJobDetail(ExecutableJob job, String oid) throws SchedulerException
   {
-    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(id));
+    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(oid));
 
     if (detail == null)
     {
-      detail = JobBuilder.newJob(job.getClass()).withIdentity(id).build();
+      detail = JobBuilder.newJob(job.getClass()).withIdentity(oid).build();
 
       // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(JobHistoryRecord.ID, id);
+      detail.getJobDataMap().put(JobHistoryRecord.OID, oid);
     }
 
     return detail;
@@ -325,10 +325,10 @@ public class SchedulerManager
   {
     try
     {
-      // The listener will fire if the Quartz job id matches the Runway job id
+      // The listener will fire if the Quartz job oid matches the Runway job oid
 
-      String id = job.getId();
-      scheduler().getListenerManager().addJobListener(new JobListenerDelegate(jobListener, job), NameMatcher.jobNameEquals(id));
+      String oid = job.getOid();
+      scheduler().getListenerManager().addJobListener(new JobListenerDelegate(jobListener, job), NameMatcher.jobNameEquals(oid));
     }
     catch (SchedulerException e)
     {

@@ -114,13 +114,13 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileSingleTerm mdMobileSingleTerm)
     {
       if(mdMobileSingleTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileSingleTerm.getId());
+      return this.EQ(mdMobileSingleTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileSingleTerm mdMobileSingleTerm)
     {
       if(mdMobileSingleTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileSingleTerm.getId());
+      return this.NE(mdMobileSingleTerm.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
 
       for (int i=0; i<mdMobileSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileSingleTerm[i].getId();
+        itemIdArray[i] = mdMobileSingleTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
 
       for (int i=0; i<mdMobileSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileSingleTerm[i].getId();
+        itemIdArray[i] = mdMobileSingleTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
 
       for (int i=0; i<mdMobileSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileSingleTerm[i].getId();
+        itemIdArray[i] = mdMobileSingleTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
 
       for (int i=0; i<mdMobileSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileSingleTerm[i].getId();
+        itemIdArray[i] = mdMobileSingleTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileSingleTermQuery extends com.runwaysdk.system.metadata.MdMo
 
       for (int i=0; i<mdMobileSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileSingleTerm[i].getId();
+        itemIdArray[i] = mdMobileSingleTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

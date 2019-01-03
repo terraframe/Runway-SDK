@@ -168,13 +168,13 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   }
 
   /**
-   * Returns the ID of this exception.
+   * Returns the OID of this exception.
    * 
-   * @see com.runwaysdk.ComponentIF#getId()
+   * @see com.runwaysdk.ComponentIF#getOid()
    */
-  public String getId()
+  public String getOid()
   {
-    return transientDAO.getId();
+    return transientDAO.getOid();
   }
 
   /**

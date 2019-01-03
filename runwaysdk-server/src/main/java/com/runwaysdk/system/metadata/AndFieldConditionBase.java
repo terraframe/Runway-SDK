@@ -41,9 +41,9 @@ public abstract class AndFieldConditionBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static AndFieldCondition get(String id)
+  public static AndFieldCondition get(String oid)
   {
-    return (AndFieldCondition) com.runwaysdk.business.Business.get(id);
+    return (AndFieldCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static AndFieldCondition getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class AndFieldConditionBase extends com.runwaysdk.system.metadat
     return (AndFieldCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static AndFieldCondition lock(java.lang.String id)
+  public static AndFieldCondition lock(java.lang.String oid)
   {
-    AndFieldCondition _instance = AndFieldCondition.get(id);
+    AndFieldCondition _instance = AndFieldCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static AndFieldCondition unlock(java.lang.String id)
+  public static AndFieldCondition unlock(java.lang.String oid)
   {
-    AndFieldCondition _instance = AndFieldCondition.get(id);
+    AndFieldCondition _instance = AndFieldCondition.get(oid);
     _instance.unlock();
     
     return _instance;

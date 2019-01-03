@@ -28,7 +28,6 @@ import java.util.Map;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 
 public abstract class ComponentIterator<T> implements OIterator<T> 
@@ -38,7 +37,7 @@ public abstract class ComponentIterator<T> implements OIterator<T>
   protected boolean   hasNext;
   
   // ThreadRefactor: get rid of this map.
-  // Key: ID of an {@link MdAttriuteDAOIF}  Value: MdEntity that defines the attribute;
+  // Key: OID of an {@link MdAttriuteDAOIF}  Value: MdEntity that defines the attribute;
   protected Map<String, MdTableClassIF> definedByTableClassTableMap;
   // This is map improves performance.  
   // Key: type Values: List of MdAttributeIF objects that an instance of the type has.

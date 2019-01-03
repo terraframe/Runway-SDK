@@ -84,9 +84,9 @@ public abstract class SingleActorBase extends com.runwaysdk.system.Actor
     }
   }
   
-  public static SingleActor get(String id)
+  public static SingleActor get(String oid)
   {
-    return (SingleActor) com.runwaysdk.business.Business.get(id);
+    return (SingleActor) com.runwaysdk.business.Business.get(oid);
   }
   
   public static SingleActor getByKey(String key)
@@ -94,17 +94,17 @@ public abstract class SingleActorBase extends com.runwaysdk.system.Actor
     return (SingleActor) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static SingleActor lock(java.lang.String id)
+  public static SingleActor lock(java.lang.String oid)
   {
-    SingleActor _instance = SingleActor.get(id);
+    SingleActor _instance = SingleActor.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static SingleActor unlock(java.lang.String id)
+  public static SingleActor unlock(java.lang.String oid)
   {
-    SingleActor _instance = SingleActor.get(id);
+    SingleActor _instance = SingleActor.get(oid);
     _instance.unlock();
     
     return _instance;

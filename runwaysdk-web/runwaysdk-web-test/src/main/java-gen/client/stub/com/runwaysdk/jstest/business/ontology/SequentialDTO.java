@@ -19,12 +19,12 @@
 package com.runwaysdk.jstest.business.ontology;
 
 public class SequentialDTO extends SequentialDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = -1024727039;
   
-  public SequentialDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public SequentialDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -32,7 +32,7 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -43,9 +43,9 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = 1164894070;
   
-  public HasThematicAttributeBase(String parentId, String childId)
+  public HasThematicAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()
@@ -128,24 +128,24 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.HasThematicAttribute.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -284,7 +284,7 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
     return (com.runwaysdk.system.gis.mapping.ThematicAttribute) super.getChild();
   }
   
-  public static HasThematicAttribute get(String id)
+  public static HasThematicAttribute get(String oid)
   {
-    return (HasThematicAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (HasThematicAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static HasThematicAttribute getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class HasThematicAttributeBase extends com.runwaysdk.business.Re
     return (HasThematicAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static HasThematicAttribute lock(java.lang.String id)
+  public static HasThematicAttribute lock(java.lang.String oid)
   {
-    HasThematicAttribute _instance = HasThematicAttribute.get(id);
+    HasThematicAttribute _instance = HasThematicAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static HasThematicAttribute unlock(java.lang.String id)
+  public static HasThematicAttribute unlock(java.lang.String oid)
   {
-    HasThematicAttribute _instance = HasThematicAttribute.get(id);
+    HasThematicAttribute _instance = HasThematicAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -22,9 +22,9 @@ public class AttributeIndicatorDTO extends AttributeIndicatorDTOBase
 {
   private static final long serialVersionUID = -1512296811;
   
-  public AttributeIndicatorDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public AttributeIndicatorDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

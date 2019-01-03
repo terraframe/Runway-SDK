@@ -41,9 +41,9 @@ public abstract class EntryEnumerationBase extends com.runwaysdk.system.Enumerat
     return CLASS;
   }
   
-  public static EntryEnumeration get(String id)
+  public static EntryEnumeration get(String oid)
   {
-    return (EntryEnumeration) com.runwaysdk.business.Business.get(id);
+    return (EntryEnumeration) com.runwaysdk.business.Business.get(oid);
   }
   
   public static EntryEnumeration getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class EntryEnumerationBase extends com.runwaysdk.system.Enumerat
     return (EntryEnumeration) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.EntryEnumeration.CLASS ,enumName);
   }
   
-  public static EntryEnumeration lock(java.lang.String id)
+  public static EntryEnumeration lock(java.lang.String oid)
   {
-    EntryEnumeration _instance = EntryEnumeration.get(id);
+    EntryEnumeration _instance = EntryEnumeration.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EntryEnumeration unlock(java.lang.String id)
+  public static EntryEnumeration unlock(java.lang.String oid)
   {
-    EntryEnumeration _instance = EntryEnumeration.get(id);
+    EntryEnumeration _instance = EntryEnumeration.get(oid);
     _instance.unlock();
     
     return _instance;

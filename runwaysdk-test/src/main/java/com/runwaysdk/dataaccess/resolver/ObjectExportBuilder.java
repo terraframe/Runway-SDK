@@ -20,10 +20,13 @@ package com.runwaysdk.dataaccess.resolver;
 
 import java.io.File;
 
+import org.junit.Before;
+
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionImportManager;
+import com.runwaysdk.session.Request;
 
 public class ObjectExportBuilder extends ExportBuilder<BusinessDAO>
 {
@@ -40,7 +43,9 @@ public class ObjectExportBuilder extends ExportBuilder<BusinessDAO>
   }
 
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }

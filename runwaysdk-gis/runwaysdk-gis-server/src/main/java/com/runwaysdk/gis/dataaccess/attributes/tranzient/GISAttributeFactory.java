@@ -20,6 +20,8 @@ package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
 import org.postgis.jts.JtsGeometry;
 
+import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
+import com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory.PluginIF;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
@@ -27,14 +29,6 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributeLineString;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributeMultiLineString;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributeMultiPoint;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributeMultiPolygon;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributePoint;
-import com.runwaysdk.gis.dataaccess.attributes.tranzient.AttributePolygon;
-import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
-import com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory.PluginIF;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;

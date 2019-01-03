@@ -26,7 +26,7 @@ public interface MdNotificationInfo extends MdLocalizableInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdNotification";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "20071130NM000000000000000000000900000000000000000000000000000001"; 
+  public static final String ID_VALUE  = "a34975e9-71b6-3cc0-a1ab-40c60400003a"; 
 }

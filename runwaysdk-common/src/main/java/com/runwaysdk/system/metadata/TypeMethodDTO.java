@@ -22,9 +22,9 @@ public class TypeMethodDTO extends TypeMethodDTOBase
 {
   private static final long serialVersionUID = 663232342;
   
-  public TypeMethodDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public TypeMethodDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

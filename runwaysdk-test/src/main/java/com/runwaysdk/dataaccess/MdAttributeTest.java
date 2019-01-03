@@ -22,11 +22,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -76,8 +75,9 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
-public class MdAttributeTest extends TestCase
+public class MdAttributeTest
 {
   private static MdEnumerationDAOIF mdEnumerationDAOIF;
 
@@ -87,52 +87,13 @@ public class MdAttributeTest extends TestCase
 
   private static final TypeInfo     stateEnum  = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State_Enum");
 
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>MdAttributeTest.class</code> and wraps
-   * it in <code>MasterTestSetup</code>. The returned class is a suite of all
-   * the tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdAttributeTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * Provides setup operations required for all of the tests in this class.
    * Specifically, <code>classSetUp()</code> defines a new Enumerated Type
    * (STATE) and adds it as an attribute on the MasterTestSetup.TEST_CLASS type.
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     MdBusinessDAOIF enumMasterMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
@@ -146,8 +107,7 @@ public class MdAttributeTest extends TestCase
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
-    stateEnumMdBusiness.setGenerateMdController(false);
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
 
@@ -161,7 +121,7 @@ public class MdAttributeTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessDAOIF.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusinessDAOIF.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
@@ -182,6 +142,8 @@ public class MdAttributeTest extends TestCase
    * Deletes the previously defined STATE Enumeration after all tests have
    * completed.
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdEnumerationDAOIF);
@@ -189,31 +151,34 @@ public class MdAttributeTest extends TestCase
   }
 
   /**
-   * Set the index or a reference attribute to NON_UNIQUE when no index is defined.
+   * Set the index or a reference attribute to NON_UNIQUE when no index is
+   * defined.
    * 
    */
+  @Request
+  @Test
   public void testDefaultReferenceFieldForNoIndex()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
 
     MdBusinessDAOIF referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
-    
+
     MdAttributeReferenceDAO mdAttributeReferenceDAO = TestFixtureFactory.addReferenceAttribute(testMdBusinessIF, referenceMdBusinessIF);
 
     try
     {
       mdAttributeReferenceDAO.apply();
-      
+
       AttributeEnumeration index = (AttributeEnumeration) mdAttributeReferenceDAO.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
       Iterator<String> i = index.getEnumItemIdList().iterator();
       String indexTypeId = i.next();
-          
-      assertEquals("Referenced attribute did receive the correct non-unique default index", IndexTypes.NON_UNIQUE_INDEX.getId(), indexTypeId);
-      
+
+      Assert.assertEquals("Referenced attribute did receive the correct non-unique default index", IndexTypes.NON_UNIQUE_INDEX.getOid(), indexTypeId);
+
       // check for correctness
       if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
       {
-        fail("An attribute with an index of type non unique was not correctly created.");
+        Assert.fail("An attribute with an index of type non unique was not correctly created.");
       }
     }
     finally
@@ -224,35 +189,37 @@ public class MdAttributeTest extends TestCase
       }
     }
   }
-  
+
   /**
    * Do not set the index or a reference attribute if a UNIQUE index is defined.
    * 
    */
+  @Request
+  @Test
   public void testDefaultReferenceFieldForUniqueIndex()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
 
     MdBusinessDAOIF referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
-    
+
     MdAttributeReferenceDAO mdAttributeReferenceDAO = TestFixtureFactory.addReferenceAttribute(testMdBusinessIF, referenceMdBusinessIF);
 
-    mdAttributeReferenceDAO.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    
+    mdAttributeReferenceDAO.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+
     try
     {
       mdAttributeReferenceDAO.apply();
-      
+
       AttributeEnumeration index = (AttributeEnumeration) mdAttributeReferenceDAO.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
       Iterator<String> i = index.getEnumItemIdList().iterator();
       String indexTypeId = i.next();
-          
-      assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getId(), indexTypeId);
-      
+
+      Assert.assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getOid(), indexTypeId);
+
       // check for correctness
       if (!Database.uniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
       {
-        fail("An attribute with an index of type non unique was not correctly created.");
+        Assert.fail("An attribute with an index of type non unique was not correctly created.");
       }
     }
     finally
@@ -263,12 +230,13 @@ public class MdAttributeTest extends TestCase
       }
     }
   }
-  
-  
+
   /**
    * Tests to make sure an attribute of the same name can be deleted and then
    * added as an enumeration within a single transaction.
    */
+  @Request
+  @Test
   public void testAttribute_Add_Delete_Add_Enum_in_transaction()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -286,7 +254,7 @@ public class MdAttributeTest extends TestCase
     try
     {
 
-      mdAttributeEnumerationDAO = this.attribute_Add_Delete_Add_Enum_in_transaction(hashedColumnNames, enumBusinessDAO.getId());
+      mdAttributeEnumerationDAO = this.attribute_Add_Delete_Add_Enum_in_transaction(hashedColumnNames, enumBusinessDAO.getOid());
 
       QueryFactory qf = new QueryFactory();
       BusinessDAOQuery bq = qf.businessDAOQuery(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -297,13 +265,13 @@ public class MdAttributeTest extends TestCase
       {
         for (BusinessDAOIF businessDAOIF : i)
         {
-          object1Id = businessDAOIF.getId();
+          object1Id = businessDAOIF.getOid();
 
           AttributeEnumerationIF attributeEnum = (AttributeEnumerationIF) businessDAOIF.getAttributeIF("myAttribute");
 
-          if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getId()))
+          if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getOid()))
           {
-            fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
+            Assert.fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
           }
         }
       }
@@ -314,7 +282,7 @@ public class MdAttributeTest extends TestCase
 
       if (object1Id == null)
       {
-        fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
+        Assert.fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
       }
     }
     finally
@@ -326,7 +294,7 @@ public class MdAttributeTest extends TestCase
         mdAttributeEnumerationDAO.delete();
         if (Database.columnExists(mdAttributeEnumerationDAO.getDefinedColumnName(), testMdBusinessIF.getTableName()))
         {
-          fail("An attribute metadata object was deleted but the column [" + mdAttributeEnumerationDAO.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
+          Assert.fail("An attribute metadata object was deleted but the column [" + mdAttributeEnumerationDAO.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
         }
       }
     }
@@ -349,7 +317,7 @@ public class MdAttributeTest extends TestCase
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -359,20 +327,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
     if (mdAttributeDate.getDefinedColumnName().equals(mdAttributeDate.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeDate.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -385,27 +353,27 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration1.getDefinedColumnName().equals(mdAttributeEnumeration1.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
     }
     // at this point, the cache column will not be hashed, as one did not exist
     // previously
     if (!mdAttributeEnumeration1.getDefinedCacheColumnName().equals(mdAttributeEnumeration1.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration1.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration1.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeEnumeration1.delete();
@@ -414,20 +382,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
     if (mdAttributeBoolean.getDefinedColumnName().equals(mdAttributeBoolean.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeBoolean.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -440,25 +408,25 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration2.getDefinedColumnName().equals(mdAttributeEnumeration2.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
     }
     if (mdAttributeEnumeration2.getDefinedCacheColumnName().equals(mdAttributeEnumeration2.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration2.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration2.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     BusinessDAO object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -472,6 +440,8 @@ public class MdAttributeTest extends TestCase
    * Tests to make sure an attribute of the same name can be deleted, then
    * added, and then deleted within a single transaction.
    */
+  @Request
+  @Test
   public void testAttribute_Add_Delete_Add_Delete_in_transaction()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -482,16 +452,16 @@ public class MdAttributeTest extends TestCase
 
     if (Database.columnExists("my_attribute", testMdBusinessIF.getTableName()))
     {
-      fail("Column was not properly removed at the end of a transaction [my_attribute].");
+      Assert.fail("Column was not properly removed at the end of a transaction [my_attribute].");
     }
 
-    assertEquals(8, hashedColumnNames.size());
+    Assert.assertEquals(8, hashedColumnNames.size());
 
     for (String hashedColumnName : hashedColumnNames)
     {
       if (Database.columnExists(hashedColumnName, testMdBusinessIF.getTableName()))
       {
-        fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
+        Assert.fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
       }
     }
   }
@@ -515,7 +485,7 @@ public class MdAttributeTest extends TestCase
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -525,20 +495,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
     if (mdAttributeDate.getDefinedColumnName().equals(mdAttributeDate.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeDate.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -551,27 +521,27 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration1.getDefinedColumnName().equals(mdAttributeEnumeration1.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
     }
     // at this point, the cache column will not be hashed, as one did not exist
     // previously
     if (!mdAttributeEnumeration1.getDefinedCacheColumnName().equals(mdAttributeEnumeration1.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration1.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration1.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeEnumeration1.delete();
@@ -580,20 +550,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
     if (mdAttributeBoolean.getDefinedColumnName().equals(mdAttributeBoolean.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeBoolean.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -606,25 +576,25 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration2.getDefinedColumnName().equals(mdAttributeEnumeration2.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
     }
     if (mdAttributeEnumeration2.getDefinedCacheColumnName().equals(mdAttributeEnumeration2.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration2.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration2.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeEnumeration2.delete();
@@ -634,20 +604,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
     if (mdAttributeCharacter.getDefinedColumnName().equals(mdAttributeCharacter.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeCharacter.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -657,20 +627,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
     if (mdAttributeText.getDefinedColumnName().equals(mdAttributeText.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeText.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeText.delete();
@@ -680,6 +650,8 @@ public class MdAttributeTest extends TestCase
    * Tests to make sure an attribute of the same name can be deleted, and then
    * added within a single transaction.
    */
+  @Request
+  @Test
   public void testAttribute_Add_Delete_Add_in_transaction()
   {
     MdAttributeConcreteDAO mdAttribute = null;
@@ -697,16 +669,16 @@ public class MdAttributeTest extends TestCase
 
       if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
       {
-        fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        Assert.fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
       }
 
-      assertEquals(8, hashedColumnNames.size());
+      Assert.assertEquals(8, hashedColumnNames.size());
 
       for (String hashedColumnName : hashedColumnNames)
       {
         if (Database.columnExists(hashedColumnName, testMdBusinessIF.getTableName()))
         {
-          fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
+          Assert.fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
         }
       }
 
@@ -721,11 +693,11 @@ public class MdAttributeTest extends TestCase
         {
           if (businessDAOIF.getValue("myAttribute").equals("Value 1"))
           {
-            object1Id = businessDAOIF.getId();
+            object1Id = businessDAOIF.getOid();
           }
           else if (businessDAOIF.getValue("myAttribute").equals("Value 2"))
           {
-            object2Id = businessDAOIF.getId();
+            object2Id = businessDAOIF.getOid();
           }
         }
       }
@@ -736,7 +708,7 @@ public class MdAttributeTest extends TestCase
 
       if (object1Id == null || object2Id == null)
       {
-        fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
+        Assert.fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
       }
     }
     finally
@@ -758,7 +730,7 @@ public class MdAttributeTest extends TestCase
         mdAttribute.delete();
         if (Database.columnExists(mdAttribute.getDefinedColumnName(), testMdBusinessIF.getTableName()))
         {
-          fail("An attribute metadata object was deleted but the column [" + mdAttribute.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
+          Assert.fail("An attribute metadata object was deleted but the column [" + mdAttribute.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
         }
       }
     }
@@ -783,7 +755,7 @@ public class MdAttributeTest extends TestCase
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -793,20 +765,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
     if (mdAttributeDate.getDefinedColumnName().equals(mdAttributeDate.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeDate.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -819,27 +791,27 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration1.getDefinedColumnName().equals(mdAttributeEnumeration1.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration1.getColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedColumnName() + "]");
     }
     // at this point, the cache column will not be hashed, as one did not exist
     // previously
     if (!mdAttributeEnumeration1.getDefinedCacheColumnName().equals(mdAttributeEnumeration1.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration1.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration1.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration1.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration1.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeEnumeration1.delete();
@@ -848,20 +820,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
     if (mdAttributeBoolean.getDefinedColumnName().equals(mdAttributeBoolean.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeBoolean.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -874,25 +846,25 @@ public class MdAttributeTest extends TestCase
     // A hashed column should have been created.
     if (mdAttributeEnumeration2.getDefinedColumnName().equals(mdAttributeEnumeration2.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeEnumeration2.getColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedColumnName() + "]");
     }
     if (mdAttributeEnumeration2.getDefinedCacheColumnName().equals(mdAttributeEnumeration2.getCacheColumnName()))
     {
-      fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
+      Assert.fail("Attribute metadataenumeration has a hashed temporary cache column when it should not, as no previous column existed.  Hashed column[" + mdAttributeEnumeration2.getCacheColumnName() + "] vs defined column [" + mdAttributeEnumeration2.getDefinedCacheColumnName() + "]");
     }
 
     hashedColumn = mdAttributeEnumeration2.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
     // Also perform the check for the cache column
     hashedColumn = mdAttributeEnumeration2.getCacheColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     mdAttributeEnumeration2.delete();
@@ -902,20 +874,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
     if (mdAttributeCharacter.getDefinedColumnName().equals(mdAttributeCharacter.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeCharacter.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -925,20 +897,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
     if (mdAttributeText.getDefinedColumnName().equals(mdAttributeText.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeText.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     BusinessDAO object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -957,6 +929,8 @@ public class MdAttributeTest extends TestCase
    * added within a single transaction. This test uses a user specified column
    * name for the attribute.
    */
+  @Request
+  @Test
   public void testAttribute_Add_Delete_Add_in_transaction_customColumn()
   {
     MdAttributeConcreteDAO mdAttribute = null;
@@ -974,16 +948,16 @@ public class MdAttributeTest extends TestCase
 
       if (!mdAttribute.getColumnName().equals("custom_column"))
       {
-        fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        Assert.fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
       }
 
-      assertEquals(4, hashedColumnNames.size());
+      Assert.assertEquals(4, hashedColumnNames.size());
 
       for (String hashedColumnName : hashedColumnNames)
       {
         if (Database.columnExists(hashedColumnName, testMdBusinessIF.getTableName()))
         {
-          fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
+          Assert.fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
         }
       }
 
@@ -998,11 +972,11 @@ public class MdAttributeTest extends TestCase
         {
           if (businessDAOIF.getValue("myAttribute").equals("Value 1"))
           {
-            object1Id = businessDAOIF.getId();
+            object1Id = businessDAOIF.getOid();
           }
           else if (businessDAOIF.getValue("myAttribute").equals("Value 2"))
           {
-            object2Id = businessDAOIF.getId();
+            object2Id = businessDAOIF.getOid();
           }
         }
       }
@@ -1013,7 +987,7 @@ public class MdAttributeTest extends TestCase
 
       if (object1Id == null || object2Id == null)
       {
-        fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
+        Assert.fail("Attribute values from an attribute that was added, dropped, and then added of the same name but different datatype were missing.");
       }
     }
     finally
@@ -1035,7 +1009,7 @@ public class MdAttributeTest extends TestCase
         mdAttribute.delete();
         if (Database.columnExists(mdAttribute.getDefinedColumnName(), testMdBusinessIF.getTableName()))
         {
-          fail("An attribute metadata object was deleted but the column [" + mdAttribute.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
+          Assert.fail("An attribute metadata object was deleted but the column [" + mdAttribute.getDefinedColumnName() + "] " + "was not removed from the table [" + testMdBusinessIF.getTableName() + "].");
         }
       }
     }
@@ -1059,7 +1033,7 @@ public class MdAttributeTest extends TestCase
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.COLUMN_NAME, "custom_column");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // Now delete it
@@ -1070,20 +1044,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setValue(MdAttributeDateInfo.COLUMN_NAME, "custom_column");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
     if (mdAttributeDate.getDefinedColumnName().equals(mdAttributeDate.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeDate.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1094,20 +1068,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.COLUMN_NAME, "custom_column");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
     if (mdAttributeBoolean.getDefinedColumnName().equals(mdAttributeBoolean.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeBoolean.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1119,20 +1093,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.COLUMN_NAME, "custom_column");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
     if (mdAttributeCharacter.getDefinedColumnName().equals(mdAttributeCharacter.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeCharacter.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1143,20 +1117,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setValue(MdAttributeTextInfo.COLUMN_NAME, "custom_column");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     // A hashed column should have been created.
     if (mdAttributeText.getDefinedColumnName().equals(mdAttributeText.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeText.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     BusinessDAO object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1175,6 +1149,8 @@ public class MdAttributeTest extends TestCase
    * with an attribute of the same name deleted, and then added within a single
    * transaction.
    */
+  @Request
+  @Test
   public void testAttribute_Add_Delete_Add_in_transaction_rollback()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1183,7 +1159,7 @@ public class MdAttributeTest extends TestCase
     MdAttributeTextDAO mdAttributeText = MdAttributeTextDAO.newInstance();
     mdAttributeText.setValue(MdAttributeTextInfo.NAME, "myAttribute");
     mdAttributeText.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeText.apply();
 
     List<String> hashedColumnNames = new LinkedList<String>();
@@ -1198,25 +1174,25 @@ public class MdAttributeTest extends TestCase
     }
     try
     {
-      assertEquals(4, hashedColumnNames.size());
+      Assert.assertEquals(4, hashedColumnNames.size());
 
       for (String hashedColumnName : hashedColumnNames)
       {
         if (Database.columnExists(hashedColumnName, testMdBusinessIF.getTableName()))
         {
-          fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
+          Assert.fail("Hashed column was not properly removed at the end of a transaction [" + hashedColumnName + "].");
         }
       }
 
       // A hashed column should have been removed.
       if (!mdAttributeText.getDefinedColumnName().equals(mdAttributeText.getColumnName()))
       {
-        fail("Attribute metadata still has a hashed column after a rolledback transaction.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
+        Assert.fail("Attribute metadata still has a hashed column after a rolledback transaction.  Hashed column[" + mdAttributeText.getColumnName() + "] vs defined column [" + mdAttributeText.getDefinedColumnName() + "]");
       }
 
       if (!Database.columnExists(mdAttributeText.getDefinedColumnName(), testMdBusinessIF.getTableName()))
       {
-        fail("Transaction rolled back but the original column on an attribute metadata object was improperly deleted [" + mdAttributeText.getDefinedColumnName() + "] " + "from the table [" + testMdBusinessIF.getTableName() + "].");
+        Assert.fail("Transaction rolled back but the original column on an attribute metadata object was improperly deleted [" + mdAttributeText.getDefinedColumnName() + "] " + "from the table [" + testMdBusinessIF.getTableName() + "].");
       }
 
     }
@@ -1245,20 +1221,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeDate = MdAttributeDateDAO.newInstance();
     mdAttributeDate.setValue(MdAttributeDateInfo.NAME, "myAttribute");
     mdAttributeDate.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeDate.apply();
 
     // A hashed column should have been created.
     if (mdAttributeDate.getDefinedColumnName().equals(mdAttributeDate.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeDate.getColumnName() + "] vs defined column [" + mdAttributeDate.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeDate.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1268,20 +1244,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "myAttribute");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeBoolean.apply();
 
     // A hashed column should have been created.
     if (mdAttributeBoolean.getDefinedColumnName().equals(mdAttributeBoolean.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeBoolean.getColumnName() + "] vs defined column [" + mdAttributeBoolean.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeBoolean.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1292,20 +1268,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "myAttribute");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeCharacter.apply();
 
     // A hashed column should have been created.
     if (mdAttributeCharacter.getDefinedColumnName().equals(mdAttributeCharacter.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeCharacter.getColumnName() + "] vs defined column [" + mdAttributeCharacter.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeCharacter.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     // Now delete it
@@ -1315,20 +1291,20 @@ public class MdAttributeTest extends TestCase
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "myAttribute");
     mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "My Attribute");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttributeInteger.apply();
 
     // A hashed column should have been created.
     if (mdAttributeInteger.getDefinedColumnName().equals(mdAttributeInteger.getColumnName()))
     {
-      fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeInteger.getColumnName() + "] vs defined column [" + mdAttributeInteger.getDefinedColumnName() + "]");
+      Assert.fail("Attribute metadata does not define a hashed temporary column when it should.  Hashed column[" + mdAttributeInteger.getColumnName() + "] vs defined column [" + mdAttributeInteger.getDefinedColumnName() + "]");
     }
 
     hashedColumn = mdAttributeInteger.getColumnName();
     hashedColumnNames.add(hashedColumn);
     if (!Database.columnExists(hashedColumn, testMdBusinessIF.getTableName()))
     {
-      fail("Hashed column was not defined in the database [" + hashedColumn + "]");
+      Assert.fail("Hashed column was not defined in the database [" + hashedColumn + "]");
     }
 
     BusinessDAO object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1341,6 +1317,8 @@ public class MdAttributeTest extends TestCase
    * transaction.
    * 
    */
+  @Request
+  @Test
   public void testNewAttributeChangeIndexType()
   {
     newAttributeChangeIndexType();
@@ -1360,9 +1338,9 @@ public class MdAttributeTest extends TestCase
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "changeCharIndex");
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Change Index Type Attribute");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "64");
 
     mdAttrChar.apply();
@@ -1371,17 +1349,17 @@ public class MdAttributeTest extends TestCase
 
     if (!Database.uniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttrChar.getColumnName(), indexName))
     {
-      fail("A unique indesx was not properly created.");
+      Assert.fail("A unique indesx was not properly created.");
     }
 
     try
     {
-      mdAttrChar.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdAttrChar.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdAttrChar.apply();
 
       if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttrChar.getColumnName(), indexName))
       {
-        fail("A unique indesx was not properly created.");
+        Assert.fail("A unique indesx was not properly created.");
       }
     }
     finally
@@ -1394,6 +1372,8 @@ public class MdAttributeTest extends TestCase
    * CLOB attributes cannot be unique.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeClob()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1402,9 +1382,9 @@ public class MdAttributeTest extends TestCase
     mdAttrClob.setValue(MdAttributeClobInfo.NAME, "uniqueAttrClob");
     mdAttrClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attribute Clob");
     mdAttrClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttrClob.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrClob.addItem(MdAttributeClobInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1417,13 +1397,15 @@ public class MdAttributeTest extends TestCase
     }
 
     mdAttrClob.delete();
-    fail("A Clob attribute was defined to be unique.  Clob attributes cannot participate in a uniqueness constraint.");
+    Assert.fail("A Clob attribute was defined to be unique.  Clob attributes cannot participate in a uniqueness constraint.");
   }
 
   /**
    * CLOB Attributes cannot participate in a uniqueness constraint.
    * 
    */
+  @Request
+  @Test
   public void testUniqueAttributeGroupClob()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1433,11 +1415,11 @@ public class MdAttributeTest extends TestCase
     mdAttrClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attribute Clob");
     mdAttrClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrClob.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, testMdBusinessIF.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
     mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
@@ -1446,7 +1428,7 @@ public class MdAttributeTest extends TestCase
     {
       // add the unique group index
       mdIndex.addAttribute(mdAttrClob, 0);
-      fail("A Clob attribute was defined to be in a unique attribute group.  Clob attributes cannot participate in a uniqueness constraint.");
+      Assert.fail("A Clob attribute was defined to be in a unique attribute group.  Clob attributes cannot participate in a uniqueness constraint.");
     }
     catch (AttributeInvalidUniquenessConstraintException e)
     {
@@ -1463,6 +1445,8 @@ public class MdAttributeTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testInvalidDefaultFloatAttribute()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1472,7 +1456,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "2");
@@ -1486,15 +1470,15 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid value.");
+      Assert.fail("A float attribute was defined with an invalid value.");
     }
     catch (ProblemException e)
     {
       // This is expected
       List<ProblemIF> problems = e.getProblems();
 
-      assertEquals(1, problems.size());
-      assertTrue(problems.get(0) instanceof AttributeValueProblem);
+      Assert.assertEquals(1, problems.size());
+      Assert.assertTrue(problems.get(0) instanceof AttributeValueProblem);
     }
 
   }
@@ -1503,6 +1487,8 @@ public class MdAttributeTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testInvalidDefaultBooleanAttribute()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1514,7 +1500,7 @@ public class MdAttributeTest extends TestCase
     mdAttrBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttrBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1528,13 +1514,15 @@ public class MdAttributeTest extends TestCase
     }
 
     mdAttrBoolean.delete();
-    fail("A boolean attribute was defined with an invalid value.");
+    Assert.fail("A boolean attribute was defined with an invalid value.");
   }
 
   /**
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testInvalidDefaultCharacterAttribute()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1546,7 +1534,7 @@ public class MdAttributeTest extends TestCase
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.SIZE, "4");
     mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "A default character greater than 4");
-    mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1559,13 +1547,15 @@ public class MdAttributeTest extends TestCase
     }
 
     mdAttrCharacter.delete();
-    fail("A character attribute was defined with an invalid value.");
+    Assert.fail("A character attribute was defined with an invalid value.");
   }
 
   /**
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testInvalidDefaultReferenceAttribute()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1576,8 +1566,8 @@ public class MdAttributeTest extends TestCase
     mdAttrRef.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, MdClassInfo.ID_VALUE);
-    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "An invalid reference");
-    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "99999999-9999-9999-9999-999999999999");
+    mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1590,13 +1580,15 @@ public class MdAttributeTest extends TestCase
     }
 
     mdAttrRef.delete();
-    fail("A reference attribute was defined with an invalid value.");
+    Assert.fail("A reference attribute was defined with an invalid value.");
   }
 
   /**
    * Tests that an attribute that should be unique should also be required.
    * 
    */
+  @Request
+  @Test
   public void testInvalidDefaultEnumerationAttribute()
   {
     MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(Constants.SYSTEM_PACKAGE + ".AllEntryEnumeration");
@@ -1609,9 +1601,9 @@ public class MdAttributeTest extends TestCase
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumerationIF.getOid());
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "An invalid enumeration item");
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
 
     try
     {
@@ -1624,9 +1616,11 @@ public class MdAttributeTest extends TestCase
     }
 
     mdAttrEnum.delete();
-    fail("A reference attribute was defined with an invalid value.");
+    Assert.fail("A reference attribute was defined with an invalid value.");
   }
 
+  @Request
+  @Test
   public void testInvalidNegativeDecLength()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1636,7 +1630,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "-2");
@@ -1650,7 +1644,7 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid length value.");
+      Assert.fail("A float attribute was defined with an invalid length value.");
     }
     catch (AttributeDefinitionLengthException e)
     {
@@ -1658,10 +1652,12 @@ public class MdAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidZeroDecLength()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1671,7 +1667,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "0");
@@ -1685,7 +1681,7 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid length value.");
+      Assert.fail("A float attribute was defined with an invalid length value.");
     }
     catch (AttributeDefinitionLengthException e)
     {
@@ -1693,10 +1689,12 @@ public class MdAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidNegativeDecDecimal()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1706,7 +1704,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");
@@ -1720,7 +1718,7 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid decimal value.");
+      Assert.fail("A float attribute was defined with an invalid decimal value.");
     }
     catch (AttributeDefinitionDecimalException e)
     {
@@ -1728,10 +1726,12 @@ public class MdAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidZeroDecDecimal()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1741,7 +1741,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");
@@ -1755,7 +1755,7 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid decimal value.");
+      Assert.fail("A float attribute was defined with an invalid decimal value.");
     }
     catch (AttributeDefinitionDecimalException e)
     {
@@ -1763,10 +1763,12 @@ public class MdAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testTooBigDecDecimal()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1776,7 +1778,7 @@ public class MdAttributeTest extends TestCase
     mdAttrFloat.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Float");
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttrFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
     mdAttrFloat.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttrFloat.setValue(MdAttributeFloatInfo.LENGTH, "5");
@@ -1790,7 +1792,7 @@ public class MdAttributeTest extends TestCase
 
       mdAttrFloat.delete();
 
-      fail("A float attribute was defined with an invalid decimal value.");
+      Assert.fail("A float attribute was defined with an invalid decimal value.");
     }
     catch (AttributeDefinitionDecimalException e)
     {
@@ -1798,7 +1800,7 @@ public class MdAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 

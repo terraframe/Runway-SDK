@@ -96,7 +96,7 @@ public abstract class MdParameterBase extends com.runwaysdk.system.metadata.Meta
     }
     else
     {
-      setValue(METADATA, value.getId());
+      setValue(METADATA, value.getOid());
     }
   }
   
@@ -232,9 +232,9 @@ public abstract class MdParameterBase extends com.runwaysdk.system.metadata.Meta
     }
   }
   
-  public static MdParameter get(String id)
+  public static MdParameter get(String oid)
   {
-    return (MdParameter) com.runwaysdk.business.Business.get(id);
+    return (MdParameter) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdParameter getByKey(String key)
@@ -242,17 +242,17 @@ public abstract class MdParameterBase extends com.runwaysdk.system.metadata.Meta
     return (MdParameter) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdParameter lock(java.lang.String id)
+  public static MdParameter lock(java.lang.String oid)
   {
-    MdParameter _instance = MdParameter.get(id);
+    MdParameter _instance = MdParameter.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdParameter unlock(java.lang.String id)
+  public static MdParameter unlock(java.lang.String oid)
   {
-    MdParameter _instance = MdParameter.get(id);
+    MdParameter _instance = MdParameter.get(oid);
     _instance.unlock();
     
     return _instance;

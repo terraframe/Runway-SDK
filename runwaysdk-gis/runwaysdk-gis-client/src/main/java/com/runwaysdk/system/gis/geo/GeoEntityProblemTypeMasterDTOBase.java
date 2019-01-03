@@ -71,9 +71,9 @@ public abstract class GeoEntityProblemTypeMasterDTOBase extends com.runwaysdk.sy
     return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DESCRIPTION).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO) dto;
   }
@@ -91,7 +91,7 @@ public abstract class GeoEntityProblemTypeMasterDTOBase extends com.runwaysdk.sy
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -104,10 +104,10 @@ public abstract class GeoEntityProblemTypeMasterDTOBase extends com.runwaysdk.sy
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -117,10 +117,10 @@ public abstract class GeoEntityProblemTypeMasterDTOBase extends com.runwaysdk.sy
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -41,9 +41,9 @@ public abstract class IndexTypesBase extends com.runwaysdk.system.EnumerationMas
     return CLASS;
   }
   
-  public static IndexTypes get(String id)
+  public static IndexTypes get(String oid)
   {
-    return (IndexTypes) com.runwaysdk.business.Business.get(id);
+    return (IndexTypes) com.runwaysdk.business.Business.get(oid);
   }
   
   public static IndexTypes getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class IndexTypesBase extends com.runwaysdk.system.EnumerationMas
     return (IndexTypes) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.IndexTypes.CLASS ,enumName);
   }
   
-  public static IndexTypes lock(java.lang.String id)
+  public static IndexTypes lock(java.lang.String oid)
   {
-    IndexTypes _instance = IndexTypes.get(id);
+    IndexTypes _instance = IndexTypes.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static IndexTypes unlock(java.lang.String id)
+  public static IndexTypes unlock(java.lang.String oid)
   {
-    IndexTypes _instance = IndexTypes.get(id);
+    IndexTypes _instance = IndexTypes.get(oid);
     _instance.unlock();
     
     return _instance;

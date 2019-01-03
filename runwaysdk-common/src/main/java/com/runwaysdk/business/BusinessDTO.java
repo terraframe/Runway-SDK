@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.business;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.CommonExceptionProcessor;
@@ -39,19 +37,9 @@ public class BusinessDTO extends ElementDTO
   public final static String CLASS = BusinessDTOInfo.CLASS;
 
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = -4669065823599432023L;
-
-  /**
-   * State.
-   */
-  private String            state;
-
-  /**
-   * A list of all transitions from the current state (if applicable).
-   */
-  private List<String> transitions;
 
   /**
    * Generic business object.
@@ -62,9 +50,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(ClientRequestIF clientRequest, String type)
   {
     super(clientRequest, type);
-
-    state = "";
-    transitions = new LinkedList<String>();
   }
 
   /**
@@ -79,8 +64,6 @@ public class BusinessDTO extends ElementDTO
     super(clientRequest);
 
     String _type = this.getDeclaredType();
-
-    transitions = new LinkedList<String>();
 
     // only get default values if a subclass of BusinessDTO is requested.
     if(!_type.equals(BusinessDTO.class.getName()) && clientRequest != null)
@@ -97,8 +80,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(BusinessDTO businessDTO, ClientRequestIF clientRequest)
   {
     super(clientRequest);
-
-    transitions = new LinkedList<String>();
 
     if(!this.getDeclaredType().equals(businessDTO.getType()))
     {
@@ -119,61 +100,6 @@ public class BusinessDTO extends ElementDTO
   protected BusinessDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap)
   {
     super(clientRequest, type, attributeMap);
-
-    state = "";
-    transitions = new LinkedList<String>();
-  }
-
-  /**
-   * Returns the state of this DTO.
-   *
-   * @return
-   */
-  public String getState()
-  {
-    return state;
-  }
-
-  /**
-   * Sets the state of this DTO
-   */
-  public void setState(String state)
-  {
-    this.state = state;
-  }
-
-  /**
-   * Returns a list of available transitions.
-   *
-   * @return
-   */
-  public List<String> getTransitions()
-  {
-    return transitions;
-  }
-
-  public void setTransitions(List<String> transitions)
-  {
-    this.transitions = transitions;
-  }
-
-  /**
-   * Copies over properties from the given componentDTO.
-   * @param componentDTOIF
-   */
-  public void copyProperties(ComponentDTOIF componentDTOIF)
-  {
-    super.copyProperties(componentDTOIF);
-
-    if (componentDTOIF instanceof BusinessDTO)
-    {
-      // state
-      BusinessDTO businessDTO = (BusinessDTO)componentDTOIF;
-      this.setState(businessDTO.getState());
-
-      // enum values
-      this.setTransitions(businessDTO.getTransitions());
-    }
   }
 
   @Override
@@ -188,54 +114,54 @@ public class BusinessDTO extends ElementDTO
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllParentMetadata()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO> getAllParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO> getAllParentMetadataRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO> getAllParentMetadataRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO> getAllParentMetadataRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MetadataRelationshipDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
   public com.runwaysdk.system.metadata.MetadataRelationshipDTO addParentMetadata(com.runwaysdk.system.metadata.MetadataDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MetadataRelationshipDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MetadataRelationshipDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
-  public static com.runwaysdk.system.metadata.MetadataRelationshipDTO addParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MetadataDTO parent)
+  public static com.runwaysdk.system.metadata.MetadataRelationshipDTO addParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MetadataDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MetadataRelationshipDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MetadataRelationshipDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
   public void removeParentMetadata(com.runwaysdk.system.metadata.MetadataRelationshipDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
 
   public static void removeParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.MetadataRelationshipDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
 
   public void removeAllParentMetadata()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 
-  public static void removeAllParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllParentMetadata(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.MetadataRelationshipDTO.CLASS);
   }
 }

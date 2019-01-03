@@ -22,9 +22,9 @@ public class HasThematicAttributeDTO extends HasThematicAttributeDTOBase
 {
   private static final long serialVersionUID = -1360631495;
   
-  public HasThematicAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public HasThematicAttributeDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

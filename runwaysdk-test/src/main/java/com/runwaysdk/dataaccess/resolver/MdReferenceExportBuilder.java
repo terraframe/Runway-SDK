@@ -29,7 +29,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 public class MdReferenceExportBuilder extends ExportBuilder<MdBusinessDAO[]>
 {
   private MdBusinessDAO mdBusiness;
-  
+
   private MdBusinessDAO mdBusiness2;
 
   @Override
@@ -37,24 +37,24 @@ public class MdReferenceExportBuilder extends ExportBuilder<MdBusinessDAO[]>
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
-    
+
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, "true");
     mdAttributeCharacter.apply();
-    
+
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
-    
+
     MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness2, mdBusiness);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, "true");
     mdAttributeReference.apply();
-    
+
     MdAttributeReferenceDAO mdAttributeReference2 = TestFixtureFactory.addReferenceAttribute(mdBusiness, mdBusiness2);
     mdAttributeReference2.setValue(MdAttributeReferenceInfo.REQUIRED, "false");
-    mdAttributeReference2.apply();    
-    
-    return new MdBusinessDAO[]{mdBusiness, mdBusiness2};
+    mdAttributeReference2.apply();
+
+    return new MdBusinessDAO[] { mdBusiness, mdBusiness2 };
   }
 
   @Override

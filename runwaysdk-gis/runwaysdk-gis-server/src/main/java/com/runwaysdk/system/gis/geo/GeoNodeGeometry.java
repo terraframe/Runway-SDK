@@ -39,6 +39,6 @@ public class GeoNodeGeometry extends GeoNodeGeometryBase
       return attribute.getKey();
     }
 
-    return this.getId();
+    return this.getOid();
   }
 }

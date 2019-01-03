@@ -114,13 +114,13 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileInteger mdMobileInteger)
     {
       if(mdMobileInteger == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileInteger.getId());
+      return this.EQ(mdMobileInteger.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileInteger mdMobileInteger)
     {
       if(mdMobileInteger == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileInteger.getId());
+      return this.NE(mdMobileInteger.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileInteger.length; i++)
       {
-        itemIdArray[i] = mdMobileInteger[i].getId();
+        itemIdArray[i] = mdMobileInteger[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileInteger.length; i++)
       {
-        itemIdArray[i] = mdMobileInteger[i].getId();
+        itemIdArray[i] = mdMobileInteger[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileInteger.length; i++)
       {
-        itemIdArray[i] = mdMobileInteger[i].getId();
+        itemIdArray[i] = mdMobileInteger[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileInteger.length; i++)
       {
-        itemIdArray[i] = mdMobileInteger[i].getId();
+        itemIdArray[i] = mdMobileInteger[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileIntegerQuery extends com.runwaysdk.system.metadata.MdMobil
 
       for (int i=0; i<mdMobileInteger.length; i++)
       {
-        itemIdArray[i] = mdMobileInteger[i].getId();
+        itemIdArray[i] = mdMobileInteger[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

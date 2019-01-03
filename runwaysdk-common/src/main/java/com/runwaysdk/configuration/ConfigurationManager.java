@@ -37,7 +37,7 @@ public class ConfigurationManager
   {
     public String getPath();
 
-    public String getIdentifier();
+    public String getOidentifier();
   }
 
   public static enum ConfigGroup implements ConfigGroupIF {
@@ -58,7 +58,7 @@ public class ConfigurationManager
       return this.path;
     }
 
-    public String getIdentifier()
+    public String getOidentifier()
     {
       return identifier;
     }
@@ -66,7 +66,7 @@ public class ConfigurationManager
     @Override
     public String toString()
     {
-      return "ConfigGroup : " + getIdentifier();
+      return "ConfigGroup : " + getOidentifier();
     }
   }
 
@@ -143,7 +143,8 @@ public class ConfigurationManager
         throw new RunwayConfigurationException(msg);
       }
 
-      configResolver = new CommonsConfigurationResolver();
+      // Hardcoded default configuration resolver if none is specified
+      configResolver = new EnvironmentConfigurationResolver();
     }
   }
 

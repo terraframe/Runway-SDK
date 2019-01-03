@@ -39,7 +39,7 @@ public class ServerAttributeMdBuilder
       dest.setDescription(source.getDescription(Session.getCurrentLocale()));
       dest.setImmutable(source.isImmutable());
       dest.setRequired(source.isRequiredForDTO());
-      dest.setId(source.getId());
+      dest.setOid(source.getOid());
       dest.setName(source.definesAttribute());
       dest.setSystem(source.isSystem());
       dest.setGenerateAccessor(source.getGenerateAccessor());

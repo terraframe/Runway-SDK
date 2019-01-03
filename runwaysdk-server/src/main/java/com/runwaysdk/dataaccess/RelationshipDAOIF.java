@@ -23,23 +23,23 @@ public interface RelationshipDAOIF extends ElementDAOIF
   /**
    * Attribute of relationship table.
    */
-  public static final String PARENT_ID_COLUMN                          = "parent_id";
+  public static final String PARENT_OID_COLUMN                          = "parent_oid";
 
   /**
    * Attribute of relationship table.
    */
-  public static final String CHILD_ID_COLUMN                            = "child_id";
+  public static final String CHILD_OID_COLUMN                            = "child_oid";
   
   /**
-   * Returns the id of the parent BusinessDAO in this relationship.
+   * Returns the oid of the parent BusinessDAO in this relationship.
    *
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    *
-   * @return id of the parent BusinessDAO in this relationship
+   * @return oid of the parent BusinessDAO in this relationship
    */
-  public String getParentId();
+  public String getParentOid();
 
   /**
    * Returns the parent BusinessDAO in this relationship.
@@ -53,15 +53,15 @@ public interface RelationshipDAOIF extends ElementDAOIF
   public BusinessDAOIF getParent();
 
   /**
-   * Returns the id of the child BusinessDAO in this relationship.
+   * Returns the oid of the child BusinessDAO in this relationship.
    *
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
    *
-   * @return id of the child BusinessDAO in this relationship
+   * @return oid of the child BusinessDAO in this relationship
    */
-  public String getChildId();
+  public String getChildOid();
   
   /**
    * Returns the child BusinessDAO in this relationship.
@@ -98,7 +98,7 @@ public interface RelationshipDAOIF extends ElementDAOIF
   public RelationshipDAO getRelationshipDAO();
 
   /**
-   * Returns a copy of the given RelationshipDAO instance, with a new id and mastered at the current site.
+   * Returns a copy of the given RelationshipDAO instance, with a new oid and mastered at the current site.
    * The state of the object is new and has not been applied to the database.
    *
    * @return a copy of the given RelationshipDAO instance

@@ -154,13 +154,13 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.DomainTuple domainTuple)
     {
       if(domainTuple == null) return this.EQ((java.lang.String)null);
-      return this.EQ(domainTuple.getId());
+      return this.EQ(domainTuple.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.DomainTuple domainTuple)
     {
       if(domainTuple == null) return this.NE((java.lang.String)null);
-      return this.NE(domainTuple.getId());
+      return this.NE(domainTuple.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getPermissionDomain()
@@ -237,7 +237,7 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
 
       for (int i=0; i<domainTuple.length; i++)
       {
-        itemIdArray[i] = domainTuple[i].getId();
+        itemIdArray[i] = domainTuple[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
 
       for (int i=0; i<domainTuple.length; i++)
       {
-        itemIdArray[i] = domainTuple[i].getId();
+        itemIdArray[i] = domainTuple[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
 
       for (int i=0; i<domainTuple.length; i++)
       {
-        itemIdArray[i] = domainTuple[i].getId();
+        itemIdArray[i] = domainTuple[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
 
       for (int i=0; i<domainTuple.length; i++)
       {
-        itemIdArray[i] = domainTuple[i].getId();
+        itemIdArray[i] = domainTuple[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class DomainTupleQuery extends com.runwaysdk.system.metadata.TypeTupleQu
 
       for (int i=0; i<domainTuple.length; i++)
       {
-        itemIdArray[i] = domainTuple[i].getId();
+        itemIdArray[i] = domainTuple[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

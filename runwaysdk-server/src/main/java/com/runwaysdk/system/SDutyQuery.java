@@ -119,21 +119,21 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.SDuty.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.SDuty.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.SDuty.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.SDuty.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.SDuty.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -512,9 +512,9 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -595,13 +595,13 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.SDuty sDuty)
     {
       if(sDuty == null) return this.EQ((java.lang.String)null);
-      return this.EQ(sDuty.getId());
+      return this.EQ(sDuty.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.SDuty sDuty)
     {
       if(sDuty == null) return this.NE((java.lang.String)null);
-      return this.NE(sDuty.getId());
+      return this.NE(sDuty.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -655,21 +655,21 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.SDuty.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.SDuty.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.SDuty.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.SDuty.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.SDuty.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1007,9 +1007,9 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1071,7 +1071,7 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<sDuty.length; i++)
       {
-        itemIdArray[i] = sDuty[i].getId();
+        itemIdArray[i] = sDuty[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1083,7 +1083,7 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<sDuty.length; i++)
       {
-        itemIdArray[i] = sDuty[i].getId();
+        itemIdArray[i] = sDuty[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1095,7 +1095,7 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<sDuty.length; i++)
       {
-        itemIdArray[i] = sDuty[i].getId();
+        itemIdArray[i] = sDuty[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1107,7 +1107,7 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<sDuty.length; i++)
       {
-        itemIdArray[i] = sDuty[i].getId();
+        itemIdArray[i] = sDuty[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1119,7 +1119,7 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<sDuty.length; i++)
       {
-        itemIdArray[i] = sDuty[i].getId();
+        itemIdArray[i] = sDuty[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1175,21 +1175,21 @@ public  class SDutyQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.SDuty.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.SDuty.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.SDuty.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.SDuty.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.SDuty.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

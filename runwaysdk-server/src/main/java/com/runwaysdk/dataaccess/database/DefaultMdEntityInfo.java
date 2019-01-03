@@ -156,8 +156,8 @@ public class DefaultMdEntityInfo
                    "FROM "+MetadataDAOIF.TABLE+", "+MdAttributeConcreteDAOIF.TABLE+" \n"+
                    "WHERE "+MetadataDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdAttributeConcreteDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n"+
                    "AND "+MdAttributeConcreteDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" IN \n"+
-                   "  (SELECT "+RelationshipDAOIF.CHILD_ID_COLUMN+" FROM "+RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getTableName()+" \n"+
-                   "   WHERE "+RelationshipDAOIF.PARENT_ID_COLUMN+" IN \n" +
+                   "  (SELECT "+RelationshipDAOIF.CHILD_OID_COLUMN+" FROM "+RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getTableName()+" \n"+
+                   "   WHERE "+RelationshipDAOIF.PARENT_OID_COLUMN+" IN \n" +
                    "     (SELECT "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n " +
                    "      FROM "+MdTypeDAOIF.TABLE+", "+MetadataDAOIF.TABLE+" \n"+
                    "      WHERE "+MetadataDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n"+

@@ -20,6 +20,7 @@ package com.runwaysdk.query;
 
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 
 /**
@@ -59,14 +60,14 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
     return (MdEntityDAOIF)super.getMdClassIF();
   }
 
-  public Attribute id()
+  public Attribute oid()
   {
-    return this.getComponentQuery().id();
+    return this.getComponentQuery().oid();
   }
 
-  public SelectableChar getId()
+  public SelectableUUID getOid()
   {
-    return this.getComponentQuery().id();
+    return this.getComponentQuery().oid();
   }
   
   /**
@@ -77,9 +78,9 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public Condition EQ(SelectableReference _attributeIF)
   {
-    AttributeCharacter idCharacter = this.getComponentQuery().id();
+    AttributeUUID idCharacter = this.getComponentQuery().oid();
 
-    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF) idCharacter.getMdAttributeIF();
+    MdAttributeUUIDDAOIF mdAttributeCharacterDAOIF = (MdAttributeUUIDDAOIF) idCharacter.getMdAttributeIF();
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference();
 
     AttributeReference idReference = (AttributeReference) this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, idCharacter.getUserDefinedAlias(), idCharacter.getUserDefinedDisplayLabel());
@@ -122,7 +123,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable selectable)
   {
-    return new LeftJoinEq(this.id(), selectable);
+    return new LeftJoinEq(this.oid(), selectable);
   }
 
   /**
@@ -132,7 +133,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable... selectableArray)
   {
-    return new LeftJoinEq(this.id(), selectableArray);
+    return new LeftJoinEq(this.oid(), selectableArray);
   }
 
   /**
@@ -142,7 +143,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle selectable)
   {
-    return new LeftJoinNotEq(this.id(), selectable);
+    return new LeftJoinNotEq(this.oid(), selectable);
   }
 
   /**
@@ -152,7 +153,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinNotEq(this.id(), selectableArray);
+    return new LeftJoinNotEq(this.oid(), selectableArray);
   }
 
   /**
@@ -162,7 +163,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle selectable)
   {
-    return new LeftJoinGt(this.id(), selectable);
+    return new LeftJoinGt(this.oid(), selectable);
   }
 
   /**
@@ -172,7 +173,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle... selectableArray)
   {
-    return new LeftJoinGt(this.id(), selectableArray);
+    return new LeftJoinGt(this.oid(), selectableArray);
   }
 
   /**
@@ -182,7 +183,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle selectable)
   {
-    return new LeftJoinGtEq(this.id(), selectable);
+    return new LeftJoinGtEq(this.oid(), selectable);
   }
 
   /**
@@ -192,7 +193,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinGtEq(this.id(), selectableArray);
+    return new LeftJoinGtEq(this.oid(), selectableArray);
   }
 
   /**
@@ -202,7 +203,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle selectable)
   {
-    return new LeftJoinLt(this.id(), selectable);
+    return new LeftJoinLt(this.oid(), selectable);
   }
 
   /**
@@ -212,7 +213,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle... selectableArray)
   {
-    return new LeftJoinLt(this.id(), selectableArray);
+    return new LeftJoinLt(this.oid(), selectableArray);
   }
 
   /**
@@ -222,7 +223,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle selectable)
   {
-    return new LeftJoinLtEq(this.id(), selectable);
+    return new LeftJoinLtEq(this.oid(), selectable);
   }
 
   /**
@@ -232,7 +233,7 @@ public abstract class GeneratedEntityQuery extends GeneratedTableClassQuery
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle... selectableArray)
   {
-    return new LeftJoinLtEq(this.id(), selectableArray);
+    return new LeftJoinLtEq(this.oid(), selectableArray);
   }
 
 }

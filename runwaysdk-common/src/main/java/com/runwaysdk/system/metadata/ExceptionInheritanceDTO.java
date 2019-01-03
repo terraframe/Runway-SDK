@@ -22,9 +22,9 @@ public class ExceptionInheritanceDTO extends ExceptionInheritanceDTOBase
 {
   private static final long serialVersionUID = -615982679;
   
-  public ExceptionInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ExceptionInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

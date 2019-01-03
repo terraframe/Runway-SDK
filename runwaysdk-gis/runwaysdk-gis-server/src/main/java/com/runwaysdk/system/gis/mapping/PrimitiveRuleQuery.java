@@ -274,13 +274,13 @@ public  class PrimitiveRuleQuery extends com.runwaysdk.system.gis.mapping.Themat
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.PrimitiveRule primitiveRule)
     {
       if(primitiveRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(primitiveRule.getId());
+      return this.EQ(primitiveRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.PrimitiveRule primitiveRule)
     {
       if(primitiveRule == null) return this.NE((java.lang.String)null);
-      return this.NE(primitiveRule.getId());
+      return this.NE(primitiveRule.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getAttributeValue()

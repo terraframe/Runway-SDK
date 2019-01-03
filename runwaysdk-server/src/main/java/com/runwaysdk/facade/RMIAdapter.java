@@ -57,7 +57,7 @@ import com.runwaysdk.util.DTOConversionUtilInfo;
 public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 {
   /**
-   * Generated serial id.
+   * Generated serial oid.
    */
   private static final long serialVersionUID = 3978704188014521740L;
 
@@ -96,41 +96,41 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /**
    * @see com.runwaysdk.request.RemoteAdapter#addChild(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addChild(sessionId, parentId, childId, relationshipType);
+    return Facade.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#addParent(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addParent(sessionId, parentId, childId, relationshipType);
+    return Facade.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#delete(java.lang.String, java.lang.String)
    */
-  public void delete(String sessionId, String id)
+  public void delete(String sessionId, String oid)
   {
-    Facade.delete(sessionId, id);
+    Facade.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#get(java.lang.String)
    */
-  public MutableDTO get(String sessionId, String id)
+  public MutableDTO get(String sessionId, String oid)
   {
-    return Facade.get(sessionId, id);
+    return Facade.get(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
    */
-  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
-    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return Facade.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
 
   /**
@@ -275,27 +275,11 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**
@@ -315,14 +299,6 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#promoteObject(java.lang.String, java.lang.String, java.lang.String)
-   */
-  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    return Facade.promoteObject(sessionId, businessDTO, transitionName);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
@@ -339,14 +315,6 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
@@ -355,27 +323,19 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.request.RemoteAdapter#lock(java.lang.String, java.lang.String)
    */
-  public ElementDTO lock(String sessionId, String id)
+  public ElementDTO lock(String sessionId, String oid)
   {
-    return Facade.lock(sessionId, id);
+    return Facade.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#unlock(java.lang.String, java.lang.String)
    */
-  public ElementDTO unlock(String sessionId, String id)
+  public ElementDTO unlock(String sessionId, String oid)
   {
-    return Facade.unlock(sessionId, id);
+    return Facade.unlock(sessionId, oid);
   }
 
   /**
@@ -399,9 +359,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#getChildren(java.lang.String, java.lang.String, java.lang.String)
    */
-  public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType) throws RemoteException
+  public List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType) throws RemoteException
   {
-    return Facade.getChildren(sessionId, id, relationshipType);
+    return Facade.getChildren(sessionId, oid, relationshipType);
   }
 
   /*
@@ -409,9 +369,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#getParents(java.lang.String, java.lang.String, java.lang.String)
    */
-  public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType) throws RemoteException
+  public List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType) throws RemoteException
   {
-    return Facade.getParents(sessionId, id, relationshipType);
+    return Facade.getParents(sessionId, oid, relationshipType);
   }
 
   /*
@@ -419,9 +379,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#getChildRelationships(java.lang .String, java.lang.String, java.lang.String)
    */
-  public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException
+  public List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType) throws RemoteException
   {
-    return Facade.getChildRelationships(sessionId, id, relationshipType);
+    return Facade.getChildRelationships(sessionId, oid, relationshipType);
   }
 
   /*
@@ -429,9 +389,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#getParentRelationships(java.lang .String, java.lang.String, java.lang.String)
    */
-  public List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException
+  public List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType) throws RemoteException
   {
-    return Facade.getParentRelationships(sessionId, id, relationshipType);
+    return Facade.getParentRelationships(sessionId, oid, relationshipType);
   }
 
   /*
@@ -479,9 +439,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String, java.lang.String, java.lang.String)
    */
-  public void deleteChildren(String sessionId, String id, String relationshipType)
+  public void deleteChildren(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteChildren(sessionId, id, relationshipType);
+    Facade.deleteChildren(sessionId, oid, relationshipType);
   }
 
   /*
@@ -489,9 +449,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * 
    * @see com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String, java.lang.String, java.lang.String)
    */
-  public void deleteParents(String sessionId, String id, String relationshipType)
+  public void deleteParents(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteParents(sessionId, id, relationshipType);
+    Facade.deleteParents(sessionId, oid, relationshipType);
   }
 
   /*

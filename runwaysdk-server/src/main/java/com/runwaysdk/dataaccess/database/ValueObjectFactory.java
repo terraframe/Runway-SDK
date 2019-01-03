@@ -31,9 +31,8 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.attributes.value.Attribute;
@@ -56,7 +55,7 @@ public class ValueObjectFactory
    * Builds a ValueObject from a row from the given resultset.
    * 
    * @param definedByTableClassMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          {@link MdAttributeDAOIF} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -78,7 +77,7 @@ public class ValueObjectFactory
    * instantiate an ValueObject object.
    * 
    * @param definedByTableClassMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -99,7 +98,7 @@ public class ValueObjectFactory
 
       if (! ( mdAttributeIF instanceof MdAttributeConcrete_SQL ))
       {
-        MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getId());
+        MdTableClassIF mdTableClassIF = definedByTableClassMap.get(mdAttributeIF.getOid());
 
         if (mdTableClassIF == null)
         {
@@ -108,7 +107,7 @@ public class ValueObjectFactory
           // SQL pass through attributes do not have type metadata
           if (mdTableClassIF != null)
           {
-            definedByTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+            definedByTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
             definingType = mdTableClassIF.definesType();
           }
         }
@@ -175,7 +174,7 @@ public class ValueObjectFactory
         }
 
         StructDAO structDAO = null;
-        com.runwaysdk.dataaccess.attributes.entity.Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
+        com.runwaysdk.dataaccess.attributes.entity.Attribute idAttribute = structAttributeMap.get(EntityInfo.OID);
         if (!idAttribute.getValue().trim().equals(""))
         {
           structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap, mdStructIF.definesType());

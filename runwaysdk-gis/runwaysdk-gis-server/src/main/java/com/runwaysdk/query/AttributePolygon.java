@@ -20,8 +20,8 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
-import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 
 public class AttributePolygon extends AttributeGeometry
 {

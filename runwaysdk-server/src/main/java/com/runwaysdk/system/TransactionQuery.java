@@ -89,21 +89,21 @@ public  class TransactionQuery extends com.runwaysdk.query.GeneratedStructQuery
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Transaction.DATAOBJECTID, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Transaction.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.Transaction.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Transaction.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.Transaction.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -194,9 +194,9 @@ public  class TransactionQuery extends com.runwaysdk.query.GeneratedStructQuery
     public com.runwaysdk.query.SelectableChar getDataObjectID();
     public com.runwaysdk.query.SelectableChar getDataObjectID(String alias);
     public com.runwaysdk.query.SelectableChar getDataObjectID(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -255,21 +255,21 @@ public  class TransactionQuery extends com.runwaysdk.query.GeneratedStructQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Transaction.DATAOBJECTID, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Transaction.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.Transaction.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Transaction.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.Transaction.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

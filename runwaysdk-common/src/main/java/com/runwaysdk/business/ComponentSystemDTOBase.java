@@ -45,10 +45,10 @@ public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.Busi
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
-  public static com.runwaysdk.business.ComponentSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static java.lang.String OID = "oid";
+  public static com.runwaysdk.business.ComponentSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.business.ComponentSystemDTO) dto;
   }
@@ -66,7 +66,7 @@ public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.Busi
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.business.ComponentQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -79,10 +79,10 @@ public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.Busi
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.business.ComponentSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.ComponentSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.ComponentSystemDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.business.ComponentSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -92,10 +92,10 @@ public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.Busi
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.business.ComponentSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.ComponentSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.ComponentSystemDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.business.ComponentSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

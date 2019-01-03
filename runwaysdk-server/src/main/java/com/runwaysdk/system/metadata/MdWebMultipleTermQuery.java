@@ -114,13 +114,13 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebMultipleTerm mdWebMultipleTerm)
     {
       if(mdWebMultipleTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebMultipleTerm.getId());
+      return this.EQ(mdWebMultipleTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebMultipleTerm mdWebMultipleTerm)
     {
       if(mdWebMultipleTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebMultipleTerm.getId());
+      return this.NE(mdWebMultipleTerm.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
 
       for (int i=0; i<mdWebMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebMultipleTerm[i].getId();
+        itemIdArray[i] = mdWebMultipleTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
 
       for (int i=0; i<mdWebMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebMultipleTerm[i].getId();
+        itemIdArray[i] = mdWebMultipleTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
 
       for (int i=0; i<mdWebMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebMultipleTerm[i].getId();
+        itemIdArray[i] = mdWebMultipleTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
 
       for (int i=0; i<mdWebMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebMultipleTerm[i].getId();
+        itemIdArray[i] = mdWebMultipleTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebMultipleTermQuery extends com.runwaysdk.system.metadata.MdWeb
 
       for (int i=0; i<mdWebMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebMultipleTerm[i].getId();
+        itemIdArray[i] = mdWebMultipleTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

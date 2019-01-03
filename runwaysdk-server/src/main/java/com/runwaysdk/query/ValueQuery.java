@@ -48,6 +48,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
@@ -73,6 +74,7 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
@@ -1399,12 +1401,12 @@ public class ValueQuery extends ComponentQuery
    * including all attributes required to instantiate instances of this object.
    * 
    * @param mdAttributeIDMap
-   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   *          Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
   {
-    // Key: ID of an MdAttribute Value: MdTableClass that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdTableClass that defines the attribute;
     Map<String, MdTableClassIF> mdTableClassMap = new HashMap<String, MdTableClassIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1444,21 +1446,21 @@ public class ValueQuery extends ComponentQuery
 
         if (fSelectable == null || ! ( fSelectable instanceof SelectableSpoof ))
         {
-          MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getId());
+          MdTableClassIF mdTableClassIF = mdTableClassMap.get(mdAttributeIF.getOid());
           if (mdTableClassIF == null)
           {
             mdTableClassIF = (MdTableClassIF) mdAttributeIF.definedByClass();
-            mdTableClassMap.put(mdAttributeIF.getId(), mdTableClassIF);
+            mdTableClassMap.put(mdAttributeIF.getOid(), mdTableClassIF);
           }
 
           fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
 
           String baseTableName = mdTableClassIF.getTableName();
           if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
-          // For functions, sometimes they are applying either to the ID or to
+          // For functions, sometimes they are applying either to the OID or to
           // the
           // type itself, and therefore do not need to be joined with the table
-          // that defines the ID in metadata
+          // that defines the OID in metadata
               && ! ( selectable instanceof Function && fSelectable.getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
           {
             String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
@@ -1914,6 +1916,49 @@ public class ValueQuery extends ComponentQuery
     return (AttributeCharacter) this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String userDefinedAlias)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+    
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+    
+    if (! ( mdAttributeIF instanceof MdAttributeUUIDDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeUUIDInfo.CLASS, userDefinedAlias);
+    }
+    return (AttributeUUID) this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, selectable.getUserDefinedDisplayLabel());
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+    
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+    
+    if (! ( mdAttributeIF instanceof MdAttributeUUIDDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeUUIDInfo.CLASS, userDefinedAlias);
+    }
+    return (AttributeUUID) this.internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns an attribute text statement object.
    * 
@@ -2877,6 +2922,48 @@ public class ValueQuery extends ComponentQuery
     return new SelectableSQLCharacter(false, this, attributeName, sql, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql);
+  }
+  
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * @param userDefinedAlias
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql, String userDefinedAlias)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns a custom SQL character selectable.
+   * 
+   * @param attributeName
+   * @param sql
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * 
+   * @return custom SQL character selectable.
+   */
+  public SelectableSQLUUID aSQLUUID(String attributeName, String sql, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    return new SelectableSQLUUID(false, this, attributeName, sql, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns a custom SQL character selectable.
    * 
@@ -3989,6 +4076,10 @@ public class ValueQuery extends ComponentQuery
     else if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
       attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      attribute = new AttributeUUID((MdAttributeUUIDDAOIF) mdAttributeIF, selectable.getAttributeNameSpace(), definingTableName, definingTableAlias, rootComponentQuery, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {

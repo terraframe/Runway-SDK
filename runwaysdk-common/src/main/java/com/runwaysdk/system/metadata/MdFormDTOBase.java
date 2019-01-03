@@ -73,7 +73,7 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     }
     else
     {
-      setValue(DIMENSION, value.getId());
+      setValue(DIMENSION, value.getOid());
     }
   }
   
@@ -122,7 +122,7 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     }
     else
     {
-      setValue(FORMMDCLASS, value.getId());
+      setValue(FORMMDCLASS, value.getOid());
     }
   }
   
@@ -191,10 +191,10 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     return (com.runwaysdk.system.metadata.MdFieldDTO[]) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final com.runwaysdk.system.metadata.MdFieldDTO[] getOrderedMdFields(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final com.runwaysdk.system.metadata.MdFieldDTO[] getOrderedMdFields(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdFormDTO.CLASS, "getOrderedMdFields", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdFieldDTO[]) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -202,60 +202,60 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO> getAllMdFields()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO> getAllMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO> getAllMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdFieldDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO> getAllMdFieldsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO> getAllMdFieldsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO> getAllMdFieldsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.FormFieldDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.FormFieldDTO addMdFields(com.runwaysdk.system.metadata.MdFieldDTO child)
   {
-    return (com.runwaysdk.system.metadata.FormFieldDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.FormFieldDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.FormFieldDTO addMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdFieldDTO child)
+  public static com.runwaysdk.system.metadata.FormFieldDTO addMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdFieldDTO child)
   {
-    return (com.runwaysdk.system.metadata.FormFieldDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.FormFieldDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
   public void removeMdFields(com.runwaysdk.system.metadata.FormFieldDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.FormFieldDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllMdFields()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
-  public static void removeAllMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllMdFields(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.FormFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdFormDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdFormDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdFormDTO) dto;
   }
@@ -273,7 +273,7 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdFormQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -286,10 +286,10 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdFormDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdFormDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdFormDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdFormDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -299,10 +299,10 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdFormDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdFormDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdFormDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdFormDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

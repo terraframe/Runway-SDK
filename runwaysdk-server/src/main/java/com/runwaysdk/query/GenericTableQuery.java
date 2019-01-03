@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.query;
 
-import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.dataaccess.MdTableDAOIF;
 
 public class GenericTableQuery extends GeneratedTableClassQuery
@@ -86,7 +85,7 @@ public class GenericTableQuery extends GeneratedTableClassQuery
   }
 
 //  @Override
-//  protected SelectableChar getId()
+//  protected SelectableUUID getOid()
 //  {
 //    // TODO Auto-generated method stub
 //    return null;

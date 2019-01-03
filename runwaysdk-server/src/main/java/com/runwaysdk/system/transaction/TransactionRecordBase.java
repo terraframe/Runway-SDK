@@ -33,7 +33,7 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String EXPORTSEQUENCE = "exportSequence";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -129,7 +129,7 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -149,20 +149,20 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
     return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(EXPORTSEQUENCE);
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.transaction.TransactionRecord.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -301,7 +301,7 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -358,9 +358,9 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
     return CLASS;
   }
   
-  public static TransactionRecord get(String id)
+  public static TransactionRecord get(String oid)
   {
-    return (TransactionRecord) com.runwaysdk.business.Business.get(id);
+    return (TransactionRecord) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TransactionRecord getByKey(String key)
@@ -368,17 +368,17 @@ public abstract class TransactionRecordBase extends com.runwaysdk.business.Busin
     return (TransactionRecord) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static TransactionRecord lock(java.lang.String id)
+  public static TransactionRecord lock(java.lang.String oid)
   {
-    TransactionRecord _instance = TransactionRecord.get(id);
+    TransactionRecord _instance = TransactionRecord.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TransactionRecord unlock(java.lang.String id)
+  public static TransactionRecord unlock(java.lang.String oid)
   {
-    TransactionRecord _instance = TransactionRecord.get(id);
+    TransactionRecord _instance = TransactionRecord.get(oid);
     _instance.unlock();
     
     return _instance;

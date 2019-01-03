@@ -22,9 +22,9 @@ public class WebGroupFieldDTO extends WebGroupFieldDTOBase
 {
   private static final long serialVersionUID = -12966928;
   
-  public WebGroupFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public WebGroupFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -159,21 +159,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
@@ -478,9 +478,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -537,13 +537,13 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.AbstractJob abstractJob)
     {
       if(abstractJob == null) return this.EQ((java.lang.String)null);
-      return this.EQ(abstractJob.getId());
+      return this.EQ(abstractJob.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.AbstractJob abstractJob)
     {
       if(abstractJob == null) return this.NE((java.lang.String)null);
-      return this.NE(abstractJob.getId());
+      return this.NE(abstractJob.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -631,21 +631,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
@@ -903,9 +903,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -967,7 +967,7 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<abstractJob.length; i++)
       {
-        itemIdArray[i] = abstractJob[i].getId();
+        itemIdArray[i] = abstractJob[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -979,7 +979,7 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<abstractJob.length; i++)
       {
-        itemIdArray[i] = abstractJob[i].getId();
+        itemIdArray[i] = abstractJob[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -991,7 +991,7 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<abstractJob.length; i++)
       {
-        itemIdArray[i] = abstractJob[i].getId();
+        itemIdArray[i] = abstractJob[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1003,7 +1003,7 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<abstractJob.length; i++)
       {
-        itemIdArray[i] = abstractJob[i].getId();
+        itemIdArray[i] = abstractJob[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1015,7 +1015,7 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
 
       for (int i=0; i<abstractJob.length; i++)
       {
-        itemIdArray[i] = abstractJob[i].getId();
+        itemIdArray[i] = abstractJob[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1105,21 +1105,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()

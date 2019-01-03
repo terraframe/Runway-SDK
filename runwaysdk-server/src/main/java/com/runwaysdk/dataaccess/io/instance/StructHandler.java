@@ -58,7 +58,7 @@ public class StructHandler extends XMLHandler
    *          ImportManager which provides communication between handlers for a
    *          single import
    * @param entity
-   *          The EntityDAO which defines the attribute-multiple id mapping
+   *          The EntityDAO which defines the attribute-multiple oid mapping
    * @param attributes
    *          The attributes of the instance tag
    * @param exceptionHandler
@@ -77,7 +77,7 @@ public class StructHandler extends XMLHandler
     this.exceptionHandler = exceptionHandler;
     this.attributeStruct = (AttributeStruct) entity.getAttributeIF(structName);
 
-    // Overwrite the ID that was generated on this node if the structDAO is new.
+    // Overwrite the OID that was generated on this node if the structDAO is new.
     StructDAO structDAO = this.attributeStruct.getStructDAO();
     if (structDAO.isNew())
     {
@@ -85,7 +85,7 @@ public class StructHandler extends XMLHandler
 
       this.attributeStruct.setValue(importStructId);
 
-      structDAO.getAttribute(ComponentInfo.ID).setValue(importStructId);
+      structDAO.getAttribute(ComponentInfo.OID).setValue(importStructId);
     }
   }
 

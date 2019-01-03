@@ -70,26 +70,26 @@ public class CacheMRUStrategy extends CacheStrategy
    * If this collection is supposed to cache the object, the main {@link ObjectCache} is updated.
    * If it is not in the cache, perhaps it was marked to be refreshed by removing it from the cache.
    *
-   * <br/><b>Precondition:</b>  id != null
-   * <br/><b>Precondition:</b>  !id.trim().equals("")
-   * <br/><b>Precondition:</b>  id is a valid id of a EntityDAO
+   * <br/><b>Precondition:</b>  oid != null
+   * <br/><b>Precondition:</b>  !oid.trim().equals("")
+   * <br/><b>Precondition:</b>  oid is a valid oid of a EntityDAO
    * <br/><b>Postcondition:</b> return value may not be null
    *
-   * @param  id of the desired EntityDAO
-   * @return EntityDAO with the given id
-   * @throws DataAccessException a EntityDAO with the given id does not exist
+   * @param  oid of the desired EntityDAO
+   * @return EntityDAO with the given oid
+   * @throws DataAccessException a EntityDAO with the given oid does not exist
    *         in the database and the cache
    */
-  public EntityDAOIF getEntityInstance(String id)
+  public EntityDAOIF getEntityInstance(String oid)
   {
     if (reload == true)
     {
       this.reload();
     }
 
-    synchronized(id)
+    synchronized(oid)
     {
-      EntityDAOIF entityDAO = this.getFromFactory(id);
+      EntityDAOIF entityDAO = this.getFromFactory(oid);
 
       if (entityDAO != null)
       {
@@ -99,9 +99,9 @@ public class CacheMRUStrategy extends CacheStrategy
       {
         if (entityDAO == null)
         {
-          MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+          MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
 
-          String errMsg = "An instance of [" + metadata.definesType() + "] with id [" + id
+          String errMsg = "An instance of [" + metadata.definesType() + "] with oid [" + oid
             + "] could not be found. [" + metadata.definesType() + "] caches none.";
 
           throw new DataNotFoundException(errMsg, metadata);
@@ -174,12 +174,12 @@ public class CacheMRUStrategy extends CacheStrategy
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  protected EntityDAOIF getFromFactory(String id)
+  protected EntityDAOIF getFromFactory(String oid)
   {
-    return BusinessDAOFactory.get(id);
+    return BusinessDAOFactory.get(oid);
   }
 
   /**
@@ -229,7 +229,7 @@ public class CacheMRUStrategy extends CacheStrategy
     }
     else
     {
-      syncId = entityDAO.getId();
+      syncId = entityDAO.getOid();
     }
     
     String oldKey = null;
@@ -245,7 +245,7 @@ public class CacheMRUStrategy extends CacheStrategy
 
       if (entityDAO.hasIdChanged())
       {
-        this.entityDAOIdSet.remove(entityDAO.getId());
+        this.entityDAOIdSet.remove(entityDAO.getOid());
         String oldId = entityDAO.getOldId();
         entityDAO.clearOldId();
         ObjectCache.updateIdEntityDAOIFinCache(oldId, entityDAO);
@@ -254,13 +254,13 @@ public class CacheMRUStrategy extends CacheStrategy
       {
         ObjectCache.putEntityDAOIFintoCache(entityDAO);
       }
-      this.entityDAOIdSet.add(entityDAO.getId());
+      this.entityDAOIdSet.add(entityDAO.getOid());
 
       if (oldKey != null)
       {
         this.entityDAOIdByKeyMap.remove(oldKey);
       }
-      this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
+      this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getOid());
     }
   }
   
@@ -283,7 +283,7 @@ public class CacheMRUStrategy extends CacheStrategy
     }
     else
     {
-      syncId = entityDAO.getId();
+      syncId = entityDAO.getOid();
     }
     
     String oldKey = null;
@@ -301,9 +301,9 @@ public class CacheMRUStrategy extends CacheStrategy
         ObjectCache.removeEntityDAOIFfromCache(entityDAO.getOldId(), true);
       }
       
-      this.entityDAOIdSet.remove(entityDAO.getId());
+      this.entityDAOIdSet.remove(entityDAO.getOid());
 
-      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);
+      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getOid(), true);
     }
     
 
@@ -321,7 +321,7 @@ public class CacheMRUStrategy extends CacheStrategy
           
       if (keyId != null)
       {
-        if (keyId.equals(entityDAO.getId()) ||
+        if (keyId.equals(entityDAO.getOid()) ||
             (entityDAO.hasIdChanged() && keyId.equals(entityDAO.getOldId()))
            )
         {
@@ -332,14 +332,14 @@ public class CacheMRUStrategy extends CacheStrategy
   }
 
   /**
-   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * Removes the {@link EntityDAO} with the given oid from the cache so that it can be refreshed
    * on the next request for the object.
    *
    * <br/><b>Precondition:</b>  {@link EntityDAO} != null
    *
    * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
    *
-   * @param  id for the {@link EntityDAO} to remove from this collection
+   * @param  oid for the {@link EntityDAO} to remove from this collection
    */
   public void clearCacheForRefresh(String entityId)
   {

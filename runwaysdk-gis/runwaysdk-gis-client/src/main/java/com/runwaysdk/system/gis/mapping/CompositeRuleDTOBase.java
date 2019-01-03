@@ -48,60 +48,60 @@ public abstract class CompositeRuleDTOBase extends com.runwaysdk.system.gis.mapp
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO> getAllPrimitiveRule()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO> getAllPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO> getAllPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO> getAllPrimitiveRuleRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO> getAllPrimitiveRuleRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO> getAllPrimitiveRuleRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO addPrimitiveRule(com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO child)
   {
-    return (com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO addPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO child)
+  public static com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO addPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.mapping.PrimitiveRuleDTO child)
   {
-    return (com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    return (com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
   public void removePrimitiveRule(com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removePrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllPrimitiveRule()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
-  public static void removeAllPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllPrimitiveRule(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.mapping.HasPrimitiveRuleDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.mapping.CompositeRuleDTO) dto;
   }
@@ -119,7 +119,7 @@ public abstract class CompositeRuleDTOBase extends com.runwaysdk.system.gis.mapp
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.CompositeRuleQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -132,10 +132,10 @@ public abstract class CompositeRuleDTOBase extends com.runwaysdk.system.gis.mapp
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.CompositeRuleDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.CompositeRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -145,10 +145,10 @@ public abstract class CompositeRuleDTOBase extends com.runwaysdk.system.gis.mapp
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.CompositeRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.CompositeRuleDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.CompositeRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

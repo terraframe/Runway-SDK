@@ -22,14 +22,14 @@ public class MobileFormField extends MobileFormFieldBase
 {
   private static final long serialVersionUID = 592357530;
   
-  public MobileFormField(String parentId, String childId)
+  public MobileFormField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public MobileFormField(com.runwaysdk.system.metadata.MdMobileForm parent, com.runwaysdk.system.metadata.MdMobileField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

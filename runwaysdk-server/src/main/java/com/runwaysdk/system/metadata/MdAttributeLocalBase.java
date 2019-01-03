@@ -41,9 +41,9 @@ public abstract class MdAttributeLocalBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static MdAttributeLocal get(String id)
+  public static MdAttributeLocal get(String oid)
   {
-    return (MdAttributeLocal) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeLocal) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeLocal getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeLocalBase extends com.runwaysdk.system.metadata
     return (MdAttributeLocal) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeLocal lock(java.lang.String id)
+  public static MdAttributeLocal lock(java.lang.String oid)
   {
-    MdAttributeLocal _instance = MdAttributeLocal.get(id);
+    MdAttributeLocal _instance = MdAttributeLocal.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeLocal unlock(java.lang.String id)
+  public static MdAttributeLocal unlock(java.lang.String oid)
   {
-    MdAttributeLocal _instance = MdAttributeLocal.get(id);
+    MdAttributeLocal _instance = MdAttributeLocal.get(oid);
     _instance.unlock();
     
     return _instance;

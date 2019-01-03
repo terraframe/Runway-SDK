@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,8 +33,8 @@ import com.runwaysdk.business.ProblemDTO;
 import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.request.RequestDecorator;
-import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ResponseDecorator;
+import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
 
 public class RequestManager
@@ -51,12 +52,12 @@ public class RequestManager
   private ServletMethod                  method;
 
   /**
-   * List of attribute notifications which have occured
+   * List of attribute notifications which have occurred
    */
   private List<AttributeNotificationDTO> attributeNotifications;
 
   /**
-   * List of problems which have occured
+   * List of problems which have occurred
    */
   private List<ProblemDTO>               problems;
 

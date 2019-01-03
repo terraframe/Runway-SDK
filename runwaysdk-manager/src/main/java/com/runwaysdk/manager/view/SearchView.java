@@ -38,7 +38,7 @@ import com.runwaysdk.manager.widgets.WidgetVisitor;
 
 public class SearchView extends EntityView
 {
-  public static final String ID = "com.runwaysdk.view.SearchView";
+  public static final String OID = "com.runwaysdk.view.SearchView";
 
   private SashForm           form;
 

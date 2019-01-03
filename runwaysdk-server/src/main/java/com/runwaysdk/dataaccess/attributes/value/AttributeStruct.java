@@ -133,7 +133,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   public void setStructDAO(StructDAO structDAO)
   {
     this.structDAO = structDAO;
-    this.value = this.structDAO.getId();
+    this.value = this.structDAO.getOid();
   }
 
   /**

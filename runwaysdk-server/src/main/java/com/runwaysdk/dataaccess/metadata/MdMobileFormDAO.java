@@ -51,14 +51,14 @@ public class MdMobileFormDAO extends MdFormDAO implements MdMobileFormDAOIF
   }
 
   /**
-   * Returns the MdFormDAOIF with the given id.
+   * Returns the MdFormDAOIF with the given oid.
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  public static MdMobileFormDAOIF get(String id)
+  public static MdMobileFormDAOIF get(String oid)
   {
-    return (MdMobileFormDAOIF) MdBusinessDAO.get(id);
+    return (MdMobileFormDAOIF) MdBusinessDAO.get(oid);
   }
 
   public static MdMobileFormDAO newInstance()

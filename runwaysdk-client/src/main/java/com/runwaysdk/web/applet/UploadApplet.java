@@ -50,7 +50,7 @@ import com.runwaysdk.web.applet.common.RemoteAppletAdapter;
 public class UploadApplet extends JApplet
 {
   /**
-   * Auto generated serial ID
+   * Auto generated serial OID
    */
   private static final long   serialVersionUID = -4597200402195985189L;
 
@@ -101,7 +101,7 @@ public class UploadApplet extends JApplet
   private String jsonInfo;
 
   /**
-   * Session id of the user running the applet
+   * Session oid of the user running the applet
    */
   private String              sessionId;
 
@@ -541,7 +541,7 @@ public class UploadApplet extends JApplet
     return new TransferHandler()
     {
       /**
-       * Auto Generated serial ID
+       * Auto Generated serial OID
        */
       private static final long serialVersionUID = 5990284648843424528L;
 

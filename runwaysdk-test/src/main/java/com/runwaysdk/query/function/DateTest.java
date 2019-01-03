@@ -21,12 +21,11 @@ package com.runwaysdk.query.function;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -39,48 +38,15 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableMoment;
+import com.runwaysdk.session.Request;
 
-public class DateTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class DateTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-  
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-  
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new AggregateFunctionMasterSetup(DateTest.suite()));
-  }
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(DateTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp() 
-      { 
-      }
-
-      protected void tearDown() 
-      { 
-      }
-    };
-
-    return wrapper;
-  }
-  
-
+  @Request
+  @Test
   public void testDateEqMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
@@ -89,221 +55,233 @@ public class DateTest extends TestCase
     long count = query.getCount();
 
     String errMsg = "Eq MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinEqList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMinEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
+  @Request
+  @Test
   public void testDateEqMinAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class<?> objectClass = LoaderDecorator.load(type);      
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(F.MIN(comAttributeDate)));
-    
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Eq MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinEqList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinEqList.size(), count);
+
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMinEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
-      
+
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
-  
+
+  @Request
+  @Test
   public void testDateGtMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").GT(F.MIN(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Greater than MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinGtList.size(), count);
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinGtList.size(), count);
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMinGtList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
+  @Request
+  @Test
   public void testDateGtMinAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      Class<?> objectClass = LoaderDecorator.load(type);    
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(F.MIN(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Greater than MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinGtList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinGtList.size(), count);
+
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
-      
+
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMinGtList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
-      
+
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
-  
+
+  @Request
+  @Test
   public void testDateGtEqMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").GE(F.MIN(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Greater equals than MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.numOfObjects, count);
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.numOfObjects, count);
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMinGtEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
-    
+
   }
 
+  @Request
+  @Test
   public void testDateGtEqMinAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class<?> objectClass = LoaderDecorator.load(type);    
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(F.MIN(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Greater than MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.numOfObjects, count);
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.numOfObjects, count);
 
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
-      
+
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMinGtEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateLtMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
@@ -312,607 +290,634 @@ public class DateTest extends TestCase
     long count = query.getCount();
 
     String errMsg = "Less than MIN() check returned wrong result.";
-    assertEquals(errMsg, 0, count);
+    Assert.assertEquals(errMsg, 0, count);
   }
 
+  @Request
+  @Test
   public void testDateLtMinAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(F.MIN(comAttributeDate)));
-    
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Less than MIN() check returned wrong result.";
-      assertEquals(errMsg, 0, count);
+      Assert.assertEquals(errMsg, 0, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateLtEqMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").LE(F.MIN(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Less than Equal MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinLtEqList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinLtEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMinLtEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
-    
+
   }
 
+  @Request
+  @Test
   public void testDateLtEqMinAttribute_Generated()
-  { 
+  {
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class<?> objectClass = LoaderDecorator.load(type);  
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(F.MIN(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Less than Equal MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinLtEqList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinLtEqList.size(), count);
+
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
-      
+
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMinGtEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
-      
+
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqMinAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").NE(F.MIN(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Not Equal MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinNotEqList.size(), count);
- 
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinNotEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMinNotEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqMinAttribute_Generated()
-  { 
+  {
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class<?> objectClass = LoaderDecorator.load(type);  
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(F.MIN(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
-      String errMsg =  "Not Equal MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinNotEqList.size(), count);
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
+      String errMsg = "Not Equal MIN() check returned wrong result.";
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMinNotEqList.size(), count);
 
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
-      
+
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMinNotEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
-  
+
+  @Request
+  @Test
   public void testDateEqMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").EQ(F.MAX(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Greater than MAX() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxEqList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMaxEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
-  
+  @Request
+  @Test
   public void testDateEqMaxAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();   
-      Class<?> objectClass = LoaderDecorator.load(type);      
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(F.MAX(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Greater than MAX() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxEqList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxEqList.size(), count);
+
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMaxEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
-  
+
+  @Request
+  @Test
   public void testDateGtMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").GT(F.MAX(query2.aDate("comFuncDate"))));
 
     long count = query.getCount();
-    
+
     String errMsg = "Greater than MAX() check returned wrong result.";
-    assertEquals(errMsg, 0, count);
+    Assert.assertEquals(errMsg, 0, count);
 
   }
-  
-  
+
+  @Request
+  @Test
   public void testDateGtMaxAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();     
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(F.MAX(comAttributeDate)));
-    
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Greater than MAX() check returned wrong result.";
-      assertEquals(errMsg, 0, count);
+      Assert.assertEquals(errMsg, 0, count);
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateGtEqMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").GE(F.MAX(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Greater equals than MAX() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxGtEqList.size(), count);
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxGtEqList.size(), count);
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMaxGtEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
-  
+  @Request
+  @Test
   public void testDateGtEqMaxAttribute_Generated()
-  { 
+  {
     try
-    {  
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class<?> objectClass = LoaderDecorator.load(type);   
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+    {
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(F.MAX(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Greater than MAX() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxGtEqList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxGtEqList.size(), count);
+
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMaxGtEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
-      
+
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateLtMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").LT(F.MAX(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Less than MAX() check returned wrong result.";
-    assertEquals(errMsg,  AggregateFunctionMasterSetup.dateMaxLtList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMaxLtList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
- 
-  
+
+  @Request
+  @Test
   public void testDateLtMaxAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();    
-      Class<?> objectClass = LoaderDecorator.load(type);   
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(F.MAX(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Less than MAX() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtList.size(), count);
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtList.size(), count);
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMaxLtList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateLtEqMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").LE(F.MAX(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Less than Equal MAX() check returned wrong result.";
-    assertEquals(errMsg,  AggregateFunctionMasterSetup.dateMaxLtEqList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMaxLtEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
-  
+  @Request
+  @Test
   public void testDateLtEqMaxAttribute_Generated()
-  { 
+  {
     try
     {
       String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
-      Class<?> objectClass = LoaderDecorator.load(type); 
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(F.MAX(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-      
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
       String errMsg = "Less than Equal MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtEqList.size(), count);
-      
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxLtEqList.size(), count);
+
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMaxLtEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDateNotEqMaxAttribute()
-  { 
+  {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(AggregateFunctionMasterSetup.classQueryInfo.getType());
     BusinessDAOQuery query2 = factory.businessDAOQuery(AggregateFunctionMasterSetup.comQueryInfo.getType());
     query.WHERE(query.aDate("funcDate").NE(F.MAX(query2.aDate("comFuncDate"))));
     query.ORDER_BY(query.aDate("funcDate"), OrderBy.SortOrder.ASC);
-    
+
     long count = query.getCount();
 
     String errMsg = "Not Equal MIN() check returned wrong result.";
-    assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxNotEqList.size(), count);
-    
+    Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxNotEqList.size(), count);
+
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     int loopCount = 0;
     for (BusinessDAOIF businessDAO : iterator)
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"),  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse(businessDAO.getValue("funcDate"), new java.text.ParsePosition(0));
       if (AggregateFunctionMasterSetup.dateMaxNotEqList.get(loopCount) != date.getTime())
       {
-        fail("Query did not return the expected object.");
+        Assert.fail("Query did not return the expected object.");
       }
       loopCount += 1;
     }
   }
 
-  
+  @Request
+  @Test
   public void testDateNotEqMaxAttribute_Generated()
-  { 
+  {
     try
     {
-      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();  
-      Class<?> objectClass = LoaderDecorator.load(type); 
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);  
+      String type = AggregateFunctionMasterSetup.classQueryInfo.getType();
+      Class<?> objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class<?> queryClass = LoaderDecorator.load(queryType);
-    
+
       String comType = AggregateFunctionMasterSetup.comQueryInfo.getType();
-      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);  
+      String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class<?> comQueryClass = LoaderDecorator.load(comQueryType);
-    
+
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getFuncDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(F.MAX(comAttributeDate)));
       queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
-    
-      long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
-   
-      String errMsg =  "Not Equal MIN() check returned wrong result.";
-      assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxNotEqList.size(), count);
+
+      long count = ( (Long) ( queryClass.getMethod("getCount").invoke(queryObject) ) ).longValue();
+
+      String errMsg = "Not Equal MIN() check returned wrong result.";
+      Assert.assertEquals(errMsg, AggregateFunctionMasterSetup.dateMaxNotEqList.size(), count);
 
       // Load the iterator class
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       int loopCount = 0;
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         objectClass.cast(object);
-        Date date = (Date)objectClass.getMethod("getFuncDate").invoke(object);
+        Date date = (Date) objectClass.getMethod("getFuncDate").invoke(object);
         if (AggregateFunctionMasterSetup.dateMaxNotEqList.get(loopCount) != date.getTime())
         {
-          fail("Query did not return the expected object.");
+          Assert.fail("Query did not return the expected object.");
         }
         loopCount += 1;
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
- 
 }

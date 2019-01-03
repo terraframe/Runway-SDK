@@ -20,10 +20,6 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlException;
-
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.InvalidExpressionSyntaxException;
@@ -43,6 +39,10 @@ import com.runwaysdk.system.metadata.MdClass;
 import com.runwaysdk.system.metadata.MdWebForm;
 import com.runwaysdk.system.metadata.MdWebPrimitive;
 import com.runwaysdk.system.metadata.MdWebPrimitiveQuery;
+
+import ognl.ExpressionSyntaxException;
+import ognl.Ognl;
+import ognl.OgnlException;
 
 public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO implements MdAttributePrimitiveDAOIF
 {
@@ -187,7 +187,7 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
     if (this.isExpression())
     {
       MdWebPrimitiveQuery webPrimQ = new MdWebPrimitiveQuery(new QueryFactory());
-      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getId().EQ(this.getId()));
+      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getOid().EQ(this.getOid()));
       OIterator<? extends MdWebPrimitive> mdWebPrimIt = webPrimQ.getIterator();
       
       while (mdWebPrimIt.hasNext())

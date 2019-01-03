@@ -96,13 +96,13 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Always returns true if the containing component is new, false otherwise. The id to the struct never changes after it has been persisted.
+   * Always returns true if the containing component is new, false otherwise. The oid to the struct never changes after it has been persisted.
    * 
    * <br>
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    * 
-   * @return true if the containing component is new, false otherwise. The id to the struct never changes after it has been persisted.
+   * @return true if the containing component is new, false otherwise. The oid to the struct never changes after it has been persisted.
    */
   public boolean isModified()
   {
@@ -125,7 +125,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
     if (structDAO != null)
     {
       this.structDAO = structDAO;
-      this.value = this.structDAO.getId();
+      this.value = this.structDAO.getOid();
     }
   }
 
@@ -328,7 +328,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
 
   /**
    * 
-   * @return the string ID of the structDAO object. precondition: this.structDAO is initialized.
+   * @return the string OID of the structDAO object. precondition: this.structDAO is initialized.
    */
   protected String save(boolean validateRequired)
   {
@@ -400,7 +400,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Apply the StructDAO for this struct attribute and then store the id of that BusinessDAO as the value of this struct attribute.
+   * Apply the StructDAO for this struct attribute and then store the oid of that BusinessDAO as the value of this struct attribute.
    * 
    * <b>Precondition: </b> this MdAttribute MUST be the metadata of this attribute. <br>
    */

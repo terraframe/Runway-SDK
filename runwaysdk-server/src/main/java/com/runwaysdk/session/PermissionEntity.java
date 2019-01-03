@@ -25,15 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Element;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -44,10 +41,8 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDimensionDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.util.IdParser;
 
 /**
@@ -261,12 +256,12 @@ public abstract class PermissionEntity implements Serializable
 
         try
         {
-          if (IdParser.validId(relationship.getParentId()))
+          if (IdParser.validId(relationship.getParentOid()))
           {
             parent = relationship.getParent();
           }
 
-          if (IdParser.validId(relationship.getChildId()))
+          if (IdParser.validId(relationship.getChildOid()))
           {
             child = relationship.getChild();
           }
@@ -274,20 +269,20 @@ public abstract class PermissionEntity implements Serializable
         catch (Exception e)
         {
           // Do nothing, a relationship may or may not have a valid
-          // parent/child id. If the id is not valid then no further
+          // parent/child oid. If the oid is not valid then no further
           // permission checks can be done on the entity
         }
 
         if (Operation.CREATE.equals(o))
         {
           // Check if actor via the parent object can add a child
-          if (parent != null && this.checkRelationshipAccess(Operation.ADD_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.ADD_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can add a parent
-          if (child != null && this.checkRelationshipAccess(Operation.ADD_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.ADD_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -295,13 +290,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.DELETE.equals(o))
         {
           // Check if actor via the parent object can delete a child
-          if (parent != null && this.checkRelationshipAccess(Operation.DELETE_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.DELETE_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can delete a parent
-          if (child != null && this.checkRelationshipAccess(Operation.DELETE_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.DELETE_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -309,13 +304,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.WRITE.equals(o))
         {
           // Check if actor via the parent object can modify a child
-          if (parent != null && this.checkRelationshipAccess(Operation.WRITE_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.WRITE_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can modify a parent
-          if (child != null && this.checkRelationshipAccess(Operation.WRITE_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.WRITE_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -323,13 +318,13 @@ public abstract class PermissionEntity implements Serializable
         else if (Operation.READ.equals(o))
         {
           // Check if actor via the parent object can read a child
-          if (parent != null && this.checkRelationshipAccess(Operation.READ_CHILD, parent, mdClassIF.getId()))
+          if (parent != null && this.checkRelationshipAccess(Operation.READ_CHILD, parent, mdClassIF.getOid()))
           {
             return true;
           }
 
           // Check if actor via the child object can read a parent
-          if (child != null && this.checkRelationshipAccess(Operation.READ_PARENT, child, mdClassIF.getId()))
+          if (child != null && this.checkRelationshipAccess(Operation.READ_PARENT, child, mdClassIF.getOid()))
           {
             return true;
           }
@@ -337,67 +332,6 @@ public abstract class PermissionEntity implements Serializable
       }
 
       return false;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Checks if the session has permissions on the given state
-   *
-   * @param o
-   *          The operation to execute
-   * @param stateId
-   *          id of the state
-   *
-   * @return If access has been granted
-   */
-  protected boolean checkAccess(Operation o, String stateId)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (this.getOperations(stateId).contains(o))
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  protected Set<Operation> getOperations(String stateId)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      Set<Operation> operations = new TreeSet<Operation>();
-
-      StateMasterDAOIF state = StateMasterDAO.get(stateId);
-
-      // Load state permissions
-      if (state != null)
-      {
-        if (permissions.containsKey(state.getId()))
-        {
-          operations.addAll(permissions.get(state.getId()));
-        }
-      }
-
-      return operations;
     }
     finally
     {
@@ -419,36 +353,11 @@ public abstract class PermissionEntity implements Serializable
         // Load domain-type permissions
         if (!domainId.equals(""))
         {
-          String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getId(), null);
+          String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
 
           if (permissions.containsKey(key))
           {
             operations.addAll(permissions.get(key));
-          }
-        }
-
-        if (component instanceof Business)
-        {
-          StateMasterDAOIF state = BusinessFacade.getState((Business) component);
-
-          // Load state permissions
-          if (state != null)
-          {
-            if (permissions.containsKey(state.getId()))
-            {
-              operations.addAll(permissions.get(state.getId()));
-            }
-          }
-
-          // Load domain-state permissions
-          if (state != null && !domainId.equals(""))
-          {
-            String key = DomainTupleDAO.buildKey(domainId, null, state.getId());
-
-            if (permissions.containsKey(key))
-            {
-              operations.addAll(permissions.get(key));
-            }
           }
         }
       }
@@ -466,9 +375,9 @@ public abstract class PermissionEntity implements Serializable
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Load type permissions
-    if (permissions.containsKey(mdTypeIF.getId()))
+    if (permissions.containsKey(mdTypeIF.getOid()))
     {
-      operations.addAll(permissions.get(mdTypeIF.getId()));
+      operations.addAll(permissions.get(mdTypeIF.getOid()));
     }
 
     if (mdTypeIF instanceof MdClassDAOIF)
@@ -568,30 +477,6 @@ public abstract class PermissionEntity implements Serializable
         }
       }
 
-      // Load state permissions
-      StateMasterDAOIF state = BusinessFacade.getState(business);
-
-      if (state != null)
-      {
-        String key = TypeTupleDAO.buildKey(mdRelationshipId, state.getId());
-
-        if (permissions.containsKey(key))
-        {
-          operations.addAll(permissions.get(key));
-        }
-      }
-
-      // Load domain-state permissions
-      if (state != null && !domainId.equals(""))
-      {
-        String key = DomainTupleDAO.buildKey(domainId, mdRelationshipId, state.getId());
-
-        if (permissions.containsKey(key))
-        {
-          operations.addAll(permissions.get(key));
-        }
-      }
-
       return operations;
     }
     finally
@@ -647,116 +532,6 @@ public abstract class PermissionEntity implements Serializable
   }
 
   /**
-   * Check if the user of this session has promote access on a transition
-   *
-   * @param entity
-   *          The entity object ot check acces on
-   * @param transitionName
-   *          The name of the transition to check promotion on
-   *
-   * @return If the user of the session has the permission to execute the given
-   *         operation on the given transition
-   */
-  protected boolean checkPromoteAccess(Business business, String transitionName)
-  {
-    this.permissionLock.lock();
-
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      StateMasterDAOIF sink = BusinessFacade.getSink(business, transitionName);
-
-      Set<Operation> operations = this.getPromoteOperations(business, sink);
-
-      return operations.contains(Operation.PROMOTE);
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  protected Set<Operation> getPromoteOperations(Business business, StateMasterDAOIF sink)
-  {
-    this.permissionLock.lock();
-
-    try
-    {
-      Set<Operation> operations = new TreeSet<Operation>();
-
-      if (sink != null)
-      {
-        // Load state permissions
-        if (permissions.containsKey(sink.getId()))
-        {
-          operations.addAll(permissions.get(sink.getId()));
-        }
-
-        String domainId = business.getValue(ElementInfo.DOMAIN);
-
-        // Load domain-state permissions
-        if (!domainId.equals(""))
-        {
-          String key = DomainTupleDAO.buildKey(domainId, null, sink.getId());
-
-          if (permissions.containsKey(key))
-          {
-            operations.addAll(permissions.get(key));
-          }
-        }
-      }
-
-      return operations;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Check if the user of this session has promote access on a transition
-   *
-   * @param sink
-   *          The StateMasterIF in which the entity will be promoted to
-   *
-   * @return If the user of the session has the permission to execute the given
-   *         operation on the given transition
-   */
-  protected boolean checkPromoteAccess(StateMasterDAOIF sink)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (sink != null)
-      {
-        // Check for permissions on the sink state
-        Set<Operation> typeOperations = permissions.get(sink.getId());
-
-        if (typeOperations != null && typeOperations.contains(Operation.PROMOTE))
-        {
-          return true;
-        }
-      }
-
-      return false;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
    * Check if the user has type permission on the entity attribute for a given
    * operation.
    *
@@ -779,9 +554,9 @@ public abstract class PermissionEntity implements Serializable
       }
 
       // Check if permissions exist of the mdAttribute type
-      if (permissions.containsKey(mdAttribute.getId()))
+      if (permissions.containsKey(mdAttribute.getOid()))
       {
-        Set<Operation> operations = permissions.get(mdAttribute.getId());
+        Set<Operation> operations = permissions.get(mdAttribute.getOid());
 
         if (operations != null && operations.contains(operation))
         {
@@ -831,17 +606,17 @@ public abstract class PermissionEntity implements Serializable
         Business parent = null;
         Business child = null;
 
-        // It is possible that the child or parent id is invalid and can't be
+        // It is possible that the child or parent oid is invalid and can't be
         // dereferenced
 
         try
         {
-          if (IdParser.validId(relationship.getParentId()))
+          if (IdParser.validId(relationship.getParentOid()))
           {
             parent = relationship.getParent();
           }
 
-          if (IdParser.validId(relationship.getChildId()))
+          if (IdParser.validId(relationship.getChildOid()))
           {
             child = relationship.getChild();
           }
@@ -849,7 +624,7 @@ public abstract class PermissionEntity implements Serializable
         catch (Exception e)
         {
           // Do nothing, a relationship may or may not have a valid
-          // parent/child id. If the id is not valid then no further
+          // parent/child oid. If the oid is not valid then no further
           // permission checks can be done on the entity
         }
 
@@ -892,71 +667,6 @@ public abstract class PermissionEntity implements Serializable
     }
   }
 
-  /**
-   * Returns true if permission exists for the given operation on the attribute
-   * and the given defining type state.
-   *
-   * @param operation
-   * @param stateId
-   * @param mdAttribute
-   * @return operations for the given attribute and the state of the type that
-   *         defines it.
-   */
-  protected boolean checkAttributeAccess(Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (getAttributeOperations(stateId, mdAttribute).contains(operation))
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Gets operations for the given attribute and the state of the type that
-   * defines it.
-   *
-   * @param stateId
-   * @param mdAttribute
-   * @return operations for the given attribute and the state of the type that
-   *         defines it.
-   */
-  protected Set<Operation> getAttributeOperations(String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    Set<Operation> operations = new TreeSet<Operation>();
-
-    MdClassDAOIF mdClassIF = mdAttribute.definedByClass();
-
-    if (mdClassIF instanceof MdBusinessDAO)
-    {
-      StateMasterDAOIF state = StateMasterDAO.get(stateId);
-
-      String key = TypeTupleDAO.buildKey(mdAttribute.getId(), state.getId());
-
-      if (permissions.containsKey(key))
-      {
-        operations.addAll(permissions.get(key));
-      }
-    }
-
-    return operations;
-  }
-
   protected Set<Operation> getAttributeOperations(Mutable component, MdAttributeDAOIF mdAttribute)
   {
     this.permissionLock.lock();
@@ -972,38 +682,11 @@ public abstract class PermissionEntity implements Serializable
         // Load domain-attribute permissions
         if (!domainId.equals(""))
         {
-          String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getId(), null);
+          String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
           if (permissions.containsKey(key))
           {
             operations.addAll(permissions.get(key));
-          }
-        }
-
-        if (component instanceof Business)
-        {
-          StateMasterDAOIF state = BusinessFacade.getState((Business) component);
-
-          // Load state-attribute permissions
-          if (state != null)
-          {
-            String key = TypeTupleDAO.buildKey(mdAttribute.getId(), state.getId());
-
-            if (permissions.containsKey(key))
-            {
-              operations.addAll(permissions.get(key));
-            }
-          }
-
-          // Load domain-state-attribute permissions
-          if (!domainId.equals(""))
-          {
-            String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getId(), state.getId());
-
-            if (permissions.containsKey(key))
-            {
-              operations.addAll(permissions.get(key));
-            }
           }
         }
       }
@@ -1020,9 +703,9 @@ public abstract class PermissionEntity implements Serializable
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Check if permissions exist of the mdAttribute type
-    if (permissions.containsKey(mdAttribute.getId()))
+    if (permissions.containsKey(mdAttribute.getOid()))
     {
-      operations.addAll(permissions.get(mdAttribute.getId()));
+      operations.addAll(permissions.get(mdAttribute.getOid()));
     }
 
     // Check for permissions of the MdAttributeDimension this permission entity
@@ -1170,9 +853,9 @@ public abstract class PermissionEntity implements Serializable
       }
 
       // Check if permissions exist on the MdMethod
-      if (permissions.containsKey(mdMethod.getId()))
+      if (permissions.containsKey(mdMethod.getOid()))
       {
-        Set<Operation> operations = permissions.get(mdMethod.getId());
+        Set<Operation> operations = permissions.get(mdMethod.getOid());
 
         if (operations != null && operations.contains(operation))
         {

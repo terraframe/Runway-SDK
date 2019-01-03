@@ -21,7 +21,9 @@
  */
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +31,7 @@ import java.util.Scanner;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.CommonProperties;
@@ -60,21 +63,21 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   ConfigurationResolverIF getConfigResolver()
   {
     ConfigurationManager.setConfigResolver(new ProfileConfigurationResolver());
-    
+
     baseDir = CommonProperties.getProjectBasedir();
     CommonProperties.dumpInstance();
-    
+
     ProfileFlattener.main(new String[] { "flat" });
 
     ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
 
     return new ProfileConfigurationResolver();
-  } 
-  
+  }
+
   @Test
   public void testIsLegacy()
   {
-    assertTrue(LegacyPropertiesSupport.isLegacy());
+    Assert.assertTrue(LegacyPropertiesSupport.isLegacy());
   }
 
   @Test
@@ -95,7 +98,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
         CommonProperties.dumpInstance();
         String appName = CommonProperties.getDeployAppName();
 
-        assertEquals("Actually Using Flattened Profile", appName);
+        Assert.assertEquals("Actually Using Flattened Profile", appName);
       }
       finally
       {
@@ -111,19 +114,20 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 
     CommonProperties.dumpInstance();
   }
-  
+
   @Test
   public void testNotWritingNewProperties() throws FileNotFoundException
   {
     Scanner scanner = null;
-    
+
     try
     {
       scanner = new Scanner(new File(baseDir + "/target/test-classes/flat/database.properties"));
-      
-      // Make sure we don't have any weird bugs that cause the ProfileFlattener to write the migrated properties instead of the legacy ones
+
+      // Make sure we don't have any weird bugs that cause the ProfileFlattener
+      // to write the migrated properties instead of the legacy ones
       String dbProps = scanner.useDelimiter("\\Z").next();
-      assertFalse(dbProps.contains("database.port"));
+      Assert.assertFalse(dbProps.contains("database.port"));
     }
     finally
     {

@@ -34,7 +34,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -88,7 +88,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(CHILDGEOENTITY, value.getId());
+      setValue(CHILDGEOENTITY, value.getOid());
     }
   }
   
@@ -128,7 +128,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(CHILDUNIVERSAL, value.getId());
+      setValue(CHILDUNIVERSAL, value.getOid());
     }
   }
   
@@ -212,24 +212,24 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityAllPaths.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -368,7 +368,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -408,7 +408,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(PARENTGEOENTITY, value.getId());
+      setValue(PARENTGEOENTITY, value.getOid());
     }
   }
   
@@ -448,7 +448,7 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     }
     else
     {
-      setValue(PARENTUNIVERSAL, value.getId());
+      setValue(PARENTUNIVERSAL, value.getOid());
     }
   }
   
@@ -505,9 +505,9 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     return CLASS;
   }
   
-  public static GeoEntityAllPaths get(String id)
+  public static GeoEntityAllPaths get(String oid)
   {
-    return (GeoEntityAllPaths) com.runwaysdk.business.Business.get(id);
+    return (GeoEntityAllPaths) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeoEntityAllPaths getByKey(String key)
@@ -515,17 +515,17 @@ public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Busin
     return (GeoEntityAllPaths) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GeoEntityAllPaths lock(java.lang.String id)
+  public static GeoEntityAllPaths lock(java.lang.String oid)
   {
-    GeoEntityAllPaths _instance = GeoEntityAllPaths.get(id);
+    GeoEntityAllPaths _instance = GeoEntityAllPaths.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeoEntityAllPaths unlock(java.lang.String id)
+  public static GeoEntityAllPaths unlock(java.lang.String oid)
   {
-    GeoEntityAllPaths _instance = GeoEntityAllPaths.get(id);
+    GeoEntityAllPaths _instance = GeoEntityAllPaths.get(oid);
     _instance.unlock();
     
     return _instance;

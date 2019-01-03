@@ -19,7 +19,6 @@
 package com.runwaysdk.gis;
 
 import java.util.List;
-import java.util.Set;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.CoreException;
@@ -28,6 +27,7 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.io.XMLExporter;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.query.EntityQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -56,7 +56,7 @@ public class GISMetadataExporter
       CacheShutdown.shutdown();
     }
   }
-  
+
   @Request
   public static void gisMetadata(String schemaFile, String exportFile) throws Throwable
   {
@@ -73,7 +73,7 @@ public class GISMetadataExporter
       while (componentIterator.hasNext())
       {
         EntityDAOIF component = (EntityDAOIF) componentIterator.next();
-        
+
         if (isGISMetadata(component) && !isUniversalMetadata(component))
         {
           exporter.add(component);
@@ -83,52 +83,52 @@ public class GISMetadataExporter
 
     exporter.writeToFile(exportFile);
   }
-  
-//  private static void export(String id, Set<String> all)
-//  {
-//    if (!all.contains(id))
-//    {
-//      EntityDAOIF entity = EntityDAO.get(id);
-//
-//      if (!isRunwayMetadata(entity))
-//      {
-//        all.add(id);
-//
-//        if (entity instanceof BusinessDAOIF)
-//        {
-//          BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
-//          List<RelationshipDAOIF> children = businessDAO.getAllChildren();
-//
-//          for (RelationshipDAOIF child : children)
-//          {
-//            export(child.getId(), all);
-//          }
-//
-//          List<RelationshipDAOIF> parents = businessDAO.getAllParents();
-//
-//          for (RelationshipDAOIF parent : parents)
-//          {
-//            export(parent.getId(), all);
-//          }
-//        }
-//        else if (entity instanceof RelationshipDAOIF)
-//        {
-//          RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
-//
-//          export(relationship.getParentId(), all);
-//          export(relationship.getChildId(), all);
-//        }
-//      }
-//    }
-//  }
-  
+
+  // private static void export(String oid, Set<String> all)
+  // {
+  // if (!all.contains(oid))
+  // {
+  // EntityDAOIF entity = EntityDAO.get(oid);
+  //
+  // if (!isRunwayMetadata(entity))
+  // {
+  // all.add(oid);
+  //
+  // if (entity instanceof BusinessDAOIF)
+  // {
+  // BusinessDAOIF businessDAO = (BusinessDAOIF) entity;
+  // List<RelationshipDAOIF> children = businessDAO.getAllChildren();
+  //
+  // for (RelationshipDAOIF child : children)
+  // {
+  // export(child.getOid(), all);
+  // }
+  //
+  // List<RelationshipDAOIF> parents = businessDAO.getAllParents();
+  //
+  // for (RelationshipDAOIF parent : parents)
+  // {
+  // export(parent.getOid(), all);
+  // }
+  // }
+  // else if (entity instanceof RelationshipDAOIF)
+  // {
+  // RelationshipDAOIF relationship = (RelationshipDAOIF) entity;
+  //
+  // export(relationship.getParentOid(), all);
+  // export(relationship.getChildOid(), all);
+  // }
+  // }
+  // }
+  // }
+
   private static boolean isGISMetadata(EntityDAOIF component)
   {
-    return component.getSiteMaster().equals("www.runwaysdk-gis.com") || component.getKey().startsWith("com.runwaysdk.system.gis");
+    return component.getSiteMaster().equals("www.runwaysdk-gis.com") || component.getKey().startsWith(GISConstants.GIS_METADATA_PACKAGE);
   }
 
   private static boolean isUniversalMetadata(EntityDAOIF component)
   {
-    return component.getKey().startsWith("com.runwaysdk.system.gis.geo"); 
+    return component.getKey().startsWith(GISConstants.GEO_PACKAGE);
   }
 }

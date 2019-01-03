@@ -26,28 +26,17 @@ import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -128,21 +117,6 @@ public class ExportMetadata
     private List<MdWebFieldDAO>      fields;
 
     /**
-     * A new MdStateMachine to add to an existing MdBusiness
-     */
-    private MdStateMachineDAO        mdStateMachine;
-
-    /**
-     * List of new StateMasters to add to a new or existing MdStateMachine
-     */
-    private List<StateMasterDAOIF>   states;
-
-    /**
-     * List of new TransitionDAO to add to a new or existing MdStateMachine
-     */
-    private List<TransitionDAOIF>    transitions;
-
-    /**
      * List of new ParameterMarkers, and corresponding MdParamerters, to add to an existing MdEntity, MdFacade, MdController
      */
     private List<NewParameterMarker> markers;
@@ -163,9 +137,6 @@ public class ExportMetadata
     NewComponent()
     {
       attributes = new LinkedList<MdAttributeDAO>();
-      mdStateMachine = null;
-      states = new LinkedList<StateMasterDAOIF>();
-      transitions = new LinkedList<TransitionDAOIF>();
       markers = new LinkedList<NewParameterMarker>();
       mdParameters = new LinkedList<MdParameterDAOIF>();
       removeEnumItems = new LinkedList<BusinessDAOIF>();
@@ -208,23 +179,6 @@ public class ExportMetadata
     }
 
     /**
-     * Add a new MdStateMachine component.
-     * 
-     * @param mdStateMachine
-     *          The new MdStateMachine
-     * @param states
-     *          The new StateMasters corresponding to the new MdStateMachine
-     * @param transitions
-     *          The new TransitionDAOs corresponding to the new MdStateMachine
-     */
-    void addMdStateMachine(MdStateMachineDAO mdStateMachine, List<StateMasterDAO> states, List<TransitionDAO> transitions)
-    {
-      this.mdStateMachine = mdStateMachine;
-      this.states.addAll(states);
-      this.transitions.addAll(transitions);
-    }
-
-    /**
      * Add a new MdParameter component
      * 
      * @param mdParameter
@@ -233,34 +187,6 @@ public class ExportMetadata
     void addMdParameter(MdParameterDAO mdParameter)
     {
       this.mdParameters.add(mdParameter);
-    }
-
-    /**
-     * Adds new TransitionDAO components
-     * 
-     * @param transitions
-     *          The new TransitionDAOs
-     */
-    public void addTransitions(TransitionDAO... transitions)
-    {
-      for (TransitionDAO transition : transitions)
-      {
-        this.transitions.add(transition);
-      }
-    }
-
-    /**
-     * Adds new StateMasterDAO components
-     * 
-     * @param states
-     *          The new StateMasters
-     */
-    public void addStates(StateMasterDAO... states)
-    {
-      for (StateMasterDAO state : states)
-      {
-        this.states.add(state);
-      }
     }
 
     /**
@@ -275,11 +201,6 @@ public class ExportMetadata
       {
         this.removeEnumItems.add(businessDAO);
       }
-    }
-
-    public void addAction(MdActionDAO mdAction, MdParameterDAO... mdParameters)
-    {
-      markers.add(new NewParameterMarker(mdAction, mdParameters));
     }
   }
 
@@ -314,7 +235,7 @@ public class ExportMetadata
   private List<ComponentIF>         revokePermissionsList;
 
   /**
-   * Mapping between an existing {@link ComponentIF} id and it's {@link NewComponent}s.
+   * Mapping between an existing {@link ComponentIF} oid and it's {@link NewComponent}s.
    */
   private Map<String, NewComponent> newComponentList;
 
@@ -457,7 +378,7 @@ public class ExportMetadata
   /**
    * @param role
    * @param exportRole If true then all the permissions on the RoleDAOIF will also be exported.
-   * @param id
+   * @param oid
    */
   public void grantAllPermissions(RoleDAOIF component, boolean exportRole, MdBusinessDAOIF... mdBusinesses)
   {
@@ -510,12 +431,12 @@ public class ExportMetadata
    */
   public void addNewMdAttribute(MdClassDAOIF mdClass, MdAttributeDAO mdAttribute)
   {
-    if (!newComponentList.containsKey(mdClass.getId()))
+    if (!newComponentList.containsKey(mdClass.getOid()))
     {
-      newComponentList.put(mdClass.getId(), new NewComponent());
+      newComponentList.put(mdClass.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdClass.getId()).addMdAttribute(mdAttribute);
+    newComponentList.get(mdClass.getOid()).addMdAttribute(mdAttribute);
   }
 
   /**
@@ -525,80 +446,22 @@ public class ExportMetadata
    */
   public List<MdAttributeDAO> getNewMdAttributes(MdClassDAOIF mdClass)
   {
-    if (!newComponentList.containsKey(mdClass.getId()))
+    if (!newComponentList.containsKey(mdClass.getOid()))
     {
       return new LinkedList<MdAttributeDAO>();
     }
 
-    return newComponentList.get(mdClass.getId()).attributes;
+    return newComponentList.get(mdClass.getOid()).attributes;
   }
 
   public List<MdWebFieldDAO> getNewMdWebFields(MdWebFormDAOIF mdWebForm)
   {
-    if (!newComponentList.containsKey(mdWebForm.getId()))
+    if (!newComponentList.containsKey(mdWebForm.getOid()))
     {
       return new LinkedList<MdWebFieldDAO>();
     }
 
-    return newComponentList.get(mdWebForm.getId()).fields;
-  }
-
-  /**
-   * Adds a new {@link MdStateMachineDAO} to an existing {@link MdBusinessDAO}
-   * 
-   * @param mdBusiness
-   *          Existing {@link MdBusinessDAO}
-   * @param mdStateMachine
-   *          The new {@link MdStateMachineDAO}
-   * @param states
-   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
-   * @param transitions
-   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewMdStateMachine(MdBusinessDAOIF mdBusiness, MdStateMachineDAO mdStateMachine, List<StateMasterDAO> states, List<TransitionDAO> transitions)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      newComponentList.put(mdBusiness.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdBusiness.getId()).addMdStateMachine(mdStateMachine, states, transitions);
-  }
-
-  /**
-   * Adds a new {@link StateMasterDAO} to an existing {@link MdStateMachineDAO}
-   * 
-   * @param mdStateMachine
-   *          Existing {@link MdStateMachineDAO}
-   * @param states
-   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewStates(MdStateMachineDAOIF mdStateMachine, StateMasterDAO... states)
-  {
-    if (!newComponentList.containsKey(mdStateMachine.getId()))
-    {
-      newComponentList.put(mdStateMachine.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdStateMachine.getId()).addStates(states);
-  }
-
-  /**
-   * Adds a new {@link TransitionDAO} to an existing {@link MdStateMachineDAO}
-   * 
-   * @param mdStateMachine
-   *          Existing {@link MdStateMachineDAO}
-   * @param transitions
-   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
-   */
-  public void addNewTransitions(MdStateMachineDAOIF mdStateMachine, TransitionDAO... transitions)
-  {
-    if (!newComponentList.containsKey(mdStateMachine.getId()))
-    {
-      newComponentList.put(mdStateMachine.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdStateMachine.getId()).addTransitions(transitions);
+    return newComponentList.get(mdWebForm.getOid()).fields;
   }
 
   /**
@@ -613,22 +476,12 @@ public class ExportMetadata
    */
   public void addNewMdMethod(MdTypeDAOIF mdType, MdMethodDAO mdMethod, MdParameterDAO... mdParameters)
   {
-    if (!newComponentList.containsKey(mdType.getId()))
+    if (!newComponentList.containsKey(mdType.getOid()))
     {
-      newComponentList.put(mdType.getId(), new NewComponent());
+      newComponentList.put(mdType.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdType.getId()).addMethod(mdMethod, mdParameters);
-  }
-
-  public void addNewMdAction(MdControllerDAOIF mdController, MdActionDAO mdAction, MdParameterDAO... mdParameters)
-  {
-    if (!newComponentList.containsKey(mdController.getId()))
-    {
-      newComponentList.put(mdController.getId(), new NewComponent());
-    }
-
-    newComponentList.get(mdController.getId()).addAction(mdAction, mdParameters);
+    newComponentList.get(mdType.getOid()).addMethod(mdMethod, mdParameters);
   }
 
   /**
@@ -641,12 +494,12 @@ public class ExportMetadata
    */
   public void addNewMdParameter(ParameterMarker marker, MdParameterDAO mdParameter)
   {
-    if (!newComponentList.containsKey(marker.getId()))
+    if (!newComponentList.containsKey(marker.getOid()))
     {
-      newComponentList.put(marker.getId(), new NewComponent());
+      newComponentList.put(marker.getOid(), new NewComponent());
     }
 
-    newComponentList.get(marker.getId()).addMdParameter(mdParameter);
+    newComponentList.get(marker.getOid()).addMdParameter(mdParameter);
   }
 
   /**
@@ -659,12 +512,12 @@ public class ExportMetadata
    */
   public void addRemoveEnumItem(MdEnumerationDAOIF mdEnumeration, BusinessDAOIF... businessDAOs)
   {
-    if (!newComponentList.containsKey(mdEnumeration.getId()))
+    if (!newComponentList.containsKey(mdEnumeration.getOid()))
     {
-      newComponentList.put(mdEnumeration.getId(), new NewComponent());
+      newComponentList.put(mdEnumeration.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdEnumeration.getId()).addRemoveEnumItem(businessDAOs);
+    newComponentList.get(mdEnumeration.getOid()).addRemoveEnumItem(businessDAOs);
   }
 
   /**
@@ -673,52 +526,7 @@ public class ExportMetadata
    */
   public boolean hasNewComponents(ComponentIF component)
   {
-    return newComponentList.containsKey(component.getId());
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return The new MdStateMachine defined for an existing {@link MdBusinessDAO}
-   */
-  public MdStateMachineDAO getNewMdStateMachine(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return null;
-    }
-
-    return newComponentList.get(mdBusiness.getId()).mdStateMachine;
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link StateMasterDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
-   */
-  public List<StateMasterDAOIF> getNewStates(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return new LinkedList<StateMasterDAOIF>();
-    }
-
-    return newComponentList.get(mdBusiness.getId()).states;
-  }
-
-  /**
-   * @param mdBusiness
-   *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link TransitionDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
-   */
-  public List<TransitionDAOIF> getNewTransitions(MdBusinessDAOIF mdBusiness)
-  {
-    if (!newComponentList.containsKey(mdBusiness.getId()))
-    {
-      return new LinkedList<TransitionDAOIF>();
-    }
-
-    return newComponentList.get(mdBusiness.getId()).transitions;
+    return newComponentList.containsKey(component.getOid());
   }
 
   /**
@@ -728,12 +536,12 @@ public class ExportMetadata
    */
   public List<NewParameterMarker> getNewParameterMarkers(MdTypeDAOIF mdType)
   {
-    if (!newComponentList.containsKey(mdType.getId()))
+    if (!newComponentList.containsKey(mdType.getOid()))
     {
       return new LinkedList<NewParameterMarker>();
     }
 
-    return newComponentList.get(mdType.getId()).markers;
+    return newComponentList.get(mdType.getOid()).markers;
   }
 
   /**
@@ -743,12 +551,12 @@ public class ExportMetadata
    */
   public List<MdParameterDAOIF> getNewMdParameters(ParameterMarker marker)
   {
-    if (!newComponentList.containsKey(marker.getId()))
+    if (!newComponentList.containsKey(marker.getOid()))
     {
       return new LinkedList<MdParameterDAOIF>();
     }
 
-    return newComponentList.get(marker.getId()).mdParameters;
+    return newComponentList.get(marker.getOid()).mdParameters;
   }
 
   /**
@@ -758,12 +566,12 @@ public class ExportMetadata
    */
   public List<BusinessDAOIF> getRemoveEnumItems(MdEnumerationDAOIF mdEnumeration)
   {
-    if (!newComponentList.containsKey(mdEnumeration.getId()))
+    if (!newComponentList.containsKey(mdEnumeration.getOid()))
     {
       return new LinkedList<BusinessDAOIF>();
     }
 
-    return newComponentList.get(mdEnumeration.getId()).removeEnumItems;
+    return newComponentList.get(mdEnumeration.getOid()).removeEnumItems;
   }
 
   public boolean isExportSource()
@@ -853,42 +661,42 @@ public class ExportMetadata
 
   public void renameAttribute(MdAttributeDAOIF mdAttribute, String updatedName)
   {
-    this.renameAttributes.put(mdAttribute.getId(), updatedName);
+    this.renameAttributes.put(mdAttribute.getOid(), updatedName);
   }
 
   public boolean hasRename(MdAttributeDAOIF mdAttribute)
   {
-    return this.renameAttributes.containsKey(mdAttribute.getId());
+    return this.renameAttributes.containsKey(mdAttribute.getOid());
   }
 
   public String getRename(MdAttributeDAOIF mdAttribute)
   {
-    return this.renameAttributes.get(mdAttribute.getId());
+    return this.renameAttributes.get(mdAttribute.getOid());
   }
 
   public void rekeyEntity(EntityDAOIF entity, String newKey)
   {
-    this.rekeyEntities.put(entity.getId(), newKey);
+    this.rekeyEntities.put(entity.getOid(), newKey);
   }
 
   public boolean isRekeyed(EntityDAOIF entity)
   {
-    return this.rekeyEntities.containsKey(entity.getId());
+    return this.rekeyEntities.containsKey(entity.getOid());
   }
 
   public String getRekey(EntityDAOIF entity)
   {
-    return this.rekeyEntities.get(entity.getId());
+    return this.rekeyEntities.get(entity.getOid());
   }
 
   public void addNewMdField(MdWebFormDAO mdWebForm, MdWebFieldDAO mdWebField)
   {
-    if (!newComponentList.containsKey(mdWebForm.getId()))
+    if (!newComponentList.containsKey(mdWebForm.getOid()))
     {
-      newComponentList.put(mdWebForm.getId(), new NewComponent());
+      newComponentList.put(mdWebForm.getOid(), new NewComponent());
     }
 
-    newComponentList.get(mdWebForm.getId()).addMdWebField(mdWebField);
+    newComponentList.get(mdWebForm.getOid()).addMdWebField(mdWebField);
   }
 
 }

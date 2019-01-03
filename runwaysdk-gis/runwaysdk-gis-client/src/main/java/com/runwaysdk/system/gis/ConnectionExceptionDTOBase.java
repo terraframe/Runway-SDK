@@ -69,7 +69,7 @@ public abstract class ConnectionExceptionDTOBase extends com.runwaysdk.business.
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   /**
    * Overrides java.lang.Throwable#getMessage() to retrieve the localized
    * message from the exceptionDTO, instead of from a class variable.
@@ -78,7 +78,7 @@ public abstract class ConnectionExceptionDTOBase extends com.runwaysdk.business.
   {
     java.lang.String template = super.getMessage();
     
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

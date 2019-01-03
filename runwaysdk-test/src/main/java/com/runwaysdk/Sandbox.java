@@ -18,9 +18,17 @@
  */
 package com.runwaysdk;
 
+import java.util.UUID;
+
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.patcher.domain.SchedulerV2;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.metadata.MdAttributeCharacter;
+import com.runwaysdk.system.metadata.MdAttributeIndices;
+import com.runwaysdk.system.metadata.MdBusiness;
+import com.runwaysdk.system.metadata.MdTermRelationship;
 
 /**
  * !!HEADS UP!!
@@ -48,18 +56,42 @@ public class Sandbox
 {
   public static void main(String[] args)
   {
-    inRequest();
+    System.out.println(UUID.randomUUID().toString());
+//    inRequest();
   }
   
-  @Request
-  private static void inRequest()
-  {
-    if (!LocalProperties.isRunwayEnvironment())
-    {
-      throw new RuntimeException("Runway environment expected");
-    }
-    LocalProperties.setSkipCodeGenAndCompile(false);
-    
-    SchedulerV2.doIt();
-  }
+//  @Request
+//  private static void addToMetadata()
+//  {
+//    addToMetadataTransaction();
+//  }
+//  @Transaction
+//  private static void addToMetadataTransaction()
+//  {
+////    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdBusinessInfo.CLASS);
+//    MdBusiness mdBusiness = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+//    
+//    // DefaultAttribute.CODE - defined by GeoEntity geoId
+//    MdAttributeCharacter codeMdAttr = new MdAttributeCharacter();
+//    codeMdAttr.setAttributeName(MdTermRelationshipInfo.CODE);
+//    codeMdAttr.getDisplayLabel().setValue("Code");
+//    codeMdAttr.getDescription().setValue("A unique and human readle identifier");
+//    codeMdAttr.setDatabaseSize(255);
+//    codeMdAttr.setDefiningMdClass(mdBusiness);
+//    codeMdAttr.setRequired(true);
+//    codeMdAttr.addIndexType(MdAttributeIndices.UNIQUE_INDEX);
+//    codeMdAttr.apply();
+//  }
+//  
+//  @Request
+//  private static void inRequest()
+//  {
+//    if (!LocalProperties.isRunwayEnvironment())
+//    {
+//      throw new RuntimeException("Runway environment expected");
+//    }
+//    LocalProperties.setSkipCodeGenAndCompile(false);
+//    
+//    SchedulerV2.doIt();
+//  }
 }

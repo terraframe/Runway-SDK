@@ -32,7 +32,6 @@ import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.FormObjectInfo;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.ValueQueryDTOInfo;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.query.GeneratedComponentQuery;
@@ -89,7 +88,7 @@ public class Type
   {
     String baseType = type.replaceAll("\\[\\]", "");
 
-    if (isPrimitive() || isVoid() || isStream() || isFormObject() || isMultipartFileParameter())
+    if (isPrimitive() || isVoid() || isStream() || isFormObject())
     {
       return type;
     }
@@ -299,7 +298,7 @@ public class Type
 
   public boolean isDefinedType()
   {
-    return ! ( this.isPrimitive() || this.isGeneratedComponentQuery() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject() || this.isMultipartFileParameter() );
+    return ! ( this.isPrimitive() || this.isGeneratedComponentQuery() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject() );
   }
 
   public boolean isQuery()
@@ -374,10 +373,5 @@ public class Type
   public boolean isFormObject()
   {
     return type.equals(FormObjectInfo.CLASS);
-  }
-
-  public boolean isMultipartFileParameter()
-  {
-    return type.equals(MdActionInfo.MULTIPART_FILE_PARAMETER);
   }
 }

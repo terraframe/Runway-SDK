@@ -166,9 +166,9 @@ public class MdAttributeBlobDAO extends MdAttributeConcreteDAO implements MdAttr
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeBlobDAOIF get(String id)
+  public static MdAttributeBlobDAOIF get(String oid)
   {
-    return (MdAttributeBlobDAOIF) BusinessDAO.get(id);
+    return (MdAttributeBlobDAOIF) BusinessDAO.get(oid);
   }
 
   public MdAttributeBlobDAO create(Map<String, Attribute> attributeMap, String classType)

@@ -39,7 +39,7 @@ public class RoleExportBuilder extends ExportBuilder<Void>
   @Request
   public Void doIt()
   {
-    if(transaction)
+    if (transaction)
     {
       doItTransaction();
     }

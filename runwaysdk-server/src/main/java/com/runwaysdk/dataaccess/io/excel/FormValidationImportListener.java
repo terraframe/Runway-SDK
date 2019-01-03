@@ -85,7 +85,7 @@ public class FormValidationImportListener extends ImportAdapter implements Impor
             String formattedString = condition.getFormattedString();
             String msg = "Attribute is not applicable when [" + condition + "] does not evaluate to true";
 
-            FieldValidationProblem problem = new FieldValidationProblem(instance.getId(), mdClass, key, msg);
+            FieldValidationProblem problem = new FieldValidationProblem(instance.getOid(), mdClass, key, msg);
             problem.setCondition(formattedString);
             problem.throwIt();
           }

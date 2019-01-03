@@ -170,21 +170,21 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.transaction.TransactionItem.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()
@@ -521,9 +521,9 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber();
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber(String alias);
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber(String alias, String displayLabel);
@@ -586,13 +586,13 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.transaction.TransactionItem transactionItem)
     {
       if(transactionItem == null) return this.EQ((java.lang.String)null);
-      return this.EQ(transactionItem.getId());
+      return this.EQ(transactionItem.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.transaction.TransactionItem transactionItem)
     {
       if(transactionItem == null) return this.NE((java.lang.String)null);
-      return this.NE(transactionItem.getId());
+      return this.NE(transactionItem.getOid());
     }
 
   public com.runwaysdk.query.SelectableChar getComponentId()
@@ -697,21 +697,21 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.transaction.TransactionItem.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()
@@ -995,9 +995,9 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber();
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber(String alias);
     public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber(String alias, String displayLabel);
@@ -1065,7 +1065,7 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
 
       for (int i=0; i<transactionItem.length; i++)
       {
-        itemIdArray[i] = transactionItem[i].getId();
+        itemIdArray[i] = transactionItem[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1077,7 +1077,7 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
 
       for (int i=0; i<transactionItem.length; i++)
       {
-        itemIdArray[i] = transactionItem[i].getId();
+        itemIdArray[i] = transactionItem[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1089,7 +1089,7 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
 
       for (int i=0; i<transactionItem.length; i++)
       {
-        itemIdArray[i] = transactionItem[i].getId();
+        itemIdArray[i] = transactionItem[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1101,7 +1101,7 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
 
       for (int i=0; i<transactionItem.length; i++)
       {
-        itemIdArray[i] = transactionItem[i].getId();
+        itemIdArray[i] = transactionItem[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1113,7 +1113,7 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
 
       for (int i=0; i<transactionItem.length; i++)
       {
-        itemIdArray[i] = transactionItem[i].getId();
+        itemIdArray[i] = transactionItem[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1220,21 +1220,21 @@ public  class TransactionItemQuery extends com.runwaysdk.query.GeneratedBusiness
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.transaction.TransactionItem.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.transaction.TransactionItem.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.transaction.TransactionItem.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getIgnoreSequenceNumber()

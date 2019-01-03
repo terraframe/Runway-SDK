@@ -51,6 +51,7 @@ import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeBlob_Q;
@@ -78,6 +79,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeSymmetric_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeTerm_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeText_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeTime_Q;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeUUID_Q;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
@@ -188,7 +190,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   }
 
   /**
-   * Used only for queries involving parent_id or child_id on a relationship
+   * Used only for queries involving parent_oid or child_oid on a relationship
    */
   protected void recomputeColumnAlias()
   {
@@ -202,6 +204,10 @@ public abstract class Attribute implements SelectableSingle, Statement
     if (_mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
       mdAttribute_Q = new MdAttributeBoolean_Q(_mdAttributeIF);
+    }
+    else if (_mdAttributeIF instanceof MdAttributeUUIDDAOIF)
+    {
+      mdAttribute_Q = new MdAttributeUUID_Q(_mdAttributeIF);
     }
     else if (_mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
@@ -657,7 +663,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinEq LEFT_JOIN_EQ(EntityQuery entityQuery)
   {
-    return new LeftJoinEq(this, entityQuery.id());
+    return new LeftJoinEq(this, entityQuery.oid());
   }
 
   /**
@@ -667,7 +673,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinEq LEFT_JOIN_EQ(GeneratedEntityQuery componentQuery)
   {
-    return new LeftJoinEq(this, componentQuery.id());
+    return new LeftJoinEq(this, componentQuery.oid());
   }
 
   /**
@@ -697,7 +703,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinNotEq LEFT_JOIN_NE(EntityQuery entityQuery)
   {
-    return new LeftJoinNotEq(this, entityQuery.id());
+    return new LeftJoinNotEq(this, entityQuery.oid());
   }
 
   /**
@@ -707,7 +713,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinNotEq LEFT_JOIN_NE(GeneratedEntityQuery entityQuery)
   {
-    return new LeftJoinNotEq(this, entityQuery.id());
+    return new LeftJoinNotEq(this, entityQuery.oid());
   }
 
   /**
@@ -737,7 +743,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinGt LEFT_JOIN_GT(EntityQuery entityQuery)
   {
-    return new LeftJoinGt(this, entityQuery.id());
+    return new LeftJoinGt(this, entityQuery.oid());
   }
 
   /**
@@ -747,7 +753,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinGt LEFT_JOIN_GT(GeneratedEntityQuery componentQuery)
   {
-    return new LeftJoinGt(this, componentQuery.id());
+    return new LeftJoinGt(this, componentQuery.oid());
   }
 
   /**
@@ -777,7 +783,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinGtEq LEFT_JOIN_GE(GeneratedEntityQuery entityQuery)
   {
-    return new LeftJoinGtEq(this, entityQuery.id());
+    return new LeftJoinGtEq(this, entityQuery.oid());
   }
 
   /**
@@ -787,7 +793,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinGtEq LEFT_JOIN_GE(EntityQuery entityQuery)
   {
-    return new LeftJoinGtEq(this, entityQuery.id());
+    return new LeftJoinGtEq(this, entityQuery.oid());
   }
 
   /**
@@ -817,7 +823,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinLt LEFT_JOIN_LT(EntityQuery entityQuery)
   {
-    return new LeftJoinLt(this, entityQuery.id());
+    return new LeftJoinLt(this, entityQuery.oid());
   }
 
   /**
@@ -827,7 +833,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinLt LEFT_JOIN_LT(GeneratedEntityQuery entityQuery)
   {
-    return new LeftJoinLt(this, entityQuery.id());
+    return new LeftJoinLt(this, entityQuery.oid());
   }
 
   /**
@@ -857,7 +863,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinLtEq LEFT_JOIN_LE(EntityQuery entityQuery)
   {
-    return new LeftJoinLtEq(this, entityQuery.id());
+    return new LeftJoinLtEq(this, entityQuery.oid());
   }
 
   /**
@@ -867,7 +873,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    */
   public LeftJoinLtEq LEFT_JOIN_LE(GeneratedEntityQuery entityQuery)
   {
-    return new LeftJoinLtEq(this, entityQuery.id());
+    return new LeftJoinLtEq(this, entityQuery.oid());
   }
 
   /**

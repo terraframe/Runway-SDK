@@ -31,9 +31,9 @@ public abstract class ProblemInheritanceBase extends com.runwaysdk.system.metada
   public final static String CLASS = "com.runwaysdk.system.metadata.ProblemInheritance";
   private static final long serialVersionUID = 1827230838;
   
-  public ProblemInheritanceBase(String parentId, String childId)
+  public ProblemInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class ProblemInheritanceBase extends com.runwaysdk.system.metada
     return (com.runwaysdk.system.metadata.MdProblem) super.getChild();
   }
   
-  public static ProblemInheritance get(String id)
+  public static ProblemInheritance get(String oid)
   {
-    return (ProblemInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (ProblemInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ProblemInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ProblemInheritanceBase extends com.runwaysdk.system.metada
     return (ProblemInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ProblemInheritance lock(java.lang.String id)
+  public static ProblemInheritance lock(java.lang.String oid)
   {
-    ProblemInheritance _instance = ProblemInheritance.get(id);
+    ProblemInheritance _instance = ProblemInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ProblemInheritance unlock(java.lang.String id)
+  public static ProblemInheritance unlock(java.lang.String oid)
   {
-    ProblemInheritance _instance = ProblemInheritance.get(id);
+    ProblemInheritance _instance = ProblemInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

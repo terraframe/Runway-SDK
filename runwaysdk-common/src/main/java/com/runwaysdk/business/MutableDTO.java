@@ -322,12 +322,12 @@ public abstract class MutableDTO extends ComponentDTO
     }
   }
 
-  public void addMultiItem(String attributeName, String id)
+  public void addMultiItem(String attributeName, String oid)
   {
     if (attributeMap.containsKey(attributeName))
     {
       AttributeMultiReferenceDTO reference = (AttributeMultiReferenceDTO) attributeMap.get(attributeName);
-      reference.addItem(id);
+      reference.addItem(oid);
       setModified(true);
     }
   }
@@ -342,12 +342,12 @@ public abstract class MutableDTO extends ComponentDTO
     }
   }
 
-  public void removeMultiItem(String enumerationName, String id)
+  public void removeMultiItem(String enumerationName, String oid)
   {
     if (attributeMap.containsKey(enumerationName))
     {
       AttributeMultiReferenceDTO reference = (AttributeMultiReferenceDTO) attributeMap.get(enumerationName);
-      reference.removeItem(id);
+      reference.removeItem(oid);
       setModified(true);
     }
   }

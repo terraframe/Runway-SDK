@@ -33,13 +33,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.gis.constants.GeoserverProperties;
 import com.runwaysdk.system.gis.ConnectionException;
 import com.runwaysdk.system.gis.InvalidFormatException;
 import com.runwaysdk.system.gis.mapping.GeoserverFacade;
 
-public abstract class AbstractRequest implements Reloadable
+public abstract class AbstractRequest
 {
   private static final String REST_SERVICE = "/gwc/rest/seed/";
 

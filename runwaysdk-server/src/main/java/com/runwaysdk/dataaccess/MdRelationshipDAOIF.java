@@ -46,12 +46,12 @@ public interface MdRelationshipDAOIF extends MdElementDAOIF
   public static final String INDEX_PREFIX                = "rel_";
 
   /**
-   * Name of the 1st database index. (parent_id, child_id)
+   * Name of the 1st database index. (parent_oid, child_oid)
    */
   public static final String INDEX1_NAME                 = "index1Name";
 
   /**
-   * Name of the 2nd database index. (child_id)
+   * Name of the 2nd database index. (child_oid)
    */
   public static final String INDEX2_NAME                 = "index2Name";
 

@@ -51,9 +51,9 @@ public interface SingleActorDAOIF extends ActorDAOIF
   public Set<RoleDAOIF> authorizedRoles();
   
   /**
-   * Returns true if the actor is assigned to the role with the given id, false otherwise.
+   * Returns true if the actor is assigned to the role with the given oid, false otherwise.
    * 
-   * @return true if the actor is assigned to the role with the given id, false otherwise.
+   * @return true if the actor is assigned to the role with the given oid, false otherwise.
    */
   public boolean hasRole(String roleId);
   

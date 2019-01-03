@@ -99,9 +99,9 @@ public abstract class MdMobileCharacterBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdMobileCharacter get(String id)
+  public static MdMobileCharacter get(String oid)
   {
-    return (MdMobileCharacter) com.runwaysdk.business.Business.get(id);
+    return (MdMobileCharacter) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileCharacter getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdMobileCharacterBase extends com.runwaysdk.system.metadat
     return (MdMobileCharacter) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileCharacter lock(java.lang.String id)
+  public static MdMobileCharacter lock(java.lang.String oid)
   {
-    MdMobileCharacter _instance = MdMobileCharacter.get(id);
+    MdMobileCharacter _instance = MdMobileCharacter.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileCharacter unlock(java.lang.String id)
+  public static MdMobileCharacter unlock(java.lang.String oid)
   {
-    MdMobileCharacter _instance = MdMobileCharacter.get(id);
+    MdMobileCharacter _instance = MdMobileCharacter.get(oid);
     _instance.unlock();
     
     return _instance;

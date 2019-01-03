@@ -21,9 +21,9 @@ package com.runwaysdk.constants;
 public interface MdMethodInfo extends MetadataInfo
 {
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "20070427JS000000000000000000151400000000000000000000000000000001";  
+  public static final String ID_VALUE  = "04ec4fb8-2e29-3922-a330-c031cb00003a";  
 
   /**
    * Class.

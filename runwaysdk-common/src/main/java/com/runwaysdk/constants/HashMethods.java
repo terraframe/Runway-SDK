@@ -20,9 +20,9 @@ package com.runwaysdk.constants;
 
 public enum HashMethods
 {
-  MD5   ("0000000000000000000000000000062800000000000000000000000000000640", "MD5"),
+  MD5   ("eb1a44d5-dfdb-3858-9378-cac4a000005d", "MD5"),
   
-  SHA   ("0000000000000000000000000000063400000000000000000000000000000640", "SHA");
+  SHA   ("76518452-0089-33e5-bd4c-55175f00005d", "SHA");
   
   /**
    * The name of the attribute that specifies what kind of hash 
@@ -31,9 +31,9 @@ public enum HashMethods
   public static final String MESSAGE_DIGEST = "messageDigest";
   
   /**
-   * The id of the symmetric method.
+   * The oid of the symmetric method.
    */
-  private String id;
+  private String oid;
   
   /**
    * The message digest of the symmetric method.
@@ -45,29 +45,29 @@ public enum HashMethods
    */
   private HashMethods()
   {
-    id = null;
+    oid = null;
     messageDigest = null;
   }
   
   /**
    * Enum constructor.
    * 
-   * @param id
+   * @param oid
    * @param messageDigest
    */
-  private HashMethods(String id, String messageDigest)
+  private HashMethods(String oid, String messageDigest)
   {
     this();
-    this.id = id;
+    this.oid = oid;
     this.messageDigest = messageDigest;
   }
   
   /**
-   * @return The id of the method.
+   * @return The oid of the method.
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
   
   /**

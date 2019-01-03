@@ -20,11 +20,12 @@ package com.runwaysdk.gis;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.runwaysdk.gis.business.GISBusinessTest;
-import com.runwaysdk.gis.business.GISControllerGenTest;
 import com.runwaysdk.gis.dataaccess.GISDataAccessTest;
 import com.runwaysdk.gis.dataaccess.GISWebFormDAOTest;
 import com.runwaysdk.gis.dataaccess.io.GISSaxParseTest;
@@ -39,57 +40,47 @@ import com.runwaysdk.gis.geo.UniversalTest;
 import com.runwaysdk.session.Request;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-  GISDataAccessTest.class,
-  GISBusinessTest.class,
-  GISAdapterTest.class,
-//  GISRMIAdapterTest.class,
-  GISViewAdapterTest.class,
-  GISRMIViewAdapterTest.class,
-  GISVirtualAdapterTest.class,
-  GISRMIVirtualAdapterTest.class,
-  GISControllerGenTest.class,
-  GISWebFormDAOTest.class,
-  GeoEntityTest.class,
-  UniversalTest.class,
-  GISSaxParseTest.class
-})
+@Suite.SuiteClasses({ GISDataAccessTest.class, GISBusinessTest.class, GISAdapterTest.class,
+    // GISRMIAdapterTest.class,
+    GISViewAdapterTest.class, GISRMIViewAdapterTest.class, GISVirtualAdapterTest.class, GISRMIVirtualAdapterTest.class, GISWebFormDAOTest.class, GeoEntityTest.class, UniversalTest.class, GISSaxParseTest.class })
 public class GISTestSuite
 {
   @BeforeClass
   @Request
-  public static void setUp() throws Exception {
+  public static void setUp() throws Exception
+  {
     GISMasterTestSetup.doSetUp(true);
   }
-  
+
   @AfterClass
   @Request
-  public static void tearDown() throws Exception {
+  public static void tearDown() throws Exception
+  {
     GISMasterTestSetup.doTearDown(true);
   }
-  
-//  public static Test suite()
-//  {
-//    TestSuite gisTestSuite = new TestSuite();
-//
-//    TestSuite suite = new TestSuite();
-//    suite.addTest(GISDataAccess.suite());
-//    suite.addTest(GISBusiness.suite());
-//    suite.addTest(GISAdapterTest.suite());
-//    suite.addTest(GISRMIAdapterTest.suite());
-//    suite.addTest(GISViewAdapterTest.suite());
-//    suite.addTest(GISRMIViewAdapterTest.suite());
-//    suite.addTest(GISVirtualAdapterTest.suite());
-//    suite.addTest(GISRMIVirtualAdapterTest.suite());
-//    suite.addTest(GISControllerGenTest.suite());
-//    suite.addTest(GISWebFormDAO.suite());
-////    suite.addTestSuite(GeoEntityTest.class);
-////    suite.addTestSuite(UniversalTest.class);
-//    
-//    gisTestSuite.addTest(new GISMasterTestSetup(suite));
-//
-//    gisTestSuite.addTest(GISSaxParseTest.suite());
-//
-//    return gisTestSuite;
-//  }
+
+  // public static Test suite()
+  // {
+  // TestSuite gisTestSuite = new TestSuite();
+  //
+  // TestSuite suite = new TestSuite();
+  // suite.addTest(GISDataAccess.suite());
+  // suite.addTest(GISBusiness.suite());
+  // suite.addTest(GISAdapterTest.suite());
+  // suite.addTest(GISRMIAdapterTest.suite());
+  // suite.addTest(GISViewAdapterTest.suite());
+  // suite.addTest(GISRMIViewAdapterTest.suite());
+  // suite.addTest(GISVirtualAdapterTest.suite());
+  // suite.addTest(GISRMIVirtualAdapterTest.suite());
+  // suite.addTest(GISControllerGenTest.suite());
+  // suite.addTest(GISWebFormDAO.suite());
+  //// suite.addTestSuite(GeoEntityTest.class);
+  //// suite.addTestSuite(UniversalTest.class);
+  //
+  // gisTestSuite.addTest(new GISMasterTestSetup(suite));
+  //
+  // gisTestSuite.addTest(GISSaxParseTest.suite());
+  //
+  // return gisTestSuite;
+  // }
 }

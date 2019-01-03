@@ -30,9 +30,6 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.generation.GenerationUtil;
-import com.runwaysdk.business.state.InvalidEntryStateException;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -138,7 +135,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public List<RelationshipDAOIF> getChildren(String relationshipType)
   {
-    return ObjectCache.getChildren(this.getId(), relationshipType);
+    return ObjectCache.getChildren(this.getOid(), relationshipType);
   }
 
   /**
@@ -166,17 +163,17 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public List<RelationshipDAOIF> getChildren(BusinessDAOIF childObject, String relationshipType)
   {
-    return this.getChildren(childObject.getId(), relationshipType);
+    return this.getChildren(childObject.getOid(), relationshipType);
   }
 
   /**
    * Returns an array of Relationship objects of the given relationship type
    * that represent child relationships between the this object and the child
-   * object with the given id.
+   * object with the given oid.
    * 
    * <br/>
-   * <b>Precondition:</b> childId != null <br/>
-   * <b>Precondition:</b> !childId.trim().equals("") <br/>
+   * <b>Precondition:</b> childOid != null <br/>
+   * <b>Precondition:</b> !childOid.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipTypeis a valid relationship type.
@@ -186,16 +183,16 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * relationships to this BusinessDAO with the given child for the given
    * relationship type
    * 
-   * @param childId
-   *          id to the child of this object.
+   * @param childOid
+   *          oid to the child of this object.
    * @param relationshipType
    *          Relationship type specifying which relationship objects to be
    *          returned
    * @return List of Relationship objects.
    */
-  public List<RelationshipDAOIF> getChildren(String childId, String relationshipType)
+  public List<RelationshipDAOIF> getChildren(String childOid, String relationshipType)
   {
-    return RelationshipDAOFactory.get(this.getId(), childId, relationshipType);
+    return RelationshipDAOFactory.get(this.getOid(), childOid, relationshipType);
   }
 
   /**
@@ -224,7 +221,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
         continue;
       }
 
-      relationshipList.addAll(ObjectCache.getChildren(this.getId(), mdRelationshipIF.definesType()));
+      relationshipList.addAll(ObjectCache.getChildren(this.getOid(), mdRelationshipIF.definesType()));
     }
     return relationshipList;
   }
@@ -249,7 +246,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public List<RelationshipDAOIF> getParents(String relationshipType)
   {
-    return ObjectCache.getParents(this.getId(), relationshipType);
+    return ObjectCache.getParents(this.getOid(), relationshipType);
   }
 
   /**
@@ -277,17 +274,17 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public List<RelationshipDAOIF> getParents(BusinessDAOIF parentObject, String relationshipType)
   {
-    return this.getParents(parentObject.getId(), relationshipType);
+    return this.getParents(parentObject.getOid(), relationshipType);
   }
 
   /**
    * Returns an array of Relationship objects of the given relationship type
    * that represent parent relationships between the this object and the parent
-   * object with the given id.
+   * object with the given oid.
    * 
    * <br/>
-   * <b>Precondition:</b> parentId != null <br/>
-   * <b>Precondition:</b> !parentId.trim().equals("") <br/>
+   * <b>Precondition:</b> parentOid != null <br/>
+   * <b>Precondition:</b> !parentOid.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type.)
@@ -297,16 +294,16 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * relationships to this BusinessDAO with the given parent for the given
    * relationship type
    * 
-   * @param parentId
-   *          id to a parent of this object.
+   * @param parentOid
+   *          oid to a parent of this object.
    * @param relationshipType
    *          relationshipType specifying which relationship objects to be
    *          returned
    * @return List of Relationship objects
    */
-  public List<RelationshipDAOIF> getParents(String parentId, String relationshipType)
+  public List<RelationshipDAOIF> getParents(String parentOid, String relationshipType)
   {
-    return RelationshipDAOFactory.get(parentId, this.getId(), relationshipType);
+    return RelationshipDAOFactory.get(parentOid, this.getOid(), relationshipType);
   }
 
   /**
@@ -335,7 +332,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
         continue;
       }
 
-      relationshipList.addAll(ObjectCache.getParents(this.getId(), mdRelationshipIF.definesType()));
+      relationshipList.addAll(ObjectCache.getParents(this.getOid(), mdRelationshipIF.definesType()));
     }
     return relationshipList;
   }
@@ -363,34 +360,34 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public RelationshipDAO addChild(BusinessDAOIF childBusinessDAO, String relationshipType)
   {
-    return addChild(childBusinessDAO.getId(), relationshipType);
+    return addChild(childBusinessDAO.getOid(), relationshipType);
   }
 
   /**
-   * Add the BusinessDAO with the given id as a child to this BusinessDAO for
+   * Add the BusinessDAO with the given oid as a child to this BusinessDAO for
    * the given relationship.
    * 
    * <br/>
-   * <b>Precondition:</b> childId != null <br/>
-   * <b>Precondition:</b> !childId.trim().equals("") <br/>
+   * <b>Precondition:</b> childOid != null <br/>
+   * <b>Precondition:</b> !childOid.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type.
    * 
    * <br/>
-   * <b>Postcondition:</b> adds the BusinessDAO with the given id as a child of
+   * <b>Postcondition:</b> adds the BusinessDAO with the given oid as a child of
    * this BusinessDAO for the given relationship type <br/>
    * <b>Postcondition:</b> returned Relationship object may not be null
    * 
-   * @param childId
-   *          id of the BusinessDAO to be added as a child to this BusinessDAO
+   * @param childOid
+   *          oid of the BusinessDAO to be added as a child to this BusinessDAO
    * @param relationshipType
    *          Relationship type for the added BusinessDAO
    * @return Relationship object representing the newly created relationship
    */
-  public RelationshipDAO addChild(String childId, String relationshipType)
+  public RelationshipDAO addChild(String childOid, String relationshipType)
   {
-    RelationshipDAO newChildRelationship = RelationshipDAO.newInstance(this.getId(), childId, relationshipType);
+    RelationshipDAO newChildRelationship = RelationshipDAO.newInstance(this.getOid(), childOid, relationshipType);
     return newChildRelationship;
   }
 
@@ -436,44 +433,44 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public void removeAllChildren(BusinessDAOIF childBusinessDAO, String relationshipType, boolean businessContext)
   {
-    this.removeAllChildren(childBusinessDAO.getId(), relationshipType, businessContext);
+    this.removeAllChildren(childBusinessDAO.getOid(), relationshipType, businessContext);
   }
 
   /**
-   * Removes the given BusinessDAO with the given id from the children of this
+   * Removes the given BusinessDAO with the given oid from the children of this
    * BusinessDAO.
    * 
    * <br/>
-   * <b>Precondition:</b> childId != null <br/>
-   * <b>Precondition:</b> childId is a id to a businessDAO that is already a
+   * <b>Precondition:</b> childOid != null <br/>
+   * <b>Precondition:</b> childOid is a oid to a businessDAO that is already a
    * child of this object. <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type
    * 
-   * @param childId
+   * @param childOid
    *          Id of a BusinessDAO to be removed as a child of this object
    * @param relationshipType
    *          Relationship type for the removed BusinessDAO
    */
-  public void removeAllChildren(String childId, String relationshipType)
+  public void removeAllChildren(String childOid, String relationshipType)
   {
-    this.removeAllChildren(childId, relationshipType, false);
+    this.removeAllChildren(childOid, relationshipType, false);
   }
 
   /**
-   * Removes the given BusinessDAO with the given id from the children of this
+   * Removes the given BusinessDAO with the given oid from the children of this
    * BusinessDAO.
    * 
    * <br/>
-   * <b>Precondition:</b> childId != null <br/>
-   * <b>Precondition:</b> childId is a id to a businessDAO that is already a
+   * <b>Precondition:</b> childOid != null <br/>
+   * <b>Precondition:</b> childOid is a oid to a businessDAO that is already a
    * child of this object. <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type
    * 
-   * @param childId
+   * @param childOid
    *          Id of a BusinessDAO to be removed as a child of this object
    * @param relationshipType
    *          Relationship type for the removed BusinessDAO
@@ -483,13 +480,13 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    *          will happen at the Business layer instead of the data access
    *          layer.
    */
-  public void removeAllChildren(String childId, String relationshipType, boolean businessContext)
+  public void removeAllChildren(String childOid, String relationshipType, boolean businessContext)
   {
-    List<RelationshipDAOIF> relationshipDAOlist = RelationshipDAO.get(this.getId(), childId, relationshipType);
+    List<RelationshipDAOIF> relationshipDAOlist = RelationshipDAO.get(this.getOid(), childOid, relationshipType);
 
     if (relationshipDAOlist.size() == 0)
     {
-      String error = "Object does not have child object with id [" + childId + "], in the [" + relationshipType + "] relationship.";
+      String error = "Object does not have child object with oid [" + childOid + "], in the [" + relationshipType + "] relationship.";
       throw new DataNotFoundException(error, MdRelationshipDAO.getMdRelationshipDAO(relationshipType));
     }
 
@@ -514,11 +511,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br/>
-   * <b>Precondition:</b> id to relationship object must represent the a child
+   * <b>Precondition:</b> oid to relationship object must represent the a child
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a child relationship.
+   *          oid to a child relationship.
    */
   public void removeChild(String relationshipId)
   {
@@ -532,11 +529,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br/>
-   * <b>Precondition:</b> id to relationship object must represent the a child
+   * <b>Precondition:</b> oid to relationship object must represent the a child
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a child relationship.
+   *          oid to a child relationship.
    * @param businessContext
    *          true if this is being called from a business context, false
    *          otherwise. If true then cascading deletes of other Entity objects
@@ -585,9 +582,9 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public void removeChild(RelationshipDAOIF relationshipIF, boolean businessContext)
   {
-    if (!relationshipIF.getParentId().equals(this.getId()))
+    if (!relationshipIF.getParentOid().equals(this.getOid()))
     {
-      String msg = "Relationship with id [" + relationshipIF.getId() + "] " + "does not represent a child relationship with the object with id [" + getId() + "]";
+      String msg = "Relationship with oid [" + relationshipIF.getOid() + "] " + "does not represent a child relationship with the object with oid [" + getOid() + "]";
       throw new DataNotFoundException(msg, MdRelationshipDAO.getMdRelationshipDAO(relationshipIF.getType()));
     }
 
@@ -624,33 +621,33 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public RelationshipDAO addParent(BusinessDAOIF parentBusinessDAO, String relationshipType)
   {
-    return addParent(parentBusinessDAO.getId(), relationshipType);
+    return addParent(parentBusinessDAO.getOid(), relationshipType);
   }
 
   /**
-   * Add the BusinessDAO with the given id as a parent to this BusinessDAO for
+   * Add the BusinessDAO with the given oid as a parent to this BusinessDAO for
    * the given relationship.
    * 
    * <br/>
-   * <b>Precondition:</b> parentId != null && !parentId("") <br/>
+   * <b>Precondition:</b> parentOid != null && !parentOid("") <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type
    * 
    * <br/>
-   * <b>Postcondition:</b> adds the BusinessDAO with the given id as a parent of
+   * <b>Postcondition:</b> adds the BusinessDAO with the given oid as a parent of
    * this BusinessDAO for the given relationship type <br/>
    * <b>Postcondition:</b> returned Relationship object may not be null
    * 
-   * @param parentId
-   *          id of BusinessDAO to be added as a child to this BusinessDAO
+   * @param parentOid
+   *          oid of BusinessDAO to be added as a child to this BusinessDAO
    * @param relationshipType
    *          Relationship type for the added BusinessDAO
    * @return Relationship object representing the newly created relationship
    */
-  public RelationshipDAO addParent(String parentId, String relationshipType)
+  public RelationshipDAO addParent(String parentOid, String relationshipType)
   {
-    RelationshipDAO newParentRelationshipDAO = RelationshipDAO.newInstance(parentId, this.getId(), relationshipType);
+    RelationshipDAO newParentRelationshipDAO = RelationshipDAO.newInstance(parentOid, this.getOid(), relationshipType);
 
     return newParentRelationshipDAO;
   }
@@ -697,45 +694,45 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public void removeAllParents(BusinessDAOIF parentBusinessDAO, String relationshipType, boolean businessContext)
   {
-    this.removeAllParents(parentBusinessDAO.getId(), relationshipType, businessContext);
+    this.removeAllParents(parentBusinessDAO.getOid(), relationshipType, businessContext);
   }
 
   /**
-   * Removes the BusinessDAO with the given id from the parents of this
+   * Removes the BusinessDAO with the given oid from the parents of this
    * BusinessDAO.
    * 
    * <br/>
-   * <b>Precondition:</b> parentId != null <br/>
-   * <b>Precondition:</b> parentId a id to an object that is already a parent of
+   * <b>Precondition:</b> parentOid != null <br/>
+   * <b>Precondition:</b> parentOid a oid to an object that is already a parent of
    * this object. <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type
    * 
-   * @param parentId
-   *          id to the BusinessDAO to be removed as a parent of this object
+   * @param parentOid
+   *          oid to the BusinessDAO to be removed as a parent of this object
    * @param relationshipType
    *          Relationship type for the removed BusinessDAO
    */
-  public void removeAllParents(String parentId, String relationshipType)
+  public void removeAllParents(String parentOid, String relationshipType)
   {
-    this.removeAllParents(parentId, relationshipType, false);
+    this.removeAllParents(parentOid, relationshipType, false);
   }
 
   /**
-   * Removes the BusinessDAO with the given id from the parents of this
+   * Removes the BusinessDAO with the given oid from the parents of this
    * BusinessDAO.
    * 
    * <br/>
-   * <b>Precondition:</b> parentId != null <br/>
-   * <b>Precondition:</b> parentId a id to an object that is already a parent of
+   * <b>Precondition:</b> parentOid != null <br/>
+   * <b>Precondition:</b> parentOid a oid to an object that is already a parent of
    * this object. <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType().equals("") <br/>
    * <b>Precondition:</b> relationshipType is a valid relationship type
    * 
-   * @param parentId
-   *          id to the BusinessDAO to be removed as a parent of this object
+   * @param parentOid
+   *          oid to the BusinessDAO to be removed as a parent of this object
    * @param relationshipType
    *          Relationship type for the removed BusinessDAO
    * @param businessContext
@@ -744,13 +741,13 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    *          will happen at the Business layer instead of the data access
    *          layer.
    */
-  public void removeAllParents(String parentId, String relationshipType, boolean businessContext)
+  public void removeAllParents(String parentOid, String relationshipType, boolean businessContext)
   {
-    List<RelationshipDAOIF> relationshipDAOlist = RelationshipDAO.get(parentId, this.getId(), relationshipType);
+    List<RelationshipDAOIF> relationshipDAOlist = RelationshipDAO.get(parentOid, this.getOid(), relationshipType);
 
     if (relationshipDAOlist.size() == 0)
     {
-      String error = "Object does not have parent object with id [" + parentId + "] in the [" + relationshipType + "] relationship.";
+      String error = "Object does not have parent object with oid [" + parentOid + "] in the [" + relationshipType + "] relationship.";
       throw new DataNotFoundException(error, MdRelationshipDAO.getMdRelationshipDAO(relationshipType));
     }
 
@@ -776,11 +773,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br>
-   * <b>Precondition:</b> id to relationship object must represent the a parent
+   * <b>Precondition:</b> oid to relationship object must represent the a parent
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a parent relationship.
+   *          oid to a parent relationship.
    */
   public void removeParent(String relationshipId)
   {
@@ -794,11 +791,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br>
-   * <b>Precondition:</b> id to relationship object must represent the a parent
+   * <b>Precondition:</b> oid to relationship object must represent the a parent
    * relationship with this object.
    * 
    * @param relationshipId
-   *          id to a parent relationship.
+   *          oid to a parent relationship.
    * @param businessContext
    *          true if this is being called from a business context, false
    *          otherwise. If true then cascading deletes of other Entity objects
@@ -847,9 +844,9 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    */
   public void removeParent(RelationshipDAOIF relationshipIF, boolean businessContext)
   {
-    if (!relationshipIF.getChildId().equals(this.getId()))
+    if (!relationshipIF.getChildOid().equals(this.getOid()))
     {
-      String error = "Relationship with id [" + relationshipIF.getId() + "] " + "does not represent a parent relationship with the object with id [" + getId() + "]";
+      String error = "Relationship with oid [" + relationshipIF.getOid() + "] " + "does not represent a parent relationship with the object with oid [" + getOid() + "]";
       throw new DataNotFoundException(error, MdRelationshipDAO.getMdRelationshipDAO(relationshipIF.getType()));
     }
 
@@ -897,7 +894,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
         if (loopMdEntity instanceof MdEntityDAOIF)
         {
-          clearAttributeValues((MdEntityDAOIF) loopMdEntity, mdAttributeReferenceIF, this.getId());
+          clearAttributeValues((MdEntityDAOIF) loopMdEntity, mdAttributeReferenceIF, this.getOid());
         }
       }
       catch (AttributeValueException e)
@@ -927,7 +924,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     {
       MdBusinessDAOIF parentMdBusiness = inheritsFrom.get(i);
 
-      conditions[i] = mdRelationshipQuery.aReference(MdRelationshipInfo.PARENT_MD_BUSINESS).EQ(parentMdBusiness.getId());
+      conditions[i] = mdRelationshipQuery.aReference(MdRelationshipInfo.PARENT_MD_BUSINESS).EQ(parentMdBusiness.getOid());
     }
 
     mdRelationshipQuery.WHERE(mdRelationshipQuery.aBoolean(MdRelationshipInfo.COMPOSITION).EQ(true).AND(OR.get(conditions)));
@@ -982,7 +979,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * 
    * <br/>
    * <b>Postcondition:</b> parent relationships are removed
-   * (RelationshipFactory.getParents(businessDAO.getId(), "")).length == 0
+   * (RelationshipFactory.getParents(businessDAO.getOid(), "")).length == 0
    * 
    */
   private void deleteFromAllParentRelations(boolean businessContext)
@@ -1006,7 +1003,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * 
    * <br/>
    * <b>Postcondition:</b> parent relationships are removed
-   * (RelationshipFactory.getChildren(businessDAO.getId(), "")).length == 0
+   * (RelationshipFactory.getChildren(businessDAO.getOid(), "")).length == 0
    * 
    */
   private void deleteAllChildRelations(boolean businessContext)
@@ -1072,7 +1069,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
   }
 
   /**
-   * Returns a copy of the given BusinessDAO instance, with a new id and
+   * Returns a copy of the given BusinessDAO instance, with a new oid and
    * mastered at the current site. The state of the object is new and has not
    * been applied to the database.
    * 
@@ -1095,7 +1092,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
       }
     }
 
-    // This should overwrite the non-system attributes, such as id and site
+    // This should overwrite the non-system attributes, such as oid and site
     // master
     copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
@@ -1119,7 +1116,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
       BusinessDAOIF parent = rel.getParent();
       BusinessDAO businessDAOParent = parent.getBusinessDAO();
 
-      if (businessDAOParent.getId().compareTo(possibleParent.getId()) == 0)
+      if (businessDAOParent.getOid().compareTo(possibleParent.getOid()) == 0)
       {
         return true;
       }
@@ -1144,7 +1141,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     {
       BusinessDAOIF child = rel.getChild();
       BusinessDAO businessDAOChild = child.getBusinessDAO();
-      if (businessDAOChild.getId().compareTo(possibleChild.getId()) == 0)
+      if (businessDAOChild.getOid().compareTo(possibleChild.getOid()) == 0)
       {
         return true;
       }
@@ -1154,22 +1151,22 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
   }
 
   /**
-   * Returns a BusinessDAO of the given id in the database.
+   * Returns a BusinessDAO of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> BusinessDAO representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return BusinessDAO instance of the given id
+   * @param oid
+   *          element oid of an item in the database
+   * @return BusinessDAO instance of the given oid
    */
-  public static BusinessDAOIF get(String id)
+  public static BusinessDAOIF get(String oid)
   {
-    return ObjectCache.getBusinessDAO(id);
+    return ObjectCache.getBusinessDAO(oid);
   }
 
   /**
@@ -1218,218 +1215,6 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
   public static BusinessDAO newInstance(String classType)
   {
     return BusinessDAOFactory.newInstance(classType);
-  }
-
-  @Override
-  public String apply()
-  {
-    String id = super.apply();
-
-    // If this is the first time the businessDAO has been applied
-    // then set the current state to the given entry state
-    if (this.isNew())
-    {
-      this.setEntryStatus();
-    }
-
-    return id;
-  }
-
-  /**
-   * Sets the current status of this dataobjet to the entry states for each
-   * state machine defined for the defining MdBusiness of this businessDAO.
-   * 
-   * @param id
-   *          The id this businessDAO.
-   */
-  private void setEntryStatus()
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingMdBusiness = MdBusinessDAO.getMdBusinessDAO(this.getType());
-
-    // If this type has no State Machine, just bail out.
-    if (!definingMdBusiness.hasStateMachine())
-      return;
-
-    // Get the state machine
-    MdStateMachineDAOIF stateMachine = definingMdBusiness.definesMdStateMachine();
-
-    // Get the entry states of the machine
-    StateMasterDAOIF entry = stateMachine.getDefaultState();
-
-    // Get the status mdRelationship defined for the entry state
-    MdRelationshipDAOIF rel = stateMachine.getMdStatus(entry);
-
-    // Set the current status relationship of this businessDAO
-    RelationshipDAO status = RelationshipDAO.newInstance(this.getId(), entry.getId(), rel.definesType());
-
-    status.apply();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.BusinessDAOIF#hasState()
-   */
-  public boolean hasState()
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = this.getMdBusinessDAO();
-
-    // Check if the defining MdBusiness is associated with a state machine
-    if (!definingClass.hasStateMachine())
-      return false;
-
-    // Get the status mdRelationship defined for the entry state
-    MdTreeDAOIF rel = definingClass.definesMdStateMachine().getMdStatus();
-    List<RelationshipDAOIF> list = this.getChildren(rel.definesType());
-    return ( list.size() != 0 );
-  }
-
-  /**
-   * Returns the current state of this businessDAO If there is not state machine
-   * defined for the datatype, then an expection is thrown.
-   * 
-   * @return The current state of the businessDAO
-   */
-  public StateMasterDAOIF currentState()
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = MdBusinessDAO.getMdBusinessDAO(this.getType());
-
-    if (!definingClass.hasStateMachine() || !this.isAppliedToDB())
-    {
-      return null;
-    }
-    else
-    {
-      // Check if the defining MdBusiness is associated with a state machine
-      MdStateMachineDAOIF stateMachine = definingClass.definesMdStateMachine();
-
-      // Get the status mdRelationship defined for the entry state
-      MdTreeDAOIF rel = stateMachine.getMdStatus();
-
-      // Get the current status relationship of this businessDAO
-      List<RelationshipDAOIF> statuses = this.getChildren(rel.definesType());
-
-      // This DAO does not have a current state even though it should
-      // Thus retroactively assign it to the default state
-      if (statuses.size() == 0)
-      {
-        StateMasterDAOIF defaultState = stateMachine.getDefaultState();
-        this.setState(defaultState);
-
-        return defaultState;
-      }
-      else if (statuses.size() > 1)
-      {
-        String msg = "The businessDAO [" + this.getId() + "] has more than one current state";
-        throw new ProgrammingErrorException(msg);
-      }
-
-      RelationshipDAOIF currentStatus = statuses.get(0);
-
-      return (StateMasterDAOIF) currentStatus.getChild();
-    }
-  }
-
-  /**
-   * @param entryState
-   */
-  public void setEntryState(StateMasterDAOIF entryState)
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = this.getMdBusinessDAO();
-
-    List<StateMasterDAOIF> states = definingClass.definesMdStateMachine().getEntryState();
-    if (states.contains(entryState))
-    {
-      setState(entryState);
-    }
-    else
-    {
-      String entryStateName = entryState.getName();
-      String typeWithMachine = entryState.getMdBusinessDAO().definesType();
-
-      String error = "State [" + entryStateName + "] on machine [" + entryState.getMdBusinessDAO().definesType() + "] is not an entry state";
-      throw new InvalidEntryStateException(error, entryStateName, typeWithMachine);
-    }
-  }
-
-  public MdRelationshipDAOIF getCurrentStatus()
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = this.getMdBusinessDAO();
-
-    // Check if the defining MdBusiness is associated with a state machine
-    MdStateMachineDAOIF stateMachine = definingClass.definesMdStateMachine();
-    return stateMachine.getMdStatus(this.currentState());
-  }
-
-  /**
-   * Sets the current state of the session to a new state. Throws an exception
-   * if the given newState is not a state from this state machine
-   * 
-   * @param newState
-   * @throws DataNotFoundException
-   *           If this datatype does not have a state machine.
-   */
-  private void setState(StateMasterDAOIF newState)
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = MdBusinessDAO.getMdBusinessDAO(this.getType());
-
-    // Check if the defining MdBusiness is associated with a state machine
-    MdStateMachineDAOIF stateMachine = definingClass.definesMdStateMachine();
-
-    // Delete the existing relationship
-    deleteCurrentState();
-
-    // Get the status mdRelationship defined for the entry state
-    MdRelationshipDAOIF rel = stateMachine.getMdStatus(newState);
-
-    // Set the current status relationship of this businessDAO
-    RelationshipDAO status = RelationshipDAO.newInstance(this.getId(), newState.getId(), rel.definesType());
-
-    status.apply();
-  }
-
-  private void deleteCurrentState()
-  {
-    // Get the defining class
-    MdBusinessDAOIF definingClass = MdBusinessDAO.getMdBusinessDAO(this.getType());
-
-    // Check if the defining MdBusiness is associated with a state machine
-    MdStateMachineDAOIF stateMachine = definingClass.definesMdStateMachine();
-
-    // Get the status mdRelationship defined for the entry state
-    MdTreeDAOIF rel = stateMachine.getMdStatus();
-
-    // Get the current status relationship of this businessDAO
-    List<RelationshipDAOIF> list = this.getChildren(rel.definesType());
-
-    // If a currentState already exists then remove it
-    if (list.size() != 0)
-    {
-      RelationshipDAO currentStatus = list.get(0).getRelationshipDAO();
-
-      currentStatus.delete();
-    }
-  }
-
-  /**
-   * Promotes the current state of the businessDAO according to some transition
-   * 
-   * @param transitionName
-   *          The name of the transition
-   */
-  public void promote(String transitionName)
-  {
-    StateMasterDAOIF currentState = this.currentState();
-
-    StateMasterDAOIF nextState = currentState.getNextState(transitionName);
-
-    this.setState(nextState);
   }
 
   public String toString()

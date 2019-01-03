@@ -22,14 +22,14 @@ public class UniversalAttributeRoot extends UniversalAttributeRootBase
 {
   private static final long serialVersionUID = 1016773060;
   
-  public UniversalAttributeRoot(String parentId, String childId)
+  public UniversalAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public UniversalAttributeRoot(com.runwaysdk.system.metadata.MdAttributeTerm parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

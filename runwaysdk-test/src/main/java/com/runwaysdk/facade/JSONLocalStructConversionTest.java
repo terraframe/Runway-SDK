@@ -20,12 +20,13 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.json.JSONObject;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
@@ -42,7 +43,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 import com.runwaysdk.transport.conversion.json.JSONUtil;
 
-public class JSONLocalStructConversionTest extends TestCase implements DoNotWeave
+public class JSONLocalStructConversionTest implements DoNotWeave
 {
   private static MdBusinessDAO                mdBusiness;
 
@@ -58,28 +59,8 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
 
   protected static Locale                     locale = CommonProperties.getDefaultLocale();
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(JSONLocalStructConversionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdTerm = TestFixtureFactory.createMdTerm();
@@ -98,24 +79,29 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
   }
 
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdAttributeLocalCharacter);
     TestFixtureFactory.delete(mdBusiness);
   }
 
-  @Override
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
     this.sessionId = Facade.login("SYSTEM", "SYSTEM", new Locale[] { ( Locale.US ) });
   }
 
-  @Override
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
     Facade.logout(this.sessionId);
   }
 
+  @Request
+  @Test
   public void testNewLocalStruct() throws Exception
   {
     LocalStructDTO source = (LocalStructDTO) Facade.newMutable(sessionId, mdLocalStruct.definesType());
@@ -124,12 +110,14 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
     JSONObject json = ComponentDTOIFToJSON.getConverter(source).populate();
     LocalStructDTO test = (LocalStructDTO) JSONUtil.getComponentDTOFromJSON(this.sessionId, locale, json.toString());
 
-    assertEquals(source.getType(), test.getType());
-    assertEquals(source.getValue(), test.getValue());
-    assertEquals(source.isNewInstance(), test.isNewInstance());
-    assertEquals(source.getId(), test.getId());
+    Assert.assertEquals(source.getType(), test.getType());
+    Assert.assertEquals(source.getValue(), test.getValue());
+    Assert.assertEquals(source.isNewInstance(), test.isNewInstance());
+    Assert.assertEquals(source.getOid(), test.getOid());
   }
 
+  @Request
+  @Test
   public void testAppliedLocalStruct() throws Exception
   {
     LocalStructDTO source = (LocalStructDTO) Facade.newMutable(sessionId, mdLocalStruct.definesType());
@@ -143,17 +131,19 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
       JSONObject json = ComponentDTOIFToJSON.getConverter(source).populate();
       LocalStructDTO test = (LocalStructDTO) JSONUtil.getComponentDTOFromJSON(this.sessionId, locale, json.toString());
 
-      assertEquals(source.getType(), test.getType());
-      assertEquals(source.getValue(), test.getValue());
-      assertEquals(source.isNewInstance(), test.isNewInstance());
-      assertEquals(source.getId(), test.getId());
+      Assert.assertEquals(source.getType(), test.getType());
+      Assert.assertEquals(source.getValue(), test.getValue());
+      Assert.assertEquals(source.isNewInstance(), test.isNewInstance());
+      Assert.assertEquals(source.getOid(), test.getOid());
     }
     finally
     {
-      Facade.delete(this.sessionId, source.getId());
+      Facade.delete(this.sessionId, source.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testLocalStructAttribute() throws Exception
   {
     String attributeName = mdAttributeLocalCharacter.definesAttribute();
@@ -162,17 +152,19 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
     JSONObject json = ComponentDTOIFToJSON.getConverter(source).populate();
     BusinessDTO test = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(this.sessionId, locale, json.toString());
 
-    assertTrue(source.hasAttribute(attributeName));
-    assertTrue(test.hasAttribute(attributeName));
+    Assert.assertTrue(source.hasAttribute(attributeName));
+    Assert.assertTrue(test.hasAttribute(attributeName));
 
-    assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
+    Assert.assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
 
     String sourceValue = source.getStructValue(mdAttributeLocalCharacter.definesAttribute(), MdAttributeLocalInfo.DEFAULT_LOCALE);
     String testValue = test.getStructValue(mdAttributeLocalCharacter.definesAttribute(), MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-    assertEquals(sourceValue, testValue);
+    Assert.assertEquals(sourceValue, testValue);
   }
 
+  @Request
+  @Test
   public void testAppliedLocalStructAttribute() throws Exception
   {
     String attributeName = mdAttributeLocalCharacter.definesAttribute();
@@ -187,22 +179,24 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
       JSONObject json = ComponentDTOIFToJSON.getConverter(source).populate();
       BusinessDTO test = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(this.sessionId, locale, json.toString());
 
-      assertTrue(source.hasAttribute(attributeName));
-      assertTrue(test.hasAttribute(attributeName));
+      Assert.assertTrue(source.hasAttribute(attributeName));
+      Assert.assertTrue(test.hasAttribute(attributeName));
 
-      assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
+      Assert.assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
 
       String sourceValue = source.getStructValue(attributeName, MdAttributeLocalInfo.DEFAULT_LOCALE);
       String testValue = test.getStructValue(attributeName, MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-      assertEquals(sourceValue, testValue);
+      Assert.assertEquals(sourceValue, testValue);
     }
     finally
     {
-      Facade.delete(this.sessionId, source.getId());
+      Facade.delete(this.sessionId, source.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testTerm() throws Exception
   {
     BusinessDTO term = (BusinessDTO) Facade.newMutable(sessionId, mdTerm.definesType());
@@ -214,7 +208,7 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
       String attributeName = mdAttributeTerm.definesAttribute();
 
       BusinessDTO source = (BusinessDTO) Facade.newMutable(sessionId, mdBusiness.definesType());
-      source.setValue(attributeName, term.getId());
+      source.setValue(attributeName, term.getOid());
       source = Facade.createBusiness(this.sessionId, source);
 
       try
@@ -222,24 +216,24 @@ public class JSONLocalStructConversionTest extends TestCase implements DoNotWeav
         JSONObject json = ComponentDTOIFToJSON.getConverter(source).populate();
         BusinessDTO test = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(this.sessionId, locale, json.toString());
 
-        assertTrue(source.hasAttribute(attributeName));
-        assertTrue(test.hasAttribute(attributeName));
+        Assert.assertTrue(source.hasAttribute(attributeName));
+        Assert.assertTrue(test.hasAttribute(attributeName));
 
-        assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
+        Assert.assertEquals(source.getAttributeType(attributeName), test.getAttributeType(attributeName));
 
         String sourceValue = source.getValue(attributeName);
         String testValue = test.getValue(attributeName);
 
-        assertEquals(sourceValue, testValue);
+        Assert.assertEquals(sourceValue, testValue);
       }
       finally
       {
-        Facade.delete(this.sessionId, source.getId());
+        Facade.delete(this.sessionId, source.getOid());
       }
     }
     finally
     {
-      Facade.delete(this.sessionId, term.getId());
+      Facade.delete(this.sessionId, term.getOid());
     }
   }
 

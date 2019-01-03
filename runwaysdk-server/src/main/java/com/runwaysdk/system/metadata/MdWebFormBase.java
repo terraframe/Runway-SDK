@@ -69,9 +69,9 @@ public abstract class MdWebFormBase extends com.runwaysdk.system.metadata.MdForm
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.WebFormField>) getRelationshipsWithChild(mdWebField, com.runwaysdk.system.metadata.WebFormField.CLASS);
   }
   
-  public static MdWebForm get(String id)
+  public static MdWebForm get(String oid)
   {
-    return (MdWebForm) com.runwaysdk.business.Business.get(id);
+    return (MdWebForm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebForm getByKey(String key)
@@ -79,17 +79,17 @@ public abstract class MdWebFormBase extends com.runwaysdk.system.metadata.MdForm
     return (MdWebForm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebForm lock(java.lang.String id)
+  public static MdWebForm lock(java.lang.String oid)
   {
-    MdWebForm _instance = MdWebForm.get(id);
+    MdWebForm _instance = MdWebForm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebForm unlock(java.lang.String id)
+  public static MdWebForm unlock(java.lang.String oid)
   {
-    MdWebForm _instance = MdWebForm.get(id);
+    MdWebForm _instance = MdWebForm.get(oid);
     _instance.unlock();
     
     return _instance;

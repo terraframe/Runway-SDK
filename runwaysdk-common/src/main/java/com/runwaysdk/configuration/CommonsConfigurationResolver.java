@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
-import com.runwaysdk.constants.DeployProperties;
 
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {
@@ -59,35 +58,6 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     if (CommonsConfigurationResolver.getIncludeRuntimeProperties())
     {
       cconfig.addConfiguration(this.getRuntimeProperties());
-    }
-
-    this.loadProperties("instance.properties");
-    this.loadProperties("platform.properties");
-  }
-
-  private void loadProperties(String fileName)
-  {
-    try
-    {
-      String path = ConfigGroup.COMMON.getPath() + fileName;
-
-      // Read the configuration
-      URL url = CommonsConfigurationReader.class.getClassLoader().getResource(path);
-
-      if (url != null)
-      {
-        cconfig.addConfiguration(new PropertiesConfiguration(url));
-
-        log.trace("Loading [" + fileName + "] configuration overrides.");
-      }
-      else
-      {
-        log.info("Did not find " + fileName + ". No overrides were loaded.");
-      }
-    }
-    catch (ConfigurationException e)
-    {
-      log.error(e.getLocalizedMessage(), e);
     }
   }
 
@@ -146,7 +116,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   /*
    * Calculate any special properties that only have values at runtime.
    */
-  private BaseConfiguration getRuntimeProperties()
+  protected BaseConfiguration getRuntimeProperties()
   {
     BaseConfiguration properties = new BaseConfiguration();
 
@@ -183,7 +153,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
 
     if (resource == null)
     {
-      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getIdentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
+      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getOidentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
       throw new RunwayConfigurationException(msg);
     }
 

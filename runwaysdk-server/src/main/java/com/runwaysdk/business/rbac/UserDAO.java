@@ -41,6 +41,7 @@ import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
 
 public class UserDAO extends SingleActorDAO implements UserDAOIF
@@ -169,7 +170,7 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
    */
   public void setLocale(SupportedLocale locale)
   {
-    super.addItem(UserInfo.LOCALE, locale.getId());
+    super.addItem(UserInfo.LOCALE, locale.getOid());
   }
 
   /**
@@ -196,7 +197,7 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
    * Returns all of the operations a uses has on a object
    * @pre get(mdTypeId) instanceof Metadata
    *
-   * @param metadata The id of the MdType
+   * @param metadata The oid of the MdType
    * @return A list of all operations the user has access for
    */
   public Set<Operation> getAllPermissions(MetadataDAOIF metadata)
@@ -222,6 +223,7 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
    * @param username The username to search for
    * @return The BusinessDAO associated with the public user.
    */
+  @Request
   public static UserDAOIF getPublicUser()
   {
     return UserDAO.get(UserDAOIF.PUBLIC_USER_ID);
@@ -279,9 +281,9 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static UserDAOIF get(String id)
+  public static UserDAOIF get(String oid)
   {
-    return (UserDAOIF) BusinessDAO.get(id);
+    return (UserDAOIF) BusinessDAO.get(oid);
   }
 
   /* (non-Javadoc)

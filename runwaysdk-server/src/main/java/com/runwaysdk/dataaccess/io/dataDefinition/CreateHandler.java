@@ -56,7 +56,6 @@ public class CreateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     this.addHandler(XMLTags.MD_VIEW_TAG, new MdViewHandler(manager));
     this.addHandler(XMLTags.MD_UTIL_TAG, new MdUtilHandler(manager));
     this.addHandler(XMLTags.MD_WEB_FORM_TAG, new MdWebFormHandler(manager));
-    this.addHandler(XMLTags.MD_CONTROLLER_TAG, new MdControllerHandler(manager));
 
     // Data handlers
     this.addHandler(XMLTags.OBJECT_TAG, new ObjectHandler(manager));

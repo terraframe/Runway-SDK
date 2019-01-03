@@ -81,7 +81,7 @@ public class TransactionRecordView extends DetailView implements IViewPart
 
         ComponentIF component = (ComponentIF) selection.getFirstElement();
 
-        final IComponentObject item = EntityObject.get(component.getId());
+        final IComponentObject item = EntityObject.get(component.getOid());
 
         manager.openTab(new IViewStrategy()
         {
@@ -97,7 +97,7 @@ public class TransactionRecordView extends DetailView implements IViewPart
 
           public String getKey()
           {
-            return item.getId();
+            return item.getOid();
           }
 
           @Override
@@ -110,7 +110,7 @@ public class TransactionRecordView extends DetailView implements IViewPart
     });
 
     EntityQuery query = item.getQuery();
-    query.WHERE(query.aReference(TransactionItemInfo.TRANSACTION_RECORD).EQ(getEntity().getId()));
+    query.WHERE(query.aReference(TransactionItemInfo.TRANSACTION_RECORD).EQ(getEntity().getOid()));
 
     table.setInput(query);
 

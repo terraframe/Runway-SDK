@@ -184,13 +184,13 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.CompositeFieldCondition compositeFieldCondition)
     {
       if(compositeFieldCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(compositeFieldCondition.getId());
+      return this.EQ(compositeFieldCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.CompositeFieldCondition compositeFieldCondition)
     {
       if(compositeFieldCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(compositeFieldCondition.getId());
+      return this.NE(compositeFieldCondition.getOid());
     }
 
   public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition()
@@ -291,7 +291,7 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
 
       for (int i=0; i<compositeFieldCondition.length; i++)
       {
-        itemIdArray[i] = compositeFieldCondition[i].getId();
+        itemIdArray[i] = compositeFieldCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -303,7 +303,7 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
 
       for (int i=0; i<compositeFieldCondition.length; i++)
       {
-        itemIdArray[i] = compositeFieldCondition[i].getId();
+        itemIdArray[i] = compositeFieldCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -315,7 +315,7 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
 
       for (int i=0; i<compositeFieldCondition.length; i++)
       {
-        itemIdArray[i] = compositeFieldCondition[i].getId();
+        itemIdArray[i] = compositeFieldCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -327,7 +327,7 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
 
       for (int i=0; i<compositeFieldCondition.length; i++)
       {
-        itemIdArray[i] = compositeFieldCondition[i].getId();
+        itemIdArray[i] = compositeFieldCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -339,7 +339,7 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
 
       for (int i=0; i<compositeFieldCondition.length; i++)
       {
-        itemIdArray[i] = compositeFieldCondition[i].getId();
+        itemIdArray[i] = compositeFieldCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

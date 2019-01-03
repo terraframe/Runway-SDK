@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 152586028)
-public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestException";
   private static final long serialVersionUID = 152586028;
@@ -71,7 +71,7 @@ public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartE
   
   public static java.lang.String EXCHAR = "exChar";
   public static java.lang.String EXINT = "exInt";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public String getExChar()
   {
     return getValue(EXCHAR);
@@ -156,7 +156,7 @@ public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartE
     
     template = template.replace("{exChar}", this.getExChar().toString());
     template = template.replace("{exInt}", this.getExInt().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

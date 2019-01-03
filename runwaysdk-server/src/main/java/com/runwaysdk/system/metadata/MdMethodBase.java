@@ -124,7 +124,7 @@ public abstract class MdMethodBase extends com.runwaysdk.system.metadata.Metadat
     }
     else
     {
-      setValue(MDTYPE, value.getId());
+      setValue(MDTYPE, value.getOid());
     }
   }
   
@@ -275,9 +275,9 @@ public abstract class MdMethodBase extends com.runwaysdk.system.metadata.Metadat
     }
   }
   
-  public static MdMethod get(String id)
+  public static MdMethod get(String oid)
   {
-    return (MdMethod) com.runwaysdk.business.Business.get(id);
+    return (MdMethod) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMethod getByKey(String key)
@@ -285,17 +285,17 @@ public abstract class MdMethodBase extends com.runwaysdk.system.metadata.Metadat
     return (MdMethod) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMethod lock(java.lang.String id)
+  public static MdMethod lock(java.lang.String oid)
   {
-    MdMethod _instance = MdMethod.get(id);
+    MdMethod _instance = MdMethod.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMethod unlock(java.lang.String id)
+  public static MdMethod unlock(java.lang.String oid)
   {
-    MdMethod _instance = MdMethod.get(id);
+    MdMethod _instance = MdMethod.get(oid);
     _instance.unlock();
     
     return _instance;

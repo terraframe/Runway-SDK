@@ -28,9 +28,9 @@ public interface IndicatorPrimitiveInfo extends IndicatorElementInfo
   public static final String CLASS                   = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE                = "i9y6m5oxeb0pf2gafpy8u6nl8xo8sut500000000000000000000000000000001";
+  public static final String ID_VALUE                = "3e53fe98-8ac0-34f8-b30d-6b73f700003a";
   
   /**
    * Reference to an attribute definition.

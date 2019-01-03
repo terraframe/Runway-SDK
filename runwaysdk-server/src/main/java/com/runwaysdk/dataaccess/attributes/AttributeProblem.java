@@ -45,7 +45,7 @@ public abstract class AttributeProblem extends RunwayProblem implements Attribut
   /**
    * Problem when an attribute is invalid.
    *
-   * @param componentId id of the containing component.
+   * @param componentId oid of the containing component.
    * @param mdClassDAOIF defines the type of the containing component.
    * @param mdAttributeDAOIF defines the attribute.
    * @param developerMessage developer error message.
@@ -61,7 +61,7 @@ public abstract class AttributeProblem extends RunwayProblem implements Attribut
     this.mdAttributeIF = mdAttributeDAOIF;
 
     this.attributeName = mdAttributeDAOIF.definesAttribute();
-    this.attributeId = mdAttributeDAOIF.getId();
+    this.attributeId = mdAttributeDAOIF.getOid();
     this.attributeDisplayLabel = mdAttributeDAOIF.getDisplayLabel(Session.getCurrentLocale());
     this.containingType = mdClassDAOIF.definesType();
     this.containingTypeDisplayLabel = mdClassDAOIF.getDisplayLabel(Session.getCurrentLocale());
@@ -78,7 +78,7 @@ public abstract class AttributeProblem extends RunwayProblem implements Attribut
   }
 
   /**
-   * Sets the id of the component on which this attribute notification pertains to.
+   * Sets the oid of the component on which this attribute notification pertains to.
    */
   public void setComponentId(String componentId)
   {

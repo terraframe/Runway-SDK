@@ -94,7 +94,7 @@ public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, Ha
 
       try
       {
-        actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
+        actualId = EntityDAO.getOidFromKey(masterListType, enumItemKey);
       }
       catch (DataNotFoundException e)
       {
@@ -105,7 +105,7 @@ public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, Ha
 
       if (actualId.equals(""))
       {
-        actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
+        actualId = EntityDAO.getOidFromKey(masterListType, enumItemKey);
       }
 
       if (!mdEnumeration.containsEnumItem(actualId))
@@ -142,8 +142,8 @@ public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, Ha
       String enumName = attributes.getValue(XMLTags.ENUM_NAME_ATTRIBUTE);
       String enumItemKey = EnumerationItemDAO.buildKey(masterListType, enumName);
 
-      // Get the database ID of a XML puesdo id
-      String actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
+      // Get the database OID of a XML puesdo oid
+      String actualId = EntityDAO.getOidFromKey(masterListType, enumItemKey);
 
       if (mdEnumeration.containsEnumItem(actualId))
       {
@@ -223,13 +223,13 @@ public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, Ha
       }
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(masterType);
-      mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessIF.getId());
+      mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessIF.getOid());
     }
 
     if (!this.getManager().isCreated(mdEnumeration.definesType()))
     {
       mdEnumeration.apply();
-      this.getManager().addMapping(mdEnumeration.definesType(), mdEnumeration.getId());
+      this.getManager().addMapping(mdEnumeration.definesType(), mdEnumeration.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdEnumeration);

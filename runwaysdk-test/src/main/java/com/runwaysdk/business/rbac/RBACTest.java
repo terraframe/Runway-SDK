@@ -22,17 +22,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -43,8 +40,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
-import com.runwaysdk.dataaccess.metadata.DomainTupleDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
@@ -53,23 +48,10 @@ import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.TupleDefinitionException;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
+import com.runwaysdk.session.Request;
 
-public class RBACTest extends TestCase
+public class RBACTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * Rolename for the master role
    */
@@ -126,39 +108,9 @@ public class RBACTest extends TestCase
   private static MdMethodDAO               mdMethod;
 
   /**
-   * The test state machince of MdBusiness
-   */
-  private static MdStateMachineDAO         mdState;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state1;
-
-  /**
-   * A test state of mdState
-   */
-  private static StateMasterDAO            state2;
-
-  /**
-   * The id of the test attribute
+   * The oid of the test attribute
    */
   private static MdAttributeCharacterDAO   mdAttributeCharacter;
-
-  /**
-   * Test tuple of mdState and mdAttributeCharacter
-   */
-  private static TypeTupleDAO              typeTuple;
-
-  /**
-   * Test tuple of mdState and mdRelationship
-   */
-  private static TypeTupleDAO              typeTuple2;
 
   /**
    * The test MethodActor
@@ -176,7 +128,7 @@ public class RBACTest extends TestCase
   private static MdMethodDAO               mdMethod_Util;
 
   /**
-   * The id of the test attribute
+   * The oid of the test attribute
    */
   private static MdAttributeCharacterDAO   mdAttributeCharacter_Util;
 
@@ -202,35 +154,15 @@ public class RBACTest extends TestCase
   private static MdAttributeDimensionDAOIF mdAttributeDimension;
 
   /**
-   * The id of the test attribute
+   * The oid of the test attribute
    */
   private static MdAttributeCharacterDAO   mdAttributeCharacter_View;
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(RBACTest.class.getSimpleName());
-
-    suite.addTestSuite(RBACTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
 
   /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     // Create a new user
@@ -262,28 +194,6 @@ public class RBACTest extends TestCase
 
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
-
-    mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states
-    state = mdState.addState("OffState", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state.apply();
-
-    state1 = mdState.addState("StandbyState", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("OnState", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    mdState.addTransition("Plug_in", state.getId(), state1.getId()).apply();
-    mdState.addTransition("TurnOn", state1.getId(), state2.getId()).apply();
-
-    typeTuple = TestFixtureFactory.createTypeTuple(state, mdAttributeCharacter);
-    typeTuple.apply();
-
-    typeTuple2 = TestFixtureFactory.createTypeTuple(state, mdTree);
-    typeTuple2.apply();
 
     methodActor = TestFixtureFactory.createMethodActor(mdMethod);
     methodActor.apply();
@@ -323,13 +233,12 @@ public class RBACTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(methodActor);
     TestFixtureFactory.delete(mdMethod);
-    TestFixtureFactory.delete(typeTuple);
-    TestFixtureFactory.delete(typeTuple2);
-    TestFixtureFactory.delete(mdState);
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
     TestFixtureFactory.delete(mdTree);
@@ -350,7 +259,9 @@ public class RBACTest extends TestCase
    * 
    * @see junit.framework.TestCase#setUp()
    */
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
   }
 
@@ -359,32 +270,38 @@ public class RBACTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
 
   }
 
+  @Request
+  @Test
   public void testLocalesOfDefaultUsers()
   {
     UserDAOIF[] users = new UserDAOIF[] { UserDAO.getPublicUser() };
 
     for (UserDAOIF user : users)
     {
-      assertEquals(CommonProperties.getDefaultLocaleString(), user.getLocale());
+      Assert.assertEquals(CommonProperties.getDefaultLocaleString(), user.getLocale());
     }
   }
 
   /**
    * Test the creation and deletion of roles
    */
+  @Request
+  @Test
   public void testRoleCreate()
   {
     RoleDAO role = RoleDAO.createRole(TESTER, "Tester");
 
-    BusinessDAOIF businessDAO = BusinessDAO.get(role.getId());
+    BusinessDAOIF businessDAO = BusinessDAO.get(role.getOid());
 
     // Ensure that the role is created
-    assertEquals(businessDAO.getValue(RoleDAO.ROLENAME), TESTER);
+    Assert.assertEquals(businessDAO.getValue(RoleDAO.ROLENAME), TESTER);
 
     role.delete();
   }
@@ -392,11 +309,13 @@ public class RBACTest extends TestCase
   /**
    * Test the getRole function
    */
+  @Request
+  @Test
   public void testGetRole()
   {
     RoleDAO role = RoleDAO.createRole(TESTER, "Tester");
 
-    assertEquals(role.getId(), RoleDAO.findRole(TESTER).getId());
+    Assert.assertEquals(role.getOid(), RoleDAO.findRole(TESTER).getOid());
 
     role.delete();
   }
@@ -404,6 +323,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning and removing a user from a role
    */
+  @Request
+  @Test
   public void testAssignUser()
   {
     // Create a new role
@@ -414,8 +335,8 @@ public class RBACTest extends TestCase
 
     List<RelationshipDAOIF> list = newUser.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
-    assertEquals(list.size(), 1);
-    assertEquals(list.get(0).getChildId(), role.getId());
+    Assert.assertEquals(list.size(), 1);
+    Assert.assertEquals(list.get(0).getChildOid(), role.getOid());
 
     // Deassign user from a role
     role.deassignMember(newUser);
@@ -423,7 +344,7 @@ public class RBACTest extends TestCase
     list = newUser.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
     // Ensure that the relationship no longer works
-    assertEquals(list.size(), 0);
+    Assert.assertEquals(list.size(), 0);
 
     role.delete();
   }
@@ -431,6 +352,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning and removing a user from a role
    */
+  @Request
+  @Test
   public void testAssignMethod()
   {
     // Create a new role
@@ -441,8 +364,8 @@ public class RBACTest extends TestCase
 
     List<RelationshipDAOIF> list = methodActor.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
-    assertEquals(list.size(), 1);
-    assertEquals(list.get(0).getChildId(), role.getId());
+    Assert.assertEquals(list.size(), 1);
+    Assert.assertEquals(list.get(0).getChildOid(), role.getOid());
 
     // Deassign user from a role
     role.deassignMember(methodActor);
@@ -450,7 +373,7 @@ public class RBACTest extends TestCase
     list = methodActor.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
 
     // Ensure that the relationship no longer works
-    assertEquals(list.size(), 0);
+    Assert.assertEquals(list.size(), 0);
 
     role.delete();
   }
@@ -458,6 +381,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning permissions to a class
    */
+  @Request
+  @Test
   public void testClassPermission()
   {
     // Create a new role
@@ -470,45 +395,47 @@ public class RBACTest extends TestCase
     operations.add(Operation.READ);
 
     // Grant individual permissions to the role
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
-    role.grantPermission(Operation.WRITE, mdBusiness.getId());
+    role.grantPermission(Operation.CREATE, mdBusiness.getOid());
+    role.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     // Grant a list of permissions to the role
-    role.grantPermission(operations, mdBusiness.getId());
+    role.grantPermission(operations, mdBusiness.getOid());
 
     // Get the list of operations for a permission
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdBusiness.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdBusiness.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-    // assertTrue(Operation.containsOperation(enumeration.dereference(),
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
+    // Assert.assertTrue(Operation.containsOperation(enumeration.dereference(),
     // Operation.PROMOTE));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
     // Grant individual permission to a user
-    newUser.grantPermission(Operation.READ, mdBusiness.getId());
+    newUser.grantPermission(Operation.READ, mdBusiness.getOid());
 
-    relationshipDAO = RelationshipDAO.get(newUser.getId(), mdBusiness.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdBusiness.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations for a user is correctly set
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
     relationshipDAO.getRelationshipDAO().delete();
     role.delete();
 
-    role.revokePermission(Operation.CREATE, mdBusiness.getId());
-    role.revokePermission(Operation.WRITE, mdBusiness.getId());
-    newUser.revokePermission(Operation.READ, mdBusiness.getId());
+    role.revokePermission(Operation.CREATE, mdBusiness.getOid());
+    role.revokePermission(Operation.WRITE, mdBusiness.getOid());
+    newUser.revokePermission(Operation.READ, mdBusiness.getOid());
   }
 
   /**
    * Test assigning permissions to an attribute
    */
+  @Request
+  @Test
   public void testAttributePermission()
   {
     // Create a new role
@@ -520,42 +447,44 @@ public class RBACTest extends TestCase
     operations.add(Operation.READ);
 
     // Grant individual attribute permissions to the role
-    role.grantPermission(Operation.GRANT, mdAttributeCharacter.getId());
+    role.grantPermission(Operation.GRANT, mdAttributeCharacter.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(operations, mdAttributeCharacter.getId());
+    role.grantPermission(operations, mdAttributeCharacter.getOid());
 
     // Get the list of operations for a permission
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdAttributeCharacter.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdAttributeCharacter.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
 
     // Grant individual permission to a user
-    newUser.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    newUser.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
-    relationshipDAO = RelationshipDAO.get(newUser.getId(), mdAttributeCharacter.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdAttributeCharacter.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations for a user is correctly set
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
     relationshipDAO.getRelationshipDAO().delete();
     role.delete();
 
-    role.revokePermission(Operation.GRANT, mdAttributeCharacter.getId());
-    role.revokeAllPermissions(mdAttributeCharacter.getId());
-    newUser.revokePermission(Operation.READ, mdAttributeCharacter.getId());
+    role.revokePermission(Operation.GRANT, mdAttributeCharacter.getOid());
+    role.revokeAllPermissions(mdAttributeCharacter.getOid());
+    newUser.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
   }
 
   /**
    * Test assigning permissions to an attribute
    */
+  @Request
+  @Test
   public void testGetAssignedPermissions()
   {
     // Create a new role
@@ -572,7 +501,7 @@ public class RBACTest extends TestCase
       operations.add(Operation.GRANT);
 
       // Grant a list of attribute permissions to the role
-      parent.grantPermission(operations, mdAttributeCharacter.getId());
+      parent.grantPermission(operations, mdAttributeCharacter.getOid());
 
       // Get the list of operations for a permission
       Set<Operation> permissions = child.getAllPermissions(mdAttributeCharacter);
@@ -580,7 +509,7 @@ public class RBACTest extends TestCase
       // Ensure that the list of operations is correct
       for (Operation operation : operations)
       {
-        assertTrue(permissions.contains(operation));
+        Assert.assertTrue(permissions.contains(operation));
       }
 
       // Get the list of explicitly defined operations for a permission
@@ -589,7 +518,7 @@ public class RBACTest extends TestCase
       // Ensure that the list of operations is correct
       for (Operation operation : operations)
       {
-        assertFalse(permissions.contains(operation));
+        Assert.assertFalse(permissions.contains(operation));
       }
 
     }
@@ -597,7 +526,7 @@ public class RBACTest extends TestCase
     {
       child.delete();
 
-      parent.revokeAllPermissions(mdAttributeCharacter.getId());
+      parent.revokeAllPermissions(mdAttributeCharacter.getOid());
       parent.delete();
     }
   }
@@ -605,6 +534,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning permissions to a relationship
    */
+  @Request
+  @Test
   public void testRelationshipPermission()
   {
     // Create a new role
@@ -617,44 +548,46 @@ public class RBACTest extends TestCase
     operations.add(Operation.READ);
 
     // Grant individual attribute permissions to the role
-    role.grantPermission(Operation.CREATE, mdTree.getId());
-    role.grantPermission(Operation.WRITE, mdTree.getId());
+    role.grantPermission(Operation.CREATE, mdTree.getOid());
+    role.grantPermission(Operation.WRITE, mdTree.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(operations, mdTree.getId());
+    role.grantPermission(operations, mdTree.getOid());
 
     // Get the list of operations for a permission
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdTree.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdTree.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
     // Grant individual permission to a user
-    newUser.grantPermission(Operation.DELETE, mdTree.getId());
+    newUser.grantPermission(Operation.DELETE, mdTree.getOid());
 
-    relationshipDAO = RelationshipDAO.get(newUser.getId(), mdTree.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdTree.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
     enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure that the list of operations for a user is correctly set
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
+    Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
 
     relationshipDAO.getRelationshipDAO().delete();
     role.delete();
 
-    role.revokePermission(Operation.CREATE, mdTree.getId());
-    role.revokePermission(Operation.WRITE, mdTree.getId());
-    newUser.revokePermission(Operation.DELETE, mdTree.getId());
+    role.revokePermission(Operation.CREATE, mdTree.getOid());
+    role.revokePermission(Operation.WRITE, mdTree.getOid());
+    newUser.revokePermission(Operation.DELETE, mdTree.getOid());
   }
 
   /**
    * Test removing permissions from a metaData type
    */
+  @Request
+  @Test
   public void testRevokePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -666,28 +599,28 @@ public class RBACTest extends TestCase
     operations.add(Operation.READ);
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(operations, mdBusiness.getId());
+    role.grantPermission(operations, mdBusiness.getOid());
 
     // Remove permissions
-    role.revokeAllPermissions(mdBusiness.getId());
+    role.revokeAllPermissions(mdBusiness.getOid());
 
     // Get the list of operations for a permission
     List<RelationshipDAOIF> list = role.getChildren(RelationshipTypes.TYPE_PERMISSION.getType());
 
     // Ensure the list is empty
-    assertEquals(list.size(), 0);
+    Assert.assertEquals(list.size(), 0);
 
     // Regrant permisisons
-    role.grantPermission(operations, mdBusiness.getId());
+    role.grantPermission(operations, mdBusiness.getOid());
 
     // Remove the promote pemission
-    role.revokePermission(Operation.DELETE, mdBusiness.getId());
+    role.revokePermission(Operation.DELETE, mdBusiness.getOid());
 
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdBusiness.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdBusiness.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
     AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     // Ensure the list of permissions granted does not include PROMOTE
-    assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
+    Assert.assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
 
     role.delete();
   }
@@ -695,17 +628,19 @@ public class RBACTest extends TestCase
   /**
    * Test assigned users
    */
+  @Request
+  @Test
   public void testAssignedUsers()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
-    String userId = newUser.getId();
+    String userId = newUser.getOid();
 
     role.assignMember(newUser);
 
     Set<SingleActorDAOIF> list = role.assignedActors();
 
-    assertEquals(list.size(), 1);
-    assertEquals(userId, list.iterator().next().getId());
+    Assert.assertEquals(list.size(), 1);
+    Assert.assertEquals(userId, list.iterator().next().getOid());
 
     role.delete();
   }
@@ -713,17 +648,19 @@ public class RBACTest extends TestCase
   /**
    * Test assigned users
    */
+  @Request
+  @Test
   public void testAssignedMethod()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
-    String memberId = methodActor.getId();
+    String memberId = methodActor.getOid();
 
     role.assignMember(methodActor);
 
     Set<SingleActorDAOIF> list = role.assignedActors();
 
-    assertEquals(list.size(), 1);
-    assertEquals(memberId, list.iterator().next().getId());
+    Assert.assertEquals(list.size(), 1);
+    Assert.assertEquals(memberId, list.iterator().next().getOid());
 
     role.delete();
   }
@@ -731,6 +668,8 @@ public class RBACTest extends TestCase
   /**
    * test assigned roles
    */
+  @Request
+  @Test
   public void testAssignedRoles()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -743,9 +682,9 @@ public class RBACTest extends TestCase
 
     list.contains(role);
 
-    assertEquals(2, list.size());
-    assertTrue(list.contains(role));
-    assertTrue(list.contains(role2));
+    Assert.assertEquals(2, list.size());
+    Assert.assertTrue(list.contains(role));
+    Assert.assertTrue(list.contains(role2));
 
     role.delete();
     role2.delete();
@@ -754,18 +693,20 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     // Grant a list of class permissions to the role
-    role.grantPermission(Operation.DELETE, mdBusiness.getId());
+    role.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    role.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
     // Grant a list of relationship permissions to the role
-    role.grantPermission(Operation.WRITE, mdTree.getId());
+    role.grantPermission(Operation.WRITE, mdTree.getOid());
 
     Set<RelationshipDAOIF> set = role.getAllPermissions();
 
@@ -773,16 +714,16 @@ public class RBACTest extends TestCase
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
-    assertEquals(list.size(), 3);
-    assertTrue(list.contains(mdBusiness.getId()));
-    assertTrue(list.contains(mdAttributeCharacter.getId()));
-    assertTrue(list.contains(mdTree.getId()));
+    Assert.assertEquals(list.size(), 3);
+    Assert.assertTrue(list.contains(mdBusiness.getOid()));
+    Assert.assertTrue(list.contains(mdAttributeCharacter.getOid()));
+    Assert.assertTrue(list.contains(mdTree.getOid()));
 
-    role.revokePermission(Operation.DELETE, mdBusiness.getId());
-    role.revokePermission(Operation.READ, mdAttributeCharacter.getId());
+    role.revokePermission(Operation.DELETE, mdBusiness.getOid());
+    role.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
 
     role.delete();
   }
@@ -790,6 +731,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -797,13 +740,13 @@ public class RBACTest extends TestCase
     role.assignMember(newUser);
 
     // Grant a list of class permissions to the role
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    role.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
     // Grant a list of relationship permissions to the role
-    role.grantPermission(Operation.WRITE, mdTree.getId());
+    role.grantPermission(Operation.WRITE, mdTree.getOid());
 
     Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -811,19 +754,19 @@ public class RBACTest extends TestCase
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
-    assertEquals(list.size(), 3);
-    assertTrue(list.contains(mdBusiness.getId()));
-    assertTrue(list.contains(mdAttributeCharacter.getId()));
-    assertTrue(list.contains(mdTree.getId()));
+    Assert.assertEquals(list.size(), 3);
+    Assert.assertTrue(list.contains(mdBusiness.getOid()));
+    Assert.assertTrue(list.contains(mdAttributeCharacter.getOid()));
+    Assert.assertTrue(list.contains(mdTree.getOid()));
 
-    role.revokePermission(Operation.READ, mdAttributeCharacter.getId());
-    role.revokePermission(Operation.WRITE, mdTree.getId());
+    role.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
+    role.revokePermission(Operation.WRITE, mdTree.getOid());
 
-    newUser.revokeAllPermissions(mdBusiness.getId());
-    newUser.revokePermission(Operation.READ, mdAttributeCharacter.getId());
+    newUser.revokeAllPermissions(mdBusiness.getOid());
+    newUser.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
 
     role.delete();
   }
@@ -831,6 +774,8 @@ public class RBACTest extends TestCase
   /**
    * test method permissions
    */
+  @Request
+  @Test
   public void testMethodPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -838,13 +783,13 @@ public class RBACTest extends TestCase
     role.assignMember(methodActor);
 
     // Grant a list of class permissions to the role
-    methodActor.grantPermission(Operation.DELETE, mdBusiness.getId());
+    methodActor.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    role.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
     // Grant a list of relationship permissions to the role
-    role.grantPermission(Operation.WRITE, mdTree.getId());
+    role.grantPermission(Operation.WRITE, mdTree.getOid());
 
     Set<RelationshipDAOIF> set = methodActor.getAllPermissions();
 
@@ -852,21 +797,23 @@ public class RBACTest extends TestCase
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
-    assertEquals(3, list.size());
-    assertTrue(list.contains(mdBusiness.getId()));
-    assertTrue(list.contains(mdAttributeCharacter.getId()));
-    assertTrue(list.contains(mdTree.getId()));
+    Assert.assertEquals(3, list.size());
+    Assert.assertTrue(list.contains(mdBusiness.getOid()));
+    Assert.assertTrue(list.contains(mdAttributeCharacter.getOid()));
+    Assert.assertTrue(list.contains(mdTree.getOid()));
 
-    role.revokePermission(Operation.READ, mdAttributeCharacter.getId());
-    role.revokePermission(Operation.WRITE, mdTree.getId());
+    role.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
+    role.revokePermission(Operation.WRITE, mdTree.getOid());
 
-    methodActor.revokeAllPermissions(mdBusiness.getId());
+    methodActor.revokeAllPermissions(mdBusiness.getOid());
     role.delete();
   }
 
+  @Request
+  @Test
   public void testOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -874,38 +821,40 @@ public class RBACTest extends TestCase
     role.assignMember(newUser);
 
     // Grant a list of class permissions to the role
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(Operation.READ, mdBusiness.getId());
+    role.grantPermission(Operation.READ, mdBusiness.getOid());
 
     // Grant a list of relationship permissions to the role
-    role.grantPermission(Operation.WRITE, mdBusiness.getId());
+    role.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     Set<Operation> list = role.getAllPermissions(mdBusiness);
 
-    assertEquals(list.size(), 2);
-    assertTrue(list.contains(Operation.READ));
-    assertTrue(list.contains(Operation.WRITE));
+    Assert.assertEquals(list.size(), 2);
+    Assert.assertTrue(list.contains(Operation.READ));
+    Assert.assertTrue(list.contains(Operation.WRITE));
 
     list = newUser.getAllPermissions(mdBusiness);
 
-    assertEquals(list.size(), 3);
-    assertTrue(list.contains(Operation.READ));
-    assertTrue(list.contains(Operation.WRITE));
-    assertTrue(list.contains(Operation.DELETE));
+    Assert.assertEquals(list.size(), 3);
+    Assert.assertTrue(list.contains(Operation.READ));
+    Assert.assertTrue(list.contains(Operation.WRITE));
+    Assert.assertTrue(list.contains(Operation.DELETE));
 
-    role.revokePermission(Operation.READ, mdBusiness.getId());
-    role.revokePermission(Operation.WRITE, mdBusiness.getId());
+    role.revokePermission(Operation.READ, mdBusiness.getOid());
+    role.revokePermission(Operation.WRITE, mdBusiness.getOid());
 
-    newUser.revokeAllPermissions(mdBusiness.getId());
-    newUser.revokePermission(Operation.DELETE, mdBusiness.getId());
+    newUser.revokeAllPermissions(mdBusiness.getOid());
+    newUser.revokePermission(Operation.DELETE, mdBusiness.getOid());
     role.delete();
   }
 
   /**
    *
    */
+  @Request
+  @Test
   public void testAddInheritance()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -914,16 +863,16 @@ public class RBACTest extends TestCase
     // Test add inheritance
     role.addInheritance(role2);
 
-    List<RelationshipDAOIF> list = BusinessDAO.get(role.getId()).getChildren(RoleDAO.ROLE_INHERITANCE);
+    List<RelationshipDAOIF> list = BusinessDAO.get(role.getOid()).getChildren(RoleDAO.ROLE_INHERITANCE);
 
-    assertEquals(1, list.size());
-    assertEquals(role2.getId(), list.get(0).getChildId());
+    Assert.assertEquals(1, list.size());
+    Assert.assertEquals(role2.getOid(), list.get(0).getChildOid());
 
     // Test delete inheritance
     role.deleteInheritance(role2);
-    list = BusinessDAO.get(role.getId()).getChildren(RoleDAO.ROLE_INHERITANCE);
+    list = BusinessDAO.get(role.getOid()).getChildren(RoleDAO.ROLE_INHERITANCE);
 
-    assertEquals(0, list.size());
+    Assert.assertEquals(0, list.size());
 
     role.delete();
     role2.delete();
@@ -932,6 +881,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testAddAscendant()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -939,15 +890,15 @@ public class RBACTest extends TestCase
 
     List<RelationshipDAOIF> list = role.getParents(RoleDAO.ROLE_INHERITANCE);
 
-    assertEquals(1, list.size());
-    assertEquals(role2.getId(), list.get(0).getParentId());
+    Assert.assertEquals(1, list.size());
+    Assert.assertEquals(role2.getOid(), list.get(0).getParentOid());
 
     RoleDAO role3 = role.addDescendant("runway.SuperMan", "SuperMan");
 
     list = role.getChildren(RoleDAO.ROLE_INHERITANCE);
 
-    assertEquals(1, list.size());
-    assertEquals(role3.getId(), list.get(0).getChildId());
+    Assert.assertEquals(1, list.size());
+    Assert.assertEquals(role3.getOid(), list.get(0).getChildOid());
 
     role.delete();
     role2.delete();
@@ -957,19 +908,21 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testHierarchyRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
     RoleDAO role2 = role.addAscendant(EXECUTIVE, "Executive");
 
     // Grant a list of aclass permissions to the role
-    role.grantPermission(Operation.DELETE, mdBusiness.getId());
+    role.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    role.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
     // Grant a list of relationship permissions to the parent role
-    role2.grantPermission(Operation.WRITE, mdTree.getId());
+    role2.grantPermission(Operation.WRITE, mdTree.getOid());
 
     // Get a list of all permissions of the child role
     Set<RelationshipDAOIF> set = role.getAllPermissions();
@@ -978,17 +931,17 @@ public class RBACTest extends TestCase
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
-    assertEquals(list.size(), 3);
-    assertTrue(list.contains(mdBusiness.getId()));
-    assertTrue(list.contains(mdAttributeCharacter.getId()));
-    assertTrue(list.contains(mdTree.getId()));
+    Assert.assertEquals(list.size(), 3);
+    Assert.assertTrue(list.contains(mdBusiness.getOid()));
+    Assert.assertTrue(list.contains(mdAttributeCharacter.getOid()));
+    Assert.assertTrue(list.contains(mdTree.getOid()));
 
-    role.revokePermission(Operation.DELETE, mdBusiness.getId());
-    role.revokePermission(Operation.READ, mdAttributeCharacter.getId());
-    role2.revokePermission(Operation.WRITE, mdTree.getId());
+    role.revokePermission(Operation.DELETE, mdBusiness.getOid());
+    role.revokePermission(Operation.READ, mdAttributeCharacter.getOid());
+    role2.revokePermission(Operation.WRITE, mdTree.getOid());
 
     role.delete();
     role2.delete();
@@ -997,6 +950,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testHierarchyUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1005,13 +960,13 @@ public class RBACTest extends TestCase
     role.assignMember(newUser);
 
     // Grant a list of attribute permissions to the role
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role2.grantPermission(Operation.READ, mdAttributeCharacter.getId());
+    role2.grantPermission(Operation.READ, mdAttributeCharacter.getOid());
 
     // Grant a list of attribute permissions to the role
-    role2.grantPermission(Operation.WRITE, mdTree.getId());
+    role2.grantPermission(Operation.WRITE, mdTree.getOid());
 
     Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -1019,15 +974,15 @@ public class RBACTest extends TestCase
 
     for (RelationshipDAOIF rel : set)
     {
-      list.add(rel.getChildId());
+      list.add(rel.getChildOid());
     }
 
-    assertEquals(list.size(), 3);
-    assertTrue(list.contains(mdBusiness.getId()));
-    assertTrue(list.contains(mdAttributeCharacter.getId()));
-    assertTrue(list.contains(mdTree.getId()));
+    Assert.assertEquals(list.size(), 3);
+    Assert.assertTrue(list.contains(mdBusiness.getOid()));
+    Assert.assertTrue(list.contains(mdAttributeCharacter.getOid()));
+    Assert.assertTrue(list.contains(mdTree.getOid()));
 
-    newUser.revokePermission(Operation.DELETE, mdBusiness.getId());
+    newUser.revokePermission(Operation.DELETE, mdBusiness.getOid());
 
     role.delete();
     role2.delete();
@@ -1036,6 +991,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testHierarchyOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1044,30 +1001,30 @@ public class RBACTest extends TestCase
     role.assignMember(newUser);
 
     // Grant a list of attribute permissions to the role
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role2.grantPermission(Operation.READ, mdBusiness.getId());
+    role2.grantPermission(Operation.READ, mdBusiness.getOid());
 
     // Grant a list of attribute permissions to the role
-    role2.grantPermission(Operation.WRITE, mdBusiness.getId());
+    role2.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
     Set<Operation> list = role.getAllPermissions(mdBusiness);
 
-    assertEquals(2, list.size());
-    assertTrue(list.contains(Operation.READ));
-    assertTrue(list.contains(Operation.WRITE));
+    Assert.assertEquals(2, list.size());
+    Assert.assertTrue(list.contains(Operation.READ));
+    Assert.assertTrue(list.contains(Operation.WRITE));
 
     list = newUser.getAllPermissions(mdBusiness);
 
-    assertEquals(3, list.size());
-    assertTrue(list.contains(Operation.READ));
-    assertTrue(list.contains(Operation.WRITE));
-    assertTrue(list.contains(Operation.DELETE));
+    Assert.assertEquals(3, list.size());
+    Assert.assertTrue(list.contains(Operation.READ));
+    Assert.assertTrue(list.contains(Operation.WRITE));
+    Assert.assertTrue(list.contains(Operation.DELETE));
 
-    newUser.revokeAllPermissions(mdBusiness.getId());
+    newUser.revokeAllPermissions(mdBusiness.getOid());
 
-    newUser.revokePermission(Operation.DELETE, mdBusiness.getId());
+    newUser.revokePermission(Operation.DELETE, mdBusiness.getOid());
 
     role.delete();
     role2.delete();
@@ -1076,19 +1033,23 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testCreateSSD()
   {
     SDutyDAO ssd = SDutyDAO.createSSDSet("Payroll", 3);
 
-    BusinessDAOIF businessDAO = BusinessDAO.get(ssd.getId());
+    BusinessDAOIF businessDAO = BusinessDAO.get(ssd.getOid());
 
     // Ensure that the ssd is created
-    assertEquals(businessDAO.getValue(SDutyDAO.SDNAME), "Payroll");
-    assertEquals(businessDAO.getValue(SDutyDAO.SDCARDINALITY), "3");
+    Assert.assertEquals(businessDAO.getValue(SDutyDAO.SDNAME), "Payroll");
+    Assert.assertEquals(businessDAO.getValue(SDutyDAO.SDCARDINALITY), "3");
 
     ssd.delete();
   }
 
+  @Request
+  @Test
   public void testFindSSDSet()
   {
     SDutyDAO ssd = SDutyDAO.createSSDSet("Payroll", 3);
@@ -1096,18 +1057,20 @@ public class RBACTest extends TestCase
     // Test find SSDSet
     SDutyDAO ssd2 = SDutyDAO.findSSDSet("Payroll").getBusinessDAO();
 
-    assertEquals(ssd.getId(), ssd2.getId());
+    Assert.assertEquals(ssd.getOid(), ssd2.getOid());
 
     ssd.delete();
   }
 
+  @Request
+  @Test
   public void testInvlaidFindSSDSet()
   {
     try
     {
       SDutyDAO.findSSDSet("Payroll").getBusinessDAO();
 
-      fail("Able to find an ssd set that does not exists");
+      Assert.fail("Able to find an ssd set that does not exists");
     }
     catch (DataNotFoundException e)
     {
@@ -1118,6 +1081,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testAddSSDRole()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1126,12 +1091,12 @@ public class RBACTest extends TestCase
     SDutyDAO ssd = SDutyDAO.createSSDSet("Payroll", 1);
 
     String ssdName = ssd.getSSDSetName();
-    assertEquals("Payroll", ssdName);
+    Assert.assertEquals("Payroll", ssdName);
 
     ssd.setSSDSetName("Paygas");
 
     ssdName = ssd.getSSDSetName();
-    assertEquals("Paygas", ssdName);
+    Assert.assertEquals("Paygas", ssdName);
 
     role2.assignMember(newUser);
     role3.assignMember(newUser);
@@ -1139,41 +1104,41 @@ public class RBACTest extends TestCase
     // Add a new role to a seperation of duty set
     ssd.addSSDRoleMember(role2);
 
-    List<RelationshipDAOIF> relationships = BusinessDAO.get(ssd.getId()).getParents(SDutyDAO.SDCONFLICTINGROLES);
+    List<RelationshipDAOIF> relationships = BusinessDAO.get(ssd.getOid()).getParents(SDutyDAO.SDCONFLICTINGROLES);
 
-    assertEquals(relationships.size(), 1);
-    assertEquals(role2.getId(), relationships.get(0).getParentId());
+    Assert.assertEquals(relationships.size(), 1);
+    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentOid());
 
     // Add a non conflicting role
     ssd.addSSDRoleMember(role);
 
-    relationships = BusinessDAO.get(ssd.getId()).getParents(SDutyDAO.SDCONFLICTINGROLES);
-    assertEquals(2, relationships.size());
+    relationships = BusinessDAO.get(ssd.getOid()).getParents(SDutyDAO.SDCONFLICTINGROLES);
+    Assert.assertEquals(2, relationships.size());
 
     // Add a conflicting role
     try
     {
       ssd.addSSDRoleMember(role3);
 
-      fail("Accepted a conflicting role");
+      Assert.fail("Accepted a conflicting role");
     }
     catch (RBACExceptionInvalidSSDConstraint e)
     {
       // This is expected
     }
 
-    relationships = BusinessDAO.get(ssd.getId()).getParents(SDutyDAO.SDCONFLICTINGROLES);
+    relationships = BusinessDAO.get(ssd.getOid()).getParents(SDutyDAO.SDCONFLICTINGROLES);
 
-    assertEquals(relationships.size(), 2);
+    Assert.assertEquals(relationships.size(), 2);
 
     // Delete a role from the SSDSet
     ssd.deleteSSDRoleMember(role);
 
-    relationships = BusinessDAO.get(ssd.getId()).getParents(SDutyDAO.SDCONFLICTINGROLES);
+    relationships = BusinessDAO.get(ssd.getOid()).getParents(SDutyDAO.SDCONFLICTINGROLES);
 
     // Ensure the correct role is deleted
-    assertEquals(1, relationships.size());
-    assertEquals(role2.getId(), relationships.get(0).getParentId());
+    Assert.assertEquals(1, relationships.size());
+    Assert.assertEquals(role2.getOid(), relationships.get(0).getParentOid());
 
     ssd.delete();
     role.delete();
@@ -1184,6 +1149,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testSSDCardinality()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1205,17 +1172,17 @@ public class RBACTest extends TestCase
 
     int card = ssd.getSSDSetCardinality();
 
-    BusinessDAOIF businessDAO = BusinessDAO.get(ssd.getId());
+    BusinessDAOIF businessDAO = BusinessDAO.get(ssd.getOid());
 
-    assertEquals(businessDAO.getValue(SDutyDAO.SDCARDINALITY), "5");
-    assertEquals(5, card);
+    Assert.assertEquals(businessDAO.getValue(SDutyDAO.SDCARDINALITY), "5");
+    Assert.assertEquals(5, card);
 
     // Decrease the cardinality to a valid amount
     ssd.setSSDCardinality(4);
     ssd.apply();
 
     card = ssd.getSSDSetCardinality();
-    assertEquals(4, card);
+    Assert.assertEquals(4, card);
 
     // Decrease the cardinality to a number which invalidates existing values
     try
@@ -1223,7 +1190,7 @@ public class RBACTest extends TestCase
       ssd.setSSDCardinality(2);
       ssd.apply();
 
-      fail("An invalid cardinality was allowed");
+      Assert.fail("An invalid cardinality was allowed");
     }
     catch (RBACExceptionInvalidSSDCardinality e)
     {
@@ -1232,7 +1199,7 @@ public class RBACTest extends TestCase
 
     // Ensure the cardinality is unchanged
     card = ssd.getSSDSetCardinality();
-    assertEquals(4, card);
+    Assert.assertEquals(4, card);
 
     ssd.delete();
     role.delete();
@@ -1243,6 +1210,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testSSDAssignUser()
   {
     SDutyDAO ssd = SDutyDAO.createSSDSet("Payroll", 2);
@@ -1271,7 +1240,7 @@ public class RBACTest extends TestCase
     {
       f.assignMember(newUser);
 
-      assertTrue(false);
+      Assert.assertTrue(false);
     }
     catch (RBACExceptionSingleActorConflictingRole ex)
     {
@@ -1294,6 +1263,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testInvalidInheritance()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Maseter");
@@ -1312,7 +1283,7 @@ public class RBACTest extends TestCase
     {
       role3.addInheritance(role2);
 
-      assertTrue(false);
+      Assert.assertTrue(false);
     }
     catch (RBACExceptionInheritance e)
     {
@@ -1325,77 +1296,15 @@ public class RBACTest extends TestCase
     role3.delete();
   }
 
-  public void testStatePermissions()
-  {
-    // Setup role hierarchy
-    RoleDAO role = RoleDAO.createRole("runway.StatePerm", "StatePerm");
-
-    // Give permissions to the StateMachine
-    try
-    {
-      role.grantPermission(Operation.CREATE, mdState.getId());
-
-      fail("Did not fail on granting permissions to an MdState");
-    }
-    catch (RBACExceptionInvalidStateMachine e)
-    {
-      // This is expected
-    }
-
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
-
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdBusiness.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-
-    // Give permissions to an individual state of the state machine
-    role.grantPermission(Operation.WRITE, state.getId());
-
-    relationshipDAO = RelationshipDAO.get(role.getId(), state.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-
-    role.revokePermission(Operation.WRITE, state.getId());
-
-    role.delete();
-  }
-
-  public void testTypeTuple()
-  {
-
-    assertEquals(state.getId(), typeTuple.getStateMaster().getId());
-    assertEquals(mdAttributeCharacter.getId(), typeTuple.getMetaData().getId());
-
-    RoleDAO role = RoleDAO.createRole("runway.Mama", "Mama");
-
-    role.grantPermission(Operation.READ, typeTuple.getId());
-
-    // Get the list of operations for a permission
-    RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), typeTuple.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
-
-    AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
-
-    // Ensure that the list of operations is correct
-    assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
-
-    role.revokePermission(Operation.READ, typeTuple.getId());
-
-    role.delete();
-  }
-
+  @Request
+  @Test
   public void testInvalidAttriubteOperation()
   {
     try
     {
-      newUser.grantPermission(Operation.DELETE, mdAttributeCharacter.getId());
+      newUser.grantPermission(Operation.DELETE, mdAttributeCharacter.getOid());
 
-      fail("able to grant an invalid operation to an mdAttribute");
+      Assert.fail("able to grant an invalid operation to an mdAttribute");
     }
     catch (RBACExceptionInvalidOperation e)
     {
@@ -1403,13 +1312,15 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidMdRelationshipOperation()
   {
     try
     {
-      newUser.grantPermission(Operation.EXECUTE, mdTree.getId());
+      newUser.grantPermission(Operation.EXECUTE, mdTree.getOid());
 
-      fail("able to grant an invalid operation to an MdRelationship");
+      Assert.fail("able to grant an invalid operation to an MdRelationship");
     }
     catch (RBACExceptionInvalidOperation e)
     {
@@ -1417,27 +1328,15 @@ public class RBACTest extends TestCase
     }
   }
 
-  public void testInvalidStateOperation()
-  {
-    try
-    {
-      newUser.grantPermission(Operation.CREATE, mdState.getId());
-
-      fail("able to grant an invalid operation to an MdState");
-    }
-    catch (RBACExceptionInvalidStateMachine e)
-    {
-      // This is expected
-    }
-  }
-
+  @Request
+  @Test
   public void testInvalidMdBusinessOperation()
   {
     try
     {
-      newUser.grantPermission(Operation.PROMOTE, mdBusiness.getId());
+      newUser.grantPermission(Operation.PROMOTE, mdBusiness.getOid());
 
-      fail("able to grant an invalid operation to an MdBusiness");
+      Assert.fail("able to grant an invalid operation to an MdBusiness");
     }
     catch (RBACExceptionInvalidOperation e)
     {
@@ -1445,30 +1344,14 @@ public class RBACTest extends TestCase
     }
   }
 
-  public void testInvalidTypeTuple()
-  {
-    try
-    {
-      TypeTupleDAO newTuple = TypeTupleDAO.newInstance();
-      newTuple.setMetaData(mdBusiness.getId());
-      newTuple.setStateMaster(state.getId());
-      newTuple.apply();
-      fail("Able to create a TypeTuple with an invalid value on the MetaData attribute");
-    }
-    catch (TupleDefinitionException e)
-    {
-      // Expected to land here
-    }
-  }
-
-  // public void testEmptyTypeTuple()
+  // @Request @Test public void testEmptyTypeTuple()
   // {
   // try
   // {
   // PermissionTuple newTuple = PermissionTuple.newInstance();
   // newTuple.apply();
   //
-  // fail("Able to create a TypeTuple with an empty MetaData attribute");
+  // Assert.fail("Able to create a TypeTuple with an empty MetaData attribute");
   // }
   // catch (ProblemException e)
   // {
@@ -1510,34 +1393,19 @@ public class RBACTest extends TestCase
   // }
   // else
   // {
-  // fail(EmptyValueProblem.class.getName()+" was not thrown.");
+  // Assert.fail(EmptyValueProblem.class.getName()+" was not thrown.");
   // }
   // }
   // }
 
-  public void testDomainTuple()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAOIF.STATE_MASTER, state.getId());
-    tuple.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-    tuple.apply();
-
-    DomainTupleDAOIF tupleIF = DomainTupleDAO.findTuple(mdDomain.getId(), null, state.getId());
-
-    assertNotNull(tupleIF);
-    assertEquals(tuple.getDomain().getId(), tupleIF.getDomain().getId());
-    assertEquals(tuple.getStateMaster().getId(), tupleIF.getStateMaster().getId());
-  }
-
-  // public void testEmptyDomainTuple()
+  // @Request @Test public void testEmptyDomainTuple()
   // {
   // try
   // {
   // DomainTuple newTuple = DomainTuple.newInstance();
   // newTuple.apply();
   //
-  // fail("Able to create a DomainTuple with an empty Domain attribute");
+  // Assert.fail("Able to create a DomainTuple with an empty Domain attribute");
   // }
   // catch (ProblemException e)
   // {
@@ -1571,78 +1439,58 @@ public class RBACTest extends TestCase
   // }
   // else
   // {
-  // fail(EmptyValueProblem.class.getName()+" was not thrown.");
+  // Assert.fail(EmptyValueProblem.class.getName()+" was not thrown.");
   // }
   // }
   // }
 
-  public void testNonUniqueDomainTuple()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAOIF.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-    tuple.apply();
-
-    try
-    {
-      DomainTupleDAO tuple2 = DomainTupleDAO.newInstance();
-      tuple2.setValue(DomainTupleDAOIF.DOMAIN, mdDomain.getId());
-      tuple2.setValue(DomainTupleDAOIF.STATE_MASTER, state2.getId());
-      tuple2.setStructValue(DomainTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "test tuple");
-      tuple2.apply();
-
-      fail("Able to create a non unique domain tuple");
-    }
-    catch (Exception e)
-    {
-      // Excepted to land here.
-    }
-  }
-
+  @Request
+  @Test
   public void testOperationManager()
   {
-    Operation o = OperationManager.getOperation(Operation.ADD_CHILD.getId());
-    assertEquals(Operation.ADD_CHILD, o);
+    Operation o = OperationManager.getOperation(Operation.ADD_CHILD.getOid());
+    Assert.assertEquals(Operation.ADD_CHILD, o);
 
-    o = OperationManager.getOperation(Operation.ADD_PARENT.getId());
-    assertEquals(Operation.ADD_PARENT, o);
+    o = OperationManager.getOperation(Operation.ADD_PARENT.getOid());
+    Assert.assertEquals(Operation.ADD_PARENT, o);
 
-    o = OperationManager.getOperation(Operation.CREATE.getId());
-    assertEquals(Operation.CREATE, o);
+    o = OperationManager.getOperation(Operation.CREATE.getOid());
+    Assert.assertEquals(Operation.CREATE, o);
 
-    o = OperationManager.getOperation(Operation.DELETE.getId());
-    assertEquals(Operation.DELETE, o);
+    o = OperationManager.getOperation(Operation.DELETE.getOid());
+    Assert.assertEquals(Operation.DELETE, o);
 
-    o = OperationManager.getOperation(Operation.DELETE_CHILD.getId());
-    assertEquals(Operation.DELETE_CHILD, o);
+    o = OperationManager.getOperation(Operation.DELETE_CHILD.getOid());
+    Assert.assertEquals(Operation.DELETE_CHILD, o);
 
-    o = OperationManager.getOperation(Operation.DELETE_PARENT.getId());
-    assertEquals(Operation.DELETE_PARENT, o);
+    o = OperationManager.getOperation(Operation.DELETE_PARENT.getOid());
+    Assert.assertEquals(Operation.DELETE_PARENT, o);
 
-    o = OperationManager.getOperation(Operation.GRANT.getId());
-    assertEquals(Operation.GRANT, o);
+    o = OperationManager.getOperation(Operation.GRANT.getOid());
+    Assert.assertEquals(Operation.GRANT, o);
 
-    o = OperationManager.getOperation(Operation.PROMOTE.getId());
-    assertEquals(Operation.PROMOTE, o);
+    o = OperationManager.getOperation(Operation.PROMOTE.getOid());
+    Assert.assertEquals(Operation.PROMOTE, o);
 
-    o = OperationManager.getOperation(Operation.READ.getId());
-    assertEquals(Operation.READ, o);
+    o = OperationManager.getOperation(Operation.READ.getOid());
+    Assert.assertEquals(Operation.READ, o);
 
-    o = OperationManager.getOperation(Operation.REVOKE.getId());
-    assertEquals(Operation.REVOKE, o);
+    o = OperationManager.getOperation(Operation.REVOKE.getOid());
+    Assert.assertEquals(Operation.REVOKE, o);
 
-    o = OperationManager.getOperation(Operation.WRITE.getId());
-    assertEquals(Operation.WRITE, o);
+    o = OperationManager.getOperation(Operation.WRITE.getOid());
+    Assert.assertEquals(Operation.WRITE, o);
   }
 
+  @Request
+  @Test
   public void testInvalidOperation()
   {
     try
     {
       OperationManager.getOperation("invalid");
 
-      fail("Able to load an invalid operation");
+      Assert.fail("Able to load an invalid operation");
     }
     catch (DataNotFoundException e)
     {
@@ -1650,6 +1498,8 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCreateUser()
   {
     UserDAO user = UserDAO.newInstance();
@@ -1658,29 +1508,33 @@ public class RBACTest extends TestCase
     user.setSessionLimit("10");
     user.apply();
 
-    assertEquals("trashCan", user.getSingleActorName());
-    assertTrue(user.compareToPassword("secure_password"));
-    assertFalse(user.compareToPassword("invalid"));
-    assertEquals(10, user.getSessionLimit());
-    assertFalse(user.isAdministrator());
+    Assert.assertEquals("trashCan", user.getSingleActorName());
+    Assert.assertTrue(user.compareToPassword("secure_password"));
+    Assert.assertFalse(user.compareToPassword("invalid"));
+    Assert.assertEquals(10, user.getSessionLimit());
+    Assert.assertFalse(user.isAdministrator());
 
     user.delete();
   }
 
+  @Request
+  @Test
   public void testFindUser()
   {
     UserDAO user = UserDAO.findUser(newUser.getSingleActorName()).getBusinessDAO();
 
-    assertEquals(newUser.getId(), user.getId());
+    Assert.assertEquals(newUser.getOid(), user.getOid());
   }
 
+  @Request
+  @Test
   public void testInvalidFindUser()
   {
     try
     {
       UserDAO.findUser("invalid_name");
 
-      fail("Able to search a user with an invalid username");
+      Assert.fail("Able to search a user with an invalid username");
     }
     catch (DataNotFoundException e)
     {
@@ -1688,67 +1542,11 @@ public class RBACTest extends TestCase
     }
   }
 
-  public void testTupleMdAttributeOperations()
-  {
-    // Gant a permissions which is only valid in the MdRelationship context
-    try
-    {
-      newUser.grantPermission(Operation.ADD_CHILD, typeTuple.getId());
-
-      fail("able to grant an invalid operation to an MdRelationship");
-    }
-    catch (RBACExceptionInvalidOperation e)
-    {
-      // This is expected
-    }
-
-    // Grant a valid MdAttribute permissions
-    try
-    {
-      newUser.grantPermission(Operation.READ, typeTuple.getId());
-    }
-    catch (RBACException e)
-    {
-      fail("Unable to grant a valid StateMasterIF-MdAttribute permissions to a TypeTuple");
-    }
-    finally
-    {
-      newUser.revokePermission(Operation.READ, typeTuple.getId());
-    }
-  }
-
-  public void testTupleMdRelationshipOperations()
-  {
-    // Gant a permissions which is only valid in the MdAttribute context
-    try
-    {
-      newUser.grantPermission(Operation.READ, typeTuple2.getId());
-
-      fail("able to grant an invalid operation to an MdRelationship");
-    }
-    catch (RBACExceptionInvalidOperation e)
-    {
-      // This is expected
-    }
-
-    // Grant a valid MdRelationship permissions
-    try
-    {
-      newUser.grantPermission(Operation.READ_PARENT, typeTuple2.getId());
-    }
-    catch (RBACException e)
-    {
-      fail("Unable to grant a valid StateMasterIF-MdAttribute permissions to a TypeTuple");
-    }
-    finally
-    {
-      newUser.revokePermission(Operation.READ_PARENT, typeTuple2.getId());
-    }
-  }
-
   /**
    * Test assigning permissions to a class
    */
+  @Request
+  @Test
   public void testUtilClassPermission()
   {
     // Create a new role
@@ -1762,46 +1560,46 @@ public class RBACTest extends TestCase
     try
     {
       // Grant individual permissions to the role
-      role.grantPermission(Operation.CREATE, mdUtil.getId());
-      role.grantPermission(Operation.WRITE, mdUtil.getId());
+      role.grantPermission(Operation.CREATE, mdUtil.getOid());
+      role.grantPermission(Operation.WRITE, mdUtil.getOid());
 
       // Grant a list of permissions to the role
-      role.grantPermission(operations, mdUtil.getId());
+      role.grantPermission(operations, mdUtil.getOid());
 
       // Get the list of operations for a permission
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdUtil.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdUtil.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations is correct
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       // Grant individual permission to a user
-      newUser.grantPermission(Operation.READ, mdUtil.getId());
+      newUser.grantPermission(Operation.READ, mdUtil.getOid());
 
-      relationshipDAO = RelationshipDAO.get(newUser.getId(), mdUtil.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdUtil.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations for a user is correctly set
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       relationshipDAO.getRelationshipDAO().delete();
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.CREATE, mdUtil.getId());
-      role.revokePermission(Operation.WRITE, mdUtil.getId());
+      role.revokePermission(Operation.CREATE, mdUtil.getOid());
+      role.revokePermission(Operation.WRITE, mdUtil.getOid());
 
-      role.revokeAllPermissions(mdUtil.getId());
+      role.revokeAllPermissions(mdUtil.getOid());
 
-      newUser.revokePermission(Operation.READ, mdUtil.getId());
+      newUser.revokePermission(Operation.READ, mdUtil.getOid());
 
       role.delete();
     }
@@ -1810,6 +1608,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning permissions to an attribute
    */
+  @Request
+  @Test
   public void testUtilAttributePermission()
   {
     // Create a new role
@@ -1823,43 +1623,43 @@ public class RBACTest extends TestCase
       operations.add(Operation.READ);
 
       // Grant individual attribute permissions to the role
-      role.grantPermission(Operation.GRANT, mdAttributeCharacter_Util.getId());
+      role.grantPermission(Operation.GRANT, mdAttributeCharacter_Util.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(operations, mdAttributeCharacter_Util.getId());
+      role.grantPermission(operations, mdAttributeCharacter_Util.getOid());
 
       // Get the list of operations for a permission
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdAttributeCharacter_Util.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdAttributeCharacter_Util.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations is correct
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
 
       // Grant individual permission to a user
-      newUser.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      newUser.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
-      relationshipDAO = RelationshipDAO.get(newUser.getId(), mdAttributeCharacter_Util.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdAttributeCharacter_Util.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations for a user is correctly set
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       relationshipDAO.getRelationshipDAO().delete();
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.GRANT, mdAttributeCharacter_Util.getId());
-      role.revokeAllPermissions(mdAttributeCharacter_Util.getId());
+      role.revokePermission(Operation.GRANT, mdAttributeCharacter_Util.getOid());
+      role.revokeAllPermissions(mdAttributeCharacter_Util.getOid());
 
-      newUser.revokePermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      newUser.revokePermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       role.delete();
     }
@@ -1868,6 +1668,8 @@ public class RBACTest extends TestCase
   /**
    * Test removing permissions from a metaData type
    */
+  @Request
+  @Test
   public void testUtilRevokePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1881,32 +1683,32 @@ public class RBACTest extends TestCase
       operations.add(Operation.READ);
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(operations, mdUtil.getId());
+      role.grantPermission(operations, mdUtil.getOid());
 
       // Remove permissions
-      role.revokeAllPermissions(mdUtil.getId());
+      role.revokeAllPermissions(mdUtil.getOid());
 
       // Get the list of operations for a permission
       List<RelationshipDAOIF> list = role.getChildren(RelationshipTypes.TYPE_PERMISSION.getType());
 
       // Ensure the list is empty
-      assertEquals(list.size(), 0);
+      Assert.assertEquals(list.size(), 0);
 
       // Regrant permisisons
-      role.grantPermission(operations, mdUtil.getId());
+      role.grantPermission(operations, mdUtil.getOid());
 
       // Remove the promote pemission
-      role.revokePermission(Operation.DELETE, mdUtil.getId());
+      role.revokePermission(Operation.DELETE, mdUtil.getOid());
 
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdUtil.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdUtil.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure the list of permissions granted does not include PROMOTE
-      assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
+      Assert.assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -1917,16 +1719,18 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testUtilRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
     try
     {
       // Grant a list of class permissions to the role
-      role.grantPermission(Operation.DELETE, mdUtil.getId());
+      role.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       Set<RelationshipDAOIF> set = role.getAllPermissions();
 
@@ -1934,21 +1738,21 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdUtil.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_Util.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdUtil.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_Util.getOid()));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.DELETE, mdUtil.getId());
-      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.revokePermission(Operation.DELETE, mdUtil.getOid());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getOid());
       role.delete();
     }
   }
@@ -1956,6 +1760,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testUtilUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -1964,10 +1770,10 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of class permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdUtil.getId());
+      newUser.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -1975,23 +1781,23 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdUtil.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_Util.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdUtil.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_Util.getOid()));
 
-      newUser.revokeAllPermissions(mdUtil.getId());
+      newUser.revokeAllPermissions(mdUtil.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getId());
-      newUser.revokePermission(Operation.DELETE, mdUtil.getId());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getOid());
+      newUser.revokePermission(Operation.DELETE, mdUtil.getOid());
 
       role.delete();
     }
@@ -2000,6 +1806,8 @@ public class RBACTest extends TestCase
   /**
    * test method permissions
    */
+  @Request
+  @Test
   public void testUtilMethodPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2008,10 +1816,10 @@ public class RBACTest extends TestCase
       role.assignMember(methodActor_Util);
 
       // Grant a list of class permissions to the role
-      methodActor_Util.grantPermission(Operation.DELETE, mdUtil.getId());
+      methodActor_Util.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       Set<RelationshipDAOIF> set = methodActor_Util.getAllPermissions();
 
@@ -2019,26 +1827,28 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(mdUtil.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_Util.getId()));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(mdUtil.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_Util.getOid()));
 
-      methodActor_Util.revokeAllPermissions(mdUtil.getId());
+      methodActor_Util.revokeAllPermissions(mdUtil.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getOid());
       role.delete();
     }
   }
 
+  @Request
+  @Test
   public void testUtilOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2047,39 +1857,39 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of class permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdUtil.getId());
+      newUser.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdUtil.getId());
+      role.grantPermission(Operation.READ, mdUtil.getOid());
 
       // Grant a list of relationship permissions to the role
-      role.grantPermission(Operation.WRITE, mdUtil.getId());
+      role.grantPermission(Operation.WRITE, mdUtil.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdUtil);
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdUtil);
 
-      assertEquals(list.size(), 3);
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
-      assertTrue(list.contains(Operation.DELETE));
+      Assert.assertEquals(list.size(), 3);
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
+      Assert.assertTrue(list.contains(Operation.DELETE));
 
-      newUser.revokeAllPermissions(mdUtil.getId());
+      newUser.revokeAllPermissions(mdUtil.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdUtil.getId());
-      role.revokePermission(Operation.WRITE, mdUtil.getId());
+      role.revokePermission(Operation.READ, mdUtil.getOid());
+      role.revokePermission(Operation.WRITE, mdUtil.getOid());
 
-      newUser.revokePermission(Operation.DELETE, mdUtil.getId());
+      newUser.revokePermission(Operation.DELETE, mdUtil.getOid());
 
       role.delete();
     }
@@ -2088,6 +1898,8 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testUtilHierarchyRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2095,10 +1907,10 @@ public class RBACTest extends TestCase
     try
     {
       // Grant a list of aclass permissions to the role
-      role.grantPermission(Operation.DELETE, mdUtil.getId());
+      role.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       // Get a list of all permissions of the child role
       Set<RelationshipDAOIF> set = role.getAllPermissions();
@@ -2107,20 +1919,20 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertTrue(list.contains(mdUtil.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_Util.getId()));
+      Assert.assertTrue(list.contains(mdUtil.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_Util.getOid()));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.DELETE, mdUtil.getId());
-      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role.revokePermission(Operation.DELETE, mdUtil.getOid());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_Util.getOid());
       role.delete();
       role2.delete();
     }
@@ -2129,6 +1941,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testUtilHierarchyUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2138,10 +1952,10 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdUtil.getId());
+      newUser.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.READ, mdAttributeCharacter_Util.getId());
+      role2.grantPermission(Operation.READ, mdAttributeCharacter_Util.getOid());
 
       Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -2149,21 +1963,21 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdUtil.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_Util.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdUtil.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_Util.getOid()));
 
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.DELETE, mdUtil.getId());
+      newUser.revokePermission(Operation.DELETE, mdUtil.getOid());
 
       role.delete();
       role2.delete();
@@ -2173,6 +1987,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testUtilHierarchyOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2182,37 +1998,37 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdUtil.getId());
+      newUser.grantPermission(Operation.DELETE, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.READ, mdUtil.getId());
+      role2.grantPermission(Operation.READ, mdUtil.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.WRITE, mdUtil.getId());
+      role2.grantPermission(Operation.WRITE, mdUtil.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdUtil);
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdUtil);
 
-      assertEquals(3, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
-      assertTrue(list.contains(Operation.DELETE));
+      Assert.assertEquals(3, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
+      Assert.assertTrue(list.contains(Operation.DELETE));
 
-      newUser.revokeAllPermissions(mdUtil.getId());
+      newUser.revokeAllPermissions(mdUtil.getOid());
 
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.DELETE, mdUtil.getId());
+      newUser.revokePermission(Operation.DELETE, mdUtil.getOid());
 
       role.delete();
       role2.delete();
@@ -2222,6 +2038,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning permissions to a class
    */
+  @Request
+  @Test
   public void testViewClassPermission()
   {
     // Create a new role
@@ -2235,45 +2053,45 @@ public class RBACTest extends TestCase
       operations.add(Operation.READ);
 
       // Grant individual permissions to the role
-      role.grantPermission(Operation.CREATE, mdView.getId());
-      role.grantPermission(Operation.WRITE, mdView.getId());
+      role.grantPermission(Operation.CREATE, mdView.getOid());
+      role.grantPermission(Operation.WRITE, mdView.getOid());
 
       // Grant a list of permissions to the role
-      role.grantPermission(operations, mdView.getId());
+      role.grantPermission(operations, mdView.getOid());
 
       // Get the list of operations for a permission
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdView.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdView.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations is correct
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.CREATE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       // Grant individual permission to a user
-      newUser.grantPermission(Operation.READ, mdView.getId());
+      newUser.grantPermission(Operation.READ, mdView.getOid());
 
-      relationshipDAO = RelationshipDAO.get(newUser.getId(), mdView.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdView.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations for a user is correctly set
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       relationshipDAO.getRelationshipDAO().delete();
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.CREATE, mdView.getId());
-      role.revokePermission(Operation.WRITE, mdView.getId());
-      role.revokeAllPermissions(mdView.getId());
+      role.revokePermission(Operation.CREATE, mdView.getOid());
+      role.revokePermission(Operation.WRITE, mdView.getOid());
+      role.revokeAllPermissions(mdView.getOid());
 
-      newUser.revokePermission(Operation.READ, mdView.getId());
+      newUser.revokePermission(Operation.READ, mdView.getOid());
 
       role.delete();
     }
@@ -2282,6 +2100,8 @@ public class RBACTest extends TestCase
   /**
    * Test assigning permissions to an attribute
    */
+  @Request
+  @Test
   public void testSessionAttributePermission()
   {
     // Create a new role
@@ -2295,43 +2115,43 @@ public class RBACTest extends TestCase
       operations.add(Operation.READ);
 
       // Grant individual attribute permissions to the role
-      role.grantPermission(Operation.GRANT, mdAttributeCharacter_View.getId());
+      role.grantPermission(Operation.GRANT, mdAttributeCharacter_View.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(operations, mdAttributeCharacter_View.getId());
+      role.grantPermission(operations, mdAttributeCharacter_View.getOid());
 
       // Get the list of operations for a permission
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdAttributeCharacter_View.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdAttributeCharacter_View.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations is correct
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.GRANT));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.WRITE));
 
       // Grant individual permission to a user
-      newUser.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      newUser.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
-      relationshipDAO = RelationshipDAO.get(newUser.getId(), mdAttributeCharacter_View.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      relationshipDAO = RelationshipDAO.get(newUser.getOid(), mdAttributeCharacter_View.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
 
       enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure that the list of operations for a user is correctly set
-      assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
+      Assert.assertTrue(OperationManager.containsOperation(enumeration.dereference(), Operation.READ));
 
       relationshipDAO.getRelationshipDAO().delete();
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.GRANT, mdAttributeCharacter_View.getId());
-      role.revokeAllPermissions(mdAttributeCharacter_View.getId());
+      role.revokePermission(Operation.GRANT, mdAttributeCharacter_View.getOid());
+      role.revokeAllPermissions(mdAttributeCharacter_View.getOid());
 
-      newUser.revokePermission(Operation.READ, mdAttributeCharacter_View.getId());
+      newUser.revokePermission(Operation.READ, mdAttributeCharacter_View.getOid());
       role.delete();
     }
   }
@@ -2339,6 +2159,8 @@ public class RBACTest extends TestCase
   /**
    * Test removing permissions from a metaData type
    */
+  @Request
+  @Test
   public void testSessionRevokePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2352,32 +2174,32 @@ public class RBACTest extends TestCase
       operations.add(Operation.READ);
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(operations, mdView.getId());
+      role.grantPermission(operations, mdView.getOid());
 
       // Remove permissions
-      role.revokeAllPermissions(mdView.getId());
+      role.revokeAllPermissions(mdView.getOid());
 
       // Get the list of operations for a permission
       List<RelationshipDAOIF> list = role.getChildren(RelationshipTypes.TYPE_PERMISSION.getType());
 
       // Ensure the list is empty
-      assertEquals(list.size(), 0);
+      Assert.assertEquals(list.size(), 0);
 
       // Regrant permissions
-      role.grantPermission(operations, mdView.getId());
+      role.grantPermission(operations, mdView.getOid());
 
       // Remove the promote permission
-      role.revokePermission(Operation.DELETE, mdView.getId());
+      role.revokePermission(Operation.DELETE, mdView.getOid());
 
-      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdView.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
+      RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getOid(), mdView.getOid(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);
       AttributeEnumerationIF enumeration = (AttributeEnumerationIF) relationshipDAO.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
       // Ensure the list of permissions granted does not include PROMOTE
-      assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
+      Assert.assertFalse(OperationManager.containsOperation(enumeration.dereference(), Operation.DELETE));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2388,16 +2210,18 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testSessionRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
     try
     {
       // Grant a list of class permissions to the role
-      role.grantPermission(Operation.DELETE, mdView.getId());
+      role.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       Set<RelationshipDAOIF> set = role.getAllPermissions();
 
@@ -2405,21 +2229,21 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdView.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_View.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdView.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_View.getOid()));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.DELETE, mdView.getId());
-      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.revokePermission(Operation.DELETE, mdView.getOid());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getOid());
       role.delete();
     }
   }
@@ -2427,6 +2251,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testSessionUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2435,10 +2261,10 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of class permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdView.getId());
+      newUser.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -2446,24 +2272,24 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdView.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_View.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdView.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_View.getOid()));
 
-      newUser.revokeAllPermissions(mdView.getId());
+      newUser.revokeAllPermissions(mdView.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
-      newUser.revokePermission(Operation.DELETE, mdView.getId());
+      newUser.revokePermission(Operation.DELETE, mdView.getOid());
       role.delete();
     }
   }
@@ -2471,6 +2297,8 @@ public class RBACTest extends TestCase
   /**
    * test method permissions
    */
+  @Request
+  @Test
   public void testSessionMethodPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2479,10 +2307,10 @@ public class RBACTest extends TestCase
       role.assignMember(methodActor_View);
 
       // Grant a list of class permissions to the role
-      methodActor_View.grantPermission(Operation.DELETE, mdView.getId());
+      methodActor_View.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       Set<RelationshipDAOIF> set = methodActor_View.getAllPermissions();
 
@@ -2490,27 +2318,29 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(mdView.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_View.getId()));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(mdView.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_View.getOid()));
 
-      methodActor_View.revokeAllPermissions(mdView.getId());
+      methodActor_View.revokeAllPermissions(mdView.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       role.delete();
     }
   }
 
+  @Request
+  @Test
   public void testSessionOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2519,38 +2349,38 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of class permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdView.getId());
+      newUser.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdView.getId());
+      role.grantPermission(Operation.READ, mdView.getOid());
 
       // Grant a list of relationship permissions to the role
-      role.grantPermission(Operation.WRITE, mdView.getId());
+      role.grantPermission(Operation.WRITE, mdView.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdView);
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdView);
 
-      assertEquals(list.size(), 3);
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
-      assertTrue(list.contains(Operation.DELETE));
+      Assert.assertEquals(list.size(), 3);
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
+      Assert.assertTrue(list.contains(Operation.DELETE));
 
-      newUser.revokeAllPermissions(mdView.getId());
+      newUser.revokeAllPermissions(mdView.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.READ, mdView.getId());
-      role.revokePermission(Operation.WRITE, mdView.getId());
-      newUser.revokePermission(Operation.DELETE, mdView.getId());
+      role.revokePermission(Operation.READ, mdView.getOid());
+      role.revokePermission(Operation.WRITE, mdView.getOid());
+      newUser.revokePermission(Operation.DELETE, mdView.getOid());
       role.delete();
     }
   }
@@ -2558,6 +2388,8 @@ public class RBACTest extends TestCase
   /**
    * test role permissions
    */
+  @Request
+  @Test
   public void testSessionHierarchyRolePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2565,10 +2397,10 @@ public class RBACTest extends TestCase
     try
     {
       // Grant a list of aclass permissions to the role
-      role.grantPermission(Operation.DELETE, mdView.getId());
+      role.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       // Get a list of all permissions of the child role
       Set<RelationshipDAOIF> set = role.getAllPermissions();
@@ -2577,20 +2409,20 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertTrue(list.contains(mdView.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_View.getId()));
+      Assert.assertTrue(list.contains(mdView.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_View.getOid()));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      role.revokePermission(Operation.DELETE, mdView.getId());
-      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role.revokePermission(Operation.DELETE, mdView.getOid());
+      role.revokePermission(Operation.READ, mdAttributeCharacter_View.getOid());
       role.delete();
       role2.delete();
     }
@@ -2599,6 +2431,8 @@ public class RBACTest extends TestCase
   /**
    * test user permissions
    */
+  @Request
+  @Test
   public void testSessionHierarchyUserPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2608,10 +2442,10 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdView.getId());
+      newUser.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.READ, mdAttributeCharacter_View.getId());
+      role2.grantPermission(Operation.READ, mdAttributeCharacter_View.getOid());
 
       Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
@@ -2619,20 +2453,20 @@ public class RBACTest extends TestCase
 
       for (RelationshipDAOIF rel : set)
       {
-        list.add(rel.getChildId());
+        list.add(rel.getChildOid());
       }
 
-      assertEquals(list.size(), 2);
-      assertTrue(list.contains(mdView.getId()));
-      assertTrue(list.contains(mdAttributeCharacter_View.getId()));
+      Assert.assertEquals(list.size(), 2);
+      Assert.assertTrue(list.contains(mdView.getOid()));
+      Assert.assertTrue(list.contains(mdAttributeCharacter_View.getOid()));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.DELETE, mdView.getId());
+      newUser.revokePermission(Operation.DELETE, mdView.getOid());
       role.delete();
       role2.delete();
     }
@@ -2641,6 +2475,8 @@ public class RBACTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testSessionHierarchyOperationOnObject()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2650,42 +2486,44 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.DELETE, mdView.getId());
+      newUser.grantPermission(Operation.DELETE, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.READ, mdView.getId());
+      role2.grantPermission(Operation.READ, mdView.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.WRITE, mdView.getId());
+      role2.grantPermission(Operation.WRITE, mdView.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdView);
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdView);
 
-      assertEquals(3, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
-      assertTrue(list.contains(Operation.DELETE));
+      Assert.assertEquals(3, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
+      Assert.assertTrue(list.contains(Operation.DELETE));
 
-      newUser.revokeAllPermissions(mdView.getId());
+      newUser.revokeAllPermissions(mdView.getOid());
 
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.DELETE, mdView.getId());
+      newUser.revokePermission(Operation.DELETE, mdView.getOid());
       role.delete();
       role2.delete();
     }
   }
 
+  @Request
+  @Test
   public void testMdAttributeDimension()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2696,37 +2534,39 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.READ, mdAttributeDimension.getId());
+      newUser.grantPermission(Operation.READ, mdAttributeDimension.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.WRITE, mdAttributeDimension.getId());
+      role2.grantPermission(Operation.WRITE, mdAttributeDimension.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdAttributeDimension);
 
-      assertEquals(1, list.size());
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(1, list.size());
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdAttributeDimension);
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
-      newUser.revokeAllPermissions(mdAttributeDimension.getId());
+      newUser.revokeAllPermissions(mdAttributeDimension.getOid());
 
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.READ, mdAttributeDimension.getId());
+      newUser.revokePermission(Operation.READ, mdAttributeDimension.getOid());
       role.delete();
       role2.delete();
     }
   }
 
+  @Request
+  @Test
   public void testMdClassDimension()
   {
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
@@ -2739,36 +2579,38 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.READ, mdClassDimension.getId());
+      newUser.grantPermission(Operation.READ, mdClassDimension.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.WRITE, mdClassDimension.getId());
+      role2.grantPermission(Operation.WRITE, mdClassDimension.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdClassDimension);
 
-      assertEquals(1, list.size());
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(1, list.size());
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
       list = newUser.getAllPermissions(mdClassDimension);
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(Operation.READ));
-      assertTrue(list.contains(Operation.WRITE));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(Operation.READ));
+      Assert.assertTrue(list.contains(Operation.WRITE));
 
-      newUser.revokeAllPermissions(mdClassDimension.getId());
+      newUser.revokeAllPermissions(mdClassDimension.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.READ, mdClassDimension.getId());
+      newUser.revokePermission(Operation.READ, mdClassDimension.getOid());
       role.delete();
       role2.delete();
     }
   }
 
+  @Request
+  @Test
   public void testReadAndWriteAllPermissions()
   {
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
@@ -2781,59 +2623,61 @@ public class RBACTest extends TestCase
       role.assignMember(newUser);
 
       // Grant a list of attribute permissions to the role
-      newUser.grantPermission(Operation.READ_ALL, mdClassDimension.getId());
+      newUser.grantPermission(Operation.READ_ALL, mdClassDimension.getOid());
 
       // Grant a list of attribute permissions to the role
-      role2.grantPermission(Operation.WRITE_ALL, mdClassDimension.getId());
+      role2.grantPermission(Operation.WRITE_ALL, mdClassDimension.getOid());
 
       Set<Operation> list = role.getAllPermissions(mdClassDimension);
 
-      assertEquals(1, list.size());
-      assertTrue(list.contains(Operation.WRITE_ALL));
+      Assert.assertEquals(1, list.size());
+      Assert.assertTrue(list.contains(Operation.WRITE_ALL));
 
       list = newUser.getAllPermissions(mdClassDimension);
 
-      assertEquals(2, list.size());
-      assertTrue(list.contains(Operation.READ_ALL));
-      assertTrue(list.contains(Operation.WRITE_ALL));
+      Assert.assertEquals(2, list.size());
+      Assert.assertTrue(list.contains(Operation.READ_ALL));
+      Assert.assertTrue(list.contains(Operation.WRITE_ALL));
 
-      newUser.revokeAllPermissions(mdClassDimension.getId());
+      newUser.revokeAllPermissions(mdClassDimension.getOid());
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
-      newUser.revokePermission(Operation.READ_ALL, mdClassDimension.getId());
+      newUser.revokePermission(Operation.READ_ALL, mdClassDimension.getOid());
       role.delete();
       role2.delete();
     }
 
   }
 
+  @Request
+  @Test
   public void testDenyPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
-      role.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-      role.grantPermission(Operation.DENY_READ, mdBusiness.getId());
-      role.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
+      role.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
+      role.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+      role.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
+      role.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
 
       Set<Operation> permissions = role.getAllPermissions(mdBusiness);
 
-      assertEquals(4, permissions.size());
-      assertTrue(permissions.contains(Operation.DENY_WRITE));
-      assertTrue(permissions.contains(Operation.DENY_READ));
-      assertTrue(permissions.contains(Operation.DENY_DELETE));
-      assertTrue(permissions.contains(Operation.DENY_CREATE));
+      Assert.assertEquals(4, permissions.size());
+      Assert.assertTrue(permissions.contains(Operation.DENY_WRITE));
+      Assert.assertTrue(permissions.contains(Operation.DENY_READ));
+      Assert.assertTrue(permissions.contains(Operation.DENY_DELETE));
+      Assert.assertTrue(permissions.contains(Operation.DENY_CREATE));
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2841,6 +2685,8 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverwritePermissions()
   {
     RoleDAO superRole = TestFixtureFactory.createRole1();
@@ -2855,23 +2701,23 @@ public class RBACTest extends TestCase
       {
         subRole.addAscendant(superRole);
 
-        superRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
-        superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-        superRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
-        superRole.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+        superRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
+        superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+        superRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
+        superRole.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
-        subRole.grantPermission(Operation.WRITE, mdBusiness.getId());
-        subRole.grantPermission(Operation.CREATE, mdBusiness.getId());
-        subRole.grantPermission(Operation.DELETE, mdBusiness.getId());
-        subRole.grantPermission(Operation.READ, mdBusiness.getId());
+        subRole.grantPermission(Operation.WRITE, mdBusiness.getOid());
+        subRole.grantPermission(Operation.CREATE, mdBusiness.getOid());
+        subRole.grantPermission(Operation.DELETE, mdBusiness.getOid());
+        subRole.grantPermission(Operation.READ, mdBusiness.getOid());
 
-        Set<Operation> permissions = subRole.getOperations().get(mdBusiness.getId());
+        Set<Operation> permissions = subRole.getOperations().get(mdBusiness.getOid());
 
-        assertEquals(4, permissions.size());
-        assertTrue(permissions.contains(Operation.WRITE));
-        assertTrue(permissions.contains(Operation.READ));
-        assertTrue(permissions.contains(Operation.DELETE));
-        assertTrue(permissions.contains(Operation.CREATE));
+        Assert.assertEquals(4, permissions.size());
+        Assert.assertTrue(permissions.contains(Operation.WRITE));
+        Assert.assertTrue(permissions.contains(Operation.READ));
+        Assert.assertTrue(permissions.contains(Operation.DELETE));
+        Assert.assertTrue(permissions.contains(Operation.CREATE));
       }
       finally
       {
@@ -2880,7 +2726,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2888,19 +2734,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNegatingWritePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
+      role.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.WRITE, mdBusiness.getId());
+        role.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -2909,7 +2757,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2917,19 +2765,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReverseNegatingWritePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.WRITE, mdBusiness.getId());
+      role.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
+        role.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -2938,7 +2788,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2946,19 +2796,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNegatingReadPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+      role.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.READ, mdBusiness.getId());
+        role.grantPermission(Operation.READ, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -2967,7 +2819,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -2975,19 +2827,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReverseNegatingReadPermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.READ, mdBusiness.getId());
+      role.grantPermission(Operation.READ, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+        role.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -2996,7 +2850,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -3004,19 +2858,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNegatingDeletePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
+      role.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.DELETE, mdBusiness.getId());
+        role.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -3025,7 +2881,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -3033,19 +2889,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReverseNegatingDeletePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DELETE, mdBusiness.getId());
+      role.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
+        role.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -3054,7 +2912,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -3062,19 +2920,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNegatingCreatePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
+      role.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.CREATE, mdBusiness.getId());
+        role.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -3083,7 +2943,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {
@@ -3091,19 +2951,21 @@ public class RBACTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReverseNegatingCreatePermissions()
   {
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
 
     try
     {
-      role.grantPermission(Operation.CREATE, mdBusiness.getId());
+      role.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
       try
       {
-        role.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
+        role.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
 
-        fail("Able to assign negating permissions");
+        Assert.fail("Able to assign negating permissions");
       }
       catch (RBACExceptionInvalidOperation e)
       {
@@ -3112,7 +2974,7 @@ public class RBACTest extends TestCase
     }
     catch (Exception t)
     {
-      fail(t.getMessage());
+      Assert.fail(t.getMessage());
     }
     finally
     {

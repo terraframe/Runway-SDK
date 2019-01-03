@@ -20,44 +20,20 @@ package com.runwaysdk.mvc;
 
 import java.io.File;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.controller.JSPFetcher;
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+import com.runwaysdk.session.Request;
 
-public class ViewResponseTest extends TestCase
+public class ViewResponseTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ViewResponseTest.class);
-
-    TestSetup wrapper = new TestSetup(suite);
-
-    return wrapper;
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  @Request
+  @Test
   public void testAttribute() throws Exception
   {
     String name = "test";
@@ -69,6 +45,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(value, response.getAttribute(name));
   }
 
+  @Request
+  @Test
   public void testHandle() throws Exception
   {
     MockServletRequest req = new MockServletRequest();
@@ -85,6 +63,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(template, req.getDispatcher().getLocation());
   }
 
+  @Request
+  @Test
   public void testHandleDirectory() throws Exception
   {
     MockServletRequest req = new MockServletRequest();
@@ -102,6 +82,8 @@ public class ViewResponseTest extends TestCase
     Assert.assertEquals(template, req.getDispatcher().getLocation());
   }
 
+  @Request
+  @Test
   public void testHandleAttributes() throws Exception
   {
     MockServletRequest req = new MockServletRequest();

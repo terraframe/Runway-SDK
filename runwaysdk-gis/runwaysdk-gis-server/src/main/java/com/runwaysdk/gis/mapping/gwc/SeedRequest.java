@@ -18,9 +18,7 @@
  */
 package com.runwaysdk.gis.mapping.gwc;
 
-import com.runwaysdk.generation.loader.Reloadable;
-
-public class SeedRequest extends AbstractRequest implements Reloadable
+public class SeedRequest extends AbstractRequest
 {
   public SeedRequest(String layer)
   {

@@ -74,7 +74,7 @@ public abstract class CompositeFieldConditionBase extends com.runwaysdk.system.m
     }
     else
     {
-      setValue(FIRSTCONDITION, value.getId());
+      setValue(FIRSTCONDITION, value.getOid());
     }
   }
   
@@ -114,7 +114,7 @@ public abstract class CompositeFieldConditionBase extends com.runwaysdk.system.m
     }
     else
     {
-      setValue(SECONDCONDITION, value.getId());
+      setValue(SECONDCONDITION, value.getOid());
     }
   }
   
@@ -123,9 +123,9 @@ public abstract class CompositeFieldConditionBase extends com.runwaysdk.system.m
     return CLASS;
   }
   
-  public static CompositeFieldCondition get(String id)
+  public static CompositeFieldCondition get(String oid)
   {
-    return (CompositeFieldCondition) com.runwaysdk.business.Business.get(id);
+    return (CompositeFieldCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static CompositeFieldCondition getByKey(String key)
@@ -133,17 +133,17 @@ public abstract class CompositeFieldConditionBase extends com.runwaysdk.system.m
     return (CompositeFieldCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static CompositeFieldCondition lock(java.lang.String id)
+  public static CompositeFieldCondition lock(java.lang.String oid)
   {
-    CompositeFieldCondition _instance = CompositeFieldCondition.get(id);
+    CompositeFieldCondition _instance = CompositeFieldCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static CompositeFieldCondition unlock(java.lang.String id)
+  public static CompositeFieldCondition unlock(java.lang.String oid)
   {
-    CompositeFieldCondition _instance = CompositeFieldCondition.get(id);
+    CompositeFieldCondition _instance = CompositeFieldCondition.get(oid);
     _instance.unlock();
     
     return _instance;

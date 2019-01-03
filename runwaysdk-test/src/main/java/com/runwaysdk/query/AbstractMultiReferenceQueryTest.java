@@ -28,9 +28,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
@@ -63,26 +64,9 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public abstract class AbstractMultiReferenceQueryTest extends TestCase
+public abstract class AbstractMultiReferenceQueryTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -160,14 +144,16 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     mdAttributeMultiReference = mdAttribute;
     mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
     mdAttributeMultiReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
-    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttributeMultiReference.apply();
   }
 
   /**
   * 
   */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
@@ -181,8 +167,9 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  @Override
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
     mdBusiness.deleteAllRecords();
     mdTerm.deleteAllRecords();
@@ -196,6 +183,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     return mdAttributeMultiReference;
   }
 
+  @Request
+  @Test
   public void testBasicQueryForOjbectWithAttributeMultiReference()
   {
     BusinessDAO value = this.createTerm();
@@ -213,9 +202,11 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(value.getId()));
+    Assert.assertTrue(result.contains(value.getOid()));
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter()
   {
     BusinessDAO term = this.createTerm();
@@ -235,13 +226,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -255,6 +246,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter_2()
   {
     BusinessDAO term = this.createTerm();
@@ -273,6 +266,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnBoolean()
   {
     BusinessDAO term = this.createTerm();
@@ -292,13 +287,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -312,6 +307,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDate()
   {
     BusinessDAO term = this.createTerm();
@@ -331,13 +328,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -351,6 +348,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDateTime()
   {
     BusinessDAO term = this.createTerm();
@@ -370,13 +369,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -390,6 +389,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnTime()
   {
     BusinessDAO term = this.createTerm();
@@ -409,13 +410,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -429,6 +430,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDecimal()
   {
     BusinessDAO term = this.createTerm();
@@ -448,13 +451,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -468,6 +471,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDouble()
   {
     BusinessDAO term = this.createTerm();
@@ -487,13 +492,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -507,6 +512,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnFloat()
   {
     BusinessDAO term = this.createTerm();
@@ -526,13 +533,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -546,6 +553,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnInteger()
   {
     BusinessDAO term = this.createTerm();
@@ -565,13 +574,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -585,6 +594,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnLong()
   {
     BusinessDAO term = this.createTerm();
@@ -604,13 +615,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -624,6 +635,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnText()
   {
     BusinessDAO term = this.createTerm();
@@ -643,13 +656,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term.getId()));
+    Assert.assertTrue(result.contains(term.getOid()));
 
     /*
      * Test a failure case
@@ -663,6 +676,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsAll()
   {
     BusinessDAO term1 = this.createTerm();
@@ -675,7 +690,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
      */
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsAll(term2.getId(), term3.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsAll(term2.getOid(), term3.getOid()));
 
     List<BusinessDAOIF> results = query.getIterator().getAll();
 
@@ -683,27 +698,29 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(2, result.size());
-    Assert.assertTrue(result.contains(term2.getId()));
-    Assert.assertTrue(result.contains(term3.getId()));
+    Assert.assertTrue(result.contains(term2.getOid()));
+    Assert.assertTrue(result.contains(term3.getOid()));
 
     /*
      * Test a failure case
      */
     factory = new QueryFactory();
     query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsAll(term1.getId(), term2.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsAll(term1.getOid(), term2.getOid()));
 
     results = query.getIterator().getAll();
 
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsAny()
   {
     BusinessDAO term1 = this.createTerm();
@@ -715,7 +732,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
      */
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsAny(term1.getId(), term2.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsAny(term1.getOid(), term2.getOid()));
 
     List<BusinessDAOIF> results = query.getIterator().getAll();
 
@@ -723,26 +740,28 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term2.getId()));
+    Assert.assertTrue(result.contains(term2.getOid()));
 
     /*
      * Test a failure case
      */
     factory = new QueryFactory();
     query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsAny(term1.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsAny(term1.getOid()));
 
     results = query.getIterator().getAll();
 
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeContainsExactly()
   {
     BusinessDAO term2 = this.createTerm();
@@ -754,7 +773,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
      */
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsExactly(term2.getId(), term3.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsExactly(term2.getOid(), term3.getOid()));
 
     List<BusinessDAOIF> results = query.getIterator().getAll();
 
@@ -762,27 +781,29 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(2, result.size());
-    Assert.assertTrue(result.contains(term2.getId()));
-    Assert.assertTrue(result.contains(term3.getId()));
+    Assert.assertTrue(result.contains(term2.getOid()));
+    Assert.assertTrue(result.contains(term3.getOid()));
 
     /*
      * Test a failure case
      */
     factory = new QueryFactory();
     query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).containsExactly(term2.getId()));
+    query.WHERE(this.getQueryAttribute(query).containsExactly(term2.getOid()));
 
     results = query.getIterator().getAll();
 
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeNotContainsAll()
   {
     BusinessDAO term1 = this.createTerm();
@@ -795,7 +816,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
      */
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).notContainsAll(term1.getId()));
+    query.WHERE(this.getQueryAttribute(query).notContainsAll(term1.getOid()));
 
     List<BusinessDAOIF> results = query.getIterator().getAll();
 
@@ -803,27 +824,29 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(2, result.size());
-    Assert.assertTrue(result.contains(term2.getId()));
-    Assert.assertTrue(result.contains(term3.getId()));
+    Assert.assertTrue(result.contains(term2.getOid()));
+    Assert.assertTrue(result.contains(term3.getOid()));
 
     /*
      * Test a failure case
      */
     factory = new QueryFactory();
     query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getId(), term3.getId()));
+    query.WHERE(this.getQueryAttribute(query).notContainsAll(term2.getOid(), term3.getOid()));
 
     results = query.getIterator().getAll();
 
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testAttributeNotContainsAny()
   {
     BusinessDAO term1 = this.createTerm();
@@ -835,7 +858,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
      */
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).notContainsAny(term1.getId()));
+    query.WHERE(this.getQueryAttribute(query).notContainsAny(term1.getOid()));
 
     List<BusinessDAOIF> results = query.getIterator().getAll();
 
@@ -843,26 +866,28 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term2.getId()));
+    Assert.assertTrue(result.contains(term2.getOid()));
 
     /*
      * Test a failure case
      */
     factory = new QueryFactory();
     query = factory.businessDAOQuery(mdBusiness.definesType());
-    query.WHERE(this.getQueryAttribute(query).notContainsAny(term2.getId()));
+    query.WHERE(this.getQueryAttribute(query).notContainsAny(term2.getOid()));
 
     results = query.getIterator().getAll();
 
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testEQ()
   {
     BusinessDAO term1 = this.createTerm();
@@ -881,13 +906,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business1.getId(), test.getId());
+    Assert.assertEquals(business1.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term1.getId()));
+    Assert.assertTrue(result.contains(term1.getOid()));
 
     /*
      * Test a failure case
@@ -901,6 +926,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertEquals(0, results.size());
   }
 
+  @Request
+  @Test
   public void testNE()
   {
     BusinessDAO term1 = this.createTerm();
@@ -919,13 +946,13 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     BusinessDAOIF test = results.get(0);
 
-    Assert.assertEquals(business1.getId(), test.getId());
+    Assert.assertEquals(business1.getOid(), test.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertTrue(result.contains(term1.getId()));
+    Assert.assertTrue(result.contains(term1.getOid()));
 
     /*
      * Test a failure case
@@ -943,6 +970,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
    * Generated AttributeMultiReference query test
    */
 
+  @Request
+  @Test
   public void testBasicQueryForOjbectWithAttributeMultiReference_Generated() throws Exception
   {
     BusinessDAO value = this.createTerm();
@@ -963,10 +992,12 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = test.getMultiItems(this.getMdAttribute().definesAttribute());
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, value.getId()));
+    Assert.assertTrue(this.contains(results, value.getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnCharacter_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -994,12 +1025,12 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     Assert.assertTrue(iterator.hasNext());
 
     Business test = (Business) iterator.next();
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     List<? extends Business> results = test.getMultiItems(this.getMdAttribute().definesAttribute());
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, term.getId()));
+    Assert.assertTrue(this.contains(results, term.getOid()));
 
     /*
      * Test a failure case
@@ -1018,6 +1049,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnBoolean_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1046,7 +1079,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     Business test = results.get(0);
 
-    Assert.assertEquals(business.getId(), test.getId());
+    Assert.assertEquals(business.getOid(), test.getOid());
 
     /*
      * Test a failure case
@@ -1064,6 +1097,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDate_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1089,7 +1124,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1108,6 +1143,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDateTime_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1133,7 +1170,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1152,6 +1189,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnTime_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1177,7 +1216,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1197,6 +1236,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDecimal_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1222,7 +1263,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1241,6 +1282,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnDouble_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1266,7 +1309,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1285,6 +1328,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnFloat_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1310,7 +1355,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1329,6 +1374,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnInteger_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1354,7 +1401,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1373,6 +1420,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeMultiReferenceQueryOnLong_Generated() throws Exception
   {
     BusinessDAO term = this.createTerm();
@@ -1398,7 +1447,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1417,6 +1466,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsAll_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());
@@ -1447,7 +1498,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1469,6 +1520,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsAny_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());
@@ -1498,7 +1551,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1519,6 +1572,8 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAttributeContainsExactly_Generated() throws Exception
   {
     Business term1 = BusinessFacade.get(this.createTerm());
@@ -1547,7 +1602,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) iterator.getAll();
 
     Assert.assertEquals(1, results.size());
-    Assert.assertEquals(business.getId(), results.get(0).getId());
+    Assert.assertEquals(business.getOid(), results.get(0).getOid());
 
     /*
      * Test a failure case
@@ -1601,7 +1656,7 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
     for (ComponentIF term : terms)
     {
-      business.addItem(this.getMdAttribute().definesAttribute(), term.getId());
+      business.addItem(this.getMdAttribute().definesAttribute(), term.getOid());
     }
 
     business.apply();
@@ -1611,14 +1666,14 @@ public abstract class AbstractMultiReferenceQueryTest extends TestCase
 
   /**
    * @param results
-   * @param id
+   * @param oid
    * @return
    */
-  private boolean contains(List<? extends Business> results, String id)
+  private boolean contains(List<? extends Business> results, String oid)
   {
     for (Business result : results)
     {
-      if (result.getId().equals(id))
+      if (result.getOid().equals(oid))
       {
         return true;
       }

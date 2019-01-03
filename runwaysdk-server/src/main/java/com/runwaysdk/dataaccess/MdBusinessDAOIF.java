@@ -24,7 +24,6 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 
@@ -158,20 +157,6 @@ public interface MdBusinessDAOIF extends MdElementDAOIF
    * @return {@link List} of {@link MdAttributeReferenceDAOIF}
    */
   public List<MdAttributeEnumerationDAOIF> getAllEnumerationAttributes();
-
-  /**
-   * Returns the MdState which this MdBusiness owns
-   *
-   * @return The MdState in which this class is the owner of
-   */
-  public MdStateMachineDAOIF definesMdStateMachine();
-
-  /**
-   * Checks if this class definition owns a state machine
-   *
-   * @return <code>true</code> if this
-   */
-  public boolean hasStateMachine();
 
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()

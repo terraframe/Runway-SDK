@@ -214,13 +214,13 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.DoubleCondition doubleCondition)
     {
       if(doubleCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(doubleCondition.getId());
+      return this.EQ(doubleCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.DoubleCondition doubleCondition)
     {
       if(doubleCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(doubleCondition.getId());
+      return this.NE(doubleCondition.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdFieldQuery.MdFieldQueryReferenceIF getDefiningMdField()
@@ -351,7 +351,7 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
 
       for (int i=0; i<doubleCondition.length; i++)
       {
-        itemIdArray[i] = doubleCondition[i].getId();
+        itemIdArray[i] = doubleCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -363,7 +363,7 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
 
       for (int i=0; i<doubleCondition.length; i++)
       {
-        itemIdArray[i] = doubleCondition[i].getId();
+        itemIdArray[i] = doubleCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -375,7 +375,7 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
 
       for (int i=0; i<doubleCondition.length; i++)
       {
-        itemIdArray[i] = doubleCondition[i].getId();
+        itemIdArray[i] = doubleCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -387,7 +387,7 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
 
       for (int i=0; i<doubleCondition.length; i++)
       {
-        itemIdArray[i] = doubleCondition[i].getId();
+        itemIdArray[i] = doubleCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -399,7 +399,7 @@ public  class DoubleConditionQuery extends com.runwaysdk.system.metadata.FieldCo
 
       for (int i=0; i<doubleCondition.length; i++)
       {
-        itemIdArray[i] = doubleCondition[i].getId();
+        itemIdArray[i] = doubleCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

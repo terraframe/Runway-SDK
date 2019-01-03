@@ -22,17 +22,17 @@ public interface ComponentInfo
 {
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Component";
 
-  public static final String ID_VALUE          = "20080305NM000000000000000000000100000000000000000000000000000001";
+  public static final String ID_VALUE          = "e4277b02-d7a5-3efe-995b-7154bc00003a";
 
   public static final String TABLE             = "component";
 
   /**
-   * Name of the attribute that specifies the ID.
+   * Name of the attribute that specifies the OID.
    */
-  public static final String ID               = "id";
+  public static final String OID               = "oid";
 
   /**
-   * Name root of the id.  Denormalized for metadata loading performance.
+   * Name root of the oid.  Denormalized for metadata loading performance.
    */
   public static final String ROOT_ID          = "rootId";
 

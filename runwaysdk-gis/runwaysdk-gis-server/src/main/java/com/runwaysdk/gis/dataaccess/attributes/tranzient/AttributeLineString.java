@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeLineStringParseException;
 import com.runwaysdk.gis.dataaccess.AttributeLineStringIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
-import com.runwaysdk.constants.CommonProperties;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;

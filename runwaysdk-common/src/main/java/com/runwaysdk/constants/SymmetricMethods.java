@@ -20,9 +20,9 @@ package com.runwaysdk.constants;
 
 public enum SymmetricMethods
 {
-  AES   ("0000000000000000000000000000062400000000000000000000000000000626", "AES/CBC/PKCS5Padding"),
+  AES   ("e9c51e51-924f-3c77-99d2-015b7800005a", "AES/CBC/PKCS5Padding"),
   
-  DES   ("0000000000000000000000000000063500000000000000000000000000000626", "DES/CBC/PKCS5Padding");
+  DES   ("c51bc3d8-c061-3c20-95d1-8d83e000005a", "DES/CBC/PKCS5Padding");
   
   /**
    * The name of the attribute that specifies what kind of symmetric 
@@ -31,9 +31,9 @@ public enum SymmetricMethods
   public static final String TRANSFORMATION = "transformation";
   
   /**
-   * The id of the symmetric method.
+   * The oid of the symmetric method.
    */
-  private String id;
+  private String oid;
   
   /**
    * The transformation of the symmetric method.
@@ -45,29 +45,29 @@ public enum SymmetricMethods
    */
   private SymmetricMethods()
   {
-    id = null;
+    oid = null;
     transformation = null;
   }
   
   /**
    * Enum constructor.
    * 
-   * @param id
+   * @param oid
    * @param transformation
    */
-  private SymmetricMethods(String id, String transformation)
+  private SymmetricMethods(String oid, String transformation)
   {
     this();
-    this.id = id;
+    this.oid = oid;
     this.transformation = transformation;
   }
   
   /**
-   * @return The id of the method.
+   * @return The oid of the method.
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
   
   /**

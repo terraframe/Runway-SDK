@@ -22,14 +22,14 @@ public class HasLayer extends HasLayerBase
 {
   private static final long serialVersionUID = -1594119681;
   
-  public HasLayer(String parentId, String childId)
+  public HasLayer(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public HasLayer(com.runwaysdk.system.gis.mapping.GeneratedMap parent, com.runwaysdk.system.gis.mapping.Layer child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

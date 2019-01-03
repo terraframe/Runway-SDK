@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * This annotation is used as a hook to weave in session management.  Any
  * method that is an entry point into the core should have this annotation.
  * The session management aspect assumes that the first parameter of the
- * method is a string containing the session id.
+ * method is a string containing the session oid.
  *
  * @author nathan
  *

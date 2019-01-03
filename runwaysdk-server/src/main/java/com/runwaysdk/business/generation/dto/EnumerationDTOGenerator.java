@@ -21,6 +21,8 @@ package com.runwaysdk.business.generation.dto;
 import java.util.Map;
 import java.util.TreeMap;
 
+
+
 import com.runwaysdk.business.EnumerationDTOIF;
 import com.runwaysdk.business.generation.AbstractClientGenerator;
 import com.runwaysdk.business.generation.AbstractGenerator;
@@ -36,7 +38,6 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.system.EnumerationMasterDTO;
 
 /**
@@ -163,10 +164,6 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
   {
     getWriter().write("public enum " + getGeneratedName(this.getMdTypeDAOIF()) + " implements " + EnumerationDTOIF.class.getName());
 
-    if (!this.mdBusinessIF.isSystemPackage())
-    {
-      getWriter().write(", " + Reloadable.class.getName());
-    }
     getWriter().writeLine("");
 
     getWriter().openBracket();

@@ -22,9 +22,9 @@ public class LocatedInDTO extends LocatedInDTOBase
 {
   private static final long serialVersionUID = -1629763456;
   
-  public LocatedInDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public LocatedInDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

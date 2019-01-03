@@ -35,7 +35,7 @@ public class ViewDTOCopier extends SessionDTOCopier
   {
     this(clientRequest, source, null, typeSafe, typeSafeAttributes);
     
-    if (typeSafe)
+    if (typeSafe && source.getMd().isGenerateSource())
     {
       this.dest = ConversionFacade.createDynamicViewDTO(null, source.getType());
       this.dest.setClientRequest(clientRequest);

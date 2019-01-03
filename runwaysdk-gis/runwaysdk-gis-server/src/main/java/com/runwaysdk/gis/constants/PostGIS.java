@@ -20,12 +20,6 @@ package com.runwaysdk.gis.constants;
 
 import java.util.Hashtable;
 
-import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
-import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
-import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
-import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
-import com.runwaysdk.gis.constants.MdAttributePointInfo;
-import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
 import com.runwaysdk.constants.PostgreSQL;
 
 public class PostGIS extends PostgreSQL 

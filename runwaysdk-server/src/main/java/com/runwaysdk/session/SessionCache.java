@@ -51,7 +51,7 @@ public abstract class SessionCache
    * @param password The password of the {@link UserDAO}
    * @param locales locale of the user.
    * 
-   * @param id of the newly created {@link Session}.
+   * @param oid of the newly created {@link Session}.
    */
   protected abstract String logIn(String username, String password, Locale[] locales);
   
@@ -65,7 +65,7 @@ public abstract class SessionCache
    * @param dimensionKey The dimension key of the dimension set to this session.
    * @param locales locale of the user.
    * 
-   * @param id of the newly created {@link Session}.
+   * @param oid of the newly created {@link Session}.
    */
   protected abstract String logIn(String username, String password, String dimensionKey, Locale[] locales);
 
@@ -77,7 +77,7 @@ public abstract class SessionCache
    * @param username Reference to the {@link SingleActorDAOIF} which is being logged in
    * @param locales locale of the user.
    * 
-   * @param id of the newly created {@link Session}.
+   * @param oid of the newly created {@link Session}.
    */
   protected abstract String logIn(SingleActorDAOIF user, Locale[] locales);
   
@@ -91,7 +91,7 @@ public abstract class SessionCache
    * @param dimensionKey The dimension key of the dimension set to this session.
    * @param locales locale of the user.
    * 
-   * @param id of the newly created {@link Session}.
+   * @param oid of the newly created {@link Session}.
    */
   protected abstract String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales);
   
@@ -103,7 +103,7 @@ public abstract class SessionCache
    * 
    * @param username The name of the {@link UserDAO}
    * @param password The password of the {@link UserDAO}
-   * @param sessionId The id of the {@link Session}
+   * @param sessionId The oid of the {@link Session}
    */
   protected abstract void changeLogin(String username, String password, String sessionId);
   
@@ -115,13 +115,13 @@ public abstract class SessionCache
    * 
    * @param username The name of the {@link UserDAO}
    * @param password The password of the {@link UserDAO}
-   * @param sessionId The id of the {@link Session}
+   * @param sessionId The oid of the {@link Session}
    */
   protected abstract void changeLogin(SingleActorDAOIF user, String sessionId);
 
   /**
    * Sets the dimension of an existing {@link Session}.
-   * @param sessionId The id of the {@link Session}.
+   * @param sessionId The oid of the {@link Session}.
    * @param dimensionKey key of a {@link MdDimension}.
    */
   protected abstract void setDimension(String sessionId, String dimensionKey);
@@ -136,7 +136,7 @@ public abstract class SessionCache
    * Closes a {@link Session} in the {@link SessionCache}. If the
    * {@link Session} does not exist then this method does nothing.
    * 
-   * @param sessionId The id of a {@link Session}.
+   * @param sessionId The oid of a {@link Session}.
    */
   protected abstract void closeSession(String sessionId);
 
@@ -148,23 +148,23 @@ public abstract class SessionCache
   /**
    * Renews the amount of time a {@link Session} has till it expires.
    * 
-   * @param sessionId The id of the {@link Session} to renew
+   * @param sessionId The oid of the {@link Session} to renew
    */
   protected abstract void renewSession(String sessionId);
 
   /**
    * Returns the session corresponding to a sessionId
    * 
-   * @param sessionId The id of the session
-   * @return The session corresponding to the id
+   * @param sessionId The oid of the session
+   * @return The session corresponding to the oid
    */
   protected abstract Session getSession(String sessionId);
 
   /**
-   * Checks if a {@link Session} of the given id exists in the
+   * Checks if a {@link Session} of the given oid exists in the
    * {@link SessionCache}.
    * 
-   * @param sessionId The id of the {@link Session}.
+   * @param sessionId The oid of the {@link Session}.
    * 
    * @return true if the {@link Session} exists, false otherwise.
    */
@@ -180,7 +180,7 @@ public abstract class SessionCache
   protected abstract void addSession(Session session);
 
   /**
-   * @param userId The id of the {@link UserDAO}.
+   * @param userId The oid of the {@link UserDAO}.
    * 
    * @return Returns if the {@link UserDAO} is logged into at least one
    *         {@link Session}.
@@ -188,7 +188,7 @@ public abstract class SessionCache
   abstract boolean isLoggedIn(String userId);
 
   /**
-   * @param userId The id of the {@link UserDAO}.
+   * @param userId The oid of the {@link UserDAO}.
    * 
    * @return Returns the number of open {@link Session}s associated with a
    *         {@link UserDAO}.
@@ -226,7 +226,7 @@ public abstract class SessionCache
   /**
    * Sets the user of a session
    * 
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param user The user of the new session
    */
   protected abstract void setUser(String sessionId, UserDAOIF user);
@@ -234,8 +234,8 @@ public abstract class SessionCache
   /**
    * Retrieves a {@link Session} which will be used in a request.
    * 
-   * @param sessionId The id of the session to retrieve
-   * @return {@link Session} corresponding to the session id
+   * @param sessionId The oid of the session to retrieve
+   * @return {@link Session} corresponding to the session oid
    */
   protected abstract Session getSessionForRequest(String sessionId);
   
@@ -248,7 +248,7 @@ public abstract class SessionCache
   protected abstract SessionIterator getIterator();
 
   /**
-   * Sets the flag denoting if the {@link Session} corresponding to the session id
+   * Sets the flag denoting if the {@link Session} corresponding to the session oid
    * should close at the end of its current request.
    * 
    * @param sessionId Id of session

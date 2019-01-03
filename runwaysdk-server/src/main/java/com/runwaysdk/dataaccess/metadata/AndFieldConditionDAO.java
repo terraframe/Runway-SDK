@@ -78,9 +78,9 @@ public class AndFieldConditionDAO extends CompositeFieldConditionDAO implements 
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static AndFieldConditionDAOIF get(String id)
+  public static AndFieldConditionDAOIF get(String oid)
   {
-    return (AndFieldConditionDAOIF) BusinessDAO.get(id);
+    return (AndFieldConditionDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

@@ -18,51 +18,51 @@
  */
 package com.runwaysdk;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 import com.runwaysdk.session.Request;
 
-public class CommonExceptionTest extends TestCase
+public class CommonExceptionTest
 {
-	public CommonExceptionTest() {
-		super();
-	}
-	
-    public CommonExceptionTest( String testName )
+  @Request
+  @Test
+  public void testClient()
+  {
+    try
     {
-        super( testName );
+      CommonExceptionProcessor.processException(ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
     }
+    catch (ProgrammingErrorExceptionDTO err)
+    {
+      // Expected
+    }
+    catch (ProgrammingErrorException err)
+    {
+      Assert.fail("A server exception was thrown in a client environment.");
+    }
+  }
 
-    public void testClient()
-    {
-      try {
-    	CommonExceptionProcessor.processException(
-    	          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
-      }
-      catch (ProgrammingErrorExceptionDTO err) {
-        // Expected
-      }
-      catch (ProgrammingErrorException err) {
-        fail("A server exception was thrown in a client environment.");
-      }
-    }
-    
-    @Request
-    public void testServer() {
-      // Commented out only because I want Ueber Test Suite to pass on the CI box and I'm not even sure if this test is the expected behavior.
-      
-//    	try {
-//        CommonExceptionProcessor.processException(
-//        	      ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
-//    	}
-//    	catch (ProgrammingErrorException e) {
-//          // Expected
-//    	}
-//    	catch (ProgrammingErrorExceptionDTO e) {
-//    		fail("A DTO exception was thrown within a request state.");
-//    	}
-    }
+  @Request
+  @Test
+  public void testServer()
+  {
+    // Commented out only because I want Ueber Test Suite to pass on the CI box
+    // and I'm not even sure if this test is the expected behavior.
+
+    // try {
+    // CommonExceptionProcessor.processException(
+    // ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some
+    // message, doesn't matter.");
+    // }
+    // catch (ProgrammingErrorException e) {
+    // // Expected
+    // }
+    // catch (ProgrammingErrorExceptionDTO e) {
+    // Assert.fail("A DTO exception was thrown within a request state.");
+    // }
+  }
 }

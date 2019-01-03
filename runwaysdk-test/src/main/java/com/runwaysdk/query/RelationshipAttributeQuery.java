@@ -24,12 +24,11 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
@@ -39,47 +38,18 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-public class RelationshipAttributeQuery extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class RelationshipAttributeQuery
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(RelationshipAttributeQuery.suite()));
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RelationshipAttributeQuery.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp() {}
-
-      protected void tearDown(){}
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsAll()
   {
     try
@@ -93,16 +63,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -117,16 +87,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsAll_Generated()
   {
     try
@@ -145,7 +116,7 @@ public class RelationshipAttributeQuery extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
@@ -154,11 +125,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -166,20 +137,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -188,29 +159,31 @@ public class RelationshipAttributeQuery extends TestCase
 
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CT");
       method = stateEnumQueryIFClass.getMethod("containsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsAny()
   {
     try
@@ -224,16 +197,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -248,16 +221,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsAny_Generated()
   {
     try
@@ -276,7 +250,7 @@ public class RelationshipAttributeQuery extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
@@ -285,11 +259,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -297,20 +271,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -319,29 +293,31 @@ public class RelationshipAttributeQuery extends TestCase
 
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT");
       method = stateEnumQueryIFClass.getMethod("containsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsExactly()
   {
     try
@@ -355,16 +331,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -379,16 +355,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInEnumerationContainsExactly_Generated()
   {
     try
@@ -407,7 +384,7 @@ public class RelationshipAttributeQuery extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
@@ -416,11 +393,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CO");
       Method method = stateEnumQueryIFClass.getMethod("containsExactly", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -428,20 +405,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -450,29 +427,31 @@ public class RelationshipAttributeQuery extends TestCase
 
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CA", "CO", "CT");
       method = stateEnumQueryIFClass.getMethod("containsExactly", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationNotContainsAll()
   {
     try
@@ -486,16 +465,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -510,16 +489,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testEnumerationNotContainsAll_Generated()
   {
     try
@@ -538,7 +518,7 @@ public class RelationshipAttributeQuery extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
@@ -547,11 +527,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO", "KS");
       Method method = stateEnumQueryIFClass.getMethod("notContainsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -559,20 +539,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -581,29 +561,31 @@ public class RelationshipAttributeQuery extends TestCase
 
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO", "CA");
       method = stateEnumQueryIFClass.getMethod("notContainsAll", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationNotContainsAny()
   {
     try
@@ -617,16 +599,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -641,16 +623,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testEnumerationNotContainsAny_Generated()
   {
     try
@@ -669,7 +652,7 @@ public class RelationshipAttributeQuery extends TestCase
       Object[] enumConstants = stateEnumClass.getEnumConstants();
 
       MdEnumerationDAOIF stateMdEnumIF = MdEnumerationDAO.getMdEnumerationDAO(QueryMasterSetup.stateEnum_all.getType());
-      String stateEnumQueryIFType =  BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
+      String stateEnumQueryIFType = BusinessQueryAPIGenerator.getEnumSubInterfaceCompiled(stateMdEnumIF);
       Class<?> stateEnumQueryIFClass = LoaderDecorator.load(stateEnumQueryIFType);
 
       QueryFactory factory = new QueryFactory();
@@ -678,11 +661,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CT", "KS");
       Method method = stateEnumQueryIFClass.getMethod("notContainsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      Condition condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      Condition condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -690,20 +673,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -712,29 +695,31 @@ public class RelationshipAttributeQuery extends TestCase
 
       enumArray = QueryMasterSetup.getStateEnumConstants(stateEnumClass, enumConstants, "CO", "CA");
       method = stateEnumQueryIFClass.getMethod("notContainsAny", Array.newInstance(stateEnumClass, 0).getClass());
-      condition = (Condition)method.invoke(attributeEnumeration, enumArray);
+      condition = (Condition) method.invoke(attributeEnumeration, enumArray);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
 
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInBooleanEqString()
   {
     try
@@ -748,16 +733,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -772,15 +757,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInBooleanEq()
   {
     try
@@ -794,16 +781,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -818,16 +805,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInBooleanEq_Generated()
   {
     try
@@ -843,11 +831,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableBoolean attributeBoolean = (SelectableBoolean)relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeBoolean.EQ(true));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -855,46 +843,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeBoolean = (SelectableBoolean)relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
+      attributeBoolean = (SelectableBoolean) relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeBoolean.EQ(false));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInBooleanNotEqString()
   {
     try
@@ -908,16 +898,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -932,15 +922,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInBooleanNotEq()
   {
     try
@@ -954,16 +946,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -978,16 +970,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInBooleanNotEq_Generated()
   {
     try
@@ -1003,11 +996,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableBoolean attributeBoolean = (SelectableBoolean)relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeBoolean.NE(false));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1015,46 +1008,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeBoolean = (SelectableBoolean)relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
+      attributeBoolean = (SelectableBoolean) relQueryClass.getMethod("getConQueryBoolean").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeBoolean.NE(true));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterEqString()
   {
     try
@@ -1068,16 +1063,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1092,16 +1087,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterEqString_Generated()
   {
     try
@@ -1117,11 +1113,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.EQ("con character value"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1129,46 +1125,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.EQ("wrong character value"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterEqIgnoreCaseString()
   {
     try
@@ -1182,16 +1180,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1206,16 +1204,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterEqIgnoreCaseString_Generated()
   {
     try
@@ -1231,11 +1230,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.EQi("CON CHARACTER VALUE"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1243,46 +1242,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.EQi("WRONG CHARACTER VALUE"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterInStringArray()
   {
     try
@@ -1296,16 +1297,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1320,16 +1321,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterInStringArray_Generated()
   {
     try
@@ -1345,11 +1347,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.IN("wrong value 1", "con character value", "wrong value 2"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1357,46 +1359,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIgnoreCaseCharacterInStringArray()
   {
     try
@@ -1410,16 +1414,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1434,16 +1438,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterInIngoreCaseStringArray_Generated()
   {
     try
@@ -1459,11 +1464,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.INi("WRONG VALUE 1", "CON CHARACTER VALUE", "WRONG VALUE 2"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1471,46 +1476,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.INi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterLikeString()
   {
     try
@@ -1524,16 +1531,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1548,16 +1555,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterLikeString_Generated()
   {
     try
@@ -1573,11 +1581,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.LIKE("%character%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1585,46 +1593,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.LIKE("%character"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterLikeIgnoreCaseString()
   {
     try
@@ -1638,16 +1648,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1662,16 +1672,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterLikeIgnoreCaseString_Generated()
   {
     try
@@ -1687,11 +1698,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.LIKEi("%CHARACTER%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1699,46 +1710,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.LIKEi("%CHARACTER"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotEqString()
   {
     try
@@ -1752,16 +1765,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1776,16 +1789,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotEqString_Generated()
   {
     try
@@ -1801,11 +1815,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NE("wrong character value"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1813,46 +1827,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NE("con character value"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotEqIgnoreCaseString()
   {
     try
@@ -1866,16 +1882,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -1890,16 +1906,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotEqIgnoreCaseString_Generated()
   {
     try
@@ -1915,11 +1932,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NEi("WRONG CHARACTER STRING"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -1927,46 +1944,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NEi("CON CHARACTER VALUE"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotInStringArray()
   {
     try
@@ -1980,16 +1999,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2004,16 +2023,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotInStringArray_Generated()
   {
     try
@@ -2029,11 +2049,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NI("wrong 1", "wrong 2", "wrong 3"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2041,46 +2061,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NI("wrong 1", "con character value", "wrong 2"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotInIgnoreCaseStringArray()
   {
     try
@@ -2094,16 +2116,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2118,16 +2140,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2143,11 +2166,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2155,46 +2178,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NIi("WRONG 1", "CON CHARACTER VALUE", "WRONG 2"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotLikeString()
   {
     try
@@ -2208,16 +2233,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2232,16 +2257,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotLikeString_Generated()
   {
     try
@@ -2257,11 +2283,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NLIKE("%wrong%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2269,46 +2295,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NLIKE("%character%"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotLikeIgnoreCaseString()
   {
     try
@@ -2322,16 +2350,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2346,16 +2374,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -2371,11 +2400,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      SelectableChar attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NLIKEi("%WRONG%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2383,46 +2412,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeChar = (SelectableChar)relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
+      attributeChar = (SelectableChar) relQueryClass.getMethod("getConQueryCharacter").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeChar.NLIKEi("%CHARACTER%"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextEqString()
   {
     try
@@ -2436,16 +2467,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2460,16 +2491,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextEqString_Generated()
   {
     try
@@ -2485,11 +2517,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.EQ("con text value"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2497,46 +2529,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.EQ("wrong text value"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextEqIgnoreCaseString()
   {
     try
@@ -2550,16 +2584,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2574,16 +2608,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextEqIgnoreCaseString_Generated()
   {
     try
@@ -2599,11 +2634,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.EQi("CON TEXT VALUE"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2611,46 +2646,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.EQi("WRONG TEXT VALUE"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextInStringArray()
   {
     try
@@ -2664,16 +2701,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2688,16 +2725,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextInStringArray_Generated()
   {
     try
@@ -2713,11 +2751,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.IN("wrong value 1", "con text value", "wrong value 2"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2725,46 +2763,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextInIgnoreCaseStringArray()
   {
     try
@@ -2778,16 +2818,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2802,16 +2842,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2827,11 +2868,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.INi("WRONG VALUE 1", "CON TEXT VALUE", "WRONG VALUE 2"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2839,46 +2880,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.INi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextLikeString()
   {
     try
@@ -2892,16 +2935,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -2916,16 +2959,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextLikeStringGenerated()
   {
     try
@@ -2941,11 +2985,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.LIKE("%text%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -2953,46 +2997,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.LIKE("%text"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextIgnoreCaseString()
   {
     try
@@ -3006,16 +3052,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3030,16 +3076,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextLikeIgnoreCaseString_Generated()
   {
     try
@@ -3055,11 +3102,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.LIKEi("%TEXT%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3067,46 +3114,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.LIKEi("%TEXT"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotEqString()
   {
     try
@@ -3120,16 +3169,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3144,16 +3193,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotEqString_Generated()
   {
     try
@@ -3169,11 +3219,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NE("wrong text value"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3181,46 +3231,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NE("con text value"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotEqIgnoreCaseString()
   {
     try
@@ -3234,16 +3286,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3258,16 +3310,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotEqIgnoreCaseString_Generated()
   {
     try
@@ -3283,11 +3336,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NEi("WRONG TEXT STRING"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3295,46 +3348,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NEi("CON TEXT VALUE"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotInStringArray()
   {
     try
@@ -3348,16 +3403,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3372,16 +3427,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotInStringArray_Generated()
   {
     try
@@ -3397,11 +3453,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NI("wrong 1", "wrong 2", "wrong 3"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3409,46 +3465,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NI("wrong 1", "con text value", "wrong 2"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotInIgnoreCaseStringArray()
   {
     try
@@ -3462,16 +3520,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3486,16 +3544,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -3511,11 +3570,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NIi("WRONG 1", "WRONG 2", "WRONG 3"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3523,46 +3582,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NIi("WRONG 1", "CON TEXT VALUE", "WRONG 2"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotLikeString()
   {
     try
@@ -3576,16 +3637,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3600,16 +3661,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotLikeString_Generated()
   {
     try
@@ -3625,11 +3687,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NLIKE("%wrong%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3637,46 +3699,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NLIKE("%text%"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTextNotLikeIgnoreCaseString()
   {
     try
@@ -3690,16 +3754,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3714,16 +3778,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTextNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -3739,11 +3804,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      SelectableChar attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NLIKEi("%WRONG%"));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3751,46 +3816,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
+      attributeText = (SelectableChar) relQueryClass.getMethod("getConQueryText").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeText.NLIKEi("%TEXT%"));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeEqString()
   {
     try
@@ -3804,16 +3871,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3828,20 +3895,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -3852,20 +3921,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-05-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-05-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -3878,16 +3947,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeEq_Generated()
   {
     try
@@ -3901,15 +3971,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -3917,48 +3987,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-05-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-05-05 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGtString()
   {
     try
@@ -3972,16 +4044,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -3996,20 +4068,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4020,20 +4094,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4046,16 +4120,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGt_Generated()
   {
     try
@@ -4069,15 +4144,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -4085,48 +4160,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGtEqString()
   {
     try
@@ -4140,16 +4217,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4160,16 +4237,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4184,20 +4261,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4208,20 +4287,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -4230,20 +4309,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4256,16 +4335,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeGtEq_Generated()
   {
     try
@@ -4279,15 +4359,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -4295,74 +4375,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeLtString()
   {
     try
@@ -4376,16 +4458,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4400,20 +4482,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeLt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4424,20 +4508,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4450,16 +4534,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeLt_Generated()
   {
     try
@@ -4473,15 +4558,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -4489,48 +4574,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeltEqString()
   {
     try
@@ -4544,16 +4631,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4564,16 +4651,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4588,20 +4675,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeltEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4612,20 +4701,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -4634,20 +4723,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4660,16 +4749,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeltEq_Generated()
   {
     try
@@ -4683,15 +4773,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -4699,74 +4789,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-07 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeNotEqString()
   {
     try
@@ -4780,16 +4872,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4804,20 +4896,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4828,20 +4922,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -4854,16 +4948,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateTimeNotEq_Generated()
   {
     try
@@ -4877,15 +4972,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-05 13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -4893,48 +4988,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATETIME_FORMAT).parse("2009-12-06 13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDateTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateEqString()
   {
     try
@@ -4948,16 +5045,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -4972,20 +5069,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -4996,20 +5095,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-05-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-05-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5022,16 +5121,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateEq_Generated()
   {
     try
@@ -5045,15 +5145,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -5061,48 +5161,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-05-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-05-05", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateGtString()
   {
     try
@@ -5116,16 +5218,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5140,20 +5242,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateGt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -5164,20 +5268,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5190,16 +5294,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateGt_Generated()
   {
     try
@@ -5213,15 +5318,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -5229,48 +5334,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateGtEqString()
   {
     try
@@ -5284,16 +5391,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5304,16 +5411,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5328,20 +5435,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateGtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -5352,20 +5461,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -5374,20 +5483,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5400,16 +5509,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateGtEq_Generated()
   {
     try
@@ -5423,15 +5533,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -5439,74 +5549,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateLtString()
   {
     try
@@ -5520,16 +5632,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5544,20 +5656,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateLt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -5568,20 +5682,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5594,16 +5708,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateLt_Generated()
   {
     try
@@ -5617,15 +5732,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -5633,49 +5748,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testQueryIsParentInDateltEqString()
   {
     try
@@ -5689,16 +5805,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5709,16 +5825,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5733,20 +5849,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateltEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -5757,20 +5875,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -5779,20 +5897,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5805,16 +5923,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateltEq_Generated()
   {
     try
@@ -5828,15 +5947,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -5844,74 +5963,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-07", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateNotEqString()
   {
     try
@@ -5925,16 +6046,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -5949,20 +6070,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDateNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -5973,20 +6096,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -5999,16 +6122,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDateNotEq_Generated()
   {
     try
@@ -6022,15 +6146,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-05", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6038,48 +6162,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.DATE_FORMAT).parse("2009-12-06", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryDate").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeEqString()
   {
     try
@@ -6093,16 +6219,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6117,20 +6243,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -6141,20 +6269,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -6167,16 +6295,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeEq_Generated()
   {
     try
@@ -6190,15 +6319,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6206,48 +6335,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.EQ(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeGtString()
   {
     try
@@ -6261,16 +6392,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6285,20 +6416,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeGt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -6309,20 +6442,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -6335,16 +6468,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeGt_Generated()
   {
     try
@@ -6358,15 +6492,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6374,48 +6508,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeGtEqString()
   {
     try
@@ -6429,16 +6565,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6449,16 +6585,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6473,20 +6609,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeGtEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -6497,20 +6635,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -6519,20 +6657,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -6545,16 +6683,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeGtEq_Generated()
   {
     try
@@ -6568,15 +6707,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6584,74 +6723,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.GE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeLtString()
   {
     try
@@ -6665,16 +6806,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6689,20 +6830,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeLt()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -6713,20 +6856,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -6739,16 +6882,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeLt_Generated()
   {
     try
@@ -6762,15 +6906,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6778,49 +6922,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LT(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-
+  @Request
+  @Test
   public void testQueryIsParentInTimeltEqString()
   {
     try
@@ -6834,16 +6979,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6854,16 +6999,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -6878,20 +7023,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeltEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -6902,20 +7049,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
@@ -6924,20 +7071,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -6950,16 +7097,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeltEq_Generated()
   {
     try
@@ -6973,15 +7121,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -6989,74 +7137,76 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("14:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.LE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeNotEqString()
   {
     try
@@ -7070,16 +7220,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7094,20 +7244,22 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInTimeNotEq()
   {
     try
     {
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -7118,20 +7270,20 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
@@ -7144,16 +7296,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInTimeNotEq_Generated()
   {
     try
@@ -7167,15 +7320,15 @@ public class RelationshipAttributeQuery extends TestCase
       String relQueryType = EntityQueryAPIGenerator.getQueryClass(relType);
       Class<?> relQueryClass = LoaderDecorator.load(relQueryType);
 
-      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00",  new java.text.ParsePosition(0));
+      Date date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("12:00:00", new java.text.ParsePosition(0));
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      SelectableMoment attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -7183,48 +7336,50 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
-      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00",  new java.text.ParsePosition(0));
+      date = new SimpleDateFormat(Constants.TIME_FORMAT).parse("13:00:00", new java.text.ParsePosition(0));
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeMoment = (SelectableMoment)relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
+      attributeMoment = (SelectableMoment) relQueryClass.getMethod("getConQueryTime").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeMoment.NE(date));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerEqString()
   {
     try
@@ -7238,16 +7393,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7262,15 +7417,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerEq()
   {
     try
@@ -7284,16 +7441,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7308,16 +7465,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerEq_Generated()
   {
     try
@@ -7333,11 +7491,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.EQ(400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -7345,46 +7503,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.EQ(401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGtString()
   {
     try
@@ -7398,16 +7558,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7422,15 +7582,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGt()
   {
     try
@@ -7444,16 +7606,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7468,16 +7630,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGt_Generated()
   {
     try
@@ -7493,11 +7656,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.GT(399));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -7505,46 +7668,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.GT(401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGtEqString()
   {
     try
@@ -7558,16 +7723,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7578,16 +7743,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7602,15 +7767,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGtEq()
   {
     try
@@ -7624,16 +7791,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7644,16 +7811,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7668,16 +7835,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerGtEq_Generated()
   {
     try
@@ -7693,11 +7861,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.GE(400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -7705,73 +7873,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.GE(399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.GE(401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLtString()
   {
     try
@@ -7785,16 +7955,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7809,15 +7979,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLt()
   {
     try
@@ -7831,16 +8003,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7855,16 +8027,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLt_Generated()
   {
     try
@@ -7880,11 +8053,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.LT(401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -7892,46 +8065,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.LT(400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLtEqString()
   {
     try
@@ -7945,16 +8120,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7965,16 +8140,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -7989,15 +8164,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLtEq()
   {
     try
@@ -8011,16 +8188,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8031,16 +8208,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8055,16 +8232,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerLtEq_Generated()
   {
     try
@@ -8080,11 +8258,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.LE(400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8092,73 +8270,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.LE(401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.LE(399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerNotEqString()
   {
     try
@@ -8172,16 +8352,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8196,15 +8376,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInIntegerNotEq()
   {
     try
@@ -8218,16 +8400,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8242,16 +8424,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInIntegerNotEq_Generated()
   {
     try
@@ -8267,11 +8450,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.NE(401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8279,46 +8462,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
+      attributeInteger = (SelectableInteger) relQueryClass.getMethod("getConQueryInteger").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeInteger.NE(400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongEqString()
   {
     try
@@ -8332,16 +8517,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8356,15 +8541,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongEq()
   {
     try
@@ -8373,28 +8560,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").EQ((long)400));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").EQ((long) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").EQ((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").EQ((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -8402,16 +8589,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongEq_Generated()
   {
     try
@@ -8427,11 +8615,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.EQ((long)400));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.EQ((long) 400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8439,46 +8627,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.EQ((long)401));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.EQ((long) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongGtString()
   {
     try
@@ -8492,16 +8682,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8516,15 +8706,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongGt()
   {
     try
@@ -8533,28 +8725,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").GT((long)399));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").GT((long) 399));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").GT((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").GT((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -8562,16 +8754,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongGt_Generated()
   {
     try
@@ -8587,11 +8780,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GT((long)399));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GT((long) 399));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8599,46 +8792,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GT((long)401));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GT((long) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongGtEqString()
   {
     try
@@ -8652,16 +8847,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8672,16 +8867,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8696,15 +8891,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongGtEq()
   {
     try
@@ -8713,48 +8910,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long)400));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long)399));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long) 399));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").GE((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -8762,16 +8959,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongGtEq_Generated()
   {
     try
@@ -8787,11 +8985,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long)400));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long) 400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8799,73 +8997,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long)399));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long) 399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long)401));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.GE((long) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongLtString()
   {
     try
@@ -8879,16 +9079,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -8903,15 +9103,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongLt()
   {
     try
@@ -8920,28 +9122,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").LT((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").LT((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").LT((long)400));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").LT((long) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -8949,16 +9151,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongLt_Generated()
   {
     try
@@ -8974,11 +9177,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LT((long)401));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LT((long) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -8986,46 +9189,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LT((long)400));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LT((long) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongLtEqString()
   {
     try
@@ -9039,16 +9244,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9059,16 +9264,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9083,15 +9288,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongLtEq()
   {
     try
@@ -9100,48 +9307,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long)400));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long)399));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").LE((long) 399));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -9149,16 +9356,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongLtEq_Generated()
   {
     try
@@ -9174,11 +9382,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long)400));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long) 400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -9186,73 +9394,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long)401));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long)399));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.LE((long) 399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongNotEqString()
   {
     try
@@ -9266,16 +9476,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9290,15 +9500,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInLongNotEq()
   {
     try
@@ -9307,28 +9519,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").NE((long)401));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").NE((long) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aLong("conQueryLong").NE((long)400));
+      relQuery.WHERE(relQuery.aLong("conQueryLong").NE((long) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -9336,16 +9548,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInLongNotEq_Generated()
   {
     try
@@ -9361,11 +9574,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.NE((long)401));
+      SelectableLong attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.NE((long) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -9373,46 +9586,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.NE((long)400));
+      attributeLong = (SelectableLong) relQueryClass.getMethod("getConQueryLong").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeLong.NE((long) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatEqString()
   {
     try
@@ -9426,16 +9641,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9450,15 +9665,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatEq()
   {
     try
@@ -9467,28 +9684,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").EQ((float)400.5));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").EQ((float) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").EQ((float)401.5));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").EQ((float) 401.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -9496,16 +9713,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatEq_Generated()
   {
     try
@@ -9521,11 +9739,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.EQ((float)400.5));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.EQ((float) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -9533,46 +9751,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.EQ((float)401.5));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.EQ((float) 401.5));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatGtString()
   {
     try
@@ -9586,16 +9806,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9610,15 +9830,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatGt()
   {
     try
@@ -9627,28 +9849,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GT((float)400));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GT((float) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GT((float)401));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GT((float) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -9656,16 +9878,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatGt_Generated()
   {
     try
@@ -9681,11 +9904,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GT((float)400));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GT((float) 400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -9693,46 +9916,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GT((float)401));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GT((float) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatGtEqString()
   {
     try
@@ -9746,16 +9971,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9766,16 +9991,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9790,15 +10015,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatGtEq()
   {
     try
@@ -9807,48 +10034,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float)400.5));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float)400));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float)401));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").GE((float) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -9856,16 +10083,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatGtEq_Generated()
   {
     try
@@ -9881,11 +10109,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float)400.5));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -9893,73 +10121,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float)400));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float)401));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.GE((float) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatLtString()
   {
     try
@@ -9973,16 +10203,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -9997,15 +10227,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatLt()
   {
     try
@@ -10014,28 +10246,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LT((float)401));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LT((float) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LT((float)400));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LT((float) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -10043,16 +10275,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatLt_Generated()
   {
     try
@@ -10068,11 +10301,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LT((float)401));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LT((float) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10080,46 +10313,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LT((float)400));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LT((float) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatLtEqString()
   {
     try
@@ -10133,16 +10368,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10153,16 +10388,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10177,15 +10412,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatLtEq()
   {
     try
@@ -10194,48 +10431,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float)400.5));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float)401));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float)399));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").LE((float) 399));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -10243,16 +10480,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatLtEq_Generated()
   {
     try
@@ -10268,11 +10506,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float)400.5));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10280,73 +10518,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float)401));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float)399));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.LE((float) 399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatNotEqString()
   {
     try
@@ -10360,16 +10600,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10384,15 +10624,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInFloatNotEq()
   {
     try
@@ -10401,28 +10643,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").NE((float)401));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").NE((float) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aFloat("conQueryFloat").NE((float)400.5));
+      relQuery.WHERE(relQuery.aFloat("conQueryFloat").NE((float) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -10430,16 +10672,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInFloatNotEq_Generated()
   {
     try
@@ -10455,11 +10698,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.NE((float)401));
+      SelectableFloat attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.NE((float) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10467,46 +10710,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.NE((float)400.5));
+      attributeFloat = (SelectableFloat) relQueryClass.getMethod("getConQueryFloat").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeFloat.NE((float) 400.5));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalEqString()
   {
     try
@@ -10520,16 +10765,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10544,15 +10789,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalEq()
   {
     try
@@ -10566,16 +10813,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10590,16 +10837,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalEq_Generated()
   {
     try
@@ -10615,11 +10863,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.EQ(new BigDecimal(400.5)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10627,46 +10875,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.EQ(new BigDecimal(401.5)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGtString()
   {
     try
@@ -10680,16 +10930,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10704,15 +10954,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGt()
   {
     try
@@ -10726,16 +10978,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10750,16 +11002,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGt_Generated()
   {
     try
@@ -10775,11 +11028,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.GT(new BigDecimal(400)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10787,46 +11040,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.GT(new BigDecimal(401)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGtEqString()
   {
     try
@@ -10840,16 +11095,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10860,16 +11115,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10884,15 +11139,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGtEq()
   {
     try
@@ -10906,16 +11163,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10926,16 +11183,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -10950,16 +11207,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalGtEq_Generated()
   {
     try
@@ -10975,11 +11233,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.GE(new BigDecimal(400.5)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -10987,73 +11245,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.GE(new BigDecimal(400)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.GE(new BigDecimal(401)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLtString()
   {
     try
@@ -11067,16 +11327,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11091,15 +11351,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLt()
   {
     try
@@ -11113,16 +11375,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11137,16 +11399,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLt_Generated()
   {
     try
@@ -11162,11 +11425,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.LT(new BigDecimal(401)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -11174,46 +11437,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.LT(new BigDecimal(400)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLtEqString()
   {
     try
@@ -11227,16 +11492,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11247,16 +11512,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11271,15 +11536,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLtEq()
   {
     try
@@ -11293,16 +11560,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11313,16 +11580,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11337,16 +11604,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalLtEq_Generated()
   {
     try
@@ -11362,11 +11630,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.LE(new BigDecimal(400.5)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -11374,73 +11642,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.LE(new BigDecimal(401)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.LE(new BigDecimal(399)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalNotEqString()
   {
     try
@@ -11454,16 +11724,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11478,15 +11748,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDecimalNotEq()
   {
     try
@@ -11500,16 +11772,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11524,16 +11796,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDecimalNotEq_Generated()
   {
     try
@@ -11549,11 +11822,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.NE(new BigDecimal(401)));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -11561,46 +11834,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
+      attributeDecimal = (SelectableDecimal) relQueryClass.getMethod("getConQueryDecimal").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDecimal.NE(new BigDecimal(400.5)));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleEqString()
   {
     try
@@ -11614,16 +11889,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11638,15 +11913,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleEq()
   {
     try
@@ -11655,28 +11932,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").EQ((double)400.5));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").EQ((double) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").EQ((double)401.5));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").EQ((double) 401.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -11684,16 +11961,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleEq_Generated()
   {
     try
@@ -11709,11 +11987,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.EQ((double)400.5));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.EQ((double) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -11721,46 +11999,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.EQ((double)401.5));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.EQ((double) 401.5));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGtString()
   {
     try
@@ -11774,16 +12054,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11798,15 +12078,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGt()
   {
     try
@@ -11815,28 +12097,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GT((double)400));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GT((double) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GT((double)401));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GT((double) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -11844,16 +12126,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGt_Generated()
   {
     try
@@ -11869,11 +12152,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GT((double)400));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GT((double) 400));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -11881,46 +12164,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GT((double)401));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GT((double) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGtEqString()
   {
     try
@@ -11934,16 +12219,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11954,16 +12239,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -11978,15 +12263,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGtEq()
   {
     try
@@ -11995,48 +12282,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double)400.5));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double)400));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double)401));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").GE((double) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -12044,16 +12331,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleGtEq_Generated()
   {
     try
@@ -12069,11 +12357,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double)400.5));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12081,73 +12369,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double)400));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double)401));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.GE((double) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLtString()
   {
     try
@@ -12161,16 +12451,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -12185,15 +12475,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLt()
   {
     try
@@ -12202,28 +12494,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LT((double)401));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LT((double) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LT((double)400));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LT((double) 400));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -12231,16 +12523,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLt_Generated()
   {
     try
@@ -12256,11 +12549,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LT((double)401));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LT((double) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12268,46 +12561,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LT((double)400));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LT((double) 400));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLtEqString()
   {
     try
@@ -12321,16 +12616,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -12341,16 +12636,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -12365,15 +12660,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLtEq()
   {
     try
@@ -12382,48 +12679,48 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double)400.5));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double)401));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double)399));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").LE((double) 399));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -12431,16 +12728,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleLtEq_Generated()
   {
     try
@@ -12456,11 +12754,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double)400.5));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double) 400.5));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12468,73 +12766,75 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double)401));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double) 401));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
-      if(!hasNext)
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double)399));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.LE((double) 399));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleNotEqString()
   {
     try
@@ -12548,16 +12848,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -12572,15 +12872,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInDoubleNotEq()
   {
     try
@@ -12589,28 +12891,28 @@ public class RelationshipAttributeQuery extends TestCase
       QueryFactory factory = new QueryFactory();
       BusinessDAOQuery parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       RelationshipDAOQuery relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").NE((double)401));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").NE((double) 401));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       // perform a query that WILL NOT find a match
       parentMdQuery = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       relQuery = factory.relationshipDAOQuery(QueryMasterSetup.connectionQueryInfo.getType());
-      relQuery.WHERE(relQuery.aDouble("conQueryDouble").NE((double)400.5));
+      relQuery.WHERE(relQuery.aDouble("conQueryDouble").NE((double) 400.5));
       parentMdQuery.WHERE(parentMdQuery.isParentIn(relQuery));
 
       iterator = parentMdQuery.getIterator();
@@ -12618,16 +12920,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInDoubleNotEq_Generated()
   {
     try
@@ -12643,11 +12946,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.NE((double)401));
+      SelectableDouble attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.NE((double) 401));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12655,46 +12958,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
-      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.NE((double)400.5));
+      attributeDouble = (SelectableDouble) relQueryClass.getMethod("getConQueryDouble").invoke(relQueryObject);
+      relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeDouble.NE((double) 400.5));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testQueryIsParentInReferenceEqString()
   {
     try
@@ -12708,16 +13013,16 @@ public class RelationshipAttributeQuery extends TestCase
 
       OIterator<BusinessDAOIF> iterator = parentMdQuery.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.testQueryObject1.getId()))
+        if (!object.getOid().equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
@@ -12732,16 +13037,17 @@ public class RelationshipAttributeQuery extends TestCase
       if (iterator.hasNext())
       {
         iterator.close();
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInReferenceEqString_Generated()
   {
     try
@@ -12757,11 +13063,11 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableReference attributeReference = (SelectableReference)relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
+      SelectableReference attributeReference = (SelectableReference) relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeReference.EQ(ServerConstants.SYSTEM_USER_ID));
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12769,47 +13075,48 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeReference = (SelectableReference)relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
+      attributeReference = (SelectableReference) relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, attributeReference.EQ(ServerConstants.PUBLIC_USER_ID));
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
-  
+  @Request
+  @Test
   public void testQueryIsParentInReferenceEq_Generated()
   {
     try
@@ -12825,7 +13132,7 @@ public class RelationshipAttributeQuery extends TestCase
 
       // Load the reference query class
       MdBusinessDAOIF assignableMdBusinessMasterIF = MdBusinessDAO.getMdBusinessDAO(SingleActorDAOIF.CLASS);
-      String assignableQueryReferenceIFType =  BusinessQueryAPIGenerator.getRefInterfaceCompiled(assignableMdBusinessMasterIF);
+      String assignableQueryReferenceIFType = BusinessQueryAPIGenerator.getRefInterfaceCompiled(assignableMdBusinessMasterIF);
       Class<?> assignableQueryReferenceClassIF = LoaderDecorator.load(assignableQueryReferenceIFType);
 
       Class<?> AssignableClass = LoaderDecorator.load(SingleActorDAOIF.CLASS);
@@ -12836,13 +13143,13 @@ public class RelationshipAttributeQuery extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableReference attributeReference = (SelectableReference)relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
+      SelectableReference attributeReference = (SelectableReference) relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
 
-      Condition condition = (Condition)assignableQueryReferenceClassIF.getMethod("EQ", AssignableClass).invoke(attributeReference, busObjUser);
+      Condition condition = (Condition) assignableQueryReferenceClassIF.getMethod("EQ", AssignableClass).invoke(attributeReference, busObjUser);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       Object parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      SubSelectBasicConditionEq genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       // Load the iterator class
@@ -12850,46 +13157,46 @@ public class RelationshipAttributeQuery extends TestCase
 
       Object resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
-        fail("A query did not return any results when it should have");
+        Assert.fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable<?>)resultIterator)
+      for (Object object : (Iterable<?>) resultIterator)
       {
         parentClass.cast(object);
-        String parentId = (String)parentClass.getMethod("getId").invoke(object);
-        if (!parentId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        String parentOid = (String) parentClass.getMethod("getOid").invoke(object);
+        if (!parentOid.equals(QueryMasterSetup.testQueryObject1.getOid()))
         {
-          fail("The objects returned by a query based on relationship type are incorrect.");
+          Assert.fail("The objects returned by a query based on relationship type are incorrect.");
         }
       }
 
       busObjUser = usersClass.getMethod("get", String.class).invoke(null, ServerConstants.PUBLIC_USER_ID);
 
       relQueryObject = relQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeReference = (SelectableReference)relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
-      condition = (Condition)assignableQueryReferenceClassIF.getMethod("EQ", AssignableClass).invoke(attributeReference, busObjUser);
+      attributeReference = (SelectableReference) relQueryClass.getMethod("getCreatedBy").invoke(relQueryObject);
+      condition = (Condition) assignableQueryReferenceClassIF.getMethod("EQ", AssignableClass).invoke(attributeReference, busObjUser);
       relQueryClass.getMethod("WHERE", Condition.class).invoke(relQueryObject, condition);
 
       parentQueryObject = parentQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      genRelQuery = (SubSelectBasicConditionEq)parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
+      genRelQuery = (SubSelectBasicConditionEq) parentQueryClass.getMethod("queryChild3", relQueryClass).invoke(parentQueryObject, relQueryObject);
       parentQueryClass.getMethod("WHERE", Condition.class).invoke(parentQueryObject, genRelQuery);
 
       resultIterator = parentQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(parentQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
-        fail("A query based on relationships returned objects when it shouldn't have.");
+        Assert.fail("A query based on relationships returned objects when it shouldn't have.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 }

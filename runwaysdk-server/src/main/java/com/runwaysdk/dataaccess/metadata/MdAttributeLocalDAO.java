@@ -91,9 +91,9 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MdAttributeLocalDAOIF get(String id)
+  public static MdAttributeLocalDAOIF get(String oid)
   {
-    return (MdAttributeLocalDAOIF) BusinessDAO.get(id);
+    return (MdAttributeLocalDAOIF) BusinessDAO.get(oid);
   }
 
   /**

@@ -394,13 +394,13 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdParameter mdParameter)
     {
       if(mdParameter == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdParameter.getId());
+      return this.EQ(mdParameter.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdParameter mdParameter)
     {
       if(mdParameter == null) return this.NE((java.lang.String)null);
-      return this.NE(mdParameter.getId());
+      return this.NE(mdParameter.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -687,7 +687,7 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdParameter.length; i++)
       {
-        itemIdArray[i] = mdParameter[i].getId();
+        itemIdArray[i] = mdParameter[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -699,7 +699,7 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdParameter.length; i++)
       {
-        itemIdArray[i] = mdParameter[i].getId();
+        itemIdArray[i] = mdParameter[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -711,7 +711,7 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdParameter.length; i++)
       {
-        itemIdArray[i] = mdParameter[i].getId();
+        itemIdArray[i] = mdParameter[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -723,7 +723,7 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdParameter.length; i++)
       {
-        itemIdArray[i] = mdParameter[i].getId();
+        itemIdArray[i] = mdParameter[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -735,7 +735,7 @@ public  class MdParameterQuery extends com.runwaysdk.system.metadata.MetadataQue
 
       for (int i=0; i<mdParameter.length; i++)
       {
-        itemIdArray[i] = mdParameter[i].getId();
+        itemIdArray[i] = mdParameter[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -114,13 +114,13 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeInt mdAttributeInt)
     {
       if(mdAttributeInt == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeInt.getId());
+      return this.EQ(mdAttributeInt.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeInt mdAttributeInt)
     {
       if(mdAttributeInt == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeInt.getId());
+      return this.NE(mdAttributeInt.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeInt.length; i++)
       {
-        itemIdArray[i] = mdAttributeInt[i].getId();
+        itemIdArray[i] = mdAttributeInt[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeInt.length; i++)
       {
-        itemIdArray[i] = mdAttributeInt[i].getId();
+        itemIdArray[i] = mdAttributeInt[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeInt.length; i++)
       {
-        itemIdArray[i] = mdAttributeInt[i].getId();
+        itemIdArray[i] = mdAttributeInt[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeInt.length; i++)
       {
-        itemIdArray[i] = mdAttributeInt[i].getId();
+        itemIdArray[i] = mdAttributeInt[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeIntQuery extends com.runwaysdk.system.metadata.MdAttrib
 
       for (int i=0; i<mdAttributeInt.length; i++)
       {
-        itemIdArray[i] = mdAttributeInt[i].getId();
+        itemIdArray[i] = mdAttributeInt[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

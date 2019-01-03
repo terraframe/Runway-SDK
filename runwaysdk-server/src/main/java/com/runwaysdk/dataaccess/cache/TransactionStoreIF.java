@@ -22,11 +22,11 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 
 public interface TransactionStoreIF
 {
-  public EntityDAOIF getEntityDAOIFfromCache(String id);
+  public EntityDAOIF getEntityDAOIFfromCache(String oid);
 
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF);
 
-  public void removeEntityDAOIFfromCache(String id);
+  public void removeEntityDAOIFfromCache(String oid);
 
   public void close();
 

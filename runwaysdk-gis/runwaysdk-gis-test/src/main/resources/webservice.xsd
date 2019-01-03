@@ -312,7 +312,7 @@
   <!--  common dto properties -->
   <xs:complexType name="componentDTOproperties">
     <xs:sequence>
-      <xs:element name="id"       type="xs:string"/>
+      <xs:element name="oid"       type="xs:string"/>
       <xs:element name="type"     type="xs:string"/>
       <xs:element name="readable" type="xs:boolean"/>
     </xs:sequence>     
@@ -362,8 +362,8 @@
     <xs:complexContent>
       <xs:extension base="elementDTOproperties">
 	    <xs:sequence>
-          <xs:element name="parentId" type="xs:string"/>
-          <xs:element name="childId" type="xs:string"/>
+          <xs:element name="parentOid" type="xs:string"/>
+          <xs:element name="childOid" type="xs:string"/>
 	    </xs:sequence>
 	  </xs:extension>
     </xs:complexContent>
@@ -373,7 +373,7 @@
     <xs:sequence>
       <xs:element name="displayLabel" type="xs:string"/>  
       <xs:element name="description"  type="xs:string"/>  
-      <xs:element name="id"           type="xs:string"/>  
+      <xs:element name="oid"           type="xs:string"/>  
     </xs:sequence>     
   </xs:complexType>
 
@@ -381,7 +381,7 @@
     <xs:sequence>
       <xs:element name="displayLabel"       type="xs:string"/>  
       <xs:element name="description"        type="xs:string"/>  
-      <xs:element name="id"                 type="xs:string"/>
+      <xs:element name="oid"                 type="xs:string"/>
       <xs:element name="parentMdBusiness"   type="xs:string"/>  
       <xs:element name="childMdBusiness"    type="xs:string"/>  
     </xs:sequence>     

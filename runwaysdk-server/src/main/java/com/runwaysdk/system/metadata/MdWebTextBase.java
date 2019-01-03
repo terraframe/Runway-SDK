@@ -99,9 +99,9 @@ public abstract class MdWebTextBase extends com.runwaysdk.system.metadata.MdWebP
     return CLASS;
   }
   
-  public static MdWebText get(String id)
+  public static MdWebText get(String oid)
   {
-    return (MdWebText) com.runwaysdk.business.Business.get(id);
+    return (MdWebText) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebText getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdWebTextBase extends com.runwaysdk.system.metadata.MdWebP
     return (MdWebText) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebText lock(java.lang.String id)
+  public static MdWebText lock(java.lang.String oid)
   {
-    MdWebText _instance = MdWebText.get(id);
+    MdWebText _instance = MdWebText.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebText unlock(java.lang.String id)
+  public static MdWebText unlock(java.lang.String oid)
   {
-    MdWebText _instance = MdWebText.get(id);
+    MdWebText _instance = MdWebText.get(oid);
     _instance.unlock();
     
     return _instance;

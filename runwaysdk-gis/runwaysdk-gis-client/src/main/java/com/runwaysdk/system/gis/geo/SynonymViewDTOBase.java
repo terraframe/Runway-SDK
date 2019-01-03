@@ -35,7 +35,7 @@ public abstract class SynonymViewDTOBase extends com.runwaysdk.business.ViewDTO
   }
   
   public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RELATIONSHIPID = "relationshipId";
   public static java.lang.String SYNONYMID = "synonymId";
   public String getDisplayLabel()
@@ -149,9 +149,9 @@ public abstract class SynonymViewDTOBase extends com.runwaysdk.business.ViewDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SYNONYMID).getAttributeMdDTO();
   }
   
-  public static SynonymViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static SynonymViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (SynonymViewDTO) dto;
   }
@@ -169,7 +169,7 @@ public abstract class SynonymViewDTOBase extends com.runwaysdk.business.ViewDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

@@ -137,12 +137,12 @@ public class AttributeReference extends Attribute implements AttributeReferenceI
       {
         MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(valueToValidate));
         doQ = qFactory.businessDAOQuery(mdClassIF.definesType());
-        doQ.WHERE(doQ.aCharacter(EntityInfo.ID).EQ(valueToValidate));
+        doQ.WHERE(doQ.aUUID(EntityInfo.OID).EQ(valueToValidate));
       }
       else
       {
         doQ = qFactory.businessDAOQuery(refMdBusinessIF.definesType());
-        doQ.WHERE(doQ.aCharacter(EntityInfo.ID).EQ(valueToValidate));
+        doQ.WHERE(doQ.aUUID(EntityInfo.OID).EQ(valueToValidate));
       }
 
       if (doQ.getCount() == 0)

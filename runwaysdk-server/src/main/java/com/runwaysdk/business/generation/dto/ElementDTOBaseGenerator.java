@@ -58,10 +58,10 @@ public abstract class ElementDTOBaseGenerator extends EntityDTOBaseGenerator
     getWriter().writeLine("");
 
     Type returnType = new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF()));
-    MdParameterDAO id = GenerationUtil.getMdParameterId();
+    MdParameterDAO oid = GenerationUtil.getMdParameterId();
 
     List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
-    list.add(id);
+    list.add(oid);
 
     writeMdMethod(this.getDTOStubClassType()+".CLASS", list, "lock", returnType, true, false);
   }
@@ -78,10 +78,10 @@ public abstract class ElementDTOBaseGenerator extends EntityDTOBaseGenerator
     getWriter().writeLine("");
 
     Type returnType = new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF()));
-    MdParameterDAO id = GenerationUtil.getMdParameterId();
+    MdParameterDAO oid = GenerationUtil.getMdParameterId();
 
     List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
-    list.add(id);
+    list.add(oid);
 
     writeMdMethod(this.getDTOStubClassType()+".CLASS", list, "unlock", returnType, true, false);
   }

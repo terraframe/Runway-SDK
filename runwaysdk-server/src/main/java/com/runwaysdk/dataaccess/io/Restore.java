@@ -408,7 +408,7 @@ public class Restore
       {
         String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
         String vaultLocation = VaultProperties.getPath(vaultName);
-        String vaultInsideBackup = backupVaultFileLocation + File.separator + vault.getId() + File.separator;
+        String vaultInsideBackup = backupVaultFileLocation + File.separator + vault.getOid() + File.separator;
         
         File vaultInsideBackupFile = new File(vaultInsideBackup);
         File vaultLocationFile = new File(vaultLocation);
@@ -473,7 +473,7 @@ public class Restore
    * OIterator<BusinessDAOIF> i = webFileQ.getIterator(); try { for
    * (BusinessDAOIF businessDAOIF : i) { WebFileDAOIF webFileDAOIF =
    * (WebFileDAOIF)businessDAOIF; File thisBackupWebFileFile = new
-   * File(backupWebFileFileLocation+webFileDAOIF.getId()); try {
+   * File(backupWebFileFileLocation+webFileDAOIF.getOid()); try {
    * BufferedInputStream inputStream = new BufferedInputStream(new
    * FileInputStream(thisBackupWebFileFile)); webFileDAOIF.putFile(inputStream);
    * } catch (IOException e) { throw new

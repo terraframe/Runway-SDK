@@ -293,26 +293,26 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    * <b>Precondition:</b> !userId.trim().equals("") <br/>
    *
    * @param userId
-   *          id of the user locking the Entity
+   *          oid of the user locking the Entity
    * @throws DataAccessException
    *           if the Entity is locked by another user
    */
   public void userLock(String userId)
   {   
-    (LockObject.getLockObject()).appLock(this.getId());
+    (LockObject.getLockObject()).appLock(this.getOid());
     
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getId())).getEntityDAO());
+    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid())).getEntityDAO());
     
     // make sure there is no existing user lock
     if (this.hasUserLockFromDifferentUser(userId))
     {
       // Release the Java lock, as it is already locked by another user.
-      (LockObject.getLockObject()).releaseAppLock(this.getId());
+      (LockObject.getLockObject()).releaseAppLock(this.getOid());
 
       String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
       String errMsg = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot lock entity ["
-          + this.getId() + "] because it is already locked by user ["
+          + this.getOid() + "] because it is already locked by user ["
           + SingleActorDAO.get(lockedBy).getSingleActorName() + "]";
       throw new LockException(errMsg, this, "ExistingLockException");
     }
@@ -335,7 +335,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     
     if(session != null)
     {
-      this.userLock(session.getUser().getId());
+      this.userLock(session.getUser().getOid());
     }
   }
 
@@ -348,17 +348,17 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    * <b>Precondition:</b> !userId.trim().equals("") <br/>
    *
    * @param userId
-   *          id of the user locking the Entity
+   *          oid of the user locking the Entity
    * @throws BusinessException
    *           if the Entity is locked by another user
    */
   public void releaseUserLock(String userId)
   {
-    (LockObject.getLockObject()).appLock(this.getId());
+    (LockObject.getLockObject()).appLock(this.getOid());
 
     // If this object has been modified during this transaction, then this should return a reference to the
     // same entityDAO object.
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getId()).getEntityDAO()));
+    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid()).getEntityDAO()));
 
     String lockedBy = this.entityDAO.getAttributeIF(ElementInfo.LOCKED_BY).getValue();
 
@@ -369,7 +369,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
       if (!lockedBy.equals(userId))
       {
         String error = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot unlock Entity ["
-            + this.getId() + "] because it is locked by user [" + UserDAO.get(lockedBy).getSingleActorName()
+            + this.getOid() + "] because it is locked by user [" + UserDAO.get(lockedBy).getSingleActorName()
             + "]";
 
         throw new LockException(error, this, "ExistingUnlockException");
@@ -381,7 +381,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     this.entityDAO.apply();
 
     // Release the lock on this object
-    (LockObject.getLockObject()).releaseAppLock(this.getId());
+    (LockObject.getLockObject()).releaseAppLock(this.getOid());
   }
 
 
@@ -397,7 +397,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     SessionIF session = Session.getCurrentSession();
     if(session != null)
     {
-      this.releaseUserLock(session.getUser().getId());
+      this.releaseUserLock(session.getUser().getOid());
     }
   }
 
@@ -417,20 +417,20 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
 
     // Wait until this thread attains a lock on this object
-    (LockObject.getLockObject()).appLock(this.getId());
+    (LockObject.getLockObject()).appLock(this.getOid());
 
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getId())).getEntityDAO());
+    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid())).getEntityDAO());
 
     // make sure there is no existing user lock
     if (this.hasUserLockFromDifferentUser(userId))
     {
       // Release the Java lock, as it is already locked by another user.
-      (LockObject.getLockObject()).releaseAppLock(this.getId());
+      (LockObject.getLockObject()).releaseAppLock(this.getOid());
 
       String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
       String errMsg = "Entity ["
-          + this.getId() + "] cannot be locked because it is already locked by user ["
+          + this.getOid() + "] cannot be locked because it is already locked by user ["
           + UserDAO.get(lockedBy).getSingleActorName() + "]";
       throw new LockException(errMsg, this, "ExistingLockException");
     }
@@ -440,7 +440,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   /**
    * Returns true if the lockedby field  is populated, meaning a user lock exists on this
    * object by a different user, false otherwise.
-   * @param userId id of the user who wants to get a lock on this object
+   * @param userId oid of the user who wants to get a lock on this object
    * @return true if the lockedby field  is populated, meaning a user lock exists on this
    * object by a different user, false otherwise.
    */
@@ -494,7 +494,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     SessionIF session = Session.getCurrentSession();
     if(session != null)
     {
-      String currentUserId = session.getUser().getId();
+      String currentUserId = session.getUser().getOid();
 
       if(currentUserId.equals(userLockId))
       {
@@ -525,17 +525,17 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     SessionIF session = Session.getCurrentSession();
     if(session != null)
     {
-      String currentUserId = session.getUser().getId();
+      String currentUserId = session.getUser().getOid();
       // make sure there is no existing user lock
       if (this.hasUserLockFromDifferentUser(currentUserId))
       {
         // Release the Java lock, as it is already locked by another user.
-        (LockObject.getLockObject()).releaseAppLock(this.getId());
+        (LockObject.getLockObject()).releaseAppLock(this.getOid());
 
         String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
         String errMsg = "Entity ["
-            + this.getId() + "] cannot be deleted because it is locked by user ["
+            + this.getOid() + "] cannot be deleted because it is locked by user ["
             + UserDAO.get(lockedBy).getSingleActorName() + "]";
         throw new LockException(errMsg, this, "ExistingLockException");
       }
@@ -617,7 +617,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      setValue(CREATEDBY, value.getId());
+      setValue(CREATEDBY, value.getOid());
     }
   }
 
@@ -680,7 +680,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      setValue(LASTUPDATEDBY, value.getId());
+      setValue(LASTUPDATEDBY, value.getOid());
     }
   }
 
@@ -743,7 +743,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      setValue(LOCKEDBY, value.getId());
+      setValue(LOCKEDBY, value.getOid());
     }
   }
 
@@ -806,7 +806,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
 
@@ -841,7 +841,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
 

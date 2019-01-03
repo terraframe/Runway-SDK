@@ -462,7 +462,7 @@ public class DummyRequest implements HttpServletRequest
   {
   }
 
-  public void setRequestedSessionId(String id)
+  public void setRequestedSessionId(String oid)
   {
   }
 

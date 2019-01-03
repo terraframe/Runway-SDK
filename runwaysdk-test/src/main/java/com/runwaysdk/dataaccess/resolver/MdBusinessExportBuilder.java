@@ -47,7 +47,7 @@ public class MdBusinessExportBuilder extends ExportBuilder<MdBusinessDAO>
     mdBusiness.apply();
 
     mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
   }
@@ -62,7 +62,7 @@ public class MdBusinessExportBuilder extends ExportBuilder<MdBusinessDAO>
   {
     return mdBusiness;
   }
-  
+
   public MdAttributeCharacterDAO getMdAttribute()
   {
     return mdAttribute;

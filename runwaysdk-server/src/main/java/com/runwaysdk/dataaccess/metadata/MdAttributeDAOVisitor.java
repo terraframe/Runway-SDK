@@ -92,4 +92,6 @@ public interface MdAttributeDAOVisitor
   public void visitMultiReference(MdAttributeMultiReferenceDAO attribute);
 
   public void visitMultiTerm(MdAttributeMultiTermDAO attribute);
+
+  public void visitUUID(MdAttributeUUIDDAO attribute);
 }

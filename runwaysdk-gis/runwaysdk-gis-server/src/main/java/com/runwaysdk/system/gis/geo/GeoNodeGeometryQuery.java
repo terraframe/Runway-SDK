@@ -274,13 +274,13 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.GeoNodeGeometry geoNodeGeometry)
     {
       if(geoNodeGeometry == null) return this.EQ((java.lang.String)null);
-      return this.EQ(geoNodeGeometry.getId());
+      return this.EQ(geoNodeGeometry.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.GeoNodeGeometry geoNodeGeometry)
     {
       if(geoNodeGeometry == null) return this.NE((java.lang.String)null);
-      return this.NE(geoNodeGeometry.getId());
+      return this.NE(geoNodeGeometry.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDisplayLabelAttribute()
@@ -453,7 +453,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
       for (int i=0; i<geoNodeGeometry.length; i++)
       {
-        itemIdArray[i] = geoNodeGeometry[i].getId();
+        itemIdArray[i] = geoNodeGeometry[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -465,7 +465,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
       for (int i=0; i<geoNodeGeometry.length; i++)
       {
-        itemIdArray[i] = geoNodeGeometry[i].getId();
+        itemIdArray[i] = geoNodeGeometry[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -477,7 +477,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
       for (int i=0; i<geoNodeGeometry.length; i++)
       {
-        itemIdArray[i] = geoNodeGeometry[i].getId();
+        itemIdArray[i] = geoNodeGeometry[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -489,7 +489,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
       for (int i=0; i<geoNodeGeometry.length; i++)
       {
-        itemIdArray[i] = geoNodeGeometry[i].getId();
+        itemIdArray[i] = geoNodeGeometry[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -501,7 +501,7 @@ public  class GeoNodeGeometryQuery extends com.runwaysdk.system.gis.geo.GeoNodeQ
 
       for (int i=0; i<geoNodeGeometry.length; i++)
       {
-        itemIdArray[i] = geoNodeGeometry[i].getId();
+        itemIdArray[i] = geoNodeGeometry[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

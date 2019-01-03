@@ -73,7 +73,7 @@ public abstract class MdInformationBase extends com.runwaysdk.system.metadata.Md
     }
     else
     {
-      setValue(SUPERMDINFORMATION, value.getId());
+      setValue(SUPERMDINFORMATION, value.getOid());
     }
   }
   
@@ -168,9 +168,9 @@ public abstract class MdInformationBase extends com.runwaysdk.system.metadata.Md
     }
   }
   
-  public static MdInformation get(String id)
+  public static MdInformation get(String oid)
   {
-    return (MdInformation) com.runwaysdk.business.Business.get(id);
+    return (MdInformation) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdInformation getByKey(String key)
@@ -178,17 +178,17 @@ public abstract class MdInformationBase extends com.runwaysdk.system.metadata.Md
     return (MdInformation) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdInformation lock(java.lang.String id)
+  public static MdInformation lock(java.lang.String oid)
   {
-    MdInformation _instance = MdInformation.get(id);
+    MdInformation _instance = MdInformation.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdInformation unlock(java.lang.String id)
+  public static MdInformation unlock(java.lang.String oid)
   {
-    MdInformation _instance = MdInformation.get(id);
+    MdInformation _instance = MdInformation.get(oid);
     _instance.unlock();
     
     return _instance;

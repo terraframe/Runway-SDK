@@ -65,7 +65,7 @@ public class MethodFacade
   /**
    * Checks to see if the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param mdTypeIF The object to test permissions on
    *
@@ -82,7 +82,7 @@ public class MethodFacade
    * Checks all types involved in building a {@link ValueObject} to see if
    * the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param valueObject The object to test permissions on
    *
@@ -106,21 +106,6 @@ public class MethodFacade
   }
   
   /**
-   * Checks if the session has permissions on the given state
-   *
-   * @param o The operation to execute
-   * @param stateId id of the state
-   *
-   * @return If access has been granted
-   */
-  public static boolean checkAccess(MdMethodDAOIF mdMethod, Operation o, String stateId)
-  {
-    MethodCache cache = MethodCache.getMethodCache();
-    
-    return cache.checkAttributeAccess(mdMethod, o, stateId);
-  }
-  
-  /**
    * See {@link MethodCache#checkAttributeAccess(MdMethodDAOIF, Operation, Mutable, MdAttributeDAOIF)} 
    */
   public static boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation operation, Mutable mutable, MdAttributeDAOIF mdAttribute)
@@ -128,14 +113,7 @@ public class MethodFacade
     MethodCache cache = MethodCache.getMethodCache();
     
     return cache.checkAttributeAccess(mdMethod, operation, mutable, mdAttribute);
-  }
-  
-  public static boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    MethodCache cache = MethodCache.getMethodCache();
-    
-    return cache.checkAttributeAccess(mdMethod, operation, stateId, mdAttribute);    
-  }
+  } 
   
   public static boolean checkAttributeAccess(MdMethodDAOIF mdMethod, Operation operation, MdAttributeDAOIF mdAttribute)
   {
@@ -172,16 +150,6 @@ public class MethodFacade
     MethodCache cache = MethodCache.getMethodCache();
     
     return cache.checkRelationshipAccess(mdMethod, operation, business, mdRelationshipId);
-  }
-  
-  /**
-   * See {@link MethodCache#checkPromoteAccess(MdMethodDAOIF, Business, String)} 
-   */
-  public static boolean checkPromoteAccess(MdMethodDAOIF mdMethod, Business business, String transitionName)
-  {
-    MethodCache cache = MethodCache.getMethodCache();
-    
-    return cache.checkPromoteAccess(mdMethod, business, transitionName);         
   }
   
   /**

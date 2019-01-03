@@ -38,7 +38,7 @@ public class AttributeStructDTO extends AttributeDTO
   private StructDTO         structDTO;
 
   /**
-   * Auto-generated ID
+   * Auto-generated OID
    */
   private static final long serialVersionUID = 3218179807583523937L;
 
@@ -151,7 +151,7 @@ public class AttributeStructDTO extends AttributeDTO
    * 
    * @param attributeName
    *          The name of the attribute to retrieve all items.
-   * @returns A List of strings where each string is an item id. An emptry list
+   * @returns A List of strings where each string is an item oid. An emptry list
    *          is returned if no items exist for the attribute.
    */
   public List<? extends BusinessDTO> getEnumValues(String attributeName)

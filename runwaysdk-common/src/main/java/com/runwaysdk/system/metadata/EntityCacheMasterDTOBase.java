@@ -109,9 +109,9 @@ public abstract class EntityCacheMasterDTOBase extends com.runwaysdk.system.Enum
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(DESCRIPTION).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.EntityCacheMasterDTO) dto;
   }
@@ -129,7 +129,7 @@ public abstract class EntityCacheMasterDTOBase extends com.runwaysdk.system.Enum
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.EntityCacheMasterQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -142,10 +142,10 @@ public abstract class EntityCacheMasterDTOBase extends com.runwaysdk.system.Enum
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.EntityCacheMasterDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.EntityCacheMasterDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -155,10 +155,10 @@ public abstract class EntityCacheMasterDTOBase extends com.runwaysdk.system.Enum
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.EntityCacheMasterDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.EntityCacheMasterDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.EntityCacheMasterDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

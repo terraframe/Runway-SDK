@@ -33,7 +33,7 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -158,24 +158,24 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Vault.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -314,7 +314,7 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -399,9 +399,9 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
     return CLASS;
   }
   
-  public static Vault get(String id)
+  public static Vault get(String oid)
   {
-    return (Vault) com.runwaysdk.business.Business.get(id);
+    return (Vault) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Vault getByKey(String key)
@@ -409,17 +409,17 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
     return (Vault) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Vault lock(java.lang.String id)
+  public static Vault lock(java.lang.String oid)
   {
-    Vault _instance = Vault.get(id);
+    Vault _instance = Vault.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Vault unlock(java.lang.String id)
+  public static Vault unlock(java.lang.String oid)
   {
-    Vault _instance = Vault.get(id);
+    Vault _instance = Vault.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -41,9 +41,9 @@ public abstract class TermFileFormatMasterBase extends com.runwaysdk.system.Enum
     return CLASS;
   }
   
-  public static TermFileFormatMaster get(String id)
+  public static TermFileFormatMaster get(String oid)
   {
-    return (TermFileFormatMaster) com.runwaysdk.business.Business.get(id);
+    return (TermFileFormatMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TermFileFormatMaster getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class TermFileFormatMasterBase extends com.runwaysdk.system.Enum
     return (TermFileFormatMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.ontology.io.TermFileFormatMaster.CLASS ,enumName);
   }
   
-  public static TermFileFormatMaster lock(java.lang.String id)
+  public static TermFileFormatMaster lock(java.lang.String oid)
   {
-    TermFileFormatMaster _instance = TermFileFormatMaster.get(id);
+    TermFileFormatMaster _instance = TermFileFormatMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TermFileFormatMaster unlock(java.lang.String id)
+  public static TermFileFormatMaster unlock(java.lang.String oid)
   {
-    TermFileFormatMaster _instance = TermFileFormatMaster.get(id);
+    TermFileFormatMaster _instance = TermFileFormatMaster.get(oid);
     _instance.unlock();
     
     return _instance;

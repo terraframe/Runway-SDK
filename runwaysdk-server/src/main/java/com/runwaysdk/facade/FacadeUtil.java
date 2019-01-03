@@ -219,13 +219,13 @@ public class FacadeUtil
   private static void copyToValueQueryDTO(String sessionId, ValueQuery valueQuery, ValueQueryDTO valueQueryDTO)
   {
     Boolean hasTypeReadAccess = true;
-    // Key: MdAttribute id Value: indicates if the user has read permission on
+    // Key: MdAttribute oid Value: indicates if the user has read permission on
     // the attribute.
     Map<String, Boolean> attrReadPermissionMap = new HashMap<String, Boolean>();
 
     List<Selectable> selectableList = valueQuery.getSelectableRefs();
 
-    // Key: MdAttribute.getId(), Value: Defining MdEntityIF
+    // Key: MdAttribute.getOid(), Value: Defining MdEntityIF
     Map<String, MdClassDAOIF> definesAttributeMap = new HashMap<String, MdClassDAOIF>();
 
     // Permission checking is at the type level only. Build a permission map for
@@ -239,7 +239,7 @@ public class FacadeUtil
       // string
       if (! ( mdAttributeIF instanceof MdAttributeConcrete_SQL ))
       {
-        MdClassDAOIF mdClassIF = definesAttributeMap.get(mdAttributeIF.getId());
+        MdClassDAOIF mdClassIF = definesAttributeMap.get(mdAttributeIF.getOid());
 
         if (mdClassIF == null)
         {
@@ -247,7 +247,7 @@ public class FacadeUtil
           mdClassIF = mdAttributeIF.definedByClass();
           if (mdClassIF != null)
           {
-            definesAttributeMap.put(mdAttributeIF.getId(), mdClassIF);
+            definesAttributeMap.put(mdAttributeIF.getOid(), mdClassIF);
           }
         }
 
@@ -267,7 +267,7 @@ public class FacadeUtil
           }
         }
 
-        attrReadPermissionMap.put(mdAttributeIF.getId(), hasAttributeReadAccess);
+        attrReadPermissionMap.put(mdAttributeIF.getOid(), hasAttributeReadAccess);
       }
     }
 

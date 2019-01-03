@@ -41,9 +41,9 @@ public abstract class LessThanOrEqualRuleBase extends com.runwaysdk.system.gis.m
     return CLASS;
   }
   
-  public static LessThanOrEqualRule get(String id)
+  public static LessThanOrEqualRule get(String oid)
   {
-    return (LessThanOrEqualRule) com.runwaysdk.business.Business.get(id);
+    return (LessThanOrEqualRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static LessThanOrEqualRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class LessThanOrEqualRuleBase extends com.runwaysdk.system.gis.m
     return (LessThanOrEqualRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static LessThanOrEqualRule lock(java.lang.String id)
+  public static LessThanOrEqualRule lock(java.lang.String oid)
   {
-    LessThanOrEqualRule _instance = LessThanOrEqualRule.get(id);
+    LessThanOrEqualRule _instance = LessThanOrEqualRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static LessThanOrEqualRule unlock(java.lang.String id)
+  public static LessThanOrEqualRule unlock(java.lang.String oid)
   {
-    LessThanOrEqualRule _instance = LessThanOrEqualRule.get(id);
+    LessThanOrEqualRule _instance = LessThanOrEqualRule.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -197,7 +197,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
     {
       if (mdAttribute instanceof MdWebFieldDAOIF)
       {
-        mdAttribute.setValue(MdWebFieldInfo.DEFINING_MD_FORM, mdForm.getId());
+        mdAttribute.setValue(MdWebFieldInfo.DEFINING_MD_FORM, mdForm.getOid());
         mdAttribute.apply();
       }
     }
@@ -234,7 +234,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, formMdClass.definesType(), mdField.getKey());
         }
 
-        mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
+        mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getOid());
       }
     }
 

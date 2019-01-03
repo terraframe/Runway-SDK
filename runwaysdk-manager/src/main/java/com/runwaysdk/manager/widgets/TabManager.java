@@ -118,6 +118,6 @@ public class TabManager
 
   public static String getEditKey(IComponentObject entity)
   {
-    return EDIT_PREFIX + entity.getId();
+    return EDIT_PREFIX + entity.getOid();
   }
 }

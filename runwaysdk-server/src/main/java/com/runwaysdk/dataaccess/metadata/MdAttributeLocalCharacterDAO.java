@@ -117,7 +117,7 @@ public class MdAttributeLocalCharacterDAO extends MdAttributeLocalDAO implements
     localChar.getAttribute(MdAttributeCharacterInfo.IMMUTABLE).setValue(MdAttributeBooleanInfo.FALSE);
     localChar.getAttribute(MdAttributeCharacterInfo.SIZE).setValue(Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
     localChar.getAttribute(MdAttributeCharacterInfo.GENERATE_ACCESSOR).setValue(Boolean.toString(false));
-    localChar.getAttribute(MdAttributeCharacterInfo.DEFINING_MD_CLASS).setValue(mdLocalStructDAOIF.getId());
+    localChar.getAttribute(MdAttributeCharacterInfo.DEFINING_MD_CLASS).setValue(mdLocalStructDAOIF.getOid());
     localChar.apply();
 
     return localChar;

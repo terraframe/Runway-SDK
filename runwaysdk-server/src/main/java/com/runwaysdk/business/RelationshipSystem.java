@@ -22,14 +22,14 @@ public abstract class RelationshipSystem extends RelationshipSystemBase
 {
   private static final long serialVersionUID = 863035662;
   
-  public RelationshipSystem(String parentId, String childId)
+  public RelationshipSystem(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public RelationshipSystem(com.runwaysdk.business.Business parent, com.runwaysdk.business.Business child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

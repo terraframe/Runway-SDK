@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.OntologyEntryIF;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -86,7 +86,7 @@ public class Synonym extends SynonymBase implements OntologyEntryIF
     SynonymRelationship rel = geo.addSynonym(synonym);
     rel.apply();
 
-    return new TermAndRel(synonym, SynonymRelationship.CLASS, rel.getId());
+    return new TermAndRel(synonym, SynonymRelationship.CLASS, rel.getOid());
   }
 
   public static Term getRoot()

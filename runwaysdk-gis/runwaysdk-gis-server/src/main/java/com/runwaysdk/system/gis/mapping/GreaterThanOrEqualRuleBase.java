@@ -41,9 +41,9 @@ public abstract class GreaterThanOrEqualRuleBase extends com.runwaysdk.system.gi
     return CLASS;
   }
   
-  public static GreaterThanOrEqualRule get(String id)
+  public static GreaterThanOrEqualRule get(String oid)
   {
-    return (GreaterThanOrEqualRule) com.runwaysdk.business.Business.get(id);
+    return (GreaterThanOrEqualRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GreaterThanOrEqualRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class GreaterThanOrEqualRuleBase extends com.runwaysdk.system.gi
     return (GreaterThanOrEqualRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GreaterThanOrEqualRule lock(java.lang.String id)
+  public static GreaterThanOrEqualRule lock(java.lang.String oid)
   {
-    GreaterThanOrEqualRule _instance = GreaterThanOrEqualRule.get(id);
+    GreaterThanOrEqualRule _instance = GreaterThanOrEqualRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GreaterThanOrEqualRule unlock(java.lang.String id)
+  public static GreaterThanOrEqualRule unlock(java.lang.String oid)
   {
-    GreaterThanOrEqualRule _instance = GreaterThanOrEqualRule.get(id);
+    GreaterThanOrEqualRule _instance = GreaterThanOrEqualRule.get(oid);
     _instance.unlock();
     
     return _instance;

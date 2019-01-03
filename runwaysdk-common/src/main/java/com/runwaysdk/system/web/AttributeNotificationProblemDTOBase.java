@@ -44,7 +44,7 @@ public abstract class AttributeNotificationProblemDTOBase extends com.runwaysdk.
   public static java.lang.String COMPONENTID = "componentId";
   public static java.lang.String DEFININGTYPE = "definingType";
   public static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public String getAttributeDisplayLabel()
   {
     return getValue(ATTRIBUTEDISPLAYLABEL);
@@ -243,7 +243,7 @@ public abstract class AttributeNotificationProblemDTOBase extends com.runwaysdk.
     template = template.replace("{componentId}", this.getComponentId().toString());
     template = template.replace("{definingType}", this.getDefiningType().toString());
     template = template.replace("{definingTypeDisplayLabel}", this.getDefiningTypeDisplayLabel().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

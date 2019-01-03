@@ -64,7 +64,7 @@ public class ParentCommand implements IRelationshipStrategy
   @Override
   public BusinessObject getEndPoint(RelationshipDAOIF relationship)
   {
-    return (BusinessObject) BusinessObject.get(relationship.getChildId());
+    return (BusinessObject) BusinessObject.get(relationship.getChildOid());
   }
 
   @Override
@@ -75,7 +75,7 @@ public class ParentCommand implements IRelationshipStrategy
       throw new RuntimeException(Localizer.getMessage("NULL_CHILD"));
     }
 
-    return PersistanceFacade.newInstance(input.getId(), component.getId(), relationshipType);
+    return PersistanceFacade.newInstance(input.getOid(), component.getOid(), relationshipType);
   }
 
   @Override

@@ -215,9 +215,9 @@ public abstract class MdWebDateBase extends com.runwaysdk.system.metadata.MdWebM
     return CLASS;
   }
   
-  public static MdWebDate get(String id)
+  public static MdWebDate get(String oid)
   {
-    return (MdWebDate) com.runwaysdk.business.Business.get(id);
+    return (MdWebDate) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebDate getByKey(String key)
@@ -225,17 +225,17 @@ public abstract class MdWebDateBase extends com.runwaysdk.system.metadata.MdWebM
     return (MdWebDate) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebDate lock(java.lang.String id)
+  public static MdWebDate lock(java.lang.String oid)
   {
-    MdWebDate _instance = MdWebDate.get(id);
+    MdWebDate _instance = MdWebDate.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebDate unlock(java.lang.String id)
+  public static MdWebDate unlock(java.lang.String oid)
   {
-    MdWebDate _instance = MdWebDate.get(id);
+    MdWebDate _instance = MdWebDate.get(oid);
     _instance.unlock();
     
     return _instance;

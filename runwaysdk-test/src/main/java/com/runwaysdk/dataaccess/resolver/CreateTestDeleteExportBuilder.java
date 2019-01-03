@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.resolver;
 
 import java.io.File;
 
+import org.junit.Before;
+
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -37,25 +39,27 @@ public class CreateTestDeleteExportBuilder extends ExportBuilder<Void>
     this.file = file;
     this.mdBusiness = mdBusiness;
   }
-  
+
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }
 
   @Request
   protected Void doIt()
-  {    
+  {
     this.inTransaction();
 
     return null;
   }
-  
+
   @Transaction
   private void inTransaction()
   {
-    TestFixtureFactory.delete(mdBusiness);    
+    TestFixtureFactory.delete(mdBusiness);
   }
 
   @Override

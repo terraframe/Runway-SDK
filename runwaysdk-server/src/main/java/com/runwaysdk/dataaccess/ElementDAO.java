@@ -175,23 +175,23 @@ public abstract class ElementDAO extends EntityDAO implements Serializable
   }
 
   /**
-   * Returns a ElementDAO of the given id in the database.
+   * Returns a ElementDAO of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the database <br/>
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> ElementDAOIF representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return ElementDAOIF instance of the given id, of the given type
+   * @param oid
+   *          element oid of an item in the database
+   * @return ElementDAOIF instance of the given oid, of the given type
    */
-  public static ElementDAOIF get(String id)
+  public static ElementDAOIF get(String oid)
   {
-    return ObjectCache.getElementDAO(id);
+    return ObjectCache.getElementDAO(oid);
   }
 
 }

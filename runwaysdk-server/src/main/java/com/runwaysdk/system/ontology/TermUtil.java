@@ -68,12 +68,12 @@ public class TermUtil extends TermUtilBase
   // String sql = "";
   //
   // sql += "WITH RECURSIVE term_flags AS( \n";
-  // // sql += "SELECT t.id, dl.default_locale \n";
-  // sql += "SELECT term.id \n";
+  // // sql += "SELECT t.oid, dl.default_locale \n";
+  // sql += "SELECT term.oid \n";
   // sql += "FROM " + termTable + " term, " + termRelTable + " termRel \n";
   // // sql += "INNER JOIN " + displayLabelTable + " dl\n";
-  // // sql += "ON dl." + "id" + "=t." + "display_label";
-  // sql += "WHERE  termRel." + RelationshipInfo.PARENT_ID + " = term.id \n";
+  // // sql += "ON dl." + "oid" + "=t." + "display_label";
+  // sql += "WHERE  termRel." + RelationshipInfo.PARENT_OID + " = term.oid \n";
   // sql += ") \n";
   // sql += ", recursive_rollup AS ( \n";
   // sql += " SELECT * ,0 as depth \n";
@@ -138,15 +138,15 @@ public class TermUtil extends TermUtilBase
   public static com.runwaysdk.business.ontology.TermAndRel[] getDirectAncestors(String termId, String[] relationshipTypes)
   {
     List<TermAndRel> tnrs = new ArrayList<TermAndRel>();
-    Term parent = Term.get(termId);
+    Term child = Term.get(termId);
 
     for (String relType : relationshipTypes)
     {
-      OIterator<? extends Relationship> parentRels = parent.getParentRelationships(relType);
+      OIterator<? extends Relationship> parentRels = child.getParentRelationships(relType);
 
       for (Relationship rel : parentRels)
       {
-        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getId()));
+        tnrs.add(new TermAndRel((Term) rel.getParent(), relType, rel.getOid()));
       }
     }
 
@@ -181,7 +181,7 @@ public class TermUtil extends TermUtilBase
 
       for (Relationship rel : childRels)
       {
-        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getId()));
+        tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getOid()));
       }
     }
 
@@ -200,41 +200,41 @@ public class TermUtil extends TermUtilBase
   /**
    * MdMethod
    * 
-   * @param childId
-   * @param oldParentId
+   * @param childOid
+   * @param oldParentOid
    * @param oldRelType
-   * @param newParentId
+   * @param newParentOid
    * @param newRelType
    * @return
    */
   @Transaction
-  public static com.runwaysdk.business.Relationship addAndRemoveLink(String childId, String oldParentId, String oldRelType, String newParentId, String newRelType)
+  public static com.runwaysdk.business.Relationship addAndRemoveLink(String childOid, String oldParentOid, String oldRelType, String newParentOid, String newRelType)
   {
-    // Term child = (Term) Term.get(childId);
-    // Term oldParent = (Term) Term.get(oldParentId);
-    // Term newParent = (Term) Term.get(newParentId);
+    // Term child = (Term) Term.get(childOid);
+    // Term oldParent = (Term) Term.get(oldParentOid);
+    // Term newParent = (Term) Term.get(newParentOid);
     //
     // return child.addAndRemoveLink(oldParent, oldRelType, newParent,
     // newRelType);
 
-    Relationship retRel = addLink(childId, newParentId, newRelType);
-    removeLink(childId, oldParentId, oldRelType);
+    Relationship retRel = addLink(childOid, newParentOid, newRelType);
+    removeLink(childOid, oldParentOid, oldRelType);
     return retRel;
   }
 
   /**
    * MdMethod
    * 
-   * @param childId
-   * @param parentId
+   * @param childOid
+   * @param parentOid
    * @param relationshipType
    * @return
    */
   @Transaction
-  public static com.runwaysdk.business.Relationship addLink(String childId, String parentId, String relationshipType)
+  public static com.runwaysdk.business.Relationship addLink(String childOid, String parentOid, String relationshipType)
   {
-    Term child = (Term) Term.get(childId);
-    Term parent = (Term) Term.get(parentId);
+    Term child = (Term) Term.get(childOid);
+    Term parent = (Term) Term.get(parentOid);
 
     return child.addLink(parent, relationshipType);
   }
@@ -242,15 +242,15 @@ public class TermUtil extends TermUtilBase
   /**
    * MdMethod
    * 
-   * @param childId
-   * @param parentId
+   * @param childOid
+   * @param parentOid
    * @param relationshipType
    */
   @Transaction
-  public static void removeLink(String childId, String parentId, String relationshipType)
+  public static void removeLink(String childOid, String parentOid, String relationshipType)
   {
-    Term child = (Term) Term.get(childId);
-    Term parent = (Term) Term.get(parentId);
+    Term child = (Term) Term.get(childOid);
+    Term parent = (Term) Term.get(parentOid);
 
     child.removeLink(parent, relationshipType);
   }
@@ -259,15 +259,15 @@ public class TermUtil extends TermUtilBase
    * MdMethod Exports the term to the output stream.
    * 
    * @param outputStream
-   * @param parentId
+   * @param parentOid
    * @param exportParent
    * @param format
    */
-  public static void exportTerm(OutputStream outputStream, String parentId, Boolean exportParent, TermFileFormat format)
+  public static void exportTerm(OutputStream outputStream, String parentOid, Boolean exportParent, TermFileFormat format)
   {
     if (format == TermFileFormat.XML)
     {
-      Term term = Term.get(parentId);
+      Term term = Term.get(parentOid);
 
       TermExporter exporter = new TermExporter(new VersionExporter(outputStream));
       exporter.exportAll(term, exportParent);

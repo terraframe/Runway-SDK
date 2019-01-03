@@ -20,44 +20,39 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 
+@RunWith(ClasspathTestRunner.class)
 public class RMIInvokeMethodTest extends InvokeMethodTest
 {
-  public static Test suite()
+  @BeforeClass
+  public static void classSetUp()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RMIInvokeMethodTest.class);
+    TestRMIUtil.startServer();
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        TestRMIUtil.startServer();
+    systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    classSetUpRequest();
+    noPermissionSession = ClientSession.createUserSession("rmiDefault", "smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
+    noPermissionRequest = noPermissionSession.getRequest();
+    finalizeSetup();
+  }
 
-        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-        noPermissionSession = ClientSession.createUserSession("rmiDefault", "smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
-        noPermissionRequest = noPermissionSession.getRequest();
-        finalizeSetup();
-      }
+  @AfterClass
+  public static void stopServer()
+  {
+    noPermissionSession.logout();
+    systemSession.logout();
 
-      protected void tearDown()
-      {
-        classTearDown();
-        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
-        RemoteAdapterServer.stopServer();
-      }
-    };
-
-    return wrapper;
+    ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
+    RemoteAdapterServer.stopServer();
   }
 }

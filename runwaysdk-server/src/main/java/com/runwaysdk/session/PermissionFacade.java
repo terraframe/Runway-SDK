@@ -38,7 +38,7 @@ public class PermissionFacade
    * Check if the {@link UserDAO} of the {@link Session} or
    * the method actor has read permission on the method.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param mutable The entity to check permissions on
    *
    * @return if the {@link UserDAO} of the {@link Session} or
@@ -70,7 +70,7 @@ public class PermissionFacade
    * Checks all types involved in building a {@link ValueObject} to see if
    * the read permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param valueObject The object to test permissions on
    *
    * @return If access has been granted
@@ -102,7 +102,7 @@ public class PermissionFacade
   /**
    * Checks to see if the read permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param mdTypeIF The object to test permissions on
    *
    * @return If access has been granted
@@ -143,7 +143,7 @@ public class PermissionFacade
    * {@link MetadataDAO} of the {@link MdAttributeDAOIF} as well as permissions of the
    * method actor, if any.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param mutabale The Component to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
    *
@@ -179,7 +179,7 @@ public class PermissionFacade
    * type read permissions for a given {@link Operation}. Checks for permissions on the
    * {@link MetadataDAO} of the {@link MdAttributeDAOIF}.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
    *
    * @return If the {@link UserDAO} has access permissions for a given operation on a given attribute
@@ -215,7 +215,7 @@ public class PermissionFacade
    * checks against the {@link MetadataDAO}.  It does not take into
    * account permissions that exist on entity state.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
    *
    * @return If the {@link UserDAO} has access permissions for a given {@link Operation} on a given attribute

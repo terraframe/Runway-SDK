@@ -129,9 +129,9 @@ public abstract class MdSessionDAO extends MdTransientDAO implements MdSessionDA
    *
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdSessionDAOIF get(String id)
+  public static MdSessionDAOIF get(String oid)
   {
-    return (MdSessionDAOIF) BusinessDAO.get(id);
+    return (MdSessionDAOIF) BusinessDAO.get(oid);
   }
 
   /*

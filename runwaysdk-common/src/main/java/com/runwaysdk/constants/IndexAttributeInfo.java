@@ -25,7 +25,7 @@ public interface IndexAttributeInfo extends RelationshipInfo
 {
   public static final String CLASS = Constants.METADATA_PACKAGE+"."+"IndexAttribute";
 
-  public static final String ID_VALUE          = "NM20070418000000000000000000006620060824000000000000000000000011";
+  public static final String ID_VALUE          = "ba7e4fd7-3497-35ae-8c0d-c2f214000067";
 
   public static final String TABLE             = "index_attribute";
 

@@ -22,9 +22,9 @@ public class EntityIndexDTO extends EntityIndexDTOBase
 {
   private static final long serialVersionUID = 941531028;
   
-  public EntityIndexDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public EntityIndexDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

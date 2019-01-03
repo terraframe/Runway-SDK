@@ -48,7 +48,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -146,7 +146,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -331,7 +331,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -482,60 +482,60 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllSDuty()
   {
-    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.RolesDTO> getAllSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.RolesDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO> getAllSDutyRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO> getAllSDutyRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO> getAllSDutyRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.ConflictingRolesDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
   public com.runwaysdk.system.ConflictingRolesDTO addSDuty(com.runwaysdk.system.RolesDTO parent)
   {
-    return (com.runwaysdk.system.ConflictingRolesDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (com.runwaysdk.system.ConflictingRolesDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.ConflictingRolesDTO addSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.RolesDTO parent)
+  public static com.runwaysdk.system.ConflictingRolesDTO addSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.RolesDTO parent)
   {
-    return (com.runwaysdk.system.ConflictingRolesDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    return (com.runwaysdk.system.ConflictingRolesDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
   public void removeSDuty(com.runwaysdk.system.ConflictingRolesDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.ConflictingRolesDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllSDuty()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
-  public static void removeAllSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSDuty(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.ConflictingRolesDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.SDutyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.SDutyDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.SDutyDTO) dto;
   }
@@ -553,7 +553,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.SDutyQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -566,10 +566,10 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.SDutyDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.SDutyDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.SDutyDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.SDutyDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -579,10 +579,10 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.SDutyDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.SDutyDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.SDutyDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.SDutyDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

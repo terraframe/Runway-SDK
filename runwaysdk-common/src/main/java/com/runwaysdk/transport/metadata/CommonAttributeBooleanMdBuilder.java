@@ -18,16 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 public class CommonAttributeBooleanMdBuilder extends CommonAttributeMdBuilder
 {
   /**
@@ -50,25 +40,6 @@ public class CommonAttributeBooleanMdBuilder extends CommonAttributeMdBuilder
     positiveDisplayLabel = ((AttributeBooleanMdDTO)source).getPositiveDisplayLabel();
 
     negativeDisplayLabel = ((AttributeBooleanMdDTO)source).getNegativeDisplayLabel();
-  }
-
-  /**
-   * Constructor
-   */
-  protected CommonAttributeBooleanMdBuilder(Node metadata, Node properties, AttributeBooleanMdDTO dest)
-  {
-    super(metadata, properties, dest);
-
-    try
-    {
-      positiveDisplayLabel = (String)ConversionFacade.getXPath().evaluate(Elements.BOOLEAN_METADATA_POSITIVE.getLabel(), metadata, XPathConstants.STRING);
-      negativeDisplayLabel = (String)ConversionFacade.getXPath().evaluate(Elements.BOOLEAN_METADATA_NEGATIVE.getLabel(), metadata, XPathConstants.STRING);
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**

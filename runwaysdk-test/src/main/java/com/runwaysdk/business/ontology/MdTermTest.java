@@ -18,13 +18,10 @@
  */
 package com.runwaysdk.business.ontology;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -33,48 +30,18 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-public class MdTermTest extends TestCase
+public class MdTermTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdTermTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   private static MdTermDAO mdTerm;
-  
+
   /**
    * Set the testObject to a new Instance of the TEST type.
    */
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     mdTerm = MdTermDAO.newInstance();
     mdTerm.setValue(MdTermInfo.NAME, "Term");
@@ -83,8 +50,7 @@ public class MdTermTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.setGenerateMdController(false);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
   }
@@ -92,13 +58,17 @@ public class MdTermTest extends TestCase
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     mdTerm.delete();
   }
 
+  @Request
+  @Test
   public void testCreateAndGetMdTerm()
   {
     MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
@@ -109,16 +79,21 @@ public class MdTermTest extends TestCase
     Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
     Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
   }
-  
-  public void testTermInstance() {
+
+  @Request
+  @Test
+  public void testTermInstance()
+  {
     BusinessDAO term = BusinessDAO.newInstance(mdTerm.definesType());
     term.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "expected value");
     term.apply();
-    
-    try {
-      Assert.assertEquals("expected value", BusinessDAO.get(term.getId()).getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    try
+    {
+      Assert.assertEquals("expected value", BusinessDAO.get(term.getOid()).getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
     }
-    finally {
+    finally
+    {
       term.delete();
     }
   }

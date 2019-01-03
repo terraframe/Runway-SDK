@@ -166,14 +166,14 @@ public abstract class InstanceExporter
     HashMap<String, String> parameters = new HashMap<String, String>();
 
     String type = relationshipDAOIF.getType();
-    String id = relationshipDAOIF.getId();
+    String oid = relationshipDAOIF.getOid();
 
-    // Add the type, id, parent_id, and child_id to the attributes of the
+    // Add the type, oid, parent_oid, and child_oid to the attributes of the
     // <relationship> tag
     parameters.put(XMLTags.TYPE_TAG, type);
-    parameters.put(XMLTags.ID_TAG, id);
-    parameters.put(XMLTags.PARENT_ID_TAG, relationshipDAOIF.getParentId());
-    parameters.put(XMLTags.CHILD_ID_TAG, relationshipDAOIF.getChildId());
+    parameters.put(XMLTags.ID_TAG, oid);
+    parameters.put(XMLTags.PARENT_OID_TAG, relationshipDAOIF.getParentOid());
+    parameters.put(XMLTags.CHILD_OID_TAG, relationshipDAOIF.getChildOid());
 
     writer.openEscapedTag(XMLTags.RELATIONSHIP_TAG, parameters);
 
@@ -196,11 +196,11 @@ public abstract class InstanceExporter
     HashMap<String, String> parameters = new HashMap<String, String>();
 
     String typeName = businessDAOIF.getType();
-    String id = businessDAOIF.getId();
+    String oid = businessDAOIF.getOid();
 
-    // Add the type and id to the attributes the <instance> tag
+    // Add the type and oid to the attributes the <instance> tag
     parameters.put(XMLTags.TYPE_TAG, typeName);
-    parameters.put(XMLTags.ID_TAG, id);
+    parameters.put(XMLTags.ID_TAG, oid);
 
     writer.openEscapedTag(XMLTags.OBJECT_TAG, parameters);
 
@@ -226,7 +226,7 @@ public abstract class InstanceExporter
       {
         ComponentIF component = iterator.next();
         
-        export(component.getId());
+        export(component.getOid());
       }
 
       iterator.close();
@@ -234,10 +234,10 @@ public abstract class InstanceExporter
   }
 
   /**
-   * Exports an entity who's id is in the result set.
+   * Exports an entity who's oid is in the result set.
    * 
    * @param resultSet
-   *          contains three columns: EntityInfo.ID - A string and primary key.
+   *          contains three columns: EntityInfo.OID - A string and primary key.
    * 
    */
   public void export(ResultSet resultSet)
@@ -246,9 +246,9 @@ public abstract class InstanceExporter
     {
       while (resultSet.next())
       {
-        String id = resultSet.getString(EntityInfo.ID);
+        String oid = resultSet.getString(EntityInfo.OID);
 
-        export(id);
+        export(oid);
       }
     }
     catch (SQLException e)
@@ -260,13 +260,13 @@ public abstract class InstanceExporter
   /**
    * Exports an Entity.
    * 
-   * @param id
-   *          The id of the Entity.
+   * @param oid
+   *          The oid of the Entity.
    */
-  public void export(String id)
+  public void export(String oid)
   {
     // Get the entityDAO
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
 
     this.export(entityDAO);
   }
@@ -328,7 +328,7 @@ public abstract class InstanceExporter
           AttributeStructIF attributeStructIF = (AttributeStructIF) attributeIF;
           
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
-          parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getId());
+          parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getOid());
           
           // write the selection tag
           writer.openEscapedTag(XMLTags.STRUCT_REF_TAG, parameters);
@@ -418,7 +418,7 @@ public abstract class InstanceExporter
   {
     TreeSet<String> tree = new TreeSet<String>();
 
-    tree.add(EntityInfo.ID);
+    tree.add(EntityInfo.OID);
     tree.add(EntityInfo.TYPE);
 
     return tree;

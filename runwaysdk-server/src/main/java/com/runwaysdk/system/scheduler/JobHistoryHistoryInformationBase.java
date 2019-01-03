@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1317182155)
+@com.runwaysdk.business.ClassSignature(hash = -284528772)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,10 +30,10 @@ public abstract class JobHistoryHistoryInformationBase extends com.runwaysdk.bus
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryHistoryInformation";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
-  private static final long serialVersionUID = 1317182155;
+  private static final long serialVersionUID = -284528772;
   
   public JobHistoryHistoryInformationBase()
   {
@@ -45,30 +45,14 @@ public abstract class JobHistoryHistoryInformationBase extends com.runwaysdk.bus
     super(component, structName);
   }
   
-  public static JobHistoryHistoryInformation get(String id)
+  public static JobHistoryHistoryInformation get(String oid)
   {
-    return (JobHistoryHistoryInformation) com.runwaysdk.business.Struct.get(id);
+    return (JobHistoryHistoryInformation) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static JobHistoryHistoryInformation getByKey(String key)
   {
     return (JobHistoryHistoryInformation) com.runwaysdk.business.Struct.get(CLASS, key);
-  }
-  
-  public String getId()
-  {
-    return getValue(ID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(ID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -97,6 +81,22 @@ public abstract class JobHistoryHistoryInformationBase extends com.runwaysdk.bus
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryHistoryInformation.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getSiteMaster()

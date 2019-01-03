@@ -51,10 +51,10 @@ public enum SymmetricOptions implements com.runwaysdk.business.BusinessEnumerati
     return enumeration.getTransformation();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -69,11 +69,11 @@ public enum SymmetricOptions implements com.runwaysdk.business.BusinessEnumerati
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static SymmetricOptions get(String id)
+  public static SymmetricOptions get(String oid)
   {
     for (SymmetricOptions e : SymmetricOptions.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

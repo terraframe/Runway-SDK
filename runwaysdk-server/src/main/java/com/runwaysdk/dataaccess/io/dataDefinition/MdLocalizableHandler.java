@@ -21,8 +21,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.MdMessageInfo;
 import com.runwaysdk.constants.MdLocalizableInfo;
+import com.runwaysdk.constants.MdMessageInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;

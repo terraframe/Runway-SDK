@@ -22,14 +22,14 @@ public class VisibleDependency extends VisibleDependencyBase
 {
   private static final long serialVersionUID = -195945956;
   
-  public VisibleDependency(String parentId, String childId)
+  public VisibleDependency(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public VisibleDependency(com.runwaysdk.system.metadata.MdField parent, com.runwaysdk.system.metadata.MdField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

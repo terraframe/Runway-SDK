@@ -21,9 +21,9 @@ package com.runwaysdk.constants;
 public interface MdAttributeDimensionInfo extends MetadataInfo
 {
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE              = "szii8pjdf8hmj16pi3csomvwxphpzp7400000000000000000000000000000001";
+  public static final String ID_VALUE              = "a914a15f-be1c-39f9-a87e-99e65a00003a";
 
   /**
    * Class MetaData.

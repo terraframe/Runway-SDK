@@ -121,8 +121,8 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
     FieldConditionDAO secondFieldCondition = this.secondCondition.process();
 
     AndFieldConditionDAO condition = AndFieldConditionDAO.newInstance();
-    condition.setValue(CompositeFieldConditionInfo.FIRST_CONDITION, firstFieldCondition.getId());
-    condition.setValue(CompositeFieldConditionInfo.SECOND_CONDITION, secondFieldCondition.getId());
+    condition.setValue(CompositeFieldConditionInfo.FIRST_CONDITION, firstFieldCondition.getOid());
+    condition.setValue(CompositeFieldConditionInfo.SECOND_CONDITION, secondFieldCondition.getOid());
     condition.apply();
 
     if (this.mdField != null)
@@ -138,8 +138,8 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
       // IMPORTANT: It is possible that the mdField cached in memory has become
       // stale because this field already had an existing condition which was
       // deleted.
-      BusinessDAO mdField = MdFieldDAO.get(this.mdField.getId()).getBusinessDAO();
-      mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getId());
+      BusinessDAO mdField = MdFieldDAO.get(this.mdField.getOid()).getBusinessDAO();
+      mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getOid());
       mdField.apply();
     }
 

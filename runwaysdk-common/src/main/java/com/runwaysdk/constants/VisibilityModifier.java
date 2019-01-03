@@ -20,18 +20,18 @@ package com.runwaysdk.constants;
 
 public enum VisibilityModifier 
 {
-  PUBLIC    ("public", "20071109NM000000000000000000000520071109NM0000000000000000000001"),
+  PUBLIC    ("public", "02d46938-021e-3bb4-bb8f-4a31c5000071"),
   
-  PROTECTED ("protected", "20071109NM000000000000000000000620071109NM0000000000000000000001");
+  PROTECTED ("protected", "dc5d2fb0-1cf4-3aad-be4b-f2e901000071");
   
   private String javaModifier;
   
-  private String id;
+  private String oid;
   
-  private VisibilityModifier(String javaModifier, String id)
+  private VisibilityModifier(String javaModifier, String oid)
   {
     this.javaModifier = javaModifier;
-    this.id = id;
+    this.oid = oid;
   }
   
   public String getJavaModifier()
@@ -39,9 +39,9 @@ public enum VisibilityModifier
     return this.javaModifier;
   }
   
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   } 
 
 }

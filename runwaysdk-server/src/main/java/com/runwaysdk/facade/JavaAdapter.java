@@ -56,9 +56,9 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
    *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
-  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
-    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return Facade.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
 
   /**
@@ -66,9 +66,9 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addChild(sessionId, parentId, childId, relationshipType);
+    return Facade.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -76,25 +76,25 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    return Facade.addParent(sessionId, parentId, childId, relationshipType);
+    return Facade.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    */
-  public static void delete(String sessionId, String id)
+  public static void delete(String sessionId, String oid)
   {
-    Facade.delete(sessionId, id);
+    Facade.delete(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
-  public static MutableDTO get(String sessionId, String id)
+  public static MutableDTO get(String sessionId, String oid)
   {
-    return Facade.get(sessionId, id);
+    return Facade.get(sessionId, oid);
   }
 
   public static EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -253,15 +253,6 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public static void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
@@ -269,16 +260,7 @@ public class JavaAdapter
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public static void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
+  
   /**
    * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
@@ -295,15 +277,6 @@ public class JavaAdapter
   public static void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
     Facade.grantMethodPermission(sessionId, actorId, mdMethodId, operationNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    return Facade.promoteObject(sessionId, businessDTO, transitionName);
   }
 
   /**
@@ -325,15 +298,6 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public static void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
@@ -343,29 +307,19 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
-   */
-  public static void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
-  public static EntityDTO lock(String sessionId, String id)
+  public static EntityDTO lock(String sessionId, String oid)
   {
-    return Facade.lock(sessionId, id);
+    return Facade.lock(sessionId, oid);
   }
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
-  public static EntityDTO unlock(String sessionId, String id)
+  public static EntityDTO unlock(String sessionId, String oid)
   {
-    return Facade.unlock(sessionId, id);
+    return Facade.unlock(sessionId, oid);
   }
 
   /**
@@ -395,34 +349,34 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
    *      com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
-  public static List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getChildren(sessionId, id, relationshipType);
+    return Facade.getChildren(sessionId, oid, relationshipType);
   }
 
-  public static List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getChildRelationships(sessionId, id, relationshipType);
+    return Facade.getChildRelationships(sessionId, oid, relationshipType);
   }
 
-  public static List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getParentRelationships(sessionId, id, relationshipType);
+    return Facade.getParentRelationships(sessionId, oid, relationshipType);
   }
 
-  public static List<BusinessDTO> getParents(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType)
   {
-    return Facade.getParents(sessionId, id, relationshipType);
+    return Facade.getParents(sessionId, oid, relationshipType);
   }
 
-  public static void deleteChildren(String sessionId, String id, String relationshipType)
+  public static void deleteChildren(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteChildren(sessionId, id, relationshipType);
+    Facade.deleteChildren(sessionId, oid, relationshipType);
   }
 
-  public static void deleteParents(String sessionId, String id, String relationshipType)
+  public static void deleteParents(String sessionId, String oid, String relationshipType)
   {
-    Facade.deleteParents(sessionId, id, relationshipType);
+    Facade.deleteParents(sessionId, oid, relationshipType);
   }
 
   public static BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO)

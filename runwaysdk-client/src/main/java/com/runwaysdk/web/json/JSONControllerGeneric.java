@@ -36,12 +36,12 @@ public class JSONControllerGeneric
    */
   public static String moveBusiness(String sessionId, Map<?, ?> parameters) {
     
-    String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String newParentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String oldRelationshipId = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_ID.getName()) )[0];
     String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
     
-    return JSONController.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    return JSONController.moveBusiness(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
   }
   
   /**
@@ -51,11 +51,11 @@ public class JSONControllerGeneric
    */
   public static String getTermAllChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     Integer pageNum = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_NUM.getName()) )[0]);
     Integer pageSize = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_SIZE.getName()) )[0]);
 
-    return JSONController.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    return JSONController.getTermAllChildren(sessionId, parentOid, pageNum, pageSize);
   }
   
   /**
@@ -65,11 +65,11 @@ public class JSONControllerGeneric
    */
   public static String addChild(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.addChild(sessionId, parentId, childId, relationshipType);
+    return JSONController.addChild(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -79,11 +79,11 @@ public class JSONControllerGeneric
    */
   public static String addParent(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.addParent(sessionId, parentId, childId, relationshipType);
+    return JSONController.addParent(sessionId, parentOid, childOid, relationshipType);
   }
 
   /**
@@ -92,9 +92,9 @@ public class JSONControllerGeneric
    */
   public static String delete(String sessionId, Map<?, ?> parameters)
   {
-    String id = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
-    return JSONController.delete(sessionId, id);
+    return JSONController.delete(sessionId, oid);
   }
 
   /**
@@ -103,9 +103,9 @@ public class JSONControllerGeneric
    */
   public static String get(String sessionId, Map<?, ?> parameters)
   {
-    String id = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
-    return JSONController.get(sessionId, id);
+    return JSONController.get(sessionId, oid);
   }
 
   /**
@@ -206,20 +206,6 @@ public class JSONControllerGeneric
     return JSONController.grantMethodPermission(sessionId, actorId, mdMethodId, opNames);
   }
 
-  /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public static String grantStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.grantStatePermission(sessionId, actorId, stateId, opNames);
-  }
-
   public static String importTypes(String sessionId, Map<?, ?> parameters)
   {
     String types = ( (String[]) parameters.get(JSONClientRequestConstants.TYPES.getName()) )[0];
@@ -241,34 +227,6 @@ public class JSONControllerGeneric
 
     String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
     return JSONController.grantAttributePermission(sessionId, actorId, mdAttributeId, opNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   */
-  public static String grantAttributeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String mdAttributeId = ( (String[]) parameters.get(JSONClientRequestConstants.MDATTRIBUTE_ID.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.grantAttributeStatePermission(sessionId, actorId, mdAttributeId,
-        stateId, opNames);
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public static String promoteObject(String sessionId, Map<?, ?> parameters)
-  {
-    String businessJSON = ( (String[]) parameters.get(JSONClientRequestConstants.BUSINESS_DTO.getName()) )[0];
-    String transitionName = ( (String[]) parameters.get(JSONClientRequestConstants.TRANSITION_NAME.getName()) )[0];
-
-    return JSONController.promoteObject(sessionId, businessJSON, transitionName);
   }
 
   /**
@@ -300,20 +258,6 @@ public class JSONControllerGeneric
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public static String revokeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.revokeStatePermission(sessionId, actorId, stateId, opNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    */
@@ -328,30 +272,14 @@ public class JSONControllerGeneric
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   */
-  public static String revokeAttributeStatePermission(String sessionId, Map<?, ?> parameters)
-  {
-    String actorId = ( (String[]) parameters.get(JSONClientRequestConstants.ACTOR_ID.getName()) )[0];
-    String operationNames = ( (String[]) parameters.get(JSONClientRequestConstants.OPERATION_NAMES.getName()) )[0];
-    String mdAttributeId = ( (String[]) parameters.get(JSONClientRequestConstants.MDATTRIBUTE_ID.getName()) )[0];
-    String stateId = ( (String[]) parameters.get(JSONClientRequestConstants.STATE_ID.getName()) )[0];
-
-    String[] opNames = convertJSONStringArrayToJavaArray(operationNames);
-    return JSONController.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, opNames);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
    *      java.lang.String)
    */
   public static String lock(String sessionId, Map<?, ?> parameters)
   {
-    String id = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
-    return JSONController.lock(sessionId, id);
+    return JSONController.lock(sessionId, oid);
   }
 
   /**
@@ -360,9 +288,9 @@ public class JSONControllerGeneric
    */
   public static String unlock(String sessionId, Map<?, ?> parameters)
   {
-    String id = ( (String[]) parameters.get(JSONClientRequestConstants.ID.getName()) )[0];
+    String oid = ( (String[]) parameters.get(JSONClientRequestConstants.OID.getName()) )[0];
 
-    return JSONController.unlock(sessionId, id);
+    return JSONController.unlock(sessionId, oid);
   }
 
   /**
@@ -393,50 +321,50 @@ public class JSONControllerGeneric
    */
   public static String getChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getChildren(sessionId, parentId, relationshipType);
+    return JSONController.getChildren(sessionId, parentOid, relationshipType);
   }
 
   public static String getChildRelationships(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getChildRelationships(sessionId, parentId, relationshipType);
+    return JSONController.getChildRelationships(sessionId, parentOid, relationshipType);
   }
 
   public static String getParentRelationships(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getParentRelationships(sessionId, childId, relationshipType);
+    return JSONController.getParentRelationships(sessionId, childOid, relationshipType);
   }
 
   public static String getParents(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.getParents(sessionId, childId, relationshipType);
+    return JSONController.getParents(sessionId, childOid, relationshipType);
   }
 
   public static String deleteChildren(String sessionId, Map<?, ?> parameters)
   {
-    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String parentOid = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.deleteChildren(sessionId, parentId, relationshipType);
+    return JSONController.deleteChildren(sessionId, parentOid, relationshipType);
   }
 
   public static String deleteParents(String sessionId, Map<?, ?> parameters)
   {
-    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String childOid = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_OID.getName()) )[0];
     String relationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
 
-    return JSONController.deleteParents(sessionId, childId, relationshipType);
+    return JSONController.deleteParents(sessionId, childOid, relationshipType);
   }
 
   public static String queryBusinesses(String sessionId, Map<?, ?> parameters)

@@ -18,74 +18,36 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MetadataInfo;
-import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
+import com.runwaysdk.session.Request;
 
-public class StaleObjectTest extends TestCase
+public class StaleObjectTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    *
    */
   private static TypeInfo utensilClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "UtensilOne");
 
   /**
-   * 
-   * @return
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(StaleObjectTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    *
    *
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     createUtinsilType();
@@ -95,6 +57,8 @@ public class StaleObjectTest extends TestCase
    *
    *
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     MdBusinessDAO utensilDO = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(utensilClass.getType()) ).getBusinessDAO();
@@ -119,26 +83,17 @@ public class StaleObjectTest extends TestCase
     utensilMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     utensilMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     utensilMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    utensilMdBusiness.setGenerateMdController(false);
     utensilMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     utensilMdBusiness.apply();
-    utensilClass.setId(utensilMdBusiness.getId());
-  }
-
-  public static void main(String[] args)
-  {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-    {
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-    }
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(StaleObjectTest.suite()));
+    utensilClass.setOid(utensilMdBusiness.getOid());
   }
 
   /**
    * Makes sure a StaleEntityException is thrown when an object is saved to the
    * database but is not the most current state of the object.
    */
+  @Request
+  @Test
   public void testStaleObjectSave()
   {
     MdBusinessDAO version1 = null;
@@ -155,7 +110,7 @@ public class StaleObjectTest extends TestCase
       version2.apply();
       version1.apply(); // version 1 is stale
 
-      fail("A stale object was able to be saved to the database.");
+      Assert.fail("A stale object was able to be saved to the database.");
     }
     catch (StaleEntityException e)
     {
@@ -167,6 +122,8 @@ public class StaleObjectTest extends TestCase
    * Makes sure a StaleEntityException is thrown when an object is saved to the
    * database but is not the most current state of the object.
    */
+  @Request
+  @Test
   public void testStaleObjectDelete()
   {
     MdBusinessDAO version1 = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(utensilClass.getType()) ).getBusinessDAO();
@@ -180,7 +137,7 @@ public class StaleObjectTest extends TestCase
       version2.apply();
       version1.delete(); // version 1 is stale
 
-      fail("A stale MdBusinss was able to be deleted to the database.");
+      Assert.fail("A stale MdBusinss was able to be deleted to the database.");
     }
     catch (StaleEntityException e)
     {
@@ -200,6 +157,8 @@ public class StaleObjectTest extends TestCase
    *
    *
    */
+  @Request
+  @Test
   public void testDoubleDeleteObject()
   {
     try
@@ -209,7 +168,7 @@ public class StaleObjectTest extends TestCase
       instance.delete();
       instance.delete(); // wrong!
 
-      fail("A stale object was able to be deleted from the database.");
+      Assert.fail("A stale object was able to be deleted from the database.");
     }
     catch (StaleEntityException e)
     {
@@ -220,6 +179,8 @@ public class StaleObjectTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testDoubleDeleteMdRelationship()
   {
     MdBusinessDAO A = null;
@@ -237,7 +198,6 @@ public class StaleObjectTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      A.setGenerateMdController(false);
       A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
@@ -250,7 +210,6 @@ public class StaleObjectTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      W.setGenerateMdController(false);
       W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
@@ -258,28 +217,27 @@ public class StaleObjectTest extends TestCase
       AtoW = MdTreeDAO.newInstance();
       AtoW.setValue(MdTreeInfo.NAME, AtoW_REL.getTypeName());
       AtoW.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       AtoW.setValue(MdTreeInfo.PACKAGE, AtoW_REL.getPackageName());
       AtoW.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A to W");
       AtoW.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       AtoW.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       AtoW.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getId());
+      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getOid());
       AtoW.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent A");
-      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getId());
+      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getOid());
       AtoW.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
       AtoW.setValue(MdTreeInfo.PARENT_METHOD, "A");
       AtoW.setValue(MdTreeInfo.CHILD_METHOD, "W");
-      AtoW.setGenerateMdController(false);
       AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
       AtoW.delete();
       AtoW.delete();// wrong!
 
-      fail("A relationship was able to be deleted twice.");
+      Assert.fail("A relationship was able to be deleted twice.");
     }
     catch (StaleEntityException e)
     {
@@ -305,6 +263,8 @@ public class StaleObjectTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testDoubleDeleteMdBusiness()
   {
     MdBusinessDAO utensilDO = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(utensilClass.getType()) ).getBusinessDAO();
@@ -314,7 +274,7 @@ public class StaleObjectTest extends TestCase
       utensilDO.delete();
       utensilDO.delete(); // this is wrong!
 
-      fail("An object was able to deleted twice, which is incorrect.");
+      Assert.fail("An object was able to deleted twice, which is incorrect.");
     }
     catch (StaleEntityException e)
     {

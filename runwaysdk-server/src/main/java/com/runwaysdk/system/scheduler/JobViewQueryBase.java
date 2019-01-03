@@ -80,21 +80,21 @@ public  abstract  class JobViewQueryBase extends com.runwaysdk.query.GeneratedVi
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobView.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobView.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, displayLabel);
 
   }
  

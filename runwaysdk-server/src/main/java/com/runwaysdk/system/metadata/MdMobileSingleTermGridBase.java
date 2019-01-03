@@ -69,9 +69,9 @@ public abstract class MdMobileSingleTermGridBase extends com.runwaysdk.system.me
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MobileGridField>) getRelationshipsWithChild(mdMobilePrimitive, com.runwaysdk.system.metadata.MobileGridField.CLASS);
   }
   
-  public static MdMobileSingleTermGrid get(String id)
+  public static MdMobileSingleTermGrid get(String oid)
   {
-    return (MdMobileSingleTermGrid) com.runwaysdk.business.Business.get(id);
+    return (MdMobileSingleTermGrid) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileSingleTermGrid getByKey(String key)
@@ -79,17 +79,17 @@ public abstract class MdMobileSingleTermGridBase extends com.runwaysdk.system.me
     return (MdMobileSingleTermGrid) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileSingleTermGrid lock(java.lang.String id)
+  public static MdMobileSingleTermGrid lock(java.lang.String oid)
   {
-    MdMobileSingleTermGrid _instance = MdMobileSingleTermGrid.get(id);
+    MdMobileSingleTermGrid _instance = MdMobileSingleTermGrid.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileSingleTermGrid unlock(java.lang.String id)
+  public static MdMobileSingleTermGrid unlock(java.lang.String oid)
   {
-    MdMobileSingleTermGrid _instance = MdMobileSingleTermGrid.get(id);
+    MdMobileSingleTermGrid _instance = MdMobileSingleTermGrid.get(oid);
     _instance.unlock();
     
     return _instance;

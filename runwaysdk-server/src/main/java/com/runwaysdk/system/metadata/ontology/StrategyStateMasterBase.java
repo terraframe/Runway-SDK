@@ -41,9 +41,9 @@ public abstract class StrategyStateMasterBase extends com.runwaysdk.system.Enume
     return CLASS;
   }
   
-  public static StrategyStateMaster get(String id)
+  public static StrategyStateMaster get(String oid)
   {
-    return (StrategyStateMaster) com.runwaysdk.business.Business.get(id);
+    return (StrategyStateMaster) com.runwaysdk.business.Business.get(oid);
   }
   
   public static StrategyStateMaster getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class StrategyStateMasterBase extends com.runwaysdk.system.Enume
     return (StrategyStateMaster) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.ontology.StrategyStateMaster.CLASS ,enumName);
   }
   
-  public static StrategyStateMaster lock(java.lang.String id)
+  public static StrategyStateMaster lock(java.lang.String oid)
   {
-    StrategyStateMaster _instance = StrategyStateMaster.get(id);
+    StrategyStateMaster _instance = StrategyStateMaster.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static StrategyStateMaster unlock(java.lang.String id)
+  public static StrategyStateMaster unlock(java.lang.String oid)
   {
-    StrategyStateMaster _instance = StrategyStateMaster.get(id);
+    StrategyStateMaster _instance = StrategyStateMaster.get(oid);
     _instance.unlock();
     
     return _instance;

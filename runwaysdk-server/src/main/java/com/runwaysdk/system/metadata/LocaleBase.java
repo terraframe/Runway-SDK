@@ -70,9 +70,9 @@ public abstract class LocaleBase extends com.runwaysdk.system.EnumerationMaster
     return CLASS;
   }
   
-  public static Locale get(String id)
+  public static Locale get(String oid)
   {
-    return (Locale) com.runwaysdk.business.Business.get(id);
+    return (Locale) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Locale getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class LocaleBase extends com.runwaysdk.system.EnumerationMaster
     return (Locale) com.runwaysdk.business.Business.getEnumeration("com.runwaysdk.system.metadata.Locale",enumName);
   }
   
-  public static Locale lock(java.lang.String id)
+  public static Locale lock(java.lang.String oid)
   {
-    Locale _instance = Locale.get(id);
+    Locale _instance = Locale.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Locale unlock(java.lang.String id)
+  public static Locale unlock(java.lang.String oid)
   {
-    Locale _instance = Locale.get(id);
+    Locale _instance = Locale.get(oid);
     _instance.unlock();
     
     return _instance;

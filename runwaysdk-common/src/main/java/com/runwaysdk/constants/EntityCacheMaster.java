@@ -24,22 +24,22 @@ public enum EntityCacheMaster
   /**
    * Cache all BusinessDAOs of a certain class.
    */
-  CACHE_EVERYTHING                   ("0000000000000000000000000000023000000000000000000000000000000222", 1),
+  CACHE_EVERYTHING                   ("bfc8ffc0-e021-3746-abaf-6fba7700004d", 1),
 
   /**
    * Cache no BusinessDAOs of a certain type.
    */
-  CACHE_NOTHING                      ("0000000000000000000000000000023100000000000000000000000000000222", 2),
+  CACHE_NOTHING                      ("53f84de0-954a-3d48-a57f-29b95c00004d", 2),
 
   /**
    * Cache BusinessDAOs that were the most recently accessed.
    */
-  CACHE_MOST_RECENTLY_USED           ("0000000000000000000000000000023200000000000000000000000000000222", 3),
+  CACHE_MOST_RECENTLY_USED           ("8ea897b9-393d-3c45-87e7-7d998000004d", 3),
 
   /**
    * Cache BusinessDAO algorithm is hardcoded.
    */
-  CACHE_HARDCODED                    ("0000000000000000000000000000024000000000000000000000000000000222", 4);
+  CACHE_HARDCODED                    ("5bce2da7-3746-301c-8c10-4f420100004d", 4);
 
 
   /**
@@ -58,18 +58,18 @@ public enum EntityCacheMaster
   public static final String DESCRIPTION   = "description";
 
 
-  private String id;
+  private String oid;
   private int cacheCode;
 
-  private EntityCacheMaster(String id, int cacheCode)
+  private EntityCacheMaster(String oid, int cacheCode)
   {
-   this.id = id;
+   this.oid = oid;
    this.cacheCode = cacheCode;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
   public int getCacheCode()

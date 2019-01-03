@@ -38,7 +38,6 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.io.FileWriteException;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public abstract class ComponentQueryDTOGenerator implements GeneratorIF, ClientMarker
 {
@@ -207,11 +206,6 @@ public abstract class ComponentQueryDTOGenerator implements GeneratorIF, ClientM
     this.writeLine(this.srcBuffer, " */");
     this.write(this.srcBuffer, "public class " + this.queryTypeName + " extends ");
     this.addExtends(parentMdClassIF);
-
-    if (!this.getMdClassIF().isSystemPackage())
-    {
-      this.writeLine(this.srcBuffer, Reloadable.IMPLEMENTS);
-    }
 
     this.writeLine(this.srcBuffer, "{");
   }

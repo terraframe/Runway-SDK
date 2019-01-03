@@ -37,7 +37,7 @@ public abstract class GeoEntityViewDTOBase extends com.runwaysdk.business.ViewDT
   public static java.lang.String CANCREATECHILDREN = "canCreateChildren";
   public static java.lang.String GEOENTITYDISPLAYLABEL = "geoEntityDisplayLabel";
   public static java.lang.String GEOENTITYID = "geoEntityId";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RELATIONSHIPID = "relationshipId";
   public static java.lang.String RELATIONSHIPTYPE = "relationshipType";
   public static java.lang.String UNIVERSALDISPLAYLABEL = "universalDisplayLabel";
@@ -263,9 +263,9 @@ public abstract class GeoEntityViewDTOBase extends com.runwaysdk.business.ViewDT
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(UNIVERSALDISPLAYLABEL).getAttributeMdDTO();
   }
   
-  public static GeoEntityViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static GeoEntityViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(id);
+    com.runwaysdk.business.ViewDTO dto = (com.runwaysdk.business.ViewDTO)clientRequest.get(oid);
     
     return (GeoEntityViewDTO) dto;
   }
@@ -283,7 +283,7 @@ public abstract class GeoEntityViewDTOBase extends com.runwaysdk.business.ViewDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
 }

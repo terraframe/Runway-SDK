@@ -121,7 +121,7 @@ public class CopyVisitor implements MdAttributeDAOVisitor
 
       for (EnumerationItemDAOIF item : items)
       {
-        ids.add(item.getId());
+        ids.add(item.getOid());
       }
 
       dest.setItems(attributeName, ids);

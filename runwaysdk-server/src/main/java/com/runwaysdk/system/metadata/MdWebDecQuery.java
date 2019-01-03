@@ -154,13 +154,13 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebDec mdWebDec)
     {
       if(mdWebDec == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebDec.getId());
+      return this.EQ(mdWebDec.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebDec mdWebDec)
     {
       if(mdWebDec == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebDec.getId());
+      return this.NE(mdWebDec.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getDecPrecision()
@@ -243,7 +243,7 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
 
       for (int i=0; i<mdWebDec.length; i++)
       {
-        itemIdArray[i] = mdWebDec[i].getId();
+        itemIdArray[i] = mdWebDec[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
 
       for (int i=0; i<mdWebDec.length; i++)
       {
-        itemIdArray[i] = mdWebDec[i].getId();
+        itemIdArray[i] = mdWebDec[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
 
       for (int i=0; i<mdWebDec.length; i++)
       {
-        itemIdArray[i] = mdWebDec[i].getId();
+        itemIdArray[i] = mdWebDec[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
 
       for (int i=0; i<mdWebDec.length; i++)
       {
-        itemIdArray[i] = mdWebDec[i].getId();
+        itemIdArray[i] = mdWebDec[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
 
       for (int i=0; i<mdWebDec.length; i++)
       {
-        itemIdArray[i] = mdWebDec[i].getId();
+        itemIdArray[i] = mdWebDec[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

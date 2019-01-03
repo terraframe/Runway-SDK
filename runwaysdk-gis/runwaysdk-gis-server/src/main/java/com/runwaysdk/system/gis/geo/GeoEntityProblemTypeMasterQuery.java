@@ -129,7 +129,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.gis.geo.GeoEntityProblemType.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -148,7 +148,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.gis.geo.GeoEntityProblemType.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -192,13 +192,13 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster geoEntityProblemTypeMaster)
     {
       if(geoEntityProblemTypeMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(geoEntityProblemTypeMaster.getId());
+      return this.EQ(geoEntityProblemTypeMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster geoEntityProblemTypeMaster)
     {
       if(geoEntityProblemTypeMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(geoEntityProblemTypeMaster.getId());
+      return this.NE(geoEntityProblemTypeMaster.getOid());
     }
 
   public com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescriptionQuery.GeoEntityProblemTypeMasterDescriptionQueryStructIF getDescription()
@@ -325,7 +325,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemType.length; i++)
       {
-        enumIdArray[i] = geoEntityProblemType[i].getId();
+        enumIdArray[i] = geoEntityProblemType[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -337,7 +337,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemType.length; i++)
       {
-        enumIdArray[i] = geoEntityProblemType[i].getId();
+        enumIdArray[i] = geoEntityProblemType[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -349,7 +349,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemType.length; i++)
       {
-        enumIdArray[i] = geoEntityProblemType[i].getId();
+        enumIdArray[i] = geoEntityProblemType[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -361,7 +361,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemType.length; i++)
       {
-        enumIdArray[i] = geoEntityProblemType[i].getId();
+        enumIdArray[i] = geoEntityProblemType[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -373,7 +373,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemType.length; i++)
       {
-        enumIdArray[i] = geoEntityProblemType[i].getId();
+        enumIdArray[i] = geoEntityProblemType[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -420,7 +420,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemTypeMaster.length; i++)
       {
-        itemIdArray[i] = geoEntityProblemTypeMaster[i].getId();
+        itemIdArray[i] = geoEntityProblemTypeMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -432,7 +432,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemTypeMaster.length; i++)
       {
-        itemIdArray[i] = geoEntityProblemTypeMaster[i].getId();
+        itemIdArray[i] = geoEntityProblemTypeMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -444,7 +444,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemTypeMaster.length; i++)
       {
-        itemIdArray[i] = geoEntityProblemTypeMaster[i].getId();
+        itemIdArray[i] = geoEntityProblemTypeMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -456,7 +456,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemTypeMaster.length; i++)
       {
-        itemIdArray[i] = geoEntityProblemTypeMaster[i].getId();
+        itemIdArray[i] = geoEntityProblemTypeMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -468,7 +468,7 @@ public  class GeoEntityProblemTypeMasterQuery extends com.runwaysdk.system.Enume
 
       for (int i=0; i<geoEntityProblemTypeMaster.length; i++)
       {
-        itemIdArray[i] = geoEntityProblemTypeMaster[i].getId();
+        itemIdArray[i] = geoEntityProblemTypeMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

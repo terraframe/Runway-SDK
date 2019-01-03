@@ -31,25 +31,25 @@ public interface JSONRemoteAdapter extends Remote
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.transport.RelationshipDTO)
    */
-  public String addChild(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public String addChild(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.transport.RelationshipDTO)
    */
-  public String addParent(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public String addParent(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#deleteBusiness(java.lang.String,
    *      java.lang.String)
    */
-  public String delete(String sessionId, String id) throws RemoteException;
+  public String delete(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
-  public String get(String sessionId, String id) throws RemoteException;
+  public String get(String sessionId, String oid) throws RemoteException;
 
   public String getQuery(String sessionId, String type) throws RemoteException;
 
@@ -156,29 +156,10 @@ public interface JSONRemoteAdapter extends Remote
   public String grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationId) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public String grantStatePermission(String sessionId, String actorId, String stateId, String... operationId) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    */
   public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationId) throws RemoteException;
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   */
-  public String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationId) throws RemoteException;
-
-  /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public String promoteObject(String sessionId, String businessJSON, String transitionName) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
@@ -193,33 +174,20 @@ public interface JSONRemoteAdapter extends Remote
   public String revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   */
-  public String revokeStatePermission(String sessionId, String actorId, String stateId, String... operationIds) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    */
   public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   */
-  public String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationIds) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
-  public String lock(String sessionId, String id) throws RemoteException;
+  public String lock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
-  public String unlock(String sessionId, String id) throws RemoteException;
+  public String unlock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String,
@@ -237,17 +205,17 @@ public interface JSONRemoteAdapter extends Remote
    * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
    *      com.runwaysdk.transport.BusinessDTO, java.lang.String)
    */
-  public String getChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String getChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public String getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String getChildRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public String getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String getParentRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public String getParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String getParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public String deleteChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String deleteChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public String deleteParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public String deleteParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
   public String queryBusinesses(String sessionId, String queryJSON) throws RemoteException;
 
@@ -271,9 +239,9 @@ public interface JSONRemoteAdapter extends Remote
 
   public String newMutable(String sessionId, String type) throws RemoteException;
 
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+  public String getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) throws RemoteException;
 
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) throws RemoteException;
+  public String moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType) throws RemoteException;
 
   /**
    * @param sessionId

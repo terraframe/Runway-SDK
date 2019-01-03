@@ -46,7 +46,7 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
   }
   
   public static java.lang.String CITY = "city";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String POSTALCODE = "postalCode";
   public static java.lang.String PRIMARYADDRESS = "primaryAddress";
@@ -309,9 +309,9 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(ZIPCODE).getAttributeMdDTO();
   }
   
-  public static AddressDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static AddressDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (AddressDTO) dto;
   }
@@ -329,7 +329,7 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.AddressQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)

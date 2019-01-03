@@ -43,6 +43,7 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.HardCodedMetadataIterator;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 /**
  * Database manages access to the database. It contains a singleton instance of
@@ -82,9 +83,9 @@ public class Database
   public static final int    MAX_ATTRIBUTE_NAME_SIZE          = 28;
 
   /**
-   * The size, in characters, of the ID strings for each object in the database.
+   * The size, in characters, of the OID strings for each object in the database.
    */
-  public static final String DATABASE_ID_SIZE                 = "64";
+  public static final String DATABASE_ID_SIZE                 = "36";
 
   /**
    * Magic number for an unlimited text length on clob attributes
@@ -121,7 +122,7 @@ public class Database
    */
   public static final String VERSION_NUMBER                   = "version_number";
 
-  public static final String PROPERTIES_ID_COLUMN             = "id";
+  public static final String PROPERTIES_ID_COLUMN             = "oid";
 
   /**
    * The initial version number
@@ -241,14 +242,14 @@ public class Database
    *          The values of the fields to update.
    * @param attributeTypes
    *          The core datatypes of the fields to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * 
    * @return <code>UPDATE</code> SQL statement String
    */
-  public static String buildSQLupdateStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes, String id)
+  public static String buildSQLupdateStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes, String oid)
   {
-    return instance().buildSQLupdateStatement(table, columnNames, values, attributeTypes, id);
+    return instance().buildSQLupdateStatement(table, columnNames, values, attributeTypes, oid);
   }
 
   /**
@@ -296,16 +297,16 @@ public class Database
 
   /**
    * Returns the value of a clob for the column on the table for the object with
-   * the given id.
+   * the given oid.
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return value of the clob.
    */
-  public static String getClob(String table, String columnName, String id)
+  public static String getClob(String table, String columnName, String oid)
   {
-    return instance().getClob(table, columnName, id);
+    return instance().getClob(table, columnName, oid);
   }
 
   /**
@@ -313,13 +314,13 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param string
    * @return The number of bytes written.
    */
-  public static void setClob(String table, String columnName, String id, String string)
+  public static void setClob(String table, String columnName, String oid, String string)
   {
-    instance().setClob(table, columnName, id, string);
+    instance().setClob(table, columnName, oid, string);
   }
 
   /**
@@ -327,12 +328,12 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return byte[] value of the blob.
    */
-  public static byte[] getBlobAsBytes(String table, String columnName, String id)
+  public static byte[] getBlobAsBytes(String table, String columnName, String oid)
   {
-    return instance().getBlobAsBytes(table, columnName, id);
+    return instance().getBlobAsBytes(table, columnName, oid);
   }
 
   /**
@@ -343,14 +344,14 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param length
    * @return
    */
-  public static byte[] getBlobAsBytes(String table, String columnName, String id, long pos, int length)
+  public static byte[] getBlobAsBytes(String table, String columnName, String oid, long pos, int length)
   {
-    return instance().getBlobAsBytes(table, columnName, id, pos, length);
+    return instance().getBlobAsBytes(table, columnName, oid, pos, length);
   }
 
   /**
@@ -362,16 +363,16 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public static int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset, int length)
+  public static int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset, int length)
   {
-    return instance().setBlobAsBytes(table, columnName, id, pos, bytes, offset, length);
+    return instance().setBlobAsBytes(table, columnName, oid, pos, bytes, offset, length);
   }
 
   /**
@@ -379,16 +380,16 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public static int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public static int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     // clear any previous value
-    Database.truncateBlob(table, columnName, id, 0);
+    Database.truncateBlob(table, columnName, oid, 0);
 
-    return instance().setBlobAsBytes(table, columnName, id, bytes);
+    return instance().setBlobAsBytes(table, columnName, oid, bytes);
   }
 
   /**
@@ -410,12 +411,12 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return The byte array value of this blob attribute.
    */
-  public static long getBlobSize(String table, String columnName, String id)
+  public static long getBlobSize(String table, String columnName, String oid)
   {
-    return instance().getBlobSize(table, columnName, id);
+    return instance().getBlobSize(table, columnName, oid);
   }
 
   /**
@@ -427,7 +428,7 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    *          The starting position. The first element is at position 1.
    * @param length
@@ -435,10 +436,10 @@ public class Database
    *          position.
    * @return byte[]
    */
-  public static void truncateBlob(String table, String columnName, String id, long length)
+  public static void truncateBlob(String table, String columnName, String oid, long length)
   {
     Connection conn = Database.getConnection();
-    Database.truncateBlob(table, columnName, id, length, conn);
+    Database.truncateBlob(table, columnName, oid, length, conn);
     try
     {
       instance().closeConnection(conn);
@@ -460,7 +461,7 @@ public class Database
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    *          The starting position. The first element is at position 1.
    * @param length
@@ -468,17 +469,17 @@ public class Database
    *          position.
    * @return byte[]
    */
-  public static void truncateBlob(String table, String columnName, String id, long length, Connection con)
+  public static void truncateBlob(String table, String columnName, String oid, long length, Connection con)
   {
     // if the truncate size is greater than or equal to the current size, do
     // nothing.
-    if (length >= instance().getBlobSize(table, columnName, id))
+    if (length >= instance().getBlobSize(table, columnName, oid))
     {
       return;
     }
     else
     {
-      instance().truncateBlob(table, columnName, id, length, con);
+      instance().truncateBlob(table, columnName, oid, length, con);
     }
   }
 
@@ -496,14 +497,14 @@ public class Database
    *          The values of the columns to update.
    * @param attributeTypes
    *          The core datatypes of the columns to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * 
    * @return <code>UPDATE</code> PreparedStatement
    */
-  public static PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String id)
+  public static PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String oid)
   {
-    return instance().buildPreparedSQLUpdateStatement(table, columnNames, prepStmtVars, values, attributeTypes, id);
+    return instance().buildPreparedSQLUpdateStatement(table, columnNames, prepStmtVars, values, attributeTypes, oid);
   }
 
   /**
@@ -513,7 +514,7 @@ public class Database
    * @param table
    *          The table to insert into.
    * @param entityId
-   *          entity ID (Optional)
+   *          entity OID (Optional)
    * @param columnName
    *          The name of the field being updated.
    * @param prepStmtVar
@@ -539,7 +540,7 @@ public class Database
    * @param table
    *          The table to insert into.
    * @param entityId
-   *          entity ID (Required)
+   *          entity OID (Required)
    * @param columnName
    *          The name of the field being updated.
    * @param prepStmtVar
@@ -570,16 +571,16 @@ public class Database
    *          The values of the columns to update.
    * @param attributeTypes
    *          The core datatypes of the columns to update.
-   * @param id
-   *          id of the object to update.
+   * @param oid
+   *          oid of the object to update.
    * @param seq
    *          sequence of the object to update.
    * 
    * @return <code>UPDATE</code> PreparedStatement
    */
-  public static PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String id, long seq)
+  public static PreparedStatement buildPreparedSQLUpdateStatement(String table, List<String> columnNames, List<String> prepStmtVars, List<Object> values, List<String> attributeTypes, String oid, long seq)
   {
-    return instance().buildPreparedSQLUpdateStatement(table, columnNames, prepStmtVars, values, attributeTypes, id, seq);
+    return instance().buildPreparedSQLUpdateStatement(table, columnNames, prepStmtVars, values, attributeTypes, oid, seq);
   }
 
   /**
@@ -641,13 +642,13 @@ public class Database
    * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
    * objects. If the given parameter is null, then all objects are returned.
    * Otherwise, it returns fields just for object associated with the given
-   * <code>MdAttributeDAOIF</code> id.
+   * <code>MdAttributeDAOIF</code> oid.
    * 
    * @return ResultSet contains fields that are needed by
    *         <code>MdAttributeDimensionDAOIF</code> objects. If the given
    *         parameter is null, then all objects are returned. Otherwise, it
    *         returns fields just for object associated with the given
-   *         <code>MdAttributeDAOIF</code> id.
+   *         <code>MdAttributeDAOIF</code> oid.
    */
   public static ResultSet getMdAttributeDimensionFields(String mdAttributeId)
   {
@@ -655,16 +656,16 @@ public class Database
   }
 
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
    * null, then all objects are returned. Otherwise, the
    * <code>MdAttributeDimensionDAOIF</code>s for the
-   * <code>MdDimensionDAOIF</code> with the given id.
+   * <code>MdDimensionDAOIF</code> with the given oid.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
    *         null, then all objects are returned. Otherwise, the
    *         <code>MdAttributeDimensionDAOIF</code>s for the
-   *         <code>MdDimensionDAOIF</code> with the given id.
+   *         <code>MdDimensionDAOIF</code> with the given oid.
    */
   public static ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
@@ -695,7 +696,7 @@ public class Database
 
   /**
    * Creates a new table in the database for a class. Automatically adds the
-   * Component.ID column as the primary key.
+   * Component.OID column as the primary key.
    * 
    * @param table
    *          The name of the new table.
@@ -757,7 +758,7 @@ public class Database
 
     // // Populate the properties table
     // List<String> fields = new LinkedList<String>();
-    // fields.add(EntityInfo.ID);
+    // fields.add(EntityInfo.OID);
     // fields.add(Database.VERSION_NUMBER);
     //
     // List<String> prepStmtVars = new LinkedList<String>();
@@ -921,10 +922,10 @@ public class Database
   }
 
   /**
-   * Returns the id to the MdEntity that defines the given type. given ID.
+   * Returns the oid to the MdEntity that defines the given type. given OID.
    * 
    * @param type
-   * @return id to the MdEntity that defines the given type.
+   * @return oid to the MdEntity that defines the given type.
    */
   public static String getMdEntityId(String type)
   {
@@ -985,28 +986,28 @@ public class Database
   }
 
   /**
-   * Returns a Map of Attribute objects for the EnityObject with the given ID
+   * Returns a Map of Attribute objects for the EnityObject with the given OID
    * and class name. It only returns attributes that are explicitly defined by
    * the given class name.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("")
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("")
    * 
-   * @param id
+   * @param oid
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   *          return the parent_oid and child_oid values in this map.
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
-  public static Map<String, Attribute> getAttributesForHardcodedMetadataObject(String id, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
+  public static Map<String, Attribute> getAttributesForHardcodedMetadataObject(String oid, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
   {
-    return instance().getAttributesForHardcodedMetadataObject(id, type, tableName, relationshipAttributesHackMap, rootClass);
+    return instance().getAttributesForHardcodedMetadataObject(oid, type, tableName, relationshipAttributesHackMap, rootClass);
   }
 
   /**
@@ -1016,16 +1017,16 @@ public class Database
    * <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("")
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("")
    * 
    * @param cacheTypeTable
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
    *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
+   *          return the parent_oid and child_oid values in this map.
+   * @return Map of Attribute objects for the EnityObject with the given OID and
    *         class.
    */
   public static HardCodedMetadataIterator getAttributesForHardcodedMetadataType(String cacheTypeTable, String type, String tableName, Map<String, Map<String, String>> relationshipAttributesHackMap, boolean rootClass)
@@ -1034,10 +1035,10 @@ public class Database
   }
 
   /**
-   * Returns the type of the object with the given id.
+   * Returns the type of the object with the given oid.
    * 
    * @param instanceId
-   * @return the type of the object with the given id.
+   * @return the type of the object with the given oid.
    */
   public static String getTypeFromInstanceId(String instanceId)
   {
@@ -1046,7 +1047,7 @@ public class Database
 
   /**
    * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID column as the primary key.
+   * the Component.OID column as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1055,7 +1056,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTable(String table, String index1Name, String index2Name, Boolean isUnique)
@@ -1079,7 +1080,7 @@ public class Database
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID column
+   * minus the closing parenthesis. Automatically adds the Component.OID column
    * as the primary key.
    * 
    * @param tableName
@@ -1100,7 +1101,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTableIndexesBatch(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1112,16 +1113,16 @@ public class Database
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
    *      String);
    */
-  public static void createEnumerationTable(String tableName, String id)
+  public static void createEnumerationTable(String tableName, String oid)
   {
-    instance().createEnumerationTable(tableName, id);
+    instance().createEnumerationTable(tableName, oid);
   }
 
   /**
    * Drops an entire table from the database for a class. An undo command is
    * created that will recreate the table if transaction management requires a
    * rollback. However, the undo will <b>not </b> recreate all of the columns in
-   * the table, only the Component.ID.
+   * the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1146,7 +1147,7 @@ public class Database
    * Drops an entire table from the database for a relationship. An undo command
    * is created that will recreate the table if transaction management requires
    * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the Component.ID.
+   * in the table, only the Component.OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1155,7 +1156,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public static void dropRelationshipTable(String table, String index1Name, String index2Name, boolean isUnique)
@@ -1167,11 +1168,11 @@ public class Database
    * Deletes an enumeration value mapping table in the database.
    * 
    * @param tableName
-   * @param id
+   * @param oid
    */
-  public static void dropEnumerationTable(String tableName, String id)
+  public static void dropEnumerationTable(String tableName, String oid)
   {
-    instance().dropEnumerationTable(tableName, id);
+    instance().dropEnumerationTable(tableName, oid);
   }
 
   /**
@@ -2122,15 +2123,15 @@ public class Database
    * 
    * @param table
    *          The table name where the row to delete can be found.
-   * @param id
-   *          The id of the record to delete.
+   * @param oid
+   *          The oid of the record to delete.
    * @param seq
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
    */
-  public static String buildSQLDeleteStatement(String table, String id, long seq)
+  public static String buildSQLDeleteStatement(String table, String oid, long seq)
   {
-    return instance().buildSQLDeleteStatement(table, id, seq);
+    return instance().buildSQLDeleteStatement(table, oid, seq);
   }
 
   /**
@@ -2138,13 +2139,13 @@ public class Database
    * 
    * @param table
    *          The table name where the row to delete can be found.
-   * @param id
-   *          The id of the record to delete.
+   * @param oid
+   *          The oid of the record to delete.
    * @return The SQL delete statement.
    */
-  public static String buildSQLDeleteStatement(String table, String id)
+  public static String buildSQLDeleteStatement(String table, String oid)
   {
-    return instance().buildSQLDeleteStatement(table, id);
+    return instance().buildSQLDeleteStatement(table, oid);
   }
 
   public static String buildSQLDeleteWhere(String table, List<String> conditions)
@@ -2280,15 +2281,15 @@ public class Database
   }
 
   /**
-   * Returns true if an object with the given id exists in the database.
+   * Returns true if an object with the given oid exists in the database.
    * 
-   * @param id
+   * @param oid
    * @param tableName
    * @return true if it exists, false otherwise.
    */
-  public static boolean doesObjectExist(String id, String tableName)
+  public static boolean doesObjectExist(String oid, String tableName)
   {
-    return instance().doesObjectExist(id, tableName);
+    return instance().doesObjectExist(oid, tableName);
   }
 
   /**
@@ -2324,7 +2325,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -2343,7 +2344,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -2362,7 +2363,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -2380,7 +2381,7 @@ public class Database
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdClassId
    * @param conn
@@ -2398,7 +2399,7 @@ public class Database
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -2416,7 +2417,7 @@ public class Database
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -2432,7 +2433,7 @@ public class Database
     MdEntityDAOIF definedBy = (MdEntityDAOIF) mdAttributeConcreteDAOIF.definedByClass();
     String tableName = definedBy.getTableName();
 
-    return instance().getBlobAsBytes(tableName, mdAttributeConcreteDAOIF.getColumnName(), mdType.getId(), conn);
+    return instance().getBlobAsBytes(tableName, mdAttributeConcreteDAOIF.getColumnName(), mdType.getOid(), conn);
   }
 
   public static String getSource(MdTypeDAOIF mdType, String attributeName, Connection conn)
@@ -2441,7 +2442,7 @@ public class Database
     MdEntityDAOIF definedBy = (MdEntityDAOIF) mdAttributeConcreteDAOIF.definedByClass();
     String tableName = definedBy.getTableName();
 
-    return instance().getSourceField(mdType.getId(), conn, tableName, mdAttributeConcreteDAOIF.getColumnName());
+    return instance().getSourceField(mdType.getOid(), conn, tableName, mdAttributeConcreteDAOIF.getColumnName());
   }
 
   /**
@@ -2452,7 +2453,7 @@ public class Database
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -2470,7 +2471,7 @@ public class Database
    * parameter. It is up to the client to close the connection object.
    * 
    * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdTypeId
    * @param conn
@@ -2489,7 +2490,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -2508,7 +2509,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -2527,7 +2528,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -2546,7 +2547,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -2565,7 +2566,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -2584,7 +2585,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdEntityId
    * @param conn
@@ -2603,7 +2604,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -2622,7 +2623,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -2641,7 +2642,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -2660,7 +2661,7 @@ public class Database
    * object.
    * 
    * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * given oid.
    * 
    * @param mdViewId
    * @param conn
@@ -2679,7 +2680,7 @@ public class Database
    * @param columnName
    *          name of the attribute
    * @param entityId
-   *          id of an entity
+   *          oid of an entity
    * @return value of the database column that is used to cache enumeration
    *         mappings for an attribute.
    */
@@ -2714,32 +2715,32 @@ public class Database
 
   /**
    * Returns the ids of the enumeration items that are mapped to the given
-   * setId.
+   * setOid.
    * 
    * @param enumTableName
-   * @param setId
+   * @param setOid
    */
-  public static Set<String> getEnumItemIds(String enumTableName, String setId)
+  public static Set<String> getEnumItemIds(String enumTableName, String setOid)
   {
-    return instance().getEnumItemIds(enumTableName, setId);
+    return instance().getEnumItemIds(enumTableName, setOid);
   }
 
   /**
    * Returns the SQL that inserts a mapping in the given enumeration table
-   * between the given set id and the given enumeration item id.
+   * between the given set oid and the given enumeration item oid.
    * 
    * @param enumTableName
-   * @param setId
+   * @param setOid
    * @param enumItemID
    */
-  public static String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
+  public static String buildAddItemStatement(String enumTableName, String setOid, String enumItemID)
   {
-    return instance().buildAddItemStatement(enumTableName, setId, enumItemID);
+    return instance().buildAddItemStatement(enumTableName, setOid, enumItemID);
   }
 
   /**
-   * Returns the SQL that updates an enum item id with the provided new enum
-   * item id.
+   * Returns the SQL that updates an enum item oid with the provided new enum
+   * item oid.
    * 
    * @param enumTableName
    * @param oldEnumItemId
@@ -2762,15 +2763,15 @@ public class Database
   }
 
   /**
-   * Deletes all instances of the setId from the given enumeration mapping
+   * Deletes all instances of the setOid from the given enumeration mapping
    * table.
    * 
    * @param enumTableName
-   * @param setId
+   * @param setOid
    */
-  public static void deleteSetIdFromLinkTable(String enumTableName, String setId)
+  public static void deleteSetIdFromLinkTable(String enumTableName, String setOid)
   {
-    instance().deleteSetIdFromLinkTable(enumTableName, setId);
+    instance().deleteSetIdFromLinkTable(enumTableName, setOid);
   }
 
   /**
@@ -2840,28 +2841,28 @@ public class Database
    * Returns the number of distinct child instances for a given parent of the
    * given relationship type.
    * 
-   * @param parent_id
+   * @param parent_oid
    * @param relationshipTableName
    * @return number of distinct child instances for a given parent of the given
    *         relationship type.
    */
-  public static long getChildCountForParent(String parent_id, String relationshipTableName)
+  public static long getChildCountForParent(String parent_oid, String relationshipTableName)
   {
-    return instance().getChildCountForParent(parent_id, relationshipTableName);
+    return instance().getChildCountForParent(parent_oid, relationshipTableName);
   }
 
   /**
    * Returns the number of distinct parent instances for a given child of the
    * given relationship type.
    * 
-   * @param child_id
+   * @param child_oid
    * @param relationshipTableName
    * @return number of distinct parent instances for a given child of the given
    *         relationship type.
    */
-  public static long getParentCountForChild(String child_id, String relationshipTableName)
+  public static long getParentCountForChild(String child_oid, String relationshipTableName)
   {
-    return instance().getParentCountForChild(child_id, relationshipTableName);
+    return instance().getParentCountForChild(child_oid, relationshipTableName);
   }
 
   /**
@@ -3092,5 +3093,10 @@ public class Database
   public static String castToDecimal(String sql)
   {
     return instance().castToDecimal(sql);
+  }
+
+  public static String generateRootId(MdTypeDAO mdTypeDAO)
+  {
+    return instance().generateRootId(mdTypeDAO);
   }
 }

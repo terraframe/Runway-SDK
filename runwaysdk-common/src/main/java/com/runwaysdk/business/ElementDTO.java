@@ -187,7 +187,7 @@ public abstract class ElementDTO extends EntityDTO
     }
     else
     {
-      setValue(CREATEDBY, value.getId());
+      setValue(CREATEDBY, value.getOid());
     }
   }
 
@@ -255,7 +255,7 @@ public abstract class ElementDTO extends EntityDTO
 
   public void setLastUpdatedBy(com.runwaysdk.system.SingleActorDTO value)
   {
-    setValue(LASTUPDATEDBY, value.getId());
+    setValue(LASTUPDATEDBY, value.getOid());
   }
 
   public boolean isLastUpdatedByWritable()
@@ -328,7 +328,7 @@ public abstract class ElementDTO extends EntityDTO
     }
     else
     {
-      setValue(LOCKEDBY, value.getId());
+      setValue(LOCKEDBY, value.getOid());
     }
   }
 
@@ -402,7 +402,7 @@ public abstract class ElementDTO extends EntityDTO
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }    
   }
 
@@ -439,7 +439,7 @@ public abstract class ElementDTO extends EntityDTO
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
 

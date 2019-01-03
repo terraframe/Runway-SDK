@@ -38,6 +38,7 @@ import com.runwaysdk.logging.LogLevel;
 import com.runwaysdk.query.Condition;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.TermUtil;
 
@@ -87,12 +88,25 @@ public class Universal extends UniversalBase
     // else {
     // List<? extends Business> parents = this.getParents(AllowedIn.CLASS);
     // boolean isCountry = parents.size() == 1 &&
-    // parents.get(0).getId().equals(Universal.getRoot().getId());
+    // parents.get(0).getOid().equals(Universal.getRoot().getOid());
     //
     // if (isCountry) {
     // // Update the GeoEntity country.
     // }
     // }
+  }
+  
+  @Override
+  public void delete()
+  {
+    MdBusiness mdBusiness = this.getMdBusiness();
+    
+    super.delete();
+    
+    if (mdBusiness != null)
+    {
+      this.getMdBusiness().delete();
+    }
   }
 
   /**
@@ -152,7 +166,7 @@ public class Universal extends UniversalBase
     Universal[] universals = new Universal[views.length];
 
     UniversalQuery q = new UniversalQuery(new QueryFactory());
-    q.WHERE(q.getId().IN(ids));
+    q.WHERE(q.getOid().IN(ids));
 
     OIterator<? extends Universal> iter = q.getIterator();
 
@@ -197,31 +211,31 @@ public class Universal extends UniversalBase
   }
 
   /**
-   * This MdMethod will apply the Universal dto and append it to parentId with
-   * relationshipType. If parentId == RootUniversal then it will also create a
+   * This MdMethod will apply the Universal dto and append it to parentOid with
+   * relationshipType. If parentOid == RootUniversal then it will also create a
    * corresponding GeoEntity.
    * 
    * @param dto
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return JSON {term, relType, relId}.
    */
   @Transaction
-  public static TermAndRel create(Universal dto, String parentId, String relationshipType)
+  public static TermAndRel create(Universal dto, String parentOid, String relationshipType)
   {
-    return Universal.doCreate(dto, parentId, relationshipType);
+    return Universal.doCreate(dto, parentOid, relationshipType);
   }
 
   @AbortIfProblem
-  private static TermAndRel doCreate(Universal child, String parentId, String relationshipType)
+  private static TermAndRel doCreate(Universal child, String parentOid, String relationshipType)
   {
     child.apply();
 
-    Universal parent = Universal.get(parentId);
+    Universal parent = Universal.get(parentOid);
 
     // Creating a Country Universal automatically creates a GeoEntity of the
     // same name.
-    if (parentId.equals(Universal.getRoot().getId()))
+    if (parentOid.equals(Universal.getRoot().getOid()))
     {
       GeoEntity geo = new GeoEntity();
       geo.setGeoId(child.getUniversalId());
@@ -237,7 +251,7 @@ public class Universal extends UniversalBase
 
     Relationship rel = child.addLink(parent, relationshipType);
 
-    return new TermAndRel(child, relationshipType, rel.getId());
+    return new TermAndRel(child, relationshipType, rel.getOid());
   }
 
   public static Universal getRoot()
@@ -360,13 +374,13 @@ public class Universal extends UniversalBase
     // won't be invalidated, so we skip the check.
     // boolean skipCheck = false;
     // String[] possibleRels =
-    // TermUtil.getAllParentRelationships(parent.getId());
+    // TermUtil.getAllParentRelationships(parent.getOid());
     // for (String possibleRel : possibleRels) {
     // if (!possibleRel.equals(relationshipType)) {
     // // TODO : There may be a way to do this in one query, ask Naifeh/Smethie.
     // RelationshipQuery relq = new
     // QueryFactory().relationshipQuery(possibleRel);
-    // relq.WHERE(relq.parentId().EQ(parent.getId()).AND(relq.childId().EQ(this.getId())));
+    // relq.WHERE(relq.parentOid().EQ(parent.getOid()).AND(relq.childOid().EQ(this.getOid())));
     // OIterator<? extends Relationship> relit = relq.getIterator();
     //
     // try {
@@ -382,7 +396,7 @@ public class Universal extends UniversalBase
     // }
 
     // if (!skipCheck) {
-    List<Term> thisAndAllAncestors = new LinkedList<Term>(Arrays.asList(TermUtil.getAllAncestors(this.getId(), TermUtil.getAllChildRelationships(this.getId()))));
+    List<Term> thisAndAllAncestors = new LinkedList<Term>(Arrays.asList(TermUtil.getAllAncestors(this.getOid(), TermUtil.getAllChildRelationships(this.getOid()))));
     thisAndAllAncestors.add(this);
 
     // 1) Get all GeoEntites that reference this universal or any of our
@@ -390,7 +404,7 @@ public class Universal extends UniversalBase
     GeoEntityQuery query = new GeoEntityQuery(new QueryFactory());
     Condition condition = query.getUniversal().EQ(this);
 
-    Term[] thisAllDescends = TermUtil.getAllDescendants(this.getId(), TermUtil.getAllParentRelationships(this.getId()));
+    Term[] thisAllDescends = TermUtil.getAllDescendants(this.getOid(), TermUtil.getAllParentRelationships(this.getOid()));
     for (int i = 0; i < thisAllDescends.length; ++i)
     {
       condition = condition.OR(query.getUniversal().EQ((Universal) thisAllDescends[i]));
@@ -408,9 +422,9 @@ public class Universal extends UniversalBase
         // valid iff its universal is a descendant of the parent geo's universal
         GeoEntity geo = iter.next();
 
-        List<Term> uniAncestors = Arrays.asList(TermUtil.getAllAncestors(geo.getUniversalId(), TermUtil.getAllChildRelationships(geo.getUniversalId())));
+        List<Term> uniAncestors = Arrays.asList(TermUtil.getAllAncestors(geo.getUniversalOid(), TermUtil.getAllChildRelationships(geo.getUniversalOid())));
 
-        String[] rels = TermUtil.getAllChildRelationships(geo.getId());
+        String[] rels = TermUtil.getAllChildRelationships(geo.getOid());
         for (String rel : rels)
         {
           OIterator<Term> geoAncestIt = geo.getDirectAncestors(rel);

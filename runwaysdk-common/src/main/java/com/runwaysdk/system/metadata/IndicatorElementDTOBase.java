@@ -48,7 +48,7 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -144,7 +144,7 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -329,7 +329,7 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -403,9 +403,9 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorElementDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.IndicatorElementDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.IndicatorElementDTO) dto;
   }
@@ -423,7 +423,7 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.IndicatorElementQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -436,10 +436,10 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorElementDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.IndicatorElementDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.IndicatorElementDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.IndicatorElementDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -449,10 +449,10 @@ public abstract class IndicatorElementDTOBase extends com.runwaysdk.business.Bus
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorElementDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.IndicatorElementDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.IndicatorElementDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.IndicatorElementDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

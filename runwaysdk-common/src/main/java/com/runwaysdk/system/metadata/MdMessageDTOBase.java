@@ -45,9 +45,9 @@ public abstract class MdMessageDTOBase extends com.runwaysdk.system.metadata.MdN
     return CLASS;
   }
   
-  public static com.runwaysdk.system.metadata.MdMessageDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdMessageDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdMessageDTO) dto;
   }
@@ -65,7 +65,7 @@ public abstract class MdMessageDTOBase extends com.runwaysdk.system.metadata.MdN
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdMessageQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -78,10 +78,10 @@ public abstract class MdMessageDTOBase extends com.runwaysdk.system.metadata.MdN
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdMessageDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdMessageDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdMessageDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdMessageDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -91,10 +91,10 @@ public abstract class MdMessageDTOBase extends com.runwaysdk.system.metadata.MdN
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdMessageDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdMessageDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdMessageDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdMessageDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

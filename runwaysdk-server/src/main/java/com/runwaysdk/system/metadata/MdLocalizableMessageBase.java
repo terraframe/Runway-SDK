@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -26386918)
+@com.runwaysdk.business.ClassSignature(hash = 1014502925)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,10 +30,10 @@ public abstract class MdLocalizableMessageBase extends com.runwaysdk.business.Lo
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdLocalizableMessage";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
-  private static final long serialVersionUID = -26386918;
+  private static final long serialVersionUID = 1014502925;
   
   public MdLocalizableMessageBase()
   {
@@ -45,30 +45,14 @@ public abstract class MdLocalizableMessageBase extends com.runwaysdk.business.Lo
     super(component, structName);
   }
   
-  public static MdLocalizableMessage get(String id)
+  public static MdLocalizableMessage get(String oid)
   {
-    return (MdLocalizableMessage) com.runwaysdk.business.Struct.get(id);
+    return (MdLocalizableMessage) com.runwaysdk.business.Struct.get(oid);
   }
   
   public static MdLocalizableMessage getByKey(String key)
   {
     return (MdLocalizableMessage) com.runwaysdk.business.Struct.get(CLASS, key);
-  }
-  
-  public String getId()
-  {
-    return getValue(ID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(ID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdLocalizableMessage.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
   }
   
   public String getKeyName()
@@ -97,6 +81,22 @@ public abstract class MdLocalizableMessageBase extends com.runwaysdk.business.Lo
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdLocalizableMessage.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getSiteMaster()

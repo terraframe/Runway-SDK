@@ -48,7 +48,7 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -379,7 +379,7 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(RULESTYLE, value.getId());
+      setValue(RULESTYLE, value.getOid());
     }
   }
   
@@ -456,60 +456,60 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO> getAllContainingThematicAttribute()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO> getAllContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO> getAllContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.ThematicAttributeDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO> getAllContainingThematicAttributeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO> getAllContainingThematicAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO> getAllContainingThematicAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.mapping.HasThematicRuleDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.mapping.HasThematicRuleDTO addContainingThematicAttribute(com.runwaysdk.system.gis.mapping.ThematicAttributeDTO parent)
   {
-    return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO addContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.mapping.ThematicAttributeDTO parent)
+  public static com.runwaysdk.system.gis.mapping.HasThematicRuleDTO addContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.mapping.ThematicAttributeDTO parent)
   {
-    return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    return (com.runwaysdk.system.gis.mapping.HasThematicRuleDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
   public void removeContainingThematicAttribute(com.runwaysdk.system.gis.mapping.HasThematicRuleDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllContainingThematicAttribute()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
-  public static void removeAllContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllContainingThematicAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.mapping.HasThematicRuleDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.mapping.ThematicRuleDTO) dto;
   }
@@ -527,7 +527,7 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.mapping.ThematicRuleQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -540,10 +540,10 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.ThematicRuleDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.ThematicRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -553,10 +553,10 @@ public abstract class ThematicRuleDTOBase extends com.runwaysdk.business.Busines
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.mapping.ThematicRuleDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.mapping.ThematicRuleDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.mapping.ThematicRuleDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

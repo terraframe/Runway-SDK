@@ -53,7 +53,7 @@ public class UserExportBuilder extends ExportBuilder<List<UserDAO>>
       user.setUsername("TestUser" + i);
       user.setPassword("TestUser" + i);
       user.apply();
-      
+
       list.add(user);
     }
   }
@@ -61,7 +61,7 @@ public class UserExportBuilder extends ExportBuilder<List<UserDAO>>
   @Override
   public void undoIt()
   {
-    for(UserDAO user : list)
+    for (UserDAO user : list)
     {
       user.delete();
     }

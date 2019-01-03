@@ -262,9 +262,9 @@ public abstract class RolesBase extends com.runwaysdk.system.Actor
     }
   }
   
-  public static Roles get(String id)
+  public static Roles get(String oid)
   {
-    return (Roles) com.runwaysdk.business.Business.get(id);
+    return (Roles) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Roles getByKey(String key)
@@ -272,17 +272,17 @@ public abstract class RolesBase extends com.runwaysdk.system.Actor
     return (Roles) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Roles lock(java.lang.String id)
+  public static Roles lock(java.lang.String oid)
   {
-    Roles _instance = Roles.get(id);
+    Roles _instance = Roles.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Roles unlock(java.lang.String id)
+  public static Roles unlock(java.lang.String oid)
   {
-    Roles _instance = Roles.get(id);
+    Roles _instance = Roles.get(oid);
     _instance.unlock();
     
     return _instance;

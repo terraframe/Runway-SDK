@@ -70,9 +70,9 @@ public abstract class MdWebGeoBase extends com.runwaysdk.system.metadata.MdWebAt
     return CLASS;
   }
   
-  public static MdWebGeo get(String id)
+  public static MdWebGeo get(String oid)
   {
-    return (MdWebGeo) com.runwaysdk.business.Business.get(id);
+    return (MdWebGeo) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebGeo getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdWebGeoBase extends com.runwaysdk.system.metadata.MdWebAt
     return (MdWebGeo) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebGeo lock(java.lang.String id)
+  public static MdWebGeo lock(java.lang.String oid)
   {
-    MdWebGeo _instance = MdWebGeo.get(id);
+    MdWebGeo _instance = MdWebGeo.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebGeo unlock(java.lang.String id)
+  public static MdWebGeo unlock(java.lang.String oid)
   {
-    MdWebGeo _instance = MdWebGeo.get(id);
+    MdWebGeo _instance = MdWebGeo.get(oid);
     _instance.unlock();
     
     return _instance;

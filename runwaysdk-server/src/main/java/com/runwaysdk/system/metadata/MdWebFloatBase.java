@@ -41,9 +41,9 @@ public abstract class MdWebFloatBase extends com.runwaysdk.system.metadata.MdWeb
     return CLASS;
   }
   
-  public static MdWebFloat get(String id)
+  public static MdWebFloat get(String oid)
   {
-    return (MdWebFloat) com.runwaysdk.business.Business.get(id);
+    return (MdWebFloat) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebFloat getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebFloatBase extends com.runwaysdk.system.metadata.MdWeb
     return (MdWebFloat) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebFloat lock(java.lang.String id)
+  public static MdWebFloat lock(java.lang.String oid)
   {
-    MdWebFloat _instance = MdWebFloat.get(id);
+    MdWebFloat _instance = MdWebFloat.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebFloat unlock(java.lang.String id)
+  public static MdWebFloat unlock(java.lang.String oid)
   {
-    MdWebFloat _instance = MdWebFloat.get(id);
+    MdWebFloat _instance = MdWebFloat.get(oid);
     _instance.unlock();
     
     return _instance;

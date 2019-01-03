@@ -117,12 +117,13 @@ public class Oracle extends AbstractDatabase
    *
    * @see com.runwaysdk.dataaccess.database.general.AbstractDatabase#getConnection()
    */
-  public synchronized Connection getConnection()
+  @Override
+  public Connection getConnectionRaw()
   {
     // Lazily set up the data source
     if (dataSource==null)
       setupDataSource();
-    return super.getConnection();
+    return super.getConnectionRaw();
   }
 
   /**
@@ -399,13 +400,13 @@ public class Oracle extends AbstractDatabase
   }
 
   /**
-   * Creates a new table in the database for a relationships. Automatically adds the Component.ID columnName as the primary
+   * Creates a new table in the database for a relationships. Automatically adds the Component.OID columnName as the primary
    * key.
    *
    * @param tableName The name of the new table.
    * @param index1Name The name of the 1st index used by the given table.
    * @param index2Name The name of the 1st index used by the given table.
-   * @param isUnique Indicates whether the parent_id child_id pair should be made unique.  This should only be
+   * @param isUnique Indicates whether the parent_oid child_oid pair should be made unique.  This should only be
    *                 done on concrete relationship types.
    */
   public void createRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -442,7 +443,7 @@ public class Oracle extends AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship, minus the closing parenthesis.
-   * Automatically adds the Component.ID columnName as the primary key.
+   * Automatically adds the Component.OID columnName as the primary key.
    *
    * @param tableName  The name of the new table.
    */
@@ -450,9 +451,9 @@ public class Oracle extends AbstractDatabase
   public String startCreateRelationshipTableBatch(String tableName)
   {
     return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR("
-    + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_ID_COLUMN
+    + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN
     + "                    CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n"
-    + RelationshipDAOIF.CHILD_ID_COLUMN + "                     CHAR(" + Database.DATABASE_ID_SIZE
+    + RelationshipDAOIF.CHILD_OID_COLUMN + "                     CHAR(" + Database.DATABASE_ID_SIZE
     + ") NOT NULL \n";
   }
 
@@ -462,7 +463,7 @@ public class Oracle extends AbstractDatabase
    * @param tableName  The name of the new table.
    * @param index1Name The name of the 1st index used by the given table.
    * @param index2Name The name of the 1st index used by the given table.
-   * @param isUnique Indicates whether the parent_id child_id pair should be made unique.  This should only be
+   * @param isUnique Indicates whether the parent_oid child_oid pair should be made unique.  This should only be
    *                 done on concrete relationship types.
    */
   @Override
@@ -474,13 +475,13 @@ public class Oracle extends AbstractDatabase
     {
       statement += " UNIQUE ";
     }
-    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", "
-        + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", "
+        + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     String undo = "DROP INDEX " + index1Name;
     new DDLCommand(statement, undo, false).doIt();
 
     // Create the second index
-    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     undo = "DROP INDEX " + index2Name;
     new DDLCommand(statement, undo, false).doIt();
   }
@@ -488,7 +489,7 @@ public class Oracle extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
     String statement = "CREATE TABLE " + tableName + " ( " + MdEnumerationDAOIF.SET_ID_COLUMN
         + "                    CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n"
@@ -497,7 +498,7 @@ public class Oracle extends AbstractDatabase
     new DDLCommand(statement, undo, false).doIt();
 
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " ("
         + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
     undo = "DROP INDEX " + indexName;
@@ -519,12 +520,12 @@ public class Oracle extends AbstractDatabase
   /**
    * Drops an entire table from the database for a relationship. An undo command is created that will
    * recreate the table if transaction managaement requires a rollback. However, the undo
-   * will <b>not </b> recreate all of the fields in the table, only the ID.
+   * will <b>not </b> recreate all of the fields in the table, only the OID.
    *
    * @param table The name of the table to drop.
    * @param index1Name The name of the 1st index used by the given table.
    * @param index2Name The name of the 1st index used by the given tablle.
-   * @param isUnique Indicates whether the parent_id child_id pair should be made unique.  This should only be
+   * @param isUnique Indicates whether the parent_oid child_oid pair should be made unique.  This should only be
    *                 done on concrete relationship types.
    */
   public void dropRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -536,20 +537,20 @@ public class Oracle extends AbstractDatabase
     {
       undo += " UNIQUE ";
     }
-    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", "
-        + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", "
+        + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     // Create the second index
     statement = "DROP INDEX " + index2Name;
-    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     statement = "DROP TABLE " + tableName;
     undo = "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR("
-        + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_ID_COLUMN
+        + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN
         + "                    CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n"
-        + RelationshipDAOIF.CHILD_ID_COLUMN + "                     CHAR(" + Database.DATABASE_ID_SIZE
+        + RelationshipDAOIF.CHILD_OID_COLUMN + "                     CHAR(" + Database.DATABASE_ID_SIZE
         + ") NOT NULL \n" + " )";
     new DDLCommand(statement, undo, true).doIt();
   }
@@ -557,10 +558,10 @@ public class Oracle extends AbstractDatabase
   /**
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String, String);
    */
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
     // Create the first index
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     String statement = "DROP INDEX " + indexName;
     String undo = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " ("
         + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
@@ -2006,14 +2007,14 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset,
+  public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset,
       int length)
   {
     Connection conn = Database.getConnection();
@@ -2025,10 +2026,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       Blob blob = resultSet.getBlob(columnName);
@@ -2087,11 +2088,11 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
@@ -2102,10 +2103,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -2167,10 +2168,10 @@ public class Oracle extends AbstractDatabase
    *
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     PreparedStatement prepared = null;
     Statement statement = null;
@@ -2179,10 +2180,10 @@ public class Oracle extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid
           + "' FOR UPDATE";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '"
-          + id + "'";
+          + oid + "'";
       resultSet = statement.executeQuery(select);
       boolean resultSetFound = resultSet.next();
       if (!resultSetFound)
@@ -2453,11 +2454,11 @@ public class Oracle extends AbstractDatabase
   {
     /*
 SELECT * FROM (
-  SELECT ROW_NUMBER() OVER (ORDER BY id ASC) AS rn, id, type FROM (
+  SELECT ROW_NUMBER() OVER (ORDER BY oid ASC) AS rn, oid, type FROM (
       SELECT
-      id, type FROM  metadata
+      oid, type FROM  metadata
       UNION ALL
-      SELECT id, type
+      SELECT oid, type
       FROM  metadata
   )
 )
@@ -2482,15 +2483,15 @@ WHERE rn > 5 AND rn <= 10
   /**
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getChildCountForParent(java.lang.String, java.lang.String)
    */
-  public long getChildCountForParent(String parent_id, String relationshipTableName )
+  public long getChildCountForParent(String parent_oid, String relationshipTableName )
   {
     String query = " SELECT COUNT(*) AS CT \n" +
                    " FROM "+relationshipTableName+" \n"+
-                   " WHERE "+RelationshipDAOIF.PARENT_ID_COLUMN+" = '"+parent_id+"' \n"+
-                   " AND "+RelationshipDAOIF.CHILD_ID_COLUMN+" IN "+
-                   "   (SELECT DISTINCT "+RelationshipDAOIF.CHILD_ID_COLUMN+" \n"+
+                   " WHERE "+RelationshipDAOIF.PARENT_OID_COLUMN+" = '"+parent_oid+"' \n"+
+                   " AND "+RelationshipDAOIF.CHILD_OID_COLUMN+" IN "+
+                   "   (SELECT DISTINCT "+RelationshipDAOIF.CHILD_OID_COLUMN+" \n"+
                    "    FROM "+relationshipTableName+" \n"+
-                   "    WHERE "+RelationshipDAOIF.PARENT_ID_COLUMN +" = '"+parent_id+"')";
+                   "    WHERE "+RelationshipDAOIF.PARENT_OID_COLUMN +" = '"+parent_oid+"')";
 
 
     ResultSet resultSet = this.query(query);
@@ -2544,15 +2545,15 @@ WHERE rn > 5 AND rn <= 10
   /**
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getParentCountForChild(java.lang.String, java.lang.String)
    */
-  public long getParentCountForChild(String child_id, String relationshipTableName )
+  public long getParentCountForChild(String child_oid, String relationshipTableName )
   {
     String query = " SELECT COUNT(*) AS CT \n" +
                    " FROM "+relationshipTableName+" \n"+
-                   " WHERE "+RelationshipDAOIF.CHILD_ID_COLUMN+" = '"+child_id+"' \n"+
-                   " AND "+RelationshipDAOIF.PARENT_ID_COLUMN+" IN "+
-                   "   (SELECT DISTINCT "+RelationshipDAOIF.PARENT_ID_COLUMN+" \n"+
+                   " WHERE "+RelationshipDAOIF.CHILD_OID_COLUMN+" = '"+child_oid+"' \n"+
+                   " AND "+RelationshipDAOIF.PARENT_OID_COLUMN+" IN "+
+                   "   (SELECT DISTINCT "+RelationshipDAOIF.PARENT_OID_COLUMN+" \n"+
                    "    FROM "+relationshipTableName+" \n"+
-                   "    WHERE "+RelationshipDAOIF.CHILD_ID_COLUMN +" = '"+child_id+"')";
+                   "    WHERE "+RelationshipDAOIF.CHILD_OID_COLUMN +" = '"+child_oid+"')";
 
     ResultSet resultSet = this.query(query);
 

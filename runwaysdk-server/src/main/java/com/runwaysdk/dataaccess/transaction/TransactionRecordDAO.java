@@ -202,7 +202,7 @@ public class TransactionRecordDAO extends BusinessDAO implements TransactionReco
     // Load the new path
     StringBuffer newPath = new StringBuffer();
 
-    String rootId = IdParser.parseRootFromId(this.getId());
+    String rootId = IdParser.parseRootFromId(this.getOid());
     
     int length = rootId.length();
 

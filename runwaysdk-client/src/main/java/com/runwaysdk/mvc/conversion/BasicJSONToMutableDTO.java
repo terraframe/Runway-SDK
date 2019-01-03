@@ -59,10 +59,10 @@ public abstract class BasicJSONToMutableDTO extends BasicJSONToComponentDTO
   {
     JSONObject json = getJSON();
 
-    boolean newInstance = !json.has(ComponentInfo.ID);
-    String id = newInstance ? "" : json.getString(ComponentInfo.ID);
+    boolean newInstance = !json.has(ComponentInfo.OID);
+    String oid = newInstance ? "" : json.getString(ComponentInfo.OID);
 
-    return factoryMethod(type, newInstance, id);
+    return factoryMethod(type, newInstance, oid);
   }
 
   /**
@@ -71,12 +71,12 @@ public abstract class BasicJSONToMutableDTO extends BasicJSONToComponentDTO
    * 
    * @param type
    * @param newInstance
-   * @param id
+   * @param oid
    *          TODO
    * @return
    * @throws JSONException
    */
-  protected abstract MutableDTO factoryMethod(String type, boolean newInstance, String id) throws JSONException;
+  protected abstract MutableDTO factoryMethod(String type, boolean newInstance, String oid) throws JSONException;
 
   @Override
   protected void populate(ComponentDTO componentDTO) throws JSONException

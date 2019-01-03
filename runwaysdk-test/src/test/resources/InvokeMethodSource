@@ -1,5 +1,5 @@
 package test.generated;
-public class Collection extends CollectionBase implements com.runwaysdk.generation.loader.Reloadable
+public class Collection extends CollectionBase
 {
   public Collection()
   {

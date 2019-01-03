@@ -19,14 +19,14 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = 1551729790)
-public abstract class SequentialDTOBase extends com.runwaysdk.business.RelationshipDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class SequentialDTOBase extends com.runwaysdk.business.RelationshipDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Sequential";
   private static final long serialVersionUID = 1551729790;
   
-  public SequentialDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public SequentialDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -49,7 +49,7 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -145,7 +145,7 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -330,7 +330,7 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -406,31 +406,31 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
   
   public com.runwaysdk.jstest.business.ontology.AlphabetDTO getParent()
   {
-    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.jstest.business.ontology.AlphabetDTO getChild()
   {
-    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.jstest.business.ontology.AlphabetDTO.get(getRequest(), super.getChildOid());
   }
   
-  public static com.runwaysdk.jstest.business.ontology.SequentialDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.jstest.business.ontology.SequentialDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.jstest.business.ontology.SequentialDTO) dto;
   }
   
-  public static com.runwaysdk.jstest.business.ontology.SequentialQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.jstest.business.ontology.SequentialQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.jstest.business.ontology.SequentialQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.jstest.business.ontology.SequentialQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.jstest.business.ontology.SequentialQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.jstest.business.ontology.SequentialQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()
@@ -446,7 +446,7 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.business.ontology.SequentialQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -459,10 +459,10 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.jstest.business.ontology.SequentialDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.business.ontology.SequentialDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.jstest.business.ontology.SequentialDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -472,10 +472,10 @@ public abstract class SequentialDTOBase extends com.runwaysdk.business.Relations
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.jstest.business.ontology.SequentialDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.business.ontology.SequentialDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.jstest.business.ontology.SequentialDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -263,9 +263,9 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MdAttributeStructDAOIF get(String id)
+  public static MdAttributeStructDAOIF get(String oid)
   {
-    return (MdAttributeStructDAOIF) BusinessDAO.get(id);
+    return (MdAttributeStructDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

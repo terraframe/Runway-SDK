@@ -27,7 +27,7 @@ import com.runwaysdk.business.rbac.SingleActorDAOIF;
 public class MaximumSessionsException extends LoginException
 {
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = -2912814482510272768L;
   

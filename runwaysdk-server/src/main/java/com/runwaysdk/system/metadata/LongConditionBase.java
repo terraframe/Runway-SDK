@@ -75,7 +75,7 @@ public abstract class LongConditionBase extends com.runwaysdk.system.metadata.Fi
     }
     else
     {
-      setValue(DEFININGMDFIELD, value.getId());
+      setValue(DEFININGMDFIELD, value.getOid());
     }
   }
   
@@ -89,7 +89,7 @@ public abstract class LongConditionBase extends com.runwaysdk.system.metadata.Fi
   {
     if(value != null)
     {
-      addEnumItem(OPERATION, value.getId());
+      addEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -97,7 +97,7 @@ public abstract class LongConditionBase extends com.runwaysdk.system.metadata.Fi
   {
     if(value != null)
     {
-      removeEnumItem(OPERATION, value.getId());
+      removeEnumItem(OPERATION, value.getOid());
     }
   }
   
@@ -150,9 +150,9 @@ public abstract class LongConditionBase extends com.runwaysdk.system.metadata.Fi
     return CLASS;
   }
   
-  public static LongCondition get(String id)
+  public static LongCondition get(String oid)
   {
-    return (LongCondition) com.runwaysdk.business.Business.get(id);
+    return (LongCondition) com.runwaysdk.business.Business.get(oid);
   }
   
   public static LongCondition getByKey(String key)
@@ -160,17 +160,17 @@ public abstract class LongConditionBase extends com.runwaysdk.system.metadata.Fi
     return (LongCondition) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static LongCondition lock(java.lang.String id)
+  public static LongCondition lock(java.lang.String oid)
   {
-    LongCondition _instance = LongCondition.get(id);
+    LongCondition _instance = LongCondition.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static LongCondition unlock(java.lang.String id)
+  public static LongCondition unlock(java.lang.String oid)
   {
-    LongCondition _instance = LongCondition.get(id);
+    LongCondition _instance = LongCondition.get(oid);
     _instance.unlock();
     
     return _instance;

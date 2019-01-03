@@ -90,9 +90,9 @@ public abstract class MdDomainBase extends com.runwaysdk.system.metadata.Metadat
     return CLASS;
   }
   
-  public static MdDomain get(String id)
+  public static MdDomain get(String oid)
   {
-    return (MdDomain) com.runwaysdk.business.Business.get(id);
+    return (MdDomain) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdDomain getByKey(String key)
@@ -100,17 +100,17 @@ public abstract class MdDomainBase extends com.runwaysdk.system.metadata.Metadat
     return (MdDomain) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdDomain lock(java.lang.String id)
+  public static MdDomain lock(java.lang.String oid)
   {
-    MdDomain _instance = MdDomain.get(id);
+    MdDomain _instance = MdDomain.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdDomain unlock(java.lang.String id)
+  public static MdDomain unlock(java.lang.String oid)
   {
-    MdDomain _instance = MdDomain.get(id);
+    MdDomain _instance = MdDomain.get(oid);
     _instance.unlock();
     
     return _instance;

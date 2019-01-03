@@ -26,7 +26,7 @@ import com.runwaysdk.transport.metadata.AttributeLocalMdDTO;
 public abstract class AttributeLocalDTO extends AttributeStructDTO implements Serializable
 {
   /**
-   * Auto-generated ID
+   * Auto-generated OID
    */
   private static final long      serialVersionUID = 3218179807583521928L;
 

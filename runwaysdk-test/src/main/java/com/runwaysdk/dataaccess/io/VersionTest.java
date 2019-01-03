@@ -22,9 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -53,27 +52,25 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdExceptionDAO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.util.FileIO;
 
-public class VersionTest extends TestCase
+public class VersionTest
 {
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
   public static final String SCHEMA = XMLConstants.VERSION_XSD;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(VersionTest.class);
-
-    return suite;
-  }
-
   /**
-   * Tests deleting and adding an attribute of the same name on the same time within the same transaction.
+   * Tests deleting and adding an attribute of the same name on the same time
+   * within the same transaction.
    */
+  @Request
+  @Test
   public void testDeleteAndAttributeInTransaction_Enumeration()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Enumeration/";
 
     // Import merge file
@@ -87,33 +84,33 @@ public class VersionTest extends TestCase
     {
       if (mdAttribute == null)
       {
-        fail("Attribute was not properly defined");
+        Assert.fail("Attribute was not properly defined");
       }
 
       if (! ( mdAttribute instanceof MdAttributeEnumerationDAOIF ))
       {
-        fail("Attribute should have been redefined to type [" + MdAttributeEnumerationInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
+        Assert.fail("Attribute should have been redefined to type [" + MdAttributeEnumerationInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
       }
 
       if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
       {
-        fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        Assert.fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
       }
 
       MdAttributeEnumerationDAOIF mdAttributeEnum = (MdAttributeEnumerationDAOIF) mdAttribute;
 
       if (!mdAttributeEnum.getCacheColumnName().equals(mdAttributeEnum.getDefinedCacheColumnName()))
       {
-        fail("[" + MdAttributeEnumerationInfo.CACHE_COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        Assert.fail("[" + MdAttributeEnumerationInfo.CACHE_COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
       }
 
       BusinessDAOIF enumBusinessDAO = BusinessDAO.get("test.xmlclasses.EnumClassTest99", "test.xmlclasses.EnumClassTest99.CO");
       BusinessDAOIF businessDAOIF = BusinessDAO.get("test.xmlclasses.Class99", "test.xmlclasses.Class99.01");
 
       AttributeEnumerationIF attributeEnum = (AttributeEnumerationIF) businessDAOIF.getAttributeIF("myAttribute");
-      if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getId()))
+      if (!attributeEnum.getCachedEnumItemIdSet().contains(enumBusinessDAO.getOid()))
       {
-        fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
+        Assert.fail("Hashed temp column for cached enum ids did not transfer over its values to the final column at the end of the transaction.");
       }
 
     }
@@ -128,14 +125,19 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
-   * Tests deleting and adding an attribute of the same name on the same time within the same transaction.
+   * Tests deleting and adding an attribute of the same name on the same time
+   * within the same transaction.
    */
+  @Request
+  @Test
   public void testDeleteAndAttributeInTransaction()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction/";
 
     // Import merge file
@@ -149,17 +151,17 @@ public class VersionTest extends TestCase
     {
       if (mdAttribute == null)
       {
-        fail("Attribute was not properly defined");
+        Assert.fail("Attribute was not properly defined");
       }
 
       if (! ( mdAttribute instanceof MdAttributeTextDAOIF ))
       {
-        fail("Attribute should have been redefined to type [" + MdAttributeTextInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
+        Assert.fail("Attribute should have been redefined to type [" + MdAttributeTextInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
       }
 
       if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
       {
-        fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        Assert.fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
       }
     }
     finally
@@ -173,14 +175,20 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
-   * Tests deleting and adding an attribute of the same name on the same time within the same transaction, but produces an exception and tests to see it rolls back properly.
+   * Tests deleting and adding an attribute of the same name on the same time
+   * within the same transaction, but produces an exception and tests to see it
+   * rolls back properly.
    */
+  @Request
+  @Test
   public void testDeleteAndAttributeInTransaction_Exception()
   {
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
+
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Exception/";
 
     UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000001" });
@@ -200,17 +208,17 @@ public class VersionTest extends TestCase
 
         if (mdAttribute == null)
         {
-          fail("Attribute was not properly rolled back.");
+          Assert.fail("Attribute was not properly rolled back.");
         }
 
         if (! ( mdAttribute instanceof MdAttributeBooleanDAOIF ))
         {
-          fail("Attribute should have been rolled back to its original type [" + MdAttributeBooleanInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
+          Assert.fail("Attribute should have been rolled back to its original type [" + MdAttributeBooleanInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
         }
 
         if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
         {
-          fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+          Assert.fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
         }
       }
     }
@@ -221,12 +229,14 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
+  @Request
+  @Test
   public void testIncreaseVersion()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
@@ -235,26 +245,28 @@ public class VersionTest extends TestCase
       // Ensure that the database is at the correct version
       List<String> timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
 
-      assertTrue(timestamps.contains("0001204354800000"));
+      Assert.assertTrue(timestamps.contains("0001204354800000"));
 
       // Ensure that the MdBusiness and its MdAttribute were imported
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
-      assertNotNull(mdBusiness);
+      Assert.assertNotNull(mdBusiness);
 
       MdAttributeDAOIF mdAttribute = mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
-      assertNotNull(mdAttribute);
+      Assert.assertNotNull(mdAttribute);
     }
     finally
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
 
-      assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
   }
 
+  @Request
+  @Test
   public void testDecremenateVersion()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001207033200000" });
 
@@ -263,42 +275,44 @@ public class VersionTest extends TestCase
       // Ensure that the database is at the correct version
       List<String> timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
 
-      assertTrue(timestamps.contains("0001207033200000"));
-      assertTrue(timestamps.contains("0001204354800000"));
+      Assert.assertTrue(timestamps.contains("0001207033200000"));
+      Assert.assertTrue(timestamps.contains("0001204354800000"));
 
       // Ensure that the MdBusiness and its MdAttribute were imported
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
-      assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      Assert.assertNotNull(mdBusiness);
+      Assert.assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
 
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
       // Ensure that the database is at the correct version
       timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
 
-      assertFalse(timestamps.contains("0001207033200000"));
-      assertTrue(timestamps.contains("0001204354800000"));
+      Assert.assertFalse(timestamps.contains("0001207033200000"));
+      Assert.assertTrue(timestamps.contains("0001204354800000"));
 
       // Ensure that the MdBusiness and its MdAttribute were imported
       mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
-      assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      Assert.assertNotNull(mdBusiness);
+      Assert.assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
     }
     finally
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
-      assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
 
   }
 
+  @Request
+  @Test
   public void testMostRecent()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     Versioning.run(new String[] { path, XMLConstants.VERSION_XSD });
 
@@ -307,29 +321,32 @@ public class VersionTest extends TestCase
       // Ensure that the database is at the correct version
       List<String> timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
 
-      assertTrue(timestamps.contains("0001247673910176"));
+      Assert.assertTrue(timestamps.contains("0001247673910176"));
 
       // Ensure that the MdBusiness and its MdAttribute were imported
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
-      assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      Assert.assertNotNull(mdBusiness);
+      Assert.assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
 
     }
     finally
     {
       UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
-   * Test the ability to create and then subsequently delete metadata in a single transaction
+   * Test the ability to create and then subsequently delete metadata in a
+   * single transaction
    */
+  @Request
+  @Test
   public void testCreateAndDeleteInOneTransaction()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
@@ -338,12 +355,12 @@ public class VersionTest extends TestCase
       // Ensure that the database is at the correct version
       List<String> timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
 
-      assertTrue(timestamps.contains("0000000000000002"));
+      Assert.assertTrue(timestamps.contains("0000000000000002"));
 
       // Ensure that the MdException was not imported
       MdExceptionDAOIF mdException = MdExceptionDAO.getMdException("test.xmlclasses.TestException");
       mdException.getBusinessDAO().delete();
-      fail("Expected exception to be delete, but was still found");
+      Assert.fail("Expected exception to be delete, but was still found");
     }
     catch (DataNotFoundException e)
     {
@@ -354,19 +371,22 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
   /**
-   * Test the ability to create and delete metadata then roll back the transaction
+   * Test the ability to create and delete metadata then roll back the
+   * transaction
    */
+  @Request
+  @Test
   public void testCreateAndDeleteRollback()
   {
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    int original = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size();
 
     UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
-    assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original + 2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
     try
     {
@@ -385,12 +405,12 @@ public class VersionTest extends TestCase
     try
     {
       // Ensure that the database rolled back correctly
-      assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+      Assert.assertEquals(original + 2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
       // Ensure that the MdException was not imported
       MdExceptionDAOIF mdException = MdExceptionDAO.getMdException("test.xmlclasses.TestException");
       TestFixtureFactory.delete(mdException);
-      fail("Expected exception to be delete, but was still found");
+      Assert.fail("Expected exception to be delete, but was still found");
     }
     catch (DataNotFoundException e)
     {
@@ -401,9 +421,11 @@ public class VersionTest extends TestCase
       UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
-    assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
+    Assert.assertEquals(original, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
 
+  @Request
+  @Test
   public void testCreateDeleteCreateAttribute() throws IOException
   {
     String dir = path + "CreateDeleteAdd/";
@@ -437,7 +459,7 @@ public class VersionTest extends TestCase
 
       try
       {
-        assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
       }
       finally
       {
@@ -451,10 +473,14 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Tests creating a type, attribute, and object of that type and then later adding a localized character and updating the object all within the same transaction.
+   * Tests creating a type, attribute, and object of that type and then later
+   * adding a localized character and updating the object all within the same
+   * transaction.
    * 
    * @throws IOException
    */
+  @Request
+  @Test
   public void testCreateAndUpdateOfObject() throws IOException
   {
     String dir = path + "/CreateDeleteAdd/";
@@ -478,7 +504,7 @@ public class VersionTest extends TestCase
       MdAttributeLocalCharacterDAO mdAttributeLocal = TestFixtureFactory.addLocalCharacterAttribute(mdBusiness);
       mdAttributeLocal.apply();
 
-      business = BusinessDAO.get(business.getId()).getBusinessDAO();
+      business = BusinessDAO.get(business.getOid()).getBusinessDAO();
       business.setStructValue(mdAttributeLocal.definesAttribute(), "defaultLocale", "Localized Value");
       business.apply();
 
@@ -496,7 +522,7 @@ public class VersionTest extends TestCase
 
       try
       {
-        assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+        Assert.assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
       }
       finally
       {

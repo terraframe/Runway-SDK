@@ -25,7 +25,7 @@ public interface MdEntityInfo extends MdClassInfo
    */
   public static final String CLASS               = Constants.METADATA_PACKAGE + ".MdEntity";
 
-  public static final String ID_VALUE            = "20070920NM000000000000000000000300000000000000000000000000000001";
+  public static final String ID_VALUE            = "64084773-fb2f-3c53-ab40-fadbdc00003a";
 
   /**
    * Name of the attribute that stores the name of the the database table used

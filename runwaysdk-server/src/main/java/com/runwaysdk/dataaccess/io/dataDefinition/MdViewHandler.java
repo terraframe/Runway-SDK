@@ -79,7 +79,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
     {
       mdView.apply();
 
-      this.getManager().addMapping(mdView.definesType(), mdView.getId());
+      this.getManager().addMapping(mdView.definesType(), mdView.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdView);
@@ -107,6 +107,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
     ImportManager.setLocalizedValue(mdView, MdViewInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.ABSTRACT, attributes, XMLTags.ABSTRACT_ATTRIBUTE);
+    ImportManager.setValue(mdView, MdViewInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdView, MdViewInfo.EXTENDABLE, attributes, XMLTags.EXTENDABLE_ATTRIBUTE);
     ImportManager.setValue(mdView, MdViewInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
 
@@ -124,7 +125,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdView.definesType());
       }
 
-      mdView.setValue(MdViewInfo.SUPER_MD_VIEW, MdViewDAO.getMdViewDAO(extend).getId());
+      mdView.setValue(MdViewInfo.SUPER_MD_VIEW, MdViewDAO.getMdViewDAO(extend).getOid());
     }
   }
 

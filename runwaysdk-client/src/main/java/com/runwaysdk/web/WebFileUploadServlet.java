@@ -55,7 +55,7 @@ public class WebFileUploadServlet extends FileUploadServlet
   {
     ClientRequestIF clientRequest = (ClientRequestIF)req.getAttribute(ClientConstants.CLIENTREQUEST);
     
-    // capture the session id
+    // capture the session oid
     boolean isMultipart = ServletFileUpload.isMultipartContent(req);
 
     if (!isMultipart)

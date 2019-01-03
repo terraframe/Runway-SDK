@@ -47,7 +47,7 @@ public abstract class MdTermRelationshipBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      addEnumItem(ASSOCIATIONTYPE, value.getId());
+      addEnumItem(ASSOCIATIONTYPE, value.getOid());
     }
   }
   
@@ -55,7 +55,7 @@ public abstract class MdTermRelationshipBase extends com.runwaysdk.system.metada
   {
     if(value != null)
     {
-      removeEnumItem(ASSOCIATIONTYPE, value.getId());
+      removeEnumItem(ASSOCIATIONTYPE, value.getOid());
     }
   }
   
@@ -80,9 +80,9 @@ public abstract class MdTermRelationshipBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static MdTermRelationship get(String id)
+  public static MdTermRelationship get(String oid)
   {
-    return (MdTermRelationship) com.runwaysdk.business.Business.get(id);
+    return (MdTermRelationship) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdTermRelationship getByKey(String key)
@@ -90,17 +90,17 @@ public abstract class MdTermRelationshipBase extends com.runwaysdk.system.metada
     return (MdTermRelationship) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdTermRelationship lock(java.lang.String id)
+  public static MdTermRelationship lock(java.lang.String oid)
   {
-    MdTermRelationship _instance = MdTermRelationship.get(id);
+    MdTermRelationship _instance = MdTermRelationship.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdTermRelationship unlock(java.lang.String id)
+  public static MdTermRelationship unlock(java.lang.String oid)
   {
-    MdTermRelationship _instance = MdTermRelationship.get(id);
+    MdTermRelationship _instance = MdTermRelationship.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -434,13 +434,13 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileField mdMobileField)
     {
       if(mdMobileField == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileField.getId());
+      return this.EQ(mdMobileField.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileField mdMobileField)
     {
       if(mdMobileField == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileField.getId());
+      return this.NE(mdMobileField.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdMobileFormQuery.MdMobileFormQueryReferenceIF getDefiningMdForm()
@@ -749,7 +749,7 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
 
       for (int i=0; i<mdMobileField.length; i++)
       {
-        itemIdArray[i] = mdMobileField[i].getId();
+        itemIdArray[i] = mdMobileField[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -761,7 +761,7 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
 
       for (int i=0; i<mdMobileField.length; i++)
       {
-        itemIdArray[i] = mdMobileField[i].getId();
+        itemIdArray[i] = mdMobileField[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -773,7 +773,7 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
 
       for (int i=0; i<mdMobileField.length; i++)
       {
-        itemIdArray[i] = mdMobileField[i].getId();
+        itemIdArray[i] = mdMobileField[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -785,7 +785,7 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
 
       for (int i=0; i<mdMobileField.length; i++)
       {
-        itemIdArray[i] = mdMobileField[i].getId();
+        itemIdArray[i] = mdMobileField[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -797,7 +797,7 @@ public  class MdMobileFieldQuery extends com.runwaysdk.system.metadata.MdFieldQu
 
       for (int i=0; i<mdMobileField.length; i++)
       {
-        itemIdArray[i] = mdMobileField[i].getId();
+        itemIdArray[i] = mdMobileField[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

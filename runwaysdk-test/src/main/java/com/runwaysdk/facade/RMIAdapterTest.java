@@ -20,47 +20,35 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 
-public class RMIAdapterTest extends AdapterTest
+@RunWith(ClasspathTestRunner.class)
+public class RMIAdapterTest extends AbstractAdapterTest
 {
-  public static void main(String[] args)
+  @BeforeClass
+  public static void classSetUp()
   {
-    junit.textui.TestRunner.run(RMIAdapterTest.suite());
+    TestRMIUtil.startServer();
+    
+    systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
   }
 
-  public static Test suite()
+  @AfterClass
+  public static void classTearDown()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RMIAdapterTest.class);
+    systemSession.logout();
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        TestRMIUtil.startServer();
-        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-        ( (RMIClientRequest) systemSession.getRequest() ).unbindRMIClientRequest();
-        RemoteAdapterServer.stopServer();
-      }
-    };
-
-    return wrapper;
+    ( (RMIClientRequest) systemSession.getRequest() ).unbindRMIClientRequest();
+    RemoteAdapterServer.stopServer();
   }
 
   protected ClientSession createAnonymousSession()

@@ -84,7 +84,7 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //      if (!manager.isCreated(mdRelationshipDAO.definesType()))
 //      {
 //        mdRelationshipDAO.apply();
-//        manager.addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
+//        manager.addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getOid());
 //      }
 //
 //      // once the end of the mdRelationship tag has been encountered, dispatch

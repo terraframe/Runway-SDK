@@ -24,7 +24,7 @@ import com.runwaysdk.dataaccess.MetadataDAOIF;
 
 
 /**
- * Thrown when an object is requested that does not exist (the id can not be
+ * Thrown when an object is requested that does not exist (the oid can not be
  * found).
  * 
  * @author Eric Grunzke

@@ -37,7 +37,6 @@ import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -48,7 +47,6 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -61,7 +59,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.transaction.LockObject;
@@ -163,11 +160,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     }
 
     signature += "]";
-
-    if (this.hasStateMachine())
-    {
-      signature += this.definesMdStateMachine().getSignature();
-    }
 
     return signature;
   }
@@ -514,9 +506,9 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * 
    * <br/>
    * <b>Postcondition:</b> child relationships are removed
-   * (RelationshipFactory.getChildren(this.getId(), "")).length == 0 <br/>
+   * (RelationshipFactory.getChildren(this.getOid(), "")).length == 0 <br/>
    * <b>Postcondition:</b> parent relationships are removed
-   * (RelationshipFactory.getParents(this.getId(), "")).length == 0
+   * (RelationshipFactory.getParents(this.getOid(), "")).length == 0
    * 
    * @param businessContext
    *          true if this is being called from a business context, false
@@ -528,12 +520,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   @Override
   public void delete(boolean businessContext)
   {
-    // Delete the MdState this owns
-    if (this.hasStateMachine())
-    {
-      definesMdStateMachine().getBusinessDAO().delete(businessContext);
-    }
-
     // We're deleting a type. Find all reference attributes that point to this
     // type,
     // and delete them, too
@@ -564,7 +550,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttributeReferenceQuery = queryFactory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
 
-    mdAttributeReferenceQuery.WHERE(mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getId()));
+    mdAttributeReferenceQuery.WHERE(mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> mdAttrRefIterator = mdAttributeReferenceQuery.getIterator();
 
@@ -636,7 +622,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     List<MdRelationshipDAOIF> mdRelationships = new LinkedList<MdRelationshipDAOIF>();
 
-    for (String mdRelationshipDAOid : ObjectCache.getChildMdRelationshipDAOids(this.getId()))
+    for (String mdRelationshipDAOid : ObjectCache.getChildMdRelationshipDAOids(this.getOid()))
     {
       mdRelationships.add(MdRelationshipDAO.get(mdRelationshipDAOid));
     }
@@ -677,7 +663,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     List<MdRelationshipDAOIF> mdRelationships = new LinkedList<MdRelationshipDAOIF>();
 
-    for (String mdRelationshipDAOid : ObjectCache.getParentMdRelationshipDAOids(this.getId()))
+    for (String mdRelationshipDAOid : ObjectCache.getParentMdRelationshipDAOids(this.getOid()))
     {
       mdRelationships.add(MdRelationshipDAO.get(mdRelationshipDAOid));
     }
@@ -722,7 +708,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
     for (MdBusinessDAOIF superMdBusinessDAOIF : superMdBusinessIFList)
     {
-      for (String mdRelationshipDAOid : ObjectCache.getChildMdRelationshipDAOids(superMdBusinessDAOIF.getId()))
+      for (String mdRelationshipDAOid : ObjectCache.getChildMdRelationshipDAOids(superMdBusinessDAOIF.getOid()))
       {
         mdRelationships.add(MdRelationshipDAO.get(mdRelationshipDAOid));
       }
@@ -746,7 +732,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
     for (MdBusinessDAOIF superMdBusinessDAOIF : superMdBusinessIFList)
     {
-      for (String mdRelationshipDAOid : ObjectCache.getParentMdRelationshipDAOids(superMdBusinessDAOIF.getId()))
+      for (String mdRelationshipDAOid : ObjectCache.getParentMdRelationshipDAOids(superMdBusinessDAOIF.getOid()))
       {
         mdRelationships.add(MdRelationshipDAO.get(mdRelationshipDAOid));
       }
@@ -774,7 +760,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     for (int i = 0; i < superMdBusinessList.size(); i++)
     {
       MdBusinessDAOIF superMdBusiness = superMdBusinessList.get(i);
-      refConditions[i] = mdAttrRefQ.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(superMdBusiness.getId());
+      refConditions[i] = mdAttrRefQ.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(superMdBusiness.getOid());
     }
     mdAttrRefQ.WHERE(OR.get(refConditions));
 
@@ -802,7 +788,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     for (int i = 0; i < superMdBusinessList.size(); i++)
     {
       MdBusinessDAOIF superMdBusiness = superMdBusinessList.get(i);
-      refConditions[i] = mdEnumerationQ.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(superMdBusiness.getId());
+      refConditions[i] = mdEnumerationQ.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(superMdBusiness.getOid());
     }
 
     mdEnumerationQ.WHERE(OR.get(refConditions));
@@ -887,7 +873,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdRelationshipQuery = queryFactory.businessDAOQuery(MdRelationshipInfo.CLASS);
 
-    mdRelationshipQuery.WHERE(mdRelationshipQuery.aReference(MdRelationshipInfo.PARENT_MD_BUSINESS).EQ(this.getId()).OR(mdRelationshipQuery.aReference(MdRelationshipInfo.CHILD_MD_BUSINESS).EQ(this.getId())));
+    mdRelationshipQuery.WHERE(mdRelationshipQuery.aReference(MdRelationshipInfo.PARENT_MD_BUSINESS).EQ(this.getOid()).OR(mdRelationshipQuery.aReference(MdRelationshipInfo.CHILD_MD_BUSINESS).EQ(this.getOid())));
 
     OIterator<BusinessDAOIF> mdRelationshipIterator = mdRelationshipQuery.getIterator();
 
@@ -921,18 +907,18 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
       for (MdBusinessDAOIF subMdBusinessIF : this.getAllSubClasses())
       {
-        if (subMdBusinessIF.getId() == this.getId())
+        if (subMdBusinessIF.getOid() == this.getOid())
         {
           continue;
         }
 
-        LockObject.getLockObject().appLock(subMdBusinessIF.getId());
+        LockObject.getLockObject().appLock(subMdBusinessIF.getOid());
 
         MdBusinessDAO subMdBusiness = subMdBusinessIF.getBusinessDAO();
         subMdBusiness.setIsPublished(this.isPublished());
         subMdBusiness.save(true);
 
-        LockObject.getLockObject().releaseAppLock(subMdBusinessIF.getId());
+        LockObject.getLockObject().releaseAppLock(subMdBusinessIF.getOid());
       }
     }
 
@@ -944,30 +930,30 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    */
   public String save(boolean flag)
   {
-    String id = super.save(flag);
+    String oid = super.save(flag);
 
     if (this.getAttributeIF(MdClassInfo.PUBLISH).isModified() && !this.isImport())
     {
       for (MdRelationshipDAOIF mdRelationshipIF : this.getChildMdRelationships())
       {
-        LockObject.getLockObject().appLock(mdRelationshipIF.getId());
+        LockObject.getLockObject().appLock(mdRelationshipIF.getOid());
 
         MdRelationshipDAO mdRelationship = mdRelationshipIF.getBusinessDAO();
         mdRelationship.setIsPublished(this.isPublished());
         mdRelationship.save(true);
 
-        LockObject.getLockObject().releaseAppLock(mdRelationshipIF.getId());
+        LockObject.getLockObject().releaseAppLock(mdRelationshipIF.getOid());
       }
 
       for (MdRelationshipDAOIF mdRelationshipIF : this.getParentMdRelationships())
       {
-        LockObject.getLockObject().appLock(mdRelationshipIF.getId());
+        LockObject.getLockObject().appLock(mdRelationshipIF.getOid());
 
         MdRelationshipDAO mdRelationship = mdRelationshipIF.getBusinessDAO();
         mdRelationship.setIsPublished(this.isPublished());
         mdRelationship.save(true);
 
-        LockObject.getLockObject().releaseAppLock(mdRelationshipIF.getId());
+        LockObject.getLockObject().releaseAppLock(mdRelationshipIF.getOid());
       }
     }
 
@@ -982,7 +968,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
         ObjectCache.updateCacheStrategy(this);
       }
     }
-    return id;
+    return oid;
   }
 
   /**
@@ -993,38 +979,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     String tableName = this.getTableName();
     Database.createClassTable(tableName);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.MdBusinessIF#getMdState()
-   */
-  public MdStateMachineDAOIF definesMdStateMachine()
-  {
-    List<RelationshipDAOIF> list = this.getChildren(MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
-
-    if (list.size() != 0)
-    {
-      return (MdStateMachineDAOIF) list.get(0).getChild();
-    }
-
-    String msg = "There is no state machine defined for type [" + definesType() + "]";
-    throw new DataNotFoundException(msg, this.getMdBusinessDAO());
-  }
-
-  public boolean hasStateMachine()
-  {
-    List<RelationshipDAOIF> list = this.getChildren(MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
-
-    if (list.size() > 0)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
   }
 
   /**
@@ -1042,9 +996,9 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdBusinessDAOIF get(String id)
+  public static MdBusinessDAOIF get(String oid)
   {
-    return (MdBusinessDAOIF) BusinessDAO.get(id);
+    return (MdBusinessDAOIF) BusinessDAO.get(oid);
   }
 
   /**

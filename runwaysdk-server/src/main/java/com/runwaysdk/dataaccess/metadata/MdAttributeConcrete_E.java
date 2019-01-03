@@ -120,14 +120,14 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     {
       MdEntityDAOIF definingEntity = this.definedByClass();
       String definesAttribute = this.getMdAttribute().definesAttribute();
-      String attributeId = this.getMdAttribute().getId();
+      String attributeId = this.getMdAttribute().getOid();
 
       boolean preExistingAttribute = false;
 
       List<? extends MdAttributeConcreteDAOIF> attributeList = definingEntity.definesAttributes();
       for (MdAttributeConcreteDAOIF attribute : attributeList)
       {
-        if (definesAttribute.equals(attribute.definesAttribute()) && !attribute.getId().equals(attributeId))
+        if (definesAttribute.equals(attribute.definesAttribute()) && !attribute.getOid().equals(attributeId))
         {
           preExistingAttribute = true;
         }
@@ -136,11 +136,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       if (!preExistingAttribute)
       {
         // Check to see if there is an existing attribute definition with the
-        // identical id that may have been overwritten
+        // identical oid that may have been overwritten
         // in the transaction cache with this newly created attribute, due to an
         // identical key name value. We need to go to
         // the database to see if an existing attribute definition exists.
-        MdAttributeDAOIF possibleExistingMdAttributeDAOIF = (MdAttributeDAOIF) BusinessDAOFactory.get(this.getMdAttribute().getId());
+        MdAttributeDAOIF possibleExistingMdAttributeDAOIF = (MdAttributeDAOIF) BusinessDAOFactory.get(this.getMdAttribute().getOid());
 
         // A possible pre-existing attribute was found
         if (possibleExistingMdAttributeDAOIF != null)
@@ -193,7 +193,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    */
   private String autoGenCreateColumnName(String attributeName)
   {
-    if (attributeName.equals(ComponentInfo.ID))
+    if (attributeName.equals(ComponentInfo.OID))
     {
       return EntityDAOIF.ID_COLUMN;
     }
@@ -443,7 +443,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
       QueryFactory queryFactory = new QueryFactory();
       BusinessDAOQuery mdAttrStructQ = queryFactory.businessDAOQuery(MdAttributeStructInfo.CLASS);
-      mdAttrStructQ.WHERE(mdAttrStructQ.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(definingMdStructDAOIF.getId()));
+      mdAttrStructQ.WHERE(mdAttrStructQ.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(definingMdStructDAOIF.getOid()));
 
       OIterator<BusinessDAOIF> mdAttrStructIerator = mdAttrStructQ.getIterator();
 
@@ -541,15 +541,15 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
 
     /* Check for the new requested kind of index (if any) */
     AttributeEnumerationIF index = (AttributeEnumerationIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-    String derefId = index.dereference()[0].getId();
+    String derefId = index.dereference()[0].getOid();
 
-    if (derefId.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getId()) && !this.getMdAttribute().definesAttribute().equals(EntityInfo.ID))
+    if (derefId.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid()) && !this.getMdAttribute().definesAttribute().equals(EntityInfo.OID))
     {
       // add a unique index
       String indexName = this.getMdAttribute().getIndexName();
       Database.addUniqueIndex(parentMdEntity.getTableName(), this.getMdAttribute().getColumnName(), indexName);
     }
-    else if (derefId.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()))
+    else if (derefId.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getOid()))
     {
       // add a non unique index
       String indexName = this.getMdAttribute().getIndexName();
@@ -685,11 +685,11 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     MdEntityDAO mdEntity = mdEntityIF.getBusinessDAO();
 
     // Some dbs require that all tables have at least one column. Therefore, I
-    // am making the assumption that if you are deleting the ID field, then you
+    // am making the assumption that if you are deleting the OID field, then you
     // are also
     // dropping the defining type within the same transaction, which will drop
     // the table.
-    if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.ID))
+    if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(EntityInfo.OID))
     {
       // drop the attribute from the table
       this.dropAttribute(mdEntityIF.getTableName(), this.getMdAttribute().getColumnName(), this.dbColumnType);
@@ -710,7 +710,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(TypeTupleDAOIF.CLASS);
-    query.WHERE(query.aReference(TypeTupleDAOIF.METADATA).EQ(this.getMdAttribute().getId()));
+    query.WHERE(query.aReference(TypeTupleDAOIF.METADATA).EQ(this.getMdAttribute().getOid()));
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
 

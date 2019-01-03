@@ -49,7 +49,7 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -170,7 +170,7 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -355,7 +355,7 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -440,168 +440,168 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO> getAllGeoEntity()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO> getAllGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO> getAllGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO> getAllGeoEntityRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO> getAllGeoEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO> getAllGeoEntityRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymRelationshipDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.SynonymRelationshipDTO addGeoEntity(com.runwaysdk.system.gis.geo.GeoEntityDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymRelationshipDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymRelationshipDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymRelationshipDTO addGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.gis.geo.GeoEntityDTO parent)
+  public static com.runwaysdk.system.gis.geo.SynonymRelationshipDTO addGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.GeoEntityDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymRelationshipDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymRelationshipDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   public void removeGeoEntity(com.runwaysdk.system.gis.geo.SynonymRelationshipDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllGeoEntity()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
-  public static void removeAllGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllGeoEntity(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.SynonymRelationshipDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllSynonymMultiTermAttributeRoots()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO> getAllSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeMultiTermDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO> getAllSynonymMultiTermAttributeRootsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO> getAllSynonymMultiTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO> getAllSynonymMultiTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO addSynonymMultiTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO addSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
+  public static com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO addSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeMultiTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   public void removeSynonymMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllSynonymMultiTermAttributeRoots()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
-  public static void removeAllSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSynonymMultiTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllSynonymTermAttributeRoots()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO> getAllSynonymTermAttributeRootsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO> getAllSynonymTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO> getAllSynonymTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
   public com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO addSynonymTermAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO addSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
+  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO addSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
   public void removeSynonymTermAttributeRoots(com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllSynonymTermAttributeRoots()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
-  public static void removeAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.SynonymDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.SynonymDTO) dto;
   }
@@ -619,7 +619,7 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.SynonymQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -632,10 +632,10 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.SynonymDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.SynonymDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.SynonymDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -645,10 +645,10 @@ public abstract class SynonymDTOBase extends com.runwaysdk.business.ontology.Ter
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.SynonymDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.SynonymDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.SynonymDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.SynonymDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

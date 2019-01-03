@@ -298,13 +298,13 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeIndicator mdAttributeIndicator)
     {
       if(mdAttributeIndicator == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeIndicator.getId());
+      return this.EQ(mdAttributeIndicator.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeIndicator mdAttributeIndicator)
     {
       if(mdAttributeIndicator == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeIndicator.getId());
+      return this.NE(mdAttributeIndicator.getOid());
     }
 
   public com.runwaysdk.system.metadata.IndicatorElementQuery.IndicatorElementQueryReferenceIF getIndicatorElement()
@@ -497,7 +497,7 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeIndicator.length; i++)
       {
-        itemIdArray[i] = mdAttributeIndicator[i].getId();
+        itemIdArray[i] = mdAttributeIndicator[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -509,7 +509,7 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeIndicator.length; i++)
       {
-        itemIdArray[i] = mdAttributeIndicator[i].getId();
+        itemIdArray[i] = mdAttributeIndicator[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -521,7 +521,7 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeIndicator.length; i++)
       {
-        itemIdArray[i] = mdAttributeIndicator[i].getId();
+        itemIdArray[i] = mdAttributeIndicator[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -533,7 +533,7 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeIndicator.length; i++)
       {
-        itemIdArray[i] = mdAttributeIndicator[i].getId();
+        itemIdArray[i] = mdAttributeIndicator[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -545,7 +545,7 @@ public  class MdAttributeIndicatorQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdAttributeIndicator.length; i++)
       {
-        itemIdArray[i] = mdAttributeIndicator[i].getId();
+        itemIdArray[i] = mdAttributeIndicator[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -18,13 +18,12 @@
  */
 package com.runwaysdk;
 
-
 public class XMLExporter
 {
   /*
-   * @deprecated
-   * This method exists only for backwards compatibility! DO NOT USE!!
-   * Instead, use the main method in runwaysdk-server/com.runwaysdk.dataacess.io.XMLExporter 
+   * @deprecated This method exists only for backwards compatibility! DO NOT
+   * USE!! Instead, use the main method in
+   * runwaysdk-server/com.runwaysdk.dataacess.io.XMLExporter
    */
   public static void main(String[] args)
   {

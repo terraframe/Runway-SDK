@@ -76,7 +76,7 @@ public privileged aspect ThreadTransactionManagement extends AbstractTransaction
   /**
    * New Description:
    * Update the cache after the object has been applied to the DB with the correct
-   * ID and KEY values.
+   * OID and KEY values.
    * 
    * Old description:
    * Updating the key cache needs to occur after the call, as the key is not

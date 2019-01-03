@@ -41,9 +41,9 @@ public abstract class MdMessageBase extends com.runwaysdk.system.metadata.MdNoti
     return CLASS;
   }
   
-  public static MdMessage get(String id)
+  public static MdMessage get(String oid)
   {
-    return (MdMessage) com.runwaysdk.business.Business.get(id);
+    return (MdMessage) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMessage getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMessageBase extends com.runwaysdk.system.metadata.MdNoti
     return (MdMessage) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMessage lock(java.lang.String id)
+  public static MdMessage lock(java.lang.String oid)
   {
-    MdMessage _instance = MdMessage.get(id);
+    MdMessage _instance = MdMessage.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMessage unlock(java.lang.String id)
+  public static MdMessage unlock(java.lang.String oid)
   {
-    MdMessage _instance = MdMessage.get(id);
+    MdMessage _instance = MdMessage.get(oid);
     _instance.unlock();
     
     return _instance;

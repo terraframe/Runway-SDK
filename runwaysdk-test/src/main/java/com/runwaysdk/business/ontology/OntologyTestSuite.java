@@ -21,41 +21,18 @@
  */
 package com.runwaysdk.business.ontology;
 
-import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
  * 
  * @author Richard Rowlands
  * @since 2.0.17
  **/
-public class OntologyTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ MdTermTest.class, OntologyStrategyTest.class, MdTermRelationshipTest.class, DatabaseAllPathsStrategyTest.class, DefaultStrategyTest.class })
+public class OntologyTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(OntologyTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite testSuite = new TestSuite(OntologyTestSuite.class.getSimpleName());
-    testSuite.setName(OntologyTestSuite.class.getName());
-
-    testSuite.addTest(MdTermTest.suite());
-    testSuite.addTest(OntologyStrategyTest.suite());
-    testSuite.addTest(MdTermRelationshipTest.suite());
-    testSuite.addTest(DatabaseAllPathsStrategyTest.suite());
-    testSuite.addTest(DefaultStrategyTest.suite());
-
-    return testSuite;
-  }
 }

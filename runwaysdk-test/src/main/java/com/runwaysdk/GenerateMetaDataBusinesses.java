@@ -18,7 +18,6 @@
  */
 package com.runwaysdk;
 
-
 public class GenerateMetaDataBusinesses
 {
   public static void main(String[] args)

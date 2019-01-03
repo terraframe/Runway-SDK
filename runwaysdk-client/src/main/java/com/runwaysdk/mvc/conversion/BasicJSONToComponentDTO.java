@@ -128,7 +128,7 @@ public abstract class BasicJSONToComponentDTO extends BasicJSONToDTO
 
     try
     {
-      Class<?> type = LoaderDecorator.loadClass(className);
+      Class<?> type = LoaderDecorator.load(className);
 
       if (BusinessDTO.class.isAssignableFrom(type))
       {
@@ -164,11 +164,6 @@ public abstract class BasicJSONToComponentDTO extends BasicJSONToDTO
     {
       String msg = "An error occured while trying to convert JSON to a ComponentDTO.";
       CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), msg, e);
-    }
-    catch (ClassNotFoundException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
 
     return converter;

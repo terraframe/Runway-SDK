@@ -26,9 +26,8 @@ import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdFormDAOIF;
 import com.runwaysdk.dataaccess.MdWebAttributeDAOIF;
 import com.runwaysdk.dataaccess.io.ExcelImporter.ImportContext;
-import com.runwaysdk.generation.loader.Reloadable;
 
-public class WebFormContextBuilder extends ContextBuilder implements ContextBuilderIF, Reloadable
+public class WebFormContextBuilder extends ContextBuilder implements ContextBuilderIF
 {
   private MdFormDAOIF   mdForm;
 

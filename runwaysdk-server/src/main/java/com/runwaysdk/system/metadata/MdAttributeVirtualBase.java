@@ -108,7 +108,7 @@ public abstract class MdAttributeVirtualBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(DEFININGMDVIEW, value.getId());
+      setValue(DEFININGMDVIEW, value.getOid());
     }
   }
   
@@ -164,7 +164,7 @@ public abstract class MdAttributeVirtualBase extends com.runwaysdk.system.metada
     }
     else
     {
-      setValue(MDATTRIBUTECONCRETE, value.getId());
+      setValue(MDATTRIBUTECONCRETE, value.getOid());
     }
   }
   
@@ -287,9 +287,9 @@ public abstract class MdAttributeVirtualBase extends com.runwaysdk.system.metada
     }
   }
   
-  public static MdAttributeVirtual get(String id)
+  public static MdAttributeVirtual get(String oid)
   {
-    return (MdAttributeVirtual) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeVirtual) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeVirtual getByKey(String key)
@@ -297,17 +297,17 @@ public abstract class MdAttributeVirtualBase extends com.runwaysdk.system.metada
     return (MdAttributeVirtual) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeVirtual lock(java.lang.String id)
+  public static MdAttributeVirtual lock(java.lang.String oid)
   {
-    MdAttributeVirtual _instance = MdAttributeVirtual.get(id);
+    MdAttributeVirtual _instance = MdAttributeVirtual.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeVirtual unlock(java.lang.String id)
+  public static MdAttributeVirtual unlock(java.lang.String oid)
   {
-    MdAttributeVirtual _instance = MdAttributeVirtual.get(id);
+    MdAttributeVirtual _instance = MdAttributeVirtual.get(oid);
     _instance.unlock();
     
     return _instance;

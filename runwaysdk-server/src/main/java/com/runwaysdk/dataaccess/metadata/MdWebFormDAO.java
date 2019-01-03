@@ -60,14 +60,14 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
   }
 
   /**
-   * Returns the MdFormDAOIF with the given id.
+   * Returns the MdFormDAOIF with the given oid.
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  public static MdWebFormDAOIF get(String id)
+  public static MdWebFormDAOIF get(String oid)
   {
-    return (MdWebFormDAOIF) BusinessDAO.get(id);
+    return (MdWebFormDAOIF) BusinessDAO.get(oid);
   }
 
   public static MdWebFormDAO newInstance()
@@ -139,7 +139,7 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
     RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
 
     // exclude fields that are directly beneath a group
-    relQ.WHERE(relQ.childId().EQ(q1.id()));
+    relQ.WHERE(relQ.childOid().EQ(q1.oid()));
     q.AND(q.isNotChildIn_SUBSELECT(relQ));
 
     q.WHERE(q.aReference(MdWebField.DEFININGMDFORM).EQ(this));

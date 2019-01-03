@@ -82,46 +82,46 @@ public class DDMSAllpathsLogic
       OIterator<Term> childIt = (OIterator<Term>) tCurrent.getChildren(relationshipType);
       for (Term child: childIt)
       {
-        qNext.offer(child.getId());
+        qNext.offer(child.getOid());
       }
     }
   }
   
   @Transaction
-  public void updateAllPathForTerm(String childId, String parentId, boolean copyChildren)
+  public void updateAllPathForTerm(String childOid, String parentOid, boolean copyChildren)
   {
-    createPath(childId, childId);
+    createPath(childOid, childOid);
 
-    // If an id of a parent is given, only build paths between this node, the
+    // If an oid of a parent is given, only build paths between this node, the
     // given parent
     // and that parent's parents. This is ideal for copies, so we don't have to
     // traverse
     // the paths of existing parents.
-    List<String> parentIdList;
-    if (parentId != null)
+    List<String> parentOidList;
+    if (parentOid != null)
     {
-      parentIdList = this.getRecursiveParentIds(parentId);
-      parentIdList.add(0, parentId);
+      parentOidList = this.getRecursiveParentOids(parentOid);
+      parentOidList.add(0, parentOid);
     }
     else
     {
-      parentIdList = this.getRecursiveParentIds(childId);
+      parentOidList = this.getRecursiveParentOids(childOid);
     }
 
-    for (String someParentId : parentIdList)
+    for (String someParentOid : parentOidList)
     {
-      createPath(someParentId, childId);
+      createPath(someParentOid, childOid);
     }
 
     if (copyChildren)
     {
       // Update paths of the children.  
-      List<String> childOfChildIdList = this.getChildIds(childId);
-      for (String childOfChild : childOfChildIdList)
+      List<String> childOfChildOidList = this.getChildOids(childOid);
+      for (String childOfChild : childOfChildOidList)
       {
-        if (parentId != null)
+        if (parentOid != null)
         {
-          updateAllPathForTerm(childOfChild, childId, copyChildren);
+          updateAllPathForTerm(childOfChild, childOid, copyChildren);
         }
         else
         {
@@ -131,7 +131,7 @@ public class DDMSAllpathsLogic
     }
   }
 
-  private void createPath(String parentId, String childId)
+  private void createPath(String parentOid, String childOid)
   {
     // create save point
     Savepoint savepoint = Database.setSavepoint();
@@ -139,8 +139,8 @@ public class DDMSAllpathsLogic
     try
     {
       BusinessDAO instance = BusinessDAO.newInstance(strategy.getAllPaths().definesType());
-      instance.setValue(PARENT_TERM_ATTR, parentId);
-      instance.setValue(CHILD_TERM_ATTR, childId);
+      instance.setValue(PARENT_TERM_ATTR, parentOid);
+      instance.setValue(CHILD_TERM_ATTR, childOid);
       instance.apply();
     }
     catch (DuplicateDataDatabaseException ex)
@@ -159,49 +159,49 @@ public class DDMSAllpathsLogic
     }
   }
   
-  public List<String> getRecursiveParentIds(String childId)
+  public List<String> getRecursiveParentOids(String childOid)
   {
     QueryFactory queryFactory = new QueryFactory();
     
     RelationshipQuery relQ = queryFactory.relationshipQuery(this.relationshipType);
     ValueQuery valueQuery = queryFactory.valueQuery();
 
-    valueQuery.SELECT(relQ.parentId());
-    valueQuery.WHERE(relQ.childId().EQ(childId));
+    valueQuery.SELECT(relQ.parentOid());
+    valueQuery.WHERE(relQ.childOid().EQ(childOid));
     
     OIterator<ValueObject> qit = valueQuery.getIterator();
 
-    List<String> parentIdList = new LinkedList<String>();
+    List<String> parentOidList = new LinkedList<String>();
     
     for (ValueObject valueObject : qit)
     {
-      String parentId = valueObject.getValue(RelationshipInfo.PARENT_ID);
-      parentIdList.add(parentId);
-      parentIdList.addAll(getRecursiveParentIds(parentId));
+      String parentOid = valueObject.getValue(RelationshipInfo.PARENT_OID);
+      parentOidList.add(parentOid);
+      parentOidList.addAll(getRecursiveParentOids(parentOid));
     }
 
-    return parentIdList;
+    return parentOidList;
   }
   
-  public List<String> getChildIds(String parentId)
+  public List<String> getChildOids(String parentOid)
   {
-    List<String> childIdList = new LinkedList<String>();
+    List<String> childOidList = new LinkedList<String>();
     
     QueryFactory queryFactory = new QueryFactory();
     RelationshipQuery relQ = queryFactory.relationshipQuery(this.relationshipType);
     ValueQuery valueQuery = queryFactory.valueQuery();
 
-    valueQuery.SELECT(relQ.childId());
-    valueQuery.WHERE(relQ.parentId().EQ(parentId));
+    valueQuery.SELECT(relQ.childOid());
+    valueQuery.WHERE(relQ.parentOid().EQ(parentOid));
 
     List<ValueObject> valueObjectList = valueQuery.getIterator().getAll();
 
     for (ValueObject valueObject : valueObjectList)
     {
-      String childId = valueObject.getValue(RelationshipInfo.CHILD_ID);
-      childIdList.add(childId);
+      String childOid = valueObject.getValue(RelationshipInfo.CHILD_OID);
+      childOidList.add(childOid);
     }
     
-    return childIdList;
+    return childOidList;
   }
 }

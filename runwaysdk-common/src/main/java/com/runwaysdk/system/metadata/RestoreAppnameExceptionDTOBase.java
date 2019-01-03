@@ -70,7 +70,7 @@ public abstract class RestoreAppnameExceptionDTOBase extends com.runwaysdk.busin
   }
   
   public static java.lang.String CURRENTAPPNAME = "currentAppname";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RESTOREAPPNAME = "restoreAppname";
   public String getCurrentAppname()
   {
@@ -155,7 +155,7 @@ public abstract class RestoreAppnameExceptionDTOBase extends com.runwaysdk.busin
     java.lang.String template = super.getMessage();
     
     template = template.replace("{currentAppname}", this.getCurrentAppname().toString());
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{restoreAppname}", this.getRestoreAppname().toString());
     
     return template;

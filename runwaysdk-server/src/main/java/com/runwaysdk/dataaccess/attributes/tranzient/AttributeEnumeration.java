@@ -145,7 +145,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
    * 
    * @param enumItemId
-   *          The ID of the item to be added to the enumerated attribute
+   *          The OID of the item to be added to the enumerated attribute
    * @return <code>true</code> if the item is successfully added
    */
   public boolean addItem(String enumItemId)
@@ -173,7 +173,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    * Removes an item from an enumerated attribute
    * 
    * @param enumItemID
-   *          The ID of the item to be removed from the enumerated attribute
+   *          The OID of the item to be removed from the enumerated attribute
    */
   public void removeItem(String enumItemID)
   {

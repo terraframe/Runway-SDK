@@ -22,12 +22,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.runwaysdk.business.Business;
@@ -55,52 +53,16 @@ import com.runwaysdk.dataaccess.io.dataDefinition.VersionPlugin;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
-public class XMLTermExporterTest extends TestCase
+import junit.extensions.TestSetup;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
+public class XMLTermExporterTest
 {
-  public static void main(String[] args)
-  {
-    String s = "Vsl\"Out\"Lrg.2\"";
-
-    System.out.println(s.replace("\"", "&quot;"));
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(XMLTermExporterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-        afterTransactionFinishes();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   private static String                termAId;
 
   private static String                termBId;
@@ -119,11 +81,16 @@ public class XMLTermExporterTest extends TestCase
 
   public static final String           PACKAGE = "com.runwaysdk.test.ontology.io";
 
-  /**
-   * Set the testObject to a new Instance of the TEST type.
-   */
+  @Request
+  @BeforeClass
+  public static void classSetUp()
+  {
+    classSetUpTransaction();
+    afterTransactionFinishes();
+  }
+
   @Transaction
-  protected static void classSetUp()
+  public static void classSetUpTransaction()
   {
     mdTerm = MdTermDAO.newInstance();
     mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
@@ -132,8 +99,8 @@ public class XMLTermExporterTest extends TestCase
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + DatabaseAllPathsStrategy.class.getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n ((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);\n" + "}\n" + "}\n";
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
+    String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.\n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + DatabaseAllPathsStrategy.class.getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n ((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);\n" + "}\n" + "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
 
@@ -141,16 +108,15 @@ public class XMLTermExporterTest extends TestCase
     mdTermRelationship.setValue(MdTreeInfo.NAME, "Sequential");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sequential Relationship");
-    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Previous Letter");
-    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Next Letter");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
     mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
-    mdTermRelationship.setGenerateMdController(false);
-    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
     mdTermRelationship.apply();
 
     // Lets define a relationship A > B > C between these terms.
@@ -178,23 +144,23 @@ public class XMLTermExporterTest extends TestCase
     termB.addChild(termBb, mdTermRelationship.definesType()).apply();
     BusinessDAO termBba = BusinessDAO.newInstance(mdTerm.definesType());
     termBba.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termBba&<>\""); // Special
-                                                                                                       // characters
-                                                                                                       // test
+                                                                                                      // characters
+                                                                                                      // test
     termBba.apply();
     termBb.addChild(termBba, mdTermRelationship.definesType()).apply();
 
-    termAId = termA.getId();
-    termBId = termB.getId();
-    termCId = termC.getId();
+    termAId = termA.getOid();
+    termBId = termB.getOid();
+    termCId = termC.getOid();
 
-    termBaId = termBa.getId();
-    termBbId = termBb.getId();
-    termBbaId = termBba.getId();
+    termBaId = termBa.getOid();
+    termBbId = termBb.getOid();
+    termBbaId = termBba.getOid();
   }
 
   protected static void afterTransactionFinishes()
   {
-    AbstractOntologyStrategyTest.initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
+    AbstractOntologyStrategyTest.initStrat(mdTerm, mdTermRelationship.definesType());
   }
 
   protected static void deleteTermInstances()
@@ -218,15 +184,19 @@ public class XMLTermExporterTest extends TestCase
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     AbstractOntologyStrategyTest.shutDownStrat(mdTerm.definesType());
     TestFixtureFactory.delete(mdTerm);
     TestFixtureFactory.delete(mdTermRelationship);
   }
 
+  @Request
+  @Test
   public void testExportImport() throws UnsupportedEncodingException
   {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -261,19 +231,19 @@ public class XMLTermExporterTest extends TestCase
     Term termBb = Term.get(mdTerm.definesType(), termBbId);
 
     Term termBba = Term.get(mdTerm.definesType(), termBbaId);
-    assertEquals("termBba&<>\"", termBba.getDisplayLabel().getValue());
+    Assert.assertEquals("termBba&<>\"", termBba.getDisplayLabel().getValue());
 
     List<? extends Business> aChildren = termA.getChildren(mdTermRelationship.definesType()).getAll();
-    assertEquals(1, aChildren.size());
-    assertEquals(aChildren.get(0).getId(), termB.getId());
+    Assert.assertEquals(1, aChildren.size());
+    Assert.assertEquals(aChildren.get(0).getOid(), termB.getOid());
 
     List<? extends Business> bChildren = termB.getChildren(mdTermRelationship.definesType()).getAll();
-    assertEquals(3, bChildren.size());
+    Assert.assertEquals(3, bChildren.size());
 
     List<? extends Business> cChildren = termC.getChildren(mdTermRelationship.definesType()).getAll();
-    assertEquals(0, cChildren.size());
+    Assert.assertEquals(0, cChildren.size());
 
     List<? extends Business> bbChildren = termBb.getChildren(mdTermRelationship.definesType()).getAll();
-    assertEquals(1, bbChildren.size());
+    Assert.assertEquals(1, bbChildren.size());
   }
 }

@@ -22,14 +22,14 @@ public class EnumerationAttributeItem extends EnumerationAttributeItemBase
 {
   private static final long serialVersionUID = 1229405888032L;
   
-  public EnumerationAttributeItem(String parentId, String childId)
+  public EnumerationAttributeItem(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public EnumerationAttributeItem(com.runwaysdk.system.metadata.MdEnumeration parent, com.runwaysdk.system.EnumerationMaster child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

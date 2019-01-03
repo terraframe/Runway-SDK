@@ -41,9 +41,9 @@ public abstract class MdAttributePolygonBase extends com.runwaysdk.system.gis.me
     return CLASS;
   }
   
-  public static MdAttributePolygon get(String id)
+  public static MdAttributePolygon get(String oid)
   {
-    return (MdAttributePolygon) com.runwaysdk.business.Business.get(id);
+    return (MdAttributePolygon) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributePolygon getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributePolygonBase extends com.runwaysdk.system.gis.me
     return (MdAttributePolygon) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributePolygon lock(java.lang.String id)
+  public static MdAttributePolygon lock(java.lang.String oid)
   {
-    MdAttributePolygon _instance = MdAttributePolygon.get(id);
+    MdAttributePolygon _instance = MdAttributePolygon.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributePolygon unlock(java.lang.String id)
+  public static MdAttributePolygon unlock(java.lang.String oid)
   {
-    MdAttributePolygon _instance = MdAttributePolygon.get(id);
+    MdAttributePolygon _instance = MdAttributePolygon.get(oid);
     _instance.unlock();
     
     return _instance;

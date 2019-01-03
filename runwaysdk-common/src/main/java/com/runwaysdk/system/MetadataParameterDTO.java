@@ -22,9 +22,9 @@ public class MetadataParameterDTO extends MetadataParameterDTOBase
 {
   private static final long serialVersionUID = 1795951314;
   
-  public MetadataParameterDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public MetadataParameterDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

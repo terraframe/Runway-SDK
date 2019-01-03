@@ -61,7 +61,7 @@ public interface AttributeMultiReferenceIF extends AttributeIF
   /**
    * Returns a cached list of mappings between this object and referenced
    * business items. If an enumeration item is removed from the master list,
-   * this cache may still contain an ID to the item.
+   * this cache may still contain an OID to the item.
    * 
    * @return Returns the itemIdList.
    */

@@ -22,14 +22,14 @@ public class HasThematicAttribute extends HasThematicAttributeBase
 {
   private static final long serialVersionUID = -1206499399;
   
-  public HasThematicAttribute(String parentId, String childId)
+  public HasThematicAttribute(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public HasThematicAttribute(com.runwaysdk.system.gis.mapping.Layer parent, com.runwaysdk.system.gis.mapping.ThematicAttribute child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

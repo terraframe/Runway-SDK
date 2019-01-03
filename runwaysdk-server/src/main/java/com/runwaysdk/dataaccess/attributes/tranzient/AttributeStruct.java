@@ -65,14 +65,14 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Always returns true if the containing component is new, false otherwise.  The id to the
+   * Always returns true if the containing component is new, false otherwise.  The oid to the
    * struct never changes after it has been persisted.
    *
    * <br>
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    *
-   * @return true if the containing component is new, false otherwise.  The id to the
+   * @return true if the containing component is new, false otherwise.  The oid to the
    * struct never changes after it has been persisted.
    */
   public boolean isModified()
@@ -145,7 +145,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   public void setStructDAO(StructDAO structDAO)
   {
     this.structDAO = structDAO;
-    this.value = this.structDAO.getId();
+    this.value = this.structDAO.getOid();
   }
 
   /**

@@ -20,7 +20,7 @@ package ${package};
 
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.Assert; import org.junit.Test;
 
 import com.runwaysdk.session.Request;
 import ${package}.HelloWorld;
@@ -41,7 +41,7 @@ public class HelloWorldTest {
       original.setGreeting("Hey-yo!");
       original.apply();
     
-      HelloWorld fetched = HelloWorld.get(original.getId());
+      HelloWorld fetched = HelloWorld.get(original.getOid());
       
       Assert.assertEquals(original, fetched);
     }

@@ -23,11 +23,11 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.ElementInfo;
@@ -57,6 +57,7 @@ import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
+import com.runwaysdk.session.Request;
 
 /**
  * J-Unit tests for class Relationship.
@@ -65,20 +66,8 @@ import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
  * @version $Revision 1.0 $
  * @since
  **/
-public class RelationshipTest extends TestCase
+public class RelationshipTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static final TypeInfo TEST_RELATIONSHIP                = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestRelationship");
 
   private static final TypeInfo TEST_RELATIONSHIP_GRAPH          = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestRelationshipGraph");
@@ -107,44 +96,8 @@ public class RelationshipTest extends TestCase
    */
   private BusinessDAO           reference;
 
-  /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(RelationshipTest.suite()));
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>RelationshipTest.class</code> and wraps
-   * it in <code>MasterTestSetup</code>. The returned class is a suite of all
-   * the tests in <code>RelationshipTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(RelationshipTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -159,15 +112,14 @@ public class RelationshipTest extends TestCase
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "TestParent1");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "TestChild1");
-    mdRelationship.setGenerateMdController(false);
     mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.apply();
 
@@ -180,15 +132,14 @@ public class RelationshipTest extends TestCase
     mdGraph.setValue(MdGraphInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdGraph.setValue(MdGraphInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdGraph.setValue(MdGraphInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdGraph.setValue(MdGraphInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdGraph.setValue(MdGraphInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdGraph.setValue(MdGraphInfo.PARENT_CARDINALITY, "*");
     mdGraph.setStructValue(MdGraphInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
-    mdGraph.setValue(MdGraphInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdGraph.setValue(MdGraphInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdGraph.setValue(MdGraphInfo.CHILD_CARDINALITY, "*");
     mdGraph.setStructValue(MdGraphInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdGraph.setValue(MdGraphInfo.PARENT_METHOD, "TestParent2");
     mdGraph.setValue(MdGraphInfo.CHILD_METHOD, "TestChild2");
-    mdGraph.setGenerateMdController(false);
     mdGraph.setValue(MdGraphInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdGraph.apply();
 
@@ -201,15 +152,14 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "TestParent3");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "TestChild3");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -221,15 +171,14 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "RecursionParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "RecursionChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -241,15 +190,14 @@ public class RelationshipTest extends TestCase
     mdTreeTestAbstract.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdTreeTestAbstract.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTreeTestAbstract.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
-    mdTreeTestAbstract.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdTreeTestAbstract.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdTreeTestAbstract.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTreeTestAbstract.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" class");
-    mdTreeTestAbstract.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTreeTestAbstract.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTreeTestAbstract.setValue(MdTreeInfo.CHILD_CARDINALITY, "2");
     mdTreeTestAbstract.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTreeTestAbstract.setValue(MdTreeInfo.PARENT_METHOD, "AbstractParent");
     mdTreeTestAbstract.setValue(MdTreeInfo.CHILD_METHOD, "AbstractChild");
-    mdTreeTestAbstract.setGenerateMdController(false);
     mdTreeTestAbstract.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTreeTestAbstract.apply();
 
@@ -259,18 +207,17 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PACKAGE, TEST_CONCRETE_TREE_RELATIONSHIP1.getPackageName());
     mdTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Concrete Relationship");
     mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, mdTreeTestAbstract.getId());
+    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, mdTreeTestAbstract.getOid());
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" class");
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "2");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "ConcreteParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "ConcreteChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -280,18 +227,17 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.PACKAGE, TEST_CONCRETE_TREE_RELATIONSHIP2.getPackageName());
     mdTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Concrete Relationship");
     mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, mdTreeTestAbstract.getId());
+    mdTree.setValue(MdTreeInfo.SUPER_MD_RELATIONSHIP, mdTreeTestAbstract.getOid());
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" class");
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "2");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "Concrete2Parent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "Concrete2Child");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -300,9 +246,10 @@ public class RelationshipTest extends TestCase
   /**
    * Set the testObject to a new Instance of the TEST class.
    */
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
-    super.setUp();
     testObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
     testObject.apply();
     reference = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
@@ -312,12 +259,12 @@ public class RelationshipTest extends TestCase
   /**
    * If testObject was applied, it is removed from the database.
    * 
-   * @see TestCase#tearDown()
+   * 
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
-    super.tearDown();
-
     if (!testObject.isNew())
     {
       TestFixtureFactory.delete(testObject);
@@ -330,18 +277,10 @@ public class RelationshipTest extends TestCase
   }
 
   /**
-   * Constructor for AttributeTest.
-   * 
-   * @param name
-   */
-  public RelationshipTest(String name)
-  {
-    super(name);
-  }
-
-  /**
    * Tests a relationship with a child of the wrong type.
    */
+  @Request
+  @Test
   public void testRelationshipInvalidChildType()
   {
     RelationshipDAO relDAO = null;
@@ -351,7 +290,7 @@ public class RelationshipTest extends TestCase
       relDAO = testObject.addChild(testObject, TEST_RELATIONSHIP_TREE.getType());
       relDAO.apply();
 
-      fail(TEST_RELATIONSHIP_TREE.getType() + " accepted an invalid child type.");
+      Assert.fail(TEST_RELATIONSHIP_TREE.getType() + " accepted an invalid child type.");
     }
     catch (UnexpectedTypeException e)
     {
@@ -362,6 +301,8 @@ public class RelationshipTest extends TestCase
   /**
    * Tests a relationship with a parent of the wrong type.
    */
+  @Request
+  @Test
   public void testRelationshipInvalidParentType()
   {
     RelationshipDAO relDAO = null;
@@ -371,7 +312,7 @@ public class RelationshipTest extends TestCase
       relDAO = reference.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
       relDAO.apply();
 
-      fail(TEST_RELATIONSHIP_TREE.getType() + " accepted an invalid parent type.");
+      Assert.fail(TEST_RELATIONSHIP_TREE.getType() + " accepted an invalid parent type.");
     }
     catch (UnexpectedTypeException e)
     {
@@ -389,6 +330,8 @@ public class RelationshipTest extends TestCase
   /**
    * Tests a relationship by violating the parent cardinality.
    */
+  @Request
+  @Test
   public void testRelationshipParentCardinality()
   {
     RelationshipDAO relationshipDAO = testObject.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
@@ -401,7 +344,7 @@ public class RelationshipTest extends TestCase
     {
       RelationshipDAO failure = parent.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
       failure.apply();
-      fail("Relationship.validate() accepted that violates parent cardinality.");
+      Assert.fail("Relationship.validate() accepted that violates parent cardinality.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -417,6 +360,8 @@ public class RelationshipTest extends TestCase
   /**
    * Tests a relationship by violating the child cardinality.
    */
+  @Request
+  @Test
   public void testRelationshipChildCardinality()
   {
     RelationshipDAO relationshipDAO = testObject.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
@@ -429,7 +374,7 @@ public class RelationshipTest extends TestCase
     {
       RelationshipDAO failure = testObject.addChild(child2, TEST_RELATIONSHIP_TREE.getType());
       failure.apply();
-      fail("Relationship.validate() accepted that violates child cardinality.");
+      Assert.fail("Relationship.validate() accepted that violates child cardinality.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -445,6 +390,8 @@ public class RelationshipTest extends TestCase
   /**
    * Tests adding a recursive relationship.
    */
+  @Request
+  @Test
   public void testRelationshipRecursion()
   {
 
@@ -459,7 +406,7 @@ public class RelationshipTest extends TestCase
       RelationshipDAO failure = reference2.addChild(reference, TEST_RELATIONSHIP_TREE_RECURSION.getType());
       failure.apply();
 
-      fail("RelationshipFactory.recursiveLinkCheck() accepted recursive relationship where the child is the parent of it's parent.");
+      Assert.fail("RelationshipFactory.recursiveLinkCheck() accepted recursive relationship where the child is the parent of it's parent.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -475,21 +422,23 @@ public class RelationshipTest extends TestCase
   /**
    * Tests to make sure that using BusinessDAO.addParent() works correctly.
    */
+  @Request
+  @Test
   public void testRelationshipAddParent()
   {
     RelationshipDAO relationshipDAO = reference.addParent(testObject, TEST_RELATIONSHIP_TREE.getType());
     relationshipDAO.apply();
 
-    // check database directly for ID match on parent/child
-    RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getId());
+    // check database directly for OID match on parent/child
+    RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getOid());
     if (rel == null)
     {
-      fail("RelationshipFactory.get() returned null");
+      Assert.fail("RelationshipFactory.get() returned null");
     }
 
-    if (rel.getParentId().compareTo(testObject.getId()) != 0 || rel.getChildId().compareTo(reference.getId()) != 0)
+    if (rel.getParentOid().compareTo(testObject.getOid()) != 0 || rel.getChildOid().compareTo(reference.getOid()) != 0)
     {
-      fail("BusinessDAO.addParent() did not correctly save the information to the database.");
+      Assert.fail("BusinessDAO.addParent() did not correctly save the information to the database.");
     }
 
     // check if caching is disabled and if it is, the cache should hold nothing
@@ -499,33 +448,33 @@ public class RelationshipTest extends TestCase
     if (Integer.parseInt(dataArr[0].getValue(EntityCacheMaster.CACHE_CODE)) == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
     {
       // make sure cache holds nothing for children objects of the relationship
-      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (childList.size() != ObjectCache.getChildren(testObject.getId(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
+      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (childList.size() != ObjectCache.getChildren(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
       }
 
       // make sure cache holds nothing for parent objects of the relationship
-      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (parentList.size() != ObjectCache.getParents(reference.getId(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
+      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (parentList.size() != ObjectCache.getParents(reference.getOid(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
       }
     }
     else
     {
       // make sure cache holds nothing for children objects of the relationship
-      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (childList.size() == ObjectCache.getChildren(testObject.getId(), TEST_RELATIONSHIP_TREE.getType()).size())
+      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (childList.size() == ObjectCache.getChildren(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType()).size())
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
       }
 
       // make sure cache holds nothing for parent objects of the relationship
-      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (parentList.size() == ObjectCache.getParents(reference.getId(), TEST_RELATIONSHIP_TREE.getType()).size())
+      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (parentList.size() == ObjectCache.getParents(reference.getOid(), TEST_RELATIONSHIP_TREE.getType()).size())
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
       }
     }
 
@@ -533,37 +482,39 @@ public class RelationshipTest extends TestCase
     {
       if (!reference.isChildOf(testObject, TEST_RELATIONSHIP_TREE.getType()))
       {
-        fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
       else if (!testObject.isParentOf(reference, TEST_RELATIONSHIP_TREE.getType()))
       {
-        fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests to make sure that using BusinessDAO.addChild() works correctly.
    */
+  @Request
+  @Test
   public void testRelationshipAddChild()
   {
     RelationshipDAO relationshipDAO = testObject.addChild(reference, TEST_RELATIONSHIP_TREE.getType());
     relationshipDAO.apply();
 
-    // check database directly for ID match on parent/child
-    RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getId());
+    // check database directly for OID match on parent/child
+    RelationshipDAOIF rel = RelationshipDAOFactory.get(relationshipDAO.getOid());
     if (rel == null)
     {
-      fail("RelationshipFactory.get() returned null");
+      Assert.fail("RelationshipFactory.get() returned null");
     }
 
-    if (rel.getParentId().compareTo(testObject.getId()) != 0 || rel.getChildId().compareTo(reference.getId()) != 0)
+    if (rel.getParentOid().compareTo(testObject.getOid()) != 0 || rel.getChildOid().compareTo(reference.getOid()) != 0)
     {
-      fail("BusinessDAO.addParent() did not correctly save the information to the database.");
+      Assert.fail("BusinessDAO.addParent() did not correctly save the information to the database.");
     }
 
     // check if caching is disabled and if it is, the cache should hold nothing
@@ -573,33 +524,33 @@ public class RelationshipTest extends TestCase
     if (Integer.parseInt(dataArr[0].getValue(EntityCacheMaster.CACHE_CODE)) == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
     {
       // make sure cache holds nothing for children objects of the relationship
-      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (childList.size() != ObjectCache.getChildren(testObject.getId(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
+      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (childList.size() != ObjectCache.getChildren(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
       }
 
       // make sure cache holds nothing for parent objects of the relationship
-      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (parentList.size() != ObjectCache.getParents(reference.getId(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
+      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (parentList.size() != ObjectCache.getParents(reference.getOid(), TEST_RELATIONSHIP_TREE.getType()).size() - 1)
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
       }
     }
     else
     {
       // make sure cache holds nothing for children objects of the relationship
-      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (childList.size() == ObjectCache.getChildren(testObject.getId(), TEST_RELATIONSHIP_TREE.getType()).size())
+      List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (childList.size() == ObjectCache.getChildren(testObject.getOid(), TEST_RELATIONSHIP_TREE.getType()).size())
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
       }
 
       // make sure cache holds nothing for parent objects of the relationship
-      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getId(), TEST_RELATIONSHIP_TREE.getType());
-      if (parentList.size() == ObjectCache.getParents(reference.getId(), TEST_RELATIONSHIP_TREE.getType()).size())
+      List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(reference.getOid(), TEST_RELATIONSHIP_TREE.getType());
+      if (parentList.size() == ObjectCache.getParents(reference.getOid(), TEST_RELATIONSHIP_TREE.getType()).size())
       {
-        fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
+        Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
       }
     }
 
@@ -607,22 +558,24 @@ public class RelationshipTest extends TestCase
     {
       if (!reference.isChildOf(testObject, TEST_RELATIONSHIP_TREE.getType()))
       {
-        fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
       else if (!testObject.isParentOf(reference, TEST_RELATIONSHIP_TREE.getType()))
       {
-        fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Deletes a relationship between a parent and child
    */
+  @Request
+  @Test
   public void testRelationshipDelete()
   {
     // create the test to be deleted
@@ -635,20 +588,20 @@ public class RelationshipTest extends TestCase
     relDAO.apply();
 
     // number of children
-    int numChildren = ObjectCache.getChildren(uniqueParent1.getId(), TEST_RELATIONSHIP_TREE.getType()).size();
+    int numChildren = ObjectCache.getChildren(uniqueParent1.getOid(), TEST_RELATIONSHIP_TREE.getType()).size();
 
     // number of parents
-    int numParents = ObjectCache.getParents(uniqueChild1.getId(), TEST_RELATIONSHIP_TREE.getType()).size();
+    int numParents = ObjectCache.getParents(uniqueChild1.getOid(), TEST_RELATIONSHIP_TREE.getType()).size();
 
     TestFixtureFactory.delete(relDAO);
 
     // this should throw an exception since the relationship has been deleted
     try
     {
-      RelationshipDAO.get(relDAO.getId());
+      RelationshipDAO.get(relDAO.getOid());
       uniqueChild1.delete();
       uniqueParent1.delete();
-      fail("Relationship.delete() didn't work as expected. Relationship.get() didn't throw an error!");
+      Assert.fail("Relationship.delete() didn't work as expected. Relationship.get() didn't throw an error!");
     }
     catch (DataAccessException e)
     {
@@ -658,12 +611,12 @@ public class RelationshipTest extends TestCase
     // this should return null since there is no relationship
     try
     {
-      if (RelationshipDAOFactory.get(relDAO.getId()) != null)
+      if (RelationshipDAOFactory.get(relDAO.getOid()) != null)
       {
         // clean up
         uniqueChild1.delete();
         uniqueParent1.delete();
-        fail("Relationship.delete() didn't work as expected. RelationshipFactory.get() returns the relationship that should have been deleted.");
+        Assert.fail("Relationship.delete() didn't work as expected. RelationshipFactory.get() returns the relationship that should have been deleted.");
       }
     }
     catch (DataNotFoundException e)
@@ -673,25 +626,25 @@ public class RelationshipTest extends TestCase
 
     // the cache should hold nothing for children since the relationship was
     // deleted
-    List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(uniqueParent1.getId(), TEST_RELATIONSHIP_TREE.getType());
+    List<RelationshipDAOIF> childList = ObjectCache.getChildrenFromCache(uniqueParent1.getOid(), TEST_RELATIONSHIP_TREE.getType());
     if (childList.size() != numChildren - 1)
     {
       // clean up
       uniqueChild1.delete();
       uniqueParent1.delete();
-      fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
+      Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildrenFromCache()");
     }
 
     // the cache should hold nothing for parents since the relationship was
     // deleted
-    List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(uniqueChild1.getId(), TEST_RELATIONSHIP_TREE.getType());
+    List<RelationshipDAOIF> parentList = ObjectCache.getParentsFromCache(uniqueChild1.getOid(), TEST_RELATIONSHIP_TREE.getType());
     if (parentList.size() != numParents - 1)
     {
 
       // clean up
       uniqueChild1.delete();
       uniqueParent1.delete();
-      fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
+      Assert.fail("BusinessDAO.addParent() cached a relationship when it shouldn't have..." + "from RelationshipCache.getChildFromCache()");
     }
 
     // the below tests should fail
@@ -703,14 +656,14 @@ public class RelationshipTest extends TestCase
         // clean up
         uniqueChild1.delete();
         uniqueParent1.delete();
-        fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isChildOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
       else if (uniqueParent1.isParentOf(uniqueChild1, TEST_RELATIONSHIP_TREE.getType()))
       {
         // clean up
         uniqueChild1.delete();
         uniqueParent1.delete();
-        fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
+        Assert.fail("BusinessDAO.isParentOf() did not correctly identify the parent<->child relationship when adding a parent.");
       }
     }
     catch (DataAccessException e)
@@ -718,7 +671,7 @@ public class RelationshipTest extends TestCase
       // clean up
       uniqueChild1.delete();
       uniqueParent1.delete();
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
 
     // clean up
@@ -731,6 +684,8 @@ public class RelationshipTest extends TestCase
    * TEST_RELATIONSHIP.getType(), that the MdBusiness for storing attributes has
    * the same number of instance.
    */
+  @Request
+  @Test
   public void testMdBusinessCorrectNumberOfInstances()
   {
     // create 3 parent objects of type TEST
@@ -750,13 +705,13 @@ public class RelationshipTest extends TestCase
     child3.apply();
 
     // now create 3 new relationships of type TEST_RELATIONSHIP.getType()
-    RelationshipDAO rel1 = parent1.addChild(child1.getId(), TEST_RELATIONSHIP_TREE.getType());
+    RelationshipDAO rel1 = parent1.addChild(child1.getOid(), TEST_RELATIONSHIP_TREE.getType());
     rel1.apply();
 
-    RelationshipDAO rel2 = parent2.addChild(child2.getId(), TEST_RELATIONSHIP_TREE.getType());
+    RelationshipDAO rel2 = parent2.addChild(child2.getOid(), TEST_RELATIONSHIP_TREE.getType());
     rel2.apply();
 
-    RelationshipDAO rel3 = parent3.addChild(child3.getId(), TEST_RELATIONSHIP_TREE.getType());
+    RelationshipDAO rel3 = parent3.addChild(child3.getOid(), TEST_RELATIONSHIP_TREE.getType());
     rel3.apply();
 
     // clean up
@@ -774,6 +729,8 @@ public class RelationshipTest extends TestCase
    * ENTITY_ATTRIBUTE was created where the parent is the MdBusiness and the
    * child is the MdAttribute.
    */
+  @Request
+  @Test
   public void testAddAttributeToMdRelationship()
   {
     MdRelationshipDAOIF test_relationship = MdRelationshipDAO.getMdRelationshipDAO(TEST_RELATIONSHIP_TREE.getType());
@@ -784,7 +741,7 @@ public class RelationshipTest extends TestCase
     MdAttributeCharacterDAO attr = MdAttributeCharacterDAO.newInstance();
     attr.setValue(MdAttributeCharacterInfo.NAME, "teaches");
     attr.setValue(MdAttributeCharacterInfo.SIZE, "128");
-    attr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, test_relationship.getId());
+    attr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, test_relationship.getOid());
     attr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     attr.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     attr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Teaches a");
@@ -799,21 +756,21 @@ public class RelationshipTest extends TestCase
     // only added one!)
     if (attributes.size() != numOfDefinedAttributes + 1)
     {
-      fail("The MdRelationship did not register the correct number of attributes");
+      Assert.fail("The MdRelationship did not register the correct number of attributes");
     }
 
     // now compare for validity
     boolean foundMatch = false;
     for (MdAttributeConcreteDAOIF mdAttribute : attributes)
     {
-      if (attr.getId().compareTo(mdAttribute.getId()) == 0)
+      if (attr.getOid().compareTo(mdAttribute.getOid()) == 0)
       {
         foundMatch = true;
       }
     }
     if (!foundMatch)
     {
-      fail("The actual and potential attribute ids didn't match.");
+      Assert.fail("The actual and potential attribute ids didn't match.");
     }
 
     // verify that a relationship of type CLASS_ATTRIBUTE was created
@@ -824,7 +781,7 @@ public class RelationshipTest extends TestCase
     // length must be one
     if (relations.size() != numOfDefinedAttributes + 1)
     {
-      fail(TEST_RELATIONSHIP_TREE.getType() + " failed to have any children of relationship type " + RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      Assert.fail(TEST_RELATIONSHIP_TREE.getType() + " failed to have any children of relationship type " + RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
     }
 
     // compare ids
@@ -832,14 +789,14 @@ public class RelationshipTest extends TestCase
     for (RelationshipDAOIF relation : relations)
     {
       BusinessDAOIF potentialAttrIF = relation.getChild();
-      if (potentialAttrIF.getId().compareTo(attr.getId()) == 0)
+      if (potentialAttrIF.getOid().compareTo(attr.getOid()) == 0)
       {
         foundMatch = true;
       }
     }
     if (!foundMatch)
     {
-      fail("A relationship of type " + RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType() + " failed to be created between " + TEST_RELATIONSHIP_TREE.getType() + " and " + TEST_RELATIONSHIP_TREE.getType() + ".TEACHES");
+      Assert.fail("A relationship of type " + RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType() + " failed to be created between " + TEST_RELATIONSHIP_TREE.getType() + " and " + TEST_RELATIONSHIP_TREE.getType() + ".TEACHES");
     }
 
     // Now create an instance of TEST_RELATIONSHIP.getType() and makes sure
@@ -854,14 +811,14 @@ public class RelationshipTest extends TestCase
     relDAO.apply();
     MdAttributeConcreteDAOIF attrIF = relDAO.getMdAttributeDAO("teaches");
 
-    if (attrIF.getId().compareTo(attr.getId()) != 0)
+    if (attrIF.getOid().compareTo(attr.getOid()) != 0)
     {
 
       // clean up
       professor.delete();
       student.delete();
       attr.delete();
-      fail("Could not retrieve the attribute " + TEST_RELATIONSHIP_TREE.getType() + ".TEACHES for relationship " + TEST_RELATIONSHIP_TREE.getType());
+      Assert.fail("Could not retrieve the attribute " + TEST_RELATIONSHIP_TREE.getType() + ".TEACHES for relationship " + TEST_RELATIONSHIP_TREE.getType());
     }
 
     // clean up
@@ -874,6 +831,8 @@ public class RelationshipTest extends TestCase
    * 1) Verify the MdRelationship object is deleted 2) Verify that all instances
    * of the relationship have been deleted.
    */
+  @Request
+  @Test
   public void testDeleteRelationshipCascading()
   {
     MdBusinessDAOIF testType = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -896,15 +855,14 @@ public class RelationshipTest extends TestCase
     teaches.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     teaches.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     teaches.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    teaches.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    teaches.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     teaches.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     teaches.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "\"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" class");
-    teaches.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    teaches.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     teaches.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     teaches.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
     teaches.setValue(MdTreeInfo.PARENT_METHOD, "Teacher");
     teaches.setValue(MdTreeInfo.CHILD_METHOD, "Student");
-    teaches.setGenerateMdController(false);
     teaches.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     teaches.apply();
 
@@ -912,7 +870,7 @@ public class RelationshipTest extends TestCase
     MdAttributeCharacterDAO attr = MdAttributeCharacterDAO.newInstance();
     attr.setValue(MdAttributeCharacterInfo.NAME, "flunk");
     attr.setValue(MdAttributeCharacterInfo.SIZE, "128");
-    attr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, teaches.getId());
+    attr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, teaches.getOid());
     attr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     attr.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "F-");
     attr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Flunkee");
@@ -931,7 +889,7 @@ public class RelationshipTest extends TestCase
     // Now make sure that all instances of the relationship have been deleted.
     if (Database.tableExists(teaches.getTableName()))
     {
-      fail("Not all instances of " + teachesRelationship.getType() + " have been correctly deleted.");
+      Assert.fail("Not all instances of " + teachesRelationship.getType() + " have been correctly deleted.");
     }
 
     // clean up
@@ -943,6 +901,8 @@ public class RelationshipTest extends TestCase
    * Tests if a composition relationship holds true. This means if a parent in a
    * relationship is deleted, then all of the children must be deleted as well.
    */
+  @Request
+  @Test
   public void testRelationshipComposition()
   {
     // Create the new data types Teacher, Student, and Pencil
@@ -967,7 +927,6 @@ public class RelationshipTest extends TestCase
       teacherDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       teacherDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       teacherDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      teacherDO.setGenerateMdController(false);
       teacherDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       teacherDO.apply();
 
@@ -982,7 +941,6 @@ public class RelationshipTest extends TestCase
       studentDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       studentDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       studentDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      studentDO.setGenerateMdController(false);
       studentDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       studentDO.apply();
 
@@ -997,7 +955,6 @@ public class RelationshipTest extends TestCase
       pencilDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       pencilDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       pencilDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      pencilDO.setGenerateMdController(false);
       pencilDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       pencilDO.apply();
 
@@ -1012,7 +969,6 @@ public class RelationshipTest extends TestCase
       graphiteDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       graphiteDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       graphiteDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      graphiteDO.setGenerateMdController(false);
       graphiteDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       graphiteDO.apply();
 
@@ -1028,15 +984,14 @@ public class RelationshipTest extends TestCase
       teachesREL.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       teachesREL.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       teachesREL.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      teachesREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, teacherDO.getId());
+      teachesREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, teacherDO.getOid());
       teachesREL.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       teachesREL.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, teacherClass.getTypeName() + " teaches a student");
-      teachesREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, studentDO.getId());
+      teachesREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, studentDO.getOid());
       teachesREL.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
       teachesREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, studentClass.getTypeName() + " is taught by a teacher");
       teachesREL.setValue(MdTreeInfo.PARENT_METHOD, "Teacher");
       teachesREL.setValue(MdTreeInfo.CHILD_METHOD, "Student");
-      teachesREL.setGenerateMdController(false);
       teachesREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       teachesREL.apply();
 
@@ -1051,15 +1006,14 @@ public class RelationshipTest extends TestCase
       writesREL.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       writesREL.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       writesREL.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      writesREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, studentDO.getId());
+      writesREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, studentDO.getOid());
       writesREL.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       writesREL.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A student writes with a pencil");
-      writesREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, pencilDO.getId());
+      writesREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, pencilDO.getOid());
       writesREL.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       writesREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A pencil is used by a student to write with");
       writesREL.setValue(MdTreeInfo.PARENT_METHOD, "Writer");
       writesREL.setValue(MdTreeInfo.CHILD_METHOD, "Pencil1");
-      writesREL.setGenerateMdController(false);
       writesREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       writesREL.apply();
 
@@ -1074,15 +1028,14 @@ public class RelationshipTest extends TestCase
       mediumREL.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       mediumREL.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mediumREL.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mediumREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, pencilDO.getId());
+      mediumREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, pencilDO.getOid());
       mediumREL.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       mediumREL.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A pencil's medium is graphite");
-      mediumREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, graphiteDO.getId());
+      mediumREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, graphiteDO.getOid());
       mediumREL.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       mediumREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Graphite is a pencil's medium");
       mediumREL.setValue(MdTreeInfo.PARENT_METHOD, "Pencil2");
       mediumREL.setValue(MdTreeInfo.CHILD_METHOD, "Graphite");
-      mediumREL.setGenerateMdController(false);
       mediumREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mediumREL.apply();
 
@@ -1154,26 +1107,26 @@ public class RelationshipTest extends TestCase
       List<String> studentIdList = EntityDAO.getEntityIdsDB(studentClass.getType());
       if (studentIdList.size() != 0)
       {
-        fail("Deleting the parent (teacher) in a composition relationship did not delete the children.");
+        Assert.fail("Deleting the parent (teacher) in a composition relationship did not delete the children.");
       }
 
       // pencil check
       List<String> pencilIdList = EntityDAO.getEntityIdsDB(pencilClass.getType());
       if (pencilIdList.size() != 0)
       {
-        fail("Deleting the parent (student) in a composition relationship did not delete the children.");
+        Assert.fail("Deleting the parent (student) in a composition relationship did not delete the children.");
       }
 
       // graphite check (should be 3 since relationship is not composition)
       List<String> graphiteIdList = EntityDAO.getEntityIdsDB(graphiteClass.getType());
       if (graphiteIdList.size() != 3)
       {
-        fail("The graphite objects were deleted in a composition relationship that evaluated to false.");
+        Assert.fail("The graphite objects were deleted in a composition relationship that evaluated to false.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1203,6 +1156,8 @@ public class RelationshipTest extends TestCase
    * A test to make sure that a instance of a struct cannot partake in a
    * relationship.
    */
+  @Request
+  @Test
   public void testBasicInRelationship()
   {
     MdBusinessDAO someDO = null;
@@ -1219,7 +1174,6 @@ public class RelationshipTest extends TestCase
     someDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     someDO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     someDO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    someDO.setGenerateMdController(false);
     someDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     someDO.apply();
 
@@ -1232,7 +1186,6 @@ public class RelationshipTest extends TestCase
     some2DO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     some2DO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     some2DO.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    some2DO.setGenerateMdController(false);
     some2DO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     some2DO.apply();
 
@@ -1243,7 +1196,6 @@ public class RelationshipTest extends TestCase
     structDO.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     structDO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, structEntityInfo.getTypeName() + " Test Type");
     structDO.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
-    structDO.setGenerateMdController(false);
     structDO.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     structDO.apply();
 
@@ -1254,15 +1206,14 @@ public class RelationshipTest extends TestCase
     badREL.setValue(MdTreeInfo.PACKAGE, badRelationship.getPackageName());
     badREL.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A bad Relationship");
     badREL.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    badREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, someDO.getId());
+    badREL.setValue(MdTreeInfo.PARENT_MD_BUSINESS, someDO.getOid());
     badREL.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     badREL.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 1");
     badREL.setValue(MdTreeInfo.PARENT_METHOD, "parentMethod");
-    badREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, some2DO.getId());
+    badREL.setValue(MdTreeInfo.CHILD_MD_BUSINESS, some2DO.getOid());
     badREL.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     badREL.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     badREL.setValue(MdTreeInfo.CHILD_METHOD, "childMethod");
-    badREL.setGenerateMdController(false);  
     badREL.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     badREL.apply();
@@ -1279,10 +1230,10 @@ public class RelationshipTest extends TestCase
 
     try
     {
-      RelationshipDAO relDAO = some.addChild(structDAO.getId(), badRelationship.getType());
+      RelationshipDAO relDAO = some.addChild(structDAO.getOid(), badRelationship.getType());
       relDAO.apply();
 
-      fail("A StructDAO was able to partake in a relationship.");
+      Assert.fail("A StructDAO was able to partake in a relationship.");
     }
     catch (RunwayException e)
     {
@@ -1312,6 +1263,8 @@ public class RelationshipTest extends TestCase
    * removed, but all the relationships of the children as well (since they will
    * be deleted too).
    */
+  @Request
+  @Test
   public void testDeleteMdRelationships()
   {
     MdBusinessDAO A = null;
@@ -1342,7 +1295,6 @@ public class RelationshipTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      A.setGenerateMdController(false);  
       A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
@@ -1355,8 +1307,7 @@ public class RelationshipTest extends TestCase
       B.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       B.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       B.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      B.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getId());
-      B.setGenerateMdController(false);  
+      B.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getOid());
       B.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       B.apply();
 
@@ -1369,8 +1320,7 @@ public class RelationshipTest extends TestCase
       C.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       C.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       C.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      C.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getId());
-      C.setGenerateMdController(false);  
+      C.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, A.getOid());
       C.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       C.apply();
 
@@ -1383,8 +1333,7 @@ public class RelationshipTest extends TestCase
       D.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       D.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       D.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      D.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, B.getId());
-      D.setGenerateMdController(false);  
+      D.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, B.getOid());
       D.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       D.apply();
 
@@ -1397,7 +1346,6 @@ public class RelationshipTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      W.setGenerateMdController(false);  
       W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
@@ -1410,8 +1358,7 @@ public class RelationshipTest extends TestCase
       X.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       X.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       X.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      X.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getId());
-      X.setGenerateMdController(false);  
+      X.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getOid());
       X.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       X.apply();
 
@@ -1424,8 +1371,7 @@ public class RelationshipTest extends TestCase
       Y.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       Y.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       Y.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      Y.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getId());
-      Y.setGenerateMdController(false);  
+      Y.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, W.getOid());
       Y.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       Y.apply();
 
@@ -1438,8 +1384,7 @@ public class RelationshipTest extends TestCase
       Z.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       Z.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       Z.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      Z.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, X.getId());
-      Z.setGenerateMdController(false);  
+      Z.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, X.getOid());
       Z.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       Z.apply();
 
@@ -1454,15 +1399,14 @@ public class RelationshipTest extends TestCase
       AtoW.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       AtoW.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       AtoW.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getId());
+      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getOid());
       AtoW.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent A");
-      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getId());
+      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getOid());
       AtoW.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
       AtoW.setValue(MdTreeInfo.PARENT_METHOD, "A");
       AtoW.setValue(MdTreeInfo.CHILD_METHOD, "W");
-      AtoW.setGenerateMdController(false);  
       AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
@@ -1475,15 +1419,14 @@ public class RelationshipTest extends TestCase
       BtoX.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       BtoX.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       BtoX.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      BtoX.setValue(MdTreeInfo.PARENT_MD_BUSINESS, B.getId());
+      BtoX.setValue(MdTreeInfo.PARENT_MD_BUSINESS, B.getOid());
       BtoX.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       BtoX.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent B");
-      BtoX.setValue(MdTreeInfo.CHILD_MD_BUSINESS, X.getId());
+      BtoX.setValue(MdTreeInfo.CHILD_MD_BUSINESS, X.getOid());
       BtoX.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       BtoX.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child X");
       BtoX.setValue(MdTreeInfo.PARENT_METHOD, "B");
       BtoX.setValue(MdTreeInfo.CHILD_METHOD, "X");
-      BtoX.setGenerateMdController(false);  
       BtoX.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       BtoX.apply();
 
@@ -1496,15 +1439,14 @@ public class RelationshipTest extends TestCase
       CtoY.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       CtoY.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       CtoY.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      CtoY.setValue(MdTreeInfo.PARENT_MD_BUSINESS, C.getId());
+      CtoY.setValue(MdTreeInfo.PARENT_MD_BUSINESS, C.getOid());
       CtoY.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       CtoY.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent C");
-      CtoY.setValue(MdTreeInfo.CHILD_MD_BUSINESS, Y.getId());
+      CtoY.setValue(MdTreeInfo.CHILD_MD_BUSINESS, Y.getOid());
       CtoY.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       CtoY.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child Y");
       CtoY.setValue(MdTreeInfo.PARENT_METHOD, "C");
       CtoY.setValue(MdTreeInfo.CHILD_METHOD, "Y");
-      CtoY.setGenerateMdController(false);  
       CtoY.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       CtoY.apply();
 
@@ -1517,15 +1459,14 @@ public class RelationshipTest extends TestCase
       DtoZ.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       DtoZ.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       DtoZ.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      DtoZ.setValue(MdTreeInfo.PARENT_MD_BUSINESS, D.getId());
+      DtoZ.setValue(MdTreeInfo.PARENT_MD_BUSINESS, D.getOid());
       DtoZ.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       DtoZ.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent D");
-      DtoZ.setValue(MdTreeInfo.CHILD_MD_BUSINESS, Z.getId());
+      DtoZ.setValue(MdTreeInfo.CHILD_MD_BUSINESS, Z.getOid());
       DtoZ.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       DtoZ.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child Z");
       DtoZ.setValue(MdTreeInfo.PARENT_METHOD, "D");
       DtoZ.setValue(MdTreeInfo.CHILD_METHOD, "Z");
-      DtoZ.setGenerateMdController(false);  
       DtoZ.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       DtoZ.apply();
 
@@ -1541,7 +1482,7 @@ public class RelationshipTest extends TestCase
         Y.getParents(CtoY_REL.getType());
         Z.getParents(DtoZ_REL.getType());
 
-        fail("A supertype was deleted, but the children still had relationships.");
+        Assert.fail("A supertype was deleted, but the children still had relationships.");
       }
       catch (DataNotFoundException e)
       {
@@ -1550,7 +1491,7 @@ public class RelationshipTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1564,6 +1505,8 @@ public class RelationshipTest extends TestCase
   /**
    * Test to ensure that a relationship doesn't utilize an MRU cache algorithm.
    */
+  @Request
+  @Test
   public void testRelationshipMRU()
   {
     MdBusinessDAO A = null;
@@ -1581,7 +1524,6 @@ public class RelationshipTest extends TestCase
       A.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       A.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       A.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      A.setGenerateMdController(false);  
       A.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       A.apply();
 
@@ -1594,7 +1536,6 @@ public class RelationshipTest extends TestCase
       W.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       W.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       W.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      W.setGenerateMdController(false);  
       W.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       W.apply();
 
@@ -1602,23 +1543,22 @@ public class RelationshipTest extends TestCase
       AtoW = MdTreeDAO.newInstance();
       AtoW.setValue(MdTreeInfo.NAME, AtoW_REL.getTypeName());
       AtoW.setValue(MdTreeInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      AtoW.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       AtoW.setValue(MdTreeInfo.PACKAGE, AtoW_REL.getPackageName());
       AtoW.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A to W");
       AtoW.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       AtoW.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       AtoW.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getId());
+      AtoW.setValue(MdTreeInfo.PARENT_MD_BUSINESS, A.getOid());
       AtoW.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent A");
-      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getId());
+      AtoW.setValue(MdTreeInfo.CHILD_MD_BUSINESS, W.getOid());
       AtoW.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
       AtoW.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child W");
-      AtoW.setGenerateMdController(false);  
       AtoW.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       AtoW.apply();
 
-      fail("A relationship was incorrectly able to have an MRU cache algorithm.");
+      Assert.fail("A relationship was incorrectly able to have an MRU cache algorithm.");
     }
     catch (AttributeValueException e)
     {
@@ -1640,6 +1580,8 @@ public class RelationshipTest extends TestCase
   /**
    * Test to ensure that a relationship doesn't utilize an MRU cache algorithm.
    */
+  @Request
+  @Test
   public void testRelationshipInRelationshipMappingCache()
   {
     TypeInfo TEST_CACHED_RELATIONSHIP = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestCachedRelationship");
@@ -1658,16 +1600,15 @@ public class RelationshipTest extends TestCase
     mdTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdTree.setValue(MdTreeInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getId());
+    mdTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, testType.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
-    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getId());
+    mdTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceType.getOid());
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "1");
     mdTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
-    mdTree.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    mdTree.setValue(MdTreeInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
     mdTree.setValue(MdTreeInfo.PARENT_METHOD, "CachedParent");
     mdTree.setValue(MdTreeInfo.CHILD_METHOD, "CachedChild");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -1676,7 +1617,7 @@ public class RelationshipTest extends TestCase
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Character");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdTree.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdTree.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttrChar.apply();
 
@@ -1694,7 +1635,7 @@ public class RelationshipTest extends TestCase
       relationshipDAO.apply();
 
       // Fetch the object (from the cache) and change the attribute value()
-      relationshipDAO = RelationshipDAO.get(relationshipDAO.getId()).getRelationshipDAO();
+      relationshipDAO = RelationshipDAO.get(relationshipDAO.getOid()).getRelationshipDAO();
       // perform a deep clone. This is how it would work in real life, as people
       // should not be allowed to modify the object that is cached.
       relationshipDAO = relationshipDAO.getRelationshipDAO();
@@ -1703,30 +1644,30 @@ public class RelationshipTest extends TestCase
 
       // Fetch the object from the cache and verify that the value was set
       // correctly
-      relationshipDAO = RelationshipDAO.get(relationshipDAO.getId()).getRelationshipDAO();
+      relationshipDAO = RelationshipDAO.get(relationshipDAO.getOid()).getRelationshipDAO();
 
-      if (!relationshipDAO.getValue("someCharacter").equals("value 2"))
+      if (!relationshipDAO.getAttribute("someCharacter").getValue().equals("value 2"))
       {
-        fail("An attribute was modified on an instance of a relationship whose type is cached.  The ObjectCache did not contain the right value.");
+        Assert.fail("An attribute was modified on an instance of a relationship whose type is cached.  The ObjectCache did not contain the right value.");
       }
 
       List<RelationshipDAOIF> relationshipArray = testClassParent.getChildren(TEST_CACHED_RELATIONSHIP.getType());
 
       if (relationshipArray.size() == 0)
       {
-        fail("BusinessDAO.getChildren() has a length of zero when it should have a length of one.");
+        Assert.fail("BusinessDAO.getChildren() has a length of zero when it should have a length of one.");
       }
 
       RelationshipDAOIF relationshipIF = relationshipArray.get(0);
 
       if (!relationshipIF.getValue("someCharacter").equals("value 2"))
       {
-        fail("An attribute was modified on an instance of a relationship whose type is cached.  The RelationshipMappingCache did not contain the right value.");
+        Assert.fail("An attribute was modified on an instance of a relationship whose type is cached.  The RelationshipMappingCache did not contain the right value.");
       }
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1751,6 +1692,8 @@ public class RelationshipTest extends TestCase
    * Test to ensure that you cannot violate a cardinality defined on a parent
    * type.
    */
+  @Request
+  @Test
   public void testRelationshipCardinalityConflictWithSuperAbstractRelationship1()
   {
     BusinessDAO testBusinessDAO = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1778,7 +1721,7 @@ public class RelationshipTest extends TestCase
     {
       relationishipDAO = testBusinessDAO.addChild(rDO3, TEST_CONCRETE_TREE_RELATIONSHIP1.getType());
       relationishipDAO.apply();
-      fail("A parent relationship type cardinality was violated for the parent object type.");
+      Assert.fail("A parent relationship type cardinality was violated for the parent object type.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -1813,6 +1756,8 @@ public class RelationshipTest extends TestCase
    * Test to ensure that you cannot violate a cardinality defined on a parent
    * type.
    */
+  @Request
+  @Test
   public void testRelationshipCardinalityConflictWithSuperAbstractRelationship2()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
@@ -1831,7 +1776,7 @@ public class RelationshipTest extends TestCase
     {
       relationishipDAO = reference.addParent(testObject1, TEST_CONCRETE_TREE_RELATIONSHIP2.getType());
       relationishipDAO.apply();
-      fail("A parent relationship type cardinality was violated for the child object type.");
+      Assert.fail("A parent relationship type cardinality was violated for the child object type.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -1858,6 +1803,8 @@ public class RelationshipTest extends TestCase
    * Test to ensure that you cannot violate a cardinality defined on a parent
    * type.
    */
+  @Request
+  @Test
   public void testFindValidRelationshipByParentAndChild()
   {
 
@@ -1866,7 +1813,7 @@ public class RelationshipTest extends TestCase
 
     try
     {
-      RelationshipDAO.get(mdBusinessIFMdType.getId(), mdBusinessIFMdEntity.getId(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
+      RelationshipDAO.get(mdBusinessIFMdType.getOid(), mdBusinessIFMdEntity.getOid(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
     }
     catch (DataNotFoundException e)
     {
@@ -1878,6 +1825,8 @@ public class RelationshipTest extends TestCase
    * Test to ensure that you cannot violate a cardinality defined on a parent
    * type.
    */
+  @Request
+  @Test
   public void testFindInValidRelationshipByParentAndChild()
   {
     MdBusinessDAOIF mdBusinessIFCommon = MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
@@ -1885,7 +1834,7 @@ public class RelationshipTest extends TestCase
 
     try
     {
-      RelationshipDAO.get(mdBusinessIFCommon.getId(), mdBusinessIFMdBusiness.getId(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
+      RelationshipDAO.get(mdBusinessIFCommon.getOid(), mdBusinessIFMdBusiness.getOid(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
     }
     catch (DataNotFoundException e)
     {
@@ -1898,6 +1847,8 @@ public class RelationshipTest extends TestCase
    * the same result as separately querying for all instances of the concrete
    * sub relationships.
    */
+  @Request
+  @Test
   public void testGetAllChildSubRelationshipInstances()
   {
     MdBusinessDAOIF mdBusinessIFMetadata = MdBusinessDAO.getMdBusinessDAO(MetadataInfo.CLASS);
@@ -1923,7 +1874,7 @@ public class RelationshipTest extends TestCase
     // instances fetched per type.
     if (totalRelationshipCount != relationshipCount)
     {
-      fail("The core failed to retrieve all child instances of relationships that are subtypes of a super relationship.");
+      Assert.fail("The core failed to retrieve all child instances of relationships that are subtypes of a super relationship.");
     }
 
   }
@@ -1933,6 +1884,8 @@ public class RelationshipTest extends TestCase
    * the same result as separately querying for all instances of the concrete
    * sub relationships.
    */
+  @Request
+  @Test
   public void testGetAllParentSubRelationshipInstances()
   {
     MdBusinessDAOIF mdTypeCacheMasterIfCommon = MdBusinessDAO.getMdBusinessDAO(EntityTypes.ENTITY_CACHE_MASTER.getType());
@@ -1959,7 +1912,7 @@ public class RelationshipTest extends TestCase
     // instances fetched per type.
     if (totalRelationshipCount != relationshipCount)
     {
-      fail("The core failed to retrieve all parent instances of relationships that are subtypes of a super relationship.");
+      Assert.fail("The core failed to retrieve all parent instances of relationships that are subtypes of a super relationship.");
     }
   }
 
@@ -1967,6 +1920,8 @@ public class RelationshipTest extends TestCase
    * Tests to make sure that a duplicate relationship can be created between a
    * parent and a child.
    */
+  @Request
+  @Test
   public void testDuplicateParentChildForRelationship()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -1982,7 +1937,7 @@ public class RelationshipTest extends TestCase
     }
     catch (RelationshipConstraintException e)
     {
-      fail("A relationship between a parent and a child was not created, even though it should be allowed. " + "A relationship between the parent and the child already exists, but this relationship type should allow duplicates.");
+      Assert.fail("A relationship between a parent and a child was not created, even though it should be allowed. " + "A relationship between the parent and the child already exists, but this relationship type should allow duplicates.");
     }
     finally
     {
@@ -1995,6 +1950,8 @@ public class RelationshipTest extends TestCase
    * Tests to make sure that a duplicate relationship can be created between a
    * parent and a child.
    */
+  @Request
+  @Test
   public void testDuplicateParentChildTree()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -2008,7 +1965,7 @@ public class RelationshipTest extends TestCase
     {
       testObject1.addChild(reference1, TEST_RELATIONSHIP_GRAPH.getType()).apply();
 
-      fail("A relationship between a parent and a child was created, but the relationship type is a tree and it therefore should not be allowed.");
+      Assert.fail("A relationship between a parent and a child was created, but the relationship type is a tree and it therefore should not be allowed.");
     }
     catch (RelationshipConstraintException e)
     {
@@ -2025,6 +1982,8 @@ public class RelationshipTest extends TestCase
    * Tests if the businessDAO.removeAllChildren() method removes all instances
    * of a parent-child paring.
    */
+  @Request
+  @Test
   public void testRemoveAllChildren()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -2050,21 +2009,21 @@ public class RelationshipTest extends TestCase
       List<RelationshipDAOIF> relationshipIFList = testObject1.getChildren(reference1, TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() != 3)
       {
-        fail("Relationships were not properly added to the test object");
+        Assert.fail("Relationships were not properly added to the test object");
       }
 
       testObject1.removeAllChildren(reference1, TEST_RELATIONSHIP.getType());
       relationshipIFList = testObject1.getChildren(reference1, TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() != 0)
       {
-        fail("Relationships were not properly deleted from the test object");
+        Assert.fail("Relationships were not properly deleted from the test object");
       }
 
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings. \n" + e.getMessage());
+      Assert.fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings. \n" + e.getMessage());
     }
     finally
     {
@@ -2077,6 +2036,8 @@ public class RelationshipTest extends TestCase
    * Tests if the businessDAO.removeChild() method removes an instances of a
    * parent-child paring.
    */
+  @Request
+  @Test
   public void testRemoveChildRelationshipInstance()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -2095,13 +2056,13 @@ public class RelationshipTest extends TestCase
       List<RelationshipDAOIF> relationshipIFList = testObject1.getChildren(TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() > 0)
       {
-        fail("Relationship were not properly deleted from the test object");
+        Assert.fail("Relationship were not properly deleted from the test object");
       }
 
     }
     catch (Exception e)
     {
-      fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
+      Assert.fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
     }
     finally
     {
@@ -2114,6 +2075,8 @@ public class RelationshipTest extends TestCase
    * Tests if the businessDAO.removeAllParents() method removes all instances of
    * a parent-child paring.
    */
+  @Request
+  @Test
   public void testRemoveAllParents()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -2139,20 +2102,20 @@ public class RelationshipTest extends TestCase
       List<RelationshipDAOIF> relationshipIFList = reference1.getParents(testObject1, TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() != 3)
       {
-        fail("Relationships were not properly added to the test reference");
+        Assert.fail("Relationships were not properly added to the test reference");
       }
 
       reference1.removeAllParents(testObject1, TEST_RELATIONSHIP.getType());
       relationshipIFList = reference1.getParents(testObject1, TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() != 0)
       {
-        fail("Relationships were not properly deleted from the test reference");
+        Assert.fail("Relationships were not properly deleted from the test reference");
       }
 
     }
     catch (Exception e)
     {
-      fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
+      Assert.fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
     }
     finally
     {
@@ -2165,6 +2128,8 @@ public class RelationshipTest extends TestCase
    * Tests if the businessDAO.removeParent() method removes an instances of a
    * parent-child paring.
    */
+  @Request
+  @Test
   public void testRemoveParentRelationshipInstance()
   {
     BusinessDAO testObject1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
@@ -2183,13 +2148,13 @@ public class RelationshipTest extends TestCase
       List<RelationshipDAOIF> relationshipIFList = reference1.getParents(TEST_RELATIONSHIP.getType());
       if (relationshipIFList.size() > 0)
       {
-        fail("Relationship were not properly deleted from the test reference");
+        Assert.fail("Relationship were not properly deleted from the test reference");
       }
 
     }
     catch (Exception e)
     {
-      fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
+      Assert.fail("An exception was thrown while testing the removal of all relationships with the same parent and child instance pairings.\n" + e.getMessage());
     }
     finally
     {
@@ -2198,6 +2163,8 @@ public class RelationshipTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipWithInvalidChild()
   {
     // create the test to be deleted
@@ -2208,31 +2175,33 @@ public class RelationshipTest extends TestCase
 
     try
     {
-      RelationshipDAO relDAO = RelationshipDAO.newInstance(parent.getId(), child.getId(), TEST_RELATIONSHIP_TREE.getType());
+      RelationshipDAO relDAO = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), TEST_RELATIONSHIP_TREE.getType());
       relDAO.apply();
-      
-      fail("Able to create relationships with invalid child");
+
+      Assert.fail("Able to create relationships with invalid child");
     }
     catch (DataNotFoundException e)
     {
       // This is expected
     }
   }
-  
+
+  @Request
+  @Test
   public void testRelationshipWithInvalidParent()
   {
     // create the test to be deleted
     BusinessDAO parent = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    
+
     BusinessDAO child = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
     child.apply();
-    
+
     try
     {
-      RelationshipDAO relDAO = RelationshipDAO.newInstance(parent.getId(), child.getId(), TEST_RELATIONSHIP_TREE.getType());
+      RelationshipDAO relDAO = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), TEST_RELATIONSHIP_TREE.getType());
       relDAO.apply();
-      
-      fail("Able to create relationships with invalid parent");
+
+      Assert.fail("Able to create relationships with invalid parent");
     }
     catch (DataNotFoundException e)
     {

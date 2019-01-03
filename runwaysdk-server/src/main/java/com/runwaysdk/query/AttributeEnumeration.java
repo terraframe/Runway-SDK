@@ -44,6 +44,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -155,25 +156,25 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   }
   
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition EQ(String id)
+  public BasicCondition EQ(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionEq(this, statementPrimitive, false);
   }
 
   /**
-   * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * Compares the oid of a component for equality.
+   * @param oid oid of the object to compare.
    * @return Basic Condition object
    */
-  public BasicCondition NE(String id)
+  public BasicCondition NE(String oid)
   {
-    String formattedValue = Database.formatJavaToSQL(id, MdAttributeCharacterInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(oid, MdAttributeCharacterInfo.CLASS, false);
     StatementPrimitive statementPrimitive = new StatementPrimitive(formattedValue);
     return new BasicConditionNotEq(this, statementPrimitive, false);
   }
@@ -260,6 +261,45 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return (AttributeCharacter)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name)
+  {
+    return this.aUUID(name, null, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias user defined alias.
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias)
+  {
+    return this.aUUID(name, userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute character statement object.
+   * @param name name of the attribute.
+   * @param userDefinedAlias user defined alias.
+   * @param userDefinedDisplayLabel
+   * @return Attribute character statement object.
+   */
+  public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    
+    this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeUUIDInfo.CLASS);
+    
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    
+    return (AttributeUUID)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
   /**
    * Returns an attribute text statement object.
    * @param name name of the attribute.
@@ -992,7 +1032,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
       new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
 
     // Join the mapping table with the enumeration item master table
-    Join tableJoin = new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, MdEnumerationInfo.ITEM_ID,
+    Join tableJoin = new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, MdEnumerationInfo.ITEM_ID,
         this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
 
     this.tableJoinSet.add(enumMappingTableJoin);
@@ -1005,7 +1045,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     if (!tableName.equals(this.referenceTableName))
     {
       String tableAlias = rootQuery.getTableAlias(refAttributeNameSpace, tableName);
-      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, EntityInfo.ID, tableName, tableAlias));
+      this.tableJoinSet.add(new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, EntityInfo.OID, tableName, tableAlias));
 
       parameterTableName  = tableName;
       parameterTableAlias = tableAlias;
@@ -1271,6 +1311,10 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     {
       return this.aCharacter(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      return this.aUUID(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (attributeType.equals(MdAttributeTextInfo.CLASS))
     {
       return this.aText(attributeName, userDefinedAlias, userDefinedDisplayLabel);
@@ -1348,8 +1392,8 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   // Any
   /**
    * Checks if the enumeration attribute contains a mapping with
-   * one of the enumeration items with the given id.
-   * @param enumIds ID of an enumeration.
+   * one of the enumeration items with the given oid.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAny(String ... enumIds)
@@ -1366,8 +1410,8 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   // Not Any
   /**
    * Checks if the enumeration attribute does not contain a mapping with
-   * one of the enumeration items with the given id.
-   * @param enumIds ID of an enumeration.
+   * one of the enumeration items with the given oid.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAny(String ... enumIds)
@@ -1379,8 +1423,8 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   // All
   /**
    * Checks if the enumeration attribute contains a mapping with
-   * all of the enumeration items with the given id.
-   * @param enumIds ID of an enumeration.
+   * all of the enumeration items with the given oid.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsAll(String ... enumIds)
@@ -1409,8 +1453,8 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   // NOT All
   /**
    * Checks if the enumeration attribute does not contain a mapping with
-   * all of the enumeration items with the given id.
-   * @param enumIds ID of an enumeration.
+   * all of the enumeration items with the given oid.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition notContainsAll(String ... enumIds)
@@ -1439,8 +1483,8 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   // Exactly
   /**
    * Checks if the enumeration attribute contains a mapping with
-   * exactly the given set of the enumeration items with the given id.
-   * @param enumIds ID of an enumeration.
+   * exactly the given set of the enumeration items with the given oid.
+   * @param enumIds OID of an enumeration.
    * @return Condition representing the query constraint.
    */
   public Condition containsExactly(String ... enumIds)
@@ -1733,25 +1777,25 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Compares the id of a component for equality.
+     * Compares the oid of a component for equality.
      * This class is used only by its enclosing class and is never called by a client.  Hence
      * This method is implemented only to satisfy the contract of the super class;
-     * @param id id of the object to compare.
+     * @param oid oid of the object to compare.
      * @return null;
      */
-    public BasicCondition EQ(String id)
+    public BasicCondition EQ(String oid)
     {
       return null;
     }
 
     /**
-     * Compares the id of a component for equality.
+     * Compares the oid of a component for equality.
      * This class is used only by its enclosing class and is never called by a client.  Hence
      * This method is implemented only to satisfy the contract of the super class;
-     * @param id id of the object to compare.
+     * @param oid oid of the object to compare.
      * @return null;
      */
-    public BasicCondition NE(String id)
+    public BasicCondition NE(String oid)
     {
       return null;
     }

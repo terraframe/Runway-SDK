@@ -33,11 +33,6 @@ import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.DefaultStateExistsException;
-import com.runwaysdk.business.state.DuplicateStateDefinitionException;
-import com.runwaysdk.business.state.InvalidEntryStateException;
-import com.runwaysdk.business.state.StateException;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -82,6 +77,7 @@ import com.runwaysdk.dataaccess.metadata.InheritanceException;
 import com.runwaysdk.dataaccess.metadata.InvalidColumnNameException;
 import com.runwaysdk.dataaccess.metadata.InvalidDefinitionException;
 import com.runwaysdk.dataaccess.metadata.InvalidIdentifierException;
+import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 import com.runwaysdk.dataaccess.metadata.InvalidMRUCacheSizeException;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
@@ -180,9 +176,9 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          instantiate
    * @return The localized error message
    */
-  public static String invalidIdException(Locale locale, String id)
+  public static String invalidIdException(Locale locale, String oid)
   {
-    return getMessage(locale, "InvalidIdException", id);
+    return getMessage(locale, "InvalidIdException", oid);
   }
 
   /**
@@ -840,7 +836,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
-   * when an object is requested that does not exist (the id can not be found).
+   * when an object is requested that does not exist (the oid can not be found).
    * 
    * @param locale
    *          The desired locale
@@ -853,7 +849,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
-   * when an object is requested that does not exist (the id can not be found).
+   * when an object is requested that does not exist (the oid can not be found).
    * 
    * @param locale
    *          The desired locale
@@ -1453,44 +1449,6 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    * 
    * @param locale
    *          The desired locale
-   * @param stateMasterIF
-   *          State that the user does not have permission to grant permissions
-   *          on.
-   * @return The localized error message
-   */
-  public static String grantStatePermissionException(Locale locale, StateMasterDAOIF stateMasterIF)
-  {
-    return getMessage(locale, "GrantStatePermissionException", stateMasterIF.getDisplayLabel(locale));
-  }
-
-  /**
-   * Gets the localized {@link PermissionException} message, which is thrown
-   * when a user does not have {@link Operation.GRANT} permission for an
-   * operation on a type
-   * 
-   * @param locale
-   *          The desired locale
-   * @param mdClassIF
-   *          Class that the user does not have permission to grant permissions
-   *          on.
-   * @param mdAttributeIF
-   *          Defines the attribute.
-   * @param stateMasterIF
-   *          State of the attribute.
-   * @return The localized error message
-   */
-  public static String grantAttributeStatePermissionException(Locale locale, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF)
-  {
-    return getMessage(locale, "GrantAttributeStatePermissionException", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale), stateMasterIF.getDisplayLabel(locale));
-  }
-
-  /**
-   * Gets the localized {@link PermissionException} message, which is thrown
-   * when a user does not have {@link Operation.GRANT} permission for an
-   * operation on a type
-   * 
-   * @param locale
-   *          The desired locale
    * @param mdClassIF
    *          Class that the user does not have permission to grant permissions
    *          on.
@@ -1556,44 +1514,6 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   public static String revokeAttributePermissionException(Locale locale, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF)
   {
     return getMessage(locale, "RevokeAttributePermissionException", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale));
-  }
-
-  /**
-   * Gets the localized {@link PermissionException} message, which is thrown
-   * when a user does not have {@link Operation.GRANT} permission for an
-   * operation on a type
-   * 
-   * @param locale
-   *          The desired locale
-   * @param mdClassIF
-   *          Class that the user does not have permission to revoke permissions
-   *          on.
-   * @param mdAttributeIF
-   *          Defines the attribute.
-   * @param stateMasterIF
-   *          State of the attribute.
-   * @return The localized error message
-   */
-  public static String revokeAttributeStatePermissionException(Locale locale, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF, StateMasterDAOIF stateMasterIF)
-  {
-    return getMessage(locale, "RevokeAttributeStatePermissionException", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale), stateMasterIF.getDisplayLabel(locale));
-  }
-
-  /**
-   * Gets the localized {@link PermissionException} message, which is thrown
-   * when a user does not have {@link Operation.GRANT} permission for an
-   * operation on a type
-   * 
-   * @param locale
-   *          The desired locale
-   * @param stateMasterIF
-   *          State that the user does not have permission to revoke permissions
-   *          on.
-   * @return The localized error message
-   */
-  public static String revokeStatePermissionException(Locale locale, StateMasterDAOIF stateMasterIF)
-  {
-    return getMessage(locale, "RevokeStatePermissionException", stateMasterIF.getDisplayLabel(locale));
   }
 
   /**

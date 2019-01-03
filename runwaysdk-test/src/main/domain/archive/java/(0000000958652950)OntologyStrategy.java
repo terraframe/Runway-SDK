@@ -146,7 +146,7 @@ public class Sandbox implements Job
     strategyState.setValue(MdEnumerationInfo.NAME, "StrategyState");
     strategyState.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
     strategyState.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
-    strategyState.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, strategyStateMaster.getId());
+    strategyState.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, strategyStateMaster.getOid());
     strategyState.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     strategyState.apply();
 
@@ -164,8 +164,8 @@ public class Sandbox implements Job
     state.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
     state.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
     state.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    state.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, ontologyStrategy.getId());
-    state.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, strategyState.getId());
+    state.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, ontologyStrategy.getOid());
+    state.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, strategyState.getOid());
     state.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     state.apply();
 
@@ -175,7 +175,7 @@ public class Sandbox implements Job
     databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Database all paths strategy");
     databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Database all paths strategy");
     databaseAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
-    databaseAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ontologyStrategy.getId());
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ontologyStrategy.getOid());
     databaseAllPathsStrategy.setGenerateMdController(false);
     databaseAllPathsStrategy.apply();
 
@@ -185,7 +185,7 @@ public class Sandbox implements Job
     postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Postgres all paths strategy");
     postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Postgres all paths strategy");
     postgresAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    postgresAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, databaseAllPathsStrategy.getId());
+    postgresAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, databaseAllPathsStrategy.getOid());
     postgresAllPathsStrategy.setGenerateMdController(false);
     postgresAllPathsStrategy.apply();
 
@@ -196,8 +196,8 @@ public class Sandbox implements Job
     strategy.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy");
     strategy.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy");
     strategy.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    strategy.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdTerm.getId());
-    strategy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ontologyStrategy.getId());
+    strategy.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdTerm.getOid());
+    strategy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ontologyStrategy.getOid());
     strategy.apply();
   }
 
@@ -226,8 +226,8 @@ public class Sandbox implements Job
     termClass.setValue(MdAttributeCharacterInfo.SIZE, "6000");
     termClass.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Class");
     termClass.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    termClass.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
-    termClass.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, ontologyStrategy.getId());
+    termClass.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
+    termClass.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, ontologyStrategy.getOid());
     termClass.apply();
   }
 }

@@ -35,14 +35,14 @@ public class RelationshipDTOCopier extends ElementDTOCopier
   {
     this(clientRequest, source, null, typeSafe, typeSafeAttributes);
         
-    if (typeSafe)
+    if (typeSafe && source.getMd().isGenerateSource())
     {
-      this.dest = ConversionFacade.createDynamicRelationshipDTO(null, source.getType(), this.getSource().getParentId(), this.getSource().getChildId());
+      this.dest = ConversionFacade.createDynamicRelationshipDTO(null, source.getType(), this.getSource().getParentOid(), this.getSource().getChildOid());
       this.dest.setClientRequest(clientRequest);
     }
     else
     {
-      this.dest = ComponentDTOFacade.buildRelationshipDTO(clientRequest, source.getType(), this.getSource().getParentId(), this.getSource().getChildId());
+      this.dest = ComponentDTOFacade.buildRelationshipDTO(clientRequest, source.getType(), this.getSource().getParentOid(), this.getSource().getChildOid());
     }
     
   }

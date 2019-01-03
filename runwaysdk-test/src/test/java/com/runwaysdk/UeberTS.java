@@ -18,23 +18,11 @@
  */
 package com.runwaysdk;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class UeberTS extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ UeberTestSuite.class })
+public class UeberTS
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-//    return new TestSuite();
-    return UeberTestSuite.suite();
-//    return new TestSuite(RunwayVersionTest.class);
-  }
-
 }

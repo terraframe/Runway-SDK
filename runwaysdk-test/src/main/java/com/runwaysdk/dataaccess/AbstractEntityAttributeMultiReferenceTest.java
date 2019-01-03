@@ -24,17 +24,17 @@ package com.runwaysdk.dataaccess;
 import java.util.Arrays;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.Test;
 
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeMultiReference;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.TermInfo;
+import com.runwaysdk.session.Request;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -54,7 +54,7 @@ import com.runwaysdk.constants.TermInfo;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
+public abstract class AbstractEntityAttributeMultiReferenceTest
 {
   public abstract MdAttributeMultiReferenceDAO getMdAttribute();
 
@@ -66,6 +66,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
 
   public abstract AttributeMultiReferenceIF getAttribute(BusinessDAO business);
 
+  @Request
+  @Test
   public void testGetAttribute()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -75,6 +77,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertTrue(attribute instanceof AttributeMultiReferenceIF);
   }
 
+  @Request
+  @Test
   public void testDefaultValueCached()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -83,9 +87,11 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Set<String> result = attribute.getCachedItemIdSet();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
+  @Request
+  @Test
   public void testDefaultValueRefreshed()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -96,6 +102,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertEquals(0, result.size());
   }
 
+  @Request
+  @Test
   public void testApply()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -105,9 +113,11 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
+  @Request
+  @Test
   public void testAddMultiple()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -124,17 +134,17 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
       {
         BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
         AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-        attribute.addItem(value1.getId());
-        attribute.addItem(value2.getId());
+        attribute.addItem(value1.getOid());
+        attribute.addItem(value2.getOid());
         business.apply();
 
         AttributeMultiReferenceIF attributeIF = getAttribute(business);
         Set<String> result = attributeIF.getItemIdList();
 
         Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(this.getDefaultValue().getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
+        Assert.assertTrue(result.contains(this.getDefaultValue().getOid()));
+        Assert.assertTrue(result.contains(value1.getOid()));
+        Assert.assertTrue(result.contains(value2.getOid()));
       }
       finally
       {
@@ -147,35 +157,41 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAddDuplicates()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
     AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-    attribute.addItem(this.getDefaultValue().getId());
-    attribute.addItem(this.getDefaultValue().getId());
+    attribute.addItem(this.getDefaultValue().getOid());
+    attribute.addItem(this.getDefaultValue().getOid());
     business.apply();
 
     AttributeMultiReferenceIF attributeIF = getAttribute(business);
     Set<String> result = attributeIF.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
+  @Request
+  @Test
   public void testGet()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
     business.apply();
 
-    BusinessDAOIF test = BusinessDAO.get(business.getId());
+    BusinessDAOIF test = BusinessDAO.get(business.getOid());
 
     AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(this.getMdAttribute().definesAttribute());
     Set<String> result = attribute.getItemIdList();
 
     Assert.assertEquals(1, result.size());
-    Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+    Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
   }
 
+  @Request
+  @Test
   public void testReplace()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -188,14 +204,14 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
       business.apply();
 
       AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.replaceItems(Arrays.asList(value.getId()));
+      attribute.replaceItems(Arrays.asList(value.getOid()));
       business.apply();
 
       AttributeMultiReferenceIF attributeIF = getAttribute(business);
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
+      Assert.assertTrue(result.contains(value.getOid()));
     }
     finally
     {
@@ -203,6 +219,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testClear()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -218,13 +236,15 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertEquals(0, result.size());
   }
 
+  @Request
+  @Test
   public void testRemove()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
     business.apply();
 
     AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-    attribute.removeItem(this.getDefaultValue().getId());
+    attribute.removeItem(this.getDefaultValue().getOid());
     business.apply();
 
     AttributeMultiReferenceIF attributeIF = getAttribute(business);
@@ -233,6 +253,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertEquals(0, result.size());
   }
 
+  @Request
+  @Test
   public void testRemoveUnsetItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -245,14 +267,14 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
       business.apply();
 
       AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.removeItem(value1.getId());
+      attribute.removeItem(value1.getOid());
       business.apply();
 
       AttributeMultiReferenceIF attributeIF = getAttribute(business);
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertEquals(this.getDefaultValue().getId(), result.iterator().next());
+      Assert.assertEquals(this.getDefaultValue().getOid(), result.iterator().next());
     }
     finally
     {
@@ -260,6 +282,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDereference()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -270,7 +294,7 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     {
       BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
       AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(this.getMdAttribute().definesAttribute());
-      attribute.addItem(value1.getId());
+      attribute.addItem(value1.getOid());
       business.apply();
 
       AttributeMultiReferenceIF attributeIF = getAttribute(business);
@@ -285,6 +309,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEmptyDereference()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
@@ -299,6 +325,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertEquals(0, results.length);
   }
 
+  @Request
+  @Test
   public void testAddItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -314,17 +342,17 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
-        business.addItem(this.getMdAttribute().definesAttribute(), value1.getId());
-        business.addItem(this.getMdAttribute().definesAttribute(), value2.getId());
+        business.addItem(this.getMdAttribute().definesAttribute(), value1.getOid());
+        business.addItem(this.getMdAttribute().definesAttribute(), value2.getOid());
         business.apply();
 
         AttributeMultiReferenceIF attributeIF = getAttribute(business);
         Set<String> result = attributeIF.getItemIdList();
 
         Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(this.getDefaultValue().getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
+        Assert.assertTrue(result.contains(this.getDefaultValue().getOid()));
+        Assert.assertTrue(result.contains(value1.getOid()));
+        Assert.assertTrue(result.contains(value2.getOid()));
       }
       finally
       {
@@ -338,6 +366,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testReplaceItems()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
@@ -347,14 +377,14 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     try
     {
       BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
-      business.replaceItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getId()));
+      business.replaceItems(this.getMdAttribute().definesAttribute(), Arrays.asList(value.getOid()));
       business.apply();
 
       AttributeMultiReferenceIF attributeIF = getAttribute(business);
       Set<String> result = attributeIF.getItemIdList();
 
       Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
+      Assert.assertTrue(result.contains(value.getOid()));
     }
     finally
     {
@@ -362,12 +392,14 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRemoveItem()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());
     business.apply();
 
-    business.removeItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getId());
+    business.removeItem(this.getMdAttribute().definesAttribute(), this.getDefaultValue().getOid());
     business.apply();
 
     AttributeMultiReferenceIF attributeIF = getAttribute(business);
@@ -376,6 +408,8 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
     Assert.assertEquals(0, result.size());
   }
 
+  @Request
+  @Test
   public void testClearItems()
   {
     BusinessDAO business = BusinessDAO.newInstance(this.getMdBusiness().definesType());

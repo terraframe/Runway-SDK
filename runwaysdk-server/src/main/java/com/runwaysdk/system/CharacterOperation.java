@@ -45,10 +45,10 @@ public enum CharacterOperation implements com.runwaysdk.business.BusinessEnumera
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -63,11 +63,11 @@ public enum CharacterOperation implements com.runwaysdk.business.BusinessEnumera
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static CharacterOperation get(String id)
+  public static CharacterOperation get(String oid)
   {
     for (CharacterOperation e : CharacterOperation.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

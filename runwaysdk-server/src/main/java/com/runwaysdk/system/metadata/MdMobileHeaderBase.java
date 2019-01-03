@@ -61,9 +61,9 @@ public abstract class MdMobileHeaderBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static MdMobileHeader get(String id)
+  public static MdMobileHeader get(String oid)
   {
-    return (MdMobileHeader) com.runwaysdk.business.Business.get(id);
+    return (MdMobileHeader) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileHeader getByKey(String key)
@@ -71,17 +71,17 @@ public abstract class MdMobileHeaderBase extends com.runwaysdk.system.metadata.M
     return (MdMobileHeader) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileHeader lock(java.lang.String id)
+  public static MdMobileHeader lock(java.lang.String oid)
   {
-    MdMobileHeader _instance = MdMobileHeader.get(id);
+    MdMobileHeader _instance = MdMobileHeader.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileHeader unlock(java.lang.String id)
+  public static MdMobileHeader unlock(java.lang.String oid)
   {
-    MdMobileHeader _instance = MdMobileHeader.get(id);
+    MdMobileHeader _instance = MdMobileHeader.get(oid);
     _instance.unlock();
     
     return _instance;

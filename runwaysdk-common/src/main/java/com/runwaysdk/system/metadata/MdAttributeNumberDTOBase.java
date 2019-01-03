@@ -159,9 +159,9 @@ public abstract class MdAttributeNumberDTOBase extends com.runwaysdk.system.meta
     return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(REJECTZERO).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdAttributeNumberDTO) dto;
   }
@@ -179,7 +179,7 @@ public abstract class MdAttributeNumberDTOBase extends com.runwaysdk.system.meta
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeNumberQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -192,10 +192,10 @@ public abstract class MdAttributeNumberDTOBase extends com.runwaysdk.system.meta
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeNumberDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeNumberDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -205,10 +205,10 @@ public abstract class MdAttributeNumberDTOBase extends com.runwaysdk.system.meta
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeNumberDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeNumberDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeNumberDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

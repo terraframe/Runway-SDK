@@ -22,11 +22,11 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.rbac.Operation;
@@ -34,9 +34,6 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.LocalProperties;
@@ -44,7 +41,6 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -55,23 +51,10 @@ import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.util.FileIO;
 
-public class SerializedSessionTest extends TestCase
+public class SerializedSessionTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * The test user object
    */
@@ -117,26 +100,6 @@ public class SerializedSessionTest extends TestCase
    */
   private static BusinessDAO             businessDAO2;
 
-  /**
-   * The test state1-mdAttribute type tuple
-   */
-  private static TypeTupleDAO            typeTuple1;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state3;
-
   private static Business                business1;
 
   @SuppressWarnings("unused")
@@ -171,38 +134,10 @@ public class SerializedSessionTest extends TestCase
   private final static long              newSessionTime = 10;
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it
-   * in <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and tearDown()
-   * methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(SerializedSessionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     Session.setSessionTime(newSessionTime);
@@ -232,30 +167,6 @@ public class SerializedSessionTest extends TestCase
     mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
     mdAttribute.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new MdBusiness
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
@@ -275,20 +186,17 @@ public class SerializedSessionTest extends TestCase
 
     // Create a businessDAO of MdBusiness
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO.apply();
 
     businessDAO2 = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO2.apply();
 
-    business1 = Business.getBusiness(businessDAO.getId());
-    business2 = Business.getBusiness(businessDAO2.getId());
-
-    typeTuple1 = TestFixtureFactory.createTypeTuple(state1, mdAttribute);
-    typeTuple1.apply();
+    business1 = Business.getBusiness(businessDAO.getOid());
+    business2 = Business.getBusiness(businessDAO2.getOid());
 
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
@@ -297,9 +205,10 @@ public class SerializedSessionTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(typeTuple1);
     TestFixtureFactory.delete(mdRelationship);
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
@@ -313,27 +222,20 @@ public class SerializedSessionTest extends TestCase
   }
 
   /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-  }
-
-  /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
     Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser
-      newUser.revokeAllPermissions(reference.getChildId());
+      newUser.revokeAllPermissions(reference.getChildOid());
     }
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -343,7 +245,7 @@ public class SerializedSessionTest extends TestCase
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -353,41 +255,45 @@ public class SerializedSessionTest extends TestCase
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions
     SessionFacade.clearSessions();
-    
+
     FileIO.deleteDirectory(new File(LocalProperties.getPermissionCacheDirectory()));
   }
 
   /**
    * Test session access
    */
+  @Request
+  @Test
   public void testCheckAccess()
   {
     // Grant permissions to the user on the md class
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
-    
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
+
     new PermissionBuilder(newUser).serialize();
 
     // Create a session for the user
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-    assertEquals(true, SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-    assertEquals(false, SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+    Assert.assertEquals(true, SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+    Assert.assertEquals(false, SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
   }
 
   /**
    * Test PUBLIC role permission
    */
+  @Request
+  @Test
   public void testPublicPermissions()
   {
     RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
 
-    publicRole.grantPermission(Operation.READ, mdBusiness.getId());
-    
+    publicRole.grantPermission(Operation.READ, mdBusiness.getOid());
+
     new PermissionBuilder(publicRole).serialize();
 
     try
@@ -395,103 +301,55 @@ public class SerializedSessionTest extends TestCase
       String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Check that the public permissions are still granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
 
       SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Check that the public permissions are still granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
     }
     finally
     {
-      publicRole.revokeAllPermissions(mdBusiness.getId());
+      publicRole.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
   /**
    * Test the Owner permissions
    */
+  @Request
+  @Test
   public void testOwnerPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
 
     // Grant permissions ot the owner role
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
+    role.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
     new PermissionBuilder(role).serialize();
 
     try
     {
       // Ensure the owner was correctly set
-      assertEquals(newUser.getId(), businessDAO.getValue(ElementInfo.OWNER));
+      Assert.assertEquals(newUser.getOid(), businessDAO.getValue(ElementInfo.OWNER));
 
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Ensure owner permission were granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-      assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+      Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
     }
     finally
     {
-      role.revokeAllPermissions(mdBusiness.getId());
+      role.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
-  /**
-   * Test the permissions based upon the current state of an object
-   */
-  public void testStatePermissions()
-  {
-    // Add permissions to the owner role for the entry state
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, state1.getId());
-    newUser.grantPermission(Operation.PROMOTE, state1.getId());
-
-    new PermissionBuilder(role).serialize();
-    new PermissionBuilder(newUser).serialize();
-
-    try
-    {
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      // Ensure that user state permissions where executed
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-      // Ensure that owner state permissions work
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
-      // Ensure extra permissions are not given
-      assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(state1.getId());
-      role.revokeAllPermissions(state1.getId());
-    }
-  }
-
-  public void testStateAttributePermissions()
-  {
-    newUser.grantPermission(Operation.READ, typeTuple1.getId());
-
-    new PermissionBuilder(newUser).serialize();
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(typeTuple1.getId());
-    }
-  }
-
+  @Request
+  @Test
   public void testAttributePermissions()
   {
-    newUser.grantPermission(Operation.READ, mdAttribute.getId());
+    newUser.grantPermission(Operation.READ, mdAttribute.getOid());
 
     new PermissionBuilder(newUser).serialize();
 
@@ -499,21 +357,23 @@ public class SerializedSessionTest extends TestCase
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdAttribute.getId());
+      newUser.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
 
+  @Request
+  @Test
   public void testOwnerAttributePermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.READ, mdAttribute.getId());
+    role.grantPermission(Operation.READ, mdAttribute.getOid());
 
     new PermissionBuilder(role).serialize();
 
@@ -521,41 +381,21 @@ public class SerializedSessionTest extends TestCase
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
+      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
+      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
     }
     finally
     {
-      role.revokeAllPermissions(mdAttribute.getId());
+      role.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
 
-  public void testOwnerStateAttributePermissions()
-  {
-    RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, typeTuple1.getId());
-
-    new PermissionBuilder(role).serialize();
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      role.revokeAllPermissions(typeTuple1.getId());
-    }
-
-  }
-
+  @Request
+  @Test
   public void testRelationshipPermission()
   {
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
 
     new PermissionBuilder(newUser).serialize();
 
@@ -563,12 +403,12 @@ public class SerializedSessionTest extends TestCase
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId()));
-      assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId()));
+      Assert.assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getOid()));
+      Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getOid()));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdRelationship.getId());
+      newUser.revokeAllPermissions(mdRelationship.getOid());
     }
   }
 }

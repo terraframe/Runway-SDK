@@ -70,9 +70,9 @@ public abstract class QualifiedTypeJobBase extends com.runwaysdk.system.schedule
     return CLASS;
   }
   
-  public static QualifiedTypeJob get(String id)
+  public static QualifiedTypeJob get(String oid)
   {
-    return (QualifiedTypeJob) com.runwaysdk.business.Business.get(id);
+    return (QualifiedTypeJob) com.runwaysdk.business.Business.get(oid);
   }
   
   public static QualifiedTypeJob getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class QualifiedTypeJobBase extends com.runwaysdk.system.schedule
     return (QualifiedTypeJob) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static QualifiedTypeJob lock(java.lang.String id)
+  public static QualifiedTypeJob lock(java.lang.String oid)
   {
-    QualifiedTypeJob _instance = QualifiedTypeJob.get(id);
+    QualifiedTypeJob _instance = QualifiedTypeJob.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static QualifiedTypeJob unlock(java.lang.String id)
+  public static QualifiedTypeJob unlock(java.lang.String oid)
   {
-    QualifiedTypeJob _instance = QualifiedTypeJob.get(id);
+    QualifiedTypeJob _instance = QualifiedTypeJob.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -99,9 +99,9 @@ public abstract class MdMobileDecBase extends com.runwaysdk.system.metadata.MdMo
     return CLASS;
   }
   
-  public static MdMobileDec get(String id)
+  public static MdMobileDec get(String oid)
   {
-    return (MdMobileDec) com.runwaysdk.business.Business.get(id);
+    return (MdMobileDec) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileDec getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdMobileDecBase extends com.runwaysdk.system.metadata.MdMo
     return (MdMobileDec) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileDec lock(java.lang.String id)
+  public static MdMobileDec lock(java.lang.String oid)
   {
-    MdMobileDec _instance = MdMobileDec.get(id);
+    MdMobileDec _instance = MdMobileDec.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileDec unlock(java.lang.String id)
+  public static MdMobileDec unlock(java.lang.String oid)
   {
-    MdMobileDec _instance = MdMobileDec.get(id);
+    MdMobileDec _instance = MdMobileDec.get(oid);
     _instance.unlock();
     
     return _instance;

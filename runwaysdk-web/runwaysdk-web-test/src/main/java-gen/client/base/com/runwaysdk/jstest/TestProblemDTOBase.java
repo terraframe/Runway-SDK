@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1868365048)
-public abstract class TestProblemDTOBase extends com.runwaysdk.business.ProblemDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class TestProblemDTOBase extends com.runwaysdk.business.ProblemDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestProblem";
   private static final long serialVersionUID = -1868365048;
@@ -39,7 +39,7 @@ public abstract class TestProblemDTOBase extends com.runwaysdk.business.ProblemD
     return CLASS;
   }
   
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PROBLEMCHAR = "problemChar";
   public static java.lang.String PROBLEMINT = "problemInt";
   public String getProblemChar()
@@ -124,7 +124,7 @@ public abstract class TestProblemDTOBase extends com.runwaysdk.business.ProblemD
   {
     java.lang.String template = super.getMessage();
     
-    template = template.replace("{id}", this.getId().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{problemChar}", this.getProblemChar().toString());
     template = template.replace("{problemInt}", this.getProblemInt().toString());
     

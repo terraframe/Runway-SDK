@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 public class StateEnumDTO extends StateEnumDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = 1456916343;
   
   public StateEnumDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

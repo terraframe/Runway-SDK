@@ -59,7 +59,7 @@ public enum AllPostalCodesDTO implements com.runwaysdk.business.EnumerationDTOIF
   
   IA(),
   
-  ID(),
+  OID(),
   
   IL(),
   

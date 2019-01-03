@@ -27,7 +27,7 @@ import junit.framework.TestCase;
  * @author Richard Rowlands
  */
 
-public class GeneratedTest extends TestCase
+public class GeneratedTest
 {
   public String testFailMessage;
 
@@ -41,7 +41,7 @@ public class GeneratedTest extends TestCase
   {
     if (testFailMessage != null)
     {
-      fail(testFailMessage);
+      Assert.fail(testFailMessage);
     }
   }
 

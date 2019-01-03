@@ -21,13 +21,13 @@ package com.runwaysdk;
 public interface AttributeNotification
 {
   /**
-   * Returns the id of the component that defines the attribute.
-   * @return id of the component that defines the attribute.
+   * Returns the oid of the component that defines the attribute.
+   * @return oid of the component that defines the attribute.
    */
   public String getComponentId();
 
   /**
-   * Sets the id of the component on which this attribute notification pertains to.
+   * Sets the oid of the component on which this attribute notification pertains to.
    */
   public void setComponentId(String componentId);
 

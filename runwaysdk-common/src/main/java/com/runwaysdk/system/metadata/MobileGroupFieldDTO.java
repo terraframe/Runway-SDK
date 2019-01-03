@@ -22,9 +22,9 @@ public class MobileGroupFieldDTO extends MobileGroupFieldDTOBase
 {
   private static final long serialVersionUID = 1539209986;
   
-  public MobileGroupFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public MobileGroupFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

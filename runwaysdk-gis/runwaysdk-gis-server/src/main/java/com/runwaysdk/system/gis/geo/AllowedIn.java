@@ -22,20 +22,20 @@ public class AllowedIn extends AllowedInBase
 {
   private static final long serialVersionUID = -381106102;
   
-  public AllowedIn(String parentId, String childId)
+  public AllowedIn(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public AllowedIn(com.runwaysdk.system.gis.geo.Universal parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   @Override
   public String buildKey()
   {
-    return this.getParentId() + this.getChildId();
+    return this.getParentOid() + this.getChildOid();
   }
   
 }

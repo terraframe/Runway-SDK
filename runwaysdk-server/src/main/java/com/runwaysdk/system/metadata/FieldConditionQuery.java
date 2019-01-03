@@ -119,21 +119,21 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.FieldCondition.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -362,9 +362,9 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -415,13 +415,13 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.FieldCondition fieldCondition)
     {
       if(fieldCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(fieldCondition.getId());
+      return this.EQ(fieldCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.FieldCondition fieldCondition)
     {
       if(fieldCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(fieldCondition.getId());
+      return this.NE(fieldCondition.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -475,21 +475,21 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.metadata.FieldCondition.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -677,9 +677,9 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -735,7 +735,7 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<fieldCondition.length; i++)
       {
-        itemIdArray[i] = fieldCondition[i].getId();
+        itemIdArray[i] = fieldCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -747,7 +747,7 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<fieldCondition.length; i++)
       {
-        itemIdArray[i] = fieldCondition[i].getId();
+        itemIdArray[i] = fieldCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -759,7 +759,7 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<fieldCondition.length; i++)
       {
-        itemIdArray[i] = fieldCondition[i].getId();
+        itemIdArray[i] = fieldCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -771,7 +771,7 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<fieldCondition.length; i++)
       {
-        itemIdArray[i] = fieldCondition[i].getId();
+        itemIdArray[i] = fieldCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -783,7 +783,7 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
 
       for (int i=0; i<fieldCondition.length; i++)
       {
-        itemIdArray[i] = fieldCondition[i].getId();
+        itemIdArray[i] = fieldCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -839,21 +839,21 @@ public  class FieldConditionQuery extends com.runwaysdk.query.GeneratedBusinessQ
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.metadata.FieldCondition.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.FieldCondition.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.FieldCondition.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

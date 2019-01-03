@@ -22,9 +22,9 @@ public class SynonymRelationshipDTO extends SynonymRelationshipDTOBase
 {
   private static final long serialVersionUID = 1416414315;
   
-  public SynonymRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public SynonymRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

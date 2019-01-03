@@ -36,7 +36,7 @@ import com.runwaysdk.query.QueryFactory;
 public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOImplementationIF
 {
   /**
-   * An eclipse auto-generated id
+   * An eclipse auto-generated oid
    */
   private static final long serialVersionUID = -2338064958702734232L;
 
@@ -106,7 +106,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
   {
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery query = queryFactory.businessDAOQuery(VaultFileInfo.CLASS);
-    query.WHERE(query.aReference(VaultFileInfo.VAULT_REF).EQ(this.getId()));
+    query.WHERE(query.aReference(VaultFileInfo.VAULT_REF).EQ(this.getOid()));
     OIterator<BusinessDAOIF> iterator = query.getIterator();
 
     while (iterator.hasNext())
@@ -154,7 +154,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
 
     if (vaultName == null || vaultName.length() == 0)
     {
-      return this.getId();
+      return this.getOid();
     }
 
     return vaultName;

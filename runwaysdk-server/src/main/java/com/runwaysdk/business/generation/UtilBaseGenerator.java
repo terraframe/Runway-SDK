@@ -44,9 +44,9 @@ public class UtilBaseGenerator extends SessionBaseGenerator
     super.addMethods();
 
     //get for the java class
-    getWriter().writeLine("public static " + this.getMdTypeDAOIF().getTypeName() + " get(String id)");
+    getWriter().writeLine("public static " + this.getMdTypeDAOIF().getTypeName() + " get(String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + this.getMdTypeDAOIF().getTypeName() + ") " + UtilInfo.CLASS + ".get(id);");
+    getWriter().writeLine("return (" + this.getMdTypeDAOIF().getTypeName() + ") " + UtilInfo.CLASS + ".get(oid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

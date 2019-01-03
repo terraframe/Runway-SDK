@@ -22,9 +22,9 @@ public class UniversalAttributeRootDTO extends UniversalAttributeRootDTOBase
 {
   private static final long serialVersionUID = 1208326980;
   
-  public UniversalAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public UniversalAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

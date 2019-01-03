@@ -236,9 +236,9 @@ public class MdUtilDAO extends MdSessionDAO implements MdUtilDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdUtilDAOIF get(String id)
+  public static MdUtilDAOIF get(String oid)
   {
-    return (MdUtilDAOIF) BusinessDAO.get(id);
+    return (MdUtilDAOIF) BusinessDAO.get(oid);
   }
   
   /* (non-Javadoc)

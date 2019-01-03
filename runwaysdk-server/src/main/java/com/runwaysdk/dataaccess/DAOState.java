@@ -64,7 +64,7 @@ public abstract class DAOState implements Serializable
   
   /**
    * Id used for AttributeProblems (not messages). New instances that fail will
-   * have a different ID on the client.
+   * have a different OID on the client.
    */
   protected String problemNotificationId = "";
 

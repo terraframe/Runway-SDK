@@ -21,5 +21,6 @@ package com.runwaysdk.gis;
 public class TestConstants
 {
   public static final String DATATYPE_GIS_XSD = "classpath:com/runwaysdk/resources/xsd/datatype_gis.xsd";
-  public static final String XML_FILES = "src/main/XMLFiles";
+
+  public static final String XML_FILES        = "src/main/XMLFiles";
 }

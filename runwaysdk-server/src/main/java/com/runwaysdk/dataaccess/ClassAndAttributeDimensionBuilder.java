@@ -118,7 +118,7 @@ public class ClassAndAttributeDimensionBuilder
 
     RelationshipDAOQuery classHasDimensionQuery = factory.relationshipDAOQuery(RelationshipTypes.CLASS_HAS_DIMENSION.getType());
     BusinessDAOQuery query = factory.businessDAOQuery(MdClassInfo.CLASS);
-    query.WHERE(query.get(MdClassInfo.ID).SUBSELECT_NOT_IN(classHasDimensionQuery.parentId()));
+    query.WHERE(query.get(MdClassInfo.OID).SUBSELECT_NOT_IN(classHasDimensionQuery.parentOid()));
 
     return query.getIterator();
   }
@@ -214,7 +214,7 @@ public class ClassAndAttributeDimensionBuilder
     BusinessDAOQuery mdAttrDimQuery = factory.businessDAOQuery(MdAttributeDimensionInfo.CLASS);
     
     BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeInfo.CLASS);
-    query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(mdAttrDimQuery.get(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE)));
+    query.WHERE(query.get(MdAttributeInfo.OID).SUBSELECT_NOT_IN(mdAttrDimQuery.get(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE)));
     
     return query.getIterator();
   }

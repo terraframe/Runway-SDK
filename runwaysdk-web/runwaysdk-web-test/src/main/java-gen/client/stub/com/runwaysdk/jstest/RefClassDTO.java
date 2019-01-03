@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 public class RefClassDTO extends RefClassDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = -1267141450;
   
   public RefClassDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

@@ -28,7 +28,7 @@ public class InvalidIdException extends ProgrammingErrorException
    * 
    */
   private static final long serialVersionUID = -802661371670773259L;
-  private String id;
+  private String oid;
   
   /**
    * Constructs a new InvalidIdException with the specified developer message and a
@@ -39,20 +39,20 @@ public class InvalidIdException extends ProgrammingErrorException
    *          The non-localized developer error message. Contains specific data access
    *          layer information useful for application debugging. The developer message is
    *          saved for later retrieval by the {@link #getMessage()} method.
-   * @param id
-   *          Invalid id.
+   * @param oid
+   *          Invalid oid.
    */
-  public InvalidIdException(String devMessage, String id)
+  public InvalidIdException(String devMessage, String oid)
   {
     super(devMessage);
     
-    if (id == null)
+    if (oid == null)
     {
-      this.id = "NULL";
+      this.oid = "NULL";
     }
     else
     {
-      this.id = id;
+      this.oid = oid;
     }
   }
 
@@ -71,20 +71,20 @@ public class InvalidIdException extends ProgrammingErrorException
    *          the cause (which is saved for later retrieval by the {@link #getCause()}
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
-   * @param id
-   *          Invalid id.
+   * @param oid
+   *          Invalid oid.
    */
-  public InvalidIdException(String devMessage, Throwable cause, String id)
+  public InvalidIdException(String devMessage, Throwable cause, String oid)
   {
     super(devMessage, cause);
 
-    if (id == null)
+    if (oid == null)
     {
-      this.id = "NULL";
+      this.oid = "NULL";
     }
     else
     {
-      this.id = id;
+      this.oid = oid;
     }
   }
 
@@ -97,20 +97,20 @@ public class InvalidIdException extends ProgrammingErrorException
    *          the cause (which is saved for later retrieval by the {@link #getCause()}
    *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
    *          is nonexistent or unknown.)
-   * @param id
-   *          Invalid id.
+   * @param oid
+   *          Invalid oid.
    */
-  public InvalidIdException(Throwable cause, String id)
+  public InvalidIdException(Throwable cause, String oid)
   {
     super(cause);
 
-    if (id == null)
+    if (oid == null)
     {
-      this.id = "NULL";
+      this.oid = "NULL";
     }
     else
     {
-      this.id = id;
+      this.oid = oid;
     }
   } 
 
@@ -121,6 +121,6 @@ public class InvalidIdException extends ProgrammingErrorException
    */
   public String getLocalizedMessage()
   { 
-    return ServerExceptionMessageLocalizer.invalidIdException(this.getLocale(), this.id);
+    return ServerExceptionMessageLocalizer.invalidIdException(this.getLocale(), this.oid);
   }
 }

@@ -49,7 +49,7 @@ public class MdParameterHandler extends TagHandler implements TagHandlerIF, Hand
     String key = MdParameterDAO.buildKey(marker.getEnclosingMdTypeDAO().definesType(), marker.getName(), attributes.getValue(XMLTags.NAME_ATTRIBUTE));
 
     MdParameterDAO mdParameter = (MdParameterDAO) this.getManager().getEntityDAO(MdParameterInfo.CLASS, key).getEntityDAO();
-    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, marker.getId());
+    mdParameter.setValue(MdParameterInfo.ENCLOSING_METADATA, marker.getOid());
 
     if (attributes.getValue(XMLTags.TYPE_ATTRIBUTE) != null)
     {

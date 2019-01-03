@@ -32,9 +32,9 @@ public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadat
   public static java.lang.String CONDITION = "condition";
   private static final long serialVersionUID = -2074703911;
   
-  public VisibleDependencyBase(String parentId, String childId)
+  public VisibleDependencyBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public com.runwaysdk.system.metadata.FieldCondition getCondition()
@@ -73,7 +73,7 @@ public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadat
     }
     else
     {
-      setValue(CONDITION, value.getId());
+      setValue(CONDITION, value.getOid());
     }
   }
   
@@ -92,9 +92,9 @@ public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadat
     return (com.runwaysdk.system.metadata.MdField) super.getChild();
   }
   
-  public static VisibleDependency get(String id)
+  public static VisibleDependency get(String oid)
   {
-    return (VisibleDependency) com.runwaysdk.business.Relationship.get(id);
+    return (VisibleDependency) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static VisibleDependency getByKey(String key)
@@ -102,17 +102,17 @@ public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadat
     return (VisibleDependency) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static VisibleDependency lock(java.lang.String id)
+  public static VisibleDependency lock(java.lang.String oid)
   {
-    VisibleDependency _instance = VisibleDependency.get(id);
+    VisibleDependency _instance = VisibleDependency.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static VisibleDependency unlock(java.lang.String id)
+  public static VisibleDependency unlock(java.lang.String oid)
   {
-    VisibleDependency _instance = VisibleDependency.get(id);
+    VisibleDependency _instance = VisibleDependency.get(oid);
     _instance.unlock();
     
     return _instance;

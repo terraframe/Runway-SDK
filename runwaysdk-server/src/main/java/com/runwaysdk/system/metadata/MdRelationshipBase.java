@@ -68,7 +68,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      addEnumItem(CACHEALGORITHM, value.getId());
+      addEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -76,7 +76,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      removeEnumItem(CACHEALGORITHM, value.getId());
+      removeEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -176,7 +176,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(CHILDMDBUSINESS, value.getId());
+      setValue(CHILDMDBUSINESS, value.getOid());
     }
   }
   
@@ -218,7 +218,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      addEnumItem(CHILDVISIBILITY, value.getId());
+      addEnumItem(CHILDVISIBILITY, value.getOid());
     }
   }
   
@@ -226,7 +226,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      removeEnumItem(CHILDVISIBILITY, value.getId());
+      removeEnumItem(CHILDVISIBILITY, value.getOid());
     }
   }
   
@@ -386,7 +386,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(PARENTMDBUSINESS, value.getId());
+      setValue(PARENTMDBUSINESS, value.getOid());
     }
   }
   
@@ -428,7 +428,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      addEnumItem(PARENTVISIBILITY, value.getId());
+      addEnumItem(PARENTVISIBILITY, value.getOid());
     }
   }
   
@@ -436,7 +436,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
   {
     if(value != null)
     {
-      removeEnumItem(PARENTVISIBILITY, value.getId());
+      removeEnumItem(PARENTVISIBILITY, value.getOid());
     }
   }
   
@@ -492,7 +492,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(SORTMDATTRIBUTE, value.getId());
+      setValue(SORTMDATTRIBUTE, value.getOid());
     }
   }
   
@@ -532,7 +532,7 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     }
     else
     {
-      setValue(SUPERMDRELATIONSHIP, value.getId());
+      setValue(SUPERMDRELATIONSHIP, value.getOid());
     }
   }
   
@@ -627,9 +627,9 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     }
   }
   
-  public static MdRelationship get(String id)
+  public static MdRelationship get(String oid)
   {
-    return (MdRelationship) com.runwaysdk.business.Business.get(id);
+    return (MdRelationship) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdRelationship getByKey(String key)
@@ -637,17 +637,17 @@ public abstract class MdRelationshipBase extends com.runwaysdk.system.metadata.M
     return (MdRelationship) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdRelationship lock(java.lang.String id)
+  public static MdRelationship lock(java.lang.String oid)
   {
-    MdRelationship _instance = MdRelationship.get(id);
+    MdRelationship _instance = MdRelationship.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdRelationship unlock(java.lang.String id)
+  public static MdRelationship unlock(java.lang.String oid)
   {
-    MdRelationship _instance = MdRelationship.get(id);
+    MdRelationship _instance = MdRelationship.get(oid);
     _instance.unlock();
     
     return _instance;

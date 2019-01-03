@@ -87,8 +87,8 @@ public class AttributeClob extends Attribute
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      return Database.getClob(table, columnName, id);
+      String oid = this.getContainingComponent().getOid();
+      return Database.getClob(table, columnName, oid);
     }
   }
 
@@ -122,8 +122,8 @@ public class AttributeClob extends Attribute
     {
       String table = ((MdEntityDAOIF)this.getMdAttribute().definedByClass()).getTableName();
       String columnName = this.getMdAttribute().getColumnName();
-      String id = this.getContainingComponent().getId();
-      Database.setClob(table, columnName, id, value);
+      String oid = this.getContainingComponent().getOid();
+      Database.setClob(table, columnName, oid, value);
     }
   }
 

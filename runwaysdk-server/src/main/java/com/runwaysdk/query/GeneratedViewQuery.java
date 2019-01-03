@@ -111,7 +111,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
    *
    * @return Attribute character statement object.
    */
-  protected abstract SelectableChar getId();
+  protected abstract SelectableUUID getOid();
   
   /**
    * Sets the ValueQuery that all generated query methods delegate to.

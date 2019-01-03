@@ -61,9 +61,9 @@ public class RelationshipDTOStubGenerator extends EntityDTOStubGenerator
    */
   protected void writeConstructor()
   {    
-    getWriter().writeLine("public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, String parentId, String childId)");
+    getWriter().writeLine("public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, String parentOid, String childOid)");
     getWriter().openBracket();
-    getWriter().writeLine("super(clientRequest, parentId, childId);");
+    getWriter().writeLine("super(clientRequest, parentOid, childOid);");
     getWriter().writeLine("");  
     getWriter().closeBracket();
     getWriter().writeLine("");

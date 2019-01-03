@@ -125,17 +125,17 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
 
         if (this.getManager().isCreateState())
         {
-          RelationshipDAO.newInstance(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
+          RelationshipDAO.newInstance(mdWebSingleGrid.getOid(), mdAttribute.getOid(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
         }
         else if (this.getManager().isCreateOrUpdateState())
         {
           try
           {
-            RelationshipDAO.get(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType());
+            RelationshipDAO.get(mdWebSingleGrid.getOid(), mdAttribute.getOid(), RelationshipTypes.WEB_GRID_FIELD.getType());
           }
           catch (DataNotFoundException e)
           {
-            RelationshipDAO.newInstance(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
+            RelationshipDAO.newInstance(mdWebSingleGrid.getOid(), mdAttribute.getOid(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
           }
 
         }
@@ -173,7 +173,7 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, mdClass.definesType(), mdField.getKey());
         }
 
-        mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
+        mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getOid());
       }
     }
 

@@ -22,11 +22,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -51,48 +50,21 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.session.Request;
 
-public class AttributeValidationTest extends TestCase
+import junit.extensions.TestSetup;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
+public class AttributeValidationTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static MdBusinessDAO mdBusiness;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(AttributeValidationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -127,44 +99,48 @@ public class AttributeValidationTest extends TestCase
 
     MdAttributeDateDAO mdAttributeDateBeforeExclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateBeforeExclusive");
     mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateBeforeExclusive.setValue(MdAttributeDateInfo.BEFORE_TODAY_EXCLUSIVE, "true");
     mdAttributeDateBeforeExclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateBeforeInclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateBeforeInclusive");
     mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
     mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.BEFORE_TODAY_INCLUSIVE, "true");
-    mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateBeforeInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateBeforeInclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateAfterExclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateAfterExclusive");
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.AFTER_TODAY_EXCLUSIVE, "true");
     mdAttributeDateAfterExclusive.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDateAfterExclusive.apply();
 
     MdAttributeDateDAO mdAttributeDateAfterInclusive = TestFixtureFactory.addDateAttribute(mdBusiness, "attributeDateAfterInclusive");
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.AFTER_TODAY_INCLUSIVE, "true");
     mdAttributeDateAfterInclusive.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDateAfterInclusive.apply();
 
     MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, "false");
-    mdAttributeDate.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.START_DATE, "2001-12-04");
     mdAttributeDate.setValue(MdAttributeDateInfo.END_DATE, "2001-12-12");
     mdAttributeDate.apply();
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
   }
 
+  @Request
+  @Test
   public void testValidDouble()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -172,6 +148,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testUpperLimitDouble()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -179,6 +157,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testLowerLimitDouble()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -186,6 +166,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testOverUpperLimitDouble() throws Exception
   {
     try
@@ -194,7 +176,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testDouble", "20");
       businessDAO.apply();
 
-      fail("Able to set a value which is greater than the end range");
+      Assert.fail("Able to set a value which is greater than the end range");
     }
     catch (ProblemException e)
     {
@@ -211,6 +193,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverLowerLimitDouble() throws Exception
   {
     try
@@ -219,7 +203,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testDouble", "-13");
       businessDAO.apply();
 
-      fail("Able to set a value which is less than the start range");
+      Assert.fail("Able to set a value which is less than the start range");
     }
     catch (ProblemException e)
     {
@@ -236,6 +220,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testValidDecimal()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -243,6 +229,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testUpperLimitDecimal()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -250,6 +238,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testLowerLimitDecimal()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -257,6 +247,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testOverUpperLimitDecimal() throws Exception
   {
     try
@@ -265,7 +257,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testDecimal", "20");
       businessDAO.apply();
 
-      fail("Able to set a value which is greater than the end range");
+      Assert.fail("Able to set a value which is greater than the end range");
     }
     catch (ProblemException e)
     {
@@ -282,6 +274,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverLowerLimitDecimal() throws Exception
   {
     try
@@ -290,7 +284,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testDecimal", "-13");
       businessDAO.apply();
 
-      fail("Able to set a value which is less than the start range");
+      Assert.fail("Able to set a value which is less than the start range");
     }
     catch (ProblemException e)
     {
@@ -307,6 +301,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testValidFloat()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -314,6 +310,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testUpperLimitFloat()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -321,6 +319,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testLowerLimitFloat()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -328,6 +328,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testOverUpperLimitFloat() throws Exception
   {
     try
@@ -336,7 +338,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testFloat", "20");
       businessDAO.apply();
 
-      fail("Able to set a value which is greater than the end range");
+      Assert.fail("Able to set a value which is greater than the end range");
     }
     catch (ProblemException e)
     {
@@ -353,6 +355,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverLowerLimitFloat() throws Exception
   {
     try
@@ -361,7 +365,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testFloat", "-13");
       businessDAO.apply();
 
-      fail("Able to set a value which is less than the start range");
+      Assert.fail("Able to set a value which is less than the start range");
     }
     catch (ProblemException e)
     {
@@ -378,6 +382,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testValidLong()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -385,6 +391,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testUpperLimitLong()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -392,6 +400,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testLowerLimitLong()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -399,6 +409,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testOverUpperLimitLong() throws Exception
   {
     try
@@ -407,7 +419,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testLong", "20");
       businessDAO.apply();
 
-      fail("Able to set a value which is greater than the end range");
+      Assert.fail("Able to set a value which is greater than the end range");
     }
     catch (ProblemException e)
     {
@@ -424,6 +436,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverLowerLimitLong() throws Exception
   {
     try
@@ -432,7 +446,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testLong", "-13");
       businessDAO.apply();
 
-      fail("Able to set a value which is less than the start range");
+      Assert.fail("Able to set a value which is less than the start range");
     }
     catch (ProblemException e)
     {
@@ -449,6 +463,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testValidInteger()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -456,6 +472,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testUpperLimitInteger()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -463,6 +481,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testLowerLimitInteger()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -470,6 +490,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testOverUpperLimitInteger() throws Exception
   {
     try
@@ -478,7 +500,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testInteger", "20");
       businessDAO.apply();
 
-      fail("Able to set a value which is greater than the end range");
+      Assert.fail("Able to set a value which is greater than the end range");
     }
     catch (ProblemException e)
     {
@@ -495,6 +517,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOverLowerLimitInteger() throws Exception
   {
     try
@@ -503,7 +527,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testInteger", "-13");
       businessDAO.apply();
 
-      fail("Able to set a value which is less than the start range");
+      Assert.fail("Able to set a value which is less than the start range");
     }
     catch (ProblemException e)
     {
@@ -520,6 +544,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFailDateBeforeExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -532,7 +558,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateBeforeExclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -540,6 +566,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSameDateBeforeExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -551,7 +579,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateBeforeExclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -559,6 +587,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateBeforeExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -570,6 +600,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testFailDateBeforeInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -582,7 +614,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateBeforeInclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -590,6 +622,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSameDateBeforeInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -600,6 +634,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testDateBeforeInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -611,6 +647,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testFailDateAfterExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -623,7 +661,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateAfterExclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -631,6 +669,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSameDateAfterExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -642,7 +682,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateAfterExclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -650,6 +690,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDateAfterExclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -661,6 +703,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testFailDateAfterInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -673,7 +717,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("attributeDateAfterInclusive", MdAttributeDateUtil.getTypeUnsafeValue(date));
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {
@@ -681,6 +725,8 @@ public class AttributeValidationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSameDateAfterInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -691,6 +737,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testDateAfterInclusive()
   {
     Calendar calendar = Calendar.getInstance();
@@ -702,6 +750,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testDateBetween()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -709,6 +759,8 @@ public class AttributeValidationTest extends TestCase
     businessDAO.apply();
   }
 
+  @Request
+  @Test
   public void testDateOutsideBetween()
   {
     try
@@ -717,7 +769,7 @@ public class AttributeValidationTest extends TestCase
       businessDAO.setValue("testDate", "2010-12-12");
       businessDAO.apply();
 
-      fail("Failed validation for before exclusive");
+      Assert.fail("Failed validation for before exclusive");
     }
     catch (AttributeValueException e)
     {

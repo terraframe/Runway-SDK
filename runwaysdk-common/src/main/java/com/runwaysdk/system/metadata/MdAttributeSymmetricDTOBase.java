@@ -130,9 +130,9 @@ public abstract class MdAttributeSymmetricDTOBase extends com.runwaysdk.system.m
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(SYMMETRICMETHOD).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdAttributeSymmetricDTO) dto;
   }
@@ -150,7 +150,7 @@ public abstract class MdAttributeSymmetricDTOBase extends com.runwaysdk.system.m
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeSymmetricQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -163,10 +163,10 @@ public abstract class MdAttributeSymmetricDTOBase extends com.runwaysdk.system.m
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeSymmetricDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeSymmetricDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -176,10 +176,10 @@ public abstract class MdAttributeSymmetricDTOBase extends com.runwaysdk.system.m
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdAttributeSymmetricDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdAttributeSymmetricDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdAttributeSymmetricDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

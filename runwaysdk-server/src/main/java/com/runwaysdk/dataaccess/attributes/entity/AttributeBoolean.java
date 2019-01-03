@@ -24,7 +24,6 @@ package com.runwaysdk.dataaccess.attributes.entity;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
-import com.runwaysdk.dataaccess.AttributeNumericalIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 

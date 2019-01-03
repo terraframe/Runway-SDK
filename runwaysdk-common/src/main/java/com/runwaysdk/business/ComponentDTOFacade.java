@@ -304,8 +304,8 @@ public class ComponentDTOFacade
    * @clientRequest clientRequest
    * @param type
    * @param attributeMap
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param newInstance
    * @param readable
    * @param writable
@@ -313,9 +313,9 @@ public class ComponentDTOFacade
    * @param userHasCurrentLock
    * @return RelationshipDTO (not type safe)
    */
-  public static RelationshipDTO buildRelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentId, String childId, boolean newInstance, boolean readable, boolean writable, boolean modified, String toString, boolean userHasCurrentLock)
+  public static RelationshipDTO buildRelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentOid, String childOid, boolean newInstance, boolean readable, boolean writable, boolean modified, String toString, boolean userHasCurrentLock)
   {
-    RelationshipDTO relationshipDTO = new RelationshipDTO(clientRequest, type, attributeMap, parentId, childId);
+    RelationshipDTO relationshipDTO = new RelationshipDTO(clientRequest, type, attributeMap, parentOid, childOid);
     setCommonProperties(newInstance, readable, writable, modified, toString, relationshipDTO);
     relationshipDTO.setLockedByCurrentUser(userHasCurrentLock);
     return relationshipDTO;
@@ -326,13 +326,13 @@ public class ComponentDTOFacade
    * 
    * @param clientRequest
    * @param type
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @return RelationshipDTO (not type safe)
    */
-  public static RelationshipDTO buildRelationshipDTO(ClientRequestIF clientRequest, String type, String parentId, String childId)
+  public static RelationshipDTO buildRelationshipDTO(ClientRequestIF clientRequest, String type, String parentOid, String childOid)
   {
-    return new RelationshipDTO(clientRequest, type, parentId, childId);
+    return new RelationshipDTO(clientRequest, type, parentOid, childOid);
   }
 
   /**
@@ -554,13 +554,13 @@ public class ComponentDTOFacade
   /**
    * 
    * @param relationshipDTO
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    */
-  public static void setParentAndChildOnRelationshipDTO(RelationshipDTO relationshipDTO, String parentId, String childId)
+  public static void setParentAndChildOnRelationshipDTO(RelationshipDTO relationshipDTO, String parentOid, String childOid)
   {
-    relationshipDTO.setParentId(parentId);
-    relationshipDTO.setChildId(childId);
+    relationshipDTO.setParentOid(parentOid);
+    relationshipDTO.setChildOid(childOid);
   }
 
   /**
@@ -763,7 +763,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Creates a map with the key being the id of the MdAttribute that defines the value, the AttributeDTO.
+   * Creates a map with the key being the oid of the MdAttribute that defines the value, the AttributeDTO.
    * 
    * @param dto
    * @return
@@ -775,7 +775,7 @@ public class ComponentDTOFacade
     for (String name : dto.getAttributeNames())
     {
       AttributeDTO attr = getAttributeDTO(dto, name);
-      attributes.put(attr.getAttributeMdDTO().getId(), attr);
+      attributes.put(attr.getAttributeMdDTO().getOid(), attr);
     }
 
     return attributes;

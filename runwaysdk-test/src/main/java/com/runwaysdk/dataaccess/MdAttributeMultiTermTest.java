@@ -21,12 +21,10 @@
 */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -42,51 +40,18 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.session.Request;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class MdAttributeMultiTermTest extends TestCase
+import junit.extensions.TestSetup;
+import junit.framework.TestSuite;
+
+public class MdAttributeMultiTermTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdAttributeMultiTermTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * 
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
   }
@@ -94,22 +59,24 @@ public class MdAttributeMultiTermTest extends TestCase
   /**
    * 
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
   }
 
+  @Request
+  @Test
   public void testCreateOnEntity()
   {
     String tableName = "class1_test_multi_term";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -118,13 +85,13 @@ public class MdAttributeMultiTermTest extends TestCase
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiTermInfo.NAME), mdAttributeMultiTerm.getValue(MdAttributeMultiTermInfo.NAME));
@@ -155,11 +122,12 @@ public class MdAttributeMultiTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCreateOnView()
   {
     String tableName = "view1_test_multi_term";
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -174,13 +142,13 @@ public class MdAttributeMultiTermTest extends TestCase
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdView.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdView.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeMultiTermInfo.NAME), mdAttributeMultiTerm.getValue(MdAttributeMultiTermInfo.NAME));
@@ -211,10 +179,11 @@ public class MdAttributeMultiTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDefaultValue()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -225,7 +194,6 @@ public class MdAttributeMultiTermTest extends TestCase
       defaultValue.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -234,17 +202,17 @@ public class MdAttributeMultiTermTest extends TestCase
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFAULT_VALUE, defaultValue.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFAULT_VALUE, defaultValue.getOid());
         mdAttributeMultiTerm.apply();
 
         try
         {
-          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getId());
+          MdAttributeMultiTermDAOIF result = MdAttributeMultiTermDAO.get(mdAttributeMultiTerm.getOid());
 
           Assert.assertNotNull(result);
-          Assert.assertEquals(defaultValue.getId(), result.getValue(MdAttributeMultiTermInfo.DEFAULT_VALUE));
+          Assert.assertEquals(defaultValue.getOid(), result.getValue(MdAttributeMultiTermInfo.DEFAULT_VALUE));
         }
         finally
         {
@@ -262,17 +230,17 @@ public class MdAttributeMultiTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidType()
   {
     MdBusinessDAO mdReference = TestFixtureFactory.createMdBusiness1();
-    mdReference.setGenerateMdController(false);
     mdReference.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdReference.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness2();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -281,8 +249,8 @@ public class MdAttributeMultiTermTest extends TestCase
         MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
         mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
         mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiTerm Test");
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdReference.getId());
-        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, mdReference.getOid());
+        mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeMultiTerm.apply();
 
         TestFixtureFactory.delete(mdAttributeMultiTerm);

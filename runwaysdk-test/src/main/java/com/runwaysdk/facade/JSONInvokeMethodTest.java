@@ -24,100 +24,73 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.JSONClientRequestIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.TestConstants;
-import com.runwaysdk.dataaccess.io.XMLImporter;
-import com.runwaysdk.generation.loader.WebTestGeneratedClassLoader;
+import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.conversion.json.JSONUtil;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.web.json.JSONJavaClientRequest;
 
-public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotWeave
+@RunWith(ClasspathTestRunner.class)
+public class JSONInvokeMethodTest extends InvokeMethodTestBase
 {
   protected static volatile JSONClientRequestIF jsonProxy = null;
-  
-  protected static Locale locale = CommonProperties.getDefaultLocale();
 
-  /**
-   * Launch-point for the standalone textui JUnit tests in this class.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
+  protected static Locale                       locale    = CommonProperties.getDefaultLocale();
+
+  @BeforeClass
+  public static void classSetUp()
   {
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
+    jsonProxy = new JSONJavaClientRequest("default", "");
 
-    junit.textui.TestRunner.run(JSONInvokeMethodTest.suite());
-  }
+    systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(JSONInvokeMethodTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
+    try
     {
-      protected void setUp()
-      {
-        jsonProxy = new JSONJavaClientRequest("default", "");
-
-        systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-
-        try
-        {
-          clientRequest = systemSession.getRequest();
-          classSetUp();
-          noPermissionSession = ClientSession.createUserSession("smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
-          noPermissionRequest = noPermissionSession.getRequest();
-          finalizeSetup();
-        }
-        catch (Exception e)
-        {
-          systemSession.logout();
-        }
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
+      clientRequest = systemSession.getRequest();
+      classSetUpRequest();
+      noPermissionSession = ClientSession.createUserSession("smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
+      noPermissionRequest = noPermissionSession.getRequest();
+      finalizeSetup();
+    }
+    catch (Exception e)
+    {
+      systemSession.logout();
+    }
   }
 
+  @Request
+  @Test
   public void testInvokeEmptyMethod() throws Exception
   {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", "142");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
-    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getId());
+    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getOid());
     JSONObject returnObject1 = new JSONObject(returnJSON1);
 
     String businessJSON = returnObject1.getJSONObject(JSONReturnObject.RETURN_VALUE).toString();
@@ -133,28 +106,30 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     BusinessDTO output = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, jsonObject.toString());
 
-    assertEquals(new Long(142), new Long(output.getValue("aLong"))); // should
+    Assert.assertEquals(new Long(142), new Long(output.getValue("aLong"))); // should
     // be the
     // same
     // value
   }
 
+  @Request
+  @Test
   public void testInvokeArrayMethod() throws Exception
   {
     String booleanInput = Boolean.toString(true);
     String longInput = "374364";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
 
-    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getId());
+    String returnJSON1 = jsonProxy.lock(clientRequest.getSessionId(), object.getOid());
 
     JSONObject returnObject1 = new JSONObject(returnJSON1);
 
@@ -177,31 +152,33 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     if (!output.getType().equals(object.getType()))
     {
-      fail("The invoked method [sortNumbers] did not return an object of the proper type");
+      Assert.fail("The invoked method [sortNumbers] did not return an object of the proper type");
     }
 
-    assertEquals(Boolean.parseBoolean(booleanInput), Boolean.parseBoolean(output.getValue("aBoolean")));
-    assertEquals(new Long(3), new Long(Long.parseLong(output.getValue("aLong"))));
+    Assert.assertEquals(Boolean.parseBoolean(booleanInput), Boolean.parseBoolean(output.getValue("aBoolean")));
+    Assert.assertEquals(new Long(3), new Long(Long.parseLong(output.getValue("aLong"))));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedAttributeMethod() throws Exception
   {
     String input = "164";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", input + "3");
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", input);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -222,29 +199,31 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
     BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
 
-    assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
-    assertEquals(Long.parseLong(input), Long.parseLong(returnDTO.getValue("aLong")));
+    Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
+    Assert.assertEquals(Long.parseLong(input), Long.parseLong(returnDTO.getValue("aLong")));
   }
 
+  @Request
+  @Test
   public void testInvokeDefinedArrayMethod() throws Exception
   {
     String input = "Har har bar bar";
     String longInput = "1";
 
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -271,37 +250,39 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(Array.getLength(array), output.length());
+    Assert.assertEquals(Array.getLength(array), output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeEmptyArrayMethod() throws Exception
   {
     String input = "Har har de dar dar";
     String longInput = "152";
 
     // Create the existing BusinessDAO
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     collectionClass.getMethod("lock").invoke(object);
@@ -325,35 +306,37 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(dtoArr.length, output.length());
+    Assert.assertEquals(dtoArr.length, output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 
+  @Request
+  @Test
   public void testInvokeMultiArrayMethod() throws Exception
   {
     // Create the existing BusinessDAO
     String longInput = "163";
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     collectionClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = collectionClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(collectionClass, 1);
@@ -388,33 +371,35 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray multi = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(2, multi.length());
-    assertEquals(2, multi.getJSONArray(0).length());
-    assertEquals("Yo my nizzle", multi.getJSONArray(0).getString(0));
-    assertEquals("Leroy Im witha or against ya.", multi.getJSONArray(0).getString(1));
-    assertEquals(2, multi.getJSONArray(1).length());
-    assertEquals("[[[[L" + collectionType + ";", multi.getJSONArray(1).getString(0));
-    assertEquals("Collection[][][][]", multi.getJSONArray(1).getString(1));
+    Assert.assertEquals(2, multi.length());
+    Assert.assertEquals(2, multi.getJSONArray(0).length());
+    Assert.assertEquals("Yo my nizzle", multi.getJSONArray(0).getString(0));
+    Assert.assertEquals("Leroy Im witha or against ya.", multi.getJSONArray(0).getString(1));
+    Assert.assertEquals(2, multi.getJSONArray(1).length());
+    Assert.assertEquals("[[[[L" + collectionType + ";", multi.getJSONArray(1).getString(0));
+    Assert.assertEquals("Collection[][][][]", multi.getJSONArray(1).getString(1));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubclass() throws Exception
   {
     String longInput = "278";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
+    Class<?> bagClass = LoaderDecorator.load(bagDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     bagClass.getMethod("lock").invoke(object);
@@ -436,29 +421,31 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
     BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
 
-    assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
-    assertEquals(Long.parseLong(longInput) + 10L, Long.parseLong(returnDTO.getValue("aLong")));
+    Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
+    Assert.assertEquals(Long.parseLong(longInput) + 10L, Long.parseLong(returnDTO.getValue("aLong")));
   }
 
+  @Request
+  @Test
   public void testInvokeMethodOnSubArray() throws Exception
   {
     String longInput = "142";
     String input = "H to this izzo, E to the izza";
 
-    Class<?> bagClass = WebTestGeneratedClassLoader.load(bagDTO);
+    Class<?> bagClass = LoaderDecorator.load(bagDTO);
 
     BusinessDTO businessDAO = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO.setValue("aLong", longInput + "0");
     bagClass.getMethod("apply").invoke(businessDAO);
-    String id = businessDAO.getId();
+    String oid = businessDAO.getOid();
 
     BusinessDTO businessDAO2 = (BusinessDTO) bagClass.getConstructor(ClientRequestIF.class).newInstance(clientRequest);
     businessDAO2.setValue("aLong", longInput);
     bagClass.getMethod("apply").invoke(businessDAO2);
-    String id2 = businessDAO2.getId();
+    String id2 = businessDAO2.getOid();
 
     Method get = bagClass.getMethod("get", ClientRequestIF.class, String.class);
-    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, id);
+    BusinessDTO object = (BusinessDTO) get.invoke(null, clientRequest, oid);
     BusinessDTO object2 = (BusinessDTO) get.invoke(null, clientRequest, id2);
 
     Object array = Array.newInstance(bagClass, 1);
@@ -485,14 +472,14 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase implements DoNotW
 
     JSONArray output = jsonArray.getJSONArray(DTOConversionUtilInfo.JSON_RETURN_OBJECT);
 
-    assertEquals(Array.getLength(array), output.length());
+    Assert.assertEquals(Array.getLength(array), output.length());
 
     for (int i = 0; i < output.length(); i++)
     {
       BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
 
-      assertEquals(input, dto.getValue("aCharacter"));
-      assertEquals(longInput, dto.getValue("aLong"));
+      Assert.assertEquals(input, dto.getValue("aCharacter"));
+      Assert.assertEquals(longInput, dto.getValue("aLong"));
     }
   }
 }

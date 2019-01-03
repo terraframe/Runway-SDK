@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis;
 public abstract class ConfigurationExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.ConfigurationException";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   private static final long serialVersionUID = -1948738169;
   
   public ConfigurationExceptionBase()
@@ -52,20 +52,20 @@ public abstract class ConfigurationExceptionBase extends com.runwaysdk.business.
     super(cause);
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.ConfigurationException.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()
@@ -76,7 +76,7 @@ public abstract class ConfigurationExceptionBase extends com.runwaysdk.business.
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

@@ -46,29 +46,6 @@ public class BusinessDTOToJSON extends ElementDTOToJSON
   {
     return (BusinessDTO) super.getComponentDTO();
   }
-  
-  /**
-   * Sets the BusinessDTO properties on the json.
-   */
-  protected void setProperties() throws JSONException
-  {
-    super.setProperties();
-    
-    JSONObject json = getJSON();
-    BusinessDTO businessDTO = getComponentDTO();
-
-    // add the state
-    String state = businessDTO.getState();
-    json.put(JSON.BUSINESS_DTO_STATE.getLabel(), state);
-    
-    // transitions
-    JSONArray transitions = new JSONArray();
-    for(String transition : businessDTO.getTransitions())
-    {
-      transitions.put(transition);
-    }
-    json.put(JSON.BUSINESS_DTO_TRANSITIONS.getLabel(), transitions);
-  }
 
   @Override
   protected String getDTOType()

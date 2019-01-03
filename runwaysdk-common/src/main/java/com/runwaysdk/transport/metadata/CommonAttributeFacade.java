@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import org.w3c.dom.Node;
-
 /**
  * Facade used to set attribute metadata on an attribute. This must be used to
  * set metadata on an attribute since metadata information on an attribute is
@@ -36,18 +34,6 @@ public class CommonAttributeFacade
   public static void setAttributeMetadata(AttributeMdDTO source, AttributeMdDTO dest)
   {
     CommonAttributeMdBuilder builder = new CommonAttributeMdBuilder(source, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeDTO
-   * 
-   * @param metadata
-   * @param dest
-   */
-  public static void setAttributeMetadata(Node metadata, Node properties, AttributeMdDTO dest)
-  {
-    CommonAttributeMdBuilder builder = new CommonAttributeMdBuilder(metadata, properties, dest);
     builder.build();
   }
 
@@ -76,30 +62,6 @@ public class CommonAttributeFacade
   }
 
   /**
-   * Sets the metadata for an AttributeCharacterDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setCharacterMetadata(Node source, Node properties, AttributeCharacterMdDTO dest)
-  {
-    CommonAttributeCharacterMdBuilder builder = new CommonAttributeCharacterMdBuilder(source, properties, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeBooleanDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setBooleanMetadata(Node source, Node properties, AttributeBooleanMdDTO dest)
-  {
-    CommonAttributeBooleanMdBuilder builder = new CommonAttributeBooleanMdBuilder(source, properties, dest);
-    builder.build();
-  }
-
-  /**
    * Sets the metadata for an AttributeStructDTO
    * 
    * @param source
@@ -108,18 +70,6 @@ public class CommonAttributeFacade
   public static void setStructMetadata(AttributeStructMdDTO source, AttributeStructMdDTO dest)
   {
     CommonAttributeStructMdBuilder builder = new CommonAttributeStructMdBuilder(source, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeStructDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setStructMetadata(Node metadata, Node properties, AttributeStructMdDTO dest)
-  {
-    CommonAttributeStructMdBuilder builder = new CommonAttributeStructMdBuilder(metadata, properties, dest);
     builder.build();
   }
 
@@ -136,18 +86,6 @@ public class CommonAttributeFacade
   }
 
   /**
-   * Sets the metadata for an AttributeFloatDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setDecMetadata(Node metadata, Node properties, AttributeDecMdDTO dest)
-  {
-    CommonAttributeDecMdBuilder builder = new CommonAttributeDecMdBuilder(metadata, properties, dest);
-    builder.build();
-  }
-
-  /**
    * Sets the metadata for an AttributeSymmetricDTO
    * 
    * @param source
@@ -156,18 +94,6 @@ public class CommonAttributeFacade
   public static void setEncryptionMetadata(AttributeEncryptionMdDTO source, AttributeEncryptionMdDTO dest)
   {
     CommonAttributeEncryptionMdBuilder builder = new CommonAttributeEncryptionMdBuilder(source, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeSymmetricDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setEncryptionMetadata(Node metadata, Node properties, AttributeEncryptionMdDTO dest)
-  {
-    CommonAttributeEncryptionMdBuilder builder = new CommonAttributeEncryptionMdBuilder(metadata, properties, dest);
     builder.build();
   }
 
@@ -184,18 +110,6 @@ public class CommonAttributeFacade
   }
 
   /**
-   * Sets the metadata for an AttributeLongDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setNumberMetadata(Node metadata, Node properties, AttributeNumberMdDTO dest)
-  {
-    CommonAttributeNumberMdBuilder builder = new CommonAttributeNumberMdBuilder(metadata, properties, dest);
-    builder.build();
-  }
-
-  /**
    * Sets the metadata for an AttributeEnumerationDTO
    * 
    * @param source
@@ -204,18 +118,6 @@ public class CommonAttributeFacade
   public static void setEnumerationMetadata(AttributeEnumerationMdDTO source, AttributeEnumerationMdDTO dest)
   {
     CommonAttributeEnumerationMdBuilder builder = new CommonAttributeEnumerationMdBuilder(source, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeEnumerationDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setEnumerationMetadata(Node metadata, Node properties, AttributeEnumerationMdDTO dest)
-  {
-    CommonAttributeEnumerationMdBuilder builder = new CommonAttributeEnumerationMdBuilder(metadata, properties, dest);
     builder.build();
   }
 
@@ -232,18 +134,6 @@ public class CommonAttributeFacade
   }
 
   /**
-   * Sets the metadata for an AttributeMultiReferenceDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setMultiReferenceMetadata(Node metadata, Node properties, AttributeMultiReferenceMdDTO dest)
-  {
-    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(metadata, properties, dest);
-    builder.build();
-  }
-
-  /**
    * Sets the metadata for an AttributeMultiTermDTO
    * 
    * @param source
@@ -256,18 +146,6 @@ public class CommonAttributeFacade
   }
 
   /**
-   * Sets the metadata for an AttributeMultiTermDTO
-   * 
-   * @param source
-   * @param dest
-   */
-  public static void setMultiTermMetadata(Node metadata, Node properties, AttributeMultiTermMdDTO dest)
-  {
-    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(metadata, properties, dest);
-    builder.build();
-  }
-
-  /**
    * Sets the metadata for an AttributeReferenceDTO
    * 
    * @param source
@@ -276,24 +154,6 @@ public class CommonAttributeFacade
   public static void setReferenceMetadata(AttributeReferenceMdDTO source, AttributeReferenceMdDTO dest)
   {
     CommonAttributeReferenceMdBuilder builder = new CommonAttributeReferenceMdBuilder(source, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeReferenceDTO
-   */
-  public static void setReferenceMetadata(Node metadata, Node properties, AttributeReferenceMdDTO dest)
-  {
-    CommonAttributeReferenceMdBuilder builder = new CommonAttributeReferenceMdBuilder(metadata, properties, dest);
-    builder.build();
-  }
-
-  /**
-   * Sets the metadata for an AttributeTermDTO
-   */
-  public static void setTermMetadata(Node metadata, Node properties, AttributeTermMdDTO dest)
-  {
-    CommonAttributeTermMdBuilder builder = new CommonAttributeTermMdBuilder(metadata, properties, dest);
     builder.build();
   }
 }

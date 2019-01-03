@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 1662871713)
-public class JSONSummationAdapter implements com.runwaysdk.generation.loader.Reloadable
+public class JSONSummationAdapter implements com.runwaysdk.generation.loader.
 {
   private static JSONSummationProxyIF proxy = JSONSummationProxy.getProxy();
   public static java.lang.String arrayInOut(java.lang.String sessionId, java.lang.String array)

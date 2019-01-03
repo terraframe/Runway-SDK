@@ -22,9 +22,9 @@ public class WarningInheritanceDTO extends WarningInheritanceDTOBase
 {
   private static final long serialVersionUID = 327630294;
   
-  public WarningInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public WarningInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

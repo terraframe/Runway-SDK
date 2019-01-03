@@ -28,12 +28,12 @@ public interface MdAttributeGeometryInfo extends MdAttributeConcreteInfo
   public static final String CLASS   = GISConstants.GIS_METADATA_PACKAGE +".MdAttributeGeometry";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "NM20090219000000000000000000000100000000000000000000000000000001";
+  public static final String ID_VALUE  = "NM2009021900000000000000000000010058";
   
   /**
-   * Projection ID used for this geometry attribute;
+   * Projection OID used for this geometry attribute;
    */
   public static final String SRID   = "srid";  
   

@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.ehcache.Cache.Entry;
-
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -52,7 +50,6 @@ import com.runwaysdk.dataaccess.cache.RelationshipDAOCollection;
 import com.runwaysdk.dataaccess.cache.TransactionMemorystore;
 import com.runwaysdk.dataaccess.cache.TransactionStore;
 import com.runwaysdk.dataaccess.cache.TransactionStoreIF;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -165,7 +162,6 @@ public class TransactionCache extends AbstractTransactionCache
     this.deletedEnumerationAttributeItemSet_CodeGeneration.addAll(threadTransactionCache.deletedEnumerationAttributeItemSet_CodeGeneration);
 
     this.updatedMdMethod_CodeGeneration.addAll(threadTransactionCache.updatedMdMethod_CodeGeneration);
-    this.updatedMdAction_CodeGeneration.addAll(threadTransactionCache.updatedMdAction_CodeGeneration);
     this.updatedMdParameter_CodeGeneration.addAll(threadTransactionCache.updatedMdParameter_CodeGeneration);
 
     this.updatedMdTypeSet_CodeGeneration.addAll(threadTransactionCache.updatedMdTypeSet_CodeGeneration);
@@ -252,7 +248,7 @@ public class TransactionCache extends AbstractTransactionCache
     
     if (threadTransactionCache.newEntityIdStringCache != null)
     {
-      Iterator<String> entryIterator = threadTransactionCache.newEntityIdStringCache.getIds();
+      Iterator<String> entryIterator = threadTransactionCache.newEntityIdStringCache.getOids();
       while (entryIterator.hasNext())
       {
         String entry = entryIterator.next();
@@ -266,7 +262,7 @@ public class TransactionCache extends AbstractTransactionCache
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
-  public EntityDAOIF getEntityDAO(String id)
+  public EntityDAOIF getEntityDAO(String oid)
   {
     EntityDAOIF entityDAOIF = null;
 
@@ -274,7 +270,7 @@ public class TransactionCache extends AbstractTransactionCache
     try
     {
       // 1) Check to see if the object's type has been modified in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(id); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(oid); 
       boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
       
       // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
@@ -294,24 +290,24 @@ public class TransactionCache extends AbstractTransactionCache
         if (!mdEntityDAOIF.isNotCached())
         {
           // 4.1) fetch the object from the transaction
-          TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
+          TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(oid);
           if (transactionCacheItem != null)
           {
-            entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
+            entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(oid);
           }
           
           // 4.2) If it is not in the transaction cache, fetch it from the global cache
           if (entityDAOIF == null)
           {
-            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
           }
         }
         else // (mdEntityDAOIF.isNotCached())
         {
           // 5) If the object is not cached, 
-          if (this.isNewUncachedEntity(id))
+          if (this.isNewUncachedEntity(oid))
           {
-            entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+            entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
             ((EntityDAO)entityDAOIF).setIsNew(true);
           }
         }
@@ -329,9 +325,9 @@ public class TransactionCache extends AbstractTransactionCache
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
    */
-  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    return (EntityDAOIF) this.cache.getEntityDAOIFfromCache(id);
+    return (EntityDAOIF) this.cache.getEntityDAOIFfromCache(oid);
   }
   
   /**
@@ -354,7 +350,7 @@ public class TransactionCache extends AbstractTransactionCache
   }
 
   /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
    * @param oldId
    * @param entityDAO
@@ -431,15 +427,6 @@ public class TransactionCache extends AbstractTransactionCache
         String updatedMdMethodId = updatedMdMethodIterator.next();
         MdMethodDAO mdMethod = (MdMethodDAO) this.internalGetEntityDAO(updatedMdMethodId);
         MdTypeDAOIF mdTypeDAOIF = mdMethod.getEnclosingMdTypeDAO();
-        this.addMdTypeToMapForGen(mdTypeDAOIF, mdTypeMap);
-      }
-
-      Iterator<String> updatedMdActionIterator = this.updatedMdAction_CodeGeneration.iterator();
-      while (updatedMdActionIterator.hasNext())
-      {
-        String updatedMdActionId = updatedMdActionIterator.next();
-        MdActionDAO mdAction = (MdActionDAO) this.internalGetEntityDAO(updatedMdActionId);
-        MdTypeDAOIF mdTypeDAOIF = mdAction.getEnclosingMdTypeDAO();
         this.addMdTypeToMapForGen(mdTypeDAOIF, mdTypeMap);
       }
 
@@ -584,6 +571,200 @@ public class TransactionCache extends AbstractTransactionCache
     }
   }
 
+// Alternative code that has not been tested that aims to reduce the scenarios where code is generated 
+//   
+//  /**
+//   * Returns a list of MdTypes that will have Java classes
+//   * generated/regenerated.
+//   * 
+//   * @return list of MdTypes that will have Java classes generated/regenerated.
+//   */
+//  protected Collection<MdTypeDAOIF> getMdTypesForCodeGeneration()
+//  {
+//    this.transactionStateLock.lock();
+//    try
+//    {
+//      Map<String, MdTypeDAOIF> mdTypeMap = new HashMap<String, MdTypeDAOIF>();
+//
+//      Iterator<String> updatedMdMethodIterator = this.updatedMdMethod_CodeGeneration.iterator();
+//      while (updatedMdMethodIterator.hasNext())
+//      {
+//        String updatedMdMethodId = updatedMdMethodIterator.next();
+//        MdMethodDAO mdMethod = (MdMethodDAO) this.internalGetEntityDAO(updatedMdMethodId);
+//        MdTypeDAOIF mdTypeDAOIF = mdMethod.getEnclosingMdTypeDAO();
+//        
+//        this.shouldGenerateSource(mdTypeMap, mdTypeDAOIF, mdTypeDAOIF.isGenerateSource());
+//      }
+//
+//      Iterator<String> updatedMdParameterIterator = this.updatedMdParameter_CodeGeneration.iterator();
+//      while (updatedMdParameterIterator.hasNext())
+//      {
+//        String updatedMdParameterId = updatedMdParameterIterator.next();
+//        MdParameterDAO mdParameter = (MdParameterDAO) this.internalGetEntityDAO(updatedMdParameterId);
+//        MdTypeDAOIF mdTypeDAOIF = mdParameter.getEnclosingMetadata().getEnclosingMdTypeDAO();
+//
+//        this.shouldGenerateSource(mdTypeMap, mdTypeDAOIF, mdTypeDAOIF.isGenerateSource());
+//      }
+//
+//      Iterator<String> newMdAttrId = this.newMdAttributeSet_CodeGeneration.iterator();
+//      while (newMdAttrId.hasNext())
+//      {
+//        String mdAttributeDAOid = newMdAttrId.next();
+//        MdAttributeDAO mdAttribute = (MdAttributeDAO) this.internalGetEntityDAO(mdAttributeDAOid);
+//        MdClassDAOIF definingMdClassDAOIF = (MdClassDAOIF) mdAttribute.definedByClass();
+//        
+//        this.shouldGenerateSource(mdTypeMap, definingMdClassDAOIF, definingMdClassDAOIF.isGenerateSource());
+//      }
+//
+//      Iterator<String> deletedMdAttributeIttr = this.deletedMdAttributeSet_CodeGeneration.iterator();
+//
+//      while (deletedMdAttributeIttr.hasNext())
+//      {
+//        String deletedMdAttributeId = deletedMdAttributeIttr.next();
+//        MdAttributeDAOIF mdAttributeIF = (MdAttributeDAOIF) this.internalGetEntityDAO(deletedMdAttributeId);
+//
+//        MdClassDAOIF definingMdClassDAOIF = (MdClassDAOIF) mdAttributeIF.definedByClass();
+//        
+//        this.shouldGenerateSource(mdTypeMap, definingMdClassDAOIF, definingMdClassDAOIF.isGenerateSource());
+//
+//        if (definingMdClassDAOIF instanceof MdBusinessDAOIF)
+//        {
+//          MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) definingMdClassDAOIF;
+//
+//          MdBusinessDAOIF superMdBusinessIF = definingMdBusinessIF.getSuperClass();
+//
+//          if (superMdBusinessIF != null)
+//          {
+//            if (definingMdBusinessIF.getSuperClass().definesType().equals(EnumerationMasterInfo.CLASS))
+//            {
+//              for (MdEnumerationDAOIF mdEnumerationDAOIF : definingMdBusinessIF.getMdEnumerationDAOs())
+//              {
+//                // Don't generate the MdEnummeration if source is not being generated for the enumeration master class
+//                this.shouldGenerateSource(mdTypeMap, mdEnumerationDAOIF, definingMdBusinessIF.isGenerateSource());
+//              }
+//            }
+//          }
+//        }
+//      }
+//
+//      // If we delete a business class, any MdAttributeReference that used the
+//      // class is implicitly deleated as well.
+//      // Consequently, the map above will contain an entry for the attribute.
+//      // The same is true for deleting a struct class. The MdAttributeStruct is
+//      // dropped.
+//      Iterator<String> mdRelationshipIterator = this.newMdRelationshipSet_CodeGeneration.iterator();
+//      while (mdRelationshipIterator.hasNext())
+//      {
+//        String mdRelationshipId = mdRelationshipIterator.next();
+//        MdRelationshipDAO mdRelationship = (MdRelationshipDAO) this.internalGetEntityDAO(mdRelationshipId);
+//        
+//        MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationship.getParentMdBusiness();
+//        MdBusinessDAOIF childMdBusinessDAOIF = mdRelationship.getChildMdBusiness();
+//
+//        this.shouldGenerateSource(mdTypeMap, parentMdBusinessDAOIF, mdRelationship.isGenerateSource());
+//        this.shouldGenerateSource(mdTypeMap, childMdBusinessDAOIF, mdRelationship.isGenerateSource());
+//      }
+//
+//      Iterator<String> deletedMdRelationshipIttr = this.deletedMdRelationshipSet_CodeGeneration.iterator();
+//      while (deletedMdRelationshipIttr.hasNext())
+//      {
+//        String mdRelationshipId = deletedMdRelationshipIttr.next();
+//        MdRelationshipDAOIF mdRelationshipIF = (MdRelationshipDAOIF) this.internalGetEntityDAO(mdRelationshipId);
+//
+//        MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipIF.getParentMdBusiness();
+//        MdBusinessDAOIF childMdBusinessDAOIF = mdRelationshipIF.getChildMdBusiness();
+//        
+//        this.shouldGenerateSource(mdTypeMap, parentMdBusinessDAOIF, mdRelationshipIF.isGenerateSource());
+//        this.shouldGenerateSource(mdTypeMap, childMdBusinessDAOIF, mdRelationshipIF.isGenerateSource());
+//      }
+//
+//      // If we delete a business class, any relationship class that it
+//      // participates in is implicitly deleted as well.
+//      // Consequently, the map above will contain an entry.
+//      Iterator<String> enumItemIterator = this.newEnumerationAttributeItemSet_CodeGeneration.iterator();
+//      while (enumItemIterator.hasNext())
+//      {
+//        String enumItemId = enumItemIterator.next();
+//        EnumerationAttributeItem enumerationAttributeItem = (EnumerationAttributeItem) this.internalGetEntityDAO(enumItemId);
+//        MdEnumerationDAOIF mdEnumerationDAOIF = enumerationAttributeItem.getMdEnumerationDAO();
+//
+//        this.shouldGenerateSource(mdTypeMap, mdEnumerationDAOIF, mdEnumerationDAOIF.isGenerateSource());
+//      }
+//
+//      Iterator<String> delEnumIterator = this.deletedEnumerationAttributeItemSet_CodeGeneration.iterator();
+//      while (delEnumIterator.hasNext())
+//      {
+//        String enumItemId = delEnumIterator.next();
+//        EnumerationAttributeItem enumerationAttributeItem = (EnumerationAttributeItem) this.internalGetEntityDAO(enumItemId);
+//        MdEnumerationDAOIF mdEnumerationDAOIF = enumerationAttributeItem.getMdEnumerationDAO();
+//
+//        this.shouldGenerateSource(mdTypeMap, mdEnumerationDAOIF, mdEnumerationDAOIF.isGenerateSource());
+//      }
+//
+//      Iterator<String> updatedMdTypeIterator = this.updatedMdTypeSet_CodeGeneration.iterator();
+//      while (updatedMdTypeIterator.hasNext())
+//      {
+//        String updatedMdTypeId = updatedMdTypeIterator.next();
+//        MdTypeDAO mdTypeDAO = (MdTypeDAO) this.internalGetEntityDAO(updatedMdTypeId);
+//        
+//        this.shouldGenerateSource(mdTypeMap, mdTypeDAO, mdTypeDAO.isGenerateSource());
+//      }
+//
+//      Iterator<String> enumIterator = this.updatedEnumerationItemSet_CodeGeneration.iterator();
+//      while (enumIterator.hasNext())
+//      {
+//        String enumIteratorId = enumIterator.next();
+//        EnumerationItemDAO enumerationItem = (EnumerationItemDAO) this.internalGetEntityDAO(enumIteratorId);
+//
+//        for (MdEnumerationDAOIF mdEnumerationDAOIF : enumerationItem.getParticipatingMdEnumerations())
+//        {
+//          this.shouldGenerateSource(mdTypeMap, mdEnumerationDAOIF, mdEnumerationDAOIF.isGenerateSource());
+//        }
+//      }
+//
+//      // Regenerate the EnumerationMaster class
+//      for (String mdEnumerationDAOIid : this.updatedMdEnumerationMap_CodeGeneration.values())
+//      {
+//        MdEnumerationDAOIF mdEnumerationDAOIF = (MdEnumerationDAOIF) this.internalGetEntityDAO(mdEnumerationDAOIid);
+//
+//        MdBusinessDAOIF mdBusinessDAOIF = mdEnumerationDAOIF.getMasterListMdBusinessDAO();
+//        
+//        this.shouldGenerateSource(mdTypeMap, mdBusinessDAOIF, mdBusinessDAOIF.isGenerateSource());
+//      }
+//
+//      // Remove types that are to be deleted
+//      for (String definesType : deletedMdTypeMap_CodeGeneration.keySet())
+//      {
+//        mdTypeMap.remove(definesType);
+//      }
+//
+//      return mdTypeMap.values();
+//    }
+//    finally
+//    {
+//      this.transactionStateLock.unlock();
+//    }
+//  }
+//
+//  /**
+//   * Only generate source if the given attribute is true. NOTE: the attribute could come from a
+//   * DIFFERENT type than the one provided. For example, a relationship may not generate source and
+//   * therefore the parent and child classes should not be generated.
+//   * 
+//   * @param mdTypeMap
+//   * @param mdTypeDAOIF
+//   * @param generateSource
+//   */
+//  private void shouldGenerateSource(Map<String, MdTypeDAOIF> mdTypeMap,
+//      MdTypeDAOIF mdTypeDAOIF, Boolean generateSource)
+//  {
+//    if (generateSource)
+//    {
+//      this.addMdTypeToMapForGen(mdTypeDAOIF, mdTypeMap);
+//    }
+//  }
+  
+  
   /**
    * Returns true if an operation has occured in the transaction that should
    * cause the entire code stream to recompile. This should happen when a
@@ -660,7 +841,7 @@ public class TransactionCache extends AbstractTransactionCache
         {          
           entityDAO.setCommitState();
 
-          entityDAO.setOldId(this.getOriginalId(entityDAO.getId()));
+          entityDAO.setOldId(this.getOriginalId(entityDAO.getOid()));
           
           ObjectCache.updateCache(entityDAO);
         }

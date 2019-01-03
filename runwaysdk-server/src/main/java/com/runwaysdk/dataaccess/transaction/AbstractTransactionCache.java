@@ -35,9 +35,6 @@ import org.slf4j.LoggerFactory;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -57,7 +54,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -67,18 +63,14 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.RelationshipDAOCollection;
 import com.runwaysdk.dataaccess.database.DatabaseException;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
@@ -103,7 +95,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected ReentrantLock                                    transactionStateLock;
 
   /**
-   * Keeps track of which entities have been deleted. Value: Entity ID + method
+   * Keeps track of which entities have been deleted. Value: Entity OID + method
    * signature <br/>
    * <b>invariant</b> deletedEntitySignatures != null
    */
@@ -119,7 +111,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains all EntityDAOs that were added or modified during a transaction
-   * where the key is the entity id.. <br/>
+   * where the key is the entity oid.. <br/>
    * <b>invariant</b> updatedEntityDAOIdMap != null
    */
   protected Map<String, TransactionItemEntityDAOAction>      updatedEntityDAOIdMap;
@@ -127,7 +119,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains all {@link EntityDAO}s that were added or modified during a
    * transaction where the key is the type plus the keyname of the entity. The
-   * value is the id of the {@link EntityDAO} <br/>
+   * value is the oid of the {@link EntityDAO} <br/>
    * <b>invariant</b> updatedEntityDAOKeyMap != null
    */
   protected Map<String, String>                              updatedEntityDAOKeyMap;
@@ -135,10 +127,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Sometimes entities that are cached should be cleared from the global cache at the end of a 
    * transaction. Such objects will be refreshed in the global cache the next time they are referenced.
-   * {@link EntityDAO} ids should not bee in both this map and in the updatedEntityDAOIdMap. If an id is
+   * {@link EntityDAO} ids should not bee in both this map and in the updatedEntityDAOIdMap. If an oid is
    * added to updatedEntityDAOIdMap it should be removed from this set.
    * 
-   * Key is the id of a {@link EntityDAO} <br/>
+   * Key is the oid of a {@link EntityDAO} <br/>
    * 
    * <b>invariant</b> entitiesToRefreshFromGlobalCache != null
    */
@@ -181,7 +173,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains a reference to all {@link MdClass} objects that were modified
    * during this transaction. The key is the name of the class. Used to allow
-   * sets of classes to be defined within a transaction. The value is the id of
+   * sets of classes to be defined within a transaction. The value is the oid of
    * the {@link MdClass}. <br/>
    * <b>invariant</b> updatedMdClassDefinedTypeMap != null
    */
@@ -189,8 +181,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdClass}. objects that were modified
-   * during this transaction. The key is the root id of the class. The value is
-   * the id of the {@link MdClass}.
+   * during this transaction. The key is the root oid of the class. The value is
+   * the oid of the {@link MdClass}.
    * 
    * <br/>
    * <b>invariant</b> updatedMdClassRootIdMap != null
@@ -199,7 +191,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link RoleDAOIF} that were modified during
-   * this transaction. The key is the name of the role. The value is the id of
+   * this transaction. The key is the name of the role. The value is the oid of
    * the {@link RoleDAOIF}. Used to allow sets of roles to be defined and
    * assigned to users and actors within a transaction. <br/>
    * <b>invariant</b> updatedRoleIFMap != null
@@ -224,7 +216,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdAttributeDAO} objects that were
-   * created during this transaction. The key is the id of the object. Used to
+   * created during this transaction. The key is the oid of the object. Used to
    * determine MdEntities (the defining entity) that need to have Java classes
    * generated or regenerated.
    * 
@@ -236,13 +228,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains a reference to {@link MdAttributeDAO} objects that were added
    * during this transaction. The key is the key of the object. The value is the
-   * id of the{@link MdAttributeDAO} object.
+   * oid of the{@link MdAttributeDAO} object.
    */
   protected DualHashBidiMap                                  addedMdAttrubiteKeyMap;
 
   /**
    * Contains a reference to all {@link MdAttributeDAOIF} objects that were
-   * deleted during this transaction. The value is the id of the
+   * deleted during this transaction. The value is the oid of the
    * {@link MdAttributeDAOIF} Used to determine MdEntities (the defining entity)
    * that need to have Java classes generated or regenerated.
    * 
@@ -253,7 +245,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdRelationshipDAO} objects that were
-   * created during this transaction. The key is the id of the
+   * created during this transaction. The key is the oid of the
    * {@link MdRelationshipDAO} object. Used to determine MdBusiness (parent or
    * child class) that need to have Java classes generated or regenerated.
    * 
@@ -264,7 +256,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdRelationshipDAOIF} objects that were
-   * deleted during this transaction. The key is the id of the
+   * deleted during this transaction. The key is the oid of the
    * {@link MdRelationshipDAOIF} object. Used to determine MdBusiness (parent or
    * child class) that need to have Java classes generated or regenerated.
    * 
@@ -275,7 +267,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link EnumerationAttributeItem} objects that
-   * were created during this transaction. The key is the id of the
+   * were created during this transaction. The key is the oid of the
    * {@link EnumerationAttributeItem} object. Used to determine MdEnumeration
    * objects that need to have Java classes generated or regenerated.
    * 
@@ -286,7 +278,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link EnumerationAttributeItem} objects that
-   * were deleted during this transaction. The key is the id of the
+   * were deleted during this transaction. The key is the oid of the
    * {@link EnumerationAttributeItem} object. Used to determine
    * {@link MdEnumerationDAO} objects that need to have Java classes generated
    * or regenerated.
@@ -298,7 +290,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdMethodDAO} objects that were created,
-   * updated, or deleted during this transaction. The key is the id of the
+   * updated, or deleted during this transaction. The key is the oid of the
    * object. Used to determine {@link MdEntityDAO} or {@link MdFacadeDAO}
    * objects that need to have Java classes generated or regenerated.
    * 
@@ -308,19 +300,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Set<String>                                      updatedMdMethod_CodeGeneration;
 
   /**
-   * Contains a reference to all {@link MdActionDAO} objects that were created,
-   * updated, or deleted during this transaction. The key is the id of the
-   * object. Used to determine {@link MdControllerDAO} objects that need to have
-   * Java classes generated or regenerated.
-   * 
-   * <br/>
-   * <b>invariant</b> updatedMdAction_CodeGeneration != null
-   */
-  protected Set<String>                                      updatedMdAction_CodeGeneration;
-
-  /**
    * Contains a reference to all {@link MdParameterDAO} objects that were
-   * created, updated, or deleted during this transaction. The key is the id of
+   * created, updated, or deleted during this transaction. The key is the oid of
    * the object. Used to determine {@link MdEntityDAO} or {@link MdFacadeDAO}
    * objects that need to have Java classes generated or regenerated.
    * 
@@ -331,7 +312,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdType} objects that were created during
-   * this transaction. The key is the id of the object. Used to determine
+   * this transaction. The key is the oid of the object. Used to determine
    * {@link MdType} objects that need to have Java classes generated.
    * 
    * <br/>
@@ -352,7 +333,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link EnumerationItemDAO} objects that were
-   * modified during this transaction. The key is the id of the object. Used to
+   * modified during this transaction. The key is the oid of the object. Used to
    * determine {@link MdEnumerationDAO}s that need to be regenerated, as their
    * corresponding Java enumerations contain the values as strings within the
    * class definition.
@@ -364,8 +345,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Contains a reference to all {@link MdEnumerationDAOIF} objects that were
-   * created or deleted during this transaction. The key is the id of the
-   * object. The value is the id of the {@link MdEnumerationDAOIF} object. Used
+   * created or deleted during this transaction. The key is the oid of the
+   * object. The value is the oid of the {@link MdEnumerationDAOIF} object. Used
    * to determine the enumeration master list classes that need to be
    * regenerated.
    * 
@@ -377,7 +358,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains a reference to all {@link MdEnumerationDAO} objects that were
    * modified during this transaction. The key is the name of the enumeration
-   * type. The value is the id of the {@link MdEnumerationDAO}object. Used to
+   * type. The value is the oid of the {@link MdEnumerationDAO}object. Used to
    * allow sets of classes to be defined within a transaction. <br/>
    * <b>invariant</b> updatedMdEnumerationMap != null
    */
@@ -386,7 +367,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains a reference to all {@link MdIndexDAO} objects that were modified
    * during this transaction. The key is the name of the index. The value is the
-   * id of the {@link MdIndexDAO} object. Used to allow sets of classes to be
+   * oid of the {@link MdIndexDAO} object. Used to allow sets of classes to be
    * defined within a transaction. <br/>
    * <b>invariant</b> updatedMdIndexMap != null
    */
@@ -395,7 +376,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Contains a reference to all {@link MdAttributeConcreteDAO} objects that
    * were modified during this transaction. The key is the name of the index.
-   * The value is the id of the {@link MdAttributeConcreteDAO} object. Used to
+   * The value is the oid of the {@link MdAttributeConcreteDAO} object. Used to
    * allow sets of classes to be defined within a transaction. <br/>
    * <b>invariant</b> indexNameMap != null
    */
@@ -437,13 +418,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, RelationshipDAOCollection>           cachedRemovedRelationships;
 
   /**
-   * Key: MdBusiness id. Value: MdRelationship ids where MdBusiness participates
+   * Key: MdBusiness oid. Value: MdRelationship ids where MdBusiness participates
    * as a parent.
    */
   protected Map<String, Set<String>>                         mdBusinessParentMdRelationships;
 
   /**
-   * Key: MdBusiness id. Value: MdRelationship ids where MdBusiness participates
+   * Key: MdBusiness oid. Value: MdRelationship ids where MdBusiness participates
    * as a child.
    */
   protected Map<String, Set<String>>                         mdBusinessChildMdRelationships;
@@ -459,7 +440,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   private Boolean                                            isClosed;
 
   /**
-   * Records the types, as the class root id, that have participated in this transaction. 
+   * Records the types, as the class root oid, that have participated in this transaction. 
    * If a type has not participated in the transaction than no need to check the file system 
    * to see if an object instance of the type has participated in the transaction.
    */
@@ -520,7 +501,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.deletedEnumerationAttributeItemSet_CodeGeneration = new HashSet<String>();
 
     this.updatedMdMethod_CodeGeneration = new HashSet<String>();
-    this.updatedMdAction_CodeGeneration = new HashSet<String>();
     this.updatedMdParameter_CodeGeneration = new HashSet<String>();
 
     this.updatedMdTypeSet_CodeGeneration = new HashSet<String>();
@@ -613,7 +593,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
    * 
    * @param entityId
-   *          ID of the {@link EntityDAOIF} that goes into the the global cache.
+   *          OID of the {@link EntityDAOIF} that goes into the the global cache.
    */
   public void recordNewlyCreatedNonCachedEntity(String entityId)
   {
@@ -621,11 +601,11 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
   
   /**
-   * Returns true if the given id is from a newly created {@link EntityDAO} who's type 
+   * Returns true if the given oid is from a newly created {@link EntityDAO} who's type 
    * is not cached.
    * 
    * @param entityDAOid
-   * @return true if the given id is from a newly created {@link EntityDAO} who's type 
+   * @return true if the given oid is from a newly created {@link EntityDAO} who's type 
    * is not cached.
    */
   public boolean isNewUncachedEntity(String entityDAOid)
@@ -634,7 +614,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
    * @param oldId
    * @param entityDAO
@@ -643,7 +623,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     this.newEntityIdStringCache.changeEntityIdInCache(oldId, entityDAO);
     
-    String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+    String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
     this.typeRootIdsInTransaction.add(mdTypeRootId);
   }
   
@@ -698,32 +678,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
 
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.addChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.addParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
 
       }
     }
@@ -734,7 +714,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Call this method if the id of the relationshipId has changed during the
+   * Call this method if the oid of the relationshipId has changed during the
    * transaction.
    * 
    * <br/>
@@ -757,32 +737,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.updateChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.updateParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
       }
     }
     finally
@@ -792,10 +772,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Updates the cache when the id of a relationship has changed.
+   * Updates the cache when the oid of a relationship has changed.
    * 
    * <br/>
-   * <b>Precondition:</b>Check to see if the child id has changed has already
+   * <b>Precondition:</b>Check to see if the child oid has changed has already
    * occurred.
    * 
    * @param mdRelationshipDAOIF
@@ -830,7 +810,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     try
     {
       // Record that this object's type is participating in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
       this.typeRootIdsInTransaction.add(mdTypeRootId);
       
       MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
@@ -848,8 +828,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         if (entityDAO instanceof MdEntityDAO)
         {
           MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
-          this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getId());
-          this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getId());
+          this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getOid());
+          this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getOid());
 
           if (mdEntityDAO instanceof MdRelationshipDAO)
           {
@@ -868,7 +848,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
               parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
               this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
             }
-            parentRelationshipSet.remove(mdRelationshipDAO.getId());
+            parentRelationshipSet.remove(mdRelationshipDAO.getOid());
 
             String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS).getValue();
             Set<String> childRelationshipSet;
@@ -883,7 +863,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
               childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
               this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
             }
-            childRelationshipSet.remove(mdRelationshipDAO.getId());
+            childRelationshipSet.remove(mdRelationshipDAO.getOid());
           }
           else if (mdEntityDAO instanceof MdBusinessDAO)
           {
@@ -892,8 +872,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             // Do not remove the entries from the map, otherwise, on an update,
             // the values in the global cache
             // will be placed here again.
-            this.mdBusinessParentMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
-            this.mdBusinessChildMdRelationships.put(mdBusinessDAO.getId(), new HashSet<String>());
+            this.mdBusinessParentMdRelationships.put(mdBusinessDAO.getOid(), new HashSet<String>());
+            this.mdBusinessChildMdRelationships.put(mdBusinessDAO.getOid(), new HashSet<String>());
           }
         }
         else if (entityDAO instanceof MdEnumerationDAO)
@@ -902,13 +882,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
           if (!entityDAO.isImport())
           {
-            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getOid());
           }
         }
         else if (entityDAO instanceof MdIndexDAO)
         {
           MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
-          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
+          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getOid());
         }
       } 
     }
@@ -953,32 +933,32 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
-        String parentId = relationshipDAO.getParentId();
-        String childId = relationshipDAO.getChildId();
+        String parentOid = relationshipDAO.getParentOid();
+        String childOid = relationshipDAO.getChildOid();
 
         TransactionBusinessDAORelationships parentRels;
-        if (this.updatedBusinessDAORelationships.containsKey(parentId))
+        if (this.updatedBusinessDAORelationships.containsKey(parentOid))
         {
-          parentRels = this.updatedBusinessDAORelationships.get(parentId);
+          parentRels = this.updatedBusinessDAORelationships.get(parentOid);
         }
         else
         {
           parentRels = new TransactionBusinessDAORelationships();
         }
         parentRels.deletedChildRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(parentId, parentRels);
+        this.updatedBusinessDAORelationships.put(parentOid, parentRels);
 
         TransactionBusinessDAORelationships childRels;
-        if (this.updatedBusinessDAORelationships.containsKey(childId))
+        if (this.updatedBusinessDAORelationships.containsKey(childOid))
         {
-          childRels = this.updatedBusinessDAORelationships.get(childId);
+          childRels = this.updatedBusinessDAORelationships.get(childOid);
         }
         else
         {
           childRels = new TransactionBusinessDAORelationships();
         }
         childRels.deletedParentRelationship(relationshipDAO);
-        this.updatedBusinessDAORelationships.put(childId, childRels);
+        this.updatedBusinessDAORelationships.put(childOid, childRels);
 
       }
     }
@@ -996,7 +976,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.deletedEnumerationAttributeItemSet_CodeGeneration.add(enumerationAttributeItem.getId());
+      this.deletedEnumerationAttributeItemSet_CodeGeneration.add(enumerationAttributeItem.getOid());
       this.storeTransactionEntityDAO(enumerationAttributeItem);
     }
     finally
@@ -1013,7 +993,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.deletedMdAttributeSet_CodeGeneration.add(mdAttribute.getId());
+      this.deletedMdAttributeSet_CodeGeneration.add(mdAttribute.getOid());
       this.storeTransactionEntityDAO(mdAttribute);
     }
     finally
@@ -1030,7 +1010,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationshipDAO.getId());
+      this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationshipDAO.getOid());
       this.storeTransactionEntityDAO(mdRelationshipDAO);
     }
     finally
@@ -1047,7 +1027,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.deletedMdTypeMap_CodeGeneration.put(mdTypeIF.definesType(), mdTypeIF.getId());
+      this.deletedMdTypeMap_CodeGeneration.put(mdTypeIF.definesType(), mdTypeIF.getOid());
       this.storeTransactionEntityDAO((MdTypeDAO) mdTypeIF);
     }
     finally
@@ -1278,9 +1258,9 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      String id = (String) this.addedMdAttrubiteKeyMap.get(mdAttributeKey);
+      String oid = (String) this.addedMdAttrubiteKeyMap.get(mdAttributeKey);
 
-      return (MdAttributeDAOIF) this.internalGetEntityDAO(id);
+      return (MdAttributeDAOIF) this.internalGetEntityDAO(oid);
     }
     finally
     {
@@ -1346,12 +1326,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
-  public abstract EntityDAOIF getEntityDAO(String id);
+  public abstract EntityDAOIF getEntityDAO(String oid);
 
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
    */
-  public abstract EntityDAOIF getEntityDAOIFfromCache(String id);
+  public abstract EntityDAOIF getEntityDAOIFfromCache(String oid);
 
   /**
    * Returns a map of all entities that were updated during this transaction.
@@ -1372,15 +1352,15 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Returns the ID that should be passed on to the ObjectCache for fetching
-   * parents objects with the given id. The id could have been changed during
-   * the transaction, and the id in the global cache may be different than the
-   * id for the object in the current transaction.
+   * Returns the OID that should be passed on to the ObjectCache for fetching
+   * parents objects with the given oid. The oid could have been changed during
+   * the transaction, and the oid in the global cache may be different than the
+   * oid for the object in the current transaction.
    * 
    * @param businessDAOid
    * @param relationshipType
-   * @return ID that should be passed on to the ObjectCache for fetching parents
-   *         objects with the given id.
+   * @return OID that should be passed on to the ObjectCache for fetching parents
+   *         objects with the given oid.
    */
   public String getBusIdForGetParentsMethod(String businessDAOid, String relationshipType)
   {
@@ -1397,7 +1377,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     // int cacheCode =
     // Integer.parseInt(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue());
 
-    if (cacheAlgorithmId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()) || cacheAlgorithmId.equals(EntityCacheMaster.CACHE_HARDCODED.getId()))
+    if (cacheAlgorithmId.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()) || cacheAlgorithmId.equals(EntityCacheMaster.CACHE_HARDCODED.getOid()))
     {
       String originalId = this.getOriginalId(businessDAOid);
 
@@ -1414,7 +1394,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Returns parent relationships for the object with the given id in the
+   * Returns parent relationships for the object with the given oid in the
    * transaction.
    * 
    * @param relationshipList
@@ -1438,7 +1418,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       // Set of the original ids (ids before they were changed in this
       // transaction. If not changed, than just
-      // the relationship id) of relationshipIds that have been added to the
+      // the relationship oid) of relationshipIds that have been added to the
       // relationship list that
       // will be returned by this function.
       Set<String> originalIdHasBeenAddedToTheReturnList = new HashSet<String>();
@@ -1464,11 +1444,11 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       {
         // Do not add to the list if the relationship has been added or deleted
         // in this transaction.
-        if (!addedParentRelSet.contains(relationshipDAOIF.getId()) && !deletedParentRelSet.contains(relationshipDAOIF.getId()) &&
+        if (!addedParentRelSet.contains(relationshipDAOIF.getOid()) && !deletedParentRelSet.contains(relationshipDAOIF.getOid()) &&
         // do not add the relationship from the global cache/database if it
         // has already been added to the return list under a different or the
-        // same id.
-            !originalIdHasBeenAddedToTheReturnList.contains(relationshipDAOIF.getId()))
+        // same oid.
+            !originalIdHasBeenAddedToTheReturnList.contains(relationshipDAOIF.getOid()))
         {
           newRelationshipList.add(relationshipDAOIF);
         }
@@ -1481,7 +1461,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Returns child relationships for the object with the given id in the
+   * Returns child relationships for the object with the given oid in the
    * transaction.
    * 
    * @param relationshipList
@@ -1507,7 +1487,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       // Set of the original ids (ids before they were changed in this
       // transaction. If not changed, than just
-      // the relationship id) of relationshipIds that have been added to the
+      // the relationship oid) of relationshipIds that have been added to the
       // relationship list that
       // will be returned by this function.
       Set<String> originalIdHasBeenAddedToTheReturnList = new HashSet<String>();
@@ -1534,11 +1514,11 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       {
         // Do not add to the list if the relationship has been added or deleted
         // in this transaction.
-        if (!addedChildRelSet.contains(relationshipDAOIF.getId()) && !deletedChildRelSet.contains(relationshipDAOIF.getId()) &&
+        if (!addedChildRelSet.contains(relationshipDAOIF.getOid()) && !deletedChildRelSet.contains(relationshipDAOIF.getOid()) &&
         // do not add the relationship from the global cache/database if it
         // has already been added to the return list under a different or the
-        // same id.
-            !originalIdHasBeenAddedToTheReturnList.contains(relationshipDAOIF.getId()))
+        // same oid.
+            !originalIdHasBeenAddedToTheReturnList.contains(relationshipDAOIF.getOid()))
         {
           newRelationshipList.add(relationshipDAOIF);
         }
@@ -1555,23 +1535,23 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * that it will check the global cache for objects not in the transaction
    * cache.
    * 
-   * @param id
-   * @return Null if the id is null.
-   * @throws {@link DataNotFoundException} if id != null and the object does not
+   * @param oid
+   * @return Null if the oid is null.
+   * @throws {@link DataNotFoundException} if oid != null and the object does not
    *         exist in the transaction cache or the ObjectCache.
    */
-  protected EntityDAOIF internalGetEntityDAO(String id)
+  protected EntityDAOIF internalGetEntityDAO(String oid)
   {
-    if (id == null)
+    if (oid == null)
     {
       return null;
     }
 
-    EntityDAOIF entityDAOIF = this.getEntityDAO(id);
+    EntityDAOIF entityDAOIF = this.getEntityDAO(oid);
     
     if (entityDAOIF == null)
     {
-      entityDAOIF = ObjectCache._internalGetEntityDAO(id);
+      entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
     }
     
     return entityDAOIF;
@@ -1640,7 +1620,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       for (String type : mdEntityDAOIF.getSuperTypes())
       {
-        this.updatedEntityDAOKeyMap.put(type + "-" + entityDAO.getKey(), entityDAO.getId());
+        this.updatedEntityDAOKeyMap.put(type + "-" + entityDAO.getKey(), entityDAO.getOid());
       }
     }
   }
@@ -1657,10 +1637,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     EntityDAOIF entityDAOIF = null;
     
     // Check to see if the type and the key have been modified in this transaction
-    String id = this.updatedEntityDAOKeyMap.get(providedType + "-" + key);
+    String oid = this.updatedEntityDAOKeyMap.get(providedType + "-" + key);
     
     // The type provided could be a parent type of the object with the key. Check all subclasses.
-    if (id == null)
+    if (oid == null)
     {
       MdEntityDAOIF rootMdEntityDAOIF = MdEntityDAO.getMdEntityDAO(providedType);
       List<? extends MdEntityDAOIF> subClasses = rootMdEntityDAOIF.getAllSubClasses();
@@ -1668,9 +1648,9 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       for (MdEntityDAOIF mdEntityDAOIF : subClasses)
       {
         String subType = mdEntityDAOIF.definesType();
-        id = this.updatedEntityDAOKeyMap.get(subType + "-" + key);
+        oid = this.updatedEntityDAOKeyMap.get(subType + "-" + key);
         
-        if (id != null)
+        if (oid != null)
         {
           // We have identified the type of the object that has been modified in this transaction. 
           // Type is also a cached type.
@@ -1680,16 +1660,16 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     }
     
     // Object has participated in the transaction and is of a cached type.
-    if (id != null)
+    if (oid != null)
     {
-      entityDAOIF = this.internalGetEntityDAO(id);
+      entityDAOIF = this.internalGetEntityDAO(oid);
     }
     // Either the object has not participated in the transaction or is not of
     // a cached type.
     else
     {
       entityDAOIF = ObjectCache.getEntityDAO(providedType, key);
-      if (this.isNewUncachedEntity(entityDAOIF.getId()))
+      if (this.isNewUncachedEntity(entityDAOIF.getOid()))
       {
         ((EntityDAO)entityDAOIF).setIsNew(true);
       }
@@ -1842,62 +1822,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getUpdatedStateMasters(java.lang.String)
-   */
-  public List<StateMasterDAOIF> getUpdatedStateMasters(String type)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      List<StateMasterDAOIF> stateMasterList = new LinkedList<StateMasterDAOIF>();
-
-      if (this.updatedStateMasterMap.containsKey(type))
-      {
-        Set<String> stateMasterDAOidSet = this.updatedStateMasterMap.get(type);
-
-        for (String stateMasterDAOid : stateMasterDAOidSet)
-        {
-          stateMasterList.add((StateMasterDAOIF) this.internalGetEntityDAO(stateMasterDAOid));
-        }
-      }
-
-      return stateMasterList;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getUpdatedTransitions(java.lang.String)
-   */
-  public Set<TransitionDAOIF> getUpdatedTransitions(String type)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<TransitionDAOIF> transitionSet = new HashSet<TransitionDAOIF>();
-
-      if (this.updatedTransitionMap.containsKey(type))
-      {
-        Set<String> transactionIdSet = this.updatedTransitionMap.get(type);
-
-        for (String transactionId : transactionIdSet)
-        {
-          transitionSet.add((TransitionDAOIF) this.internalGetEntityDAO(transactionId));
-        }
-      }
-
-      return transitionSet;
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#hasExecutedEntityDeleteMethod(com.runwaysdk.dataaccess.EntityDAO,
    *      java.lang.String)
    */
@@ -1933,7 +1857,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       if (mdAttribute.isNew())
       {
-        this.newMdAttributeSet_CodeGeneration.add(mdAttribute.getId());
+        this.newMdAttributeSet_CodeGeneration.add(mdAttribute.getOid());
         this.storeTransactionEntityDAO(mdAttribute);
       }
       else
@@ -1941,13 +1865,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         // Regenerate if the visibility has been modified
         if ( ( mdAttribute.hasAttribute(MdAttributeConcreteInfo.SETTER_VISIBILITY) && mdAttribute.getAttribute(MdAttributeConcreteInfo.SETTER_VISIBILITY).isModified() ) || ( mdAttribute.hasAttribute(MdAttributeConcreteInfo.GETTER_VISIBILITY) && mdAttribute.getAttribute(MdAttributeConcreteInfo.GETTER_VISIBILITY).isModified() ) || mdAttribute.getAttribute(MdAttributeConcreteInfo.NAME).isModified())
         {
-          this.deletedMdAttributeSet_CodeGeneration.add(mdAttribute.getId());
+          this.deletedMdAttributeSet_CodeGeneration.add(mdAttribute.getOid());
           this.storeTransactionEntityDAO(mdAttribute);
 
           // Make sure all Virtual attributes are likewise updated.
           QueryFactory qf = new QueryFactory();
           BusinessDAOQuery q = qf.businessDAOQuery(MdAttributeVirtualInfo.CLASS);
-          q.WHERE(q.aReference(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE).EQ(mdAttribute.getId()));
+          q.WHERE(q.aReference(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE).EQ(mdAttribute.getOid()));
 
           OIterator<BusinessDAOIF> iterator = q.getIterator();
 
@@ -1955,7 +1879,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           {
             MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF = (MdAttributeVirtualDAOIF) businessDAOIF;
 
-            this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeVirtualDAOIF.getId());
+            this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeVirtualDAOIF.getOid());
             this.storeTransactionEntityDAO((BusinessDAO) mdAttributeVirtualDAOIF);
           }
 
@@ -1976,7 +1900,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.newEnumerationAttributeItemSet_CodeGeneration.add(enumerationAttributeItem.getId());
+      this.newEnumerationAttributeItemSet_CodeGeneration.add(enumerationAttributeItem.getOid());
       this.storeTransactionEntityDAO(enumerationAttributeItem);
     }
     finally
@@ -1995,7 +1919,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       if (mdAttributeDAO.isNew())
       {
-        this.addedMdAttrubiteKeyMap.put(mdAttributeDAO.getKey(), mdAttributeDAO.getId());
+        this.addedMdAttrubiteKeyMap.put(mdAttributeDAO.getKey(), mdAttributeDAO.getOid());
         this.storeTransactionEntityDAO(mdAttributeDAO);
       }
     }
@@ -2013,7 +1937,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.newMdRelationshipSet_CodeGeneration.add(mdRelationship.getId());
+      this.newMdRelationshipSet_CodeGeneration.add(mdRelationship.getOid());
       this.storeTransactionEntityDAO(mdRelationship);
     }
     finally
@@ -2070,14 +1994,14 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       String idSigKey = this.buildMethKeySignature(entityDAO, signature);
       this.deletedEntitySignatures.add(idSigKey);
 
-      Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getId());
+      Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getOid());
       if (deleteCount == null)
       {
         deleteCount = new Integer(0);
       }
 
       deleteCount++;
-      this.deletedEntitySignatureCount.put(entityDAO.getId(), deleteCount);
+      this.deletedEntitySignatureCount.put(entityDAO.getOid(), deleteCount);
 
     }
     finally
@@ -2100,22 +2024,22 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
       boolean hasCompletedDelete;
 
-      Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getId());
+      Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getOid());
       if (deleteCount != null)
       {
         deleteCount--;
 
         if (deleteCount.intValue() <= 0)
         {
-          // Do not remove the id from the map, as it indicates that this object
-          // id
+          // Do not remove the oid from the map, as it indicates that this object
+          // oid
           // has been deleted during the transaction.
-          this.deletedEntitySignatureCount.put(entityDAO.getId(), 0);
+          this.deletedEntitySignatureCount.put(entityDAO.getOid(), 0);
           hasCompletedDelete = true;
         }
         else
         {
-          this.deletedEntitySignatureCount.put(entityDAO.getId(), deleteCount);
+          this.deletedEntitySignatureCount.put(entityDAO.getOid(), deleteCount);
           hasCompletedDelete = false;
         }
       }
@@ -2139,7 +2063,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     boolean isBeingDeleted = false;
 
-    Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getId());
+    Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getOid());
     if (deleteCount != null)
     {
       isBeingDeleted = true;
@@ -2153,7 +2077,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    */
   public void removeHasBeenDeletedInTransaction(EntityDAO entityDAO)
   {
-    this.deletedEntitySignatureCount.remove(entityDAO.getId());
+    this.deletedEntitySignatureCount.remove(entityDAO.getOid());
   }
 
   /**
@@ -2166,7 +2090,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       if (!mdAttributeConcreteDAO.getIndexName().trim().equals(""))
       {
-        this.indexNameMap.put(mdAttributeConcreteDAO.getIndexName(), mdAttributeConcreteDAO.getId());
+        this.indexNameMap.put(mdAttributeConcreteDAO.getIndexName(), mdAttributeConcreteDAO.getOid());
         this.storeTransactionEntityDAO(mdAttributeConcreteDAO);
       }
     }
@@ -2193,16 +2117,16 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * Returns the id of the object before it was changed in this transaction.
+   * Returns the oid of the object before it was changed in this transaction.
    * 
-   * @return id of the object before it was changed in this transaction, null if
-   *         there is no original id.
+   * @return oid of the object before it was changed in this transaction, null if
+   *         there is no original oid.
    */
-  public String getOriginalId(String id)
+  public String getOriginalId(String oid)
   {
     String oldId = null;
 
-    String loopValue = id;
+    String loopValue = oid;
     while (true)
     {
       loopValue = this.changedIds.get(loopValue);
@@ -2222,7 +2146,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * When the id of an object changes, update all caches.
+   * When the oid of an object changes, update all caches.
    * 
    * @param oldId
    * @param entityDAO
@@ -2232,41 +2156,41 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.changedIds.put(entityDAO.getId(), oldId);
+      this.changedIds.put(entityDAO.getOid(), oldId);
 
       TransactionItemEntityDAOAction transactionItemEntityDAOAction = updatedEntityDAOIdMap.get(oldId);
       if (transactionItemEntityDAOAction != null)
       {
         ActionEnumDAO actionEnumDAO = transactionItemEntityDAOAction.getAction();
         transactionItemEntityDAOAction = TransactionItemEntityDAOAction.factory(actionEnumDAO, entityDAO, this);
-        this.updatedEntityDAOIdMap.put(entityDAO.getId(), transactionItemEntityDAOAction);
+        this.updatedEntityDAOIdMap.put(entityDAO.getOid(), transactionItemEntityDAOAction);
         this.updatedEntityDAOIdMap.remove(oldId);
-        this.entitiesToRefreshFromGlobalCache.remove(entityDAO.getId());
+        this.entitiesToRefreshFromGlobalCache.remove(entityDAO.getOid());
       }
 
       this.changeEntityIdInCache(oldId, entityDAO);
 
-      this.updateBusinessDAORelationships(oldId, entityDAO.getId());
+      this.updateBusinessDAORelationships(oldId, entityDAO.getOid());
 
       if (entityDAO instanceof MdEntityDAO)
       {
         MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
         String oldRootId = IdParser.parseRootFromId(oldId);
         this.updatedMdClassRootIdMap.remove(oldRootId);
-        this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getId());
+        this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getOid());
 
         Set<String> parentRelationshipSet = this.mdBusinessParentMdRelationships.get(oldId);
         if (parentRelationshipSet != null)
         {
           this.mdBusinessParentMdRelationships.remove(oldId);
-          this.mdBusinessParentMdRelationships.put(entityDAO.getId(), parentRelationshipSet);
+          this.mdBusinessParentMdRelationships.put(entityDAO.getOid(), parentRelationshipSet);
         }
 
         Set<String> childRelationshipSet = this.mdBusinessChildMdRelationships.get(oldId);
         if (childRelationshipSet != null)
         {
           this.mdBusinessChildMdRelationships.remove(oldId);
-          this.mdBusinessChildMdRelationships.put(entityDAO.getId(), childRelationshipSet);
+          this.mdBusinessChildMdRelationships.put(entityDAO.getOid(), childRelationshipSet);
         }
       }
 
@@ -2275,55 +2199,49 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         MdAttributeDAO mdAttribute = (MdAttributeDAO) entityDAO;
 
         this.addedMdAttrubiteKeyMap.removeValue(oldId);
-        this.addedMdAttrubiteKeyMap.put(mdAttribute.getKey(), mdAttribute.getId());
+        this.addedMdAttrubiteKeyMap.put(mdAttribute.getKey(), mdAttribute.getOid());
       }
 
       if (this.updatedEnumerationItemSet_CodeGeneration.contains(oldId))
       {
         this.updatedEnumerationItemSet_CodeGeneration.remove(oldId);
-        this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getId());
+        this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.newMdAttributeSet_CodeGeneration.contains(oldId))
       {
         this.newMdAttributeSet_CodeGeneration.remove(oldId);
-        this.newMdAttributeSet_CodeGeneration.add(entityDAO.getId());
+        this.newMdAttributeSet_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.newMdRelationshipSet_CodeGeneration.contains(oldId))
       {
         this.newMdRelationshipSet_CodeGeneration.remove(oldId);
-        this.newMdRelationshipSet_CodeGeneration.add(entityDAO.getId());
+        this.newMdRelationshipSet_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.newEnumerationAttributeItemSet_CodeGeneration.contains(oldId))
       {
         this.newEnumerationAttributeItemSet_CodeGeneration.remove(oldId);
-        this.newEnumerationAttributeItemSet_CodeGeneration.add(entityDAO.getId());
+        this.newEnumerationAttributeItemSet_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.updatedMdMethod_CodeGeneration.contains(oldId))
       {
         this.updatedMdMethod_CodeGeneration.remove(oldId);
-        this.updatedMdMethod_CodeGeneration.add(entityDAO.getId());
-      }
-
-      if (this.updatedMdAction_CodeGeneration.contains(oldId))
-      {
-        this.updatedMdAction_CodeGeneration.remove(oldId);
-        this.updatedMdAction_CodeGeneration.add(entityDAO.getId());
+        this.updatedMdMethod_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.updatedMdParameter_CodeGeneration.contains(oldId))
       {
         this.updatedMdParameter_CodeGeneration.remove(oldId);
-        this.updatedMdParameter_CodeGeneration.add(entityDAO.getId());
+        this.updatedMdParameter_CodeGeneration.add(entityDAO.getOid());
       }
 
       if (this.updatedMdTypeSet_CodeGeneration.contains(oldId))
       {
         this.updatedMdTypeSet_CodeGeneration.remove(oldId);
-        this.updatedMdTypeSet_CodeGeneration.add(entityDAO.getId());
+        this.updatedMdTypeSet_CodeGeneration.add(entityDAO.getOid());
       }
 
     }
@@ -2344,7 +2262,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
       
       // Record that this object's type is participating in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId()); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
       this.typeRootIdsInTransaction.add(mdTypeRootId);
       
       if (mdEntityDAOIF.isNotCached() && entityDAO.isNew())
@@ -2362,8 +2280,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         {
           MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
 
-          this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getId());
-          this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getId());
+          this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getOid());
+          this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getOid());
 
           if (mdClassDAO instanceof MdRelationshipDAO)
           {
@@ -2384,7 +2302,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
                 parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
                 this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
               }
-              parentRelationshipSet.add(mdRelationshipDAO.getId());
+              parentRelationshipSet.add(mdRelationshipDAO.getOid());
             }
 
             if (mdRelationshipDAO.getAttributeIF(MdRelationshipInfo.CHILD_MD_BUSINESS).isModified())
@@ -2402,37 +2320,37 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
                 childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
                 this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
               }
-              childRelationshipSet.add(mdRelationshipDAO.getId());
+              childRelationshipSet.add(mdRelationshipDAO.getOid());
             }
           }
         } // if (entityDAO instanceof MdClassDAO)
         else if (entityDAO instanceof MdEnumerationDAO)
         {
           MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) entityDAO;
-          this.updatedMdEnumerationMap.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+          this.updatedMdEnumerationMap.put(mdEnumeration.definesEnumeration(), mdEnumeration.getOid());
 
           // Regenerate the EnumerationMaster class
           if (!mdEnumeration.isImport() && mdEnumeration.isNew())
           {
-            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getId());
+            this.updatedMdEnumerationMap_CodeGeneration.put(mdEnumeration.definesEnumeration(), mdEnumeration.getOid());
           }
         }
         else if (entityDAO instanceof MdIndexDAO)
         {
           MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
-          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getId());
+          this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getOid());
         }
         else if (entityDAO instanceof EnumerationItemDAO && entityDAO.getAttribute(EnumerationMasterInfo.NAME).isModified())
         {
           if (!entityDAO.isImport())
           {
-            this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getId());
+            this.updatedEnumerationItemSet_CodeGeneration.add(entityDAO.getOid());
           }
         }
         else if (entityDAO instanceof RoleDAOIF)
         {
           RoleDAOIF roleIF = (RoleDAOIF) entityDAO;
-          this.updatedRoleIFMap.put(roleIF.getRoleName(), roleIF.getId());
+          this.updatedRoleIFMap.put(roleIF.getRoleName(), roleIF.getOid());
         }
       } // mdEntityDAOIF.isNotCached()
     }
@@ -2489,23 +2407,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdAction_CodeGen(com.runwaysdk.dataaccess.metadata.MdActionDAO)
-   */
-  public void updatedMdAction_CodeGen(MdActionDAO mdActionDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      this.updatedMdAction_CodeGeneration.add(mdActionDAO.getId());
-      this.storeTransactionEntityDAO(mdActionDAO);
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedMdMethod_CodeGen(com.runwaysdk.dataaccess.metadata.MdMethodDAO)
    */
   public void updatedMdMethod_CodeGen(MdMethodDAO mdMethodDAO)
@@ -2513,7 +2414,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.updatedMdMethod_CodeGeneration.add(mdMethodDAO.getId());
+      this.updatedMdMethod_CodeGeneration.add(mdMethodDAO.getOid());
       this.storeTransactionEntityDAO(mdMethodDAO);
     }
     finally
@@ -2530,7 +2431,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.transactionStateLock.lock();
     try
     {
-      this.updatedMdParameter_CodeGeneration.add(mdParameterDAO.getId());
+      this.updatedMdParameter_CodeGeneration.add(mdParameterDAO.getOid());
       this.storeTransactionEntityDAO(mdParameterDAO);
     }
     finally
@@ -2552,7 +2453,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         return;
       }
 
-      this.updatedMdTypeSet_CodeGeneration.add(mdType.getId());
+      this.updatedMdTypeSet_CodeGeneration.add(mdType.getOid());
       this.storeTransactionEntityDAO(mdType);
 
       if (mdType instanceof MdClassDAO)
@@ -2568,7 +2469,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             for (MdAttributeStructDAOIF mdAttributeStructIF : mdStruct.getMdAttributeStruct())
             {
               // These attributes were not necessarily modified
-              this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeStructIF.getId());
+              this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeStructIF.getOid());
             }
           }
           else if (mdClass instanceof MdBusinessDAO)
@@ -2582,13 +2483,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             for (MdAttributeReferenceDAOIF mdAttributeReferenceIF : mdAttrRefList)
             {
               // These attributes were not necessarily modified
-              this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeReferenceIF.getId());
+              this.deletedMdAttributeSet_CodeGeneration.add(mdAttributeReferenceIF.getOid());
             }
           }
           else if (mdClass instanceof MdRelationshipDAO)
           {
             MdRelationshipDAO mdRelationship = (MdRelationshipDAO) mdClass;
-            this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationship.getId());
+            this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationship.getOid());
           }
         }
         else if (mdType instanceof MdRelationshipDAO)
@@ -2597,74 +2498,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
           if (!mdRelationship.isNew() && ( mdRelationship.getAttributeIF(MdRelationshipInfo.PARENT_VISIBILITY).isModified() || mdRelationship.getAttributeIF(MdRelationshipInfo.CHILD_VISIBILITY).isModified() ))
           {
-            this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationship.getId());
+            this.deletedMdRelationshipSet_CodeGeneration.add(mdRelationship.getOid());
           }
         }
       }
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedStateMaster(com.runwaysdk.business.state.StateMasterDAO)
-   */
-  public void updatedStateMaster(StateMasterDAO stateMasterDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      Set<String> stateMasterSet;
-
-      if (!this.updatedStateMasterMap.containsKey(stateMasterDAO.getType()))
-      {
-        stateMasterSet = new HashSet<String>();
-        this.updatedStateMasterMap.put(stateMasterDAO.getType(), stateMasterSet);
-      }
-      else
-      {
-        stateMasterSet = this.updatedStateMasterMap.get(stateMasterDAO.getType());
-      }
-      stateMasterSet.add(stateMasterDAO.getId());
-      this.storeTransactionEntityDAO(stateMasterDAO);
-    }
-    finally
-    {
-      this.transactionStateLock.unlock();
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#updatedTransition(com.runwaysdk.dataaccess.TransitionDAO)
-   */
-  public void updatedTransition(TransitionDAO transitionDAO)
-  {
-    this.transactionStateLock.lock();
-    try
-    {
-      BusinessDAOIF childObject = transitionDAO.getChild();
-
-      MdStateMachineDAOIF mdStateMachine = (MdStateMachineDAOIF) childObject.getMdClassDAO();
-
-      MdBusinessDAOIF mdBusinessIF = mdStateMachine.getStateMachineOwner();
-      this.updatedMdTypeSet_CodeGeneration.add(mdBusinessIF.getId());
-      this.storeTransactionEntityDAO((MdBusinessDAO) mdBusinessIF);
-
-      Set<String> transitionSet;
-
-      if (!this.updatedTransitionMap.containsKey(transitionDAO.getType()))
-      {
-        transitionSet = new HashSet<String>();
-        this.updatedTransitionMap.put(transitionDAO.getType(), transitionSet);
-      }
-      else
-      {
-        transitionSet = this.updatedTransitionMap.get(transitionDAO.getType());
-      }
-      transitionSet.add(transitionDAO.getId());
-      this.storeTransactionEntityDAO(transitionDAO);
     }
     finally
     {
@@ -2685,7 +2522,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       // need to have their sequence number incremented, need to be logged, and
       // need to be updated
       // in the cache.
-      if (!this.updatedEntityDAOIdMap.containsKey(mdTypeDAOIF.getId()))
+      if (!this.updatedEntityDAOIdMap.containsKey(mdTypeDAOIF.getOid()))
       {
         MdTypeDAO mdTypeDAO = (MdTypeDAO) mdTypeDAOIF.getBusinessDAO();
         TransactionItemEntityDAOAction transactionCacheItem = this.createTransactionItemForEntity(mdTypeDAO);
@@ -2701,7 +2538,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         // from in the control flow of the TransactionManagement around advice
         // and it may not be this
         // transaction's cached copy.
-        TransactionItemEntityDAOAction transactionCacheItem = updatedEntityDAOIdMap.get(mdTypeDAOIF.getId());
+        TransactionItemEntityDAOAction transactionCacheItem = updatedEntityDAOIdMap.get(mdTypeDAOIF.getOid());
         MdTypeDAOIF cachedMdTypeDAOIF = (MdTypeDAOIF) transactionCacheItem.getEntityDAO();
         mdTypeMap.put(mdTypeDAOIF.definesType(), cachedMdTypeDAOIF);
       }
@@ -2710,7 +2547,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   protected String buildMethKeySignature(EntityDAO entityDAO, String signature)
   {
-    return entityDAO.getId() + "-" + signature;
+    return entityDAO.getOid() + "-" + signature;
   }
 
   /**

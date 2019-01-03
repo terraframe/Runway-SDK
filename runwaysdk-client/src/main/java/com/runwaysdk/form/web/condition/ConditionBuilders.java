@@ -37,12 +37,12 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.form.web.metadata.AndFieldConditionMd;
 import com.runwaysdk.form.web.metadata.CharacterConditionMd;
 import com.runwaysdk.form.web.metadata.ConditionMdBuilders;
-import com.runwaysdk.form.web.metadata.DateConditionMd;
-import com.runwaysdk.form.web.metadata.DoubleConditionMd;
-import com.runwaysdk.form.web.metadata.LongConditionMd;
 import com.runwaysdk.form.web.metadata.ConditionMdBuilders.BasicConditionMdBuilder;
 import com.runwaysdk.form.web.metadata.ConditionMdBuilders.CompositeFieldConditionMdBuilder;
 import com.runwaysdk.form.web.metadata.ConditionMdBuilders.ConditionMdBuilder;
+import com.runwaysdk.form.web.metadata.DateConditionMd;
+import com.runwaysdk.form.web.metadata.DoubleConditionMd;
+import com.runwaysdk.form.web.metadata.LongConditionMd;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.system.EnumerationMasterDTO;
@@ -173,7 +173,7 @@ public class ConditionBuilders
     {
       List<? extends BusinessDTO> enums = conditionDTO.getEnumValues(BasicConditionInfo.OPERATION);
       String op = enums.get(0).getValue(EnumerationMasterDTO.ENUMNAME);
-      c.setId(conditionDTO.getId());
+      c.setOid(conditionDTO.getOid());
       c.setOperation(op);
       c.setDefiningMdField(conditionDTO.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
     }
@@ -360,7 +360,7 @@ public class ConditionBuilders
       Condition firstCondition = firstCB.create(mdField.getDefiningMdForm(), mdField, first);
       Condition secondCondition = secondCB.create(mdField.getDefiningMdForm(), mdField, second);
       
-      c.setId(conditionDTO.getId());
+      c.setOid(conditionDTO.getOid());
       c.setFirstCondition(firstCondition);
       c.setSecondCondition(secondCondition);
       c.setDefiningMdField(ComponentDTOIF.EMPTY_VALUE); // Composites don't have a defining MdField (FIXME remove)
@@ -409,7 +409,7 @@ public class ConditionBuilders
       AndFieldConditionMd cMd = (AndFieldConditionMd) mdBuilder.create(mdField.getDefiningMdForm(), mdField, andCond);
       AndFieldCondition c = new AndFieldCondition(cMd);
       
-      c.setId(IDGenerator.nextID());
+      c.setOid(IDGenerator.nextID());
       c.setFirstCondition(first);
       c.setSecondCondition(second);
       c.setDefiningMdField(ComponentDTOIF.EMPTY_VALUE); // Composites don't have a defining MdField (FIXME remove)

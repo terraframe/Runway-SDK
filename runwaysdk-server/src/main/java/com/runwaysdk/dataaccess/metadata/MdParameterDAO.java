@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -187,7 +186,7 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
 
     boolean isAppliedToDB = this.isAppliedToDB();
     
-    String id = super.apply();
+    String oid = super.apply();
 
     // Create the appropriate relationship between this MdParameter and its
     // MdMethod
@@ -198,7 +197,7 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
         String relationshipType = RelationshipTypes.METADATA_PARAMETER.getType();
         String mdMethodId = this.getMdMethodId();
 
-        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, oid, relationshipType);
         relationshipDAO.setKey(key);
         relationshipDAO.apply();
       }
@@ -219,7 +218,7 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   private void validateReference()
@@ -227,10 +226,10 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     String reference = this.getAttribute(MdParameterInfo.ENCLOSING_METADATA).getValue();
     BusinessDAOIF metadata = MetadataDAO.get(reference);
 
-    if (! ( metadata instanceof MdMethodDAO || metadata instanceof MdActionDAO ))
+    if (! ( metadata instanceof MdMethodDAO ))
     {
       // TODO Fix exception type
-      String msg = "The attribute [" + MdParameterInfo.ENCLOSING_METADATA + "] on [" + this.getType() + "] must be reference a [" + MdMethodInfo.CLASS + "] or [" + MdActionInfo.CLASS + "]";
+      String msg = "The attribute [" + MdParameterInfo.ENCLOSING_METADATA + "] on [" + this.getType() + "] must be reference a [" + MdMethodInfo.CLASS + "] or []";
 
       throw new RuntimeException(msg);
     }
@@ -278,9 +277,9 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
 
       String name = mdParameter.getValue(MdParameterInfo.NAME);
 
-      if (name.equals(validateName) && !mdParameter.getId().equals(this.getId()))
+      if (name.equals(validateName) && !mdParameter.getOid().equals(this.getOid()))
       {
-        String msg = "A MdParameter of the name [" + validateName + "] already exists on the MdMethod [" + marker.getId() + "]";
+        String msg = "A MdParameter of the name [" + validateName + "] already exists on the MdMethod [" + marker.getOid() + "]";
         throw new ParameterDefinitionException_NameExists(msg, this, marker);
       }
     }
@@ -303,12 +302,12 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     for (RelationshipDAOIF child : children)
     {
       MdParameterDAOIF existingMdParameter = (MdParameterDAOIF) child.getChild();
-      String id = existingMdParameter.getId();
+      String oid = existingMdParameter.getOid();
       String order = existingMdParameter.getValue(MdParameterInfo.ORDER);
 
-      if (order.equals(validateOrder) && !id.equals(this.getId()))
+      if (order.equals(validateOrder) && !oid.equals(this.getOid()))
       {
-        String msg = "A MdParameter of the order [" + validateOrder + "] already exists on the MdMethod [" + metadata.getId() + "]";
+        String msg = "A MdParameter of the order [" + validateOrder + "] already exists on the MdMethod [" + metadata.getOid() + "]";
         throw new ParameterDefinitionException_InvalidOrder(msg, this, metadata, existingMdParameter);
       }
     }
@@ -347,9 +346,9 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
    * java.lang.String)
    */
-  public static MdParameterDAOIF get(String id)
+  public static MdParameterDAOIF get(String oid)
   {
-    return (MdParameterDAOIF) BusinessDAO.get(id);
+    return (MdParameterDAOIF) BusinessDAO.get(oid);
   }
 
   public static String buildKey(String markerEnclosingType, String markerName, String parameterName)

@@ -313,7 +313,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   {
     EntityDAO entityDAO = null;
  
-    String entityDAOid = this.entityDAO.getObjectState().attributeMap.get(ComponentInfo.ID).getValue();   
+    String entityDAOid = this.entityDAO.getObjectState().attributeMap.get(ComponentInfo.OID).getValue();   
         
     if (this.entityDAO instanceof BusinessDAO)
     {

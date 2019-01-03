@@ -20,7 +20,7 @@ package com.runwaysdk.business;
 
 public interface BusinessEnumeration
 {  
-  public String getId();
+  public String getOid();
   
   public String getDisplayLabel();
   

@@ -41,9 +41,9 @@ public abstract class FieldOperationBase extends com.runwaysdk.system.Enumeratio
     return CLASS;
   }
   
-  public static FieldOperation get(String id)
+  public static FieldOperation get(String oid)
   {
-    return (FieldOperation) com.runwaysdk.business.Business.get(id);
+    return (FieldOperation) com.runwaysdk.business.Business.get(oid);
   }
   
   public static FieldOperation getByKey(String key)
@@ -56,17 +56,17 @@ public abstract class FieldOperationBase extends com.runwaysdk.system.Enumeratio
     return (FieldOperation) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.FieldOperation.CLASS ,enumName);
   }
   
-  public static FieldOperation lock(java.lang.String id)
+  public static FieldOperation lock(java.lang.String oid)
   {
-    FieldOperation _instance = FieldOperation.get(id);
+    FieldOperation _instance = FieldOperation.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static FieldOperation unlock(java.lang.String id)
+  public static FieldOperation unlock(java.lang.String oid)
   {
-    FieldOperation _instance = FieldOperation.get(id);
+    FieldOperation _instance = FieldOperation.get(oid);
     _instance.unlock();
     
     return _instance;

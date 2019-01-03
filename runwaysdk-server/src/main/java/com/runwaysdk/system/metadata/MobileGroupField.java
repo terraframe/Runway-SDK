@@ -22,14 +22,14 @@ public class MobileGroupField extends MobileGroupFieldBase
 {
   private static final long serialVersionUID = 484989314;
   
-  public MobileGroupField(String parentId, String childId)
+  public MobileGroupField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public MobileGroupField(com.runwaysdk.system.metadata.MdMobileGroup parent, com.runwaysdk.system.metadata.MdMobileField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

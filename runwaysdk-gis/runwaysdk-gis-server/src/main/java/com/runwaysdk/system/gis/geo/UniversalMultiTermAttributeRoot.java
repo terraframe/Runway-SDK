@@ -22,14 +22,14 @@ public class UniversalMultiTermAttributeRoot extends UniversalMultiTermAttribute
 {
   private static final long serialVersionUID = -1985693055;
   
-  public UniversalMultiTermAttributeRoot(String parentId, String childId)
+  public UniversalMultiTermAttributeRoot(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public UniversalMultiTermAttributeRoot(com.runwaysdk.system.metadata.MdAttributeMultiTerm parent, com.runwaysdk.system.gis.geo.Universal child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

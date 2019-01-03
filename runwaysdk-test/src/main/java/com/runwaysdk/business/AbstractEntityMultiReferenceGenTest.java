@@ -24,19 +24,18 @@ package com.runwaysdk.business;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.Test;
 
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
-
+import com.runwaysdk.session.Request;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -56,7 +55,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
+public abstract class AbstractEntityMultiReferenceGenTest
 {
   public abstract MdAttributeMultiReferenceDAO getMdAttribute();
 
@@ -72,6 +71,8 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testApply() throws Exception
   {
     Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
@@ -81,10 +82,12 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) method.invoke(business);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(this.contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddMultiple() throws Exception
   {
     Business value1 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
@@ -107,9 +110,9 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
         List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
 
         Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
+        Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
+        Assert.assertTrue(contains(results, value1.getOid()));
+        Assert.assertTrue(contains(results, value2.getOid()));
       }
       finally
       {
@@ -123,6 +126,8 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddDuplicates() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -135,26 +140,30 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGet() throws Exception
   {
     Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
     business.apply();
 
-    Business test = Business.get(business.getId());
+    Business test = Business.get(business.getOid());
 
     Assert.assertTrue(test.getClass().equals(business.getClass()));
 
     List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testClear() throws Exception
   {
     Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
@@ -168,6 +177,8 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemove() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -183,6 +194,8 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemoveUnsetItem() throws Exception
   {
     Business value = BusinessFacade.newBusiness(this.getMdTerm().definesType());
@@ -199,7 +212,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
       List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
 
       Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+      Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
     }
     finally
     {
@@ -209,14 +222,14 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
 
   /**
    * @param results
-   * @param id
+   * @param oid
    * @return
    */
-  private boolean contains(List<? extends Business> results, String id)
+  private boolean contains(List<? extends Business> results, String oid)
   {
     for (Business result : results)
     {
-      if (result.getId().equals(id))
+      if (result.getOid().equals(oid))
       {
         return true;
       }

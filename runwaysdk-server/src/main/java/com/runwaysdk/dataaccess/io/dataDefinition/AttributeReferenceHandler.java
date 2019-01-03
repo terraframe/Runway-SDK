@@ -66,11 +66,11 @@ public class AttributeReferenceHandler extends TagHandler implements TagHandlerI
     MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = (MdAttributeReferenceDAOIF) mdAttributeDAOIF;
     String referenceType = mdAttributeReferenceDAOIF.getReferenceMdBusinessDAO().definesType();
 
-    String id = "";
+    String oid = "";
 
     try
     {
-      id = EntityDAO.getIdFromKey(referenceType, referenceKey);
+      oid = EntityDAO.getOidFromKey(referenceType, referenceKey);
     }
     catch (DataNotFoundException e)
     {
@@ -82,12 +82,12 @@ public class AttributeReferenceHandler extends TagHandler implements TagHandlerI
       }
     }
 
-    if (id.equals(""))
+    if (oid.equals(""))
     {
-      id = EntityDAO.getIdFromKey(referenceType, referenceKey);
+      oid = EntityDAO.getOidFromKey(referenceType, referenceKey);
     }
 
-    entity.setValue(attributeRefName, id);
+    entity.setValue(attributeRefName, oid);
 
   }
 }

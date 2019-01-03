@@ -30,7 +30,7 @@ public class TransactionItemEntityDAOAction extends TransactionItemAction
   protected TransactionItemEntityDAOAction(ActionEnumDAO _action, EntityDAOIF _entityDAOIF, TransactionCacheIF _transactionCacheIF)
   {
     super(_action);
-    this.entityDAOid = _entityDAOIF.getId();
+    this.entityDAOid = _entityDAOIF.getOid();
     this.transactionCacheIF = _transactionCacheIF;
   }
   

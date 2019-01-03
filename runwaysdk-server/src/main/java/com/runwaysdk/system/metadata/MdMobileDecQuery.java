@@ -154,13 +154,13 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileDec mdMobileDec)
     {
       if(mdMobileDec == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileDec.getId());
+      return this.EQ(mdMobileDec.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileDec mdMobileDec)
     {
       if(mdMobileDec == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileDec.getId());
+      return this.NE(mdMobileDec.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getDecPrecision()
@@ -243,7 +243,7 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
 
       for (int i=0; i<mdMobileDec.length; i++)
       {
-        itemIdArray[i] = mdMobileDec[i].getId();
+        itemIdArray[i] = mdMobileDec[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
 
       for (int i=0; i<mdMobileDec.length; i++)
       {
-        itemIdArray[i] = mdMobileDec[i].getId();
+        itemIdArray[i] = mdMobileDec[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
 
       for (int i=0; i<mdMobileDec.length; i++)
       {
-        itemIdArray[i] = mdMobileDec[i].getId();
+        itemIdArray[i] = mdMobileDec[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
 
       for (int i=0; i<mdMobileDec.length; i++)
       {
-        itemIdArray[i] = mdMobileDec[i].getId();
+        itemIdArray[i] = mdMobileDec[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdMobileDecQuery extends com.runwaysdk.system.metadata.MdMobileNum
 
       for (int i=0; i<mdMobileDec.length; i++)
       {
-        itemIdArray[i] = mdMobileDec[i].getId();
+        itemIdArray[i] = mdMobileDec[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

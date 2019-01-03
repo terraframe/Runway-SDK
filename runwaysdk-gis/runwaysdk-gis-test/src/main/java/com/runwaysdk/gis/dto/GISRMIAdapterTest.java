@@ -22,6 +22,9 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -30,7 +33,6 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.facade.RemoteAdapterServer;
 import com.runwaysdk.request.RMIClientRequest;
-
 
 public class GISRMIAdapterTest extends GISAdapterTest
 {
@@ -49,6 +51,6 @@ public class GISRMIAdapterTest extends GISAdapterTest
   @Override
   protected ClientSession createSession(String userName, String password)
   {
-    return ClientSession.createUserSession("rmiDefault", userName, password, new Locale[]{CommonProperties.getDefaultLocale()});
+    return ClientSession.createUserSession("rmiDefault", userName, password, new Locale[] { CommonProperties.getDefaultLocale() });
   }
 }

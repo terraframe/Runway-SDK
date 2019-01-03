@@ -22,14 +22,14 @@ public class ClassAttributeConcrete extends ClassAttributeConcreteBase
 {
   private static final long serialVersionUID = 1229405888022L;
   
-  public ClassAttributeConcrete(String parentId, String childId)
+  public ClassAttributeConcrete(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public ClassAttributeConcrete(com.runwaysdk.system.metadata.MdClass parent, com.runwaysdk.system.metadata.MdAttributeConcrete child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

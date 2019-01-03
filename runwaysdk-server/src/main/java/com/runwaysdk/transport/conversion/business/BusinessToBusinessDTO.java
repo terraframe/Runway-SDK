@@ -25,7 +25,6 @@ import java.util.Map;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessEnumeration;
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.facade.FacadeUtil;
@@ -81,13 +80,7 @@ public class BusinessToBusinessDTO extends ElementToElementDTO
   public BusinessDTO populate()
   {
     BusinessDTO businessDTO = (BusinessDTO) super.populate();
-    
-    // set the state of the BusinessDTO
-    String state = this.getComponentIF().getState();
-
-    businessDTO.setState(state);
-    businessDTO.setTransitions(BusinessFacade.getTransitions(this.getComponentIF()));
-    
+        
     return businessDTO;
   }
  
@@ -156,7 +149,7 @@ public class BusinessToBusinessDTO extends ElementToElementDTO
     
     for (BusinessEnumeration businessEnumeration : busEnumArray)
     {
-      Business entity = Business.get(businessEnumeration.getId());
+      Business entity = Business.get(businessEnumeration.getOid());
       businessDTOList.add((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, entity, true));
     }
 

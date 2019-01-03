@@ -20,8 +20,6 @@ package ognl;
 
 import java.util.Map;
 
-import ognl.ClassResolver;
-
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
 // Heads up: remove class

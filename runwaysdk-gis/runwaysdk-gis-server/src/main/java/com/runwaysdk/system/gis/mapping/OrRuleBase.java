@@ -41,9 +41,9 @@ public abstract class OrRuleBase extends com.runwaysdk.system.gis.mapping.Compos
     return CLASS;
   }
   
-  public static OrRule get(String id)
+  public static OrRule get(String oid)
   {
-    return (OrRule) com.runwaysdk.business.Business.get(id);
+    return (OrRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static OrRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class OrRuleBase extends com.runwaysdk.system.gis.mapping.Compos
     return (OrRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static OrRule lock(java.lang.String id)
+  public static OrRule lock(java.lang.String oid)
   {
-    OrRule _instance = OrRule.get(id);
+    OrRule _instance = OrRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static OrRule unlock(java.lang.String id)
+  public static OrRule unlock(java.lang.String oid)
   {
-    OrRule _instance = OrRule.get(id);
+    OrRule _instance = OrRule.get(oid);
     _instance.unlock();
     
     return _instance;

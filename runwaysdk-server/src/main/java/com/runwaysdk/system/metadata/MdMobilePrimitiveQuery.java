@@ -254,13 +254,13 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobilePrimitive mdMobilePrimitive)
     {
       if(mdMobilePrimitive == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobilePrimitive.getId());
+      return this.EQ(mdMobilePrimitive.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobilePrimitive mdMobilePrimitive)
     {
       if(mdMobilePrimitive == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobilePrimitive.getId());
+      return this.NE(mdMobilePrimitive.getOid());
     }
 
 
@@ -419,7 +419,7 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobilePrimitive.length; i++)
       {
-        itemIdArray[i] = mdMobilePrimitive[i].getId();
+        itemIdArray[i] = mdMobilePrimitive[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -431,7 +431,7 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobilePrimitive.length; i++)
       {
-        itemIdArray[i] = mdMobilePrimitive[i].getId();
+        itemIdArray[i] = mdMobilePrimitive[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -443,7 +443,7 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobilePrimitive.length; i++)
       {
-        itemIdArray[i] = mdMobilePrimitive[i].getId();
+        itemIdArray[i] = mdMobilePrimitive[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -455,7 +455,7 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobilePrimitive.length; i++)
       {
-        itemIdArray[i] = mdMobilePrimitive[i].getId();
+        itemIdArray[i] = mdMobilePrimitive[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -467,7 +467,7 @@ public  class MdMobilePrimitiveQuery extends com.runwaysdk.system.metadata.MdMob
 
       for (int i=0; i<mdMobilePrimitive.length; i++)
       {
-        itemIdArray[i] = mdMobilePrimitive[i].getId();
+        itemIdArray[i] = mdMobilePrimitive[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

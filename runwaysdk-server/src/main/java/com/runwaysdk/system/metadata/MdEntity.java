@@ -56,7 +56,7 @@ public abstract class MdEntity extends MdEntityBase
     {
       MdEntityDAOIF mdEntityDAOIF = this.getMdTypeDAO();
 
-      boolean access = PermissionFacade.checkTypeReadAccess(currentSession.getId(), mdEntityDAOIF);
+      boolean access = PermissionFacade.checkTypeReadAccess(currentSession.getOid(), mdEntityDAOIF);
 
       if (!access)
       {

@@ -128,9 +128,9 @@ public abstract class MdAttributeLongBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeLong get(String id)
+  public static MdAttributeLong get(String oid)
   {
-    return (MdAttributeLong) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeLong) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeLong getByKey(String key)
@@ -138,17 +138,17 @@ public abstract class MdAttributeLongBase extends com.runwaysdk.system.metadata.
     return (MdAttributeLong) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeLong lock(java.lang.String id)
+  public static MdAttributeLong lock(java.lang.String oid)
   {
-    MdAttributeLong _instance = MdAttributeLong.get(id);
+    MdAttributeLong _instance = MdAttributeLong.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeLong unlock(java.lang.String id)
+  public static MdAttributeLong unlock(java.lang.String oid)
   {
-    MdAttributeLong _instance = MdAttributeLong.get(id);
+    MdAttributeLong _instance = MdAttributeLong.get(oid);
     _instance.unlock();
     
     return _instance;

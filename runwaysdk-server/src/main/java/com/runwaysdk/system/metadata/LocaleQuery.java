@@ -109,7 +109,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.UserLocales.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -128,7 +128,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.UserLocales.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -171,12 +171,12 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.Locale locale)
     {
-      return this.EQ(locale.getId());
+      return this.EQ(locale.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.Locale locale)
     {
-      return this.NE(locale.getId());
+      return this.NE(locale.getOid());
     }
 
   public com.runwaysdk.query.AttributeChar getLocaleLabel()
@@ -275,7 +275,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<userLocales.length; i++)
       {
-        enumIdArray[i] = userLocales[i].getId();
+        enumIdArray[i] = userLocales[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -287,7 +287,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<userLocales.length; i++)
       {
-        enumIdArray[i] = userLocales[i].getId();
+        enumIdArray[i] = userLocales[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -299,7 +299,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<userLocales.length; i++)
       {
-        enumIdArray[i] = userLocales[i].getId();
+        enumIdArray[i] = userLocales[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -311,7 +311,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<userLocales.length; i++)
       {
-        enumIdArray[i] = userLocales[i].getId();
+        enumIdArray[i] = userLocales[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -323,7 +323,7 @@ public  class LocaleQuery extends com.runwaysdk.system.EnumerationMasterQuery
 
       for (int i=0; i<userLocales.length; i++)
       {
-        enumIdArray[i] = userLocales[i].getId();
+        enumIdArray[i] = userLocales[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);

@@ -26,23 +26,23 @@ import com.runwaysdk.session.Request;
 public class MdWarningExportBuilder extends ExportBuilder<MdWarningDAO>
 {
   private MdWarningDAO mdWarning;
-  
+
   @Override
   @Request
   protected MdWarningDAO doIt()
-  {    
+  {
     this.inTransaction();
-    
+
     return mdWarning;
   }
-  
+
   @Transaction
   private void inTransaction()
   {
     mdWarning = TestFixtureFactory.createMdWarning();
     mdWarning.apply();
-    
-    TestFixtureFactory.addCharacterAttribute(mdWarning).apply(); 
+
+    TestFixtureFactory.addCharacterAttribute(mdWarning).apply();
   }
 
   @Override

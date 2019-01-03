@@ -58,7 +58,7 @@ public class ImportConversionStrategy extends ConversionStrategyAdapter implemen
 
         for (EnumerationItemDAOIF item : items)
         {
-          attributeEnumeration.addItem(item.getId());
+          attributeEnumeration.addItem(item.getOid());
         }
       }
       else

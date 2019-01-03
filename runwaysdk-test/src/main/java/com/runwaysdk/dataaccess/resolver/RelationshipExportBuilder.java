@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.resolver;
 
 import java.io.File;
 
+import org.junit.Before;
+
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -45,9 +47,11 @@ public abstract class RelationshipExportBuilder extends ExportBuilder<Relationsh
     this.child = child;
     this.relationshipType = relationshipType;
   }
-  
+
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }
@@ -63,10 +67,10 @@ public abstract class RelationshipExportBuilder extends ExportBuilder<Relationsh
   @Transaction
   private RelationshipDAO inTransaction()
   {
-    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), relationshipType);
-    
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), relationshipType);
+
     relationship.apply();
-    
+
     return relationship;
   }
 }

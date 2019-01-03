@@ -189,9 +189,9 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdStructDAOIF get(String id)
+  public static MdStructDAOIF get(String oid)
   {
-    return (MdStructDAOIF) BusinessDAO.get(id);
+    return (MdStructDAOIF) BusinessDAO.get(oid);
   }
 
 
@@ -248,7 +248,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    */
   public String save(boolean flag)
   {
-    String id =  super.save(flag);
+    String oid =  super.save(flag);
     // if cache is MRU and the size has changed, then remove current cache and create a new one.
     if(!this.isNew())
     {
@@ -259,7 +259,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
         ObjectCache.updateCacheStrategy(this);
       }
     }
-    return id;
+    return oid;
   }
 
   /**
@@ -334,7 +334,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
 
     BusinessDAOQuery mdAttrStrQ = qFactory.businessDAOQuery(MdAttributeStructInfo.CLASS);
     mdAttrStrQ.WHERE(
-      mdAttrStrQ.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(this.getId()));
+      mdAttrStrQ.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(this.getOid()));
     OIterator<BusinessDAOIF> mdAttrStrIterator = mdAttrStrQ.getIterator();
     while (mdAttrStrIterator.hasNext())
     {
@@ -353,7 +353,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
 
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery q1 = queryFactory.businessDAOQuery(MdAttributeStructInfo.CLASS);
-    q1.WHERE(q1.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(this.getId()));
+    q1.WHERE(q1.aReference(MdAttributeStructInfo.MD_STRUCT).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> iterator = q1.getIterator();
 

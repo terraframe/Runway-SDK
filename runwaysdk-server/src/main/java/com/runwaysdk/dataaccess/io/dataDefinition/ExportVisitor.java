@@ -29,9 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.BasicConditionInfo;
@@ -46,7 +43,6 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -77,9 +73,9 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -88,7 +84,6 @@ import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdInformationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
-import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
@@ -136,7 +131,6 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.FieldConditionDAOIF;
-import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -159,7 +153,6 @@ import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -196,7 +189,6 @@ import com.runwaysdk.dataaccess.MdWebSingleTermGridDAOIF;
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
@@ -272,7 +264,7 @@ public class ExportVisitor extends MarkupVisitor
    */
   public void visit(ComponentIF component)
   {
-    if (component instanceof MdParameterDAOIF || component instanceof MdStateMachineDAOIF || component instanceof StateMasterDAOIF)
+    if (component instanceof MdParameterDAOIF)
     {
       // Do nothing, filter out. These are exported as part of MdBusiness,
       // MdRelationship, etc.
@@ -323,10 +315,6 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitMdIndex((MdIndexDAOIF) component);
     }
-    else if (component instanceof MdControllerDAOIF)
-    {
-      visitMdController((MdControllerDAOIF) component);
-    }
     else if (component instanceof MdWebFormDAOIF)
     {
       visitMdWebForm((MdWebFormDAOIF) component);
@@ -361,7 +349,7 @@ public class ExportVisitor extends MarkupVisitor
     }
     else if (component instanceof Relationship)
     {
-      visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getId()));
+      visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getOid()));
     }
     else if (component instanceof BusinessDAOIF)
     {
@@ -369,7 +357,7 @@ public class ExportVisitor extends MarkupVisitor
     }
     else if (component instanceof Business)
     {
-      visitObject((BusinessDAOIF) EntityDAO.get(component.getId()));
+      visitObject((BusinessDAOIF) EntityDAO.get(component.getOid()));
     }
     else
     {
@@ -514,7 +502,7 @@ public class ExportVisitor extends MarkupVisitor
 
           for (RelationshipDAOIF relationship : relationships)
           {
-            MdWebPrimitiveDAOIF mdWebPrimitive = (MdWebPrimitiveDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
+            MdWebPrimitiveDAOIF mdWebPrimitive = (MdWebPrimitiveDAOIF) MdWebPrimitiveDAO.get(relationship.getChildOid());
 
             String primitiveTag = getTagName(mdWebPrimitive);
 
@@ -621,271 +609,7 @@ public class ExportVisitor extends MarkupVisitor
   {
     writer.closeTag();
   }
-
-  protected void enterMdController(MdControllerDAOIF mdController)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdController.definesType());
-
-    Map<String, String> localValues = mdController.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdController.getValue(MdControllerInfo.REMOVE));
-
-    Map<String, String> localDescValues = mdController.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescValues);
-
-    // Write the INDEX_TAG with is parameters
-    writer.openEscapedTag(XMLTags.MD_CONTROLLER_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdController: Export a MdController
-   * 
-   * @param mdController
-   *          The MdController to visit
-   */
-  public void visitMdController(MdControllerDAOIF mdController)
-  {
-    enterMdController(mdController);
-
-    // Write the mdMethod defined by the entity
-    for (MdActionDAOIF mdAction : mdController.getMdActionDAOsOrdered())
-    {
-      visitMdAction(mdAction, mdAction.getMdParameterDAOs());
-    }
-
-    exitMdController(mdController);
-  }
-
-  protected void exitMdController(MdControllerDAOIF mdController)
-  {
-    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
-    {
-      writer.openTag(XMLTags.STUB_SOURCE_TAG);
-      writer.writeCData(mdController.getValue(MdControllerInfo.STUB_SOURCE));
-      writer.closeTag();
-    }
-
-    writer.closeTag();
-  }
-
-  /**
-   * Specifies behavior upon entering a MdAction on visit: Exports the MdAction
-   * tag only.
-   * 
-   * @param mdAction
-   *          MdAction being visited
-   */
-  protected void enterMdAction(MdActionDAOIF mdAction)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdAction.getValue(MdActionInfo.NAME));
-
-    Map<String, String> localValues = mdAction.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    Map<String, String> localDescriptions = mdAction.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescriptions);
-
-    attributes.put(XMLTags.IS_POST_ATTRIBUTES, mdAction.getValue(MdActionInfo.IS_POST));
-    attributes.put(XMLTags.IS_QUERY_ATTRIBUTES, mdAction.getValue(MdActionInfo.IS_QUERY));
-
-    writer.openEscapedTag(XMLTags.MD_ACTION_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdAction: Export a MdAction and its MdParameters
-   * 
-   * @param mdAction
-   *          MdMethod to visit
-   * @param mdParameters
-   *          List of MdParameters defined for the MdAction
-   */
-  public void visitMdAction(MdActionDAOIF mdAction, List<MdParameterDAOIF> mdParameters)
-  {
-    enterMdAction(mdAction);
-
-    boolean isQuery = mdAction.getValue(MdActionInfo.IS_QUERY).equals(MdAttributeBooleanInfo.TRUE);
-
-    for (MdParameterDAOIF mdParameter : mdParameters)
-    {
-      String name = mdParameter.getValue(MdParameterInfo.NAME);
-
-      if (!isQuery || ( isQuery && !isQueryAttribute(name) ))
-      {
-        visitMdParameter(mdParameter);
-      }
-    }
-
-    exitMdAction(mdAction);
-  }
-
-  private boolean isQueryAttribute(String name)
-  {
-    return ( name.equals(MdActionInfo.SORT_ATTRIBUTE) || name.equals(MdActionInfo.IS_ASCENDING) || name.equals(MdActionInfo.PAGE_NUMBER) || name.equals(MdActionInfo.PAGE_SIZE) );
-  }
-
-  /**
-   * Specifies visit behavior after the MdAction has been visited. This method
-   * is likely to be overwritten in child classes.
-   * 
-   * @param mdAction
-   *          MdAction being visited
-   */
-  protected void exitMdAction(MdActionDAOIF mdAction)
-  {
-    writer.closeTag();
-  }
-
-  /**
-   * Specifies behavior upon entering a MdStateMachine on visit: Exports the
-   * MdStateMachine tag with its attributes.
-   * 
-   * @param mdStateMachine
-   *          The MdStateMachine being visited
-   */
-  protected void enterMdStateMachine(MdStateMachineDAOIF mdStateMachine)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, mdStateMachine.definesType());
-
-    Map<String, String> localValues = mdStateMachine.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    Map<String, String> localDescriptions = mdStateMachine.getDescriptions();
-    writeLocaleValues(attributes, XMLTags.DESCRIPTION_ATTRIBUTE, localDescriptions);
-
-    // Write the INDEX_TAG with is parameters
-    writer.openEscapedTag(XMLTags.MD_STATE_MACHINE_TAG, attributes);
-  }
-
-  /**
-   * Visits a MdStateMachine: Export a MdStateMachine
-   * 
-   * @param mdStateMachine
-   *          The MdStateMachine to visit
-   * @param states
-   *          List of states to export with the MdStateMachine
-   * @param transitions
-   *          List of transitions to export with the MdStateMachine
-   */
-  public void visitMdStateMachine(MdStateMachineDAOIF mdStateMachine, List<StateMasterDAOIF> states, List<TransitionDAOIF> transitions)
-  {
-    enterMdStateMachine(mdStateMachine);
-
-    // Write the StateMasterIF defined by the mdStateMachine
-    writer.openTag(XMLTags.STATES_TAG);
-    for (StateMasterDAOIF stateMaster : states)
-    {
-      visitStateMaster(stateMaster);
-    }
-    writer.closeTag();
-
-    // Write the Transitions defined by the mdStateMachine
-    writer.openTag(XMLTags.TRANSITIONS_TAG);
-    for (TransitionDAOIF transition : transitions)
-    {
-      StateMasterDAOIF source = this.getStateMaster(transition.getParentId(), states);
-      StateMasterDAOIF sink = this.getStateMaster(transition.getChildId(), states);
-
-      visitTransition(transition, source, sink);
-    }
-    writer.closeTag();
-
-    exitMdStateMachine(mdStateMachine);
-  }
-
-  /**
-   * Specifies visit behavior after the MdStateMachine has been visited. This
-   * method is likely to be overwritten in child classes.
-   * 
-   * @param mdStateMachine
-   *          MdStateMachine being visited
-   */
-  protected void exitMdStateMachine(MdStateMachineDAOIF mdStateMachine)
-  {
-    writer.closeTag();
-  }
-
-  /**
-   * Returns the StateMasterDAO with the corresponding Id. First checks if the
-   * StateMasterDAO exists in the given list of StateMasters. If it does not
-   * find the correct StateMasterDAO in the list then it queries the database
-   * for the StateMasterDAO
-   * 
-   * @param id
-   *          Id of the desired StateMasterDAO
-   * @param states
-   *          List of StateMasters to check
-   * @return
-   */
-  protected StateMasterDAOIF getStateMaster(String id, List<StateMasterDAOIF> states)
-  {
-    for (StateMasterDAOIF state : states)
-    {
-      if (id.equals(state.getId()))
-      {
-        return state;
-      }
-    }
-
-    return StateMasterDAO.get(id);
-  }
-
-  /**
-   * Visits a StateMasterDAO: Exports a MdStateMaster
-   * 
-   * @param stateMaster
-   *          The StateMasterDAO to visit
-   */
-  public void visitStateMaster(StateMasterDAOIF stateMaster)
-  {
-    String entry = XMLTags.NOT_ENTRY_ENUM;
-
-    if (stateMaster.isDefaultState())
-    {
-      entry = XMLTags.DEFAULT_ENTRY_ENUM;
-    }
-    else if (stateMaster.isEntryState())
-    {
-      entry = XMLTags.ENTRY_ENUM;
-    }
-
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, stateMaster.getName());
-    attributes.put(XMLTags.ENTRY_ATTRIBUTE, entry);
-
-    // Write the empty state tag
-    writer.writeEmptyEscapedTag(XMLTags.STATE_TAG, attributes);
-  }
-
-  /**
-   * Visits a TransitionDAO: Export a TransitionsDAO
-   * 
-   * @param transition
-   *          The TransitionDAO to visit
-   * @param source
-   *          The source StateMasterDAO of the transition
-   * @param sink
-   *          The sink StateMasterDAO of the transition
-   */
-  public void visitTransition(TransitionDAOIF transition, StateMasterDAOIF source, StateMasterDAOIF sink)
-  {
-    HashMap<String, String> attributes = new HashMap<String, String>();
-    attributes.put(XMLTags.NAME_ATTRIBUTE, transition.getName());
-    attributes.put(XMLTags.SOURCE_ATTRIBUTE, source.getName());
-    attributes.put(XMLTags.SINK_ATTRIBUTE, sink.getName());
-
-    Map<String, String> localValues = transition.getDisplayLabes();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
-
-    attributes.put(XMLTags.DISPLAY_LABEL_ATTRIBUTE, transition.getValue(TransitionDAOIF.DISPLAY_LABEL));
-
-    // Write the empty state tag
-    writer.writeEmptyEscapedTag(XMLTags.TRANSITION_TAG, attributes);
-  }
-
+  
   /**
    * Specifies behavior upon entering a MdBusiness on visit: Exports the
    * MdBusiness tag with its attributes.
@@ -1065,12 +789,6 @@ public class ExportVisitor extends MarkupVisitor
       writer.openTag(XMLTags.DTO_STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.DTO_STUB_SOURCE));
       writer.closeTag();
-    }
-
-    if (mdBusinessIF.hasStateMachine())
-    {
-      MdStateMachineDAOIF mdStateMachine = mdBusinessIF.definesMdStateMachine();
-      visitMdStateMachine(mdStateMachine, mdStateMachine.definesStateMasters(), mdStateMachine.definesTransitions());
     }
   }
 
@@ -1884,13 +1602,13 @@ public class ExportVisitor extends MarkupVisitor
     }
 
     // Get the cache alogrithm
-    String indexType = ( (AttributeEnumerationIF) mdBusinessIF.getAttributeIF(MdBusinessInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdBusinessIF.getAttributeIF(MdBusinessInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
-    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
+    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.NOTHING_ENUMERATION);
     }
@@ -1926,7 +1644,8 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.EXTENDABLE_ATTRIBUTE, mdTransient.getValue(MdTransientInfo.EXTENDABLE));
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, mdTransient.getValue(MdTransientInfo.ABSTRACT));
-
+    parameters.put(XMLTags.GENERATE_SOURCE, mdTransient.getValue(MdTransientInfo.GENERATE_SOURCE));
+    
     return parameters;
   }
 
@@ -2090,8 +1809,6 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.ENTITY_TABLE, mdEntity.getTableName());
 
-    parameters.put(XMLTags.GENERATE_CONTROLLER, new Boolean(mdEntity.hasMdController()).toString());
-
     return parameters;
   }
 
@@ -2101,6 +1818,7 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.EXTENDABLE_ATTRIBUTE, mdElement.getValue(MdElementInfo.EXTENDABLE));
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, mdElement.getValue(MdElementInfo.ABSTRACT));
+    parameters.put(XMLTags.GENERATE_SOURCE, mdElement.getValue(MdElementInfo.GENERATE_SOURCE));
 
     return parameters;
   }
@@ -2110,13 +1828,13 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> parameters = getMdEntityParameters(mdStruct);
 
     // Get the cache alogrithm
-    String indexType = ( (AttributeEnumerationIF) mdStruct.getAttributeIF(MdStructInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdStruct.getAttributeIF(MdStructInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
-    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
+    else if (indexType.equals(EntityCacheMaster.CACHE_NOTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.NOTHING_ENUMERATION);
     }
@@ -2136,9 +1854,9 @@ public class ExportVisitor extends MarkupVisitor
 
     String unqiue = mdIndex.getValue(MdIndexInfo.UNIQUE);
     String active = mdIndex.getValue(MdIndexInfo.ACTIVE);
-    String id = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
+    String oid = mdIndex.getValue(MdIndexInfo.MD_ENTITY);
     String label = mdIndex.getStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-    MdElementDAOIF mdEntity = MdElementDAO.get(id);
+    MdElementDAOIF mdEntity = MdElementDAO.get(oid);
 
     attributes.put(XMLTags.INDEX_ACTIVE_ATTRIBUTE, active);
     attributes.put(XMLTags.INDEX_UNIQUE_ATTRIBUTE, unqiue);
@@ -2228,13 +1946,13 @@ public class ExportVisitor extends MarkupVisitor
       parameters.put(XMLTags.COLUMN_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.COLUMN_NAME));
       parameters.put(XMLTags.REMOVE_ATTRIBUTE, mdAttributeIF.getValue(MetadataInfo.REMOVE));
 
-      String indexType = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE) ).dereference()[0].getId();
+      String indexType = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE) ).dereference()[0].getOid();
 
-      if (indexType.equals(IndexTypes.UNIQUE_INDEX.getId()))
+      if (indexType.equals(IndexTypes.UNIQUE_INDEX.getOid()))
       {
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.UNIQUE_INDEX_ENUMERATION);
       }
-      else if (indexType.equals(IndexTypes.NON_UNIQUE_INDEX.getId()))
+      else if (indexType.equals(IndexTypes.NON_UNIQUE_INDEX.getOid()))
       {
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.NON_UNIQUE_INDEX_ENUMERATION);
       }
@@ -2243,9 +1961,9 @@ public class ExportVisitor extends MarkupVisitor
         parameters.put(XMLTags.INDEX_TYPE_ATTRIBUTE, XMLTags.NO_INDEX_ENUMERATION);
       }
 
-      String getterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY) ).dereference()[0].getId();
+      String getterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY) ).dereference()[0].getOid();
 
-      if (getterVisibility.equals(VisibilityModifier.PUBLIC.getId()))
+      if (getterVisibility.equals(VisibilityModifier.PUBLIC.getOid()))
       {
         parameters.put(XMLTags.GETTER_VISIBILITY_ATTRIBUTE, XMLTags.PUBLIC_VISIBILITY_ENUMERATION);
       }
@@ -2254,9 +1972,9 @@ public class ExportVisitor extends MarkupVisitor
         parameters.put(XMLTags.GETTER_VISIBILITY_ATTRIBUTE, XMLTags.PROTECTED_VISIBILITY_ENUMERATION);
       }
 
-      String setterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY) ).dereference()[0].getId();
+      String setterVisibility = ( (AttributeEnumerationIF) mdAttributeIF.getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY) ).dereference()[0].getOid();
 
-      if (setterVisibility.equals(VisibilityModifier.PUBLIC.getId()))
+      if (setterVisibility.equals(VisibilityModifier.PUBLIC.getOid()))
       {
         parameters.put(XMLTags.SETTER_VISIBILITY_ATTRIBUTE, XMLTags.PUBLIC_VISIBILITY_ENUMERATION);
       }
@@ -2649,9 +2367,9 @@ public class ExportVisitor extends MarkupVisitor
     parameters.put(XMLTags.COMPOSITION_ATTRIBUTE, mdRelationship.getValue(MdRelationshipInfo.COMPOSITION));
 
     // Set the cache algorithm
-    String indexType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdRelationshipInfo.CACHE_ALGORITHM) ).dereference()[0].getId();
+    String indexType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdRelationshipInfo.CACHE_ALGORITHM) ).dereference()[0].getOid();
 
-    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
+    if (indexType.equals(EntityCacheMaster.CACHE_EVERYTHING.getOid()))
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.EVERYTHING_ENUMERATION);
     }
@@ -2663,17 +2381,17 @@ public class ExportVisitor extends MarkupVisitor
     if (mdRelationship instanceof MdTermRelationshipDAOIF)
     {
       // Set the association type
-      String associationType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+      String associationType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getOid();
 
-      if (associationType.equals(AssociationType.RELATIONSHIP.getId()))
+      if (associationType.equals(AssociationType.RELATIONSHIP.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.RELATIONSHIP_OPTION);
       }
-      else if (associationType.equals(AssociationType.TREE.getId()))
+      else if (associationType.equals(AssociationType.TREE.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.TREE_OPTION);
       }
-      else if (associationType.equals(AssociationType.GRAPH.getId()))
+      else if (associationType.equals(AssociationType.GRAPH.getOid()))
       {
         parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.GRAPH_OPTION);
       }
@@ -2726,7 +2444,7 @@ public class ExportVisitor extends MarkupVisitor
 
     tree.add(ElementInfo.CREATED_BY);
     tree.add(ElementInfo.LAST_UPDATED_BY);
-    tree.add(EntityInfo.ID);
+    tree.add(EntityInfo.OID);
     tree.add(ElementInfo.LAST_UPDATE_DATE);
     tree.add(EntityInfo.TYPE);
     tree.add(MdAttributeConcreteInfo.DEFAULT_VALUE);
@@ -2750,6 +2468,7 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributeTags = new HashMap<String, String>();
 
     // attribute types
+    attributeTags.put(MdAttributeUUIDInfo.CLASS, XMLTags.UUID_TAG);
     attributeTags.put(MdAttributeIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdAttributeLongInfo.CLASS, XMLTags.LONG_TAG);
     attributeTags.put(MdAttributeFloatInfo.CLASS, XMLTags.FLOAT_TAG);

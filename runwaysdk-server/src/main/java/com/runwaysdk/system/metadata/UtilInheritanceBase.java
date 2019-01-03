@@ -31,9 +31,9 @@ public abstract class UtilInheritanceBase extends com.runwaysdk.system.metadata.
   public final static String CLASS = "com.runwaysdk.system.metadata.UtilInheritance";
   private static final long serialVersionUID = -1701475279;
   
-  public UtilInheritanceBase(String parentId, String childId)
+  public UtilInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class UtilInheritanceBase extends com.runwaysdk.system.metadata.
     return (com.runwaysdk.system.metadata.MdUtil) super.getChild();
   }
   
-  public static UtilInheritance get(String id)
+  public static UtilInheritance get(String oid)
   {
-    return (UtilInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (UtilInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static UtilInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class UtilInheritanceBase extends com.runwaysdk.system.metadata.
     return (UtilInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static UtilInheritance lock(java.lang.String id)
+  public static UtilInheritance lock(java.lang.String oid)
   {
-    UtilInheritance _instance = UtilInheritance.get(id);
+    UtilInheritance _instance = UtilInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static UtilInheritance unlock(java.lang.String id)
+  public static UtilInheritance unlock(java.lang.String oid)
   {
-    UtilInheritance _instance = UtilInheritance.get(id);
+    UtilInheritance _instance = UtilInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

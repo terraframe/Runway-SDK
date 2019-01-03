@@ -50,7 +50,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Id used for AttributeProblems (not messages). New instances that fail will
-   * have a different ID on the client.
+   * have a different OID on the client.
    */
   private String                   problemNotificationId = "";
 
@@ -109,15 +109,15 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   
   /**
    * Returns the Id used for AttributeNotifications. New instances that fail
-   * will have a different ID on the client.
+   * will have a different OID on the client.
    * 
-   * @return notification id.
+   * @return notification oid.
    */
   public String getProblemNotificationId()
   {
     if (this.problemNotificationId.equals(""))
     {
-      return this.getId();
+      return this.getOid();
     }
     else
     {
@@ -126,8 +126,8 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Sets the ID used for AttributeProblems. Should be called on new instances,
-   * since the DTO on the client will have a different ID than the one
+   * Sets the OID used for AttributeProblems. Should be called on new instances,
+   * since the DTO on the client will have a different OID than the one
    * automatically created for this object.
    * 
    * @param problemNotificationId
@@ -672,7 +672,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   /**
    * Finalizes attributes, such as required attributes.
    * 
-   * @return id of the object.
+   * @return oid of the object.
    */
   public String apply()
   {
@@ -683,7 +683,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    * This is a hook method for aspects so that the transient object apply can be
    * managed by transaction management.
    * 
-   * @return id of the object.
+   * @return oid of the object.
    */
   private String save()
   {
@@ -700,7 +700,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
       }
     }
 
-    return this.getId();
+    return this.getOid();
   }
 
   /**

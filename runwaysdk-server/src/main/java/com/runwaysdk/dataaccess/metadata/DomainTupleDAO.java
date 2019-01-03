@@ -34,7 +34,7 @@ import com.runwaysdk.query.QueryFactory;
 public class DomainTupleDAO extends TypeTupleDAO implements DomainTupleDAOIF
 {
   /**
-   * Eclipse auto generated serial ID 
+   * Eclipse auto generated serial OID 
    */
   private static final long serialVersionUID = -6190657962345427054L;
 
@@ -67,9 +67,9 @@ public class DomainTupleDAO extends TypeTupleDAO implements DomainTupleDAOIF
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static DomainTupleDAOIF get(String id)
+  public static DomainTupleDAOIF get(String oid)
   {
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
     DomainTupleDAOIF attributeObject = (DomainTupleDAOIF) entityDAO;
 
     return attributeObject;

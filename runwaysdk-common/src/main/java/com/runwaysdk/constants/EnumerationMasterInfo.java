@@ -25,7 +25,7 @@ public interface EnumerationMasterInfo extends EntityInfo
   
   public static final String TABLE = "enumeration_master";
   
-  public static final String ID_VALUE = "0000000000000000000000000000020600000000000000000000000000000001";
+  public static final String ID_VALUE = "85d2decf-40c5-331e-8570-a7104a00003a";
   
   public static final String NAME = "enumName";
   

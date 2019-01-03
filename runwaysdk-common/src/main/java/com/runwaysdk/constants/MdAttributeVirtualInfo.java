@@ -26,9 +26,9 @@ public interface MdAttributeVirtualInfo extends MdAttributeInfo
    public static final String CLASS                       = Constants.METADATA_PACKAGE+".MdAttributeVirtual";
   
   /**
-   * ID.
+   * OID.
    */
-   public static final String ID_VALUE  = "NM20081106000000000000000000000100000000000000000000000000000001";
+   public static final String ID_VALUE  = "a4068afb-6bfd-32c6-9437-59526300003a";
 
    /**
     * Name of the attribute that this metadata defines.

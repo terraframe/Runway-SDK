@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.sql.DataSource;
 
@@ -75,6 +76,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -95,6 +97,7 @@ import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.database.NumericFieldOverflowException;
 import com.runwaysdk.dataaccess.io.CountingOutputStream;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
 
@@ -104,15 +107,18 @@ import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
  */
 public class PostgreSQL extends AbstractDatabase
 {
-  private Logger logger = LoggerFactory.getLogger(PostgreSQL.class);
+  public static final String ROOT_SEQUENCE          = "root_sequence";
   
-  private String       databaseNamespace;
+  public static final String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
+  
+  public static final String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
+  
+  public static final String PRIMARY_KEY_SUFFIX     = "_pkey";
+  
 
-  public static String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
+  private Logger             logger                 = LoggerFactory.getLogger(PostgreSQL.class);
 
-  public static String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
-
-  public static String PRIMARY_KEY_SUFFIX     = "_pkey";
+  private String             databaseNamespace;
 
   /**
    * Initialize the datasource to point to a PostgreSQL database.
@@ -160,13 +166,18 @@ public class PostgreSQL extends AbstractDatabase
       this.dataSource = (DataSource) pgDataSource;
     }
   }
-  
+
   /**
-   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * Creates a temporary table that lasts for at most the duration of the
+   * session. The behavior on transaction commit is configurable with the
+   * onCommit parameter.
    * 
-   * @param tableName The name of the temp table.
-   * @param columns An array of vendor-specific formatted columns.
-   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   * @param tableName
+   *          The name of the temp table.
+   * @param columns
+   *          An array of vendor-specific formatted columns.
+   * @param onCommit
+   *          Decides the fate of the temporary table upon transaction commit.
    */
   @Override
   public void createTempTable(String tableName, List<String> columns, String onCommit)
@@ -179,35 +190,28 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Closes all active connections to the database and cleans up any resources. Depending on your context, you may
-   * wish to revoke connect permissions before invoking this.
+   * Closes all active connections to the database and cleans up any resources.
+   * Depending on your context, you may wish to revoke connect permissions
+   * before invoking this.
    */
   public void close()
   {
     if (this.dataSource instanceof PGPoolingDataSource)
     {
-      ((PGPoolingDataSource)this.dataSource).close();
+      ( (PGPoolingDataSource) this.dataSource ).close();
     }
     else
     {
       // Terminate all connections manually.
       LinkedList<String> statements = new LinkedList<String>();
       String dbName = DatabaseProperties.getDatabaseName();
-      
-      statements.add(
-          "SELECT \n" + 
-          "    pg_terminate_backend(pid) \n" + 
-          "FROM \n" + 
-          "    pg_stat_activity \n" + 
-          "WHERE \n" + 
-          "    pid <> pg_backend_pid()\n" + 
-          "    AND datname = '" + dbName + "'\n" + 
-          "    ;");
-      
+
+      statements.add("SELECT \n" + "    pg_terminate_backend(pid) \n" + "FROM \n" + "    pg_stat_activity \n" + "WHERE \n" + "    pid <> pg_backend_pid()\n" + "    AND datname = '" + dbName + "'\n" + "    ;");
+
       executeAsRoot(statements, true);
     }
   }
-  
+
   /**
    * True if a PosgreSQL namespace has been defined, false otherwise.
    * 
@@ -260,6 +264,8 @@ public class PostgreSQL extends AbstractDatabase
     {
       this.createNamespace(rootUser, rootPass);
     }
+
+    this.createExtension(rootUser, rootPass);
   }
 
   /**
@@ -373,6 +379,54 @@ public class PostgreSQL extends AbstractDatabase
       statements.add("ALTER USER " + userName + " SET search_path = " + namespace + ", public");
       executeAsRoot(statements, true);
 
+    }
+    catch (SQLException e)
+    {
+      throw new DatabaseException(e);
+    }
+    finally
+    {
+      try
+      {
+        if (statement != null)
+        {
+          statement.close();
+        }
+        if (conn != null)
+        {
+          conn.close();
+        }
+      }
+      catch (Exception exception)
+      {
+      }
+    }
+  }
+
+  /**
+   * Creates a namespace in the database.
+   * 
+   * <b>Postcondition:</b>Assumes {@link this.hasNamespace()} == true
+   * 
+   */
+  public void createExtension(String rootUser, String rootPass)
+  {
+    // root needs to log into the application database to create the schema.
+    PGSimpleDataSource tempRootDatasource = new PGSimpleDataSource();
+    tempRootDatasource.setServerName(DatabaseProperties.getServerName());
+    tempRootDatasource.setPortNumber(DatabaseProperties.getPort());
+    tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
+    tempRootDatasource.setUser(rootUser);
+    tempRootDatasource.setPassword(rootPass);
+
+    Connection conn = null;
+    Statement statement = null;
+
+    try
+    {
+      conn = tempRootDatasource.getConnection();
+      statement = conn.createStatement();
+      statement.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
     }
     catch (SQLException e)
     {
@@ -1029,6 +1083,17 @@ public class PostgreSQL extends AbstractDatabase
     return "ALTER TABLE " + table + " ADD COLUMN " + columnName + "  " + formattedColumnType;
   }
 
+  @Override
+  public String formatCharacterField(String type, String length)
+  {
+    if (type.equals("uuid"))
+    {
+      return type;
+    }
+
+    return super.formatCharacterField(type, length);
+  }
+
   /**
    * 
    * @see com.runwaysdk.dataaccess.AbstractDatabase#buildDropColumnString(java.lang.String,
@@ -1084,7 +1149,7 @@ public class PostgreSQL extends AbstractDatabase
    */
   public String startCreateClassTable(String tableName)
   {
-    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY";
+    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " UUID NOT NULL PRIMARY KEY";
   }
 
   /*
@@ -1162,7 +1227,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID columnName as the primary key.
+   * the Component.OID columnName as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1171,7 +1236,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public void createRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1211,7 +1276,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID
+   * minus the closing parenthesis. Automatically adds the Component.OID
    * columnName as the primary key.
    * 
    * @param tableName
@@ -1220,7 +1285,7 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public String startCreateRelationshipTableBatch(String tableName)
   {
-    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL, \n" + RelationshipDAOIF.CHILD_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL";
+    return "CREATE TABLE " + tableName + " ( " + EntityDAOIF.ID_COLUMN + " UUID NOT NULL PRIMARY KEY, \n" + RelationshipDAOIF.PARENT_OID_COLUMN + " UUID NOT NULL, \n" + RelationshipDAOIF.CHILD_OID_COLUMN + " UUID NOT NULL";
   }
 
   /**
@@ -1233,7 +1298,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   @Override
@@ -1244,12 +1309,12 @@ public class PostgreSQL extends AbstractDatabase
     {
       statement += " UNIQUE ";
     }
-    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
 
     String undo = "DROP INDEX " + index1Name;
     new DDLCommand(statement, undo, false).doIt();
 
-    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    statement = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
 
     undo = "DROP INDEX " + index1Name;
     new DDLCommand(statement, undo, false).doIt();
@@ -1259,14 +1324,14 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
    *      String);
    */
-  public void createEnumerationTable(String tableName, String id)
+  public void createEnumerationTable(String tableName, String oid)
   {
-    String statement = "CREATE TABLE " + tableName + " \n" + "(" + MdEnumerationDAOIF.SET_ID_COLUMN + "                CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n" + MdEnumerationDAOIF.ITEM_ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL)";
+    String statement = "CREATE TABLE " + tableName + " \n" + "(" + MdEnumerationDAOIF.SET_ID_COLUMN + "                CHAR(" + Database.DATABASE_SET_ID_SIZE + ") NOT NULL, \n" + MdEnumerationDAOIF.ITEM_ID_COLUMN + " UUID NOT NULL)";
 
     String undo = "DROP TABLE " + tableName;
     new DDLCommand(statement, undo, false).doIt();
 
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
     statement = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
 
     undo = "DROP INDEX " + indexName;
@@ -1292,7 +1357,7 @@ public class PostgreSQL extends AbstractDatabase
    * Drops an entire table from the database for a relationship. An undo command
    * is created that will recreate the table if transaction management requires
    * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the ID.
+   * in the table, only the OID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1301,7 +1366,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
+   *          Indicates whether the parent_oid child_oid pair should be made
    *          unique. This should only be done on concrete relationship types.
    */
   public void dropRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1313,11 +1378,11 @@ public class PostgreSQL extends AbstractDatabase
     {
       undo += " UNIQUE ";
     }
-    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_ID_COLUMN + ", " + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo += " INDEX " + index1Name + " ON " + tableName + " (" + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     statement = "DROP INDEX " + index2Name;
-    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_ID_COLUMN + ")";
+    undo = "CREATE INDEX " + index2Name + " ON " + tableName + " (" + RelationshipDAOIF.CHILD_OID_COLUMN + ")";
     new DDLCommand(statement, undo, true).doIt();
 
     statement = "DROP TABLE " + tableName;
@@ -1329,11 +1394,11 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String,
    *      String);
    */
-  public void dropEnumerationTable(String tableName, String id)
+  public void dropEnumerationTable(String tableName, String oid)
   {
     String statement = "DROP TABLE " + tableName;
 
-    String indexName = this.createIdentifierFromId(id);
+    String indexName = this.createIdentifierFromId(oid);
 
     String undo = "CREATE UNIQUE INDEX " + indexName + " ON " + tableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ")";
 
@@ -1512,6 +1577,8 @@ public class PostgreSQL extends AbstractDatabase
   public void createObjectSequence()
   {
     this.execute("CREATE SEQUENCE " + OBJECT_UPDATE_SEQUENCE + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+
+    this.execute("CREATE SEQUENCE " + ROOT_SEQUENCE + " INCREMENT 1 START 1280");
   }
 
   /**
@@ -1533,6 +1600,52 @@ public class PostgreSQL extends AbstractDatabase
       resultSet.next();
 
       return resultSet.getString("nextval");
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+
+    return returnResult;
+
+  }
+
+  /**
+   * 
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#getNextSequenceNumber()
+   */
+  @Override
+  public String generateRootId(MdTypeDAO mdTypeDAO)
+  {
+    // get the sequence value
+    String sqlStmt = "SELECT NEXTVAL('" + ROOT_SEQUENCE + "') AS nextval";
+
+    ResultSet resultSet = query(sqlStmt);
+
+    String returnResult = "";
+
+    try
+    {
+      resultSet.next();
+
+      long value = resultSet.getLong("nextval");
+
+      String id = String.format("%06x", ( 0xFFFFFF & value ));
+
+      return id;
     }
     catch (SQLException sqlEx1)
     {
@@ -1673,7 +1786,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     String statement = buildAddColumnString(table, columnName, type);
 
-    if (size != null)
+    if (size != null && !type.equalsIgnoreCase("uuid"))
     {
       statement += "(" + size + ")";
     }
@@ -1681,6 +1794,34 @@ public class PostgreSQL extends AbstractDatabase
     String undo = "ALTER TABLE " + table + " DROP " + columnName;
 
     new DDLCommand(statement, undo, false).doIt();
+  }
+
+  public void bindPreparedStatementValue(PreparedStatement prepStmt, int index, Object value, String dataType)
+  {
+    try
+    {
+      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
+      {
+        String va = (String) value;
+        if (value == null || va.equals(""))
+        {
+          prepStmt.setNull(index, java.sql.Types.OTHER);
+        }
+        else
+        {
+          prepStmt.setObject(index, UUID.fromString(va));
+        }
+      }
+      else
+      {
+        super.bindPreparedStatementValue(prepStmt, index, value, dataType);
+      }
+    }
+    catch (SQLException ex)
+    {
+      this.throwDatabaseException(ex);
+    }
+
   }
 
   /*
@@ -1694,7 +1835,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     String statement = columnName + "  " + type;
 
-    if (size != null)
+    if (size != null && !type.equalsIgnoreCase("uuid"))
     {
       statement += "(" + size + ")";
     }
@@ -1770,25 +1911,11 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-          dataType.equals(MdAttributeCharacterInfo.CLASS) || 
-          dataType.equals(MdAttributeDateTimeInfo.CLASS) || 
-          dataType.equals(MdAttributeDateInfo.CLASS) || 
-          dataType.equals(MdAttributeTimeInfo.CLASS) || 
-          dataType.equals(MdAttributeTextInfo.CLASS) || 
-          dataType.equals(MdAttributeClobInfo.CLASS) || 
-          dataType.equals(MdAttributeStructInfo.CLASS) || 
-          dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
-          dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeDateTimeInfo.CLASS) || dataType.equals(MdAttributeDateInfo.CLASS) || dataType.equals(MdAttributeTimeInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
     // Encryption
-          dataType.equals(MdAttributeHashInfo.CLASS) || 
-          dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-          dataType.equals(MdAttributeReferenceInfo.CLASS) || 
-          dataType.equals(MdAttributeTermInfo.CLASS) || 
-          dataType.equals(MdAttributeFileInfo.CLASS) || 
-          dataType.equals(MdAttributeEnumerationInfo.CLASS) || 
-          dataType.equals(MdAttributeMultiReferenceInfo.CLASS) ||
-          dataType.equals(MdAttributeIndicatorInfo.CLASS))
+        dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -1800,12 +1927,7 @@ public class PostgreSQL extends AbstractDatabase
     }
     // Don't format attributes of these types.
     else if (// Primitive
-       dataType.equals(MdAttributeBooleanInfo.CLASS) || 
-       dataType.equals(MdAttributeIntegerInfo.CLASS) || 
-       dataType.equals(MdAttributeLongInfo.CLASS) || 
-       dataType.equals(MdAttributeFloatInfo.CLASS) || 
-       dataType.equals(MdAttributeDoubleInfo.CLASS) || 
-       dataType.equals(MdAttributeDecimalInfo.CLASS) ||
+    dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
     // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -1822,9 +1944,8 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.String
-   * )
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.
+   * String )
    */
   public String formatColumnAlias(String columnAlias)
   {
@@ -1851,25 +1972,19 @@ public class PostgreSQL extends AbstractDatabase
 
     // Format quotes
     if ( // Primitives
-       dataType.equals(MdAttributeCharacterInfo.CLASS) || 
-       dataType.equals(MdAttributeTextInfo.CLASS) || 
-       dataType.equals(MdAttributeClobInfo.CLASS) || 
-       dataType.equals(MdAttributeStructInfo.CLASS) || 
-       dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || 
-       dataType.equals(MdAttributeLocalTextInfo.CLASS) ||
+    dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) ||
     // Encryption
-        dataType.equals(MdAttributeHashInfo.CLASS) || 
-        dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
+        dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || 
-        dataType.equals(MdAttributeTermInfo.CLASS) || 
-        dataType.equals(MdAttributeFileInfo.CLASS) || 
-        dataType.equals(MdAttributeEnumerationInfo.CLASS) ||
-        dataType.equals(MdAttributeIndicatorInfo.CLASS)
+        dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS)
     // Non Primitives
     )
     {
       bogusValue = "''";
+    }
+    else if (dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
+    {
+      bogusValue = "'00000000-0000-0000-0000-000000000000'::uuid";
     }
     else if (dataType.equals(MdAttributeBlobInfo.CLASS))
     {
@@ -2005,14 +2120,14 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param bytes
    * @param offset
    * @param length
    * @return
    */
-  public int setBlobAsBytes(String table, String columnName, String id, long pos, byte[] bytes, int offset, int length)
+  public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset, int length)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -2022,8 +2137,8 @@ public class PostgreSQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       byte[] resultBytes = resultSet.getBytes(columnName);
@@ -2115,11 +2230,11 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param bytes
    * @return The number of bytes written.
    */
-  public int setBlobAsBytes(String table, String columnName, String id, byte[] bytes)
+  public int setBlobAsBytes(String table, String columnName, String oid, byte[] bytes)
   {
     Connection conn = Database.getConnection();
     int written = 0;
@@ -2127,7 +2242,7 @@ public class PostgreSQL extends AbstractDatabase
     try
     {
       // get the blob
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       prepared = conn.prepareStatement(update);
       prepared.setBytes(1, bytes);
       prepared.executeUpdate();
@@ -2160,11 +2275,11 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param conn
    * @return byte[] value of the blob.
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, Connection conn)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -2173,7 +2288,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
 
       if (resultSet.next())
@@ -2215,12 +2330,12 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param pos
    * @param length
    * @return
    */
-  public byte[] getBlobAsBytes(String table, String columnName, String id, long pos, int length)
+  public byte[] getBlobAsBytes(String table, String columnName, String oid, long pos, int length)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -2230,7 +2345,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 
@@ -2271,10 +2386,10 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @param length
    */
-  public void truncateBlob(String table, String columnName, String id, long length, Connection conn)
+  public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
     Statement statement = null;
     ResultSet resultSet = null;
@@ -2282,8 +2397,8 @@ public class PostgreSQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(select);
       resultSet.next();
       byte[] resultBytes = resultSet.getBytes(columnName);
@@ -2325,11 +2440,11 @@ public class PostgreSQL extends AbstractDatabase
    * 
    * @param table
    * @param columnName
-   * @param id
+   * @param oid
    * @return The byte array value of this blob attribute.
    */
   @Override
-  public long getBlobSize(String table, String columnName, String id)
+  public long getBlobSize(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
     Statement statement = null;
@@ -2339,7 +2454,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       // get the blob
       statement = conn.createStatement();
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + id + "'";
+      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       resultSet = statement.executeQuery(query);
       resultSet.next();
 
@@ -2514,9 +2629,9 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getChildCountForParent(java.lang.String,
    *      java.lang.String)
    */
-  public long getChildCountForParent(String parent_id, String relationshipTableName)
+  public long getChildCountForParent(String parent_oid, String relationshipTableName)
   {
-    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.PARENT_ID_COLUMN + " = '" + parent_id + "' \n" + " AND " + RelationshipDAOIF.CHILD_ID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.CHILD_ID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.PARENT_ID_COLUMN + " = '" + parent_id + "')";
+    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "' \n" + " AND " + RelationshipDAOIF.CHILD_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.CHILD_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "')";
 
     ResultSet resultSet = this.query(query);
 
@@ -2555,9 +2670,9 @@ public class PostgreSQL extends AbstractDatabase
    * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getParentCountForChild(java.lang.String,
    *      java.lang.String)
    */
-  public long getParentCountForChild(String child_id, String relationshipTableName)
+  public long getParentCountForChild(String child_oid, String relationshipTableName)
   {
-    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.CHILD_ID_COLUMN + " = '" + child_id + "' \n" + " AND " + RelationshipDAOIF.PARENT_ID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.PARENT_ID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.CHILD_ID_COLUMN + " = '" + child_id + "')";
+    String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "' \n" + " AND " + RelationshipDAOIF.PARENT_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.PARENT_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "')";
 
     ResultSet resultSet = this.query(query);
 
@@ -2736,7 +2851,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Imports the given SQL file into the database. The password will be read from a pgpass file, so make sure it exists there before running this.
+   * Imports the given SQL file into the database. The password will be read
+   * from a pgpass file, so make sure it exists there before running this.
    * 
    * @param restoreSQLFile
    * @param printStream
@@ -2762,9 +2878,9 @@ public class PostgreSQL extends AbstractDatabase
     argList.add(restoreSQLFile);
     argList.add("--no-password");
     argList.add("--quiet");
-    
+
     logger.info("Importing SQL file with command [" + StringUtils.join(argList, " ") + "] in a new process and waiting for the process to exit.");
-    
+
     ProcessBuilder pb = new ProcessBuilder(argList);
 
     try
@@ -2787,9 +2903,8 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.database.general.AbstractDatabase#validateClobLength
-   * (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
+   * @see com.runwaysdk.dataaccess.database.general.AbstractDatabase#
+   * validateClobLength (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
    */
   @Override
   public void validateClobLength(String value, AttributeIF attributeIF)

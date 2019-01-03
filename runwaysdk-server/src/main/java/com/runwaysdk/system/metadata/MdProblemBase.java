@@ -73,7 +73,7 @@ public abstract class MdProblemBase extends com.runwaysdk.system.metadata.MdNoti
     }
     else
     {
-      setValue(SUPERMDPROBLEM, value.getId());
+      setValue(SUPERMDPROBLEM, value.getOid());
     }
   }
   
@@ -168,9 +168,9 @@ public abstract class MdProblemBase extends com.runwaysdk.system.metadata.MdNoti
     }
   }
   
-  public static MdProblem get(String id)
+  public static MdProblem get(String oid)
   {
-    return (MdProblem) com.runwaysdk.business.Business.get(id);
+    return (MdProblem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdProblem getByKey(String key)
@@ -178,17 +178,17 @@ public abstract class MdProblemBase extends com.runwaysdk.system.metadata.MdNoti
     return (MdProblem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdProblem lock(java.lang.String id)
+  public static MdProblem lock(java.lang.String oid)
   {
-    MdProblem _instance = MdProblem.get(id);
+    MdProblem _instance = MdProblem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdProblem unlock(java.lang.String id)
+  public static MdProblem unlock(java.lang.String oid)
   {
-    MdProblem _instance = MdProblem.get(id);
+    MdProblem _instance = MdProblem.get(oid);
     _instance.unlock();
     
     return _instance;

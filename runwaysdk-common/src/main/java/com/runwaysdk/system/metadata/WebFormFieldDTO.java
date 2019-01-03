@@ -22,9 +22,9 @@ public class WebFormFieldDTO extends WebFormFieldDTOBase
 {
   private static final long serialVersionUID = 1965688426;
   
-  public WebFormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public WebFormFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -28,25 +28,25 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 public class CreateTestClassExportBuilder extends ExportBuilder<MdBusinessDAO>
 {
   private MdBusinessDAO mdBusiness;
-  
+
   @Override
   protected MdBusinessDAO doIt()
-  {    
+  {
     this.inTransaction();
-    
+
     return mdBusiness;
   }
-  
+
   @Transaction
   private void inTransaction()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
-    
+
     MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, "true");
-    mdAttributeCharacter.apply(); 
+    mdAttributeCharacter.apply();
   }
 
   @Override

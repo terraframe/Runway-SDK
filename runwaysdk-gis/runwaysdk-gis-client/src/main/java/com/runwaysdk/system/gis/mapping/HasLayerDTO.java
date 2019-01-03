@@ -22,9 +22,9 @@ public class HasLayerDTO extends HasLayerDTOBase
 {
   private static final long serialVersionUID = -1194693761;
   
-  public HasLayerDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public HasLayerDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

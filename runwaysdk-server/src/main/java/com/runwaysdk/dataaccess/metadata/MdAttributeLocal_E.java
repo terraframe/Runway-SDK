@@ -66,10 +66,10 @@ public class MdAttributeLocal_E extends MdAttributeStruct_E
       ( (AttributeLocalCharacter) mdLocalStructDAO.getAttribute(MdLocalStructInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, getMdAttribute().getDescription(CommonProperties.getDefaultLocale()));
 
       mdLocalStructDAO.getAttribute(MdLocalStructInfo.CACHE_SIZE).setValue("0");
-      mdLocalStructDAO.addItem(MdLocalStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdLocalStructDAO.addItem(MdLocalStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       mdLocalStructDAO.apply();
 
-      structAttribute.setValue(mdLocalStructDAO.getId());
+      structAttribute.setValue(mdLocalStructDAO.getOid());
     }
   }
 

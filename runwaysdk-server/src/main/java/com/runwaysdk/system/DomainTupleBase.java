@@ -73,7 +73,7 @@ public abstract class DomainTupleBase extends com.runwaysdk.system.metadata.Type
     }
     else
     {
-      setValue(PERMISSIONDOMAIN, value.getId());
+      setValue(PERMISSIONDOMAIN, value.getOid());
     }
   }
   
@@ -82,9 +82,9 @@ public abstract class DomainTupleBase extends com.runwaysdk.system.metadata.Type
     return CLASS;
   }
   
-  public static DomainTuple get(String id)
+  public static DomainTuple get(String oid)
   {
-    return (DomainTuple) com.runwaysdk.business.Business.get(id);
+    return (DomainTuple) com.runwaysdk.business.Business.get(oid);
   }
   
   public static DomainTuple getByKey(String key)
@@ -92,17 +92,17 @@ public abstract class DomainTupleBase extends com.runwaysdk.system.metadata.Type
     return (DomainTuple) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static DomainTuple lock(java.lang.String id)
+  public static DomainTuple lock(java.lang.String oid)
   {
-    DomainTuple _instance = DomainTuple.get(id);
+    DomainTuple _instance = DomainTuple.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static DomainTuple unlock(java.lang.String id)
+  public static DomainTuple unlock(java.lang.String oid)
   {
-    DomainTuple _instance = DomainTuple.get(id);
+    DomainTuple _instance = DomainTuple.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -742,13 +742,13 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.Roles roles)
     {
       if(roles == null) return this.EQ((java.lang.String)null);
-      return this.EQ(roles.getId());
+      return this.EQ(roles.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.Roles roles)
     {
       if(roles == null) return this.NE((java.lang.String)null);
-      return this.NE(roles.getId());
+      return this.NE(roles.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -1309,7 +1309,7 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<roles.length; i++)
       {
-        itemIdArray[i] = roles[i].getId();
+        itemIdArray[i] = roles[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1321,7 +1321,7 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<roles.length; i++)
       {
-        itemIdArray[i] = roles[i].getId();
+        itemIdArray[i] = roles[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1333,7 +1333,7 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<roles.length; i++)
       {
-        itemIdArray[i] = roles[i].getId();
+        itemIdArray[i] = roles[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1345,7 +1345,7 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<roles.length; i++)
       {
-        itemIdArray[i] = roles[i].getId();
+        itemIdArray[i] = roles[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1357,7 +1357,7 @@ public  class RolesQuery extends com.runwaysdk.system.ActorQuery
 
       for (int i=0; i<roles.length; i++)
       {
-        itemIdArray[i] = roles[i].getId();
+        itemIdArray[i] = roles[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

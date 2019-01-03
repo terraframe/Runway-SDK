@@ -82,7 +82,7 @@ public class ConversionStrategyAdapter implements IConversionStrategy
 
     for (Attribute attribute : attributes)
     {
-      if (!attribute.getName().equals(EntityInfo.ID))
+      if (!attribute.getName().equals(EntityInfo.OID))
       {
         if (attribute instanceof AttributeStruct)
         {
@@ -103,7 +103,7 @@ public class ConversionStrategyAdapter implements IConversionStrategy
 
           for (EnumerationItemDAOIF item : items)
           {
-            destination.addItem(attribute.getName(), item.getId());
+            destination.addItem(attribute.getName(), item.getOid());
           }
         }
         else

@@ -41,9 +41,9 @@ public abstract class MdWebMultipleTermBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdWebMultipleTerm get(String id)
+  public static MdWebMultipleTerm get(String oid)
   {
-    return (MdWebMultipleTerm) com.runwaysdk.business.Business.get(id);
+    return (MdWebMultipleTerm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebMultipleTerm getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebMultipleTermBase extends com.runwaysdk.system.metadat
     return (MdWebMultipleTerm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebMultipleTerm lock(java.lang.String id)
+  public static MdWebMultipleTerm lock(java.lang.String oid)
   {
-    MdWebMultipleTerm _instance = MdWebMultipleTerm.get(id);
+    MdWebMultipleTerm _instance = MdWebMultipleTerm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebMultipleTerm unlock(java.lang.String id)
+  public static MdWebMultipleTerm unlock(java.lang.String oid)
   {
-    MdWebMultipleTerm _instance = MdWebMultipleTerm.get(id);
+    MdWebMultipleTerm _instance = MdWebMultipleTerm.get(oid);
     _instance.unlock();
     
     return _instance;

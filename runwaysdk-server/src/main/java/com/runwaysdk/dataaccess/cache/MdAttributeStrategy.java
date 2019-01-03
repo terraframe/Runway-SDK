@@ -169,8 +169,8 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
     }
     else
     {
-      syncId = entityDAO.getId();
-      oldId = entityDAO.getId();
+      syncId = entityDAO.getOid();
+      oldId = entityDAO.getOid();
     }
     
     synchronized(syncId)
@@ -190,7 +190,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
         
         if (!mdAttributeConcrete.getIndexName().trim().equals(""))
         {         
-          this.indexNameMap.put(mdAttributeConcrete.getIndexName(), mdAttributeConcrete.getId());
+          this.indexNameMap.put(mdAttributeConcrete.getIndexName(), mdAttributeConcrete.getOid());
         }
       }
     }
@@ -207,7 +207,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
    */
   public void removeCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.removeCache(entityDAO);
 

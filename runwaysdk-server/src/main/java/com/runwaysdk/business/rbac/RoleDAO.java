@@ -189,7 +189,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     // Don't re-assign actors to roles they already have
     if (!singleActor.assignedRoles().contains(this))
     {
-      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(singleActor.getId(), super.getId(), RelationshipTypes.ASSIGNMENTS.getType());
+      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(singleActor.getOid(), super.getOid(), RelationshipTypes.ASSIGNMENTS.getType());
       relationshipDAO.setKey(RoleDAO.buildAssignmentsKey(relationshipDAO));    
       relationshipDAO.apply();
     }
@@ -212,7 +212,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
       return;
     }
 
-    List<RelationshipDAOIF> roleRelationshipList = RelationshipDAO.get(singleActorIF.getId(), super.getId(), RelationshipTypes.ASSIGNMENTS.getType());
+    List<RelationshipDAOIF> roleRelationshipList = RelationshipDAO.get(singleActorIF.getOid(), super.getOid(), RelationshipTypes.ASSIGNMENTS.getType());
 
     if (roleRelationshipList.size() > 0)
     {
@@ -226,7 +226,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
    * 
    * @pre get(mdTypeId) instanceof Metadata
    * @param metadata
-   *          The id of the MdType
+   *          The oid of the MdType
    * 
    * @return A list of all operations the role has permissions for
    */
@@ -255,7 +255,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
   public synchronized void addInheritance(RoleDAO childRole)
   {
     // Apply the inheritance
-    RelationshipDAO inherit = RelationshipDAO.newInstance(super.getId(), childRole.getId(), ROLE_INHERITANCE);
+    RelationshipDAO inherit = RelationshipDAO.newInstance(super.getOid(), childRole.getOid(), ROLE_INHERITANCE);
     inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
     inherit.apply();
 
@@ -290,7 +290,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
    */
   public void deleteInheritance(RoleDAOIF childRole)
   {
-    RelationshipDAO inherit = RelationshipDAO.get(super.getId(), childRole.getId(), ROLE_INHERITANCE).get(0).getRelationshipDAO();
+    RelationshipDAO inherit = RelationshipDAO.get(super.getOid(), childRole.getOid(), ROLE_INHERITANCE).get(0).getRelationshipDAO();
 
     inherit.delete();
   }
@@ -322,7 +322,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     try
     {
-      existing = RelationshipDAO.get(role.getId(), this.getId(), ROLE_INHERITANCE);
+      existing = RelationshipDAO.get(role.getOid(), this.getOid(), ROLE_INHERITANCE);
     }
     catch (DataNotFoundException e)
     {
@@ -331,7 +331,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     if (existing == null || existing.size() == 0)
     {
-      RelationshipDAO inherit = RelationshipDAO.newInstance(role.getId(), super.getId(), ROLE_INHERITANCE);
+      RelationshipDAO inherit = RelationshipDAO.newInstance(role.getOid(), super.getOid(), ROLE_INHERITANCE);
       inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
       inherit.apply();
     }
@@ -341,7 +341,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
   {
     try
     {
-      List<RelationshipDAOIF> relationships = RelationshipDAO.get(role.getId(), this.getId(), ROLE_INHERITANCE);
+      List<RelationshipDAOIF> relationships = RelationshipDAO.get(role.getOid(), this.getOid(), ROLE_INHERITANCE);
 
       for (RelationshipDAOIF relationship : relationships)
       {
@@ -358,7 +358,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
   {
     try
     {
-      List<RelationshipDAOIF> relationships = RelationshipDAO.get(this.getId(), role.getId(), ROLE_INHERITANCE);
+      List<RelationshipDAOIF> relationships = RelationshipDAO.get(this.getOid(), role.getOid(), ROLE_INHERITANCE);
 
       for (RelationshipDAOIF relationship : relationships)
       {
@@ -398,7 +398,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     try
     {
-      existing = RelationshipDAO.get(this.getId(), role.getId(), ROLE_INHERITANCE);
+      existing = RelationshipDAO.get(this.getOid(), role.getOid(), ROLE_INHERITANCE);
     }
     catch (DataNotFoundException e)
     {
@@ -407,7 +407,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     if (existing == null || existing.size() == 0)
     {
-      RelationshipDAO inherit = RelationshipDAO.newInstance(super.getId(), role.getId(), ROLE_INHERITANCE);
+      RelationshipDAO inherit = RelationshipDAO.newInstance(super.getOid(), role.getOid(), ROLE_INHERITANCE);
       inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
       inherit.apply();
     }
@@ -424,7 +424,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     Set<RoleDAOIF> set = new TreeSet<RoleDAOIF>();
 
-    // Add root id to the stack
+    // Add root oid to the stack
     stack.push(this);
 
     while (!stack.empty())
@@ -433,7 +433,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
       List<RelationshipDAOIF> list = role.getParents(ROLE_INHERITANCE);
 
-      // Add the parent of the current id to the set role ids
+      // Add the parent of the current oid to the set role ids
       for (RelationshipDAOIF relationship : list)
       {
         RoleDAOIF parent = (RoleDAOIF) relationship.getParent();
@@ -453,7 +453,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
    * Returns all of the roles which inherit from a role
    * 
    * @param roleId
-   *          The id of the role
+   *          The oid of the role
    * @return A list of all role ids which inherit the given role
    */
   public Set<RoleDAOIF> getSubRoles()
@@ -462,7 +462,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     Set<RoleDAOIF> set = new TreeSet<RoleDAOIF>();
 
-    // Add root id to the stack
+    // Add root oid to the stack
     stack.push(this);
 
     while (!stack.empty())
@@ -471,10 +471,10 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
       List<RelationshipDAOIF> list = role.getChildren(ROLE_INHERITANCE);
 
-      // Add the parent of the current id to the set role ids
+      // Add the parent of the current oid to the set role ids
       for (RelationshipDAOIF relationship : list)
       {
-        RoleDAOIF parent = RoleDAO.get(relationship.getChildId());
+        RoleDAOIF parent = RoleDAO.get(relationship.getChildOid());
 
         // If the parent is not already in the set of ids add to the stack
         if (set.add(parent))
@@ -575,9 +575,9 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
    * Determines the authorizedUsers of two roles intersect with each other
    * 
    * @param r1Id
-   *          The id of the first role
+   *          The oid of the first role
    * @param r2Id
-   *          The id of the second role
+   *          The oid of the second role
    * @return If two roles intersect
    */
   public boolean intersect(RoleDAO role)
@@ -650,9 +650,9 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static RoleDAOIF get(String id)
+  public static RoleDAOIF get(String oid)
   {
-    return (RoleDAOIF) BusinessDAO.get(id);
+    return (RoleDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

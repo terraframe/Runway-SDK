@@ -22,9 +22,9 @@ public class InformationInheritanceDTO extends InformationInheritanceDTOBase
 {
   private static final long serialVersionUID = 2108193510;
   
-  public InformationInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public InformationInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

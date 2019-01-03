@@ -51,7 +51,7 @@ import com.runwaysdk.manager.widgets.WidgetVisitor;
 
 public class EditView extends EntityView
 {
-  public static final String     ID = "com.runwaysdk.view.EditView";
+  public static final String     OID = "com.runwaysdk.view.EditView";
 
   private Composite              pane;
 

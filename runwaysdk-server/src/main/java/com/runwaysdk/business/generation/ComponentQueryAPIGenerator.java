@@ -38,7 +38,6 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.generation.loader.Reloadable;
 
 public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerMarker
 {
@@ -203,10 +202,6 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     this.write(this.srcBuffer, "public " + this.getClassAbstract() + " class " + this.queryTypeName + " extends ");
     this.addExtends(parentMdClassIF);
 
-    if (!this.getMdClassIF().isSystemPackage())
-    {
-      this.write(this.srcBuffer, Reloadable.IMPLEMENTS);
-    }
     this.writeLine(this.srcBuffer, "");
 
     this.writeLine(this.srcBuffer, "{");

@@ -116,13 +116,13 @@ private static final long serialVersionUID = 499649870;
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.metadata.MdWebPoint mdWebPoint)
     {
       if(mdWebPoint == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebPoint.getId());
+      return this.EQ(mdWebPoint.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.metadata.MdWebPoint mdWebPoint)
     {
       if(mdWebPoint == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebPoint.getId());
+      return this.NE(mdWebPoint.getOid());
     }
 
   }

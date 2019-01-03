@@ -39,7 +39,7 @@ public abstract class AttributeNotificationProblem extends AttributeNotification
   
   public void setNotification(Entity entity, String attributeName)
   {
-    this.setComponentId(entity.getId());
+    this.setComponentId(entity.getOid());
     this.setAttributeName(attributeName);
     this.setAttributeDisplayLabel(entity.getMdAttributeDAO(attributeName).getDisplayLabel(Session.getCurrentLocale()));
     this.setDefiningType(entity.getType());
@@ -48,7 +48,7 @@ public abstract class AttributeNotificationProblem extends AttributeNotification
 
   public void setNotification(View view, String attributeName)
   {
-    this.setComponentId(view.getId());
+    this.setComponentId(view.getOid());
     this.setAttributeName(attributeName);
     this.setAttributeDisplayLabel(view.getMdAttributeDAO(attributeName).getDisplayLabel(Session.getCurrentLocale()));
     this.setDefiningType(view.getType());

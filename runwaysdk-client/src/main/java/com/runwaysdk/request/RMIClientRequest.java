@@ -80,7 +80,7 @@ public class RMIClientRequest extends ClientRequest
   private static final long serialVersionUID = -3798463194753755412L;
 
   /**
-   * RemoteAdapter interface object to id server-side RMI implementation.
+   * RemoteAdapter interface object to oid server-side RMI implementation.
    */
   private RemoteAdapter     rmiAdapter       = null;
 
@@ -188,13 +188,13 @@ public class RMIClientRequest extends ClientRequest
    *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
-  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  public List<TermAndRelDTO> getTermAllChildren(String parentOid, Integer pageNum, Integer pageSize)
   {
     this.clearNotifications();
     List<TermAndRelDTO> tnr;
     try
     {
-      tnr = rmiAdapter.getTermAllChildren(this.getSessionId(), parentId, pageNum, pageSize);
+      tnr = rmiAdapter.getTermAllChildren(this.getSessionId(), parentOid, pageNum, pageSize);
     }
     catch (MessageExceptionDTO me)
     {
@@ -224,13 +224,13 @@ public class RMIClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addChild(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
     try
     {
-      generic = rmiAdapter.addChild(this.getSessionId(), parentId, childId, relationshipType);
+      generic = rmiAdapter.addChild(this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -252,13 +252,13 @@ public class RMIClientRequest extends ClientRequest
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
    *      java.lang.String, java.lang.String,)
    */
-  public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
+  public RelationshipDTO addParent(String parentOid, String childOid, String relationshipType)
   {
     this.clearNotifications();
     RelationshipDTO generic;
     try
     {
-      generic = rmiAdapter.addParent(this.getSessionId(), parentId, childId, relationshipType);
+      generic = rmiAdapter.addParent(this.getSessionId(), parentOid, childOid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -278,12 +278,12 @@ public class RMIClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#deleteBusiness(java.lang.String)
    */
-  public void delete(String id)
+  public void delete(String oid)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.delete(this.getSessionId(), id);
+      rmiAdapter.delete(this.getSessionId(), oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -302,13 +302,13 @@ public class RMIClientRequest extends ClientRequest
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String)
    */
-  public MutableDTO get(String id)
+  public MutableDTO get(String oid)
   {
     this.clearNotifications();
     MutableDTO generic;
     try
     {
-      generic = rmiAdapter.get(this.getSessionId(), id);
+      generic = rmiAdapter.get(this.getSessionId(), oid);
     }
     catch (MessageExceptionDTO me)
     {
@@ -831,31 +831,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, String...)
-   */
-  public void grantStatePermission(String actorId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.grantStatePermission(this.getSessionId(), actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, String...)
    */
@@ -865,31 +840,6 @@ public class RMIClientRequest extends ClientRequest
     try
     {
       rmiAdapter.grantAttributePermission(this.getSessionId(), actorId, mdAttributeId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   */
-  public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.grantAttributeStatePermission(this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
     }
     catch (MessageExceptionDTO me)
     {
@@ -956,34 +906,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String)
-   */
-  public void promoteObject(BusinessDTO businessDTO, String transitionName)
-  {
-    this.clearNotifications();
-    BusinessDTO generic;
-    try
-    {
-      generic = rmiAdapter.promoteObject(this.getSessionId(), businessDTO, transitionName);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      generic = (BusinessDTO) me.getReturnObject();
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-    ConversionFacade.typeSafeCopy(this, generic, businessDTO);
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String...)
    */
@@ -1034,31 +956,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
-   */
-  public void revokeStatePermission(String actorId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.revokeStatePermission(this.getSessionId(), actorId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String...)
    */
@@ -1084,31 +981,6 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
-   */
-  public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    this.clearNotifications();
-    try
-    {
-      rmiAdapter.revokeAttributeStatePermission(this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      this.setMessagesConvertToTypeSafe(me);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildThrowable(e, this, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
   public void lock(ElementDTO elementDTO)
@@ -1117,7 +989,7 @@ public class RMIClientRequest extends ClientRequest
     EntityDTO generic;
     try
     {
-      generic = rmiAdapter.lock(this.getSessionId(), elementDTO.getId());
+      generic = rmiAdapter.lock(this.getSessionId(), elementDTO.getOid());
     }
     catch (MessageExceptionDTO me)
     {
@@ -1144,7 +1016,7 @@ public class RMIClientRequest extends ClientRequest
     EntityDTO generic;
     try
     {
-      generic = rmiAdapter.unlock(this.getSessionId(), elementDTO.getId());
+      generic = rmiAdapter.unlock(this.getSessionId(), elementDTO.getOid());
     }
     catch (MessageExceptionDTO me)
     {
@@ -1211,13 +1083,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getChildren(String id, String relationshipType)
+  public List<? extends BusinessDTO> getChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
     try
     {
-      generics = rmiAdapter.getChildren(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getChildren(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1244,13 +1116,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends BusinessDTO> getParents(String id, String relationshipType)
+  public List<? extends BusinessDTO> getParents(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<BusinessDTO> generics;
     try
     {
-      generics = rmiAdapter.getParents(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getParents(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1277,13 +1149,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getChildRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
     try
     {
-      generics = rmiAdapter.getChildRelationships(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getChildRelationships(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1310,13 +1182,13 @@ public class RMIClientRequest extends ClientRequest
   }
 
   @SuppressWarnings("unchecked")
-  public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType)
+  public List<? extends RelationshipDTO> getParentRelationships(String oid, String relationshipType)
   {
     this.clearNotifications();
     List<RelationshipDTO> generics;
     try
     {
-      generics = rmiAdapter.getParentRelationships(this.getSessionId(), id, relationshipType);
+      generics = rmiAdapter.getParentRelationships(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1467,12 +1339,12 @@ public class RMIClientRequest extends ClientRequest
     return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  public void deleteChildren(String id, String relationshipType)
+  public void deleteChildren(String oid, String relationshipType)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.deleteChildren(this.getSessionId(), id, relationshipType);
+      rmiAdapter.deleteChildren(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {
@@ -1488,12 +1360,12 @@ public class RMIClientRequest extends ClientRequest
     }
   }
 
-  public void deleteParents(String id, String relationshipType)
+  public void deleteParents(String oid, String relationshipType)
   {
     this.clearNotifications();
     try
     {
-      rmiAdapter.deleteParents(this.getSessionId(), id, relationshipType);
+      rmiAdapter.deleteParents(this.getSessionId(), oid, relationshipType);
     }
     catch (MessageExceptionDTO me)
     {

@@ -154,13 +154,13 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdLocalizable mdLocalizable)
     {
       if(mdLocalizable == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdLocalizable.getId());
+      return this.EQ(mdLocalizable.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdLocalizable mdLocalizable)
     {
       if(mdLocalizable == null) return this.NE((java.lang.String)null);
-      return this.NE(mdLocalizable.getId());
+      return this.NE(mdLocalizable.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdLocalizableMessageQuery.MdLocalizableMessageQueryStructIF getMessage()
@@ -237,7 +237,7 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
 
       for (int i=0; i<mdLocalizable.length; i++)
       {
-        itemIdArray[i] = mdLocalizable[i].getId();
+        itemIdArray[i] = mdLocalizable[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
 
       for (int i=0; i<mdLocalizable.length; i++)
       {
-        itemIdArray[i] = mdLocalizable[i].getId();
+        itemIdArray[i] = mdLocalizable[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
 
       for (int i=0; i<mdLocalizable.length; i++)
       {
-        itemIdArray[i] = mdLocalizable[i].getId();
+        itemIdArray[i] = mdLocalizable[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
 
       for (int i=0; i<mdLocalizable.length; i++)
       {
-        itemIdArray[i] = mdLocalizable[i].getId();
+        itemIdArray[i] = mdLocalizable[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdLocalizableQuery extends com.runwaysdk.system.metadata.MdTransie
 
       for (int i=0; i<mdLocalizable.length; i++)
       {
-        itemIdArray[i] = mdLocalizable[i].getId();
+        itemIdArray[i] = mdLocalizable[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

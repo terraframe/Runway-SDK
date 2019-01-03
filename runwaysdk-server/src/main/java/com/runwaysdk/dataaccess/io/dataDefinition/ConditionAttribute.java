@@ -103,7 +103,7 @@ public class ConditionAttribute implements ConditionAttributeIF
     MdFieldDAOIF definingField = this.getDefiningField();
 
     FieldConditionDAO condition = this.getCondition();
-    condition.setValue(BasicConditionInfo.DEFINING_MD_FIELD, definingField.getId());
+    condition.setValue(BasicConditionInfo.DEFINING_MD_FIELD, definingField.getOid());
     condition.setValue(BasicConditionInfo.OPERATION, operationId);
     condition.setValue(BasicConditionInfo.VALUE, value);
     condition.apply();
@@ -113,8 +113,8 @@ public class ConditionAttribute implements ConditionAttributeIF
     // deleted.
     if (this.mdField != null)
     {
-      BusinessDAO mdField = MdFieldDAO.get(this.mdField.getId()).getBusinessDAO();
-      mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getId());
+      BusinessDAO mdField = MdFieldDAO.get(this.mdField.getOid()).getBusinessDAO();
+      mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getOid());
       mdField.apply();
     }
 
@@ -176,26 +176,26 @@ public class ConditionAttribute implements ConditionAttributeIF
     // Change to an everything caching algorithm
     if (operationName.equals(XMLTags.EQ_OPERATION))
     {
-      return AllOperation.EQ.getId();
+      return AllOperation.EQ.getOid();
     }
     else if (operationName.equals(XMLTags.GT_OPERATION))
     {
-      return AllOperation.GT.getId();
+      return AllOperation.GT.getOid();
     }
     else if (operationName.equals(XMLTags.GTE_OPERATION))
     {
-      return AllOperation.GTE.getId();
+      return AllOperation.GTE.getOid();
     }
     else if (operationName.equals(XMLTags.LT_OPERATION))
     {
-      return AllOperation.LT.getId();
+      return AllOperation.LT.getOid();
     }
     else if (operationName.equals(XMLTags.LTE_OPERATION))
     {
-      return AllOperation.LTE.getId();
+      return AllOperation.LTE.getOid();
     }
 
-    return AllOperation.NEQ.getId();
+    return AllOperation.NEQ.getOid();
   }
 
   /**

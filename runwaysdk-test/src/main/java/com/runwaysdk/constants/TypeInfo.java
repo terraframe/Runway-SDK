@@ -20,15 +20,18 @@ package com.runwaysdk.constants;
 
 /**
  * Used to store information about a class used in JUnit tests.
+ * 
  * @author nathan
  *
  */
 public class TypeInfo
 {
   private String typeName;
+
   private String packageName;
-  private String id;
-  
+
+  private String oid;
+
   public TypeInfo(String packageName, String typeName)
   {
     this.typeName = typeName;
@@ -37,6 +40,7 @@ public class TypeInfo
 
   /**
    * Returns the name of the class.
+   * 
    * @return name of the class.
    */
   public String getTypeName()
@@ -46,30 +50,32 @@ public class TypeInfo
 
   /**
    * Returns the name of the package.
+   * 
    * @return name of the package.
    */
   public String getPackageName()
   {
     return packageName;
   }
-  
+
   /**
    * Returns the type of the class.
+   * 
    * @return type of the class.
    */
   public String getType()
   {
-    return this.packageName+"."+this.typeName;
+    return this.packageName + "." + this.typeName;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
 
-  public void setId(String id)
+  public void setOid(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
-  
+
 }

@@ -38,15 +38,15 @@ public class RelationshipStubGenerator extends EntityStubGenerator
     String parentClass = this.getReturnType(mdRel.getParentMdBusiness());
     String childClass = this.getReturnType(mdRel.getChildMdBusiness());
 
-    getWriter().writeLine("public " + typeName + "(String parentId, String childId)");
+    getWriter().writeLine("public " + typeName + "(String parentOid, String childOid)");
     getWriter().openBracket();
-    getWriter().writeLine("super(parentId, childId);");
+    getWriter().writeLine("super(parentOid, childOid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
     getWriter().writeLine("public " + typeName + '(' + parentClass + " parent, " + childClass + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("this(parent.getId(), child.getId());");
+    getWriter().writeLine("this(parent.getOid(), child.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

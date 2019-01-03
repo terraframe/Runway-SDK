@@ -41,9 +41,9 @@ public abstract class MdMobileDateBase extends com.runwaysdk.system.metadata.MdM
     return CLASS;
   }
   
-  public static MdMobileDate get(String id)
+  public static MdMobileDate get(String oid)
   {
-    return (MdMobileDate) com.runwaysdk.business.Business.get(id);
+    return (MdMobileDate) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileDate getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileDateBase extends com.runwaysdk.system.metadata.MdM
     return (MdMobileDate) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileDate lock(java.lang.String id)
+  public static MdMobileDate lock(java.lang.String oid)
   {
-    MdMobileDate _instance = MdMobileDate.get(id);
+    MdMobileDate _instance = MdMobileDate.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileDate unlock(java.lang.String id)
+  public static MdMobileDate unlock(java.lang.String oid)
   {
-    MdMobileDate _instance = MdMobileDate.get(id);
+    MdMobileDate _instance = MdMobileDate.get(oid);
     _instance.unlock();
     
     return _instance;

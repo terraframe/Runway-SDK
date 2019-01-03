@@ -22,11 +22,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.CompositeException;
 import com.runwaysdk.business.rbac.RoleDAO;
@@ -53,7 +54,7 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.system.Roles;
 import com.runwaysdk.util.FileIO;
 
-public class ResolverTest extends TestCase
+public class ResolverTest
 {
   private class ReferenceMdBusinessExportBuilder extends ExportBuilder<Void>
   {
@@ -116,7 +117,9 @@ public class ResolverTest extends TestCase
     }
 
     @Override
-    protected void setup()
+    @Request
+    @Before
+    public void setUp()
     {
       new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
     }
@@ -125,7 +128,7 @@ public class ResolverTest extends TestCase
     protected Void doIt()
     {
       business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue("testReference", referenceBusiness.getId());
+      business.setValue("testReference", referenceBusiness.getOid());
       business.apply();
 
       return null;
@@ -136,18 +139,6 @@ public class ResolverTest extends TestCase
     {
       TestFixtureFactory.delete(business);
     }
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
   }
 
   /**
@@ -208,28 +199,8 @@ public class ResolverTest extends TestCase
    */
   private static boolean     log;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(ResolverTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     domain = CommonProperties.getDomain();
@@ -237,6 +208,7 @@ public class ResolverTest extends TestCase
   }
 
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.setDomain(domain);
@@ -253,9 +225,9 @@ public class ResolverTest extends TestCase
     }
   }
 
-  @Override
   @Request
-  protected void tearDown() throws Exception
+  @After
+  public void tearDown() throws Exception
   {
     // Reset the stored sequence number for sites cowbell.runway.com and
     // doorway.runway.com
@@ -267,6 +239,8 @@ public class ResolverTest extends TestCase
     ExportBuilder.resetTransactions();
   }
 
+  @Request
+  @Test
   public void testResolver()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -297,6 +271,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConflictInSingleTransaction()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -344,25 +320,25 @@ public class ResolverTest extends TestCase
       new TransactionImportManager(conflict.getAbsolutePath(), new RoleResolver()).importTransactions();
 
       // Ensure that the first import worked
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "0"));
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "1"));
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "2"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "0"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "1"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "2"));
 
       // Ensure that the conflicts were resolved
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "0_update"));
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "1_update"));
-      assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "2_update"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "0_update"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "1_update"));
+      Assert.assertNotNull(RoleDAO.findRole(ROLE_PREFIX + "2_update"));
     }
     finally
     {
       // Delete all roles
       List<String> ids = RoleDAO.getEntityIdsDB(Roles.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          RoleDAO.get(id).getBusinessDAO().delete();
+          RoleDAO.get(oid).getBusinessDAO().delete();
         }
       }
     }
@@ -371,6 +347,8 @@ public class ResolverTest extends TestCase
   /**
    * 
    */
+  @Request
+  @Test
   public void testConflictOnDelete()
   {
     List<String> existing = UserDAO.getEntityIdsDB(UserInfo.CLASS);
@@ -381,7 +359,7 @@ public class ResolverTest extends TestCase
 
     final List<UserDAO> users = new UserExportBuilder().generate(COWBELL_SITE, first);
 
-    String ownerId = users.get(0).getId();
+    String ownerId = users.get(0).getOid();
 
     final UserDAO reference = new SingleUserExportBuilder(users, first, ownerId).generate(DOORMAN_SITE, second);
     new DeleteExportBuilder(users, first, ownerId).generate(DOORWAY_SITE, third);
@@ -396,24 +374,26 @@ public class ResolverTest extends TestCase
       // Test basic delete resolver
       new TransactionImportManager(third.getAbsolutePath(), new DeleteConflictResolver(reference)).importTransactions();
 
-      assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(users.get(0).getId()));
-      assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(reference.getId()));
+      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(users.get(0).getOid()));
+      Assert.assertFalse(UserDAO.getEntityIdsDB(UserInfo.CLASS).contains(reference.getOid()));
     }
     finally
     {
       List<String> ids = UserDAO.getEntityIdsDB(UserInfo.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          UserDAO user = UserDAO.get(id).getBusinessDAO();
+          UserDAO user = UserDAO.get(oid).getBusinessDAO();
           user.delete();
         }
       }
     }
   }
 
+  @Request
+  @Test
   public void testConflictWithMultiApply()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -426,21 +406,21 @@ public class ResolverTest extends TestCase
     {
       new ReferenceExportBuilder(first, array[0], array[1]).generate(DOORMAN_SITE, second);
       new ReferenceExportBuilder(first, array[0], array[1]).generate(DOORWAY_SITE, third);
-      
+
       TestFixtureFactory.setDomain(TRUMPET_SITE);
 
       new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
-      
+
       new TransactionImportManager(second.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
-      
+
       new TransactionImportManager(third.getAbsolutePath(), new ObjectResolver()).importTransactions();
-      
+
       List<String> ids = EntityDAO.getEntityIdsDB(array[0].definesType());
 
       // Only two objects of array[0].definesType() should exist
-      assertEquals(2, ids.size());
+      Assert.assertEquals(2, ids.size());
     }
-    catch(Throwable e)
+    catch (Throwable e)
     {
       e.printStackTrace();
     }
@@ -449,11 +429,13 @@ public class ResolverTest extends TestCase
       for (MdBusinessDAO mdBusiness : array)
       {
         TestFixtureFactory.delete(mdBusiness);
-//        ObjectCache.flushCache();
+        // ObjectCache.flushCache();
       }
     }
   }
 
+  @Request
+  @Test
   public void testConflictOnCreation()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -476,13 +458,14 @@ public class ResolverTest extends TestCase
       {
         new TransactionImportManager(third.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-        fail("Did not throw an exception when importing an item where the defining MdBusiness was previously deleted");
+        Assert.fail("Did not throw an exception when importing an item where the defining MdBusiness was previously deleted");
       }
       catch (XMLParseException e)
       {
         // This is expected
-        
-        if (!(e.getCause() instanceof TransactionImportInvalidItem)) {
+
+        if (! ( e.getCause() instanceof TransactionImportInvalidItem ))
+        {
           throw e;
         }
       }
@@ -493,6 +476,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConflictOnParent()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -541,9 +526,9 @@ public class ResolverTest extends TestCase
 
       try
       {
-        RelationshipDAO.get(relationship.getId());
+        RelationshipDAO.get(relationship.getOid());
 
-        fail("Relationship was imported even though it didn't have a parent");
+        Assert.fail("Relationship was imported even though it didn't have a parent");
       }
       catch (DataNotFoundException e)
       {
@@ -556,6 +541,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConflictOnChild()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -604,9 +591,9 @@ public class ResolverTest extends TestCase
 
       try
       {
-        RelationshipDAO.get(relationship.getId());
+        RelationshipDAO.get(relationship.getOid());
 
-        fail("Relationship was imported even though it didn't have a child");
+        Assert.fail("Relationship was imported even though it didn't have a child");
       }
       catch (DataNotFoundException e)
       {
@@ -619,6 +606,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSiteMasterAfterConflict()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -646,7 +635,7 @@ public class ResolverTest extends TestCase
         @Override
         public void resolve(ImportConflict conflict)
         {
-          EntityDAO local = strategy.get(business.getId()).getEntityDAO();
+          EntityDAO local = strategy.get(business.getOid()).getEntityDAO();
           local.setValue(attributeName, updateValue);
 
           strategy.apply(local);
@@ -654,12 +643,12 @@ public class ResolverTest extends TestCase
         }
       }).importTransactions();
 
-      BusinessDAOIF test = BusinessDAO.get(business.getId());
+      BusinessDAOIF test = BusinessDAO.get(business.getOid());
 
-      assertNotNull(test);
-      assertEquals(updateValue, test.getValue(attributeName));
-      assertEquals(DOORMAN_SITE, test.getSiteMaster());
-      assertEquals(business.getSequence(), test.getSequence());
+      Assert.assertNotNull(test);
+      Assert.assertEquals(updateValue, test.getValue(attributeName));
+      Assert.assertEquals(DOORMAN_SITE, test.getSiteMaster());
+      Assert.assertEquals(business.getSequence(), test.getSequence());
     }
     finally
     {
@@ -667,6 +656,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSynchronizationOfResolvedFile()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -688,11 +679,11 @@ public class ResolverTest extends TestCase
 
       List<String> actualIds = RoleDAO.getEntityIdsDB(Roles.CLASS);
 
-      assertEquals(ids.size(), actualIds.size());
+      Assert.assertEquals(ids.size(), actualIds.size());
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        assertTrue(actualIds.contains(id));
+        Assert.assertTrue(actualIds.contains(oid));
       }
     }
     finally
@@ -702,6 +693,8 @@ public class ResolverTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testCardinalityConstraint()
   {
     final File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -730,7 +723,9 @@ public class ResolverTest extends TestCase
     {
       ParentExportBuilder childBuilder = new ParentExportBuilder(parentMdBusiness.definesType(), relationshipType, child)
       {
-        protected void setup()
+        @Request
+        @Before
+        public void setUp()
         {
           new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
         }
@@ -756,7 +751,7 @@ public class ResolverTest extends TestCase
       {
         new TransactionImportManager(third.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-        fail("Able to import a transaction which should cause a relationship cardinality constraint");
+        Assert.fail("Able to import a transaction which should cause a relationship cardinality constraint");
       }
       catch (Exception e)
       {
@@ -770,6 +765,8 @@ public class ResolverTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConflictOnInvalidReference()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -807,7 +804,7 @@ public class ResolverTest extends TestCase
         @Override
         public void resolve(ImportConflict conflict)
         {
-          assertTrue(conflict.getException() instanceof CompositeException);
+          Assert.assertTrue(conflict.getException() instanceof CompositeException);
 
           this.apply(conflict);
         }
@@ -821,7 +818,7 @@ public class ResolverTest extends TestCase
           }
           catch (Exception e)
           {
-            fail(e.getMessage());
+            Assert.fail(e.getMessage());
           }
         }
       }).importTransactions();

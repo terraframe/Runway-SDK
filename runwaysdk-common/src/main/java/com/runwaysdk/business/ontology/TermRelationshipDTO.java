@@ -30,14 +30,14 @@ public class TermRelationshipDTO extends RelationshipDTO
   
   public static final String CLASS = "com.runwaysdk.business.ontology.TermRelationshipDTO";
   
-  protected TermRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  protected TermRelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
   }
   
-  public TermRelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentId, String childId)
+  public TermRelationshipDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap, String parentOid, String childOid)
   {
-    super(clientRequest, type, attributeMap, parentId, childId);
+    super(clientRequest, type, attributeMap, parentOid, childOid);
   }
   
   /**

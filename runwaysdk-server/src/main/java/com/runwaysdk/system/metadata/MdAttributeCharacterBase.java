@@ -99,9 +99,9 @@ public abstract class MdAttributeCharacterBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static MdAttributeCharacter get(String id)
+  public static MdAttributeCharacter get(String oid)
   {
-    return (MdAttributeCharacter) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeCharacter) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeCharacter getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdAttributeCharacterBase extends com.runwaysdk.system.meta
     return (MdAttributeCharacter) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeCharacter lock(java.lang.String id)
+  public static MdAttributeCharacter lock(java.lang.String oid)
   {
-    MdAttributeCharacter _instance = MdAttributeCharacter.get(id);
+    MdAttributeCharacter _instance = MdAttributeCharacter.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeCharacter unlock(java.lang.String id)
+  public static MdAttributeCharacter unlock(java.lang.String oid)
   {
-    MdAttributeCharacter _instance = MdAttributeCharacter.get(id);
+    MdAttributeCharacter _instance = MdAttributeCharacter.get(oid);
     _instance.unlock();
     
     return _instance;

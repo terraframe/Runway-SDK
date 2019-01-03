@@ -159,9 +159,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       this.getAttribute(MdClassInfo.PUBLISH).setModified(false);
     }
     
-    String id = super.apply();
+    String oid = super.apply();
     
-    return id;
+    return oid;
   }
 
   @Override
@@ -171,7 +171,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     
     boolean first = this.isNew() && !isAppliedToDB && !this.isImport();
 
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     // Add columns to the local struct classes
     if (first)
@@ -217,7 +217,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       }
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -266,7 +266,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   }
 
   /**
-   * Structs only get the ID attribute copied from the Entity class.
+   * Structs only get the OID attribute copied from the Entity class.
    */
   protected void copyDefaultAttributes()
   {
@@ -292,7 +292,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     if (mdAttributeIFOriginal instanceof MdAttributeConcreteDAOIF)
     {
       // The copied attribute is now defined by this entity.
-      newMdAttribute.getAttribute(MdAttributeConcreteInfo.DEFINING_MD_CLASS).setValue(this.getId());
+      newMdAttribute.getAttribute(MdAttributeConcreteInfo.DEFINING_MD_CLASS).setValue(this.getOid());
       // Make sure that the unique database constraint for the key attribute is
       // enabled.
       if (newMdAttribute.definesAttribute().equals(ComponentInfo.KEY))
@@ -303,7 +303,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     else if (mdAttributeIFOriginal instanceof MdAttributeVirtualDAOIF)
     {
       // The copied attribute is now defined by this entity.
-      newMdAttribute.getAttribute(MdAttributeVirtualInfo.DEFINING_MD_VIEW).setValue(this.getId());
+      newMdAttribute.getAttribute(MdAttributeVirtualInfo.DEFINING_MD_VIEW).setValue(this.getOid());
     }
 
     newMdAttribute.apply();
@@ -359,14 +359,14 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    */
   public MdClassDimensionDAOIF getMdClassDimension(MdDimensionDAOIF mdDimension)
   {
-    String id = mdDimension.getId();
+    String oid = mdDimension.getOid();
     List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
     {
-      String _id = mdClassDimension.definingMdDimension().getId();
+      String _id = mdClassDimension.definingMdDimension().getOid();
 
-      if (_id.equals(id))
+      if (_id.equals(oid))
       {
         return mdClassDimension;
       }
@@ -433,7 +433,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   {
     QueryFactory factory = new QueryFactory();
     BusinessDAOQuery query = factory.businessDAOQuery(TypeTupleDAOIF.CLASS);
-    query.WHERE(query.aReference(TypeTupleDAOIF.METADATA).EQ(this.getId()));
+    query.WHERE(query.aReference(TypeTupleDAOIF.METADATA).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> iterator = query.getIterator();
 
@@ -483,19 +483,19 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   }
 
   /**
-   * Returns a MdClassIF instance with a root id that matches the given value.
+   * Returns a MdClassIF instance with a root oid that matches the given value.
    * 
    * <br/>
    * <b>Precondition:</b> rootId != null <br/>
    * <b>Precondition:</b> !rootId.trim().equals("") <br/>
-   * <b>Precondition:</b> rootId is the root of an id that is a valid class
+   * <b>Precondition:</b> rootId is the root of an oid that is a valid class
    * defined in the database <br/>
    * <b>Postcondition:</b> Returns a MdClassIF where
-   * IdParser.parseRootFromId(mdClass.getId()).equals(rootId)
+   * IdParser.parseRootFromId(mdClass.getOid()).equals(rootId)
    * 
    * @param rootId
    *          of the MdClass.
-   * @return MdClassIF instance with a root id that matches the given value.
+   * @return MdClassIF instance with a root oid that matches the given value.
    */
   public static MdClassDAOIF getMdClassByRootId(String rootId)
   {
@@ -781,7 +781,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    */
   public boolean definesAttribute(MdAttributeDAOIF mdAttributeIF)
   {
-    if (this.getAllDefinedMdAttributeIDMap().get(mdAttributeIF.getId()) == null)
+    if (this.getAllDefinedMdAttributeIDMap().get(mdAttributeIF.getOid()) == null)
     {
       return false;
     }
@@ -892,7 +892,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       List<? extends MdAttributeDAOIF> mdAttributeList = mdClassIF.definesAttributes();
       for (MdAttributeDAOIF mdAttribute : mdAttributeList)
       {
-        mdAttributeMap.put(mdAttribute.getId(), mdAttribute);
+        mdAttributeMap.put(mdAttribute.getOid(), mdAttribute);
       }
     }
 
@@ -1003,8 +1003,8 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
 
       if (stubSource != null && stubClassBytes != null && dtoStubClass != null && dtoStubSource != null)
       {
-        Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, stubClassColumnName, stubClassBytes, stubSourceColumnName, stubSource, conn);
-        Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, dtoStubClassColumnName, dtoStubClass, dtoStubSourceColumnName, dtoStubSource, conn);
+        Database.updateClassAndSource(this.getOid(), MdClassDAOIF.TABLE, stubClassColumnName, stubClassBytes, stubSourceColumnName, stubSource, conn);
+        Database.updateClassAndSource(this.getOid(), MdClassDAOIF.TABLE, dtoStubClassColumnName, dtoStubClass, dtoStubSourceColumnName, dtoStubSource, conn);
 
         this.getAttribute(MdClassInfo.STUB_SOURCE).setValue(stubSource);
         this.getAttribute(MdClassInfo.DTO_STUB_SOURCE).setValue(dtoStubSource);

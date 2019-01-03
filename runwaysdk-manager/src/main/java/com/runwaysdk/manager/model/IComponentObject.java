@@ -63,7 +63,7 @@ public interface IComponentObject extends PropertyChangeListener
 
   public void copyAttributes(IComponentObject entity);
 
-  public String getId();
+  public String getOid();
 
   public String getKey();
 }

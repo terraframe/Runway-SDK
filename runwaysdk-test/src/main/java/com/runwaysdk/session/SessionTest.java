@@ -23,12 +23,14 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Mutable;
@@ -38,9 +40,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -51,7 +50,6 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -64,22 +62,10 @@ import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 
-public class SessionTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class SessionTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * The test user object
    */
@@ -125,26 +111,6 @@ public class SessionTest extends TestCase
    */
   private static BusinessDAO             businessDAO2;
 
-  /**
-   * The test state1-mdAttribute type tuple
-   */
-  private static TypeTupleDAO            typeTuple1;
-
-  /**
-   * The test state1 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state1;
-
-  /**
-   * The test state2 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state2;
-
-  /**
-   * The test state3 of the MdBusiness StateMachine
-   */
-  private static StateMasterDAO          state3;
-
   private static Business                business1;
 
   private static Business                business2;
@@ -178,36 +144,10 @@ public class SessionTest extends TestCase
   private final static long              newSessionTime = 10;
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it in <code>MasterTestSetup</code>. The returned class is a suite of all the tests in <code>AttributeTest</code>, with the
-   * global setUp() and tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(SessionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     Session.setSessionTime(newSessionTime);
@@ -237,30 +177,6 @@ public class SessionTest extends TestCase
     mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
     mdAttribute.apply();
 
-    // Create a StateMachine for the MdBusiness
-    MdStateMachineDAO mdState = TestFixtureFactory.createMdStateMachine(mdBusiness);
-    mdState.apply();
-
-    // Add states to the state machine
-    state1 = mdState.addState("State1", StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.getId());
-    state1.apply();
-
-    state2 = mdState.addState("State2", StateMasterDAOIF.Entry.NOT_ENTRY_STATE.getId());
-    state2.apply();
-
-    state3 = mdState.addState("State3", StateMasterDAOIF.Entry.ENTRY_STATE.getId());
-    state3.apply();
-
-    // Add transitions between states
-    RelationshipDAO transition1 = mdState.addTransition("transition1", state1.getId(), state2.getId());
-    transition1.apply();
-
-    RelationshipDAO transition2 = mdState.addTransition("transition2", state2.getId(), state3.getId());
-    transition2.apply();
-
-    RelationshipDAO transition3 = mdState.addTransition("transition3", state3.getId(), state1.getId());
-    transition3.apply();
-
     // Create a new MdBusiness
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
@@ -280,20 +196,17 @@ public class SessionTest extends TestCase
 
     // Create a businessDAO of MdBusiness
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO.apply();
 
     businessDAO2 = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getId());
-    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getId());
+    businessDAO2.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());
+    businessDAO2.getAttribute(ElementInfo.DOMAIN).setValue(mdDomain.getOid());
     businessDAO2.apply();
 
-    business1 = Business.getBusiness(businessDAO.getId());
-    business2 = Business.getBusiness(businessDAO2.getId());
-
-    typeTuple1 = TestFixtureFactory.createTypeTuple(state1, mdAttribute);
-    typeTuple1.apply();
+    business1 = Business.getBusiness(businessDAO.getOid());
+    business2 = Business.getBusiness(businessDAO2.getOid());
 
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
@@ -302,9 +215,10 @@ public class SessionTest extends TestCase
   /**
    * The tear down done after all the test in the test suite have run
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(typeTuple1);
     TestFixtureFactory.delete(mdRelationship);
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdBusiness2);
@@ -318,27 +232,20 @@ public class SessionTest extends TestCase
   }
 
   /**
-   * No setup needed non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  protected void setUp() throws Exception
-  {
-  }
-
-  /**
    * Delete all MetaData objects which were created in the class
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
     Set<RelationshipDAOIF> set = newUser.getAllPermissions();
 
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any type permissions given to newUser
-      newUser.revokeAllPermissions(reference.getChildId());
+      newUser.revokeAllPermissions(reference.getChildOid());
     }
 
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
@@ -348,7 +255,7 @@ public class SessionTest extends TestCase
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -358,7 +265,7 @@ public class SessionTest extends TestCase
     for (RelationshipDAOIF reference : set)
     {
       // Revoke any businessDAO permissions given to newUser
-      role.revokeAllPermissions(reference.getChildId());
+      role.revokeAllPermissions(reference.getChildOid());
     }
 
     // Clear any lingering sessions
@@ -368,13 +275,15 @@ public class SessionTest extends TestCase
   /**
    * Test the creation of a new session
    */
+  @Request
+  @Test
   public void testCreateSession()
   {
     // Check for invalid user-password errors
     try
     {
       SessionFacade.logIn(username, "invalid", new Locale[] { CommonProperties.getDefaultLocale() });
-      fail("An invalid login was accepted.");
+      Assert.fail("An invalid login was accepted.");
     }
     catch (InvalidLoginException e)
     {
@@ -384,7 +293,7 @@ public class SessionTest extends TestCase
     try
     {
       SessionFacade.logIn("baldh", password, new Locale[] { CommonProperties.getDefaultLocale() });
-      fail("An invalid login was accepted.");
+      Assert.fail("An invalid login was accepted.");
     }
     catch (InvalidLoginException e)
     {
@@ -392,6 +301,8 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSessionDimension()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -402,27 +313,31 @@ public class SessionTest extends TestCase
 
     MdDimensionDAOIF dimension = session.getDimension();
 
-    assertEquals(mdDimension.getId(), dimension.getId());
+    Assert.assertEquals(mdDimension.getOid(), dimension.getOid());
   }
 
   /**
    * Test session access
    */
+  @Request
+  @Test
   public void testCheckAccess()
   {
     // Grant permissions to the user on the md class
-    newUser.grantPermission(Operation.DELETE, mdBusiness.getId());
+    newUser.grantPermission(Operation.DELETE, mdBusiness.getOid());
 
     // Create a session for the user
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-    assertEquals(true, SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-    assertEquals(false, SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+    Assert.assertEquals(true, SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+    Assert.assertEquals(false, SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
   }
 
   /**
    * Test the automatic clean up of expired sessions
    */
+  @Request
+  @Test
   public void testCleanUp()
   {
     // Create a new session
@@ -435,24 +350,24 @@ public class SessionTest extends TestCase
 
     // Get the public session
     SessionIF publicSession = SessionFacade.getPublicSession();
-    assertNotNull(publicSession);
+    Assert.assertNotNull(publicSession);
 
     // Ensure the session is active
-    assertEquals(true, SessionFacade.containsSession(sessionId));
+    Assert.assertEquals(true, SessionFacade.containsSession(sessionId));
 
     // Wait until the session is expired
     while (System.currentTimeMillis() < waitTime)
       ;
 
     // Ensure that the public session has not been cleaned up
-    assertTrue(SessionFacade.containsSession(publicSession.getId()));
-    assertEquals(publicSession.getId(), SessionFacade.getPublicSession().getId());
+    Assert.assertTrue(SessionFacade.containsSession(publicSession.getOid()));
+    Assert.assertEquals(publicSession.getOid(), SessionFacade.getPublicSession().getOid());
 
     try
     {
       SessionFacade.getSession(sessionId);
 
-      fail("Expired sessions was not cleaned up");
+      Assert.fail("Expired sessions was not cleaned up");
     }
     catch (InvalidSessionException e)
     {
@@ -463,6 +378,8 @@ public class SessionTest extends TestCase
   /**
    * Test closing a session
    */
+  @Request
+  @Test
   public void testCloseSession()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -470,19 +387,21 @@ public class SessionTest extends TestCase
     SessionFacade.closeSession(sessionId);
 
     // Ensure that the session has been cleaned up
-    assertFalse(SessionFacade.containsSession(sessionId));
+    Assert.assertFalse(SessionFacade.containsSession(sessionId));
 
     // Ensure that closing the public session does nothing
     SessionIF publicSession = SessionFacade.getPublicSession();
 
-    SessionFacade.closeSession(publicSession.getId());
-    assertTrue(SessionFacade.containsSession(publicSession.getId()));
-    assertEquals(publicSession.getId(), SessionFacade.getPublicSession().getId());
+    SessionFacade.closeSession(publicSession.getOid());
+    Assert.assertTrue(SessionFacade.containsSession(publicSession.getOid()));
+    Assert.assertEquals(publicSession.getOid(), SessionFacade.getPublicSession().getOid());
   }
 
   /**
    * Test renewing an existing session
    */
+  @Request
+  @Test
   public void testRenewSession()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -502,7 +421,7 @@ public class SessionTest extends TestCase
     catch (InvalidSessionException e)
     {
       // Fails if the session has already expired
-      fail("The session expired prematurely");
+      Assert.fail("The session expired prematurely");
     }
 
     // Renew session 1 before it expires
@@ -522,15 +441,17 @@ public class SessionTest extends TestCase
     catch (InvalidSessionException e)
     {
       // Fails if checkAccess throws an exception
-      fail("Session failed to renew");
+      Assert.fail("Session failed to renew");
     }
 
-    assertEquals(false, access);
+    Assert.assertEquals(false, access);
   }
 
   /**
    * Test renewing an expired session
    */
+  @Request
+  @Test
   public void testRenewExpired()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -543,7 +464,7 @@ public class SessionTest extends TestCase
       SessionFacade.renewSession(sessionId);
 
       // Fails if renewSession works on an expired session
-      fail("Failed to throw an exception when renewing an expired session");
+      Assert.fail("Failed to throw an exception when renewing an expired session");
     }
     catch (InvalidSessionException e)
     {
@@ -554,19 +475,21 @@ public class SessionTest extends TestCase
   /**
    * Test clearing out all sessions
    */
+  @Request
+  @Test
   public void testClearSessions()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
     // Get the public session
     SessionIF publicSession = SessionFacade.getPublicSession();
-    assertNotNull(publicSession);
+    Assert.assertNotNull(publicSession);
 
     SessionFacade.clearSessions();
 
     // Ensure that the public session has not been cleared from the cache
-    assertTrue(SessionFacade.containsSession(publicSession.getId()));
-    assertEquals(publicSession.getId(), SessionFacade.getPublicSession().getId());
+    Assert.assertTrue(SessionFacade.containsSession(publicSession.getOid()));
+    Assert.assertEquals(publicSession.getOid(), SessionFacade.getPublicSession().getOid());
 
     try
     {
@@ -574,7 +497,7 @@ public class SessionTest extends TestCase
       SessionFacade.checkAccess(sessionId, Operation.WRITE, business1);
 
       // Fails if checkAccess does not throw a exception
-      fail("Failed to throw expired sessions exception");
+      Assert.fail("Failed to throw expired sessions exception");
     }
     catch (InvalidSessionException e)
     {
@@ -585,6 +508,8 @@ public class SessionTest extends TestCase
   /**
    * Test iterating over sessions
    */
+  @Request
+  @Test
   public void testIterateSessions()
   {
     Set<String> sessions = new HashSet<String>();
@@ -594,7 +519,7 @@ public class SessionTest extends TestCase
 
     // 2. Ensure that the iterator returns no sessions.
     SessionIterator it = SessionFacade.getIterator();
-    assertFalse(it.hasNext());
+    Assert.assertFalse(it.hasNext());
     boolean didFail = false;
     try
     {
@@ -604,7 +529,7 @@ public class SessionTest extends TestCase
     {
       didFail = true;
     }
-    assertTrue(didFail);
+    Assert.assertTrue(didFail);
 
     // 3. Create the allotted number of sessions
     for (int i = 0; i < sessionLimit; i++)
@@ -615,7 +540,7 @@ public class SessionTest extends TestCase
       }
       catch (InvalidSessionException e)
       {
-        fail("A valid login failed.");
+        Assert.fail("A valid login failed.");
       }
     }
 
@@ -625,16 +550,18 @@ public class SessionTest extends TestCase
     while (it.hasNext())
     {
       SessionIF session = it.next();
-      assertNotNull(session);
-      assertTrue(sessions.contains(session.getId()));
+      Assert.assertNotNull(session);
+      Assert.assertTrue(sessions.contains(session.getOid()));
       count++;
     }
-    assertEquals(sessionLimit, count);
+    Assert.assertEquals(sessionLimit, count);
   }
 
   /**
    * Test session limits
    */
+  @Request
+  @Test
   public void testSessionLimit()
   {
     // Create the allotted number of sessions
@@ -646,7 +573,7 @@ public class SessionTest extends TestCase
       }
       catch (InvalidSessionException e)
       {
-        fail("A valid login failed.");
+        Assert.fail("A valid login failed.");
       }
     }
 
@@ -656,7 +583,7 @@ public class SessionTest extends TestCase
     try
     {
       SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-      fail("Too many sessions login pass.");
+      Assert.fail("Too many sessions login pass.");
     }
     catch (MaximumSessionsException e)
     {
@@ -667,52 +594,55 @@ public class SessionTest extends TestCase
   /**
    * Test PUBLIC role permission
    */
+  @Request
+  @Test
   public void testPublicPermissions()
   {
     RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
 
-    publicRole.grantPermission(Operation.READ, mdBusiness.getId());
+    publicRole.grantPermission(Operation.READ, mdBusiness.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Check that the public permissions are still granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
 
       SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Check that the public permissions are still granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
     }
     finally
     {
-      publicRole.revokeAllPermissions(mdBusiness.getId());
+      publicRole.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
   /**
    * Test the admin permissions of the session layer
    */
+  @Request
+  @Test
   public void testAdminPermissions()
   {
-    assertFalse(newUser.isAdministrator());
+    Assert.assertFalse(newUser.isAdministrator());
 
     // Add the newUser to the administrator role
     RoleDAO adminRole = RoleDAO.findRole(RoleDAO.ADMIN_ROLE).getBusinessDAO();
     adminRole.assignMember(newUser);
 
-    assertTrue(newUser.isAdministrator());
+    Assert.assertTrue(newUser.isAdministrator());
 
     // login the newUser
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     // Check that all permissions are granted
-    assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
-    assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business2));
-    assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    assertTrue(SessionFacade.checkPromoteAccess(sessionId, business1, "transition1"));
-    assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.DELETE_PARENT, business1, mdRelationship.getId()));
+    Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
+    Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business2));
+    Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
+    Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.DELETE_PARENT, business1, mdRelationship.getOid()));
     adminRole.deassignMember(newUser);
     SessionFacade.closeSession(sessionId);
   }
@@ -720,168 +650,113 @@ public class SessionTest extends TestCase
   /**
    * Test the getUser method of the session facade
    */
+  @Request
+  @Test
   public void testGetUser()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    assertEquals(publicUser, SessionFacade.getUser(sessionId));
+    Assert.assertEquals(publicUser, SessionFacade.getUser(sessionId));
 
     sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-    assertEquals(newUser, SessionFacade.getUser(sessionId));
+    Assert.assertEquals(newUser, SessionFacade.getUser(sessionId));
   }
 
   /**
    * Test the Owner permissions
    */
+  @Request
+  @Test
   public void testOwnerPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
 
     // Grant permissions ot the owner role
-    role.grantPermission(Operation.CREATE, mdBusiness.getId());
+    role.grantPermission(Operation.CREATE, mdBusiness.getOid());
 
     try
     {
       // Ensure the owner was correctly set
-      assertEquals(newUser.getId(), businessDAO.getValue(ElementInfo.OWNER));
+      Assert.assertEquals(newUser.getOid(), businessDAO.getValue(ElementInfo.OWNER));
 
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
       // Ensure owner permission were granted
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-      assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+      Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+      Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
     }
     finally
     {
-      role.revokeAllPermissions(mdBusiness.getId());
+      role.revokeAllPermissions(mdBusiness.getOid());
     }
   }
 
-  /**
-   * Test the permissions based upon the current state of an object
-   */
-  public void testStatePermissions()
-  {
-    // Add permissions to the owner role for the entry state
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, state1.getId());
-    newUser.grantPermission(Operation.PROMOTE, state1.getId());
-
-    try
-    {
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      // Ensure that user state permissions where executed
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-      // Ensure that owner state permissions work
-      assertTrue(SessionFacade.checkAccess(sessionId, Operation.PROMOTE, business1));
-      // Ensure extra permissions are not given
-      assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(state1.getId());
-      role.revokeAllPermissions(state1.getId());
-    }
-  }
-
-  public void testStateAttributePermissions()
-  {
-    newUser.grantPermission(Operation.READ, typeTuple1.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(typeTuple1.getId());
-    }
-  }
-
+  @Request
+  @Test
   public void testAttributePermissions()
   {
-    newUser.grantPermission(Operation.READ, mdAttribute.getId());
+    newUser.grantPermission(Operation.READ, mdAttribute.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdAttribute.getId());
+      newUser.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
 
+  @Request
+  @Test
   public void testOwnerAttributePermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
-    role.grantPermission(Operation.READ, mdAttribute.getId());
+    role.grantPermission(Operation.READ, mdAttribute.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
+      Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
+      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
     }
     finally
     {
-      role.revokeAllPermissions(mdAttribute.getId());
+      role.revokeAllPermissions(mdAttribute.getOid());
     }
 
   }
 
-  public void testOwnerStateAttributePermissions()
-  {
-    RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-
-    role.grantPermission(Operation.READ, typeTuple1.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute));
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute));
-    }
-    finally
-    {
-      role.revokeAllPermissions(typeTuple1.getId());
-    }
-
-  }
-
+  @Request
+  @Test
   public void testRelationshipPermission()
   {
-    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    newUser.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId()));
-      assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId()));
+      Assert.assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getOid()));
+      Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getOid()));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdRelationship.getId());
+      newUser.revokeAllPermissions(mdRelationship.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipPermissionWithInvalidParent()
   {
     Mutable mutable = BusinessFacade.newRelationship("0", "0", mdRelationship.definesType());
@@ -890,7 +765,7 @@ public class SessionTest extends TestCase
 
     try
     {
-      assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mutable, mdRelationship.definesAttribute("id")));
+      Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mutable, mdRelationship.definesAttribute("oid")));
     }
     finally
     {
@@ -898,83 +773,76 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testOwnerRelationshipPermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getId());
+    role.grantPermission(Operation.ADD_CHILD, mdRelationship.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId()));
-      assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId()));
+      Assert.assertTrue(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getOid()));
+      Assert.assertFalse(SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getOid()));
     }
     finally
     {
-      role.revokeAllPermissions(mdRelationship.getId());
+      role.revokeAllPermissions(mdRelationship.getOid());
     }
 
   }
 
-  public void testPromotePermissions()
-  {
-    newUser.grantPermission(Operation.PROMOTE, state2.getId());
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      assertTrue(SessionFacade.checkPromoteAccess(sessionId, business1, "transition1"));
-      assertFalse(SessionFacade.checkPromoteAccess(sessionId, business1, "transition2"));
-    }
-    finally
-    {
-      newUser.revokeAllPermissions(state2.getId());
-    }
-  }
-
+  @Request
+  @Test
   public void testExecutePermissions()
   {
-    newUser.grantPermission(Operation.EXECUTE, mdMethod.getId());
+    newUser.grantPermission(Operation.EXECUTE, mdMethod.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertEquals(true, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
+      Assert.assertEquals(true, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
     }
     finally
     {
-      newUser.revokeAllPermissions(mdMethod.getId());
+      newUser.revokeAllPermissions(mdMethod.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testNoExecutePermissions()
   {
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-    assertEquals(false, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
+    Assert.assertEquals(false, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
   }
 
+  @Request
+  @Test
   public void testOwnerExecutePermissions()
   {
     RoleDAO role = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.EXECUTE, mdMethod.getId());
+    role.grantPermission(Operation.EXECUTE, mdMethod.getOid());
 
     try
     {
       String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      assertEquals(true, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
+      Assert.assertEquals(true, SessionFacade.checkMethodAccess(sessionId, Operation.EXECUTE, business1, mdMethod));
     }
     finally
     {
-      role.revokeAllPermissions(mdMethod.getId());
+      role.revokeAllPermissions(mdMethod.getOid());
     }
 
   }
 
+  @Request
+  @Test
   public void testNoUser()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -983,9 +851,11 @@ public class SessionTest extends TestCase
 
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    assertEquals(publicUser.getId(), user.getId());
+    Assert.assertEquals(publicUser.getOid(), user.getOid());
   }
 
+  @Request
+  @Test
   public void testForceCleanUp()
   {
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -999,24 +869,26 @@ public class SessionTest extends TestCase
 
     SessionFacade.cleanUp();
 
-    assertFalse(SessionFacade.containsSession(sessionId));
-    assertFalse(SessionFacade.containsSession(null));
+    Assert.assertFalse(SessionFacade.containsSession(sessionId));
+    Assert.assertFalse(SessionFacade.containsSession(null));
   }
 
   /**
    * Ensure public permissions are not overwritten when an user logs in
    */
+  @Request
+  @Test
   public void testLoadPermissions()
   {
     UserDAO publicUser = UserDAO.findUser(UserDAO.PUBLIC_USER_NAME).getBusinessDAO();
 
-    publicUser.grantPermission(Operation.READ, mdBusiness.getId());
+    publicUser.grantPermission(Operation.READ, mdBusiness.getOid());
 
     try
     {
       PermissionCache.instance();
 
-      newUser.grantPermission(Operation.WRITE, mdBusiness.getId());
+      newUser.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
       try
       {
@@ -1024,60 +896,66 @@ public class SessionTest extends TestCase
 
         SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-        assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+        Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
       }
       finally
       {
-        newUser.revokeAllPermissions(mdBusiness.getId());
+        newUser.revokeAllPermissions(mdBusiness.getOid());
       }
 
     }
     finally
     {
-      publicUser.revokeAllPermissions(mdBusiness.getId());
+      publicUser.revokeAllPermissions(mdBusiness.getOid());
       PermissionCache.instance();
     }
 
   }
 
+  @Request
+  @Test
   public void testSessionCountCleanUp()
   {
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionCache cache = SessionFacade.getSessionCache();
 
     // Ensure that the user has been logged in
-    assertEquals(true, cache.isLoggedIn(newUser.getId()));
-    assertEquals(1, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(true, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(1, cache.getUserSessionCount(newUser.getOid()));
 
     SessionFacade.closeSession(sessionId);
 
-    assertEquals(false, cache.isLoggedIn(newUser.getId()));
-    assertEquals(0, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(false, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(0, cache.getUserSessionCount(newUser.getOid()));
   }
 
   /**
    * Test the behavoir of logging in different users to the same session
    */
+  @Request
+  @Test
   public void testSameSessionMultiLogin()
   {
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionCache cache = SessionFacade.getSessionCache();
 
     // Ensure that the user has been logged in
-    assertEquals(true, cache.isLoggedIn(newUser.getId()));
-    assertEquals(1, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(true, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(1, cache.getUserSessionCount(newUser.getOid()));
 
     SessionFacade.changeLogin(sessionId, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD);
 
-    assertEquals(false, cache.isLoggedIn(newUser.getId()));
-    assertEquals(0, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(false, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(0, cache.getUserSessionCount(newUser.getOid()));
 
-    assertEquals(true, cache.isLoggedIn(ServerConstants.SYSTEM_USER_ID));
-    assertEquals(1, cache.getUserSessionCount(ServerConstants.SYSTEM_USER_ID));
+    Assert.assertEquals(true, cache.isLoggedIn(ServerConstants.SYSTEM_USER_ID));
+    Assert.assertEquals(1, cache.getUserSessionCount(ServerConstants.SYSTEM_USER_ID));
 
     SessionFacade.closeSession(sessionId);
   }
 
+  @Request
+  @Test
   public void testSetUser()
   {
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -1085,16 +963,16 @@ public class SessionTest extends TestCase
     UserDAOIF admin = UserDAO.get(ServerConstants.SYSTEM_USER_ID);
 
     // Ensure that the user has been logged in
-    assertEquals(true, cache.isLoggedIn(newUser.getId()));
-    assertEquals(1, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(true, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(1, cache.getUserSessionCount(newUser.getOid()));
 
-    SessionFacade.setUser(sessionId, admin.getId());
+    SessionFacade.setUser(sessionId, admin.getOid());
 
-    assertEquals(false, cache.isLoggedIn(newUser.getId()));
-    assertEquals(0, cache.getUserSessionCount(newUser.getId()));
+    Assert.assertEquals(false, cache.isLoggedIn(newUser.getOid()));
+    Assert.assertEquals(0, cache.getUserSessionCount(newUser.getOid()));
 
-    assertEquals(true, cache.isLoggedIn(ServerConstants.SYSTEM_USER_ID));
-    assertEquals(1, cache.getUserSessionCount(ServerConstants.SYSTEM_USER_ID));
+    Assert.assertEquals(true, cache.isLoggedIn(ServerConstants.SYSTEM_USER_ID));
+    Assert.assertEquals(1, cache.getUserSessionCount(ServerConstants.SYSTEM_USER_ID));
 
     SessionFacade.closeSession(sessionId);
   }
@@ -1102,13 +980,15 @@ public class SessionTest extends TestCase
   /**
    * Ensure an inactive user cannot log in
    */
+  @Request
+  @Test
   public void testInactiveLogin()
   {
     try
     {
       SessionFacade.logIn(inactiveUser.getUsername(), password, new Locale[] { CommonProperties.getDefaultLocale() });
 
-      fail("Able to log in with an inactive session");
+      Assert.fail("Able to log in with an inactive session");
     }
     catch (InactiveUserException e)
     {
@@ -1119,14 +999,16 @@ public class SessionTest extends TestCase
   /**
    * Ensure an inactive user cannot log in
    */
+  @Request
+  @Test
   public void testPublicSessionLogin()
   {
     SessionIF publicSession = SessionFacade.getPublicSession();
     try
     {
-      SessionFacade.changeLogin(publicSession.getId(), username, password);
+      SessionFacade.changeLogin(publicSession.getOid(), username, password);
 
-      fail("Able to log in with an inactive session");
+      Assert.fail("Able to log in with an inactive session");
     }
     catch (InvalidLoginException e)
     {
@@ -1134,22 +1016,26 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCloseOnRequest()
   {
     String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
     SessionIF session = SessionFacade.getSession(sessionId);
 
-    assertEquals(false, session.closeOnEndOfRequest());
+    Assert.assertEquals(false, session.closeOnEndOfRequest());
 
     SessionFacade.setCloseOnEndOfRequest(sessionId, true);
 
     session = SessionFacade.getSession(sessionId);
 
-    assertEquals(true, session.closeOnEndOfRequest());
+    Assert.assertEquals(true, session.closeOnEndOfRequest());
 
     SessionFacade.closeSession(sessionId);
   }
 
+  @Request
+  @Test
   public void testMutable()
   {
     Mutable mutable = BusinessFacade.newSessionComponent(mdView.definesType());
@@ -1160,18 +1046,20 @@ public class SessionTest extends TestCase
     SessionFacade.put(sessionId, mutable);
     Session session = (Session) SessionFacade.getSession(sessionId);
 
-    Mutable ret = session.get(mutable.getId());
+    Mutable ret = session.get(mutable.getOid());
 
-    assertEquals(mutable.getValue(mdAttributeCharacter.definesAttribute()), ret.getValue(mdAttributeCharacter.definesAttribute()));
+    Assert.assertEquals(mutable.getValue(mdAttributeCharacter.definesAttribute()), ret.getValue(mdAttributeCharacter.definesAttribute()));
 
     SessionFacade.closeSession(sessionId);
   }
 
+  @Request
+  @Test
   public void testAttributeDimensionPermission()
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
 
-    newUser.grantPermission(Operation.READ, mdAttributeDimension.getId());
+    newUser.grantPermission(Operation.READ, mdAttributeDimension.getOid());
 
     try
     {
@@ -1182,8 +1070,8 @@ public class SessionTest extends TestCase
 
       try
       {
-        assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttributeCharacter));
-        assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttributeCharacter));
+        Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttributeCharacter));
+        Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttributeCharacter));
       }
       finally
       {
@@ -1192,15 +1080,17 @@ public class SessionTest extends TestCase
     }
     finally
     {
-      newUser.revokePermission(Operation.READ, mdAttributeDimension.getId());
+      newUser.revokePermission(Operation.READ, mdAttributeDimension.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testClassDimensionPermission()
   {
     MdClassDimensionDAOIF mdClassDimension = mdDimension.getMdClassDimension(mdBusiness);
 
-    newUser.grantPermission(Operation.READ, mdClassDimension.getId());
+    newUser.grantPermission(Operation.READ, mdClassDimension.getOid());
 
     try
     {
@@ -1211,8 +1101,8 @@ public class SessionTest extends TestCase
 
       try
       {
-        assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-        assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+        Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+        Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
       }
       finally
       {
@@ -1221,436 +1111,12 @@ public class SessionTest extends TestCase
     }
     finally
     {
-      newUser.revokePermission(Operation.READ, mdClassDimension.getId());
+      newUser.revokePermission(Operation.READ, mdClassDimension.getOid());
     }
   }
 
-  public void testDomainPermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdBusiness.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.DELETE, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-
-      SessionFacade.closeSession(sessionId);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(checkAccess);
-    assertFalse(checkAccess2);
-  }
-
-  public void testDomainStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.DELETE, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(checkAccess);
-    assertFalse(checkAccess2);
-  }
-
-  public void testDomainAttributePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.READ, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testDomainAttributeStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.READ, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testDomainPromotePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.PROMOTE, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkPromoteAccess(sessionId, business1, "transition1");
-      denied = SessionFacade.checkPromoteAccess(sessionId, business1, "transition2");
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testDomainRelationshipPermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testDomainRelationshipStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      newUser.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testOwnerDomainPermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdBusiness.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.DELETE, tuple.getId());
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(checkAccess);
-    assertFalse(checkAccess2);
-  }
-
-  public void testOwnerDomainStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.DELETE, tuple.getId());
-
-    boolean checkAccess = false;
-    boolean checkAccess2 = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      checkAccess = SessionFacade.checkAccess(sessionId, Operation.DELETE, business1);
-      checkAccess2 = SessionFacade.checkAccess(sessionId, Operation.CREATE, business1);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(checkAccess);
-    assertFalse(checkAccess2);
-  }
-
-  public void testOwnerDomainAttributePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.READ, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testOwnerDomainAttributeStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdAttribute.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.READ, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkAttributeAccess(sessionId, Operation.READ, business1, mdAttribute);
-      denied = SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, business1, mdAttribute);
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testOwnerDomainPromotePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state2.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.PROMOTE, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkPromoteAccess(sessionId, business1, "transition1");
-      denied = SessionFacade.checkPromoteAccess(sessionId, business1, "transition2");
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testOwnerDomainRelationshipPermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
-  public void testOwnerDomainRelationshipStatePermission()
-  {
-    DomainTupleDAO tuple = DomainTupleDAO.newInstance();
-    tuple.setValue(DomainTupleDAO.DOMAIN, mdDomain.getId());
-    tuple.setValue(DomainTupleDAO.METADATA, mdRelationship.getId());
-    tuple.setValue(DomainTupleDAO.STATE_MASTER, state1.getId());
-    tuple.setStructValue(DomainTupleDAO.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testTuple");
-    tuple.apply();
-
-    RoleDAO role = RoleDAO.findRole(RoleDAO.OWNER_ROLE).getBusinessDAO();
-    role.grantPermission(Operation.ADD_PARENT, tuple.getId());
-
-    boolean granted = false;
-    boolean denied = false;
-
-    try
-    {
-      String sessionId = SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
-
-      granted = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_PARENT, business1, mdRelationship.getId());
-      denied = SessionFacade.checkRelationshipAccess(sessionId, Operation.ADD_CHILD, business1, mdRelationship.getId());
-    }
-    finally
-    {
-      role.revokeAllPermissions(tuple.getId());
-      tuple.delete();
-    }
-
-    assertTrue(granted);
-    assertFalse(denied);
-  }
-
+  @Request
+  @Test
   public void testDenyPermission()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -1665,25 +1131,25 @@ public class SessionTest extends TestCase
       {
         role.assignMember(user);
 
-        role.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
-        role.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-        role.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
-        role.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+        role.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
+        role.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+        role.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
+        role.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
-        role.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
-        role.grantPermission(Operation.DENY_READ, mdAttribute.getId());
+        role.grantPermission(Operation.DENY_WRITE, mdAttribute.getOid());
+        role.grantPermission(Operation.DENY_READ, mdAttribute.getOid());
 
         String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
 
-          assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-          assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+          Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+          Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
         }
         finally
         {
@@ -1702,6 +1168,8 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReadAndWriteAllPermission()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -1716,20 +1184,20 @@ public class SessionTest extends TestCase
       {
         role.assignMember(user);
 
-        role.grantPermission(Operation.READ_ALL, mdBusiness.getId());
-        role.grantPermission(Operation.WRITE_ALL, mdBusiness.getId());
+        role.grantPermission(Operation.READ_ALL, mdBusiness.getOid());
+        role.grantPermission(Operation.WRITE_ALL, mdBusiness.getOid());
 
         String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
 
-          assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-          assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+          Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+          Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
         }
         finally
         {
@@ -1748,6 +1216,8 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReadAllPrecedence()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -1762,21 +1232,21 @@ public class SessionTest extends TestCase
       {
         role.assignMember(user);
 
-        role.grantPermission(Operation.READ_ALL, mdBusiness.getId());
-        role.grantPermission(Operation.WRITE_ALL, mdBusiness.getId());
-        role.grantPermission(Operation.DENY_READ, mdAttribute.getId());
+        role.grantPermission(Operation.READ_ALL, mdBusiness.getOid());
+        role.grantPermission(Operation.WRITE_ALL, mdBusiness.getOid());
+        role.grantPermission(Operation.DENY_READ, mdAttribute.getOid());
 
         String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-          assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+          Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
 
-          assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-          assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+          Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+          Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
         }
         finally
         {
@@ -1795,6 +1265,8 @@ public class SessionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSibilingRolePermissionPrecedence()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
@@ -1816,17 +1288,17 @@ public class SessionTest extends TestCase
           role.assignMember(user);
           role2.assignMember(user);
 
-          role.grantPermission(Operation.READ, mdAttribute.getId());
-          role.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
-          role2.grantPermission(Operation.DENY_READ, mdAttribute.getId());
-          role2.grantPermission(Operation.WRITE, mdAttribute.getId());
+          role.grantPermission(Operation.READ, mdAttribute.getOid());
+          role.grantPermission(Operation.DENY_WRITE, mdAttribute.getOid());
+          role2.grantPermission(Operation.DENY_READ, mdAttribute.getOid());
+          role2.grantPermission(Operation.WRITE, mdAttribute.getOid());
 
           String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {
-            assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-            assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+            Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+            Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
           }
           finally
           {
@@ -1854,6 +1326,8 @@ public class SessionTest extends TestCase
   /**
    * Test allowing an inherited permission lower in the inheritance chain
    */
+  @Request
+  @Test
   public void testAllowRoleInheritance()
   {
     RoleDAO superRole = TestFixtureFactory.createRole1();
@@ -1875,33 +1349,33 @@ public class SessionTest extends TestCase
         {
           subRole.assignMember(user);
 
-          superRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
-          superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-          superRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
-          superRole.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+          superRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
-          superRole.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
-          superRole.grantPermission(Operation.DENY_READ, mdAttribute.getId());
+          superRole.grantPermission(Operation.DENY_WRITE, mdAttribute.getOid());
+          superRole.grantPermission(Operation.DENY_READ, mdAttribute.getOid());
 
-          subRole.grantPermission(Operation.WRITE, mdBusiness.getId());
-          subRole.grantPermission(Operation.CREATE, mdBusiness.getId());
-          subRole.grantPermission(Operation.DELETE, mdBusiness.getId());
-          subRole.grantPermission(Operation.READ, mdBusiness.getId());
+          subRole.grantPermission(Operation.WRITE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.CREATE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.DELETE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.READ, mdBusiness.getOid());
 
-          subRole.grantPermission(Operation.WRITE, mdAttribute.getId());
-          subRole.grantPermission(Operation.READ, mdAttribute.getId());
+          subRole.grantPermission(Operation.WRITE, mdAttribute.getOid());
+          subRole.grantPermission(Operation.READ, mdAttribute.getOid());
 
           String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {
-            assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-            assertTrue(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-            assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-            assertTrue(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+            Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+            Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+            Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+            Assert.assertTrue(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
 
-            assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-            assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+            Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+            Assert.assertTrue(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
           }
           finally
           {
@@ -1927,6 +1401,8 @@ public class SessionTest extends TestCase
   /**
    * Test denying an inherited permission lower in the inheritance chain
    */
+  @Request
+  @Test
   public void testDenyRoleInheritance()
   {
     RoleDAO superRole = TestFixtureFactory.createRole1();
@@ -1948,33 +1424,33 @@ public class SessionTest extends TestCase
         {
           subRole.assignMember(user);
 
-          superRole.grantPermission(Operation.WRITE, mdBusiness.getId());
-          superRole.grantPermission(Operation.CREATE, mdBusiness.getId());
-          superRole.grantPermission(Operation.DELETE, mdBusiness.getId());
-          superRole.grantPermission(Operation.READ, mdBusiness.getId());
+          superRole.grantPermission(Operation.WRITE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.CREATE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.DELETE, mdBusiness.getOid());
+          superRole.grantPermission(Operation.READ, mdBusiness.getOid());
 
-          superRole.grantPermission(Operation.WRITE, mdAttribute.getId());
-          superRole.grantPermission(Operation.READ, mdAttribute.getId());
+          superRole.grantPermission(Operation.WRITE, mdAttribute.getOid());
+          superRole.grantPermission(Operation.READ, mdAttribute.getOid());
 
-          subRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getId());
-          subRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getId());
-          subRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getId());
-          subRole.grantPermission(Operation.DENY_READ, mdBusiness.getId());
+          subRole.grantPermission(Operation.DENY_WRITE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.DENY_CREATE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.DENY_DELETE, mdBusiness.getOid());
+          subRole.grantPermission(Operation.DENY_READ, mdBusiness.getOid());
 
-          subRole.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
-          subRole.grantPermission(Operation.DENY_READ, mdAttribute.getId());
+          subRole.grantPermission(Operation.DENY_WRITE, mdAttribute.getOid());
+          subRole.grantPermission(Operation.DENY_READ, mdAttribute.getOid());
 
           String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {
-            assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
-            assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
-            assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
-            assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
+            Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.CREATE, business1));
+            Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.DELETE, business1));
+            Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.READ, business1));
+            Assert.assertFalse(SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
 
-            assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
-            assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
+            Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.WRITE, mdAttribute));
+            Assert.assertFalse(SessionFacade.checkAttributeAccess(sessionId, Operation.READ, mdAttribute));
           }
           finally
           {

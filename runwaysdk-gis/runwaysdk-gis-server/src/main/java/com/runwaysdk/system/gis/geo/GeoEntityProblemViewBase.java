@@ -31,7 +31,7 @@ public abstract class GeoEntityProblemViewBase extends com.runwaysdk.business.Vi
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblemView";
   public static java.lang.String CONCRETEID = "concreteId";
   public static java.lang.String GEOID = "geoId";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PROBLEM = "problem";
   public static java.lang.String PROBLEMNAME = "problemName";
   private static final long serialVersionUID = 1004051346;
@@ -97,20 +97,20 @@ public abstract class GeoEntityProblemViewBase extends com.runwaysdk.business.Vi
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.GeoEntityProblemView.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getProblem()
@@ -174,9 +174,9 @@ public abstract class GeoEntityProblemViewBase extends com.runwaysdk.business.Vi
     return CLASS;
   }
   
-  public static GeoEntityProblemView get(String id)
+  public static GeoEntityProblemView get(String oid)
   {
-    return (GeoEntityProblemView) com.runwaysdk.business.View.get(id);
+    return (GeoEntityProblemView) com.runwaysdk.business.View.get(oid);
   }
   
   public String toString()

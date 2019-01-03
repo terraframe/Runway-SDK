@@ -99,9 +99,9 @@ public abstract class MdTransientBase extends com.runwaysdk.system.metadata.MdCl
     return CLASS;
   }
   
-  public static MdTransient get(String id)
+  public static MdTransient get(String oid)
   {
-    return (MdTransient) com.runwaysdk.business.Business.get(id);
+    return (MdTransient) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdTransient getByKey(String key)
@@ -109,17 +109,17 @@ public abstract class MdTransientBase extends com.runwaysdk.system.metadata.MdCl
     return (MdTransient) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdTransient lock(java.lang.String id)
+  public static MdTransient lock(java.lang.String oid)
   {
-    MdTransient _instance = MdTransient.get(id);
+    MdTransient _instance = MdTransient.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdTransient unlock(java.lang.String id)
+  public static MdTransient unlock(java.lang.String oid)
   {
-    MdTransient _instance = MdTransient.get(id);
+    MdTransient _instance = MdTransient.get(oid);
     _instance.unlock();
     
     return _instance;

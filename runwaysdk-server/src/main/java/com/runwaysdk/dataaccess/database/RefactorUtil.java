@@ -37,7 +37,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 public class RefactorUtil
 {
   /**
-   * Changes the type and the rootid of the given id to the new id for the object, relationships,
+   * Changes the type and the rootid of the given oid to the new oid for the object, relationships,
    * enum item ids, and references in the system.
    * Assumes all of the records have been copied over to the new tables and their ids need to be updated.
    *
@@ -57,14 +57,14 @@ public class RefactorUtil
     {
       String
         sql =  "UPDATE "+superClass.getTableName();
-        sql += "\n   SET id = '"+newId+"'";
+        sql += "\n   SET oid = '"+newId+"'";
 
         if (superClass.isRootOfHierarchy())
         {
           sql += ",\n       type = '"+newType+"'";
         }
 
-        sql += "\n WHERE id = '"+originalId+"';\n";
+        sql += "\n WHERE oid = '"+originalId+"';\n";
       System.out.println(sql);
     }
 
@@ -94,8 +94,8 @@ public class RefactorUtil
     {
       String
         sql =  "UPDATE "+tableNameIterator.next();
-        sql += "\n   SET "+RelationshipInfo.PARENT_ID+" = '"+newId+"'";
-        sql += "\n WHERE "+RelationshipInfo.PARENT_ID+" = '"+originalId+"';\n";
+        sql += "\n   SET "+RelationshipInfo.PARENT_OID+" = '"+newId+"'";
+        sql += "\n WHERE "+RelationshipInfo.PARENT_OID+" = '"+originalId+"';\n";
       System.out.println(sql);
     }
 
@@ -121,8 +121,8 @@ public class RefactorUtil
     {
       String
         sql =  "UPDATE "+tableNameIterator.next();
-        sql += "\n   SET "+RelationshipInfo.CHILD_ID+" = '"+newId+"'";
-        sql += "\n WHERE "+RelationshipInfo.CHILD_ID+" = '"+originalId+"';\n";
+        sql += "\n   SET "+RelationshipInfo.CHILD_OID+" = '"+newId+"'";
+        sql += "\n WHERE "+RelationshipInfo.CHILD_OID+" = '"+originalId+"';\n";
       System.out.println(sql);
     }
 

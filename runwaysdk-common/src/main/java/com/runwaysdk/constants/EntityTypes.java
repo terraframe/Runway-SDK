@@ -23,47 +23,42 @@ public enum EntityTypes
   /**
    * Class that defines enumeration items for caching types.
    */
-  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "0000000000000000000000000000022200000000000000000000000000000001"),
+  ENTITY_CACHE_MASTER(Constants.METADATA_PACKAGE + ".EntityCacheMaster", "entity_cache_master", "d845dd9e-9a15-3810-a854-d5ebbb00003a"),
 
   /**
    * Type that defines relationships.
    */
-  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "0000000000000000000000000000031800000000000000000000000000000979"),
-
-  /**
-   * Root state attribute class
-   */
-  STATE_MASTER(Constants.SYSTEM_PACKAGE + ".StateMaster", "state_master", "0000000000000000000000000000094200000000000000000000000000000001"),
+  PHONE_NUMBER(Constants.SYSTEM_PACKAGE + ".PhoneNumber", "phone_number", "66e25e6a-a9e1-314f-beff-b032df000064"),
 
   /**
    * Class that defines the symmetric encryption methods
    */
-  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "0000000000000000000000000000062600000000000000000000000000000001"),
+  SYMMETRIC_METHOD (Constants.METADATA_PACKAGE + ".SymmetricMethods",  "symmetric_methods", "56cbb77f-b197-3adb-93bc-a0f3b200003a"),
 
   /**
    * Class that defines the hash encryption methods
    */
-  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "0000000000000000000000000000064000000000000000000000000000000001"),
+  HASH_METHOD (Constants.METADATA_PACKAGE + ".HashMethods", "hash_methods", "38af38c9-43c9-347c-92b4-d7d14300003a"),
 
   /**
    * Class that defines the localized metadata fields
    */
-  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "NM2009041200000000000000000000300000000000000000000MdLocalStruct"),
+  METADATADISPLAYLABEL (Constants.METADATA_PACKAGE + ".MetadataDisplayLabel", "metadata_display_label", "58200659-fe24-38f6-a6fe-ab7c25000086"),
   
   /**
    * Class that defines the localized metadata fields
    */
-  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "NM2009041200000000000000000000300000000000000000000MdLocalStruct");
+  MD_LOCALIZABLE_MESSAGE (Constants.METADATA_PACKAGE + ".MdLocalizableMessage", "md_localizable_message", "58200659-fe24-38f6-a6fe-ab7c25000086");
 
   private String classType;
   private String tableName;
-  private String id;
+  private String oid;
 
-  private EntityTypes(String classType, String tableName, String id)
+  private EntityTypes(String classType, String tableName, String oid)
   {
    this.classType = classType;
    this.tableName = tableName;
-   this.id = id;
+   this.oid = oid;
   }
 
   public String getType()
@@ -76,9 +71,9 @@ public enum EntityTypes
     return this.tableName;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
 }

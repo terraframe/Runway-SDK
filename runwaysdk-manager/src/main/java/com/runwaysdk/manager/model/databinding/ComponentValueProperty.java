@@ -73,7 +73,7 @@ public class ComponentValueProperty extends SimpleValueProperty
 
       if (component != null)
       {
-        decorator.setValue(attributeName, component.getId());
+        decorator.setValue(attributeName, component.getOid());
       }
       else
       {

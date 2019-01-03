@@ -26,10 +26,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -38,26 +38,9 @@ import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class SchedulerTest extends TestCase
+public class SchedulerTest
 {
 
   private static final boolean     HALT          = false;
@@ -65,46 +48,6 @@ public class SchedulerTest extends TestCase
   protected static ClientSession   systemSession = null;
 
   protected static ClientRequestIF clientRequest = null;
-
-  // TEST BOILERPLATE
-  public static void main(String args[])
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(SchedulerTest.suite());
-
-    junit.textui.TestRunner.run(suite);
-    
-    
-    // Run this in pgadmin if you get "contraint on object violated", sometimes the database gets screwy.
-//    truncate abstract_job;
-//    truncate executable_job;
-//    truncate job_history;
-//    truncate job_history_record;
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(SchedulerTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
 
   // TEST BOILERPLATE
 
@@ -116,9 +59,9 @@ public class SchedulerTest extends TestCase
     private static Map<String, TestRecord> records = new ConcurrentHashMap<String, TestRecord>();
 
     /**
-     * The id of the Job that this is recorded against.
+     * The oid of the Job that this is recorded against.
      */
-    private final String                   id;
+    private final String                   oid;
 
     /**
      * The number of executions.
@@ -130,19 +73,19 @@ public class SchedulerTest extends TestCase
      */
     private boolean                        executed;
 
-    private TestRecord(String id)
+    private TestRecord(String oid)
     {
-      this.id = id;
+      this.oid = oid;
       this.count = 0;
       this.executed = false;
     }
 
     /**
-     * @return the id
+     * @return the oid
      */
-    public String getId()
+    public String getOid()
     {
-      return id;
+      return oid;
     }
 
     /**
@@ -165,7 +108,7 @@ public class SchedulerTest extends TestCase
     {
       if (this.count > 0)
       {
-        throw new ProgrammingErrorException("Job [" + id + "] has already executed.");
+        throw new ProgrammingErrorException("Job [" + oid + "] has already executed.");
       }
       else
       {
@@ -181,17 +124,17 @@ public class SchedulerTest extends TestCase
 
     private static TestRecord newRecord(ExecutableJob job)
     {
-      String id = job.getDisplayLabel().getValue();
+      String oid = job.getDisplayLabel().getValue();
       synchronized (records)
       {
-        if (records.containsKey(id))
+        if (records.containsKey(oid))
         {
-          throw new ProgrammingErrorException("Job [" + id + "] already recorded.");
+          throw new ProgrammingErrorException("Job [" + oid + "] already recorded.");
         }
         else
         {
-          TestRecord tr = new TestRecord(id);
-          records.put(id, tr);
+          TestRecord tr = new TestRecord(oid);
+          records.put(oid, tr);
           return tr;
         }
 
@@ -211,8 +154,8 @@ public class SchedulerTest extends TestCase
     public void execute(ExecutionContext executionContext)
     {
       ExecutableJob job = executionContext.getJob();
-      String id = job.getDisplayLabel().getValue();
-      
+      String oid = job.getDisplayLabel().getValue();
+
       JobHistory history = executionContext.getJobHistory();
       history.lock();
       try
@@ -224,8 +167,8 @@ public class SchedulerTest extends TestCase
         throw new RuntimeException(e);
       }
       history.unlock();
- 
-      TestRecord testRecord = TestRecord.records.get(id);
+
+      TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.recordOnce();
     }
   }
@@ -245,12 +188,19 @@ public class SchedulerTest extends TestCase
       throw new ProgrammingErrorException("Failed on purpose.");
     }
   }
-  
+
+  @BeforeClass
+  @Request
   public static void classSetUp()
   {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+
     SchedulerManager.start();
   }
 
+  @AfterClass
+  @Request
   public static void classTearDown()
   {
     systemSession.logout();
@@ -273,7 +223,7 @@ public class SchedulerTest extends TestCase
       {
         if (runs > maxWaits)
         {
-          fail("The record [" + tr.getId() + "] took longer than [" + maxWaits + "] retries to complete.");
+          Assert.fail("The record [" + tr.getOid() + "] took longer than [" + maxWaits + "] retries to complete.");
         }
 
         // Let's wait a while and try again.
@@ -291,7 +241,7 @@ public class SchedulerTest extends TestCase
   {
     JobHistoryRecordQuery query = new JobHistoryRecordQuery(new QueryFactory());
     OIterator<? extends JobHistoryRecord> jhrs = query.getIterator();
-    
+
     while (jhrs.hasNext())
     {
       JobHistoryRecord jhr = jhrs.next();
@@ -304,6 +254,8 @@ public class SchedulerTest extends TestCase
    * 
    * @throws InterruptedException
    */
+  @Request
+  @Test
   public void testCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -320,16 +272,16 @@ public class SchedulerTest extends TestCase
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-        assertEquals(0, SchedulerManager.getRunningJobs().size());
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
       }
       else
       {
-        fail("The job was not completed.");
+        Assert.fail("The job was not completed.");
       }
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
@@ -339,6 +291,8 @@ public class SchedulerTest extends TestCase
    * 
    * @throws InterruptedException
    */
+  @Request
+  @Test
   public void testManuallyStartJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -352,39 +306,41 @@ public class SchedulerTest extends TestCase
 
       JobHistory history = job.start();
       Date startTime = history.getStartTime();
-      
-      assertNotNull(startTime);
-      assertTrue(history.getStatus().contains(AllJobStatus.RUNNING));
-      assertEquals(1, SchedulerManager.getRunningJobs().size());
+
+      Assert.assertNotNull(startTime);
+      Assert.assertTrue(history.getStatus().contains(AllJobStatus.RUNNING));
+      Assert.assertEquals(1, SchedulerManager.getRunningJobs().size());
 
       wait(tr, 10);
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         JobHistory updated = JobHistory.getByKey(history.getKey());
-        assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
-        assertEquals(0, SchedulerManager.getRunningJobs().size());
-        assertNotNull(updated.getEndTime());
-        assertTrue(updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
+        Assert.assertNotNull(updated.getEndTime());
+        Assert.assertTrue(updated.getEndTime().after(startTime));
       }
       else
       {
-        fail("The job was not completed.");
+        Assert.fail("The job was not completed.");
       }
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
-  
+
   /**
-   * Tests to make sure that a job will stop running when the CRON string is modified. Also tests to make sure
-   * that jobs can be modified while running.
+   * Tests to make sure that a job will stop running when the CRON string is
+   * modified. Also tests to make sure that jobs can be modified while running.
    * 
    * @throws InterruptedException
    */
+  @Request
+  @Test
   public void testModifyCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -396,87 +352,91 @@ public class SchedulerTest extends TestCase
       job.apply();
 
       TestRecord tr = TestRecord.newRecord(job);
-      
+
       // Wait till the job is running
       int waitTime = 0;
       while (SchedulerManager.getRunningJobs().size() == 0)
       {
         Thread.sleep(10);
-        
+
         waitTime += 10;
         if (waitTime > 6000)
         {
-          fail("Job was never scheduled");
+          Assert.fail("Job was never scheduled");
           return;
         }
       }
-      
-      // Modify the CRON string to never run while the job is currently executing.
-      job = ExecutableJob.get(job.getId());
+
+      // Modify the CRON string to never run while the job is currently
+      // executing.
+      job = ExecutableJob.get(job.getOid());
       job.setCronExpression("");
       job.apply();
-      
+
       // Wait till the job is no longer running
       wait(tr, 30);
-      
+
       // Make sure the job never starts up again.
       waitTime = 0;
       while (waitTime < 10000)
       {
         Thread.sleep(100);
         waitTime += 100;
-        
-        assertEquals(0, SchedulerManager.getRunningJobs().size());
+
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
       }
     }
     finally
     {
-      ExecutableJob.get(job.getId()).delete();
+      ExecutableJob.get(job.getOid()).delete();
       clearHistory();
     }
   }
-  
+
   /**
    * Tests the clearHistory MdMethod defined on JobHistory.
    */
+  @Request
+  @Test
   public void testClearHistory()
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestJob.class);
     job1.getDisplayLabel().setValue("testClearHistory1");
     job1.apply();
     TestRecord tr1 = TestRecord.newRecord(job1);
-    
+
     ExecutableJob job2 = QualifiedTypeJob.newInstance(TestJob.class);
     job2.getDisplayLabel().setValue("testClearHistory2");
     job2.apply();
-//    TestRecord tr2 = TestRecord.newRecord(job2);
+    // TestRecord tr2 = TestRecord.newRecord(job2);
     TestRecord.newRecord(job2);
-    
+
     try
     {
       // First create a history item by running job1.
       job1.start();
       wait(tr1, 10);
 
-      assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
-      
+      Assert.assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
+
       job2.start();
-      
+
       Thread.sleep(10);
-      
-      assertEquals(2, new JobHistoryQuery(new QueryFactory()).getCount());
-      assertEquals(1, SchedulerManager.getRunningJobs().size());
-      
-      // Invoke the md method. This should only remove 1 of the histories, because the other one is currently running.
+
+      Assert.assertEquals(2, new JobHistoryQuery(new QueryFactory()).getCount());
+      Assert.assertEquals(1, SchedulerManager.getRunningJobs().size());
+
+      // Invoke the md method. This should only remove 1 of the histories,
+      // because the other one is currently running.
       JobHistory.clearHistory();
-      
-      assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
-      
+
+      Assert.assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
+
       Thread.sleep(2000);
-      
+
       JobHistory.clearHistory();
-      
-      assertEquals(0, new JobHistoryQuery(new QueryFactory()).getCount());
+
+      Assert.assertEquals(0, new JobHistoryQuery(new QueryFactory()).getCount());
     }
     catch (InterruptedException e)
     {
@@ -484,64 +444,64 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      ExecutableJob.get(job1.getId()).delete();
-      ExecutableJob.get(job2.getId()).delete();
+      ExecutableJob.get(job1.getOid()).delete();
+      ExecutableJob.get(job2.getOid()).delete();
       clearHistory();
     }
   }
-  
-//  public void ignoreJobHistoryView()
-//  {
-//
-//    fail("fix me i'm broken and it hurts!");
 
-    // ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    // job.setJobId("job 2");
-    // job.setCompleted(true);
-    // job.setRunning(false);
-    // job.apply();
-    //
-    // JobSnapshot snap = new JobSnapshot();
-    // snap.setCancelable(job.getCancelable());
-    // snap.setCanceled(job.getCanceled());
-    // snap.setCompleted(job.getCompleted());
-    // snap.setCronExpression(job.getCronExpression());
-    // snap.setEndTime(job.getEndTime());
-    // snap.setLastRun(job.getLastRun());
-    // snap.setMaxRetries(job.getMaxRetries());
-    // snap.setPauseable(job.getPauseable());
-    // snap.setPaused(job.getPaused());
-    // snap.setRemoveOnComplete(job.getRemoveOnComplete());
-    // snap.setRepeated(job.getRepeated());
-    // snap.setRetries(job.getRetries());
-    // snap.setRunning(job.getRunning());
-    // snap.setStartOnCreate(job.getStartOnCreate());
-    // snap.setStartTime(job.getStartTime());
-    // snap.setTimeout(job.getTimeout());
-    // snap.setWorkProgress(job.getWorkProgress());
-    // snap.setWorkTotal(job.getWorkTotal());
-    // snap.apply();
-    //
-    // JobHistory history = new JobHistory();
-    // history.setJobSnapshot(snap);
-    // history.apply();
-    //
-    // JobHistoryRecord rec = new JobHistoryRecord(job, history);
-    // rec.apply();
-    //
-    // JobHistoryViewQueryDTO view =
-    // JobHistoryViewDTO.getJobHistories(clientRequest, "jobId", false, 10, 1);
-    // List<? extends JobHistoryViewDTO> results = view.getResultSet();
-    //
-    // assertTrue(results.size() > 0);
-//  }
+  // public void ignoreJobHistoryView()
+  // {
+  //
+  // Assert.fail("fix me i'm broken and it hurts!");
+
+  // ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
+  // job.setJobId("job 2");
+  // job.setCompleted(true);
+  // job.setRunning(false);
+  // job.apply();
+  //
+  // JobSnapshot snap = new JobSnapshot();
+  // snap.setCancelable(job.getCancelable());
+  // snap.setCanceled(job.getCanceled());
+  // snap.setCompleted(job.getCompleted());
+  // snap.setCronExpression(job.getCronExpression());
+  // snap.setEndTime(job.getEndTime());
+  // snap.setLastRun(job.getLastRun());
+  // snap.setMaxRetries(job.getMaxRetries());
+  // snap.setPauseable(job.getPauseable());
+  // snap.setPaused(job.getPaused());
+  // snap.setRemoveOnComplete(job.getRemoveOnComplete());
+  // snap.setRepeated(job.getRepeated());
+  // snap.setRetries(job.getRetries());
+  // snap.setRunning(job.getRunning());
+  // snap.setStartOnCreate(job.getStartOnCreate());
+  // snap.setStartTime(job.getStartTime());
+  // snap.setTimeout(job.getTimeout());
+  // snap.setWorkProgress(job.getWorkProgress());
+  // snap.setWorkTotal(job.getWorkTotal());
+  // snap.apply();
+  //
+  // JobHistory history = new JobHistory();
+  // history.setJobSnapshot(snap);
+  // history.apply();
+  //
+  // JobHistoryRecord rec = new JobHistoryRecord(job, history);
+  // rec.apply();
+  //
+  // JobHistoryViewQueryDTO view =
+  // JobHistoryViewDTO.getJobHistories(clientRequest, "jobId", false, 10, 1);
+  // List<? extends JobHistoryViewDTO> results = view.getResultSet();
+  //
+  // assertTrue(results.size() > 0);
+  // }
 
   // /**
   // * Tests that a Jobs start, end, and duration times are set correctly.
   // */
   // public void ignoreExecutionTiming()
   // {
-  // fail("not implemented");
+  // Assert.fail("not implemented");
   //
   // // start, stop, duration, lastRun
   // }
@@ -590,12 +550,12 @@ public class SchedulerTest extends TestCase
   //
   // if (!onStartFired.booleanValue())
   // {
-  // fail("The start listener did not fire.");
+  // Assert.fail("The start listener did not fire.");
   // }
   //
   // if (!onStopFired.booleanValue())
   // {
-  // fail("The stop listener did not fire.");
+  // Assert.fail("The stop listener did not fire.");
   // }
   // }
   //
@@ -680,22 +640,22 @@ public class SchedulerTest extends TestCase
   //
   // if (!onStartFired1.booleanValue())
   // {
-  // fail("The start listener #1 did not fire.");
+  // Assert.fail("The start listener #1 did not fire.");
   // }
   //
   // if (!onStopFired1.booleanValue())
   // {
-  // fail("The stop listener #1 did not fire.");
+  // Assert.fail("The stop listener #1 did not fire.");
   // }
   //
   // if (!onStartFired1.booleanValue())
   // {
-  // fail("The start listener #2 did not fire.");
+  // Assert.fail("The start listener #2 did not fire.");
   // }
   //
   // if (!onStopFired1.booleanValue())
   // {
-  // fail("The stop listener #2 did not fire.");
+  // Assert.fail("The stop listener #2 did not fire.");
   // }
   // }
   //
@@ -732,9 +692,10 @@ public class SchedulerTest extends TestCase
   // // Make sure the ExecutableJob DB record was removed
   // try
   // {
-  // ExecutableJob.get(job.getId());
+  // ExecutableJob.get(job.getOid());
   //
-  // fail("The ExecutableJob was not deleted with removeOnComplete set to true.");
+  // Assert.fail("The ExecutableJob was not deleted with removeOnComplete set to
+  // true.");
   // }
   // catch(DataNotFoundException e)
   // {
@@ -743,7 +704,7 @@ public class SchedulerTest extends TestCase
   // }
   // else
   // {
-  // fail("The job was not completed.");
+  // Assert.fail("The job was not completed.");
   // }
   //
   // }
@@ -752,7 +713,7 @@ public class SchedulerTest extends TestCase
   // {
   // try
   // {
-  // ExecutableJob.get(job.getId()).delete();
+  // ExecutableJob.get(job.getOid()).delete();
   // }
   // catch(DataNotFoundException e)
   // {
@@ -788,7 +749,7 @@ public class SchedulerTest extends TestCase
   //
   // if (!tr.isExecuted() || tr.getCount() == 0)
   // {
-  // fail("The job was not completed.");
+  // Assert.fail("The job was not completed.");
   // }
   //
   // }
@@ -820,7 +781,7 @@ public class SchedulerTest extends TestCase
   //
   // if (!tr.isExecuted() || tr.getCount() == 0)
   // {
-  // fail("The job was not completed.");
+  // Assert.fail("The job was not completed.");
   // }
   //
   // }
@@ -840,7 +801,7 @@ public class SchedulerTest extends TestCase
   // */
   // public void ignoreFloodJobs()
   // {
-  // fail("not implemented");
+  // Assert.fail("not implemented");
   // }
   // /**
   // * Tests a job that errors.

@@ -23,31 +23,31 @@
 
 <xs:element name="Runway" type="root">
   <xs:key name="objectKey">
-    <xs:selector xpath=".//id"/>
+    <xs:selector xpath=".//oid"/>
     <xs:field xpath="."/>
   </xs:key>
   <xs:unique name="relationshipKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="id"/>
+    <xs:field xpath="oid"/>
   </xs:unique>
   <xs:keyref name="objectRef" refer="objectKey">
     <xs:selector xpath="./object/attributes/reference"/>
     <xs:field xpath="value"/>
   </xs:keyref>
 
-  <xs:keyref name="parentId" refer="objectKey">
+  <xs:keyref name="parentOid" refer="objectKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="parent_id"/>
+    <xs:field xpath="parent_oid"/>
   </xs:keyref>
 
-  <xs:keyref name="childId" refer="objectKey">
+  <xs:keyref name="childOid" refer="objectKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="child_id"/>
+    <xs:field xpath="child_oid"/>
   </xs:keyref>
 
   <xs:keyref name="mdRelId" refer="objectKey">
     <xs:selector xpath="./relationship"/>
-    <xs:field xpath="id"/>
+    <xs:field xpath="oid"/>
   </xs:keyref>
 
 </xs:element>
@@ -89,7 +89,7 @@
 <xs:complexType name="object">
   <xs:sequence>
     <xs:element name="type" type="xs:string"/>
-    <xs:element name="id" type="xs:string"/>
+    <xs:element name="oid" type="xs:string"/>
     <xs:element ref="definitions" minOccurs="0"/>
     <xs:element ref="attributes"/>
   </xs:sequence>
@@ -106,9 +106,9 @@
 
 <xs:complexType name="relationship">
   <xs:sequence>
-    <xs:element name="id" type="xs:string"/>
-    <xs:element name="parent_id" type="xs:string"/>
-    <xs:element name="child_id" type="xs:string"/>
+    <xs:element name="oid" type="xs:string"/>
+    <xs:element name="parent_oid" type="xs:string"/>
+    <xs:element name="child_oid" type="xs:string"/>
     <xs:element ref="attributes" minOccurs="0"/>
   </xs:sequence>
 </xs:complexType>
@@ -183,6 +183,7 @@
   <xs:complexType>
 	<xs:choice minOccurs="0" maxOccurs="unbounded">
 	  <xs:element name="mdattributeboolean" type="mdattributeboolean"/>
+	  <xs:element name="mdattributeuuid" type="mdattributeuuid"/>
 	  <xs:element name="mdattributeinteger" type="mdattributeinteger"/>
 	  <xs:element name="mdattributelong" type="mdattributelong"/>
 	  <xs:element name="mdattributefloat" type="mdattributefloat"/>
@@ -209,7 +210,7 @@
 
 <xs:complexType name="component">
   <xs:sequence>
-    <xs:element name="id" type="xs:string"/>
+    <xs:element name="oid" type="xs:string"/>
     <xs:element name="keyName" type="xs:string"/>
     <xs:element name="type" type="xs:string"/>
     <xs:element name="createdBy" type="xs:string"/>
@@ -333,6 +334,13 @@
    	    </xs:element>
 	  </xs:sequence>
 	</xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="mdattributeuuid">
+  <xs:complexContent>
+    <xs:extension base="mdattributeprimitive">
+  	</xs:extension>
   </xs:complexContent>
 </xs:complexType>
 

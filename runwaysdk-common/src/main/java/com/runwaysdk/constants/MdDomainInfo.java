@@ -20,7 +20,7 @@ package com.runwaysdk.constants;
 
 public interface MdDomainInfo extends MetadataInfo
 {
-  public static final String ID_VALUE              = "NM20081011000000000000000000011100000000000000000000000000000001";
+  public static final String ID_VALUE              = "514f5b28-3c4a-3b37-b363-4fe86700003a";
   
   /**
    * Class MdBusiness.
@@ -33,7 +33,7 @@ public interface MdDomainInfo extends MetadataInfo
   public static final String DISPLAY_LABEL   = "displayLabel";
   
   /**
-   * Name of the attribute that stores the id of the super class.
+   * Name of the attribute that stores the oid of the super class.
    */
   public static final String DOMAIN_NAME     = "domainName";
 }

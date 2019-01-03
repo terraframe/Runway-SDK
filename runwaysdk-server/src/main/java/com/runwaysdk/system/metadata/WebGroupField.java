@@ -22,14 +22,14 @@ public class WebGroupField extends WebGroupFieldBase
 {
   private static final long serialVersionUID = -1304169104;
   
-  public WebGroupField(String parentId, String childId)
+  public WebGroupField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public WebGroupField(com.runwaysdk.system.metadata.MdWebGroup parent, com.runwaysdk.system.metadata.MdWebField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.resolver;
 
 import java.io.File;
 
+import org.junit.Before;
+
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -45,7 +47,9 @@ public class ReferenceExportBuilder extends ExportBuilder<Void>
   }
 
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }
@@ -66,10 +70,10 @@ public class ReferenceExportBuilder extends ExportBuilder<Void>
     businessDAO.apply();
 
     BusinessDAO referenceDAO = BusinessDAO.newInstance(referenceBusiness.definesType());
-    referenceDAO.setValue("testReference", businessDAO.getId());
+    referenceDAO.setValue("testReference", businessDAO.getOid());
     referenceDAO.apply();
 
-    businessDAO.setValue("testReference", referenceDAO.getId());
+    businessDAO.setValue("testReference", referenceDAO.getOid());
     businessDAO.apply();
   }
 

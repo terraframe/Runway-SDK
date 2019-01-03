@@ -102,29 +102,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     return (com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.TypeTuple.METADATA, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster()
-  {
-    return getStateMaster(null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER);
-
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER, mdAttributeIF, this, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias, String displayLabel)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER);
-
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER, mdAttributeIF, this, alias, displayLabel);
-
-  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -132,10 +109,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     if (name.equals(com.runwaysdk.system.metadata.TypeTuple.METADATA)) 
     {
        return new com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER)) 
-    {
-       return new com.runwaysdk.system.StateMasterQuery.StateMasterQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -195,9 +168,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata();
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias);
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias, String displayLabel);
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster();
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias);
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.TypeTuple typeTuple);
 
@@ -224,13 +194,13 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.TypeTuple typeTuple)
     {
       if(typeTuple == null) return this.EQ((java.lang.String)null);
-      return this.EQ(typeTuple.getId());
+      return this.EQ(typeTuple.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.TypeTuple typeTuple)
     {
       if(typeTuple == null) return this.NE((java.lang.String)null);
-      return this.NE(typeTuple.getId());
+      return this.NE(typeTuple.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -267,23 +237,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     return (com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.METADATA,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster()
-  {
-    return getStateMaster(null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias)
-  {
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER,  alias, displayLabel);
-
-  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -291,10 +244,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     if (name.equals(com.runwaysdk.system.metadata.TypeTuple.METADATA)) 
     {
        return new com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER)) 
-    {
-       return new com.runwaysdk.system.StateMasterQuery.StateMasterQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -331,10 +280,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata();
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias);
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias, String displayLabel);
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster();
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias);
-    public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias, String displayLabel);
-
+    
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);
     public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);
@@ -365,7 +311,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -377,7 +323,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -389,7 +335,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -401,7 +347,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -413,7 +359,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<typeTuple.length; i++)
       {
-        itemIdArray[i] = typeTuple[i].getId();
+        itemIdArray[i] = typeTuple[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -452,23 +398,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     return (com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.METADATA,  alias, displayLabel);
 
   }
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster()
-  {
-    return getStateMaster(null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias)
-  {
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF getStateMaster(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.StateMasterQuery.StateMasterQueryReferenceIF)this.get(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER,  alias, displayLabel);
-
-  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -476,10 +405,6 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     if (name.equals(com.runwaysdk.system.metadata.TypeTuple.METADATA)) 
     {
        return new com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else if (name.equals(com.runwaysdk.system.metadata.TypeTuple.STATEMASTER)) 
-    {
-       return new com.runwaysdk.system.StateMasterQuery.StateMasterQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {

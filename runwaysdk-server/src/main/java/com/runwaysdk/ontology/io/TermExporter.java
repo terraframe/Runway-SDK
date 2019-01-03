@@ -57,11 +57,11 @@ public class TermExporter
     {
       if (includeParent)
       {
-        // exporter.export(parent.getId());
+        // exporter.export(parent.getOid());
         exporter.writeCreate(parent);
 
         // Loop over relationships with parents
-        String[] prelts = TermUtil.getAllChildRelationships(parent.getId());
+        String[] prelts = TermUtil.getAllChildRelationships(parent.getOid());
         for (String prelt : prelts)
         {
           OIterator<? extends Relationship> rel = parent.getParentRelationships(prelt);
@@ -90,7 +90,7 @@ public class TermExporter
 
       do
       {
-        String[] relTypes = TermUtil.getAllParentRelationships(p.getId());
+        String[] relTypes = TermUtil.getAllParentRelationships(p.getOid());
 
         for (String relType : relTypes)
         {

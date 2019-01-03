@@ -18,62 +18,36 @@
  */
 package com.runwaysdk.business;
 
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 import com.runwaysdk.RunwayVersionTest;
 import com.runwaysdk.business.rbac.RBACTest;
-import com.runwaysdk.business.state.StateTest;
 import com.runwaysdk.format.CustomFormatTest;
 import com.runwaysdk.format.DefaultFormatTest;
 import com.runwaysdk.format.LocalizedFormatTest;
 
-public class BusinessTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ 
+  ExpressionAttributeTest.class,
+  RBACTest.class,
+  EntityGenTest.class,
+  EntityMultiReferenceGenTest.class,
+  EntityMultiTermGenTest.class,
+  EntityAttributeIndicatorGenTest.class,
+  TransientMultiReferenceGenTest.class,
+  TransientMultiTermGenTest.class,
+  UtilGenTest.class,
+  ViewGenTest.class,
+  RelationshipGenTest.class,
+  BusinessLocking.class,
+  VirtualAttributeGenTest.class,
+  DefaultFormatTest.class,
+  LocalizedFormatTest.class,
+  CustomFormatTest.class,
+  RunwayVersionTest.class,
+  NoSourceGenTest.class
+})
+public class BusinessTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(BusinessTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(BusinessTestSuite.class.getSimpleName());
-
-    // Test classes where the cache algorithm for the test and reference classes are cached.
-    
-    suite.addTest(ExpressionAttributeTest.suite());
-    suite.addTest(StateTest.suite());
-    suite.addTest(RBACTest.suite());
-    suite.addTest(EntityGenTest.suite());
-    suite.addTest(EntityMultiReferenceGenTest.suite());
-    suite.addTest(EntityMultiTermGenTest.suite());
-  
-    suite.addTest(EntityAttributeIndicatorGenTest.suite());
-    
-    suite.addTest(TransientMultiReferenceGenTest.suite());
-    suite.addTest(TransientMultiTermGenTest.suite());
-    suite.addTest(UtilGenTest.suite());
-    suite.addTest(ViewGenTest.suite());
-    suite.addTest(RelationshipGenTest.suite());
-    suite.addTest(BusinessLocking.suite());
-    suite.addTest(ControllerGenTest.suite());
-    suite.addTest(JSPRollbackTest.suite());
-    suite.addTest(VirtualAttributeGenTest.suite());
-    suite.addTest(DefaultFormatTest.suite());
-    suite.addTest(LocalizedFormatTest.suite());
-    suite.addTest(CustomFormatTest.suite());
-    suite.addTestSuite(RunwayVersionTest.class);
-    suite.addTestSuite(NoSourceGenTest.class);
-
-   return suite;
-
-  }
-
 }

@@ -35,7 +35,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
   public static java.lang.String FILEEXTENSION = "fileExtension";
   public static java.lang.String FILENAME = "fileName";
   public static java.lang.String FILEPATH = "filePath";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -131,7 +131,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -219,20 +219,20 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.WebFile.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -371,7 +371,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -428,9 +428,9 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     return CLASS;
   }
   
-  public static WebFile get(String id)
+  public static WebFile get(String oid)
   {
-    return (WebFile) com.runwaysdk.business.Business.get(id);
+    return (WebFile) com.runwaysdk.business.Business.get(oid);
   }
   
   public static WebFile getByKey(String key)
@@ -438,17 +438,17 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     return (WebFile) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static WebFile lock(java.lang.String id)
+  public static WebFile lock(java.lang.String oid)
   {
-    WebFile _instance = WebFile.get(id);
+    WebFile _instance = WebFile.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static WebFile unlock(java.lang.String id)
+  public static WebFile unlock(java.lang.String oid)
   {
-    WebFile _instance = WebFile.get(id);
+    WebFile _instance = WebFile.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.resolver;
 
 import java.io.File;
 
+import org.junit.Before;
+
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -41,9 +43,11 @@ public class CreateTestObjectExportBuilder extends ExportBuilder<Void>
     this.file = file;
     this.mdBusiness = mdBusiness;
   }
-  
+
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }

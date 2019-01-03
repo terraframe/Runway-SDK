@@ -42,7 +42,7 @@ public class SmokeTest
 
 //  @Test
 //  @Request
-//  public void testCreateAndExportMetadata()
+//  @Request @Test public void testCreateAndExportMetadata()
 //  {
 //    genSource();
 //    // doTestCreateAndExportMetadata();
@@ -71,7 +71,7 @@ public class SmokeTest
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
-    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
     mdAttribute.apply();
 
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
@@ -92,7 +92,7 @@ public class SmokeTest
       SAXExporter.export(path, XMLConstants.DATATYPE_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, businessDAO }));
 
       // Delete the test object
-      // EntityDAO.get(mdBusiness.getId()).getEntityDAO().delete();
+      // EntityDAO.get(mdBusiness.getOid()).getEntityDAO().delete();
       // mdBusiness.delete();
 
       // TODO : This code is almost the same as the SAXParseTest, yet the
@@ -107,13 +107,13 @@ public class SmokeTest
       // List<String> ids =
       // EntityDAO.getEntityIdsDB("com.runwaysdk.smoke.Smoking");
       //
-      // assertEquals(1, ids.size());
+      // Assert.assertEquals(1, ids.size());
       //
       // BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
       // AttributeLocalCharacter attribute = (AttributeLocalCharacter)
       // businessDAOIF.getAttributeIF("smokeCharAttribute");
       //
-      // assertEquals("Yo Diggidy", attribute.getValue());
+      // Assert.assertEquals("Yo Diggidy", attribute.getValue());
     }
     finally
     {

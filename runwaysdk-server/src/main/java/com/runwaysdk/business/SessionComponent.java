@@ -158,14 +158,14 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
   }
 
   /**
-   * Returns the Actor id that owns this object.
+   * Returns the Actor oid that owns this object.
    * 
    */
   public String getOwnerId()
   {
     if (this.owner != null)
     {
-      return this.owner.getId();
+      return this.owner.getOid();
     }
     else
     {
@@ -634,20 +634,20 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
   }
 
   /**
-   * Returns the Universally Unique ID (UUID) for this entity.
+   * Returns the Universally Unique OID (UUID) for this entity.
    * 
    * @return <b>this</b> entity's UUID
    */
-  public String getId()
+  public String getOid()
   {
-    return this.transientDAO.getId();
+    return this.transientDAO.getOid();
   }
 
   /**
    * Returns the Id used for AttributeProblems (not messages). New instances
-   * that fail will have a different ID on the client.
+   * that fail will have a different OID on the client.
    * 
-   * @return problem notification id.
+   * @return problem notification oid.
    */
   public String getProblemNotificationId()
   {
@@ -686,7 +686,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
 
     if (currentSession != null)
     {
-      SessionFacade.put(currentSession.getId(), this);
+      SessionFacade.put(currentSession.getOid(), this);
     }
   }
 
@@ -709,7 +709,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
 
     if (currentSession != null)
     {
-      currentSession.remove(this.getId());
+      currentSession.remove(this.getOid());
     }
   }
 
@@ -752,18 +752,18 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
   }
 
   /**
-   * Returns the SessionComponent object with the given id, if it has been
+   * Returns the SessionComponent object with the given oid, if it has been
    * persisted to the user's session.
    * 
-   * @param id
-   * @return Util object with the given id.
+   * @param oid
+   * @return Util object with the given oid.
    */
-  public static SessionComponent get(String id)
+  public static SessionComponent get(String oid)
   {
     SessionIF session = Session.getCurrentSession();
     if (session != null)
     {
-      Mutable mutable = session.get(id);
+      Mutable mutable = session.get(oid);
 
       if (mutable != null)
       {
@@ -771,8 +771,8 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
       }
     }
 
-    String errMsg = "An instance of type [" + SessionComponent.class.getName() + "] with id [" + id + "] does not exist in the user's session.";
-    throw new DataNotFoundException(errMsg, MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id)));
+    String errMsg = "An instance of type [" + SessionComponent.class.getName() + "] with oid [" + oid + "] does not exist in the user's session.";
+    throw new DataNotFoundException(errMsg, MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid)));
   }
 
   /**
@@ -780,7 +780,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
    */
   public String toString()
   {
-    return this.getId();
+    return this.getOid();
   }
 
   public void addMultiItem(String name, String item)
@@ -816,9 +816,9 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
   {
     List<Business> items = new LinkedList<Business>();
 
-    for (String id : ids)
+    for (String oid : ids)
     {
-      items.add(Business.get(id));
+      items.add(Business.get(oid));
     }
     return items;
   }

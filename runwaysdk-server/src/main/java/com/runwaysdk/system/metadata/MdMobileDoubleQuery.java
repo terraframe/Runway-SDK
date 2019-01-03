@@ -114,13 +114,13 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileDouble mdMobileDouble)
     {
       if(mdMobileDouble == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileDouble.getId());
+      return this.EQ(mdMobileDouble.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileDouble mdMobileDouble)
     {
       if(mdMobileDouble == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileDouble.getId());
+      return this.NE(mdMobileDouble.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileDouble.length; i++)
       {
-        itemIdArray[i] = mdMobileDouble[i].getId();
+        itemIdArray[i] = mdMobileDouble[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileDouble.length; i++)
       {
-        itemIdArray[i] = mdMobileDouble[i].getId();
+        itemIdArray[i] = mdMobileDouble[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileDouble.length; i++)
       {
-        itemIdArray[i] = mdMobileDouble[i].getId();
+        itemIdArray[i] = mdMobileDouble[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileDouble.length; i++)
       {
-        itemIdArray[i] = mdMobileDouble[i].getId();
+        itemIdArray[i] = mdMobileDouble[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileDoubleQuery extends com.runwaysdk.system.metadata.MdMobile
 
       for (int i=0; i<mdMobileDouble.length; i++)
       {
-        itemIdArray[i] = mdMobileDouble[i].getId();
+        itemIdArray[i] = mdMobileDouble[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

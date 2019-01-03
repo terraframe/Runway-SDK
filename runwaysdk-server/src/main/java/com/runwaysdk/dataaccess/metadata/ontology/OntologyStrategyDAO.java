@@ -39,14 +39,8 @@ package com.runwaysdk.dataaccess.metadata.ontology;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.query.BusinessDAOQuery;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 
 /**
  * Class that contains behavior that is in common 
@@ -128,7 +122,7 @@ public class OntologyStrategyDAO extends BusinessDAO
 //    
 //    if (!keyHasBeenSet)
 //    {
-      this.setKey(this.getId());
+      this.setKey(this.getOid());
 //    }
     
     return super.apply();

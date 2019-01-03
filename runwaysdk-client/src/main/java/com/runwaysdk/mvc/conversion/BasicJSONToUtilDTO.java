@@ -38,7 +38,7 @@ public class BasicJSONToUtilDTO extends BasicJSONToSessionDTO
     super(sessionId, locale, json);
   }
 
-  protected UtilDTO factoryMethod(String type, boolean newInstance, String id) throws JSONException
+  protected UtilDTO factoryMethod(String type, boolean newInstance, String oid) throws JSONException
   {
     ClientRequestIF request = getClientRequest();
 
@@ -48,7 +48,7 @@ public class BasicJSONToUtilDTO extends BasicJSONToSessionDTO
     }
     else
     {
-      return (UtilDTO) request.get(id);
+      return (UtilDTO) request.get(oid);
     }
   }
 

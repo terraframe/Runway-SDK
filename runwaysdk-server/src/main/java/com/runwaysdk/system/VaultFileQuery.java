@@ -170,21 +170,21 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableInteger)this.getComponentQuery().get(com.runwaysdk.system.VaultFile.FILESIZE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.VaultFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.VaultFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.VaultFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.VaultFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -483,9 +483,9 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableInteger getFileSize();
     public com.runwaysdk.query.SelectableInteger getFileSize(String alias);
     public com.runwaysdk.query.SelectableInteger getFileSize(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -545,13 +545,13 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.VaultFile vaultFile)
     {
       if(vaultFile == null) return this.EQ((java.lang.String)null);
-      return this.EQ(vaultFile.getId());
+      return this.EQ(vaultFile.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.VaultFile vaultFile)
     {
       if(vaultFile == null) return this.NE((java.lang.String)null);
-      return this.NE(vaultFile.getId());
+      return this.NE(vaultFile.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -656,21 +656,21 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.VaultFile.FILESIZE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.VaultFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.VaultFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.VaultFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.VaultFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -922,9 +922,9 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableInteger getFileSize();
     public com.runwaysdk.query.SelectableInteger getFileSize(String alias);
     public com.runwaysdk.query.SelectableInteger getFileSize(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -989,7 +989,7 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<vaultFile.length; i++)
       {
-        itemIdArray[i] = vaultFile[i].getId();
+        itemIdArray[i] = vaultFile[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1001,7 +1001,7 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<vaultFile.length; i++)
       {
-        itemIdArray[i] = vaultFile[i].getId();
+        itemIdArray[i] = vaultFile[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1013,7 +1013,7 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<vaultFile.length; i++)
       {
-        itemIdArray[i] = vaultFile[i].getId();
+        itemIdArray[i] = vaultFile[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1025,7 +1025,7 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<vaultFile.length; i++)
       {
-        itemIdArray[i] = vaultFile[i].getId();
+        itemIdArray[i] = vaultFile[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1037,7 +1037,7 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<vaultFile.length; i++)
       {
-        itemIdArray[i] = vaultFile[i].getId();
+        itemIdArray[i] = vaultFile[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -1144,21 +1144,21 @@ public  class VaultFileQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.VaultFile.FILESIZE, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.VaultFile.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.VaultFile.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.VaultFile.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.VaultFile.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

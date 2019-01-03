@@ -114,13 +114,13 @@ public  class GreaterThanOrEqualRuleQuery extends com.runwaysdk.system.gis.mappi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.GreaterThanOrEqualRule greaterThanOrEqualRule)
     {
       if(greaterThanOrEqualRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(greaterThanOrEqualRule.getId());
+      return this.EQ(greaterThanOrEqualRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.GreaterThanOrEqualRule greaterThanOrEqualRule)
     {
       if(greaterThanOrEqualRule == null) return this.NE((java.lang.String)null);
-      return this.NE(greaterThanOrEqualRule.getId());
+      return this.NE(greaterThanOrEqualRule.getOid());
     }
 
   }

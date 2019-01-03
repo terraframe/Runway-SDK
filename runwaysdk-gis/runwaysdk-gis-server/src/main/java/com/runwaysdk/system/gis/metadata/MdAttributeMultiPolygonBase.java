@@ -41,9 +41,9 @@ public abstract class MdAttributeMultiPolygonBase extends com.runwaysdk.system.g
     return CLASS;
   }
   
-  public static MdAttributeMultiPolygon get(String id)
+  public static MdAttributeMultiPolygon get(String oid)
   {
-    return (MdAttributeMultiPolygon) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeMultiPolygon) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeMultiPolygon getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeMultiPolygonBase extends com.runwaysdk.system.g
     return (MdAttributeMultiPolygon) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeMultiPolygon lock(java.lang.String id)
+  public static MdAttributeMultiPolygon lock(java.lang.String oid)
   {
-    MdAttributeMultiPolygon _instance = MdAttributeMultiPolygon.get(id);
+    MdAttributeMultiPolygon _instance = MdAttributeMultiPolygon.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeMultiPolygon unlock(java.lang.String id)
+  public static MdAttributeMultiPolygon unlock(java.lang.String oid)
   {
-    MdAttributeMultiPolygon _instance = MdAttributeMultiPolygon.get(id);
+    MdAttributeMultiPolygon _instance = MdAttributeMultiPolygon.get(oid);
     _instance.unlock();
     
     return _instance;

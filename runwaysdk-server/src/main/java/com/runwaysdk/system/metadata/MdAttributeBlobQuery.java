@@ -114,13 +114,13 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeBlob mdAttributeBlob)
     {
       if(mdAttributeBlob == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeBlob.getId());
+      return this.EQ(mdAttributeBlob.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeBlob mdAttributeBlob)
     {
       if(mdAttributeBlob == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeBlob.getId());
+      return this.NE(mdAttributeBlob.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeBlob.length; i++)
       {
-        itemIdArray[i] = mdAttributeBlob[i].getId();
+        itemIdArray[i] = mdAttributeBlob[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeBlob.length; i++)
       {
-        itemIdArray[i] = mdAttributeBlob[i].getId();
+        itemIdArray[i] = mdAttributeBlob[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeBlob.length; i++)
       {
-        itemIdArray[i] = mdAttributeBlob[i].getId();
+        itemIdArray[i] = mdAttributeBlob[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeBlob.length; i++)
       {
-        itemIdArray[i] = mdAttributeBlob[i].getId();
+        itemIdArray[i] = mdAttributeBlob[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeBlobQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeBlob.length; i++)
       {
-        itemIdArray[i] = mdAttributeBlob[i].getId();
+        itemIdArray[i] = mdAttributeBlob[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

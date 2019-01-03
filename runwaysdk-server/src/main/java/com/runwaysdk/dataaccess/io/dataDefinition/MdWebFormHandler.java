@@ -76,7 +76,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
     {
       mdForm.apply();
 
-      this.getManager().addMapping(mdForm.definesType(), mdForm.getId());
+      this.getManager().addMapping(mdForm.definesType(), mdForm.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdForm);
@@ -120,7 +120,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
       }
 
       MdClassDAOIF mdClass = MdClassDAO.getMdClassDAO(classType);
-      mdForm.setValue(MdWebFormInfo.FORM_MD_CLASS, mdClass.getId());
+      mdForm.setValue(MdWebFormInfo.FORM_MD_CLASS, mdClass.getOid());
     }
   }
 

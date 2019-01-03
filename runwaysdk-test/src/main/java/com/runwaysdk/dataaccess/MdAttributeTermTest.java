@@ -23,12 +23,10 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
@@ -41,51 +39,15 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.session.Request;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class MdAttributeTermTest extends TestCase
+public class MdAttributeTermTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdAttributeTermTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   /**
    * 
    */
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
   }
@@ -93,21 +55,23 @@ public class MdAttributeTermTest extends TestCase
   /**
    * 
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
   }
 
+  @Request
+  @Test
   public void testCreateAndGet()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -116,13 +80,13 @@ public class MdAttributeTermTest extends TestCase
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         try
         {
-          MdAttributeTermDAOIF result = MdAttributeTermDAO.get(mdAttributeTerm.getId());
+          MdAttributeTermDAOIF result = MdAttributeTermDAO.get(mdAttributeTerm.getOid());
 
           Assert.assertNotNull(result);
           Assert.assertEquals(result.getValue(MdAttributeTermInfo.NAME), mdAttributeTerm.getValue(MdAttributeTermInfo.NAME));
@@ -146,17 +110,17 @@ public class MdAttributeTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidType()
   {
     MdBusinessDAO mdReference = TestFixtureFactory.createMdBusiness1();
-    mdReference.setGenerateMdController(false);
     mdReference.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdReference.apply();
 
     try
     {
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness2();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -165,8 +129,8 @@ public class MdAttributeTermTest extends TestCase
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdReference.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdReference.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         TestFixtureFactory.delete(mdAttributeTerm);
@@ -188,10 +152,11 @@ public class MdAttributeTermTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAddAttributeRoots()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-    mdTerm.setGenerateMdController(false);
     mdTerm.setValue(MdTermInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTerm.apply();
 
@@ -202,7 +167,6 @@ public class MdAttributeTermTest extends TestCase
       term.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -211,8 +175,8 @@ public class MdAttributeTermTest extends TestCase
         MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
         mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
         mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
-        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
-        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getOid());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
         mdAttributeTerm.apply();
 
         mdAttributeTerm.addAttributeRoot(term, true);
@@ -220,7 +184,7 @@ public class MdAttributeTermTest extends TestCase
         List<RelationshipDAOIF> roots = mdAttributeTerm.getAllAttributeRoots();
 
         Assert.assertEquals(1, roots.size());
-        Assert.assertEquals(term.getId(), roots.get(0).getChildId());
+        Assert.assertEquals(term.getOid(), roots.get(0).getChildOid());
       }
       finally
       {

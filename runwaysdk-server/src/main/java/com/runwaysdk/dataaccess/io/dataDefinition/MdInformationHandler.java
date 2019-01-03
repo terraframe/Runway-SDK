@@ -59,7 +59,7 @@ public class MdInformationHandler extends MdLocalizableHandler implements TagHan
       }
 
       MdInformationDAOIF superException = MdInformationDAO.getMdInformation(extend);
-      mdLocalizable.setValue(MdInformationInfo.SUPER_MD_INFORMATION, superException.getId());
+      mdLocalizable.setValue(MdInformationInfo.SUPER_MD_INFORMATION, superException.getOid());
     }
 
   }

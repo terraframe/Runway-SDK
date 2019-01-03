@@ -52,7 +52,7 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
@@ -60,19 +60,19 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
+  public RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
-  public void delete(String sessionId, String id) throws RemoteException;
+  public void delete(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
-  public MutableDTO get(String sessionId, String id) throws RemoteException;
+  public MutableDTO get(String sessionId, String oid) throws RemoteException;
 
   public void checkAdminScreenAccess(String sessionId) throws RemoteException;
 
@@ -190,25 +190,11 @@ public interface RemoteAdapter extends Remote
   public void removeMember(String sessionId, String userId, String... roles) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
-   * @throws RemoteExceptio
-   */
-  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationIds) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
   public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationIds) throws RemoteException;
-
-  /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
-   * @throws RemoteExceptio
-   */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
@@ -225,13 +211,6 @@ public interface RemoteAdapter extends Remote
   public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
@@ -246,13 +225,6 @@ public interface RemoteAdapter extends Remote
   public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationId) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
@@ -260,24 +232,16 @@ public interface RemoteAdapter extends Remote
   public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationId) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
-   * @throws RemoteExceptio
-   */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationId) throws RemoteException;
-
-  /**
    * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public ElementDTO lock(String sessionId, String id) throws RemoteException;
+  public ElementDTO lock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public ElementDTO unlock(String sessionId, String id) throws RemoteException;
+  public ElementDTO unlock(String sessionId, String oid) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String,
@@ -294,13 +258,13 @@ public interface RemoteAdapter extends Remote
    */
   public void deleteParent(String sessionId, String relationshipId) throws RemoteException;
 
-  public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
   public BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO) throws RemoteException;
 
@@ -312,9 +276,9 @@ public interface RemoteAdapter extends Remote
 
   public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO) throws RemoteException;
 
-  public void deleteChildren(String sessionId, String id, String relationshipType) throws RemoteException;
+  public void deleteChildren(String sessionId, String oid, String relationshipType) throws RemoteException;
 
-  public void deleteParents(String sessionId, String id, String relationshipType) throws RemoteException;
+  public void deleteParents(String sessionId, String oid, String relationshipType) throws RemoteException;
 
   /**
    * Invokes a method defined by a MdMethod on a Entity in the server.
@@ -399,11 +363,11 @@ public interface RemoteAdapter extends Remote
   public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String... params) throws RemoteException, IOException;
 
   /**
-   * @param parentId
+   * @param parentOid
    * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
    *      java.lang.Integer, java.lang.Integer)
    */
-  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize) throws RemoteException;
 
   /**
    * @param sessionId

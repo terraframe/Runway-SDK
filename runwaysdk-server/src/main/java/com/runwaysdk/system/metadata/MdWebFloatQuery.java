@@ -114,13 +114,13 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebFloat mdWebFloat)
     {
       if(mdWebFloat == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebFloat.getId());
+      return this.EQ(mdWebFloat.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebFloat mdWebFloat)
     {
       if(mdWebFloat == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebFloat.getId());
+      return this.NE(mdWebFloat.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
 
       for (int i=0; i<mdWebFloat.length; i++)
       {
-        itemIdArray[i] = mdWebFloat[i].getId();
+        itemIdArray[i] = mdWebFloat[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
 
       for (int i=0; i<mdWebFloat.length; i++)
       {
-        itemIdArray[i] = mdWebFloat[i].getId();
+        itemIdArray[i] = mdWebFloat[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
 
       for (int i=0; i<mdWebFloat.length; i++)
       {
-        itemIdArray[i] = mdWebFloat[i].getId();
+        itemIdArray[i] = mdWebFloat[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
 
       for (int i=0; i<mdWebFloat.length; i++)
       {
-        itemIdArray[i] = mdWebFloat[i].getId();
+        itemIdArray[i] = mdWebFloat[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebFloatQuery extends com.runwaysdk.system.metadata.MdWebDecQuer
 
       for (int i=0; i<mdWebFloat.length; i++)
       {
-        itemIdArray[i] = mdWebFloat[i].getId();
+        itemIdArray[i] = mdWebFloat[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

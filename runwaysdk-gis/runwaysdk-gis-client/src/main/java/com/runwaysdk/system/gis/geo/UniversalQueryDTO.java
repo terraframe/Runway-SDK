@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -997766439)
+@com.runwaysdk.business.ClassSignature(hash = -876319599)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.gis.geo;
  */
 public class UniversalQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = -997766439;
+private static final long serialVersionUID = -876319599;
 
   protected UniversalQueryDTO(String type)
   {

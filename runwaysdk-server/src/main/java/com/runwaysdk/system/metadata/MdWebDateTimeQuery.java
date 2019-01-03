@@ -114,13 +114,13 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebDateTime mdWebDateTime)
     {
       if(mdWebDateTime == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebDateTime.getId());
+      return this.EQ(mdWebDateTime.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebDateTime mdWebDateTime)
     {
       if(mdWebDateTime == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebDateTime.getId());
+      return this.NE(mdWebDateTime.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
 
       for (int i=0; i<mdWebDateTime.length; i++)
       {
-        itemIdArray[i] = mdWebDateTime[i].getId();
+        itemIdArray[i] = mdWebDateTime[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
 
       for (int i=0; i<mdWebDateTime.length; i++)
       {
-        itemIdArray[i] = mdWebDateTime[i].getId();
+        itemIdArray[i] = mdWebDateTime[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
 
       for (int i=0; i<mdWebDateTime.length; i++)
       {
-        itemIdArray[i] = mdWebDateTime[i].getId();
+        itemIdArray[i] = mdWebDateTime[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
 
       for (int i=0; i<mdWebDateTime.length; i++)
       {
-        itemIdArray[i] = mdWebDateTime[i].getId();
+        itemIdArray[i] = mdWebDateTime[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdWebDateTimeQuery extends com.runwaysdk.system.metadata.MdWebMome
 
       for (int i=0; i<mdWebDateTime.length; i++)
       {
-        itemIdArray[i] = mdWebDateTime[i].getId();
+        itemIdArray[i] = mdWebDateTime[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

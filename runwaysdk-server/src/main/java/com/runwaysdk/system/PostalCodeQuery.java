@@ -92,7 +92,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.AllPostalCodes.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.AllPostalCodes.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -152,13 +152,13 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.PostalCode postalCode)
     {
       if(postalCode == null) return this.EQ((java.lang.String)null);
-      return this.EQ(postalCode.getId());
+      return this.EQ(postalCode.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.PostalCode postalCode)
     {
       if(postalCode == null) return this.NE((java.lang.String)null);
-      return this.NE(postalCode.getId());
+      return this.NE(postalCode.getOid());
     }
 
   }
@@ -220,7 +220,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<allPostalCodes.length; i++)
       {
-        enumIdArray[i] = allPostalCodes[i].getId();
+        enumIdArray[i] = allPostalCodes[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -232,7 +232,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<allPostalCodes.length; i++)
       {
-        enumIdArray[i] = allPostalCodes[i].getId();
+        enumIdArray[i] = allPostalCodes[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -244,7 +244,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<allPostalCodes.length; i++)
       {
-        enumIdArray[i] = allPostalCodes[i].getId();
+        enumIdArray[i] = allPostalCodes[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -256,7 +256,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<allPostalCodes.length; i++)
       {
-        enumIdArray[i] = allPostalCodes[i].getId();
+        enumIdArray[i] = allPostalCodes[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -268,7 +268,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<allPostalCodes.length; i++)
       {
-        enumIdArray[i] = allPostalCodes[i].getId();
+        enumIdArray[i] = allPostalCodes[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -312,7 +312,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<postalCode.length; i++)
       {
-        itemIdArray[i] = postalCode[i].getId();
+        itemIdArray[i] = postalCode[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -324,7 +324,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<postalCode.length; i++)
       {
-        itemIdArray[i] = postalCode[i].getId();
+        itemIdArray[i] = postalCode[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -336,7 +336,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<postalCode.length; i++)
       {
-        itemIdArray[i] = postalCode[i].getId();
+        itemIdArray[i] = postalCode[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -348,7 +348,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<postalCode.length; i++)
       {
-        itemIdArray[i] = postalCode[i].getId();
+        itemIdArray[i] = postalCode[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -360,7 +360,7 @@ public  class PostalCodeQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       for (int i=0; i<postalCode.length; i++)
       {
-        itemIdArray[i] = postalCode[i].getId();
+        itemIdArray[i] = postalCode[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

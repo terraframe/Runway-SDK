@@ -48,60 +48,60 @@ public abstract class MdWebGroupDTOBase extends com.runwaysdk.system.metadata.Md
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO> getAllWebGroups()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO> getAllWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO> getAllWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebFieldDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO> getAllWebGroupsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO> getAllWebGroupsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO> getAllWebGroupsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGroupFieldDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.WebGroupFieldDTO addWebGroups(com.runwaysdk.system.metadata.MdWebFieldDTO child)
   {
-    return (com.runwaysdk.system.metadata.WebGroupFieldDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WebGroupFieldDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.WebGroupFieldDTO addWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdWebFieldDTO child)
+  public static com.runwaysdk.system.metadata.WebGroupFieldDTO addWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdWebFieldDTO child)
   {
-    return (com.runwaysdk.system.metadata.WebGroupFieldDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WebGroupFieldDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
   public void removeWebGroups(com.runwaysdk.system.metadata.WebGroupFieldDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.WebGroupFieldDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllWebGroups()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
-  public static void removeAllWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllWebGroups(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.WebGroupFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebGroupDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdWebGroupDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdWebGroupDTO) dto;
   }
@@ -119,7 +119,7 @@ public abstract class MdWebGroupDTOBase extends com.runwaysdk.system.metadata.Md
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdWebGroupQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -132,10 +132,10 @@ public abstract class MdWebGroupDTOBase extends com.runwaysdk.system.metadata.Md
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebGroupDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWebGroupDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWebGroupDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWebGroupDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -145,10 +145,10 @@ public abstract class MdWebGroupDTOBase extends com.runwaysdk.system.metadata.Md
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebGroupDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWebGroupDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWebGroupDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWebGroupDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

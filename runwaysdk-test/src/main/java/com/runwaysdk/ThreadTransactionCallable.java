@@ -23,7 +23,8 @@ import java.util.concurrent.Callable;
 import com.runwaysdk.dataaccess.transaction.ThreadTransactionState;
 
 /**
- * Used for testing spawned threads from a main thread but share the same transaction.
+ * Used for testing spawned threads from a main thread but share the same
+ * transaction.
  *
  * @author nathan
  */

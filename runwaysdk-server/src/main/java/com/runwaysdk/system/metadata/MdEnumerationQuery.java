@@ -478,13 +478,13 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdEnumeration mdEnumeration)
     {
       if(mdEnumeration == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdEnumeration.getId());
+      return this.EQ(mdEnumeration.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdEnumeration mdEnumeration)
     {
       if(mdEnumeration == null) return this.NE((java.lang.String)null);
-      return this.NE(mdEnumeration.getId());
+      return this.NE(mdEnumeration.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getIncludeAll()
@@ -833,7 +833,7 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
 
       for (int i=0; i<mdEnumeration.length; i++)
       {
-        itemIdArray[i] = mdEnumeration[i].getId();
+        itemIdArray[i] = mdEnumeration[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -845,7 +845,7 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
 
       for (int i=0; i<mdEnumeration.length; i++)
       {
-        itemIdArray[i] = mdEnumeration[i].getId();
+        itemIdArray[i] = mdEnumeration[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -857,7 +857,7 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
 
       for (int i=0; i<mdEnumeration.length; i++)
       {
-        itemIdArray[i] = mdEnumeration[i].getId();
+        itemIdArray[i] = mdEnumeration[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -869,7 +869,7 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
 
       for (int i=0; i<mdEnumeration.length; i++)
       {
-        itemIdArray[i] = mdEnumeration[i].getId();
+        itemIdArray[i] = mdEnumeration[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -881,7 +881,7 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
 
       for (int i=0; i<mdEnumeration.length; i++)
       {
-        itemIdArray[i] = mdEnumeration[i].getId();
+        itemIdArray[i] = mdEnumeration[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

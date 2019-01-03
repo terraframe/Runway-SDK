@@ -69,9 +69,9 @@ public abstract class MdMobilePrimitiveBase extends com.runwaysdk.system.metadat
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MobileGridField>) getRelationshipsWithParent(mdMobileSingleTermGrid, com.runwaysdk.system.metadata.MobileGridField.CLASS);
   }
   
-  public static MdMobilePrimitive get(String id)
+  public static MdMobilePrimitive get(String oid)
   {
-    return (MdMobilePrimitive) com.runwaysdk.business.Business.get(id);
+    return (MdMobilePrimitive) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobilePrimitive getByKey(String key)
@@ -79,17 +79,17 @@ public abstract class MdMobilePrimitiveBase extends com.runwaysdk.system.metadat
     return (MdMobilePrimitive) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobilePrimitive lock(java.lang.String id)
+  public static MdMobilePrimitive lock(java.lang.String oid)
   {
-    MdMobilePrimitive _instance = MdMobilePrimitive.get(id);
+    MdMobilePrimitive _instance = MdMobilePrimitive.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobilePrimitive unlock(java.lang.String id)
+  public static MdMobilePrimitive unlock(java.lang.String oid)
   {
-    MdMobilePrimitive _instance = MdMobilePrimitive.get(id);
+    MdMobilePrimitive _instance = MdMobilePrimitive.get(oid);
     _instance.unlock();
     
     return _instance;

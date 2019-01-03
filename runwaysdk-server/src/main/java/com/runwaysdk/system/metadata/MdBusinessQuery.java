@@ -271,122 +271,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
   }
 
 
-  public com.runwaysdk.query.Condition definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.getBusinessQuery().isParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.getBusinessQuery().isParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.getBusinessQuery().isParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.getBusinessQuery().isParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.getBusinessQuery().isNotParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-
   public com.runwaysdk.query.Condition mdEnumeration()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
@@ -638,20 +522,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdBusiness mdBusiness);
 
 
-  public com.runwaysdk.query.Condition definingMdBusiness();
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery);
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness();
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery);
-
-
   public com.runwaysdk.query.Condition mdEnumeration();
 
   public com.runwaysdk.query.Condition mdEnumeration(com.runwaysdk.system.metadata.MdEnumerationQuery mdEnumerationQuery);
@@ -679,19 +549,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
   public com.runwaysdk.query.Condition SUBSELECT_subClass(com.runwaysdk.system.metadata.MdBusinessQuery mdBusinessQuery, com.runwaysdk.system.metadata.BusinessInheritanceQuery businessInheritanceQuery);
 
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness();
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery);
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness();
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery);
 
 
   public com.runwaysdk.query.Condition NOT_IN_mdEnumeration();
@@ -766,13 +623,13 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdBusiness mdBusiness)
     {
       if(mdBusiness == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdBusiness.getId());
+      return this.EQ(mdBusiness.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdBusiness mdBusiness)
     {
       if(mdBusiness == null) return this.NE((java.lang.String)null);
-      return this.NE(mdBusiness.getId());
+      return this.NE(mdBusiness.getOid());
     }
 
   public com.runwaysdk.system.metadata.EntityCacheMasterQuery.ClassCacheQueryIF getCacheAlgorithm()
@@ -809,64 +666,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
     return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdBusiness.SUPERMDBUSINESS,  alias, displayLabel);
 
   }
-
-  public com.runwaysdk.query.Condition definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.isParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.isParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.isParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.isParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
 
   public com.runwaysdk.query.Condition mdEnumeration()
   {
@@ -981,64 +780,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
   {
     businessInheritanceQuery.AND(businessInheritanceQuery.hasChild(mdBusinessQuery));
     return this.isParentIn_SUBSELECT(businessInheritanceQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.isNotParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    return this.isNotParentIn_SUBSELECT(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.DefinesStateMachine.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdStateMachineQuery));
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.isNotParentIn(definesStateMachineQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_definingMdBusiness(com.runwaysdk.system.metadata.MdStateMachineQuery mdStateMachineQuery, com.runwaysdk.system.DefinesStateMachineQuery definesStateMachineQuery)
-  {
-    definesStateMachineQuery.AND(definesStateMachineQuery.hasChild(mdStateMachineQuery));
-    return this.isNotParentIn_SUBSELECT(definesStateMachineQuery);
   }
 
 
@@ -1347,7 +1088,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -1359,7 +1100,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -1371,7 +1112,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -1383,7 +1124,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -1395,7 +1136,7 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
 
       for (int i=0; i<mdBusiness.length; i++)
       {
-        itemIdArray[i] = mdBusiness[i].getId();
+        itemIdArray[i] = mdBusiness[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

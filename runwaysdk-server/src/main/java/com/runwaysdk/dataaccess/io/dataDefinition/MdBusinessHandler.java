@@ -49,7 +49,6 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
 
     this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
-    this.addHandler(XMLTags.MD_STATE_MACHINE_TAG, new MdStateMachineHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
     this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
     this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
@@ -95,7 +94,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     {
       mdBusinessDAO.apply();
 
-      this.getManager().addMapping(name, mdBusinessDAO.getId());
+      this.getManager().addMapping(name, mdBusinessDAO.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdBusinessDAO);
@@ -124,7 +123,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
   {
     if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG))
     {
-      // Find the database ID of the default EnumerationMaster
+      // Find the database OID of the default EnumerationMaster
       mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
       mdBusinessDAO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     }
@@ -141,6 +140,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     ImportManager.setLocalizedValue(mdBusinessDAO, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdElementInfo.EXTENDABLE, attributes, XMLTags.EXTENDABLE_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdElementInfo.ABSTRACT, attributes, XMLTags.ABSTRACT_ATTRIBUTE);
+    ImportManager.setValue(mdBusinessDAO, MdElementInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.CACHE_SIZE, attributes, XMLTags.CACHE_SIZE_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
@@ -163,7 +163,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
       }
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(extend);
-      mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
+      mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getOid());
     }
 
     if (cacheAlgorithm != null)
@@ -171,16 +171,16 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
       // Change to an everything caching algorithm
       if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       // Change to a nonthing caching algorithm
       else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
       else
       {
-        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        mdBusinessDAO.addItem(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       }
     }
 
@@ -188,12 +188,6 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     if (tableName != null)
     {
       mdBusinessDAO.setTableName(tableName);
-    }
-
-    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-    if (generateController != null)
-    {
-      mdBusinessDAO.setGenerateMdController(new Boolean(generateController));
     }
   }
 

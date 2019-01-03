@@ -82,7 +82,7 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     
     String entityTableName = allTypesTableMap.get(this.getEntityType());
 
-    // get parent_id and child_id
+    // get parent_oid and child_oid
     Map<String, Map<String, String>> relationshipAttributesHackMap = new HashMap<String, Map<String, String>>();
 
     // get attributes from the root table
@@ -94,15 +94,15 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     Map<String, Map<String, Attribute>> tupleMap = i.next();
     while (tupleMap != null)
     {      
-      String id = tupleMap.keySet().iterator().next();
-      idList.add(id);
-      Map<String, Attribute> attributeMap = tupleMap.get(id);
+      String oid = tupleMap.keySet().iterator().next();
+      idList.add(oid);
+      Map<String, Attribute> attributeMap = tupleMap.get(oid);
       String type = attributeMap.get(ComponentInfo.TYPE).getValue();
       
-      String parentId = relationshipAttributesHackMap.get(id).get(RelationshipInfo.PARENT_ID);
-      String childId = relationshipAttributesHackMap.get(id).get(RelationshipInfo.CHILD_ID);
+      String parentOid = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.PARENT_OID);
+      String childOid = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.CHILD_OID);
       
-      RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(id, parentId, childId, attributeMap, type);
+      RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentOid, childOid, attributeMap, type);
       this.updateCache(relationshipDAO);
       
       tupleMap = i.next();
@@ -122,12 +122,12 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
       tupleMap = i.next();
       while (tupleMap != null)
       {       
-        String id = tupleMap.keySet().iterator().next();
-        idList.add(id);
+        String oid = tupleMap.keySet().iterator().next();
+        idList.add(oid);
         
-        Map<String, Attribute> attributeMap = tupleMap.get(id);
+        Map<String, Attribute> attributeMap = tupleMap.get(oid);
 
-        RelationshipDAO relationshipDAO = (RelationshipDAO)ObjectCache.getEntityDAOIFfromCache(id);       
+        RelationshipDAO relationshipDAO = (RelationshipDAO)ObjectCache.getEntityDAOIFfromCache(oid);       
         relationshipDAO.addAdditionalAttributes(attributeMap);
         ObjectCache.putEntityDAOIFintoCache(relationshipDAO);
         
@@ -136,9 +136,9 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     }
     
     // No that the objects are complete, we need to update all of the other data structures this collection maintains.
-    for (String id : idList)
+    for (String oid : idList)
     {
-      RelationshipDAO relationshipDAO = (RelationshipDAO)ObjectCache.getEntityDAOIFfromCache(id);
+      RelationshipDAO relationshipDAO = (RelationshipDAO)ObjectCache.getEntityDAOIFfromCache(oid);
       this.updateCache(relationshipDAO);
     }
 
@@ -146,13 +146,13 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
 
   /**
    *
-   * @param id
+   * @param oid
    *
    * @return
    */
-  protected RelationshipDAOIF getFromFactory(String id)
+  protected RelationshipDAOIF getFromFactory(String oid)
   {
-    String type = Database.getTypeFromInstanceId(id);
+    String type = Database.getTypeFromInstanceId(oid);
 
     // Get a list of classes that the given class inherits from
     LinkedHashMap<String, String> inheritanceListMap = EntityDAOFactory.getSuperEntityTypes(type);
@@ -164,21 +164,21 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
       rootType = someType;
     }
 
-    return this.getFromFactory(id, type, rootType, inheritanceListMap);
+    return this.getFromFactory(oid, type, rootType, inheritanceListMap);
   }
 
   /**
    *
-   * @param id
+   * @param oid
    * @param type
    * @param rootType
    * @param inheritanceListMap
    *
    * @return
    */
-  protected RelationshipDAOIF getFromFactory(String id, String type, String rootType, Map<String, String> inheritanceListMap)
+  protected RelationshipDAOIF getFromFactory(String oid, String type, String rootType, Map<String, String> inheritanceListMap)
   {
-    // get parent_id and child_id
+    // get parent_oid and child_oid
     Map<String, String> relationshipAttributesHackMap = new HashMap<String, String>(2);
     Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
@@ -194,14 +194,14 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
 
       String tableName = inheritanceListMap.get(thisType);
 
-      attributeMap.putAll(EntityDAOFactory.getAttributesForHardcodedMetadata(id, thisType, tableName, relationshipAttributesHackMap,
+      attributeMap.putAll(EntityDAOFactory.getAttributesForHardcodedMetadata(oid, thisType, tableName, relationshipAttributesHackMap,
       rootOfHierarchy));
     }
 
-    String parentId = relationshipAttributesHackMap.get(RelationshipInfo.PARENT_ID);
-    String childId = relationshipAttributesHackMap.get(RelationshipInfo.CHILD_ID);
+    String parentOid = relationshipAttributesHackMap.get(RelationshipInfo.PARENT_OID);
+    String childOid = relationshipAttributesHackMap.get(RelationshipInfo.CHILD_OID);
 
-    RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(id, parentId, childId, attributeMap, type);
+    RelationshipDAO relationshipDAO = RelationshipDAOFactory.get(oid, parentOid, childOid, attributeMap, type);
     return relationshipDAO;
   }
 

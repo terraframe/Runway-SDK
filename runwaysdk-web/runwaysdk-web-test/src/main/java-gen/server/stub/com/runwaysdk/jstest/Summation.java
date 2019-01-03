@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.jstest;
-public class Summation extends SummationBase implements com.runwaysdk.generation.loader.Reloadable
+public class Summation extends SummationBase implements com.runwaysdk.generation.loader.
 {
 protected static void facadeForceException(String sessionId)
 {  com.runwaysdk.jstest.TestException ex = new com.runwaysdk.jstest.TestException("Test Ex");

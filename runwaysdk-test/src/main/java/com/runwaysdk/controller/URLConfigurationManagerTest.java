@@ -20,44 +20,20 @@ package com.runwaysdk.controller;
 
 import java.io.InputStream;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping;
 import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.ActionMapping;
 import com.runwaysdk.controller.URLConfigurationManager.UriForwardMapping;
 import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.mvc.MockController;
+import com.runwaysdk.session.Request;
 
-public class URLConfigurationManagerTest extends TestCase
+public class URLConfigurationManagerTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(URLConfigurationManagerTest.class);
-
-    TestSetup wrapper = new TestSetup(suite);
-
-    return wrapper;
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  @Request
+  @Test
   public void testRedirectMapping() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -85,6 +61,8 @@ public class URLConfigurationManagerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUrlMapping() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -116,6 +94,8 @@ public class URLConfigurationManagerTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUrlAction() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");

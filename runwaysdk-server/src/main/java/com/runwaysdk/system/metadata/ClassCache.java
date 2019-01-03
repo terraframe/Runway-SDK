@@ -55,10 +55,10 @@ public enum ClassCache implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDescription();
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -73,11 +73,11 @@ public enum ClassCache implements com.runwaysdk.business.BusinessEnumeration
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static ClassCache get(String id)
+  public static ClassCache get(String oid)
   {
     for (ClassCache e : ClassCache.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

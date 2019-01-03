@@ -249,9 +249,9 @@ public abstract class UsersDTOBase extends com.runwaysdk.system.SingleActorDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(USERNAME).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.UsersDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.UsersDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.UsersDTO) dto;
   }
@@ -269,7 +269,7 @@ public abstract class UsersDTOBase extends com.runwaysdk.system.SingleActorDTO
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.UsersQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -282,10 +282,10 @@ public abstract class UsersDTOBase extends com.runwaysdk.system.SingleActorDTO
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.UsersDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.UsersDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.UsersDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.UsersDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -295,10 +295,10 @@ public abstract class UsersDTOBase extends com.runwaysdk.system.SingleActorDTO
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.UsersDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.UsersDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.UsersDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.UsersDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

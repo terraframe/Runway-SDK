@@ -65,6 +65,7 @@ import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -92,6 +93,7 @@ import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
 import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
+import com.runwaysdk.transport.attributes.AttributeUUIDDTO;
 import com.runwaysdk.transport.conversion.business.BusinessToBusinessDTO;
 import com.runwaysdk.transport.conversion.business.InformationToInformationDTO;
 import com.runwaysdk.transport.conversion.business.LocalStructToStructDTO;
@@ -364,6 +366,10 @@ public abstract class ComponentIFtoComponentDTOIF
       {
         attributeDTO = getAttributeBoolean(mdAttribute);
       }
+      else if (mdAttributeConcreteIF instanceof MdAttributeUUIDDAOIF)
+      {
+        attributeDTO = getAttributeUUID(mdAttribute);
+      }
       else if (mdAttributeConcreteIF instanceof MdAttributeIndicatorDAOIF)
       {
         attributeDTO = getAttributeIndicator(mdAttribute);
@@ -544,6 +550,33 @@ public abstract class ComponentIFtoComponentDTOIF
     return attributeDTO;
   }
 
+  /**
+   * Sets an attribute given an mdAttribute.
+   * 
+   * @param mdAttributeIF
+   */
+  private AttributeUUIDDTO getAttributeUUID(MdAttributeDAOIF mdAttributeIF)
+  {
+    String attributeName = mdAttributeIF.definesAttribute();
+    boolean readable = hasAttributeReadAccess(mdAttributeIF);
+    boolean writable = hasAttributeWriteAccess(mdAttributeIF);
+    
+    Object oValue = invokeGetter(mdAttributeIF);
+    String value = null;
+    if (oValue != null)
+    {
+      value = oValue.toString();
+    }
+    
+    AttributeUUIDDTO attributeDTO = (AttributeUUIDDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    
+    if (this.convertMetaData())
+    {
+      ServerAttributeFacade.setAttributeMetadata(mdAttributeIF, attributeDTO.getAttributeMdDTO());
+    }
+    return attributeDTO;
+  }
+  
   /**
    * Sets an attribute given an mdAttribute.
    * 
@@ -787,7 +820,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       if (item instanceof Business)
       {
-        attributeMultiReferenceDTO.addItem( ( (Business) item ).getId());
+        attributeMultiReferenceDTO.addItem( ( (Business) item ).getOid());
       }
       else
       {
@@ -868,7 +901,7 @@ public abstract class ComponentIFtoComponentDTOIF
       Locale locale = Session.getCurrentLocale();
 
       MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(struct.getType());
-      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getId()));
+      structDTO.setMd(new TypeMd(mdStructIF.getDisplayLabel(locale), mdStructIF.getDescription(locale), mdStructIF.getOid(), mdStructIF.isGenerateSource()));
       attributeStructDTO.setStructDTO(structDTO);
     }
 
@@ -882,8 +915,8 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean readable = hasAttributeReadAccess(mdAttributeIF);
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
-    // DTOs only hold the reference id, not the object itself. Don't
-    // invoke the type-safe getter because we only need the id.
+    // DTOs only hold the reference oid, not the object itself. Don't
+    // invoke the type-safe getter because we only need the oid.
     String value = this.getComponentIF().getValue(attributeName);
 
     AttributeReferenceDTO attributeReferenceDTO = (AttributeReferenceDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
@@ -902,8 +935,8 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean readable = hasAttributeReadAccess(mdAttributeIF);
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
-    // DTOs only hold the Term id, not the object itself. Don't
-    // invoke the type-safe getter because we only need the id.
+    // DTOs only hold the Term oid, not the object itself. Don't
+    // invoke the type-safe getter because we only need the oid.
     String value = this.getComponentIF().getValue(attributeName);
 
     AttributeTermDTO attributeTermDTO = (AttributeTermDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
@@ -929,7 +962,7 @@ public abstract class ComponentIFtoComponentDTOIF
    */
   private AttributeDTO createAttribute(String attributeName, String type, Object value, boolean readable, boolean writable)
   {
-    if (!readable && !attributeName.equals(ComponentInfo.ID))
+    if (!readable && !attributeName.equals(ComponentInfo.OID))
     {
       value = "";
     }

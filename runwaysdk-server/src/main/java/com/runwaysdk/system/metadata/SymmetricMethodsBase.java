@@ -70,9 +70,9 @@ public abstract class SymmetricMethodsBase extends com.runwaysdk.system.Enumerat
     return CLASS;
   }
   
-  public static SymmetricMethods get(String id)
+  public static SymmetricMethods get(String oid)
   {
-    return (SymmetricMethods) com.runwaysdk.business.Business.get(id);
+    return (SymmetricMethods) com.runwaysdk.business.Business.get(oid);
   }
   
   public static SymmetricMethods getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class SymmetricMethodsBase extends com.runwaysdk.system.Enumerat
     return (SymmetricMethods) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.SymmetricMethods.CLASS ,enumName);
   }
   
-  public static SymmetricMethods lock(java.lang.String id)
+  public static SymmetricMethods lock(java.lang.String oid)
   {
-    SymmetricMethods _instance = SymmetricMethods.get(id);
+    SymmetricMethods _instance = SymmetricMethods.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static SymmetricMethods unlock(java.lang.String id)
+  public static SymmetricMethods unlock(java.lang.String oid)
   {
-    SymmetricMethods _instance = SymmetricMethods.get(id);
+    SymmetricMethods _instance = SymmetricMethods.get(oid);
     _instance.unlock();
     
     return _instance;

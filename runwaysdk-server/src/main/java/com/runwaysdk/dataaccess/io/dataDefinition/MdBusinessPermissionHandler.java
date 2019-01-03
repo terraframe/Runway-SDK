@@ -28,7 +28,5 @@ public class MdBusinessPermissionHandler extends MdClassPermissionHandler implem
   public MdBusinessPermissionHandler(ImportManager manager)
   {
     super(manager);
-
-    this.addHandler(XMLTags.STATE_PERMISSION_TAG, new StatePermissionHandler(manager));
   }
 }

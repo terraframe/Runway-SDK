@@ -26,8 +26,8 @@ public interface MdAttributeFileInfo extends MdAttributeConcreteInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdAttributeFile";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "NM20070815000000000000000000000300000000000000000000000000000001";
+  public static final String ID_VALUE  = "772bf787-02f3-3003-b6f7-c81e3800003a";
 
 }

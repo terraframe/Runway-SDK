@@ -85,12 +85,12 @@ public class PermissionComponent implements ComponentIF
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.ComponentIF#getId()
+   * @see com.runwaysdk.ComponentIF#getOid()
    */
   @Override
-  public String getId()
+  public String getOid()
   {
-    return this.component.getId();
+    return this.component.getOid();
   }
 
   /*

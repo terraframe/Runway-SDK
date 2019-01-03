@@ -28,7 +28,7 @@ import com.runwaysdk.RunwayException;
 public class ConversionException extends RunwayException
 {
   /**
-   * Auto-generated serial id
+   * Auto-generated serial oid
    */
   private static final long serialVersionUID = -5763249910326121427L;
 

@@ -25,35 +25,35 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 public class RelationshipObject extends ElementObject
 {
   /**
-   * id of the parent BusinessDAO in the relationship. <br/>
+   * oid of the parent BusinessDAO in the relationship. <br/>
    * <b>invariant </b> parenRef != null <br/>
    * <b>invariant </b> !parenRef.trim().equals("") <br/>
    */
-  private String parentId;
+  private String parentOid;
 
   /**
-   * id of the child BusinessDAO in the relationship. <br/>
-   * <b>invariant </b> childId != null <br/>
-   * <b>invariant </b> !childId().equals("") <br/>
+   * oid of the child BusinessDAO in the relationship. <br/>
+   * <b>invariant </b> childOid != null <br/>
+   * <b>invariant </b> !childOid().equals("") <br/>
    */
-  private String childId;
+  private String childOid;
 
   public RelationshipObject(RelationshipDAOIF relationshipDAO)
   {
     super(relationshipDAO);
 
-    this.parentId = relationshipDAO.getParentId();
-    this.childId = relationshipDAO.getChildId();
+    this.parentOid = relationshipDAO.getParentOid();
+    this.childOid = relationshipDAO.getChildOid();
   }
 
-  public String getParentId()
+  public String getParentOid()
   {
-    return parentId;
+    return parentOid;
   }
 
-  public String getChildId()
+  public String getChildOid()
   {
-    return childId;
+    return childOid;
   }
 
   @Override
@@ -61,15 +61,15 @@ public class RelationshipObject extends ElementObject
   {
     if (this.isNew() && !this.isAppliedToDB())
     {
-      return PersistanceFacade.newInstance(parentId, childId, this.getType());
+      return PersistanceFacade.newInstance(parentOid, childOid, this.getType());
     }
 
-    return PersistanceFacade.get(this.getId()).getEntityDAO();
+    return PersistanceFacade.get(this.getOid()).getEntityDAO();
   }
 
-  public static RelationshipObject newInstance(String parentId, String childId, String type)
+  public static RelationshipObject newInstance(String parentOid, String childOid, String type)
   {
-    RelationshipDAO business = PersistanceFacade.newInstance(parentId, childId, type);
+    RelationshipDAO business = PersistanceFacade.newInstance(parentOid, childOid, type);
 
     return new RelationshipObject(business);
   }

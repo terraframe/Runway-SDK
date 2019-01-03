@@ -130,9 +130,9 @@ public class MdAttributeMultiTermDAO extends MdAttributeMultiReferenceDAO implem
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static MdAttributeMultiTermDAOIF get(String id)
+  public static MdAttributeMultiTermDAOIF get(String oid)
   {
-    return (MdAttributeMultiTermDAOIF) BusinessDAO.get(id);
+    return (MdAttributeMultiTermDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
@@ -178,7 +178,7 @@ public class MdAttributeMultiTermDAO extends MdAttributeMultiReferenceDAO implem
   {
     String relationshipType = this.getAttributeRootRelationshipType();
 
-    RelationshipDAO relationship = RelationshipDAO.newInstance(this.getId(), term.getId(), relationshipType);
+    RelationshipDAO relationship = RelationshipDAO.newInstance(this.getOid(), term.getOid(), relationshipType);
     relationship.setValue(MdAttributeTermInfo.SELECTABLE, selectable.toString());
     relationship.apply();
 

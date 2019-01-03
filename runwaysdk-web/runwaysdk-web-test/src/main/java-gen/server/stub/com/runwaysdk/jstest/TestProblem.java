@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class TestProblem extends TestProblemBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestProblem extends TestProblemBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = 1537466807;
   

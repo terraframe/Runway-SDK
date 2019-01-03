@@ -23,11 +23,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.business.rbac.RoleDAO;
@@ -77,20 +78,8 @@ import com.runwaysdk.util.FileIO;
 import com.runwaysdk.vault.VaultDAO;
 import com.runwaysdk.vault.VaultFileDAO;
 
-public class TransactionImportTest extends TestCase
+public class TransactionImportTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   /**
    * Site used to create the import transaction zip file. The import sequence
    * number for this site needs to be reset after every test or else the
@@ -149,28 +138,8 @@ public class TransactionImportTest extends TestCase
    */
   private static boolean     log;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(TransactionImportTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
   @Request
+  @BeforeClass
   public static void classSetUp()
   {
     domain = CommonProperties.getDomain();
@@ -178,6 +147,7 @@ public class TransactionImportTest extends TestCase
   }
 
   @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.setDomain(domain);
@@ -194,9 +164,9 @@ public class TransactionImportTest extends TestCase
     }
   }
 
-  @Override
   @Request
-  protected void tearDown() throws Exception
+  @After
+  public void tearDown() throws Exception
   {
     // Reset the stored sequence number for sites cowbell.runway.com and
     // doorway.runway.com
@@ -208,6 +178,8 @@ public class TransactionImportTest extends TestCase
     ExportBuilder.resetTransactions();
   }
 
+  @Request
+  @Test
   public void testDataPropigation()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -216,7 +188,8 @@ public class TransactionImportTest extends TestCase
     MdBusinessExportBuilder builder = new MdBusinessExportBuilder();
     ObjectExportBuilder objectBuilder = new ObjectExportBuilder(first, builder)
     {
-      protected void setup()
+      @Request
+      public void setUp()
       {
       };
 
@@ -241,13 +214,13 @@ public class TransactionImportTest extends TestCase
 
       String type = mdBusiness.definesType();
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(type);
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
       // Ensure the data from the first site is propigated
-      assertNotNull(mdBusinessIF);
+      Assert.assertNotNull(mdBusinessIF);
 
       // Ensure data from the second site is propigated
-      assertNotNull(businessDAOIF);
+      Assert.assertNotNull(businessDAOIF);
     }
     finally
     {
@@ -255,6 +228,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGreaterImporterVersion()
   {
     RunwayMetadataVersion currentVersion = RunwayMetadataVersion.getCurrentVersion();
@@ -266,7 +241,9 @@ public class TransactionImportTest extends TestCase
     MdBusinessExportBuilder builder = new MdBusinessExportBuilder();
     ObjectExportBuilder objectBuilder = new ObjectExportBuilder(first, builder)
     {
-      protected void setup()
+      @Request
+      @Before
+      public void setUp()
       {
       };
 
@@ -293,7 +270,7 @@ public class TransactionImportTest extends TestCase
     }
     catch (TransactionVersionException e)
     {
-      fail("Unable to import transactions with an earlier import version");
+      Assert.fail("Unable to import transactions with an earlier import version");
     }
     finally
     {
@@ -301,6 +278,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLesserImporterVersion()
   {
     RunwayMetadataVersion currentVersion = RunwayMetadataVersion.getCurrentVersion();
@@ -312,7 +291,9 @@ public class TransactionImportTest extends TestCase
     MdBusinessExportBuilder builder = new MdBusinessExportBuilder();
     ObjectExportBuilder objectBuilder = new ObjectExportBuilder(first, builder)
     {
-      protected void setup()
+      @Request
+      @Before
+      public void setUp()
       {
       };
 
@@ -337,18 +318,20 @@ public class TransactionImportTest extends TestCase
       manager.setVersion(version);
       manager.importTransactions();
 
-      fail("Able to import transaction from a later import version");
+      Assert.fail("Able to import transaction from a later import version");
     }
     catch (XMLParseException e)
     {
-      if (e.getCause() instanceof TransactionVersionException) {
+      if (e.getCause() instanceof TransactionVersionException)
+      {
         // This is expected
         TransactionVersionException tve = (TransactionVersionException) e.getCause();
-  
-        assertEquals(version.toString(), tve.getExpectedVersion());
-        assertEquals(RunwayMetadataVersion.getCurrentVersion().toString(), tve.getActualVersion());
+
+        Assert.assertEquals(version.toString(), tve.getExpectedVersion());
+        Assert.assertEquals(RunwayMetadataVersion.getCurrentVersion().toString(), tve.getActualVersion());
       }
-      else {
+      else
+      {
         throw e;
       }
     }
@@ -358,6 +341,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportDeleteFromSameDomain()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -377,7 +362,7 @@ public class TransactionImportTest extends TestCase
       {
         MdBusinessDAO.getMdBusinessDAO(mdBusiness.definesType());
 
-        fail("Able to get an MdBussines which should have been deleted in an import originating from the same site");
+        Assert.fail("Able to get an MdBussines which should have been deleted in an import originating from the same site");
       }
       catch (DataNotFoundException e)
       {
@@ -390,6 +375,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportOfMdWarning()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -410,7 +397,7 @@ public class TransactionImportTest extends TestCase
       }
       catch (DataNotFoundException e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -419,6 +406,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportOfStructAttribute()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -471,11 +460,11 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -484,6 +473,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportOfStructAttributeInSingleTransaction()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -540,11 +531,11 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -553,6 +544,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportOfLocalCharacter()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -602,11 +595,11 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -615,6 +608,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+   @Test
   public void testImportOfLocalText()
   {
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -664,11 +659,11 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAO.get(expected.getId());
+        BusinessDAO.get(expected.getOid());
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -677,6 +672,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testImportLog()
   {
     final File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -686,7 +683,9 @@ public class TransactionImportTest extends TestCase
     MdBusinessExportBuilder builder = new MdBusinessExportBuilder();
     ObjectExportBuilder objectBuilder = new ObjectExportBuilder(first, builder)
     {
-      protected void setup()
+      @Request
+      @Before
+      public void setUp()
       {
       };
 
@@ -737,11 +736,11 @@ public class TransactionImportTest extends TestCase
 
       try
       {
-        assertTrue(iterator.hasNext());
+        Assert.assertTrue(iterator.hasNext());
 
         BusinessDAOIF importLog = iterator.next();
 
-        assertEquals(builder.getExportSequence(), importLog.getValue(ImportLogInfo.LAST_EXPORT_SEQUENCE));
+        Assert.assertEquals(builder.getExportSequence(), importLog.getValue(ImportLogInfo.LAST_EXPORT_SEQUENCE));
       }
       finally
       {
@@ -755,6 +754,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testSkipOfImportApplyFromSameDomain()
   {
     List<String> existing = UserDAO.getEntityIdsDB(UserInfo.CLASS);
@@ -776,24 +777,26 @@ public class TransactionImportTest extends TestCase
       // Ensure that none of the users were re-imported
       for (UserDAO user : users)
       {
-        assertFalse(ids.contains(user.getId()));
+        Assert.assertFalse(ids.contains(user.getOid()));
       }
     }
     finally
     {
       List<String> ids = UserDAO.getEntityIdsDB(UserInfo.CLASS);
 
-      for (String id : ids)
+      for (String oid : ids)
       {
-        if (!existing.contains(id))
+        if (!existing.contains(oid))
         {
-          UserDAO user = UserDAO.get(id).getBusinessDAO();
+          UserDAO user = UserDAO.get(oid).getBusinessDAO();
           user.delete();
         }
       }
     }
   }
 
+  @Request
+  @Test
   public void testTransactionUpdate()
   {
     TestFixtureFactory.setDomain(COWBELL_SITE);
@@ -804,7 +807,7 @@ public class TransactionImportTest extends TestCase
     try
     {
       MdAttributeDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.apply();
@@ -853,9 +856,9 @@ public class TransactionImportTest extends TestCase
 
       new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
-      assertEquals("UpdateValue", businessDAOIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      Assert.assertEquals("UpdateValue", businessDAOIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
     }
     finally
     {
@@ -863,6 +866,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testExportAndImportOfVaultFiles()
   {
     final File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
@@ -931,9 +936,9 @@ public class TransactionImportTest extends TestCase
 
       new TransactionImportManager(first.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
 
-      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
+      BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getOid());
 
-      assertNotNull(businessDAOIF);
+      Assert.assertNotNull(businessDAOIF);
     }
     finally
     {
@@ -941,6 +946,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUpldateLocalCharacterValue()
   {
     final String value = "update-value";
@@ -988,7 +995,7 @@ public class TransactionImportTest extends TestCase
       @Transaction
       private void update(BusinessDAO expected)
       {
-        BusinessDAO business = BusinessDAO.get(expected.getId()).getBusinessDAO();
+        BusinessDAO business = BusinessDAO.get(expected.getOid()).getBusinessDAO();
         AttributeStruct attributeStruct = (AttributeStruct) business.getAttribute("testLocalCharacter");
 
         StructDAO struct = attributeStruct.getStructDAO();
@@ -1015,13 +1022,13 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAOIF test = BusinessDAO.get(expected.getId());
+        BusinessDAOIF test = BusinessDAO.get(expected.getOid());
 
-        assertEquals(value, test.getStructValue("testLocalCharacter", MdAttributeLocalCharacterDAO.DEFAULT_LOCALE));
+        Assert.assertEquals(value, test.getStructValue("testLocalCharacter", MdAttributeLocalCharacterDAO.DEFAULT_LOCALE));
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -1030,6 +1037,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUpdateExemptRoleName()
   {
     final String value = "update-value";
@@ -1077,11 +1086,11 @@ public class TransactionImportTest extends TestCase
       {
         RoleDAOIF test = RoleDAO.findRole("AdminScreenAccess");
 
-        assertEquals(value, test.getStructValue("displayLabel", MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(value, test.getStructValue("displayLabel", MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally
@@ -1090,6 +1099,8 @@ public class TransactionImportTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testUpldateExistingWithLocalCharacterAttributes()
   {
     final String value = "update-value";
@@ -1162,7 +1173,7 @@ public class TransactionImportTest extends TestCase
       @Transaction
       private void updateLocalValue(BusinessDAO expected, String attributeName)
       {
-        BusinessDAO business = BusinessDAO.get(expected.getId()).getBusinessDAO();
+        BusinessDAO business = BusinessDAO.get(expected.getOid()).getBusinessDAO();
 
         AttributeStruct attributeStruct = (AttributeStruct) business.getAttribute(attributeName);
 
@@ -1195,14 +1206,14 @@ public class TransactionImportTest extends TestCase
       // Ensure that the delete of the MdBusiness was imported
       try
       {
-        BusinessDAOIF test = BusinessDAO.get(expected.getId());
+        BusinessDAOIF test = BusinessDAO.get(expected.getOid());
 
-        assertEquals(value, test.getStructValue(propertyLabel, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
-        assertEquals(value, test.getStructValue(propertyDescription, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(value, test.getStructValue(propertyLabel, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(value, test.getStructValue(propertyDescription, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE));
       }
       catch (Exception e)
       {
-        fail(e.getLocalizedMessage());
+        Assert.fail(e.getLocalizedMessage());
       }
     }
     finally

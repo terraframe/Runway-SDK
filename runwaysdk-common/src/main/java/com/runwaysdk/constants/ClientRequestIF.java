@@ -90,22 +90,22 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of all AttributeNotifications that pertain to the attribute
-   * from the component with the given id from the last request.
+   * from the component with the given oid from the last request.
    * 
    * @param componentId
    * @param attributeName
    * @return list of all AttributeNotifications that pertain to the attribute
-   *         from the component with the given id from the last request.
+   *         from the component with the given oid from the last request.
    */
   public List<AttributeNotificationDTO> getAttributeNotifications(String componentId, String attributeName);
 
   /**
    * Returns a list of all AttributeNotifications that pertain to ANY attribute
-   * from the component with the given id from the last request.
+   * from the component with the given oid from the last request.
    * 
    * @param componentId
    * @return list of all AttributeNotifications that pertain to ANY attribute
-   *         from the component with the given id from the last request.
+   *         from the component with the given oid from the last request.
    */
   public List<AttributeNotificationDTO> getAttributeNotifications(String componentId);
 
@@ -117,48 +117,48 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a list of BusinessDTO objects that represents all children in a
-   * relationship where the parent has the given parentId.
+   * relationship where the parent has the given parentOid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @return
    */
-  public List<? extends BusinessDTO> getChildren(String parentId, String relationshipType);
+  public List<? extends BusinessDTO> getChildren(String parentOid, String relationshipType);
 
   /**
    * Returns a list of BusinessDTO objects that represent all parents in a
-   * relationship where the child has the given childId.
+   * relationship where the child has the given childOid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    */
   public List<? extends BusinessDTO> getParents(String childid, String relationshipType);
 
   /**
    * Returns a list of RelationshipDTO objects (with children information) of
-   * the specified relationship type for the given business object id.
+   * the specified relationship type for the given business object oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
-  public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType);
+  public List<? extends RelationshipDTO> getChildRelationships(String oid, String relationshipType);
 
   /**
    * Returns a list of RelationshipDTO objects (with parent information) of the
-   * specified relationship type for the given business object id.
+   * specified relationship type for the given business object oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
-  public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType);
+  public List<? extends RelationshipDTO> getParentRelationships(String oid, String relationshipType);
 
   /**
    * Returns all children of and their relationship with the given term.
    * 
-   * @param parentId
-   *          The id of the term to get all children.
+   * @param parentOid
+   *          The oid of the term to get all children.
    * @param pageNum
    *          Used to break large returns into chunks (pages), this denotes the
    *          page number in the iteration request. Set to 0 to not use pages.
@@ -167,13 +167,13 @@ public interface ClientRequestIF extends ClientRequestMarker
    *          will be treated as infinity.
    * @return A list of TermAndRelDTO objects of size pageSize.
    */
-  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize);
+  public List<TermAndRelDTO> getTermAllChildren(String parentOid, Integer pageNum, Integer pageSize);
 
   /**
-   * Returns the session id used by the clientRequest to connect to the
+   * Returns the session oid used by the clientRequest to connect to the
    * back-end.
    * 
-   * @return session id used by the clientRequest to connect to the back-end.
+   * @return session oid used by the clientRequest to connect to the back-end.
    */
   public String getSessionId();
 
@@ -185,17 +185,17 @@ public interface ClientRequestIF extends ClientRequestMarker
   public Locale[] getLocales();
 
   /**
-   * Locks an object with the specified id.
+   * Locks an object with the specified oid.
    * 
-   * @param id
+   * @param oid
    * @return ElementDTO representing the object that was locked.
    */
   public void lock(ElementDTO elementDTO);
 
   /**
-   * Unlocks an object with the specified id.
+   * Unlocks an object with the specified oid.
    * 
-   * @param id
+   * @param oid
    * @return ElementDTO representing the object that was unlocked.
    */
   public void unlock(ElementDTO elementDTO);
@@ -203,12 +203,12 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Adds a child to a parent for a given relationship.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public RelationshipDTO addChild(String parentId, String childId, String relationshipType);
+  public RelationshipDTO addChild(String parentOid, String childOid, String relationshipType);
 
   /**
    * Deletes a child from a parent for a given relationship.
@@ -220,12 +220,12 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Adds a parent to a child for a given relationship.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return RelationshipDTO representing the new relationship.
    */
-  public RelationshipDTO addParent(String parentId, String childId, String relationshipType);
+  public RelationshipDTO addParent(String parentOid, String childOid, String relationshipType);
 
   /**
    * Deletes a parent from a child for a given relationship.
@@ -237,17 +237,17 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * Deletes an entity object.
    * 
-   * @param id
+   * @param oid
    */
-  public void delete(String id);
+  public void delete(String oid);
 
   /**
-   * Returns the entity instance associated with the specified id.
+   * Returns the entity instance associated with the specified oid.
    * 
-   * @param id
+   * @param oid
    * @return An EntityDTO object representing the requested instance.
    */
-  public MutableDTO get(String id);
+  public MutableDTO get(String oid);
 
   public EntityQueryDTO getAllInstances(String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber);
 
@@ -307,11 +307,11 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * Returns a DTO representing the object of the user who is logged into the
-   * session with the given session id.
+   * session with the given session oid.
    * 
    * @param sessionId
    * @return DTO representing the object of the user who is logged into the
-   *         session with the given session id.
+   *         session with the given session oid.
    */
   public BusinessDTO getSessionUser();
 
@@ -422,27 +422,10 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * 
    * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  public void grantStatePermission(String actorId, String stateId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
    * @param mdAttributeId
    * @param operationNames
    */
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames);
 
   /**
    * Grants permission to a role or user to execute an operation on a type.
@@ -451,7 +434,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
    *          names of operation to grant.
    */
@@ -464,19 +447,11 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param mdMethodId
-   *          The id of the method.
+   *          The oid of the method.
    * @param operationNames
    *          names of operation to grant.
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames);
-
-  /**
-   * Promotes the object with the given id to the state with the given name.
-   * 
-   * @param businessDTO
-   * @param transitionName
-   */
-  public void promoteObject(BusinessDTO businessDTO, String transitionName);
 
   /**
    * Removes an operation permission from a user or role on a type. Does nothing
@@ -486,7 +461,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
    *          names of operation to revoke.
    */
@@ -500,7 +475,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param mdMethodId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
    *          names of operation to revoke.
    */
@@ -509,27 +484,10 @@ public interface ClientRequestIF extends ClientRequestMarker
   /**
    * 
    * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  public void revokeStatePermission(String actorId, String stateId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
    * @param mdAttributeId
    * @param operationNames
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames);
-
-  /**
-   * 
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames);
 
   /**
    * 
@@ -575,17 +533,17 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    */
-  public void deleteChildren(String id, String relationshipType);
+  public void deleteChildren(String oid, String relationshipType);
 
   /**
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    */
-  public void deleteParents(String id, String relationshipType);
+  public void deleteParents(String oid, String relationshipType);
 
   /**
    * Returns a BusinessDTO which contains the values of an Enumeration.
@@ -641,7 +599,7 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * 
    * @return The content of a file as a {@link InputStream} of data
    */
@@ -672,7 +630,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param attributeName
    *          Name of the file attribute to retrieve
    * @param fileId
-   *          The id of the vault file to retrieve
+   *          The oid of the vault file to retrieve
    * @return
    */
   public BusinessDTO getVaultFileDTO(String type, String attributeName, String fileId);
@@ -683,7 +641,7 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @param type
    *          Fully qualified type name of the MdType defining the AttributeFile
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */
@@ -691,7 +649,7 @@ public interface ClientRequestIF extends ClientRequestMarker
 
   /**
    * @param fileId
-   *          The id of the vault file to retrieve
+   *          The oid of the vault file to retrieve
    * 
    * @return The content of a secure file as a {@link InputStream} of data
    */

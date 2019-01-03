@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1391018199)
-public class JSONSummationGenericAdapter implements com.runwaysdk.generation.loader.Reloadable
+public class JSONSummationGenericAdapter implements com.runwaysdk.generation.loader.
 {
   public static java.lang.String arrayInOut(java.lang.String sessionId, java.util.Map map)
   {

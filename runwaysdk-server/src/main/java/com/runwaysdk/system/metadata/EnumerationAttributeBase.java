@@ -31,9 +31,9 @@ public abstract class EnumerationAttributeBase extends com.runwaysdk.system.meta
   public final static String CLASS = "com.runwaysdk.system.metadata.EnumerationAttribute";
   private static final long serialVersionUID = 1667169941;
   
-  public EnumerationAttributeBase(String parentId, String childId)
+  public EnumerationAttributeBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class EnumerationAttributeBase extends com.runwaysdk.system.meta
     return (com.runwaysdk.system.metadata.MdEnumeration) super.getChild();
   }
   
-  public static EnumerationAttribute get(String id)
+  public static EnumerationAttribute get(String oid)
   {
-    return (EnumerationAttribute) com.runwaysdk.business.Relationship.get(id);
+    return (EnumerationAttribute) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static EnumerationAttribute getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class EnumerationAttributeBase extends com.runwaysdk.system.meta
     return (EnumerationAttribute) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static EnumerationAttribute lock(java.lang.String id)
+  public static EnumerationAttribute lock(java.lang.String oid)
   {
-    EnumerationAttribute _instance = EnumerationAttribute.get(id);
+    EnumerationAttribute _instance = EnumerationAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EnumerationAttribute unlock(java.lang.String id)
+  public static EnumerationAttribute unlock(java.lang.String oid)
   {
-    EnumerationAttribute _instance = EnumerationAttribute.get(id);
+    EnumerationAttribute _instance = EnumerationAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -25,12 +25,12 @@ public interface RelationshipDTOInfo
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".RelationshipDTO";
   
   /**
-   * The parent id value on a RelationshipDTO for which no ID has been specified.
+   * The parent oid value on a RelationshipDTO for which no OID has been specified.
    */
-  public static final String EMPTY_PARENT_ID = "0";
+  public static final String EMPTY_PARENT_OID = "0";
   
   /**
-   * The child id value on a RelationshipDTO for which no ID has been specified.
+   * The child oid value on a RelationshipDTO for which no OID has been specified.
    */
-  public static final String EMPTY_CHILD_ID = "0";
+  public static final String EMPTY_CHILD_OID = "0";
 }

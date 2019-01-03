@@ -18,30 +18,27 @@
  */
 package com.runwaysdk.vault;
 
-import junit.framework.Test;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-public class VaultTestSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+  VaultTest.class,
+  WebTest.class
+})
+public class VaultTestSuite
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static void main(String args[])
-  {
-    junit.textui.TestRunner.run(VaultTestSuite.suite());
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTest(VaultTest.suite());
-    suite.addTest(WebTest.suite());
-
-    return suite;
-  }
+//  public static Test suite()
+//  {
+//    TestSuite suite = new TestSuite();
+//
+//    suite.addTest(VaultTest.suite());
+//    suite.addTest(WebTest.suite());
+//
+//    return suite;
+//  }
 }

@@ -22,9 +22,9 @@ public class ClassAttributeVirtualDTO extends ClassAttributeVirtualDTOBase
 {
   private static final long serialVersionUID = 16086487;
   
-  public ClassAttributeVirtualDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ClassAttributeVirtualDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

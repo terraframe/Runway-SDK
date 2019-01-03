@@ -94,36 +94,8 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     }
     else
     {
-      setValue(METADATA, value.getId());
+      setValue(METADATA, value.getOid());
     }
-  }
-  
-  public com.runwaysdk.system.StateMaster getStateMaster()
-  {
-    if (getValue(STATEMASTER).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.StateMaster.get(getValue(STATEMASTER));
-    }
-  }
-  
-  public String getStateMasterId()
-  {
-    return getValue(STATEMASTER);
-  }
-  
-  public void validateStateMaster()
-  {
-    this.validateAttribute(STATEMASTER);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStateMasterMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(STATEMASTER);
   }
   
   protected String getDeclaredType()
@@ -131,9 +103,9 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     return CLASS;
   }
   
-  public static TypeTuple get(String id)
+  public static TypeTuple get(String oid)
   {
-    return (TypeTuple) com.runwaysdk.business.Business.get(id);
+    return (TypeTuple) com.runwaysdk.business.Business.get(oid);
   }
   
   public static TypeTuple getByKey(String key)
@@ -141,17 +113,17 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     return (TypeTuple) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static TypeTuple lock(java.lang.String id)
+  public static TypeTuple lock(java.lang.String oid)
   {
-    TypeTuple _instance = TypeTuple.get(id);
+    TypeTuple _instance = TypeTuple.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static TypeTuple unlock(java.lang.String id)
+  public static TypeTuple unlock(java.lang.String oid)
   {
-    TypeTuple _instance = TypeTuple.get(id);
+    TypeTuple _instance = TypeTuple.get(oid);
     _instance.unlock();
     
     return _instance;

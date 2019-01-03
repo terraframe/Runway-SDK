@@ -82,7 +82,7 @@ public class Sandbox
       MdBusinessDAO mdBusiness = MdBusinessDAO.getMdBusinessDAO(type).getBusinessDAO();
 
       MdAttributeBooleanDAO generateSource = MdAttributeBooleanDAO.newInstance();
-      generateSource.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+      generateSource.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
       generateSource.setValue(MdAttributeBooleanInfo.NAME, "generateSource");
       generateSource.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       generateSource.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);

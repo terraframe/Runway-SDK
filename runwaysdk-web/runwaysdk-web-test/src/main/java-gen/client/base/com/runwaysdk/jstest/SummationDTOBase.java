@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1577463167)
-public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.Summation";
   private static final long serialVersionUID = -1577463167;
@@ -48,7 +48,7 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -144,7 +144,7 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -329,7 +329,7 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -483,9 +483,9 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
     return (java.lang.Integer) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static com.runwaysdk.jstest.SummationDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.jstest.SummationDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.jstest.SummationDTO) dto;
   }
@@ -503,7 +503,7 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.SummationQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -516,10 +516,10 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.jstest.SummationDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.SummationDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.SummationDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.jstest.SummationDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -529,10 +529,10 @@ public abstract class SummationDTOBase extends com.runwaysdk.business.BusinessDT
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.jstest.SummationDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.SummationDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.SummationDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.jstest.SummationDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

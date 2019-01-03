@@ -26,32 +26,32 @@ public enum IndexTypes
   /**
    * Index type of no index.
    */
-  NO_INDEX                              ("0000000000000000000000000000040100000000000000000000000000000403"),
+  NO_INDEX                              ("9a7f73ee-81a9-32e9-884e-c4be61000055"),
   
   /**
    * Index type of non unique index.
    */
-  NON_UNIQUE_INDEX                      ("0000000000000000000000000000040000000000000000000000000000000403"),
+  NON_UNIQUE_INDEX                      ("cb6c78c1-3d48-333a-af1e-1885ca000055"),
   
   /**
    * Index type of unique index.
    */
-  UNIQUE_INDEX                          ("0000000000000000000000000000040900000000000000000000000000000403");
+  UNIQUE_INDEX                          ("72b5580c-2a6f-3250-9435-1be1f2000055");
 
   
   /**
    * Index type of unique group index.
    */
   
-  private String id = null;
+  private String oid = null;
   
-  private IndexTypes(String id)
+  private IndexTypes(String oid)
   {
-   this.id = id;
+   this.oid = oid;
   }
   
-  public String getId()
+  public String getOid()
   {
-    return this.id;  
+    return this.oid;  
   }
 }

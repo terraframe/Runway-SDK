@@ -155,8 +155,8 @@ public class TransactionBusinessDAORelationships
 
     addedRelationshipMapList.add(relationshipDAOIF);
     
-    // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
-    // that was deleted with the same id
+    // If a new relationship with the same oid has been added, make sure we delete any reference to a previous relationship 
+    // that was deleted with the same oid
     RelationshipMapList deletedRelationshipMapList = this.deletedParentRelationshipMap.get(relationshipDAOIF.getType());
     
     if (deletedRelationshipMapList != null)
@@ -166,7 +166,7 @@ public class TransactionBusinessDAORelationships
   }
   
   /**
-   * Updates the id of the relationship object of the parent relationship to this {@link BusinessDAOIF}.
+   * Updates the oid of the relationship object of the parent relationship to this {@link BusinessDAOIF}.
    * <br/>
    * <b>Precondition:</b> assumes the child on the given relationship equals this {@link BusinessDAOIF}.
    * 
@@ -226,8 +226,8 @@ public class TransactionBusinessDAORelationships
 
     addedRelationshipMapList.add(relationshipDAOIF);
     
-    // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
-    // that was deleted with the same id
+    // If a new relationship with the same oid has been added, make sure we delete any reference to a previous relationship 
+    // that was deleted with the same oid
     RelationshipMapList deletedRelationshipMapList = this.deletedChildRelationshipMap.get(relationshipDAOIF.getType());
     
     if (deletedRelationshipMapList != null)
@@ -238,7 +238,7 @@ public class TransactionBusinessDAORelationships
   }
   
   /**
-   * Updates the id relationship object of the child relationship to this {@link BusinessDAOIF}.
+   * Updates the oid relationship object of the child relationship to this {@link BusinessDAOIF}.
    * <br/>
    * <b>Precondition:</b> assumes the parent on the given relationship equals this {@link BusinessDAOIF}.
    * 

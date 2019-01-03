@@ -65,6 +65,7 @@ public class HsqlDB extends ListResourceBundle
     hashtable.put(MdAttributeLocalTextInfo.CLASS, "char");
     hashtable.put(MdAttributeHashInfo.CLASS, "varchar");
     hashtable.put(MdAttributeSymmetricInfo.CLASS, "varchar");
+    hashtable.put(MdAttributeUUIDInfo.CLASS, "uuid");
 
     return hashtable;
   }

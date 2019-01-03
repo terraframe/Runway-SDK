@@ -70,9 +70,9 @@ public abstract class MdAttributeClobBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdAttributeClob get(String id)
+  public static MdAttributeClob get(String oid)
   {
-    return (MdAttributeClob) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeClob) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeClob getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdAttributeClobBase extends com.runwaysdk.system.metadata.
     return (MdAttributeClob) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeClob lock(java.lang.String id)
+  public static MdAttributeClob lock(java.lang.String oid)
   {
-    MdAttributeClob _instance = MdAttributeClob.get(id);
+    MdAttributeClob _instance = MdAttributeClob.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeClob unlock(java.lang.String id)
+  public static MdAttributeClob unlock(java.lang.String oid)
   {
-    MdAttributeClob _instance = MdAttributeClob.get(id);
+    MdAttributeClob _instance = MdAttributeClob.get(oid);
     _instance.unlock();
     
     return _instance;

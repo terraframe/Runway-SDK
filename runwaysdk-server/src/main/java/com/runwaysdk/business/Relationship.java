@@ -63,17 +63,17 @@ public class Relationship extends Element implements Serializable
   /**
    * Constructor for new instances of Realtionships.
    *
-   * @param parentId
-   *          Database id of the parent
-   * @param childId
-   *          Database id of the child
+   * @param parentOid
+   *          Database oid of the parent
+   * @param childOid
+   *          Database oid of the child
    * @param type
    *          type the relationship
    */
-  public Relationship(String parentId, String childId)
+  public Relationship(String parentOid, String childOid)
   {
     super();
-    setDataEntity(RelationshipDAO.newInstance(parentId, childId, getDeclaredType()));
+    setDataEntity(RelationshipDAO.newInstance(parentOid, childOid, getDeclaredType()));
     parent = null;
     child = null;
   }
@@ -81,17 +81,17 @@ public class Relationship extends Element implements Serializable
   /**
    * Constructor for generic instances of Realtionships. Should not be called by subclasses, as their java type may not correctly represent their DAO type.
    *
-   * @param parentId
-   *          Database id of the parent
-   * @param childId
-   *          Database id of the child
+   * @param parentOid
+   *          Database oid of the parent
+   * @param childOid
+   *          Database oid of the child
    * @param type
    *          type the relationship
    */
-  public Relationship(String parentId, String childId, String type)
+  public Relationship(String parentOid, String childOid, String type)
   {
     super();
-    setDataEntity(RelationshipDAO.newInstance(parentId, childId, type));
+    setDataEntity(RelationshipDAO.newInstance(parentOid, childOid, type));
     parent = null;
     child = null;
   }
@@ -109,45 +109,45 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Overwrites the parent id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
+   * Overwrites the parent oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
    * corruption.
    *
-   * @param parentId
+   * @param parentOid
    */
-  public void overwriteParentId(String parentId)
+  public void overwriteParentOid(String parentOid)
   {
-    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(parentId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentOid(parentOid);
   }
 
   /**
-   * Overwrites the child id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
+   * Overwrites the child oid if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
    *
-   * @param childId
+   * @param childOid
    */
-  public void overwriteChildId(String childId)
+  public void overwriteChildOid(String childOid)
   {
-    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(childId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentOid(childOid);
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified id from the database. The returned Relationship is typesafe, meaning that its actual type is that specified by the
+   * Using reflection, get returns an object of the specified type with the specified oid from the database. The returned Relationship is typesafe, meaning that its actual type is that specified by the
    * type parameter.
    *
-   * @param id
-   *          ID of the instance to get
-   * @return Typesafe Relationship representing the id in the database
+   * @param oid
+   *          OID of the instance to get
+   * @return Typesafe Relationship representing the oid in the database
    */
-  public static Relationship get(String id)
+  public static Relationship get(String oid)
   {
     // An empty string likely indicates the value was never set in the database.
-    if (id == null || id.length() == 0)
+    if (oid == null || oid.length() == 0)
     {
-      String errMsg = "Object with id [" + id + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
+      String errMsg = "Object with oid [" + oid + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
 
-      throw new InvalidIdException(errMsg, id);
+      throw new InvalidIdException(errMsg, oid);
     }
 
-    Relationship reflected = instantiate(RelationshipDAO.get(id));
+    Relationship reflected = instantiate(RelationshipDAO.get(oid));
 
     return reflected;
   }
@@ -160,7 +160,7 @@ public class Relationship extends Element implements Serializable
    *          type of the instance to get
    * @param key
    *          key of the instance to get
-   * @return Typesafe Business representing the id in the database
+   * @return Typesafe Business representing the oid in the database
    */
   public static Relationship get(String type, String key)
   {
@@ -170,18 +170,18 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Relationship is not typesafe, meaning that its actual type just a
+   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Relationship is not typesafe, meaning that its actual type just a
    * Relationship.
    *
-   * @param id
-   *          ID of the instance to get.
+   * @param oid
+   *          OID of the instance to get.
    * @param type
    *          type of the instance to get.
-   * @return Typesafe Relationship representing the id in the database.
+   * @return Typesafe Relationship representing the oid in the database.
    */
-  public static Relationship getRelationship(String id)
+  public static Relationship getRelationship(String oid)
   {
-    RelationshipDAOIF relationshipIF = RelationshipDAO.get(id);
+    RelationshipDAOIF relationshipIF = RelationshipDAO.get(oid);
     // Cast is OK, as the data access object cannot be modified unless the logged in user
     // has a lock on the object.
     return new Relationship((RelationshipDAO) relationshipIF);
@@ -227,7 +227,7 @@ public class Relationship extends Element implements Serializable
         Class<String> stringClass = String.class;
         Constructor<?> con = clazz.getConstructor(stringClass, stringClass);
 
-        relationship = (Relationship) con.newInstance(relationshipDAO.getParentId(), relationshipDAO.getChildId());
+        relationship = (Relationship) con.newInstance(relationshipDAO.getParentOid(), relationshipDAO.getChildOid());
 
         // Set the private variables of the runtime type
         for (AttributeIF attribute : relationshipDAO.getAttributeArrayIF())
@@ -284,19 +284,19 @@ public class Relationship extends Element implements Serializable
   {
     // Lazy instantiation of parent
     if (parent == null)
-      parent = Business.get(relationship().getParentId());
+      parent = Business.get(relationship().getParentOid());
 
     return parent;
   }
 
   /**
-   * Returns the id of the parent on this object.
+   * Returns the oid of the parent on this object.
    *
-   * @return id of the parent on this object.
+   * @return oid of the parent on this object.
    */
-  public String getParentId()
+  public String getParentOid()
   {
-    return this.relationship().getParentId();
+    return this.relationship().getParentOid();
   }
 
   /**
@@ -308,19 +308,19 @@ public class Relationship extends Element implements Serializable
   {
     // Lazy instantiation of child
     if (child == null)
-      child = Business.get(relationship().getChildId());
+      child = Business.get(relationship().getChildOid());
 
     return child;
   }
 
   /**
-   * Returns the id of the child on this object.
+   * Returns the oid of the child on this object.
    *
-   * @return id of the child on this object.
+   * @return oid of the child on this object.
    */
-  public String getChildId()
+  public String getChildOid()
   {
-    return this.relationship().getChildId();
+    return this.relationship().getChildOid();
   }
 
   protected String getDeclaredType()

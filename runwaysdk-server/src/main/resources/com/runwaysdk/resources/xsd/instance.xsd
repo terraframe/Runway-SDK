@@ -37,13 +37,13 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!--The attribute-value pairings of the instance-->
         <xs:element ref="value"/>
-        <!--The attribute-multi xml id pairing of the instance-->
+        <!--The attribute-multi xml oid pairing of the instance-->
         <xs:element ref="enumeration"/>
         <!--The struct attribute values-->
         <xs:element ref="struct"/>
       </xs:choice>
-      <!--A unqiue id for the instance-->
-      <xs:attribute name="id" type="xs:string" use="required"/>
+      <!--A unqiue oid for the instance-->
+      <xs:attribute name="oid" type="xs:string" use="required"/>
       <!--The qualified path of the class being instaniated-->
       <xs:attribute name="type" type="xs:string" use="required"/>
     </xs:complexType>
@@ -55,19 +55,19 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!--The attribute-value pairings of the instance-->
         <xs:element ref="value"/>
-        <!--The attribute-multi xml id pairing of the instance-->
+        <!--The attribute-multi xml oid pairing of the instance-->
         <xs:element ref="enumeration"/>
         <!--The struct attribute values-->
         <xs:element ref="struct"/>
       </xs:choice>
-      <!--A unqiue id for the instance-->
-      <xs:attribute name="id" type="xs:string" use="required"/>
+      <!--A unqiue oid for the instance-->
+      <xs:attribute name="oid" type="xs:string" use="required"/>
       <!--The qualified path of the class being instaniated-->
       <xs:attribute name="type" type="xs:string" use="required"/>
-      <!--parentId: The xml id of the instance of the parent-->
-      <xs:attribute name="parentId" type="xs:string" use="required"/>
-      <!--childId: The xml id of the instance of the child-->
-      <xs:attribute name="childId" type="xs:string" use="required"/>
+      <!--parentOid: The xml oid of the instance of the parent-->
+      <xs:attribute name="parentOid" type="xs:string" use="required"/>
+      <!--childOid: The xml oid of the instance of the child-->
+      <xs:attribute name="childOid" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
 
@@ -90,7 +90,7 @@
       <xs:sequence>
         <xs:element name="value" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
-            <!--id: The xml id of the class being referenced-->
+            <!--oid: The xml oid of the class being referenced-->
             <xs:attribute name="value" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
@@ -106,13 +106,13 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <!--The attribute-value pairings of the instance-->
         <xs:element ref="value"/>
-        <!--The attribute-multi xml id pairing of the instance-->
+        <!--The attribute-multi xml oid pairing of the instance-->
         <xs:element ref="enumeration"/>
       </xs:choice>
       <!--attribute: The name of the struct attribute-->
       <xs:attribute name="attribute" type="xs:string" use="required"/>
-      <!--attribute: The id of the struct object-->
-      <xs:attribute name="id" type="xs:string" use="required"/>
+      <!--attribute: The oid of the struct object-->
+      <xs:attribute name="oid" type="xs:string" use="required"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>

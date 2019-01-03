@@ -48,8 +48,8 @@ public class ConditionMdBuilders
      */
     protected void init(MdWebFieldDTO mdField, ConditionMd conditionMd, FieldConditionDTO fieldCondition)
     {
-      conditionMd.setId(fieldCondition.getId());
-      conditionMd.setReferencingMdField(mdField.getId());
+      conditionMd.setOid(fieldCondition.getOid());
+      conditionMd.setReferencingMdField(mdField.getOid());
       conditionMd.setReferencingMdForm(mdField.getDefiningMdFormId());
     }
   }

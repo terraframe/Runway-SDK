@@ -114,13 +114,13 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeMoment mdAttributeMoment)
     {
       if(mdAttributeMoment == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeMoment.getId());
+      return this.EQ(mdAttributeMoment.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeMoment mdAttributeMoment)
     {
       if(mdAttributeMoment == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeMoment.getId());
+      return this.NE(mdAttributeMoment.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeMoment.length; i++)
       {
-        itemIdArray[i] = mdAttributeMoment[i].getId();
+        itemIdArray[i] = mdAttributeMoment[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeMoment.length; i++)
       {
-        itemIdArray[i] = mdAttributeMoment[i].getId();
+        itemIdArray[i] = mdAttributeMoment[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeMoment.length; i++)
       {
-        itemIdArray[i] = mdAttributeMoment[i].getId();
+        itemIdArray[i] = mdAttributeMoment[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeMoment.length; i++)
       {
-        itemIdArray[i] = mdAttributeMoment[i].getId();
+        itemIdArray[i] = mdAttributeMoment[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeMomentQuery extends com.runwaysdk.system.metadata.MdAtt
 
       for (int i=0; i<mdAttributeMoment.length; i++)
       {
-        itemIdArray[i] = mdAttributeMoment[i].getId();
+        itemIdArray[i] = mdAttributeMoment[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

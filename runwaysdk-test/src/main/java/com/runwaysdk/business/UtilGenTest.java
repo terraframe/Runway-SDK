@@ -18,60 +18,35 @@
  */
 package com.runwaysdk.business;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.dataaccess.metadata.MdSessionDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
+import com.runwaysdk.session.Request;
 
+@RunWith(ClasspathTestRunner.class)
 public class UtilGenTest extends SessionComponentGenTest
 {
-  @Override
-  public TestResult run()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(UtilGenTest.class.getSimpleName());
-    suite.addTestSuite(UtilGenTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        collection = MdUtilDAO.newInstance();      
-        superMdSessionAttributeNameHack = MdUtilInfo.SUPER_MD_UTIL;
-        collectionSub = MdUtilDAO.newInstance();
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
+    collection = MdUtilDAO.newInstance();
+    superMdSessionAttributeNameHack = MdUtilInfo.SUPER_MD_UTIL;
+    collectionSub = MdUtilDAO.newInstance();
+    sessionClassSetUp();
   }
 
   protected MdSessionDAO newMdSession()
   {
     return MdUtilDAO.newInstance();
   }
-  
+
   protected String buildGetMethod()
   {
-    return "return (Collection) "+Util.class.getName()+".get(id);\n";
+    return "return (Collection) " + Util.class.getName() + ".get(oid);\n";
   }
 }

@@ -27,10 +27,10 @@ public interface MdRelationshipInfo extends MdElementInfo
    */
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdRelationship";
   
-  public static final String ID_VALUE                   = "0000000000000000000000000000006100000000000000000000000000000001";
+  public static final String ID_VALUE                   = "7658319f-d93c-3ee2-9056-ba352f00003a";
   
   /**
-   * Name of the attribute that stores the id of the super class.
+   * Name of the attribute that stores the oid of the super class.
    */
   public static final String SUPER_MD_RELATIONSHIP     = "superMdRelationship";
   /**
@@ -42,12 +42,12 @@ public interface MdRelationshipInfo extends MdElementInfo
    */
   public static final String CACHE_ALGORITHM           = "cacheAlgorithm";
   /**
-   * Name of the attribute that specifies the id of the metadata that defines the type of 
+   * Name of the attribute that specifies the oid of the metadata that defines the type of 
    * objects that are parents in this relationship type.
    */
   public static final String PARENT_MD_BUSINESS        = "parentMdBusiness";
   /**
-   * Name of the attribute that specifies the id of the metadata that defines the type of 
+   * Name of the attribute that specifies the oid of the metadata that defines the type of 
    * objects that are children in this relationship type.
    */
   public static final String CHILD_MD_BUSINESS         = "childMdBusiness";
@@ -99,7 +99,7 @@ public interface MdRelationshipInfo extends MdElementInfo
   public static final String CHILD_VISIBILITY           = "childVisibility";
   
   /**
-   * Reference of the attribute that specifies the id of the metadata that defines 
+   * Reference of the attribute that specifies the oid of the metadata that defines 
    * the type used to store attributes on this relationship.
    */
   public static final String SORT_MD_ATTRIBUTE          = "sortMdAttribute";

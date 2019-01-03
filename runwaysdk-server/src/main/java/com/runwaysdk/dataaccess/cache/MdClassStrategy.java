@@ -67,13 +67,13 @@ public class MdClassStrategy extends MetaDataObjectStrategy
   private Map<String, MdEntityDAO> mdEntityTableNameMap;
   
   /**
-   * key: MdBusiness id.  Value: MdRelationship ids where MdBusiness participates as a parent.
+   * key: MdBusiness oid.  Value: MdRelationship ids where MdBusiness participates as a parent.
    */
   private Map<String, Set<String>> mdBusinessParentMdRelationships;
 
 
   /**
-   * key: MdBusiness id.  Value: MdRelationship ids where MdBusiness participates as a child.
+   * key: MdBusiness oid.  Value: MdRelationship ids where MdBusiness participates as a child.
    */
   private Map<String, Set<String>> mdBusinessChildMdRelationships;
 
@@ -146,16 +146,16 @@ public class MdClassStrategy extends MetaDataObjectStrategy
   }
 
   /**
-   * Returns a <code>MdClassDAOIF</code> instance with a root id that matches the given value.
+   * Returns a <code>MdClassDAOIF</code> instance with a root oid that matches the given value.
    *
    * <br/><b>Precondition:</b>  rootId != null
    * <br/><b>Precondition:</b>  !rootId.trim().equals("")
-   * <br/><b>Precondition:</b>  rootId is the root of an id that is a valid class defined in the database
+   * <br/><b>Precondition:</b>  rootId is the root of an oid that is a valid class defined in the database
    * <br/><b>Postcondition:</b> Returns a MdClassIF where
-   *                            IdParser.parseRootFromId(mdClass.getId()).equals(rootId)
+   *                            IdParser.parseRootFromId(mdClass.getOid()).equals(rootId)
    *
    * @param  rootId of the MdClass.
-   * @return MdClassIF instance with a root id that matches the given value.
+   * @return MdClassIF instance with a root oid that matches the given value.
    */
   public synchronized MdClassDAOIF getMdClassByRootId(String rootId)
   {
@@ -167,7 +167,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
     MdClassDAO mdClass = this.mdClassRootIdMap.get(rootId);
     if (mdClass==null)
     {
-      String error = "The "+MdClassInfo.CLASS+" with root id [" + rootId + "] was not found.";
+      String error = "The "+MdClassInfo.CLASS+" with root oid [" + rootId + "] was not found.";
 
       throw new DataNotFoundException(error, MdClassDAO.getMdClassDAO(MdClassInfo.CLASS));
     }
@@ -235,7 +235,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in which
-   * the <code>MdBusinessDAOIF</code> with the given id participates as a parent.
+   * the <code>MdBusinessDAOIF</code> with the given oid participates as a parent.
    *
    * @return set of <code>MdRelationshipDAOIF</code> ids
    */
@@ -253,7 +253,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in which
-   * the <code>MdBusinessDAOIF</code> with the given id participates as a child.
+   * the <code>MdBusinessDAOIF</code> with the given oid participates as a child.
    *
    * @return set of <code>MdRelationshipDAOIF</code> ids
    */
@@ -281,14 +281,15 @@ public class MdClassStrategy extends MetaDataObjectStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized (entityDAO.getId())
+    synchronized (entityDAO.getOid())
     {
       super.updateCache(entityDAO);
 
       MdClassDAO mdClassDAO = (MdClassDAO) entityDAO;
 
       this.mdClassTypeMap.put(mdClassDAO.definesType(), mdClassDAO);
-      this.mdClassRootIdMap.put(IdParser.parseRootFromId(mdClassDAO.getId()), mdClassDAO);
+//      this.mdClassRootIdMap.put(IdParser.parseRootFromId(mdClassDAO.getOid()), mdClassDAO);
+      this.mdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO);
 
       if (mdClassDAO instanceof MdEntityDAO)
       {
@@ -312,7 +313,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
           parentRelationshipSet = new HashSet<String>();
           this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
         }
-        parentRelationshipSet.add(mdRelationshipDAO.getId());
+        parentRelationshipSet.add(mdRelationshipDAO.getOid());
 
         String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS)
             .getValue();
@@ -326,7 +327,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
           childRelationshipSet = new HashSet<String>();
           this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
         }
-        childRelationshipSet.add(mdRelationshipDAO.getId());
+        childRelationshipSet.add(mdRelationshipDAO.getOid());
       }
     }
   }
@@ -344,12 +345,12 @@ public class MdClassStrategy extends MetaDataObjectStrategy
    */
   public void removeCache(EntityDAO mdClassDAO)
   {
-    synchronized (mdClassDAO.getId())
+    synchronized (mdClassDAO.getOid())
     {
       super.removeCache(mdClassDAO);
 
       this.mdClassTypeMap.remove( ( (MdClassDAOIF) mdClassDAO ).definesType());
-      this.mdClassRootIdMap.remove(IdParser.parseRootFromId(mdClassDAO.getId()));
+      this.mdClassRootIdMap.remove(( (MdClassDAOIF) mdClassDAO ).getRootId());
       
       if (mdClassDAO instanceof MdEntityDAO)
       {
@@ -365,22 +366,22 @@ public class MdClassStrategy extends MetaDataObjectStrategy
             .getAttribute(MdRelationshipInfo.PARENT_MD_BUSINESS).getValue();
         if (this.mdBusinessParentMdRelationships.containsKey(parentMdBusinessId))
         {
-          this.mdBusinessParentMdRelationships.get(parentMdBusinessId).remove(mdRelationshipDAO.getId());
+          this.mdBusinessParentMdRelationships.get(parentMdBusinessId).remove(mdRelationshipDAO.getOid());
         }
 
         String childMdBusinessId = mdRelationshipDAO.getAttribute(MdRelationshipInfo.CHILD_MD_BUSINESS)
             .getValue();
         if (this.mdBusinessChildMdRelationships.containsKey(childMdBusinessId))
         {
-          this.mdBusinessChildMdRelationships.get(childMdBusinessId).remove(mdRelationshipDAO.getId());
+          this.mdBusinessChildMdRelationships.get(childMdBusinessId).remove(mdRelationshipDAO.getOid());
         }
       }
       else if (mdClassDAO instanceof MdBusinessDAO)
       {
         MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) mdClassDAO;
 
-        this.mdBusinessParentMdRelationships.remove(mdBusinessDAO.getId());
-        this.mdBusinessChildMdRelationships.remove(mdBusinessDAO.getId());
+        this.mdBusinessParentMdRelationships.remove(mdBusinessDAO.getOid());
+        this.mdBusinessChildMdRelationships.remove(mdBusinessDAO.getOid());
       }
     }
   }

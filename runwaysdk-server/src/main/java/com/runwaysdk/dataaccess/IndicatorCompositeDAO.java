@@ -21,12 +21,6 @@ package com.runwaysdk.dataaccess;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlClassResolver;
-import ognl.OgnlContext;
-import ognl.OgnlException;
-
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ExpressionException;
 import com.runwaysdk.business.InvalidExpressionSyntaxException;
@@ -34,6 +28,12 @@ import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
+
+import ognl.ExpressionSyntaxException;
+import ognl.Ognl;
+import ognl.OgnlClassResolver;
+import ognl.OgnlContext;
+import ognl.OgnlException;
 
 public class IndicatorCompositeDAO extends IndicatorElementDAO implements IndicatorCompositeDAOIF
 {
@@ -77,9 +77,9 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static IndicatorCompositeDAOIF get(String id)
+  public static IndicatorCompositeDAOIF get(String oid)
   {
-    return (IndicatorCompositeDAOIF) BusinessDAO.get(id);
+    return (IndicatorCompositeDAOIF) BusinessDAO.get(oid);
   }
 
   /**

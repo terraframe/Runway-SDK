@@ -154,13 +154,13 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdStruct mdStruct)
     {
       if(mdStruct == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdStruct.getId());
+      return this.EQ(mdStruct.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdStruct mdStruct)
     {
       if(mdStruct == null) return this.NE((java.lang.String)null);
-      return this.NE(mdStruct.getId());
+      return this.NE(mdStruct.getOid());
     }
 
   public com.runwaysdk.system.metadata.EntityCacheMasterQuery.StructCacheQueryIF getCacheAlgorithm()
@@ -237,7 +237,7 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
 
       for (int i=0; i<mdStruct.length; i++)
       {
-        itemIdArray[i] = mdStruct[i].getId();
+        itemIdArray[i] = mdStruct[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
 
       for (int i=0; i<mdStruct.length; i++)
       {
-        itemIdArray[i] = mdStruct[i].getId();
+        itemIdArray[i] = mdStruct[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
 
       for (int i=0; i<mdStruct.length; i++)
       {
-        itemIdArray[i] = mdStruct[i].getId();
+        itemIdArray[i] = mdStruct[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
 
       for (int i=0; i<mdStruct.length; i++)
       {
-        itemIdArray[i] = mdStruct[i].getId();
+        itemIdArray[i] = mdStruct[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdStructQuery extends com.runwaysdk.system.metadata.MdEntityQuery
 
       for (int i=0; i<mdStruct.length; i++)
       {
-        itemIdArray[i] = mdStruct[i].getId();
+        itemIdArray[i] = mdStruct[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

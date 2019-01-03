@@ -21,9 +21,7 @@ package com.runwaysdk.business.generation;
 import java.util.List;
 
 import com.runwaysdk.constants.ComponentInfo;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -52,7 +50,6 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 
 /**
  * !IMPORTANT! If you're changing the way base classes are generated then its
@@ -169,11 +166,6 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     String typeName = this.getMdTypeDAOIF().getTypeName();
     String classSignature = "public abstract class " + this.getBaseClassName() + " extends " + getExtends(parent);
-
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      classSignature += Reloadable.IMPLEMENTS;
-    }
 
     // Add a javadoc to the base file that yells at the user to not make changes
     getWriter().writeLine("/**");
@@ -298,7 +290,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("addEnumItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("addEnumItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -308,7 +300,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("removeEnumItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("removeEnumItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -350,7 +342,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("this.addMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("this.addMultiItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -360,7 +352,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       getWriter().openBracket();
       getWriter().writeLine("if(value != null)");
       getWriter().openBracket();
-      getWriter().writeLine("removeMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().writeLine("removeMultiItem(" + attributeNameConstant + ", value.getOid());");
       getWriter().closeBracket();
       getWriter().closeBracket();
       getWriter().writeLine("");
@@ -486,9 +478,9 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    // Generate an accessor that returns the reference id
-    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
-    String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.ID).javaType(false);
+    // Generate an accessor that returns the reference oid
+    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.OID);
+    String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.OID).javaType(false);
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + getRefIdReturnType + " get" + refAttributeIdName + "()");
     getWriter().openBracket();
 
@@ -548,15 +540,15 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getSetterVisibility();
     
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " id)");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " oid)");
     getWriter().openBracket();
-    getWriter().writeLine("if(id == null)");
+    getWriter().writeLine("if(oid == null)");
     getWriter().openBracket();
     getWriter().writeLine(m.setterWrapper("\"\"") + ";");
     getWriter().closeBracket();
     getWriter().writeLine("else");
     getWriter().openBracket();
-    getWriter().writeLine(m.setterWrapper("id") + ";");
+    getWriter().writeLine(m.setterWrapper("oid") + ";");
     getWriter().closeBracket();
     getWriter().closeBracket();
     getWriter().writeLine("");
@@ -609,8 +601,8 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       if (!mdMethod.isStatic())
       {
         List<MdParameterDAOIF> list = mdMethod.getMdParameterDAOs();
-        MdParameterDAO id = GenerationUtil.getMdParameterId();
-        list.add(0, id);
+        MdParameterDAO oid = GenerationUtil.getMdParameterId();
+        list.add(0, oid);
 
         addMdMethod(mdMethod.getName(), mdMethod.getReturnType(), list, true);
       }
@@ -625,7 +617,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     getWriter().writeLine("public " + modifier + returnType.getType() + " " + methodName + "(" + parameters + ")");
     getWriter().openBracket();
-    getWriter().writeLine(this.getMdTypeDAOIF().getTypeName() + " _instance = " + this.getMdTypeDAOIF().getTypeName() + ".get(id);");
+    getWriter().writeLine(this.getMdTypeDAOIF().getTypeName() + " _instance = " + this.getMdTypeDAOIF().getTypeName() + ".get(oid);");
 
     if (!returnType.isVoid())
     {
@@ -679,7 +671,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     MdClassDAOIF mdClass = this.getMdTypeDAOIF();
 
-    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(EntityTypes.STATE_MASTER.getType()) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS) || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdActionInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS) || mdClass.definesType().equals(MdTypeInfo.CLASS))
+    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS) || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS) || mdClass.definesType().equals(MdTypeInfo.CLASS))
     {
       getWriter().writeLine("    return this.getClassDisplayLabel();");
     }

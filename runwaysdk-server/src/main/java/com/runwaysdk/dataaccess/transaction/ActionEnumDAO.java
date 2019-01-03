@@ -25,36 +25,36 @@ public enum ActionEnumDAO
    * Create Action
    */
   CREATE
-  ("stitl8uzd1t2v6xgbhmiqyl2dcwy6i4nz62bgzkm0p8s4i08714kboipputg2pty"),
+  ("0a51155b-8f3e-3f56-a420-e92ddd000089"),
 
   /**
    *  Update Action
    */
   UPDATE
-  ("xqcb4i3nlkdd4ipji5y5ifg308sozkbhz62bgzkm0p8s4i08714kboipputg2pty"),
+  ("2d8e3c76-984b-3a5e-90d6-4785e0000089"),
 
   /**
    *  Delete Action
    */
   DELETE
-  ("2dkmcf9bsv3mhwl8ij97rsap4nnaq236z62bgzkm0p8s4i08714kboipputg2pty"),
+  ("1bab1368-187a-3fd5-97ea-6c9bc3000089"),
 
   /**
    *  No Operation Action
    */
   NO_OPERATION
-  ("0oiyrpw65ysskspuxxml8gpoi1iuxiquz62bgzkm0p8s4i08714kboipputg2pty");
+  ("1f7287d2-806e-3a4b-9438-fc1ee6000089");
 
-  private String id;
+  private String oid;
 
-  private ActionEnumDAO(String id)
+  private ActionEnumDAO(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 
 }

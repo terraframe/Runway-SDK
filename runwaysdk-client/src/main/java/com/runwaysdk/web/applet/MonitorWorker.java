@@ -68,7 +68,7 @@ public class MonitorWorker
   private RemoteAppletAdapter  remoteAdapter;
 
   /**
-   * Session id of the uploader
+   * Session oid of the uploader
    */
   private String               sessionId;
 

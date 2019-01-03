@@ -144,9 +144,9 @@ public class MojaxObjectParser
    */
   private void convertDTO(JSONObject dto, String baseName) throws JSONException
   {
-    // id
-    String id = dto.getString(JSON.ENTITY_DTO_ID.getLabel());
-    parameters.put(baseName + ".componentId", new String[] { id });
+    // oid
+    String oid = dto.getString(JSON.ENTITY_DTO_ID.getLabel());
+    parameters.put(baseName + ".componentId", new String[] { oid });
 
     // isNew
     Boolean isNew = dto.getBoolean(JSON.ENTITY_DTO_NEW_INSTANCE.getLabel());
@@ -160,11 +160,11 @@ public class MojaxObjectParser
 
     if (dto.getString(JSON.DTO_TYPE.getLabel()).equals(RelationshipDTOInfo.CLASS))
     {
-      String parentId = dto.getString(JSON.RELATIONSHIP_DTO_PARENT_ID.getLabel());
-      parameters.put("#" + baseName + ".parent.id", new String[] { parentId });
+      String parentOid = dto.getString(JSON.RELATIONSHIP_DTO_PARENT_OID.getLabel());
+      parameters.put("#" + baseName + ".parent.oid", new String[] { parentOid });
 
-      String childId = dto.getString(JSON.RELATIONSHIP_DTO_CHILD_ID.getLabel());
-      parameters.put("#" + baseName + ".child.id", new String[] { childId });
+      String childOid = dto.getString(JSON.RELATIONSHIP_DTO_CHILD_OID.getLabel());
+      parameters.put("#" + baseName + ".child.oid", new String[] { childOid });
     }
   }
 
@@ -178,10 +178,10 @@ public class MojaxObjectParser
     {
       String name = (String) iter.next();
 
-      // ignore id and type attributes because including them
+      // ignore oid and type attributes because including them
       // will cause an exception as the RequestScraper will try
       // and set their values on the DTO
-      if (name.equals(ComponentInfo.ID) || name.equals(ComponentInfo.TYPE))
+      if (name.equals(ComponentInfo.OID) || name.equals(ComponentInfo.TYPE))
       {
         continue;
       }

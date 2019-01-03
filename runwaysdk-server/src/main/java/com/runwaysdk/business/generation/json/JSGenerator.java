@@ -175,7 +175,7 @@ public abstract class JSGenerator
   private MdTypeDAOIF mdTypeIF;
   
   /**
-   * The id of the session requesting the javascript class.
+   * The oid of the session requesting the javascript class.
    */
   private String sessionId;
   
@@ -324,7 +324,7 @@ public abstract class JSGenerator
   }
   
   /**
-   * Returns the session id that is requesting the javascript class.
+   * Returns the session oid that is requesting the javascript class.
    */
   protected String getSessionId()
   {

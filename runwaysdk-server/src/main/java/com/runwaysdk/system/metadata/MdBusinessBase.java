@@ -48,7 +48,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   {
     if(value != null)
     {
-      addEnumItem(CACHEALGORITHM, value.getId());
+      addEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -56,7 +56,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   {
     if(value != null)
     {
-      removeEnumItem(CACHEALGORITHM, value.getId());
+      removeEnumItem(CACHEALGORITHM, value.getOid());
     }
   }
   
@@ -112,56 +112,13 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
     else
     {
-      setValue(SUPERMDBUSINESS, value.getId());
+      setValue(SUPERMDBUSINESS, value.getOid());
     }
   }
   
   protected String getDeclaredType()
   {
     return CLASS;
-  }
-  
-  public com.runwaysdk.system.DefinesStateMachine addDefiningMdBusiness(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    return (com.runwaysdk.system.DefinesStateMachine) addChild(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  public void removeDefiningMdBusiness(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    removeAllChildren(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdStateMachine> getAllDefiningMdBusiness()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdStateMachine>) getChildren(com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine> getAllDefiningMdBusinessRel()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine>) getChildRelationships(com.runwaysdk.system.DefinesStateMachine.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.system.DefinesStateMachine getDefiningMdBusinessRel(com.runwaysdk.system.metadata.MdStateMachine mdStateMachine)
-  {
-    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.DefinesStateMachine>) getRelationshipsWithChild(mdStateMachine, com.runwaysdk.system.DefinesStateMachine.CLASS);
-    try
-    {
-      if (iterator.hasNext())
-      {
-        return iterator.next();
-      }
-      else
-      {
-        return null;
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
   }
   
   public com.runwaysdk.system.metadata.EnumerationAttribute addMdEnumeration(com.runwaysdk.system.metadata.MdEnumeration mdEnumeration)
@@ -293,9 +250,9 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
   }
   
-  public static MdBusiness get(String id)
+  public static MdBusiness get(String oid)
   {
-    return (MdBusiness) com.runwaysdk.business.Business.get(id);
+    return (MdBusiness) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdBusiness getByKey(String key)
@@ -303,17 +260,17 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     return (MdBusiness) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdBusiness lock(java.lang.String id)
+  public static MdBusiness lock(java.lang.String oid)
   {
-    MdBusiness _instance = MdBusiness.get(id);
+    MdBusiness _instance = MdBusiness.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdBusiness unlock(java.lang.String id)
+  public static MdBusiness unlock(java.lang.String oid)
   {
-    MdBusiness _instance = MdBusiness.get(id);
+    MdBusiness _instance = MdBusiness.get(oid);
     _instance.unlock();
     
     return _instance;

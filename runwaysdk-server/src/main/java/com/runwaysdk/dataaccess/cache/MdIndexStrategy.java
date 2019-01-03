@@ -129,7 +129,7 @@ public class MdIndexStrategy extends MetaDataObjectStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.updateCache(entityDAO);
 
@@ -150,7 +150,7 @@ public class MdIndexStrategy extends MetaDataObjectStrategy
    */
   public void removeCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.removeCache(entityDAO);
 

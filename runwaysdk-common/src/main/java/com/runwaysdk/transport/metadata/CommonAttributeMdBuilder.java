@@ -18,17 +18,6 @@
  */
 package com.runwaysdk.transport.metadata;
 
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.w3c.dom.CDATASection;
-import org.w3c.dom.Node;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.transport.conversion.ConversionFacade;
-import com.runwaysdk.transport.conversion.dom.Elements;
-
 /**
  * Builds the metadata for an attribute.
  */
@@ -60,9 +49,9 @@ public class CommonAttributeMdBuilder
   private boolean immutable;
 
   /**
-   * The id of the attribute metadata;
+   * The oid of the attribute metadata;
    */
-  private String id;
+  private String oid;
 
   /**
    * The flag denoting if the attribute is a system attribute.
@@ -94,50 +83,11 @@ public class CommonAttributeMdBuilder
     this.description = source.getDescription();
     this.required = source.isRequired();
     this.immutable = source.isImmutable();
-    this.id = source.getId();
+    this.oid = source.getOid();
     this.system = source.isSystem();
     this.name = source.getName();
     this.generateAccessor = source.getGenerateAccessor();
 
-  }
-
-  /**
-   *
-   * @param metadata
-   * @param dest
-   */
-  protected CommonAttributeMdBuilder(Node metadata, Node properties, AttributeMdDTO dest)
-  {
-    this.dest = dest;
-
-    try
-    {
-      Node cdata = (CDATASection)((Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_DISPLAY_LABEL.getLabel(), metadata, XPathConstants.NODE)).getFirstChild();
-      this.displayLabel = "";
-      if(cdata != null)
-      {
-        this.displayLabel = cdata.getTextContent();
-      }
-
-      cdata = (CDATASection)((Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_DESCRIPTION.getLabel(), metadata, XPathConstants.NODE)).getFirstChild();
-      this.description = "";
-      if(cdata != null)
-      {
-        this.description = cdata.getTextContent();
-      }
-
-      this.required = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_REQUIRED.getLabel(), metadata, XPathConstants.STRING));
-      this.immutable = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_IMMUTABLE.getLabel(), metadata, XPathConstants.STRING));
-      this.id = (String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_ID.getLabel(), metadata, XPathConstants.STRING);
-      this.system = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_SYSTEM.getLabel(), metadata, XPathConstants.STRING));
-      this.name = (String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_NAME.getLabel(), properties, XPathConstants.STRING);
-      this.generateAccessor = (Boolean)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA_GENERATE_ACCESSOR.getLabel(), metadata, XPathConstants.BOOLEAN);
-    }
-    catch(XPathExpressionException ex)
-    {
-      String errString = "Improper XPath expression: "+ex.getMessage();
-      CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
-    }
   }
 
   /**
@@ -151,7 +101,7 @@ public class CommonAttributeMdBuilder
     dest.setDescription(description);
     dest.setRequired(required);
     dest.setImmutable(immutable);
-    dest.setId(id);
+    dest.setOid(oid);
     dest.setSystem(system);
     dest.setName(name);
     dest.setGenerateAccessor(generateAccessor);

@@ -21,11 +21,10 @@ package com.runwaysdk.dataaccess;
 import java.util.List;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.CharacterConditionInfo;
@@ -55,23 +54,12 @@ import com.runwaysdk.dataaccess.metadata.MdWebDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebGroupDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebIntegerDAO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
-public class FieldConditionTest extends TestCase
+public class FieldConditionTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static MdBusinessDAO           mdBusiness;
 
   private static MdAttributeCharacterDAO mdAttributeCharacter;
@@ -90,31 +78,11 @@ public class FieldConditionTest extends TestCase
 
   private static MdWebDateDAO            mdWebDate;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(FieldConditionTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -144,41 +112,45 @@ public class FieldConditionTest extends TestCase
     mdWebDate.apply();
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdForm);
     TestFixtureFactory.delete(mdBusiness);
   }
 
+  @Request
+  @Test
   public void testDateCondition()
   {
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_VIEW_ALL));
-    assertEquals(MdAttributeBooleanInfo.TRUE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
-    assertEquals(MdAttributeBooleanInfo.FALSE, mdWebCharacter.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_VIEW_ALL));
+    Assert.assertEquals(MdAttributeBooleanInfo.TRUE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdWebCharacter.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
 
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 
     DateConditionDAO condition = DateConditionDAO.newInstance();
     condition.setValue(DateConditionInfo.VALUE, "2006-11-11");
-    condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
-    condition.addItem(DateConditionInfo.OPERATION, item.getId());
+    condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getOid());
+    condition.addItem(DateConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     try
     {
-      DateConditionDAOIF test = DateConditionDAO.get(condition.getId());
+      DateConditionDAOIF test = DateConditionDAO.get(condition.getOid());
 
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(DateConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(DateConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("GTE", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("GTE", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -187,31 +159,33 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDoubleCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
     DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
     condition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     try
     {
-      DoubleConditionDAOIF test = DoubleConditionDAO.get(condition.getId());
+      DoubleConditionDAOIF test = DoubleConditionDAO.get(condition.getOid());
 
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(DoubleConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(DoubleConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -220,31 +194,33 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLongCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
     LongConditionDAO condition = LongConditionDAO.newInstance();
     condition.setValue(LongConditionInfo.VALUE, "10");
-    condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    condition.addItem(LongConditionInfo.OPERATION, item.getId());
+    condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    condition.addItem(LongConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     try
     {
-      LongConditionDAOIF test = LongConditionDAO.get(condition.getId());
+      LongConditionDAOIF test = LongConditionDAO.get(condition.getOid());
 
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(LongConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(LongConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(LongConditionInfo.VALUE), test.getValue(LongConditionInfo.VALUE));
-      assertEquals(condition.getValue(LongConditionInfo.DEFINING_MD_FIELD), test.getValue(LongConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(LongConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(LongConditionInfo.VALUE), test.getValue(LongConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(LongConditionInfo.DEFINING_MD_FIELD), test.getValue(LongConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("LT", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -253,31 +229,33 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testCharacterCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
 
     CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
     condition.setValue(CharacterConditionInfo.VALUE, "testValue");
-    condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
-    condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+    condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getOid());
+    condition.addItem(CharacterConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     try
     {
-      CharacterConditionDAOIF test = CharacterConditionDAO.get(condition.getId());
+      CharacterConditionDAOIF test = CharacterConditionDAO.get(condition.getOid());
 
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) test.getAttributeIF(DoubleConditionInfo.OPERATION);
       Set<String> itemIds = attribute.getEnumItemIdList();
 
-      assertEquals(CharacterConditionInfo.CLASS, test.getType());
-      assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
-      assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
-      assertEquals(1, itemIds.size());
+      Assert.assertEquals(CharacterConditionInfo.CLASS, test.getType());
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.VALUE), test.getValue(DoubleConditionInfo.VALUE));
+      Assert.assertEquals(condition.getValue(DoubleConditionInfo.DEFINING_MD_FIELD), test.getValue(DoubleConditionInfo.DEFINING_MD_FIELD));
+      Assert.assertEquals(1, itemIds.size());
 
       for (String itemId : itemIds)
       {
-        assertEquals("EQ", EnumerationItemDAO.get(itemId).getName());
+        Assert.assertEquals("EQ", EnumerationItemDAO.get(itemId).getName());
       }
     }
     finally
@@ -286,14 +264,16 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAndCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
     DoubleConditionDAO firstCondition = DoubleConditionDAO.newInstance();
     firstCondition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-    firstCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    firstCondition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+    firstCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    firstCondition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
     firstCondition.apply();
 
     try
@@ -302,25 +282,25 @@ public class FieldConditionTest extends TestCase
 
       DoubleConditionDAO secondCondition = DoubleConditionDAO.newInstance();
       secondCondition.setValue(DoubleConditionInfo.VALUE, "135.0000000000");
-      secondCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-      secondCondition.addItem(DoubleConditionInfo.OPERATION, secondItem.getId());
+      secondCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+      secondCondition.addItem(DoubleConditionInfo.OPERATION, secondItem.getOid());
       secondCondition.apply();
 
       try
       {
 
         AndFieldConditionDAO condition = AndFieldConditionDAO.newInstance();
-        condition.setValue(AndFieldConditionInfo.FIRST_CONDITION, firstCondition.getId());
-        condition.setValue(AndFieldConditionInfo.SECOND_CONDITION, secondCondition.getId());
+        condition.setValue(AndFieldConditionInfo.FIRST_CONDITION, firstCondition.getOid());
+        condition.setValue(AndFieldConditionInfo.SECOND_CONDITION, secondCondition.getOid());
         condition.apply();
 
         try
         {
-          AndFieldConditionDAOIF test = AndFieldConditionDAO.get(condition.getId());
+          AndFieldConditionDAOIF test = AndFieldConditionDAO.get(condition.getOid());
 
-          assertEquals(AndFieldConditionInfo.CLASS, test.getType());
-          assertEquals(condition.getValue(AndFieldConditionInfo.FIRST_CONDITION), test.getValue(AndFieldConditionInfo.FIRST_CONDITION));
-          assertEquals(condition.getValue(AndFieldConditionInfo.SECOND_CONDITION), test.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+          Assert.assertEquals(AndFieldConditionInfo.CLASS, test.getType());
+          Assert.assertEquals(condition.getValue(AndFieldConditionInfo.FIRST_CONDITION), test.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+          Assert.assertEquals(condition.getValue(AndFieldConditionInfo.SECOND_CONDITION), test.getValue(AndFieldConditionInfo.SECOND_CONDITION));
         }
         finally
         {
@@ -338,29 +318,31 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testFieldDeleteWithCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
     DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
     condition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-    field.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+    field.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
     field.apply();
 
     TestFixtureFactory.delete(field);
 
     try
     {
-      FieldConditionDAOIF deletedCondition = FieldConditionDAO.get(condition.getId());
+      FieldConditionDAOIF deletedCondition = FieldConditionDAO.get(condition.getOid());
 
       TestFixtureFactory.delete(deletedCondition);
 
-      fail("The field condition was not deleted when the field was deleted");
+      Assert.fail("The field condition was not deleted when the field was deleted");
     }
     catch (DataNotFoundException e)
     {
@@ -368,26 +350,28 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetCondition()
   {
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT");
 
     DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
     condition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-    condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+    condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
     condition.apply();
 
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
-    field.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+    field.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
     field.apply();
 
     try
     {
       List<FieldConditionDAOIF> conditions = field.getConditions();
 
-      assertEquals(1, conditions.size());
-      assertEquals(condition.getId(), conditions.get(0).getId());
+      Assert.assertEquals(1, conditions.size());
+      Assert.assertEquals(condition.getOid(), conditions.get(0).getOid());
     }
     finally
     {
@@ -395,6 +379,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testConditionGrouping()
   {
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
@@ -406,12 +392,12 @@ public class FieldConditionTest extends TestCase
 
       DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
       condition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-      condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+      condition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       condition.apply();
 
       MdWebGroupDAO group = TestFixtureFactory.addGroupField(mdForm);
-      group.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getId());
+      group.setValue(MdWebIntegerInfo.FIELD_CONDITION, condition.getOid());
       group.apply();
 
       try
@@ -423,8 +409,8 @@ public class FieldConditionTest extends TestCase
         {
           List<FieldConditionDAOIF> conditions = field.getConditions();
 
-          assertEquals(1, conditions.size());
-          assertEquals(condition.getId(), conditions.get(0).getId());
+          Assert.assertEquals(1, conditions.size());
+          Assert.assertEquals(condition.getOid(), conditions.get(0).getOid());
         }
         finally
         {
@@ -442,6 +428,8 @@ public class FieldConditionTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultipleConditionGrouping()
   {
     MdWebIntegerDAO field = TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger);
@@ -453,12 +441,12 @@ public class FieldConditionTest extends TestCase
 
       DoubleConditionDAO childCondition = DoubleConditionDAO.newInstance();
       childCondition.setValue(DoubleConditionInfo.VALUE, "10.0000000000");
-      childCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-      childCondition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+      childCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+      childCondition.addItem(DoubleConditionInfo.OPERATION, item.getOid());
       childCondition.apply();
 
       MdWebGroupDAO childGroup = TestFixtureFactory.addGroupField(mdForm);
-      childGroup.setValue(MdWebIntegerInfo.FIELD_CONDITION, childCondition.getId());
+      childGroup.setValue(MdWebIntegerInfo.FIELD_CONDITION, childCondition.getOid());
       childGroup.apply();
 
       try
@@ -470,12 +458,12 @@ public class FieldConditionTest extends TestCase
         {
           DoubleConditionDAO parentCondition = DoubleConditionDAO.newInstance();
           parentCondition.setValue(DoubleConditionInfo.VALUE, "50");
-          parentCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
-          parentCondition.addItem(DoubleConditionInfo.OPERATION, EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT").getId());
+          parentCondition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getOid());
+          parentCondition.addItem(DoubleConditionInfo.OPERATION, EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "LT").getOid());
           parentCondition.apply();
 
           MdWebGroupDAO parentGroup = TestFixtureFactory.addGroupField(mdForm);
-          parentGroup.setValue(MdWebIntegerInfo.FIELD_CONDITION, parentCondition.getId());
+          parentGroup.setValue(MdWebIntegerInfo.FIELD_CONDITION, parentCondition.getOid());
           parentGroup.setValue(MdWebIntegerInfo.FIELD_NAME, "parentGroup");
           parentGroup.apply();
 
@@ -488,9 +476,9 @@ public class FieldConditionTest extends TestCase
             {
               List<FieldConditionDAOIF> conditions = field.getConditions();
 
-              assertEquals(2, conditions.size());
-              assertTrue(conditions.contains(parentCondition));
-              assertTrue(conditions.contains(childCondition));
+              Assert.assertEquals(2, conditions.size());
+              Assert.assertTrue(conditions.contains(parentCondition));
+              Assert.assertTrue(conditions.contains(childCondition));
             }
             finally
             {

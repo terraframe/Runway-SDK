@@ -31,9 +31,9 @@ public class MetadataRelationshipDAO extends TreeDAO implements SpecializedDAOIm
    */
   private static final long serialVersionUID = -3325018795739737280L;
 
-  public MetadataRelationshipDAO(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public MetadataRelationshipDAO(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    super(parentId, childId, attributeMap, relationshipType);
+    super(parentOid, childOid, attributeMap, relationshipType);
   }
 
   /**
@@ -41,13 +41,13 @@ public class MetadataRelationshipDAO extends TreeDAO implements SpecializedDAOIm
    */
   public String save(boolean save)
   {
-    String id = this.getId();
+    String oid = this.getOid();
 
     Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      this.setKey(id);
+      this.setKey(oid);
     }
 
     return super.save(save);
@@ -58,8 +58,8 @@ public class MetadataRelationshipDAO extends TreeDAO implements SpecializedDAOIm
    * @param relationshipType
    * @return
    */
-  public static MetadataRelationshipDAO newInstance(String parentId, String childId, String relationshipType)
+  public static MetadataRelationshipDAO newInstance(String parentOid, String childOid, String relationshipType)
   {
-    return (MetadataRelationshipDAO) RelationshipDAOFactory.newInstance(parentId, childId, relationshipType);
+    return (MetadataRelationshipDAO) RelationshipDAOFactory.newInstance(parentOid, childOid, relationshipType);
   }
 }

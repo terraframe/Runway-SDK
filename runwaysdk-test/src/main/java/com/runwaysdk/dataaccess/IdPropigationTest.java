@@ -24,13 +24,10 @@ package com.runwaysdk.dataaccess;
 import java.util.List;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -55,53 +52,17 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class IdPropigationTest extends TestCase
+import com.runwaysdk.session.Request;
+public class IdPropigationTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(IdPropigationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-    };
-
-    return wrapper;
-  }
-
   /*
    * (non-Javadoc)
    * 
    * @see junit.framework.TestCase#setUp()
    */
-  @Override
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
     // new MdPackage("test.xmlclasses").delete();
   }
@@ -111,16 +72,19 @@ public class IdPropigationTest extends TestCase
    * 
    * @see junit.framework.TestCase#tearDown()
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
     new MdPackage("test.xmlclasses").delete();
   }
 
+  @Request
+  @Test
   public void testSingleCachedEnumerationAttribute()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -139,7 +103,6 @@ public class IdPropigationTest extends TestCase
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -147,41 +110,42 @@ public class IdPropigationTest extends TestCase
     mdAttributeEnum.apply();
 
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.addItem(mdAttributeEnum.definesAttribute(), item.getId());
+    business.addItem(mdAttributeEnum.definesAttribute(), item.getOid());
     business.apply();
 
-    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getId()).getBusinessDAO();
+    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getOid()).getBusinessDAO();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     mdBusinessEnum.apply();
 
-    // Update the id of the item
+    // Update the oid of the item
     this.updateItems(mdBusinessEnum, item);
 
-    // Ensure the id of the enumerated item is different
+    // Ensure the oid of the enumerated item is different
     BusinessDAOIF testItem = this.getItem(mdBusinessEnum, item);
-    assertFalse(testItem.getId().equals(item.getId()));
+    Assert.assertFalse(testItem.getOid().equals(item.getOid()));
 
-    BusinessDAOIF test = BusinessDAO.get(business.getId());
+    BusinessDAOIF test = BusinessDAO.get(business.getOid());
     AttributeEnumerationIF attributeIF = (AttributeEnumerationIF) test.getAttributeIF(mdAttributeEnum.definesAttribute());
 
     // Ensure the referenced item of the enumeration attribute has been updated
     Set<String> enumItemIdList = attributeIF.getEnumItemIdList();
 
-    assertEquals(1, enumItemIdList.size());
+    Assert.assertEquals(1, enumItemIdList.size());
 
-    assertTrue(enumItemIdList.contains(testItem.getId()));
+    Assert.assertTrue(enumItemIdList.contains(testItem.getOid()));
 
     // Ensure the cached reference of the enumeration attribute has been updated
-    String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getId());
+    String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getOid());
 
-    assertEquals(testItem.getId(), cachedItems);
+    Assert.assertEquals(testItem.getOid(), cachedItems);
   }
 
+  @Request
+  @Test
   public void testMultipleCachedEnumerationAttribute()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -206,7 +170,6 @@ public class IdPropigationTest extends TestCase
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -215,11 +178,11 @@ public class IdPropigationTest extends TestCase
     mdAttributeEnum.apply();
 
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.addItem(mdAttributeEnum.definesAttribute(), colorado.getId());
-    business.addItem(mdAttributeEnum.definesAttribute(), texas.getId());
+    business.addItem(mdAttributeEnum.definesAttribute(), colorado.getOid());
+    business.addItem(mdAttributeEnum.definesAttribute(), texas.getOid());
     business.apply();
 
-    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getId()).getBusinessDAO();
+    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getOid()).getBusinessDAO();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     mdBusinessEnum.apply();
 
@@ -228,7 +191,7 @@ public class IdPropigationTest extends TestCase
 
     updateItems(mdBusinessEnum, array);
 
-    BusinessDAOIF test = BusinessDAO.get(business.getId());
+    BusinessDAOIF test = BusinessDAO.get(business.getOid());
     AttributeEnumerationIF attributeIF = (AttributeEnumerationIF) test.getAttributeIF(mdAttributeEnum.definesAttribute());
 
     for (EnumerationItemDAO item : array)
@@ -239,25 +202,26 @@ public class IdPropigationTest extends TestCase
       // updated
       Set<String> enumItemIdList = attributeIF.getEnumItemIdList();
 
-      assertEquals(2, enumItemIdList.size());
+      Assert.assertEquals(2, enumItemIdList.size());
 
-      String id = testItem.getId();
+      String oid = testItem.getOid();
 
-      assertTrue(enumItemIdList.contains(id));
+      Assert.assertTrue(enumItemIdList.contains(oid));
 
       // Ensure the cached reference of the enumeration attribute has been
       // updated
-      String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getId());
+      String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getOid());
 
-      assertTrue("[" + id + "] Not found in cached items [" + cachedItems + "]", cachedItems.contains(id));
+      Assert.assertTrue("[" + oid + "] Not found in cached items [" + cachedItems + "]", cachedItems.contains(oid));
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationDefaultValue()
   {
     MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    mdBusinessEnum.setGenerateMdController(false);
     mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusinessEnum.apply();
 
@@ -276,16 +240,15 @@ public class IdPropigationTest extends TestCase
     mdEnumeration.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeEnumerationDAO mdAttributeEnum = TestFixtureFactory.addEnumerationAttribute(mdBusiness, mdEnumeration);
     mdAttributeEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, colorado.getId());
+    mdAttributeEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, colorado.getOid());
     mdAttributeEnum.apply();
 
-    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getId()).getBusinessDAO();
+    mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getOid()).getBusinessDAO();
     mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     mdBusinessEnum.apply();
 
@@ -295,11 +258,13 @@ public class IdPropigationTest extends TestCase
     BusinessDAOIF testItem = this.getItem(mdBusinessEnum, colorado);
 
     // Ensure the default value has been updated
-    MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getId());
+    MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getOid());
 
-    assertEquals(testItem.getId(), testMdAttributeEnumeration.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
+    Assert.assertEquals(testItem.getOid(), testMdAttributeEnumeration.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
   }
 
+  @Request
+  @Test
   public void testEnumerationDimensionDefaultValue()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -310,7 +275,6 @@ public class IdPropigationTest extends TestCase
 
       MdBusinessDAO mdBusinessEnum = TestFixtureFactory.createEnumClass1();
       mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-      mdBusinessEnum.setGenerateMdController(false);
       mdBusinessEnum.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusinessEnum.apply();
 
@@ -329,7 +293,6 @@ public class IdPropigationTest extends TestCase
       mdEnumeration.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -338,10 +301,10 @@ public class IdPropigationTest extends TestCase
       mdAttributeEnum.apply();
 
       MdAttributeDimensionDAO mdAttributeDimension = mdAttributeEnum.getMdAttributeDimension(mdDimension).getBusinessDAO();
-      mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, colorado.getId());
+      mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, colorado.getOid());
       mdAttributeDimension.apply();
 
-      mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getId()).getBusinessDAO();
+      mdBusinessEnum = MdBusinessDAO.get(mdBusinessEnum.getOid()).getBusinessDAO();
       mdBusinessEnum.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
       mdBusinessEnum.apply();
 
@@ -351,10 +314,10 @@ public class IdPropigationTest extends TestCase
       BusinessDAOIF testItem = this.getItem(mdBusinessEnum, colorado);
 
       // Ensure the default value has been updated
-      MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getId());
+      MdAttributeEnumerationDAOIF testMdAttributeEnumeration = MdAttributeEnumerationDAO.get(mdAttributeEnum.getOid());
       MdAttributeDimensionDAOIF testMdAttributeDimension = testMdAttributeEnumeration.getMdAttributeDimension(mdDimension);
 
-      assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
+      Assert.assertEquals(testItem.getOid(), testMdAttributeDimension.getValue(MdAttributeEnumerationInfo.DEFAULT_VALUE));
     }
     finally
     {
@@ -362,11 +325,12 @@ public class IdPropigationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testReferenceAttribute()
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -379,7 +343,6 @@ public class IdPropigationTest extends TestCase
     item.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -387,32 +350,33 @@ public class IdPropigationTest extends TestCase
     mdAttributeEnum.apply();
 
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.setValue(mdAttributeEnum.definesAttribute(), item.getId());
+    business.setValue(mdAttributeEnum.definesAttribute(), item.getOid());
     business.apply();
 
-    referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getId()).getBusinessDAO();
+    referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getOid()).getBusinessDAO();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     referenceMdBusiness.apply();
 
-    // Update the id of the item
+    // Update the oid of the item
     this.updateItems(referenceMdBusiness, item);
 
-    // Ensure the id of the enumerated item is different
+    // Ensure the oid of the enumerated item is different
     BusinessDAOIF testItem = this.getItem(referenceMdBusiness, item);
-    assertFalse(testItem.getId().equals(item.getId()));
+    Assert.assertFalse(testItem.getOid().equals(item.getOid()));
 
-    BusinessDAOIF test = BusinessDAO.get(business.getId());
+    BusinessDAOIF test = BusinessDAO.get(business.getOid());
     AttributeReferenceIF attributeIF = (AttributeReferenceIF) test.getAttributeIF(mdAttributeEnum.definesAttribute());
 
     // Ensure the referenced item of the enumeration attribute has been updated
-    assertEquals(testItem.getId(), attributeIF.getValue());
+    Assert.assertEquals(testItem.getOid(), attributeIF.getValue());
   }
 
+  @Request
+  @Test
   public void testReferenceDefaultValue()
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -425,15 +389,14 @@ public class IdPropigationTest extends TestCase
     colorado.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeEnum = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceMdBusiness);
-    mdAttributeEnum.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, colorado.getId());
+    mdAttributeEnum.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, colorado.getOid());
     mdAttributeEnum.apply();
 
-    referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getId()).getBusinessDAO();
+    referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getOid()).getBusinessDAO();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
     referenceMdBusiness.apply();
 
@@ -443,11 +406,13 @@ public class IdPropigationTest extends TestCase
     BusinessDAOIF testItem = this.getItem(referenceMdBusiness, colorado);
 
     // Ensure the default value has been updated
-    MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getId());
+    MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getOid());
 
-    assertEquals(testItem.getId(), testMdAttributeReference.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
+    Assert.assertEquals(testItem.getOid(), testMdAttributeReference.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
   }
 
+  @Request
+  @Test
   public void testReferenceDimensionDefaultValue()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
@@ -458,7 +423,6 @@ public class IdPropigationTest extends TestCase
 
       MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
       referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-      referenceMdBusiness.setGenerateMdController(false);
       referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       referenceMdBusiness.apply();
 
@@ -471,7 +435,6 @@ public class IdPropigationTest extends TestCase
       colorado.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-      mdBusiness.setGenerateMdController(false);
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -479,10 +442,10 @@ public class IdPropigationTest extends TestCase
       mdAttributeEnum.apply();
 
       MdAttributeDimensionDAO mdAttributeDimension = mdAttributeEnum.getMdAttributeDimension(mdDimension).getBusinessDAO();
-      mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, colorado.getId());
+      mdAttributeDimension.setValue(MdAttributeDimensionInfo.DEFAULT_VALUE, colorado.getOid());
       mdAttributeDimension.apply();
 
-      referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getId()).getBusinessDAO();
+      referenceMdBusiness = MdBusinessDAO.get(referenceMdBusiness.getOid()).getBusinessDAO();
       referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.TRUE);
       referenceMdBusiness.apply();
 
@@ -492,10 +455,10 @@ public class IdPropigationTest extends TestCase
       BusinessDAOIF testItem = this.getItem(referenceMdBusiness, colorado);
 
       // Ensure the default value has been updated
-      MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getId());
+      MdAttributeReferenceDAOIF testMdAttributeReference = MdAttributeReferenceDAO.get(mdAttributeEnum.getOid());
       MdAttributeDimensionDAOIF testMdAttributeDimension = testMdAttributeReference.getMdAttributeDimension(mdDimension);
 
-      assertEquals(testItem.getId(), testMdAttributeDimension.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
+      Assert.assertEquals(testItem.getOid(), testMdAttributeDimension.getValue(MdAttributeReferenceInfo.DEFAULT_VALUE));
     }
     finally
     {
@@ -503,6 +466,8 @@ public class IdPropigationTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMerge()
   {
     mergeInTransaction();
@@ -513,7 +478,6 @@ public class IdPropigationTest extends TestCase
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness2();
     referenceMdBusiness.setValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS, MdAttributeBooleanInfo.FALSE);
-    referenceMdBusiness.setGenerateMdController(false);
     referenceMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     referenceMdBusiness.apply();
 
@@ -531,7 +495,6 @@ public class IdPropigationTest extends TestCase
     item2.apply();
 
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -539,25 +502,27 @@ public class IdPropigationTest extends TestCase
     mdAttributeReference.apply();
 
     BusinessDAO business1 = BusinessDAO.newInstance(mdBusiness.definesType());
-    business1.setValue(mdAttributeReference.definesAttribute(), item1.getId());
+    business1.setValue(mdAttributeReference.definesAttribute(), item1.getOid());
     business1.apply();
 
     BusinessDAO business2 = BusinessDAO.newInstance(mdBusiness.definesType());
-    business2.setValue(mdAttributeReference.definesAttribute(), item2.getId());
+    business2.setValue(mdAttributeReference.definesAttribute(), item2.getOid());
     business2.apply();
 
     // Convert item1 references to item2
-    BusinessDAOFactory.floatObjectIdReferences(item1, item1.getId(), item2.getId());
+    BusinessDAOFactory.floatObjectIdReferences(item1, item1.getOid(), item2.getOid());
 
     // Delete item1
     item1.delete();
 
     // Ensure the business1 reference was updated to be item2
-    BusinessDAOIF test = BusinessDAO.get(business1.getId());
+    BusinessDAOIF test = BusinessDAO.get(business1.getOid());
 
-    assertEquals(item2.getId(), test.getValue(mdAttributeReference.definesAttribute()));
+    Assert.assertEquals(item2.getOid(), test.getValue(mdAttributeReference.definesAttribute()));
   }
 
+  @Request
+  @Test
   public void testMergeIgnoreDatabaseExceptions()
   {
     mergeInTransactionIgnoreDatabaseExceptions();
@@ -567,14 +532,12 @@ public class IdPropigationTest extends TestCase
   private void mergeInTransactionIgnoreDatabaseExceptions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
     MdTreeDAO mdTree = TestFixtureFactory.createMdTree(mdBusiness, mdBusiness);
     mdTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
-    mdTree.setGenerateMdController(false);
     mdTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdTree.apply();
 
@@ -590,12 +553,12 @@ public class IdPropigationTest extends TestCase
     BusinessDAO business2 = BusinessDAO.newInstance(mdBusiness.definesType());
     business2.apply();
 
-    business1.addParent(parent1.getId(), mdTree.definesType()).apply();
-    business1.addParent(parent2.getId(), mdTree.definesType()).apply();
-    business2.addParent(parent2.getId(), mdTree.definesType()).apply();
+    business1.addParent(parent1.getOid(), mdTree.definesType()).apply();
+    business1.addParent(parent2.getOid(), mdTree.definesType()).apply();
+    business2.addParent(parent2.getOid(), mdTree.definesType()).apply();
 
     // Convert business 1 references to business 2
-    BusinessDAOFactory.floatObjectIdReferences(business1, business1.getId(), business2.getId(), true);
+    BusinessDAOFactory.floatObjectIdReferences(business1, business1.getOid(), business2.getOid(), true);
 
     business1.delete();
 
@@ -615,7 +578,7 @@ public class IdPropigationTest extends TestCase
       BusinessDAO updateItem = BusinessDAO.get(mdBusinessEnum.definesType(), item.getKey()).getBusinessDAO();
 
       // Important: We must set the key to modified even though it hasn't been
-      // changed in order to force the predictive id algorithm to run
+      // changed in order to force the predictive oid algorithm to run
       updateItem.getAttribute(BusinessInfo.KEY).setModified(true);
       updateItem.apply();
     }

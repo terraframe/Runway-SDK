@@ -63,9 +63,9 @@ public abstract class FieldConditionDAO extends BusinessDAO implements FieldCond
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static FieldConditionDAOIF get(String id)
+  public static FieldConditionDAOIF get(String oid)
   {
-    return (FieldConditionDAOIF) BusinessDAO.get(id);
+    return (FieldConditionDAOIF) BusinessDAO.get(oid);
   }
   
   @Override

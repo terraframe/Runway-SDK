@@ -61,12 +61,12 @@ public class CacheAllStructDAOStrategy extends CacheAllStrategy
 
   /**
    *
-   * @param id
+   * @param oid
    * @return
    */
-  protected EntityDAOIF getFromFactory(String id)
+  protected EntityDAOIF getFromFactory(String oid)
   {
-    return StructDAOFactory.get(id);
+    return StructDAOFactory.get(oid);
   }
 
   /**

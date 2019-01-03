@@ -92,7 +92,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.AssociationType.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -111,7 +111,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.AssociationType.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -152,13 +152,13 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.AssociationTypeEnum associationTypeEnum)
     {
       if(associationTypeEnum == null) return this.EQ((java.lang.String)null);
-      return this.EQ(associationTypeEnum.getId());
+      return this.EQ(associationTypeEnum.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.AssociationTypeEnum associationTypeEnum)
     {
       if(associationTypeEnum == null) return this.NE((java.lang.String)null);
-      return this.NE(associationTypeEnum.getId());
+      return this.NE(associationTypeEnum.getOid());
     }
 
   }
@@ -220,7 +220,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationType.length; i++)
       {
-        enumIdArray[i] = associationType[i].getId();
+        enumIdArray[i] = associationType[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -232,7 +232,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationType.length; i++)
       {
-        enumIdArray[i] = associationType[i].getId();
+        enumIdArray[i] = associationType[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -244,7 +244,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationType.length; i++)
       {
-        enumIdArray[i] = associationType[i].getId();
+        enumIdArray[i] = associationType[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -256,7 +256,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationType.length; i++)
       {
-        enumIdArray[i] = associationType[i].getId();
+        enumIdArray[i] = associationType[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -268,7 +268,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationType.length; i++)
       {
-        enumIdArray[i] = associationType[i].getId();
+        enumIdArray[i] = associationType[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -312,7 +312,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationTypeEnum.length; i++)
       {
-        itemIdArray[i] = associationTypeEnum[i].getId();
+        itemIdArray[i] = associationTypeEnum[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -324,7 +324,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationTypeEnum.length; i++)
       {
-        itemIdArray[i] = associationTypeEnum[i].getId();
+        itemIdArray[i] = associationTypeEnum[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -336,7 +336,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationTypeEnum.length; i++)
       {
-        itemIdArray[i] = associationTypeEnum[i].getId();
+        itemIdArray[i] = associationTypeEnum[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -348,7 +348,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationTypeEnum.length; i++)
       {
-        itemIdArray[i] = associationTypeEnum[i].getId();
+        itemIdArray[i] = associationTypeEnum[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -360,7 +360,7 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       for (int i=0; i<associationTypeEnum.length; i++)
       {
-        itemIdArray[i] = associationTypeEnum[i].getId();
+        itemIdArray[i] = associationTypeEnum[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

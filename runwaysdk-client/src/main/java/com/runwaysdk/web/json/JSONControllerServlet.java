@@ -44,7 +44,7 @@ import com.runwaysdk.web.WebClientSession;
 public class JSONControllerServlet extends HttpServlet
 {
   /**
-   * Auto-generated id
+   * Auto-generated oid
    */
   private static final long serialVersionUID = -3892528595585482859L;
 
@@ -326,37 +326,15 @@ public class JSONControllerServlet extends HttpServlet
         String json = JSONControllerGeneric.grantMethodPermission(sessionId, parameters);
         return json;
       }
-      else if (method.equals(FacadeMethods.GRANT_STATE_PERMISSION.getName()))
-      {
-        // overloaded inside
-        String json = JSONControllerGeneric.grantStatePermission(sessionId, parameters);
-        return json;
-      }
       else if (method.equals(FacadeMethods.GRANT_ATTRIBUTE_PERMISSION.getName()))
       {
         // overloaded inside
         String json = JSONControllerGeneric.grantAttributePermission(sessionId, parameters);
         return json;
       }
-      else if (method.equals(FacadeMethods.GRANT_ATTRIBUTE_STATE_PERMISSION.getName()))
-      {
-        // overloaded inside
-        String json = JSONControllerGeneric.grantAttributeStatePermission(sessionId, parameters);
-        return json;
-      }
-      else if (method.equals(FacadeMethods.PROMOTE_OBJECT.getName()))
-      {
-        String json = JSONControllerGeneric.promoteObject(sessionId, parameters);
-        return json;
-      }
       else if (method.equals(FacadeMethods.REVOKE_ATTRIBUTE_PERMISSION.getName()))
       {
         String json = JSONControllerGeneric.revokeAttributePermission(sessionId, parameters);
-        return json;
-      }
-      else if (method.equals(FacadeMethods.REVOKE_ATTRIBUTE_STATE_PERMISSION.getName()))
-      {
-        String json = JSONControllerGeneric.revokeAttributeStatePermission(sessionId, parameters);
         return json;
       }
       else if (method.equals(FacadeMethods.REVOKE_TYPE_PERMISSION.getName()))
@@ -367,11 +345,6 @@ public class JSONControllerServlet extends HttpServlet
       else if (method.equals(FacadeMethods.REVOKE_METHOD_PERMISSION.getName()))
       {
         String json = JSONControllerGeneric.revokeMethodPermission(sessionId, parameters);
-        return json;
-      }
-      else if (method.equals(FacadeMethods.REVOKE_STATE_PERMISSION.getName()))
-      {
-        String json = JSONControllerGeneric.revokeStatePermission(sessionId, parameters);
         return json;
       }
       else if (method.equals(FacadeMethods.QUERY_BUSINESSES.getName()))

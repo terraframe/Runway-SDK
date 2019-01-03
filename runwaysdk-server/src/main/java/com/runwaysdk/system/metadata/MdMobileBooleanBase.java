@@ -41,9 +41,9 @@ public abstract class MdMobileBooleanBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdMobileBoolean get(String id)
+  public static MdMobileBoolean get(String oid)
   {
-    return (MdMobileBoolean) com.runwaysdk.business.Business.get(id);
+    return (MdMobileBoolean) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileBoolean getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdMobileBooleanBase extends com.runwaysdk.system.metadata.
     return (MdMobileBoolean) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileBoolean lock(java.lang.String id)
+  public static MdMobileBoolean lock(java.lang.String oid)
   {
-    MdMobileBoolean _instance = MdMobileBoolean.get(id);
+    MdMobileBoolean _instance = MdMobileBoolean.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileBoolean unlock(java.lang.String id)
+  public static MdMobileBoolean unlock(java.lang.String oid)
   {
-    MdMobileBoolean _instance = MdMobileBoolean.get(id);
+    MdMobileBoolean _instance = MdMobileBoolean.get(oid);
     _instance.unlock();
     
     return _instance;

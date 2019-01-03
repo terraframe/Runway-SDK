@@ -35,7 +35,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.RunwayException;
 import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -59,12 +58,10 @@ import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionComponent;
 import com.runwaysdk.business.SessionDTO;
-import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
-import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
@@ -75,8 +72,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdEnumerationTypes;
 import com.runwaysdk.constants.MdTermInfo;
@@ -111,15 +106,12 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryException;
 import com.runwaysdk.session.CreatePermissionException;
 import com.runwaysdk.session.GrantAttributePermissionException;
-import com.runwaysdk.session.GrantAttributeStatePermissionException;
 import com.runwaysdk.session.GrantMethodPermissionException;
-import com.runwaysdk.session.GrantStatePermissionException;
 import com.runwaysdk.session.GrantTypePermissionException;
 import com.runwaysdk.session.ImportDomainExecuteException;
 import com.runwaysdk.session.InvalidLoginException;
@@ -130,9 +122,7 @@ import com.runwaysdk.session.ReadTypePermissionException;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.RevokeAttributePermissionException;
-import com.runwaysdk.session.RevokeAttributeStatePermissionException;
 import com.runwaysdk.session.RevokeMethodPermissionException;
-import com.runwaysdk.session.RevokeStatePermissionException;
 import com.runwaysdk.session.RevokeTypePermissionException;
 import com.runwaysdk.session.RoleManagementException_ADD;
 import com.runwaysdk.session.Session;
@@ -166,32 +156,32 @@ public class Facade
    * is null it is assumed to be a copy, not a move.
    * 
    * @param sessionId
-   *          The id of a previously established session.
-   * @param newParentId
-   *          The id of the Term that the child will be appended under.
-   * @param childId
-   *          The id of the Term that will be either moved or copied.
+   *          The oid of a previously established session.
+   * @param newParentOid
+   *          The oid of the Term that the child will be appended under.
+   * @param childOid
+   *          The oid of the Term that will be either moved or copied.
    * @param oldRelationshipId
-   *          The id of the relationship that currently exists between parent
+   *          The oid of the relationship that currently exists between parent
    *          and child.
    * @param newRelationshipType
    *          The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
   @Deprecated
-  public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  public static RelationshipDTO moveBusiness(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
-    Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    Relationship rel = doMoveTerm(sessionId, newParentOid, childOid, oldRelationshipId, newRelationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
 
   @Transaction
   @Deprecated
-  private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  private static Relationship doMoveTerm(String sessionId, String newParentOid, String childOid, String oldRelationshipId, String newRelationshipType)
   {
-    Term newParent = (Term) getEntity(newParentId);
-    Term child = (Term) Term.get(childId);
+    Term newParent = (Term) getEntity(newParentOid);
+    Term child = (Term) Term.get(childOid);
 
     if (oldRelationshipId != null)
     {
@@ -210,9 +200,9 @@ public class Facade
    * term by delegating to the term's ontology strategy.
    * 
    * @param sessionId
-   *          The id of a previously established session.
-   * @param parentId
-   *          The id of the term to get all children.
+   *          The oid of a previously established session.
+   * @param parentOid
+   *          The oid of the term to get all children.
    * @param pageNum
    *          Used to break large returns into chunks (pages), this denotes the
    *          page number in the iteration request. Set to 0 to not use pages.
@@ -223,15 +213,15 @@ public class Facade
    */
   @Deprecated
   @Request(RequestType.SESSION)
-  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentOid, Integer pageNum, Integer pageSize)
   {
 
-    assertReadAccess(sessionId, getEntity(parentId));
+    assertReadAccess(sessionId, getEntity(parentOid));
 
     List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
 
-    // Fetch the Term from id.
-    Term parent = (Term) Term.get(parentId);
+    // Fetch the Term from oid.
+    Term parent = (Term) Term.get(parentOid);
 
     // Get all MdRelationships that this term is a valid child in
     MdTermDAOIF mdTerm = parent.getMdTerm();
@@ -250,7 +240,7 @@ public class Facade
           // Convert the Term to a TermDTO.
           TermDTO termDTO = (TermDTO) new TermToTermDTO(sessionId, (Term) rel.getChild(), true).populate();
 
-          dtos.add(new TermAndRelDTO(termDTO, mdRelationshipDAOIF.definesType(), rel.getId()));
+          dtos.add(new TermAndRelDTO(termDTO, mdRelationshipDAOIF.definesType(), rel.getOid()));
         }
       }
     }
@@ -394,7 +384,7 @@ public class Facade
   }
 
   /**
-   * Checks if the user with the given session id can access the admin screen.
+   * Checks if the user with the given session oid can access the admin screen.
    * 
    * @param sessionId
    * @return
@@ -407,7 +397,7 @@ public class Facade
 
     for (RoleDAOIF role : user.authorizedRoles())
     {
-      if (role.getId().equals(adminScreenRole.getId()))
+      if (role.getOid().equals(adminScreenRole.getOid()))
       {
         return;
       }
@@ -466,24 +456,24 @@ public class Facade
    * Deletes an entity.
    * 
    * @param sessionId
-   * @param id
+   * @param oid
    * @param definesType
    */
   @Request(RequestType.SESSION)
-  public static void delete(String sessionId, String id)
+  public static void delete(String sessionId, String oid)
   {
     SessionIF session = Session.getCurrentSession();
 
     // Check if the object has been stored in the user's session
-    Mutable mutable = session.get(id);
+    Mutable mutable = session.get(oid);
 
     if (mutable == null)
     {
       // instantiate a type-unsafe EntityDTO if the type is reserved.
-      // This should throw a DataNotFound exception if the id represents a
+      // This should throw a DataNotFound exception if the oid represents a
       // Transient and not an Entity.
 
-      mutable = BusinessFacade.getEntity(id);
+      mutable = BusinessFacade.getEntity(oid);
     }
 
     mutable.delete();
@@ -536,27 +526,27 @@ public class Facade
   }
 
   /**
-   * Returns the instance associated with the specified id and type.
+   * Returns the instance associated with the specified oid and type.
    * 
    * @param sessionId
-   * @param id
+   * @param oid
    * @param definesType
    * @return EntityDTO
    */
   @Request(RequestType.SESSION)
-  public static MutableDTO get(String sessionId, String id)
+  public static MutableDTO get(String sessionId, String oid)
   {
     SessionIF session = Session.getCurrentSession();
 
     // Check if the object has been stored in the user's session
-    Mutable mutable = session.get(id);
+    Mutable mutable = session.get(oid);
 
     if (mutable == null)
     {
       // instantiate a type-unsafe Entity if the type is reserved.
-      // This should throw a DataNotFound exception if the id represents a
+      // This should throw a DataNotFound exception if the oid represents a
       // Transient and not an Entity.
-      mutable = getEntity(id);
+      mutable = getEntity(oid);
     }
 
     boolean access = SessionFacade.checkAccess(sessionId, Operation.READ, mutable);
@@ -612,19 +602,19 @@ public class Facade
    * Adds a child to a parent for a given relationship.
    * 
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipDTO
    * @return RelationshipDTO
    */
   @Request(RequestType.SESSION)
-  public static RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addChild(String sessionId, String parentOid, String childOid, String relationshipType)
   {
     // get the parent
-    Business parent = (Business) getEntity(parentId);
+    Business parent = (Business) getEntity(parentOid);
 
     // create the relationship (the returned relationship is type-unsafe)
-    Relationship relationship = parent.addChild(childId, relationshipType);
+    Relationship relationship = parent.addChild(childOid, relationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, relationship, true);
   }
@@ -659,18 +649,18 @@ public class Facade
    * Adds a parent to a child for a given relationship.
    * 
    * @param sessionId
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipDTO
    * @return RelationshipDTO
    */
   @Request(RequestType.SESSION)
-  public static RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
+  public static RelationshipDTO addParent(String sessionId, String parentOid, String childOid, String relationshipType)
   {
-    Business child = (Business) getEntity(childId);
+    Business child = (Business) getEntity(childOid);
 
     // create the relationship (the returned relationship is type-unsafe)
-    Relationship relationship = child.addParent(parentId, relationshipType);
+    Relationship relationship = child.addParent(parentOid, relationshipType);
 
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, relationship, true);
   }
@@ -681,7 +671,7 @@ public class Facade
    * @param username
    * @param password
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   @Request
   public static String login(String username, String password, Locale[] locales)
@@ -704,7 +694,7 @@ public class Facade
    * @param password
    * @param dimensionKey
    * @param locales
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   @Request
   public static String login(String username, String password, String dimensionKey, Locale[] locales)
@@ -723,7 +713,7 @@ public class Facade
    * Sets the dimension of an existing {@link Session}.
    * 
    * @param sessionId
-   *          The id of the {@link Session}.
+   *          The oid of the {@link Session}.
    * @param dimensionKey
    *          key of a {@link MdDimension}.
    */
@@ -755,11 +745,11 @@ public class Facade
 
   /**
    * Returns a DTO representing the object of the user who is logged into the
-   * session with the given session id.
+   * session with the given session oid.
    * 
    * @param sessionId
    * @return DTO representing the object of the user who is logged into the
-   *         session with the given session id.
+   *         session with the given session oid.
    */
   @Request(RequestType.SESSION)
   public static BusinessDTO getSessionUser(String sessionId)
@@ -799,7 +789,7 @@ public class Facade
    * 
    * @param locales
    *          locale of the user
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   @Request
   public static String loginAnonymous(Locale[] locales)
@@ -820,7 +810,7 @@ public class Facade
    * @param dimensionKey
    * @param locales
    *          locale of the user
-   * @return id of the new session.
+   * @return oid of the new session.
    */
   @Request
   public static String loginAnonymous(String dimensionKey, Locale[] locales)
@@ -1126,7 +1116,7 @@ public class Facade
       try
       {
         busEnumArray[i] = (BusinessEnumeration) c.getMethod("valueOf", String.class).invoke(null, operationNames[i]);
-        operationIds[i] = busEnumArray[i].getId();
+        operationIds[i] = busEnumArray[i].getOid();
       }
       catch (InvocationTargetException ite)
       {
@@ -1150,34 +1140,6 @@ public class Facade
     }
 
     return operationIds;
-  }
-
-  /**
-   * Grants state permission.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    boolean access = SessionFacade.checkAccess(sessionId, Operation.GRANT, stateId);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on state [" + stateMasterIF.getName() + "].";
-      throw new GrantStatePermissionException(errorMsg, stateMasterIF, userIF);
-    }
-
-    Grant.grantStatePermission(sessionId, actorId, stateId, convertOperationEnumNamesToIds(operationNames));
   }
 
   /**
@@ -1211,51 +1173,17 @@ public class Facade
   }
 
   /**
-   * Grants attribute permission on a state.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  // Heads up: ask Smethie about granting permissions based on domain
-  public static void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    MdAttributeConcreteDAOIF mdAttributeIF = MdAttributeConcreteDAO.get(mdAttributeId);
-
-    boolean access = SessionFacade.checkAttributeAccess(sessionId, Operation.GRANT, stateId, mdAttributeIF);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on attribute [" + mdAttributeIF.definesAttribute() + "] " + " on class [" + mdClassIF.definesType() + "] in state [" + stateMasterIF.getName() + "]";
-      throw new GrantAttributeStatePermissionException(errorMsg, mdClassIF, mdAttributeIF, stateMasterIF, userIF);
-    }
-
-    Grant.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
    * Grants permission to a role or user to execute an operation on a type.
    * 
    * @pre: get(mdTypeId)instanceof MdType
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
-   *          id of operation to grant.
+   *          oid of operation to grant.
    */
   @Request(RequestType.SESSION)
   public static void grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
@@ -1282,13 +1210,13 @@ public class Facade
    * 
    * @pre: get(mdMethodId)instanceof MdMethod
    * @param session
-   *          id.
+   *          oid.
    * @param actorId
    *          of the actor to receive the given operation permissions.
    * @param mdMethodId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
-   *          id of operation to grant.
+   *          oid of operation to grant.
    */
   @Request(RequestType.SESSION)
   public static void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
@@ -1320,7 +1248,7 @@ public class Facade
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
    *          ids of operation to revoke.
    */
@@ -1354,7 +1282,7 @@ public class Facade
    * @param actorId
    *          of the actor to revoke the given operation permissions.
    * @param mdTypeId
-   *          The id of the type.
+   *          The oid of the type.
    * @param operationNames
    *          ids of operation to revoke.
    */
@@ -1376,34 +1304,6 @@ public class Facade
     }
 
     Grant.revokeMetaDataPermission(sessionId, actorId, mdMethodId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
-   * Revokes state permission.
-   * 
-   * @param sessionId
-   * @param actorId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
-  {
-    boolean access = SessionFacade.checkAccess(sessionId, Operation.GRANT, stateId);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on state [" + stateMasterIF.getName() + "].";
-      throw new RevokeStatePermissionException(errorMsg, stateMasterIF, userIF);
-    }
-
-    Grant.revokeStatePermission(sessionId, actorId, stateId, convertOperationEnumNamesToIds(operationNames));
   }
 
   /**
@@ -1437,123 +1337,18 @@ public class Facade
   }
 
   /**
-   * Revokes attribute permission on a state.
+   * Locks a business element with the specified oid.
    * 
    * @param sessionId
-   * @param actorId
-   * @param mdAttributeId
-   * @param stateId
-   * @param operationNames
-   */
-  @Request(RequestType.SESSION)
-  public static void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
-  {
-    MdAttributeConcreteDAOIF mdAttributeIF = MdAttributeConcreteDAO.get(mdAttributeId);
-
-    boolean access = SessionFacade.checkAttributeAccess(sessionId, Operation.GRANT, stateId, mdAttributeIF);
-
-    if (!access)
-    {
-      SessionIF session = Session.getCurrentSession();
-
-      SingleActorDAOIF userIF = session.getUser();
-
-      MdClassDAOIF mdClassIF = mdAttributeIF.definedByClass();
-
-      StateMasterDAOIF stateMasterIF = StateMasterDAO.get(stateId);
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have grant permission on attribute [" + mdAttributeIF.definesAttribute() + "] " + " on class [" + mdClassIF.definesType() + "] in state [" + stateMasterIF.getName() + "]";
-      throw new RevokeAttributeStatePermissionException(errorMsg, mdClassIF, mdAttributeIF, stateMasterIF, userIF);
-    }
-
-    Grant.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, convertOperationEnumNamesToIds(operationNames));
-  }
-
-  /**
-   * Promotes the business object to the state with the given name.
-   * 
-   * @param sessionid
-   * @param objectId
-   * @param transitionName
-   */
-  @Request(RequestType.SESSION)
-  public static BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-  {
-    // update the Business object with the most recent values on the BusinessDTO
-    Business business = (Business) FacadeUtil.populateComponent(sessionId, businessDTO);
-
-    // check permission for promoting
-    SessionFacade.checkPromoteAccess(sessionId, business, transitionName);
-
-    try
-    {
-      if (business.getMdClass().isGenerateSource())
-      {
-        Class<?> clazz = LoaderDecorator.load(business.getType());
-        String methodName = CommonGenerationUtil.lowerFirstCharacter(transitionName);
-        clazz.getMethod(methodName).invoke(business);
-      }
-      else
-      {
-        business.promote(transitionName);
-      }
-    }
-    catch (IllegalArgumentException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (SecurityException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (IllegalAccessException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
-    catch (InvocationTargetException e)
-    {
-      if (e.getTargetException() instanceof RunwayException)
-      {
-        RunwayException fwEx = (RunwayException) e.getTargetException();
-        throw fwEx;
-      }
-      else if (e.getTargetException() instanceof SmartException)
-      {
-        throw (SmartException) e.getTargetException();
-      }
-      else
-      {
-        throw new ProgrammingErrorException(e);
-      }
-    }
-    catch (NoSuchMethodException e)
-    {
-      if (GenerationUtil.isSkipCompileAndCodeGeneration(MdTypeDAO.getMdTypeDAO(business.getType())))
-      {
-        business.promote(transitionName);
-      }
-      else
-      {
-        throw new ProgrammingErrorException(e);
-      }
-    }
-
-    return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
-  }
-
-  /**
-   * Locks a business element with the specified id.
-   * 
-   * @param sessionId
-   * @param id
-   *          The id of the business element to lock.
+   * @param oid
+   *          The oid of the business element to lock.
    * @return An EntityDTO representing the locked Element.
    */
   @Request(RequestType.SESSION)
-  public static ElementDTO lock(String sessionId, String id)
+  public static ElementDTO lock(String sessionId, String oid)
   {
     // lock the business object
-    Element element = (Element) getEntity(id);
+    Element element = (Element) getEntity(oid);
 
     element.lock();
 
@@ -1561,18 +1356,18 @@ public class Facade
   }
 
   /**
-   * Unlocks a business entity with the specified id.
+   * Unlocks a business entity with the specified oid.
    * 
    * @param sessionId
-   * @param id
-   *          The id of the business entity to unlock.
+   * @param oid
+   *          The oid of the business entity to unlock.
    * @return An EntityDTO representing the unlocked Element.
    */
   @Request(RequestType.SESSION)
-  public static ElementDTO unlock(String sessionId, String id)
+  public static ElementDTO unlock(String sessionId, String oid)
   {
     // unlock the business object
-    Element element = (Element) getEntity(id);
+    Element element = (Element) getEntity(oid);
 
     element.unlock();
 
@@ -1580,17 +1375,17 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static void deleteChildren(String sessionId, String parentId, String relationshipType)
+  public static void deleteChildren(String sessionId, String parentOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    _deleteChildren(sessionId, parentId, relationshipType);
+    _deleteChildren(sessionId, parentOid, relationshipType);
   }
 
   @Transaction
-  private static void _deleteChildren(String sessionId, String parentId, String relationshipType)
+  private static void _deleteChildren(String sessionId, String parentOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    Business business = (Business) getEntity(parentId);
+    Business business = (Business) getEntity(parentOid);
 
     OIterator<? extends Relationship> childrenRels = business.getChildRelationships(relationshipType);
 
@@ -1601,16 +1396,16 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static void deleteParents(String sessionId, String childId, String relationshipType)
+  public static void deleteParents(String sessionId, String childOid, String relationshipType)
   {
-    _deleteParents(sessionId, childId, relationshipType);
+    _deleteParents(sessionId, childOid, relationshipType);
   }
 
   @Transaction
-  private static void _deleteParents(String sessionId, String childId, String relationshipType)
+  private static void _deleteParents(String sessionId, String childOid, String relationshipType)
   {
     // get all children of the business object and delete them
-    Business business = (Business) getEntity(childId);
+    Business business = (Business) getEntity(childOid);
 
     OIterator<? extends Relationship> parentRels = business.getParentRelationships(relationshipType);
     for (Relationship parentRel : parentRels)
@@ -1624,25 +1419,25 @@ public class Facade
    * specified relationhip type for the given BusinessDTO object.
    * 
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
   @Request(RequestType.SESSION)
-  public static List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getParentRelationships(String sessionId, String oid, String relationshipType)
   {
     // Get all the Relationships associated with the parents.
-    Business business = (Business) getEntity(id);
+    Business business = (Business) getEntity(oid);
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
-    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_PARENT, business, mdRelationshipIF.getId());
+    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_PARENT, business, mdRelationshipIF.getOid());
 
     if (!access)
     {
       SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + oid + "]";
       throw new ReadParentPermissionException(errorMsg, business, mdRelationshipIF, userIF);
     }
 
@@ -1652,20 +1447,20 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static List<BusinessDTO> getParents(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getParents(String sessionId, String oid, String relationshipType)
   {
     // Get all the children associated with the parent.
-    Business business = (Business) getEntity(id);
+    Business business = (Business) getEntity(oid);
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
-    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_PARENT, business, mdRelationshipIF.getId());
+    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_PARENT, business, mdRelationshipIF.getOid());
 
     if (!access)
     {
       SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read parents of type [" + mdRelationshipIF.definesType() + "] for parent object [" + oid + "]";
       throw new ReadParentPermissionException(errorMsg, business, mdRelationshipIF, userIF);
     }
 
@@ -1675,20 +1470,20 @@ public class Facade
   }
 
   @Request(RequestType.SESSION)
-  public static List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType)
+  public static List<BusinessDTO> getChildren(String sessionId, String oid, String relationshipType)
   {
     // Get all the children associated with the parent.
-    Business business = (Business) getEntity(id);
+    Business business = (Business) getEntity(oid);
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
-    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_CHILD, business, mdRelationshipIF.getId());
+    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_CHILD, business, mdRelationshipIF.getOid());
 
     if (!access)
     {
       SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + oid + "]";
       throw new ReadChildPermissionException(errorMsg, business, mdRelationshipIF, userIF);
     }
 
@@ -1703,25 +1498,25 @@ public class Facade
    * the specified relationhip type for the given BusinessDTO object.
    * 
    * @param sessionId
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
   @Request(RequestType.SESSION)
-  public static List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType)
+  public static List<RelationshipDTO> getChildRelationships(String sessionId, String oid, String relationshipType)
   {
     // Get all the Relationships associated with the children.
-    Business business = (Business) getEntity(id);
+    Business business = (Business) getEntity(oid);
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
-    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_CHILD, business, mdRelationshipIF.getId());
+    boolean access = SessionFacade.checkRelationshipAccess(sessionId, Operation.READ_CHILD, business, mdRelationshipIF.getOid());
 
     if (!access)
     {
       SingleActorDAOIF userIF = Session.getCurrentSession().getUser();
 
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + id + "]";
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to read children of type [" + mdRelationshipIF.definesType() + "] for parent object [" + oid + "]";
       throw new ReadChildPermissionException(errorMsg, business, mdRelationshipIF, userIF);
     }
 
@@ -2097,7 +1892,7 @@ public class Facade
 
     for (BusinessEnumeration businessEnumeration : busEnumArray)
     {
-      Business entity = Business.get(businessEnumeration.getId());
+      Business entity = Business.get(businessEnumeration.getOid());
 
       boolean access = SessionFacade.checkAccess(sessionId, Operation.READ, entity);
 
@@ -2119,9 +1914,9 @@ public class Facade
    * Retrieves a globally readable file from the server.
    * 
    * @param sessionId
-   *          The id of the session
+   *          The oid of the session
    * @param fileId
-   *          The id of the file to retrieve
+   *          The oid of the file to retrieve
    * @return
    */
   @Request(RequestType.SESSION)
@@ -2311,19 +2106,19 @@ public class Facade
    * Returns a type-safe entity if possible. Otherwise, it returns a type-unsafe
    * entity.
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  private static Entity getEntity(String id)
+  private static Entity getEntity(String oid)
   {
     Entity entity;
     try
     {
-      entity = BusinessFacade.getEntity(id);
+      entity = BusinessFacade.getEntity(oid);
     }
     catch (ClassLoaderException e)
     {
-      entity = Entity.getEntity(id);
+      entity = Entity.getEntity(oid);
     }
 
     return entity;

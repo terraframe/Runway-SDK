@@ -87,9 +87,9 @@ public abstract class EntitySystemBase extends com.runwaysdk.business.ComponentS
     return CLASS;
   }
   
-  public static EntitySystem get(String id)
+  public static EntitySystem get(String oid)
   {
-    return (EntitySystem) com.runwaysdk.business.Business.get(id);
+    return (EntitySystem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static EntitySystem getByKey(String key)
@@ -97,17 +97,17 @@ public abstract class EntitySystemBase extends com.runwaysdk.business.ComponentS
     return (EntitySystem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static EntitySystem lock(java.lang.String id)
+  public static EntitySystem lock(java.lang.String oid)
   {
-    EntitySystem _instance = EntitySystem.get(id);
+    EntitySystem _instance = EntitySystem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static EntitySystem unlock(java.lang.String id)
+  public static EntitySystem unlock(java.lang.String oid)
   {
-    EntitySystem _instance = EntitySystem.get(id);
+    EntitySystem _instance = EntitySystem.get(oid);
     _instance.unlock();
     
     return _instance;

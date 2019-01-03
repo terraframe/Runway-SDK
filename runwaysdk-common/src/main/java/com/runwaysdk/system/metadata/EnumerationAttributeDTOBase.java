@@ -24,9 +24,9 @@ public abstract class EnumerationAttributeDTOBase extends com.runwaysdk.system.m
   public final static String CLASS = "com.runwaysdk.system.metadata.EnumerationAttribute";
   private static final long serialVersionUID = -11727595;
   
-  public EnumerationAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public EnumerationAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -48,31 +48,31 @@ public abstract class EnumerationAttributeDTOBase extends com.runwaysdk.system.m
   
   public com.runwaysdk.system.metadata.MdBusinessDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdBusinessDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdBusinessDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.metadata.MdEnumerationDTO getChild()
   {
-    return com.runwaysdk.system.metadata.MdEnumerationDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.metadata.MdEnumerationDTO.get(getRequest(), super.getChildOid());
   }
   
-  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.EnumerationAttributeDTO) dto;
   }
   
-  public static com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EnumerationAttributeDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.metadata.EnumerationAttributeDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()
@@ -88,7 +88,7 @@ public abstract class EnumerationAttributeDTOBase extends com.runwaysdk.system.m
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.EnumerationAttributeQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -101,10 +101,10 @@ public abstract class EnumerationAttributeDTOBase extends com.runwaysdk.system.m
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.EnumerationAttributeDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.EnumerationAttributeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -114,10 +114,10 @@ public abstract class EnumerationAttributeDTOBase extends com.runwaysdk.system.m
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.EnumerationAttributeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.EnumerationAttributeDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.EnumerationAttributeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

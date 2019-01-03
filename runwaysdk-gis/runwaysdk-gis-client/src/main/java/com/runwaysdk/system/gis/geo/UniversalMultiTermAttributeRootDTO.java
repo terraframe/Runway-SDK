@@ -22,9 +22,9 @@ public class UniversalMultiTermAttributeRootDTO extends UniversalMultiTermAttrib
 {
   private static final long serialVersionUID = 2018499585;
   
-  public UniversalMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public UniversalMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

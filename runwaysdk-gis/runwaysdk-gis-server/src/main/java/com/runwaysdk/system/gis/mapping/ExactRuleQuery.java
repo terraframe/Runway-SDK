@@ -114,13 +114,13 @@ public  class ExactRuleQuery extends com.runwaysdk.system.gis.mapping.PrimitiveR
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.mapping.ExactRule exactRule)
     {
       if(exactRule == null) return this.EQ((java.lang.String)null);
-      return this.EQ(exactRule.getId());
+      return this.EQ(exactRule.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.mapping.ExactRule exactRule)
     {
       if(exactRule == null) return this.NE((java.lang.String)null);
-      return this.NE(exactRule.getId());
+      return this.NE(exactRule.getOid());
     }
 
   }

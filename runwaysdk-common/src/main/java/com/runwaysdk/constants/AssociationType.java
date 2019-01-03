@@ -22,31 +22,31 @@ public enum AssociationType {
   /**
    * Index type of no index.
    */
-  RELATIONSHIP("8xocp8btq463ajmetk3lv41u9ttvxtwrzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g"),
+  RELATIONSHIP("fc694f1c-082c-3343-a572-284cb90000d4"),
 
   /**
    * Index type of non unique index.
    */
-  TREE("stdq297fiutlafkxcefcn7ffgv823bqmzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g"),
+  TREE("5f99d1a8-bf92-3c93-aa55-9231720000d4"),
 
   /**
    * Index type of unique index.
    */
-  GRAPH("zgfz3p6f1453bmestyd6yzjreu46ds9kzha6nh8rgh8me2mpoe6i1eaw2z3u5g7g");
+  GRAPH("aa0aa8e9-cf9e-3901-85e4-d9c9630000d4");
 
   /**
    * Index type of unique group index.
    */
 
-  private String id = null;
+  private String oid = null;
 
-  private AssociationType(String id)
+  private AssociationType(String oid)
   {
-    this.id = id;
+    this.oid = oid;
   }
 
-  public String getId()
+  public String getOid()
   {
-    return this.id;
+    return this.oid;
   }
 }

@@ -27,6 +27,9 @@ import java.util.Locale;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.ClientSession;
@@ -68,6 +71,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
   protected static ClientRequestIF clientRequest = null;
 
+  @Request
   @BeforeClass
   public static void classSetUp()
   {
@@ -80,10 +84,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     clientRequest.createBusiness(tommyUser);
   }
 
+  @Request
   @AfterClass
   public static void classTearDown()
   {
-    clientRequest.delete(tommyUser.getId());
+    clientRequest.delete(tommyUser.getOid());
 
     systemSession.logout();
   }
@@ -101,15 +106,15 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testPointCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -124,23 +129,23 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPoint", point);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY(), 0.001);
 
       tommyRequest.lock(businessDTO);
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       businessDTO.setValue("testPoint", point);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
     }
     finally
     {
@@ -148,27 +153,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testLineStringCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -183,21 +190,21 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", lineString);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       LineString newLineString = (LineString) businessDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       tommyRequest.lock(businessDTO);
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       businessDTO.setValue("testLineString", lineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       newLineString = (LineString) businessDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
     }
     finally
     {
@@ -205,24 +212,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testPolygonCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -239,11 +248,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygon);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Polygon newPolygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       tommyRequest.lock(businessDTO);
 
@@ -253,14 +262,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       newPolygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -268,24 +277,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testMultiPointCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -302,11 +313,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPoint);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPoint newMultiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       tommyRequest.lock(businessDTO);
 
@@ -316,14 +327,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPoint);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       newMultiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -331,24 +342,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testMultiLineStringCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -365,11 +378,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineString);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiLineString newMultiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       tommyRequest.lock(businessDTO);
 
@@ -379,14 +392,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       newMultiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -394,24 +407,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testMultiPolygonCRUDTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -428,11 +443,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygon);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPolygon newMultiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       tommyRequest.lock(businessDTO);
 
@@ -442,14 +457,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       newMultiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -457,27 +472,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testPointCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -489,22 +506,22 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPoint", "POINT(191232 243118)");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Point point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPoint", "POINT(191108 243242)");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
     }
     finally
     {
@@ -512,27 +529,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testLineStringCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -545,14 +564,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", lineStringText1);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       LineString lineString = (LineString) businessDTO.getObjectValue("testLineString");
 
       WKTReader reader = new WKTReader();
       LineString expectedLine = (LineString) reader.read(lineStringText1);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
 
       String lineStringText2 = "LINESTRING (189141 244158, 189265 244817)";
 
@@ -560,16 +579,16 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", lineStringText2);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       lineString = (LineString) businessDTO.getObjectValue("testLineString");
 
       expectedLine = (LineString) reader.read(lineStringText2);
 
-      assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
+      Assert.assertTrue("LineString was not the expected value.", expectedLine.equalsExact(lineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -577,27 +596,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPolygonCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -610,14 +631,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygonText1);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Polygon polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
       WKTReader reader = new WKTReader();
       Polygon expectedPolygon = (Polygon) reader.read(polygonText1);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
 
       String polygonText2 = "POLYGON (( 10 10, 15 25, 40 40, 30 25, 10 10))";
 
@@ -625,16 +646,16 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygonText2);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
       expectedPolygon = (Polygon) reader.read(polygonText2);
 
-      assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
+      Assert.assertTrue("Polygon was not the expected value.", expectedPolygon.equalsExact(polygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -642,27 +663,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPointCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -675,14 +698,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPointText1);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPoint multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
       WKTReader reader = new WKTReader();
       MultiPoint expectedMultiPoint = (MultiPoint) reader.read(multiPointText1);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
 
       String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
 
@@ -690,16 +713,16 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPointText2);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
       expectedMultiPoint = (MultiPoint) reader.read(multiPointText2);
 
-      assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
+      Assert.assertTrue("MultiPoint was not the expected value.", expectedMultiPoint.equalsExact(multiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -707,27 +730,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiLineStringCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -740,14 +765,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineStringText1);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiLineString multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
       WKTReader reader = new WKTReader();
       MultiLineString expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText1);
 
-      assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
 
       String multiLineStringText2 = "MULTILINESTRING ((189141 244158, 189265 244817, 100000 150000, 175000 200000))";
 
@@ -755,16 +780,16 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineStringText2);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
       expectedMultiLineString = (MultiLineString) reader.read(multiLineStringText2);
 
-      assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
+      Assert.assertTrue("MultiLineString was not the expected value.", expectedMultiLineString.equalsExact(multiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -772,27 +797,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPolygonCRUDTypeUnsafe_WKT()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -805,14 +832,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygonText1);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPolygon multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
       WKTReader reader = new WKTReader();
       MultiPolygon expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText1);
 
-      assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
 
       String multiPolygonText2 = "MULTIPOLYGON(((1 1,5 1,10 10,1 5,1 1),(2 2, 3 2, 6 6, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
 
@@ -820,16 +847,16 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygonText2);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
       expectedMultiPolygon = (MultiPolygon) reader.read(multiPolygonText2);
 
-      assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
+      Assert.assertTrue("MultiPolygon was not the expected value.", expectedMultiPolygon.equalsExact(multiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -837,27 +864,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testPointCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -875,11 +904,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -888,15 +917,15 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -904,27 +933,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testLineStringCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -942,10 +973,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -954,14 +985,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -969,27 +1000,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPolygonCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1009,10 +1042,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1022,14 +1055,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1037,27 +1070,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPointCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1077,10 +1112,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1090,14 +1125,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1105,27 +1140,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiLineStringCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1145,10 +1182,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiLineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1158,14 +1195,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiLineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1173,27 +1210,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPolygonCRUDTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1213,10 +1252,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1226,14 +1265,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1241,26 +1280,28 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPointInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1278,10 +1319,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the point.", null, point);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the point.", null, point);
     }
     catch (Throwable e)
     {
@@ -1296,12 +1337,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1310,25 +1351,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testLineStringInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1346,10 +1389,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       lineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the LineString.", null, lineString);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the LineString.", null, lineString);
     }
     catch (Throwable e)
     {
@@ -1364,12 +1407,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1378,25 +1421,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPolygonInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1416,10 +1461,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the Polygon.", null, polygon);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the Polygon.", null, polygon);
     }
     catch (Throwable e)
     {
@@ -1434,12 +1479,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1448,25 +1493,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPointInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1486,10 +1533,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPoint.", null, multiPoint);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPoint.", null, multiPoint);
     }
     catch (Throwable e)
     {
@@ -1504,12 +1551,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1518,25 +1565,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiLineStringInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1556,10 +1605,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiPoint = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiLineString.", null, multiPoint);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiLineString.", null, multiPoint);
     }
     catch (Throwable e)
     {
@@ -1574,12 +1623,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1588,25 +1637,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPolygonInvalidReadPermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1626,10 +1677,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPolygon.", null, multiPolygon);
+      Assert.assertEquals("User does not have adequate read permissions, yet was able to retreive the MultiPolygon.", null, multiPolygon);
     }
     catch (Throwable e)
     {
@@ -1644,12 +1695,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         else
         {
-          fail(cause.getMessage());
+          Assert.fail(cause.getMessage());
         }
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     finally
@@ -1658,25 +1709,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPointInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1694,11 +1747,11 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1707,7 +1760,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a point attribute without write permission.");
+      Assert.fail("Able to write to a point attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -1719,12 +1772,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1737,7 +1790,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -1745,25 +1798,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testLineStringInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1781,10 +1836,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1793,7 +1848,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a LineString attribute without write permission.");
+      Assert.fail("Able to write to a LineString attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -1805,12 +1860,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1823,7 +1878,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -1831,25 +1886,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testPolygonInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1869,10 +1926,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1882,7 +1939,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a Polygon attribute without write permission.");
+      Assert.fail("Able to write to a Polygon attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -1894,12 +1951,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -1912,7 +1969,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -1920,25 +1977,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPointInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1958,10 +2017,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -1971,7 +2030,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a MultiPoint attribute without write permission.");
+      Assert.fail("Able to write to a MultiPoint attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -1983,12 +2042,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2001,7 +2060,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -2009,25 +2068,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiLineStringInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2047,10 +2108,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiLineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2060,7 +2121,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiLineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a MultiLineString attribute without write permission.");
+      Assert.fail("Able to write to a MultiLineString attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -2072,12 +2133,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2090,7 +2151,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -2098,25 +2159,27 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testMultiPolygonInvalidWritePermissionTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2136,10 +2199,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPolygon newMultiLineString = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiLineString));
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2149,7 +2212,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      fail("Able to write to a MultiPolygon attribute without write permission.");
+      Assert.fail("Able to write to a MultiPolygon attribute without write permission.");
     }
     catch (InvocationTargetException e)
     {
@@ -2161,12 +2224,12 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       }
       else
       {
-        fail(cause.getMessage());
+        Assert.fail(cause.getMessage());
       }
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2179,7 +2242,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
         }
         catch (Throwable e)
         {
-          fail(e.getMessage());
+          Assert.fail(e.getMessage());
         }
       }
 
@@ -2187,28 +2250,28 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testNullPointObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2222,29 +2285,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPoint", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Point point = (Point) businessDTO.getObjectValue("testPoint");
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       tommyRequest.lock(businessDTO);
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       businessDTO.setValue("testPoint", point);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPoint", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
 
     }
     finally
@@ -2253,27 +2316,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testNullLineStringObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2287,33 +2352,33 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       LineString lineString = (LineString) businessDTO.getObjectValue("testLineString");
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       tommyRequest.lock(businessDTO);
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       businessDTO.setValue("testLineString", lineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       LineString newLineString = (LineString) businessDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testLineString", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       lineString = (LineString) businessDTO.getObjectValue("testLineString");
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2321,27 +2386,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullPolygonObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2353,10 +2420,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Polygon polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       tommyRequest.lock(businessDTO);
       String polygonText1 = "POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))";
@@ -2367,23 +2434,23 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       Polygon newPolygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPolygon", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
-      assertEquals("Object Updated. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Updated. Polygon object should be null.", null, polygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2391,27 +2458,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiPointObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2423,10 +2492,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPoint multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       tommyRequest.lock(businessDTO);
       String polygonText1 = "MULTIPOINT(191232 243118, 10000 20000)";
@@ -2437,23 +2506,23 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPoint);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiPoint newMultiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiPoint", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2461,27 +2530,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiLineStringObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2493,10 +2564,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiLineString multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       tommyRequest.lock(businessDTO);
       String polygonText1 = "MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))";
@@ -2507,23 +2578,23 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiLineString newMultiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiLineString", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2531,27 +2602,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiPolygonObjectTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2563,10 +2636,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", null);
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPolygon multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       tommyRequest.lock(businessDTO);
       String polygonText1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
@@ -2577,23 +2650,23 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiPolygon newMultiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiPolygon", null);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2601,27 +2674,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testNullPointObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2638,10 +2713,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, (Point) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       Point point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2650,26 +2725,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, point);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestPoint", Point.class).invoke(businessDTO, (Point) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2677,27 +2752,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullLineStringObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2714,10 +2791,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, (LineString) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       LineString lineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2726,25 +2803,25 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, lineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       LineString newLineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestLineString", LineString.class).invoke(businessDTO, (LineString) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       lineString = (LineString) testClass.getMethod("getTestLineString").invoke(businessDTO);
 
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2752,27 +2829,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullPolygonObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2787,10 +2866,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, (Polygon) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       Polygon polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2802,25 +2881,25 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, polygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       Polygon newPolygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestPolygon", Polygon.class).invoke(businessDTO, (Polygon) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       polygon = (Polygon) testClass.getMethod("getTestPolygon").invoke(businessDTO);
 
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2828,27 +2907,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiPointObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2863,10 +2944,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, (MultiPoint) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPoint multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2878,25 +2959,25 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, multiPoint);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPoint newMultiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestMultiPoint", MultiPoint.class).invoke(businessDTO, (MultiPoint) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiPoint = (MultiPoint) testClass.getMethod("getTestMultiPoint").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2904,27 +2985,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiLineStringObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -2939,10 +3022,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, (MultiLineString) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiLineString multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2954,25 +3037,25 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, multiLineString);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiLineString newMultiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestMultiLineString", MultiLineString.class).invoke(businessDTO, (MultiLineString) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiLineString = (MultiLineString) testClass.getMethod("getTestMultiLineString").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -2980,27 +3063,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testNullMultiPolygonObjectTypeSafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3015,10 +3100,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, (MultiPolygon) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPolygon multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -3030,25 +3115,25 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, multiPolygon);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       MultiPolygon newMultiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);
       testClass.getMethod("setTestMultiPolygon", MultiPolygon.class).invoke(businessDTO, (MultiLineString) null);
       testClass.getMethod("apply").invoke(businessDTO);
 
-      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getId());
+      businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       multiPolygon = (MultiPolygon) testClass.getMethod("getTestMultiPolygon").invoke(businessDTO);
 
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3056,29 +3141,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
    *
    */
-  @Test
   @Request
+  @Test
   public void testEmptyStringPointTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3092,29 +3177,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPoint", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Point point = (Point) businessDTO.getObjectValue("testPoint");
-      assertEquals("Object created.  Point object should be null.", null, point);
+      Assert.assertEquals("Object created.  Point object should be null.", null, point);
 
       tommyRequest.lock(businessDTO);
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
       businessDTO.setValue("testPoint", point);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
-      assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX(), 0.001);
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY(), 0.001);
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPoint", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
-      assertEquals("Object Updated. Point object should be null.", null, point);
+      Assert.assertEquals("Object Updated. Point object should be null.", null, point);
     }
     finally
     {
@@ -3122,29 +3207,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
   *
   */
-  @Test
   @Request
+  @Test
   public void testEmptyStringLineStringTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3158,28 +3243,28 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       LineString lineString = (LineString) businessDTO.getObjectValue("testLineString");
-      assertEquals("Object created.  LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object created.  LineString object should be null.", null, lineString);
 
       tommyRequest.lock(businessDTO);
       lineString = geometryFactory.createLineString(new Coordinate[] { new Coordinate(189141, 244158), new Coordinate(189265, 244817) });
       businessDTO.setValue("testLineString", lineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       LineString newLineString = (LineString) businessDTO.getObjectValue("testLineString");
 
-      assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
+      Assert.assertTrue("Returned LineString from the database does not match the LineString that was set on the object.", lineString.equalsExact(newLineString));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testLineString", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       lineString = (LineString) businessDTO.getObjectValue("testLineString");
-      assertEquals("Object Updated. LineString object should be null.", null, lineString);
+      Assert.assertEquals("Object Updated. LineString object should be null.", null, lineString);
     }
     finally
     {
@@ -3187,27 +3272,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
- *
- */
+  *
+  */
+  @Request
+  @Test
   public void testEmptyStringPolygonTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3219,10 +3306,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       Polygon polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
-      assertEquals("Object created.  Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object created.  Polygon object should be null.", null, polygon);
 
       tommyRequest.lock(businessDTO);
       String polygonText1 = "POLYGON (( 10 10, 10 20, 20 20, 20 15, 10 10))";
@@ -3232,22 +3319,22 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", polygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       Polygon newPolygon = (Polygon) businessDTO.getObjectValue("testPolygon");
 
-      assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
+      Assert.assertTrue("Returned Polygon from the database does not match the Polygon that was set on the object.", polygon.equalsExact(newPolygon));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPolygon", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       polygon = (Polygon) businessDTO.getObjectValue("testPolygon");
-      assertEquals("Object Updated. Polygon object should be null.", null, polygon);
+      Assert.assertEquals("Object Updated. Polygon object should be null.", null, polygon);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3255,27 +3342,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testEmptyStringMultiPointTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3287,10 +3376,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPoint multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object created.  MultiPoint object should be null.", null, multiPoint);
 
       tommyRequest.lock(businessDTO);
       String multiPointText1 = "MULTIPOINT(191232 243118, 10000 20000)";
@@ -3300,22 +3389,22 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", multiPoint);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiPoint newMultiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
 
-      assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
+      Assert.assertTrue("Returned MultiPoint from the database does not match the MultiPoint that was set on the object.", multiPoint.equalsExact(newMultiPoint));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiPoint", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPoint = (MultiPoint) businessDTO.getObjectValue("testMultiPoint");
-      assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
+      Assert.assertEquals("Object Updated. MultiPoint object should be null.", null, multiPoint);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3323,27 +3412,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testEmptyStringMultiLineStringTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3355,10 +3446,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiLineString multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object created.  MultiLineString object should be null.", null, multiLineString);
 
       tommyRequest.lock(businessDTO);
       String multiLineString1 = "MULTILINESTRING ((191232 243118, 191108 243242, 200000 250000, 275000 300000))";
@@ -3368,22 +3459,22 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", multiLineString);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiLineString newMultiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
 
-      assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
+      Assert.assertTrue("Returned MultiLineString from the database does not match the MultiLineString that was set on the object.", multiLineString.equalsExact(newMultiLineString));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiLineString", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiLineString = (MultiLineString) businessDTO.getObjectValue("testMultiLineString");
-      assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
+      Assert.assertEquals("Object Updated. MultiLineString object should be null.", null, multiLineString);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3391,27 +3482,29 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
   /**
-*
-*/
+  *
+  */
+  @Request
+  @Test
   public void testEmptyStringMultiPolygonTypeUnsafe()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3423,10 +3516,10 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", "");
       tommyRequest.createBusiness(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
 
       MultiPolygon multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object created.  MultiPolygon object should be null.", null, multiPolygon);
 
       tommyRequest.lock(businessDTO);
       String multiPolygon1 = "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))";
@@ -3436,22 +3529,22 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", multiPolygon);
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       MultiPolygon newMultiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
 
-      assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
+      Assert.assertTrue("Returned MultiPolygon from the database does not match the MultiPolygon that was set on the object.", multiPolygon.equalsExact(newMultiPolygon));
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testMultiPolygon", "");
       tommyRequest.update(businessDTO);
 
-      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getId());
+      businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       multiPolygon = (MultiPolygon) businessDTO.getObjectValue("testMultiPolygon");
-      assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
+      Assert.assertEquals("Object Updated. MultiPolygon object should be null.", null, multiPolygon);
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3459,26 +3552,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPointStringObject()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3490,7 +3583,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPoint", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a point attribute.");
+      Assert.fail("An invalid WKT value was set on a point attribute.");
     }
     catch (AttributePointParseExceptionDTO e)
     {
@@ -3498,7 +3591,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3506,26 +3599,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePointDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidLineStringStringObject()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3537,7 +3630,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testLineString", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a LineString attribute.");
+      Assert.fail("An invalid WKT value was set on a LineString attribute.");
     }
     catch (AttributeLineStringParseExceptionDTO e)
     {
@@ -3545,7 +3638,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3553,26 +3646,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidPolygonString()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3584,7 +3677,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testPolygon", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a Polygon attribute.");
+      Assert.fail("An invalid WKT value was set on a Polygon attribute.");
     }
     catch (AttributePolygonParseExceptionDTO e)
     {
@@ -3592,7 +3685,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3600,26 +3693,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributePolygonDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributePolygonDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPointString()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3631,7 +3724,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPoint", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a MultiPoint attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPoint attribute.");
     }
     catch (AttributeMultiPointParseExceptionDTO e)
     {
@@ -3639,7 +3732,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3647,26 +3740,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiPointDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiPointDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiLineStringString()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3678,7 +3771,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiLineString", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a MultiLineString attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiLineString attribute.");
     }
     catch (AttributeMultiLineStringParseExceptionDTO e)
     {
@@ -3686,7 +3779,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3694,26 +3787,26 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 
-  @Test
   @Request
+  @Test
   public void testInvalidMultiPolygonString()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -3725,7 +3818,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO.setValue("testMultiPolygon", "Total Garbage");
       tommyRequest.createBusiness(businessDTO);
 
-      fail("An invalid WKT value was set on a MultiPolygon attribute.");
+      Assert.fail("An invalid WKT value was set on a MultiPolygon attribute.");
     }
     catch (AttributeMultiPolygonParseExceptionDTO e)
     {
@@ -3733,7 +3826,7 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -3741,14 +3834,14 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       if (!businessDTO.isNewInstance())
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.CREATE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeTypePermission(tommyUser.getId(), GISMasterTestSetup.testClassMdBusinessDAO.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.WRITE.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.CREATE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), GISMasterTestSetup.testClassMdBusinessDAO.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), GISMasterTestSetup.mdAttributeMultiLineStringDAO.getOid(), Operation.READ.name());
     }
   }
 }

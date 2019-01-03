@@ -83,9 +83,9 @@ public abstract class HashMethodsDTOBase extends com.runwaysdk.system.Enumeratio
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(MESSAGEDIGEST).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.HashMethodsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.HashMethodsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.HashMethodsDTO) dto;
   }
@@ -103,7 +103,7 @@ public abstract class HashMethodsDTOBase extends com.runwaysdk.system.Enumeratio
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.HashMethodsQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -116,10 +116,10 @@ public abstract class HashMethodsDTOBase extends com.runwaysdk.system.Enumeratio
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.HashMethodsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.HashMethodsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.HashMethodsDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.HashMethodsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -129,10 +129,10 @@ public abstract class HashMethodsDTOBase extends com.runwaysdk.system.Enumeratio
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.HashMethodsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.HashMethodsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.HashMethodsDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.HashMethodsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

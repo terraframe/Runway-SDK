@@ -26,14 +26,14 @@ public class Assignments extends AssignmentsBase
 {
   private static final long serialVersionUID = 1229405888037L;
   
-  public Assignments(String parentId, String childId)
+  public Assignments(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public Assignments(com.runwaysdk.system.SingleActor parent, com.runwaysdk.system.Roles child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   public void apply()

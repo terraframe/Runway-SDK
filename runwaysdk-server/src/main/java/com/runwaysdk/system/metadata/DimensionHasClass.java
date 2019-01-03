@@ -22,14 +22,14 @@ public class DimensionHasClass extends DimensionHasClassBase
 {
   private static final long serialVersionUID = 59458998;
   
-  public DimensionHasClass(String parentId, String childId)
+  public DimensionHasClass(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public DimensionHasClass(com.runwaysdk.system.metadata.MdDimension parent, com.runwaysdk.system.metadata.MdClassDimension child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -20,62 +20,51 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.DoNotWeave;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.request.RMIClientRequest;
 import com.runwaysdk.web.json.JSONRMIClientRequest;
 
-public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest implements DoNotWeave
+@RunWith(ClasspathTestRunner.class)
+public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest
 {
-  public static void main(String[] args)
+  @BeforeClass
+  public static void classSetUp()
   {
-    junit.textui.TestRunner.run(JSONRMIInvokeMethodTest.suite());
+    TestRMIUtil.startServer();
+
+    jsonProxy = new JSONRMIClientRequest("default", "//localhost:" + CommonProperties.getRegistryPort() + "/");
+
+    systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+
+    try
+    {
+      clientRequest = systemSession.getRequest();
+      classSetUpRequest();
+
+      noPermissionSession = ClientSession.createUserSession("rmiDefault", "smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
+      noPermissionRequest = noPermissionSession.getRequest();
+      finalizeSetup();
+    }
+    catch (Exception e)
+    {
+      systemSession.logout();
+    }
   }
 
-  public static Test suite()
+  @AfterClass
+  public static void stopServer()
   {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(JSONRMIInvokeMethodTest.class);
+    noPermissionSession.logout();
+    systemSession.logout();
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        RemoteAdapterServer.startServer();
-
-        jsonProxy = new JSONRMIClientRequest("default", "//localhost:" + CommonProperties.getRegistryPort() + "/");
-
-        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-
-        try
-        {
-          clientRequest = systemSession.getRequest();
-          classSetUp();
-
-          noPermissionSession = ClientSession.createUserSession("rmiDefault", "smethie", "aaa", new Locale[] { CommonProperties.getDefaultLocale() });
-          noPermissionRequest = noPermissionSession.getRequest();
-          finalizeSetup();
-        }
-        catch (Exception e)
-        {
-          systemSession.logout();
-        }
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
-        RemoteAdapterServer.stopServer();
-      }
-    };
-
-    return wrapper;
+    ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
+    RemoteAdapterServer.stopServer();
   }
 }

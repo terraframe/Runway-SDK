@@ -28,8 +28,8 @@ public interface IndicatorElementInfo
   public static final String CLASS             = Constants.METADATA_PACKAGE + "." + CLASS_NAME;
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE          = "in5q49sp4ysp566txfog13xfvpjpjrnb00000000000000000000000000000001";
+  public static final String ID_VALUE          = "2148b21e-38d5-32f0-b325-d1809500003a";
    
 }

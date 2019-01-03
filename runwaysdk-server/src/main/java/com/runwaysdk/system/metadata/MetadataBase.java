@@ -35,7 +35,7 @@ public abstract class MetadataBase extends com.runwaysdk.business.Business
   private com.runwaysdk.business.Struct description = null;
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -149,24 +149,24 @@ public abstract class MetadataBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.Metadata.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -305,7 +305,7 @@ public abstract class MetadataBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -476,9 +476,9 @@ public abstract class MetadataBase extends com.runwaysdk.business.Business
     }
   }
   
-  public static Metadata get(String id)
+  public static Metadata get(String oid)
   {
-    return (Metadata) com.runwaysdk.business.Business.get(id);
+    return (Metadata) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Metadata getByKey(String key)
@@ -486,17 +486,17 @@ public abstract class MetadataBase extends com.runwaysdk.business.Business
     return (Metadata) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static Metadata lock(java.lang.String id)
+  public static Metadata lock(java.lang.String oid)
   {
-    Metadata _instance = Metadata.get(id);
+    Metadata _instance = Metadata.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Metadata unlock(java.lang.String id)
+  public static Metadata unlock(java.lang.String oid)
   {
-    Metadata _instance = Metadata.get(id);
+    Metadata _instance = Metadata.get(oid);
     _instance.unlock();
     
     return _instance;

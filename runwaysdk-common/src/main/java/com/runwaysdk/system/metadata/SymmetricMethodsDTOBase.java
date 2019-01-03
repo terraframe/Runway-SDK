@@ -83,9 +83,9 @@ public abstract class SymmetricMethodsDTOBase extends com.runwaysdk.system.Enume
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(TRANSFORMATION).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.SymmetricMethodsDTO) dto;
   }
@@ -103,7 +103,7 @@ public abstract class SymmetricMethodsDTOBase extends com.runwaysdk.system.Enume
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.SymmetricMethodsQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -116,10 +116,10 @@ public abstract class SymmetricMethodsDTOBase extends com.runwaysdk.system.Enume
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.SymmetricMethodsDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.SymmetricMethodsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -129,10 +129,10 @@ public abstract class SymmetricMethodsDTOBase extends com.runwaysdk.system.Enume
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.SymmetricMethodsDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.SymmetricMethodsDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.SymmetricMethodsDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

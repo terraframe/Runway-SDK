@@ -31,9 +31,9 @@ public abstract class ClassAttributeConcreteBase extends com.runwaysdk.system.me
   public final static String CLASS = "com.runwaysdk.system.metadata.ClassAttributeConcrete";
   private static final long serialVersionUID = 84621679;
   
-  public ClassAttributeConcreteBase(String parentId, String childId)
+  public ClassAttributeConcreteBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class ClassAttributeConcreteBase extends com.runwaysdk.system.me
     return (com.runwaysdk.system.metadata.MdAttributeConcrete) super.getChild();
   }
   
-  public static ClassAttributeConcrete get(String id)
+  public static ClassAttributeConcrete get(String oid)
   {
-    return (ClassAttributeConcrete) com.runwaysdk.business.Relationship.get(id);
+    return (ClassAttributeConcrete) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static ClassAttributeConcrete getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class ClassAttributeConcreteBase extends com.runwaysdk.system.me
     return (ClassAttributeConcrete) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static ClassAttributeConcrete lock(java.lang.String id)
+  public static ClassAttributeConcrete lock(java.lang.String oid)
   {
-    ClassAttributeConcrete _instance = ClassAttributeConcrete.get(id);
+    ClassAttributeConcrete _instance = ClassAttributeConcrete.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ClassAttributeConcrete unlock(java.lang.String id)
+  public static ClassAttributeConcrete unlock(java.lang.String oid)
   {
-    ClassAttributeConcrete _instance = ClassAttributeConcrete.get(id);
+    ClassAttributeConcrete _instance = ClassAttributeConcrete.get(oid);
     _instance.unlock();
     
     return _instance;

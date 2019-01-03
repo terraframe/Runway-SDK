@@ -174,13 +174,13 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebCharacter mdWebCharacter)
     {
       if(mdWebCharacter == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebCharacter.getId());
+      return this.EQ(mdWebCharacter.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebCharacter mdWebCharacter)
     {
       if(mdWebCharacter == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebCharacter.getId());
+      return this.NE(mdWebCharacter.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getDisplayLength()
@@ -283,7 +283,7 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
 
       for (int i=0; i<mdWebCharacter.length; i++)
       {
-        itemIdArray[i] = mdWebCharacter[i].getId();
+        itemIdArray[i] = mdWebCharacter[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -295,7 +295,7 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
 
       for (int i=0; i<mdWebCharacter.length; i++)
       {
-        itemIdArray[i] = mdWebCharacter[i].getId();
+        itemIdArray[i] = mdWebCharacter[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -307,7 +307,7 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
 
       for (int i=0; i<mdWebCharacter.length; i++)
       {
-        itemIdArray[i] = mdWebCharacter[i].getId();
+        itemIdArray[i] = mdWebCharacter[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -319,7 +319,7 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
 
       for (int i=0; i<mdWebCharacter.length; i++)
       {
-        itemIdArray[i] = mdWebCharacter[i].getId();
+        itemIdArray[i] = mdWebCharacter[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -331,7 +331,7 @@ public  class MdWebCharacterQuery extends com.runwaysdk.system.metadata.MdWebPri
 
       for (int i=0; i<mdWebCharacter.length; i++)
       {
-        itemIdArray[i] = mdWebCharacter[i].getId();
+        itemIdArray[i] = mdWebCharacter[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

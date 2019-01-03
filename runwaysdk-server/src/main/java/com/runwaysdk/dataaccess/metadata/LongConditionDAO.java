@@ -115,9 +115,9 @@ public class LongConditionDAO extends BasicConditionDAO implements LongCondition
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static LongConditionDAOIF get(String id)
+  public static LongConditionDAOIF get(String oid)
   {
-    return (LongConditionDAOIF) BusinessDAO.get(id);
+    return (LongConditionDAOIF) BusinessDAO.get(oid);
   }
 
   public MdFieldDAOIF getDefiningMdFieldDAO()

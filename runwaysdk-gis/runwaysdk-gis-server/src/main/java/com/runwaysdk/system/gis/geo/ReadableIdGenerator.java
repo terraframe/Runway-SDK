@@ -19,7 +19,6 @@
 package com.runwaysdk.system.gis.geo;
 
 import com.runwaysdk.business.generation.Base30;
-import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;

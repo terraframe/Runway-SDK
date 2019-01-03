@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class TestStructController extends TestStructControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class TestStructController extends TestStructControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/TestStruct/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";
@@ -32,18 +32,18 @@ public class TestStructController extends TestStructControllerBase implements co
   
   public void cancel(com.runwaysdk.jstest.TestStructDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(dto.getId());
+    this.view(dto.getOid());
   }
   public void failCancel(com.runwaysdk.jstest.TestStructDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.edit(dto.getId());
+    this.edit(dto.getOid());
   }
   public void create(com.runwaysdk.jstest.TestStructDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -72,15 +72,15 @@ public class TestStructController extends TestStructControllerBase implements co
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.jstest.TestStructDTO dto = com.runwaysdk.jstest.TestStructDTO.get(super.getClientRequest(), id);
+    com.runwaysdk.jstest.TestStructDTO dto = com.runwaysdk.jstest.TestStructDTO.get(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(id);
+    this.view(oid);
   }
   public void newInstance() throws java.io.IOException, javax.servlet.ServletException
   {
@@ -98,7 +98,7 @@ public class TestStructController extends TestStructControllerBase implements co
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -110,13 +110,13 @@ public class TestStructController extends TestStructControllerBase implements co
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.jstest.TestStructDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.jstest.TestStructDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }

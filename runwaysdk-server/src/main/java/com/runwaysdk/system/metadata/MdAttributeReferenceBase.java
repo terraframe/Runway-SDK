@@ -102,7 +102,7 @@ public abstract class MdAttributeReferenceBase extends com.runwaysdk.system.meta
     }
     else
     {
-      setValue(MDBUSINESS, value.getId());
+      setValue(MDBUSINESS, value.getOid());
     }
   }
   
@@ -111,9 +111,9 @@ public abstract class MdAttributeReferenceBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static MdAttributeReference get(String id)
+  public static MdAttributeReference get(String oid)
   {
-    return (MdAttributeReference) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeReference) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeReference getByKey(String key)
@@ -121,17 +121,17 @@ public abstract class MdAttributeReferenceBase extends com.runwaysdk.system.meta
     return (MdAttributeReference) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeReference lock(java.lang.String id)
+  public static MdAttributeReference lock(java.lang.String oid)
   {
-    MdAttributeReference _instance = MdAttributeReference.get(id);
+    MdAttributeReference _instance = MdAttributeReference.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeReference unlock(java.lang.String id)
+  public static MdAttributeReference unlock(java.lang.String oid)
   {
-    MdAttributeReference _instance = MdAttributeReference.get(id);
+    MdAttributeReference _instance = MdAttributeReference.get(oid);
     _instance.unlock();
     
     return _instance;

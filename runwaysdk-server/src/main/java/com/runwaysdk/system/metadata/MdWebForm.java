@@ -83,7 +83,7 @@ public class MdWebForm extends MdWebFormBase
     WebGroupFieldQuery relQ = new WebGroupFieldQuery(f);
     
     // exclude fields that are directly beneath a group
-    relQ.WHERE(relQ.childId().EQ(q1.getId()));
+    relQ.WHERE(relQ.childOid().EQ(q1.getOid()));
     q.AND(q.SUBSELECT_NOT_IN_groupFields(relQ));
     
 

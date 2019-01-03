@@ -89,7 +89,7 @@ public class MdLocalStructHandler extends MdEntityHandler implements TagHandlerI
     {
       mdLocalStructDAO.apply();
 
-      this.getManager().addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getId());
+      this.getManager().addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdLocalStructDAO);

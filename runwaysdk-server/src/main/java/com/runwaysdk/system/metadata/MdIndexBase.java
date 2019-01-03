@@ -140,7 +140,7 @@ public abstract class MdIndexBase extends com.runwaysdk.system.metadata.Metadata
     }
     else
     {
-      setValue(MDENTITY, value.getId());
+      setValue(MDENTITY, value.getOid());
     }
   }
   
@@ -263,9 +263,9 @@ public abstract class MdIndexBase extends com.runwaysdk.system.metadata.Metadata
     }
   }
   
-  public static MdIndex get(String id)
+  public static MdIndex get(String oid)
   {
-    return (MdIndex) com.runwaysdk.business.Business.get(id);
+    return (MdIndex) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdIndex getByKey(String key)
@@ -273,17 +273,17 @@ public abstract class MdIndexBase extends com.runwaysdk.system.metadata.Metadata
     return (MdIndex) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdIndex lock(java.lang.String id)
+  public static MdIndex lock(java.lang.String oid)
   {
-    MdIndex _instance = MdIndex.get(id);
+    MdIndex _instance = MdIndex.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdIndex unlock(java.lang.String id)
+  public static MdIndex unlock(java.lang.String oid)
   {
-    MdIndex _instance = MdIndex.get(id);
+    MdIndex _instance = MdIndex.get(oid);
     _instance.unlock();
     
     return _instance;

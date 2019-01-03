@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = 848402659)
+@com.runwaysdk.business.ClassSignature(hash = -2041162948)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -159,6 +159,57 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOID, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableGeometry getGeoLine()
+  {
+    return getGeoLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine()
+  {
+    return getGeoMultiLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint()
+  {
+    return getGeoMultiPoint(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon()
   {
     return getGeoMultiPolygon(null);
@@ -193,21 +244,21 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon()
   {
-    return getId(null);
+    return getGeoPolygon(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableGeometry)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -288,6 +339,23 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.GeoEntity.LOCKEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.GeoEntity.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -1081,15 +1149,24 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getGeoId();
     public com.runwaysdk.query.SelectableChar getGeoId(String alias);
     public com.runwaysdk.query.SelectableChar getGeoId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoLine();
+    public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine();
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint();
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon();
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint();
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon();
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1102,6 +1179,9 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -1274,13 +1354,13 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
     {
       if(geoEntity == null) return this.EQ((java.lang.String)null);
-      return this.EQ(geoEntity.getId());
+      return this.EQ(geoEntity.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
     {
       if(geoEntity == null) return this.NE((java.lang.String)null);
-      return this.NE(geoEntity.getId());
+      return this.NE(geoEntity.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -1368,6 +1448,57 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOID, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableGeometry getGeoLine()
+  {
+    return getGeoLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine()
+  {
+    return getGeoMultiLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint()
+  {
+    return getGeoMultiPoint(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon()
   {
     return getGeoMultiPolygon(null);
@@ -1402,21 +1533,21 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon()
   {
-    return getId(null);
+    return getGeoPolygon(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1485,6 +1616,23 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoEntity.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -2243,15 +2391,24 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getGeoId();
     public com.runwaysdk.query.SelectableChar getGeoId(String alias);
     public com.runwaysdk.query.SelectableChar getGeoId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoLine();
+    public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine();
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint();
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon();
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint();
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias);
     public com.runwaysdk.query.SelectableGeometry getGeoPoint(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon();
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias);
+    public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -2264,6 +2421,9 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -2313,7 +2473,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -2325,7 +2485,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -2337,7 +2497,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -2349,7 +2509,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -2361,7 +2521,7 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<geoEntity.length; i++)
       {
-        itemIdArray[i] = geoEntity[i].getId();
+        itemIdArray[i] = geoEntity[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -2451,6 +2611,57 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOID, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableGeometry getGeoLine()
+  {
+    return getGeoLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOLINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine()
+  {
+    return getGeoMultiLine(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiLine(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTILINE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint()
+  {
+    return getGeoMultiPoint(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableGeometry getGeoMultiPoint(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOMULTIPOINT, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableGeometry getGeoMultiPolygon()
   {
     return getGeoMultiPolygon(null);
@@ -2485,21 +2696,21 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOINT, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon()
   {
-    return getId(null);
+    return getGeoPolygon(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, null);
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableGeometry getGeoPolygon(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.GeoEntity.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableGeometry)this.get(com.runwaysdk.system.gis.geo.GeoEntity.GEOPOLYGON, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -2568,6 +2779,23 @@ public  class GeoEntityQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.GeoEntity.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.GeoEntity.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()

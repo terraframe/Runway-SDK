@@ -94,19 +94,19 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     }
     else
     {
-      setValue(RUNASDIMENSION, value.getId());
+      setValue(RUNASDIMENSION, value.getOid());
     }
   }
   
-  public void setRunAsDimensionId(java.lang.String id)
+  public void setRunAsDimensionId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(RUNASDIMENSION, "");
     }
     else
     {
-      setValue(RUNASDIMENSION, id);
+      setValue(RUNASDIMENSION, oid);
     }
   }
   
@@ -146,19 +146,19 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     }
     else
     {
-      setValue(RUNASUSER, value.getId());
+      setValue(RUNASUSER, value.getOid());
     }
   }
   
-  public void setRunAsUserId(java.lang.String id)
+  public void setRunAsUserId(java.lang.String oid)
   {
-    if(id == null)
+    if(oid == null)
     {
       setValue(RUNASUSER, "");
     }
     else
     {
-      setValue(RUNASUSER, id);
+      setValue(RUNASUSER, oid);
     }
   }
   
@@ -281,9 +281,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     }
   }
   
-  public static ExecutableJob get(String id)
+  public static ExecutableJob get(String oid)
   {
-    return (ExecutableJob) com.runwaysdk.business.Business.get(id);
+    return (ExecutableJob) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ExecutableJob getByKey(String key)
@@ -297,9 +297,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void cancel(java.lang.String id)
+  public static final void cancel(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.cancel();
   }
   
@@ -309,9 +309,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void pause(java.lang.String id)
+  public static final void pause(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.pause();
   }
   
@@ -321,9 +321,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void resume(java.lang.String id)
+  public static final void resume(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.resume();
   }
   
@@ -333,9 +333,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final com.runwaysdk.system.scheduler.JobHistory start(java.lang.String id)
+  public static final com.runwaysdk.system.scheduler.JobHistory start(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     return _instance.start();
   }
   
@@ -345,23 +345,23 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void stop(java.lang.String id)
+  public static final void stop(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.stop();
   }
   
-  public static ExecutableJob lock(java.lang.String id)
+  public static ExecutableJob lock(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ExecutableJob unlock(java.lang.String id)
+  public static ExecutableJob unlock(java.lang.String oid)
   {
-    ExecutableJob _instance = ExecutableJob.get(id);
+    ExecutableJob _instance = ExecutableJob.get(oid);
     _instance.unlock();
     
     return _instance;

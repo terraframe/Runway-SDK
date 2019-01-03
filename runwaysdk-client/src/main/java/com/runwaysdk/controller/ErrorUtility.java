@@ -43,7 +43,6 @@ import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.business.InformationDTO;
 import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.request.RequestDecorator;
 import com.runwaysdk.request.ResponseDecorator;
 import com.runwaysdk.request.ServletRequestIF;
@@ -54,7 +53,7 @@ import com.runwaysdk.util.Base64;
 import com.runwaysdk.web.json.JSONProblemExceptionDTO;
 import com.runwaysdk.web.json.JSONRunwayExceptionDTO;
 
-public class ErrorUtility implements Reloadable
+public class ErrorUtility
 {
   public static final String ERROR_MESSAGE_ARRAY = "errorMessageArray";
 

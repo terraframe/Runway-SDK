@@ -30,7 +30,7 @@ public abstract class RestoreAppnameExceptionBase extends com.runwaysdk.business
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.RestoreAppnameException";
   public static java.lang.String CURRENTAPPNAME = "currentAppname";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String RESTOREAPPNAME = "restoreAppname";
   private static final long serialVersionUID = 1807231496;
   
@@ -82,20 +82,20 @@ public abstract class RestoreAppnameExceptionBase extends com.runwaysdk.business
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.RestoreAppnameException.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getRestoreAppname()
@@ -135,7 +135,7 @@ public abstract class RestoreAppnameExceptionBase extends com.runwaysdk.business
   {
     java.lang.String message = super.localize(locale);
     message = replace(message, "{currentAppname}", this.getCurrentAppname());
-    message = replace(message, "{id}", this.getId());
+    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{restoreAppname}", this.getRestoreAppname());
     return message;
   }

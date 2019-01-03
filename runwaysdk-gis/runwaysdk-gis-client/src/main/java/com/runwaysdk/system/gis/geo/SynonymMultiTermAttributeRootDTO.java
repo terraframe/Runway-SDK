@@ -22,9 +22,9 @@ public class SynonymMultiTermAttributeRootDTO extends SynonymMultiTermAttributeR
 {
   private static final long serialVersionUID = -1024068127;
   
-  public SynonymMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public SynonymMultiTermAttributeRootDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -44,7 +44,7 @@ public class AttributeNotificationMap
 
   public String getMapKey()
   {
-    return getMapKey(this.entity.getId(), this.entityAttributeName);
+    return getMapKey(this.entity.getOid(), this.entityAttributeName);
   }
 
   public static String getMapKey(String componentId, String attributeName)
@@ -54,12 +54,12 @@ public class AttributeNotificationMap
 
 
   /**
-   * Returns the id of the component that defines the attribute.
-   * @return id of the component that defines the attribute.
+   * Returns the oid of the component that defines the attribute.
+   * @return oid of the component that defines the attribute.
    */
   public String getEntityId()
   {
-    return this.entity.getId();
+    return this.entity.getOid();
   }
 
   public Entity getEntity()
@@ -89,7 +89,7 @@ public class AttributeNotificationMap
    */
   public void convertAttributeNotification(AttributeNotification attributeNotification)
   {
-    attributeNotification.setComponentId(this.view.getId());
+    attributeNotification.setComponentId(this.view.getOid());
 
     attributeNotification.setDefiningType(this.view.getType());
     attributeNotification.setDefiningTypeDisplayLabel(this.view.getClassDisplayLabel());

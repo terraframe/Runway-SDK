@@ -42,7 +42,7 @@ public class ValueObjectToValueObjectDTO extends ComponentIFtoComponentDTOIF
 
   private Boolean              hasTypeReadAccess;
 
-  // Key: MdAttribute id Value: indicates if the user has read permission on the
+  // Key: MdAttribute oid Value: indicates if the user has read permission on the
   // attribute.
   private Map<String, Boolean> attrReadPermissionMap;
 
@@ -144,7 +144,7 @@ public class ValueObjectToValueObjectDTO extends ComponentIFtoComponentDTOIF
         return true;
       }
 
-      Boolean hasAttributePermission = this.attrReadPermissionMap.get(mdAttribute.getId());
+      Boolean hasAttributePermission = this.attrReadPermissionMap.get(mdAttribute.getOid());
       if (hasAttributePermission != null)
       {
         return hasAttributePermission;

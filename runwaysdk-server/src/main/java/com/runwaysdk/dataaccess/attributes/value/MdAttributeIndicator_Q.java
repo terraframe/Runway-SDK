@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.attributes.value;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.dataaccess.IndicatorElementDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.metadata.AttributeIndicatorMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeIndicatorMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;

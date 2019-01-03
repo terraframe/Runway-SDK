@@ -31,9 +31,9 @@ public abstract class MdMethodMethodActorBase extends com.runwaysdk.system.metad
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMethodMethodActor";
   private static final long serialVersionUID = 506003362;
   
-  public MdMethodMethodActorBase(String parentId, String childId)
+  public MdMethodMethodActorBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class MdMethodMethodActorBase extends com.runwaysdk.system.metad
     return (com.runwaysdk.system.MethodActor) super.getChild();
   }
   
-  public static MdMethodMethodActor get(String id)
+  public static MdMethodMethodActor get(String oid)
   {
-    return (MdMethodMethodActor) com.runwaysdk.business.Relationship.get(id);
+    return (MdMethodMethodActor) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static MdMethodMethodActor getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class MdMethodMethodActorBase extends com.runwaysdk.system.metad
     return (MdMethodMethodActor) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static MdMethodMethodActor lock(java.lang.String id)
+  public static MdMethodMethodActor lock(java.lang.String oid)
   {
-    MdMethodMethodActor _instance = MdMethodMethodActor.get(id);
+    MdMethodMethodActor _instance = MdMethodMethodActor.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMethodMethodActor unlock(java.lang.String id)
+  public static MdMethodMethodActor unlock(java.lang.String oid)
   {
-    MdMethodMethodActor _instance = MdMethodMethodActor.get(id);
+    MdMethodMethodActor _instance = MdMethodMethodActor.get(oid);
     _instance.unlock();
     
     return _instance;

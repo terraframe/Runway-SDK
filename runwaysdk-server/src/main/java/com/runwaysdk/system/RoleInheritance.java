@@ -26,14 +26,14 @@ public class RoleInheritance extends RoleInheritanceBase
 {
   private static final long serialVersionUID = 1229405888043L;
   
-  public RoleInheritance(String parentId, String childId)
+  public RoleInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public RoleInheritance(com.runwaysdk.system.Roles parent, com.runwaysdk.system.Roles child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
  
   public void apply()

@@ -21,9 +21,12 @@ package com.runwaysdk.dataaccess.resolver;
 import java.io.File;
 import java.util.List;
 
+import org.junit.Before;
+
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.transaction.TransactionImportManager;
+import com.runwaysdk.session.Request;
 
 public class SingleUserExportBuilder extends ExportBuilder<UserDAO>
 {
@@ -33,17 +36,19 @@ public class SingleUserExportBuilder extends ExportBuilder<UserDAO>
 
   private UserDAO       user;
 
-  private String        id;
+  private String        oid;
 
-  public SingleUserExportBuilder(List<UserDAO> list, File file, String id)
+  public SingleUserExportBuilder(List<UserDAO> list, File file, String oid)
   {
     this.list = list;
     this.file = file;
-    this.id = id;
+    this.oid = oid;
   }
-  
+
   @Override
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
     new TransactionImportManager(file.getAbsolutePath(), new DefaultConflictResolver()).importTransactions();
   }
@@ -54,7 +59,7 @@ public class SingleUserExportBuilder extends ExportBuilder<UserDAO>
     user = UserDAO.newInstance();
     user.setUsername("ReferenceUser");
     user.setPassword("ReferenceUser");
-    user.setValue("owner", id);
+    user.setValue("owner", oid);
     user.apply();
 
     return user;

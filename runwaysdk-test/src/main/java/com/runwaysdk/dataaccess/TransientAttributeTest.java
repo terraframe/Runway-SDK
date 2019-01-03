@@ -23,15 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
@@ -56,7 +56,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdViewInfo;
-import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthByteException;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
@@ -85,7 +84,6 @@ import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
-import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinedInSubclassException;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinitionException;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeInInheritedHierarchyException;
@@ -112,21 +110,10 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.session.Request;
 
-public class TransientAttributeTest extends TestCase
+public class TransientAttributeTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static final TypeInfo                       stateClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State");
 
   private static final TypeInfo                       stateEnum  = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "US_State_Enum");
@@ -187,64 +174,22 @@ public class TransientAttributeTest extends TestCase
   private static final String                         SINGLE     = "enumStateSingle";
 
   /**
-   * The ID of the California option of the STATE enumeration.
+   * The OID of the California option of the STATE enumeration.
    */
   private static String                               californiaItemId;
 
   /**
-   * The ID of the Colorado option of the STATE enumeration.
+   * The OID of the Colorado option of the STATE enumeration.
    */
   private static String                               coloradoItemId;
 
   /**
-   * The ID of the Connecticut option of the STATE enumeration.
+   * The OID of the Connecticut option of the STATE enumeration.
    */
   private static String                               connecticutItemId;
 
-  /**
-   * The launch point for the Junit tests.
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-
-    if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-      XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(TransientAttributeTest.suite()));
-
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>SessionAttributeTest.class</code> and
-   * wraps it in <code>MasterTestSetup</code>. The returned class is a suite of
-   * all the tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(TransientAttributeTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     definitions = new LinkedList<MdAttributeConcreteDAOIF>();
@@ -260,15 +205,15 @@ public class TransientAttributeTest extends TestCase
     someTree.setValue(MdTreeInfo.PACKAGE, someTreeInfo.getPackageName());
     someTree.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some tree Relationship");
     someTree.setValue(MdTreeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceMdBusiness.getId());
+    someTree.setValue(MdTreeInfo.PARENT_MD_BUSINESS, referenceMdBusiness.getOid());
     someTree.setValue(MdTreeInfo.PARENT_CARDINALITY, "1");
     someTree.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 1");
-    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusiness.getId());
+    someTree.setValue(MdTreeInfo.CHILD_MD_BUSINESS, referenceMdBusiness.getOid());
     someTree.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     someTree.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "blah 2");
     someTree.setValue(MdTreeInfo.PARENT_METHOD, "someParentAccessor");
     someTree.setValue(MdTreeInfo.CHILD_METHOD, "someChildAccessor");
-    someTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);  
+    someTree.setValue(MdTreeInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     someTree.setValue(MdTreeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     someTree.apply();
 
@@ -280,8 +225,8 @@ public class TransientAttributeTest extends TestCase
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "homePhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -291,8 +236,8 @@ public class TransientAttributeTest extends TestCase
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "workPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -302,8 +247,8 @@ public class TransientAttributeTest extends TestCase
     mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "cellPhone attr");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, phoneNumber.getOid());
     mdAttrStruct.apply();
     definitions.add(mdAttrStruct);
 
@@ -313,7 +258,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeText.setValue(MdAttributeTextInfo.DEFAULT_VALUE, "");
     mdAttributeText.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeText.setValue(MdAttributeTextInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeText.apply();
     definitions.add(mdAttributeText);
 
@@ -323,7 +268,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeClob.setValue(MdAttributeClobInfo.DEFAULT_VALUE, "");
     mdAttributeClob.setValue(MdAttributeClobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClob.setValue(MdAttributeClobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeClob.setValue(MdAttributeClobInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeClob.apply();
     definitions.add(mdAttributeClob);
 
@@ -335,7 +280,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "I wish I was a reference field!");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, referenceMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     // Add attributes to the test type
@@ -345,9 +290,9 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttributeCharacter.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -360,7 +305,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SYSTEM, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -368,9 +313,9 @@ public class TransientAttributeTest extends TestCase
     mdAttributeBlob.setValue(MdAttributeBlobInfo.NAME, "testBlob");
     mdAttributeBlob.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some blob");
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+    mdAttributeBlob.addItem(MdAttributeBlobInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
     mdAttributeBlob.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeBlob.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeBlob.apply();
     definitions.add(mdAttributeBlob);
 
@@ -381,7 +326,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity dog");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -392,7 +337,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -402,7 +347,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeInteger.apply();
     definitions.add(mdAttributeInteger);
 
@@ -412,7 +357,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeLong.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     mdAttributeLong.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLong.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeLong.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeLong.apply();
     definitions.add(mdAttributeLong);
 
@@ -424,7 +369,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.LENGTH, "10");
     mdAttributeFloat.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -439,7 +384,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloat.setValue(MdAttributeFloatInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeFloat.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeFloat.apply();
     definitions.add(mdAttributeFloat);
 
@@ -451,7 +396,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.LENGTH, "13");
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DECIMAL, "3");
-    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDecimal.apply();
     definitions.add(mdAttributeDecimal);
 
@@ -463,7 +408,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDouble.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDouble.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDouble.apply();
     definitions.add(mdAttributeDouble);
 
@@ -473,7 +418,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeTime.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     mdAttributeTime.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTime.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeTime.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeTime.apply();
     definitions.add(mdAttributeTime);
 
@@ -483,7 +428,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeDate.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "");
     mdAttributeDate.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDate.setValue(MdAttributeDateInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDate.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDate.apply();
     definitions.add(mdAttributeDate);
 
@@ -493,7 +438,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFAULT_VALUE, "");
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeDateTime.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeDateTime.apply();
     definitions.add(mdAttributeDateTime);
 
@@ -503,8 +448,8 @@ public class TransientAttributeTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getOid());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
 
@@ -515,7 +460,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeBoolean.apply();
     definitions.add(mdAttributeBoolean);
 
@@ -527,7 +472,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
@@ -542,7 +487,7 @@ public class TransientAttributeTest extends TestCase
     stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
     stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getId());
+    stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumMasterMdBusinessIF.getOid());
     stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     stateEnumMdBusiness.apply();
     stateEnumerationMdBusiness = stateEnumMdBusiness;
@@ -555,7 +500,7 @@ public class TransientAttributeTest extends TestCase
     mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumerationMdBusiness.getId());
+    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumerationMdBusiness.getOid());
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
     stateMdEnumeration = mdEnumeration;
@@ -567,9 +512,9 @@ public class TransientAttributeTest extends TestCase
     mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State Postal Code");
     mdAttrChar.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     mdAttrChar.apply();
 
     MdAttributeIntegerDAO enumMdAttributeInteger = MdAttributeIntegerDAO.newInstance();
@@ -578,7 +523,7 @@ public class TransientAttributeTest extends TestCase
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getId());
+    enumMdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, stateEnumMdBusiness.getOid());
     enumMdAttributeInteger.apply();
 
     // Define the options for the enumeration
@@ -609,8 +554,8 @@ public class TransientAttributeTest extends TestCase
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getId());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getOid());
     mdAttrEnumMultiple.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumMultiple.apply();
     // definitions.add(mdAttrEnumMultiple);
@@ -622,14 +567,16 @@ public class TransientAttributeTest extends TestCase
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, coloradoItemId);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getId());
-    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getId());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
+    mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, stateMdEnumeration.getOid());
     mdAttrEnumSingle.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttrEnumSingle.apply();
     // definitions.add(mdAttrEnumMultiple);
 
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     // Delete all of the attributes created by this class
@@ -645,9 +592,10 @@ public class TransientAttributeTest extends TestCase
    * Set the transientDAO to a new Instance of the
    * SessionMasterTestSetup.CHILD_SESSION_CLASS class.
    */
-  protected void setUp() throws Exception
+  @Request
+  @Before
+  public void setUp() throws Exception
   {
-    super.setUp();
     transientDAO = TransientDAO.newInstance(SessionMasterTestSetup.CHILD_SESSION_CLASS.getType());
   }
 
@@ -655,12 +603,15 @@ public class TransientAttributeTest extends TestCase
    * Set the transientDAO to a new Instance of the
    * SessionMasterTestSetup.CHILD_SESSION_CLASS class.
    */
-  protected void tearDown() throws Exception
+  @Request
+  @After
+  public void tearDown() throws Exception
   {
-    super.tearDown();
     transientDAO = null;
   }
 
+  @Request
+  @Test
   public void testDuplicateAttributeDefinition()
   {
     try
@@ -672,10 +623,10 @@ public class TransientAttributeTest extends TestCase
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeCharacter.apply();
 
-      fail("Able to add an attribute to a type that already has an attribute defined with that same name");
+      Assert.fail("Able to add an attribute to a type that already has an attribute defined with that same name");
     }
     catch (DuplicateAttributeDefinitionException e)
     {
@@ -683,10 +634,12 @@ public class TransientAttributeTest extends TestCase
     }
     catch (Throwable e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateAttributeInInheritedHierarchy()
   {
     MdClassDAOIF parentMdClassIF = MdClassDAO.getMdClassDAO(SessionMasterTestSetup.PARENT_SESSION_CLASS.getType());
@@ -703,10 +656,10 @@ public class TransientAttributeTest extends TestCase
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdClassIF.getId());
+        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdClassIF.getOid());
         mdAttributeCharacter.apply();
 
-        fail("Able to add an attribute to a type where the parent type already has an attribute defined with that same name");
+        Assert.fail("Able to add an attribute to a type where the parent type already has an attribute defined with that same name");
       }
       catch (DuplicateAttributeInInheritedHierarchyException e)
       {
@@ -714,7 +667,7 @@ public class TransientAttributeTest extends TestCase
       }
       catch (Throwable e)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     else if (attributeMdView.definesType().equals(SessionMasterTestSetup.CHILD_SESSION_CLASS.getType()))
@@ -728,10 +681,10 @@ public class TransientAttributeTest extends TestCase
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
         mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdClassIF.getId());
+        mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdClassIF.getOid());
         mdAttributeCharacter.apply();
 
-        fail("Able to add an attribute to a type where a child type already has an attribute defined with that same name");
+        Assert.fail("Able to add an attribute to a type where a child type already has an attribute defined with that same name");
       }
       catch (DuplicateAttributeDefinedInSubclassException e)
       {
@@ -739,12 +692,12 @@ public class TransientAttributeTest extends TestCase
       }
       catch (Throwable e)
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
     else
     {
-      fail("Test class is of the wrong type.");
+      Assert.fail("Test class is of the wrong type.");
     }
   }
 
@@ -752,6 +705,8 @@ public class TransientAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequired()
   {
     try
@@ -760,7 +715,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -768,6 +723,8 @@ public class TransientAttributeTest extends TestCase
    * Tests Attribute.validateRequired() where the value is not defined but not
    * required
    */
+  @Request
+  @Test
   public void testNotRequiredBlankValue()
   {
     try
@@ -776,13 +733,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequired()
   {
     try
@@ -792,13 +751,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
+  @Request
+  @Test
   public void testRequiredValidateMethod()
   {
     try
@@ -808,7 +769,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -817,13 +778,15 @@ public class TransientAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValue()
   {
     try
     {
       transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
       transientDAO.apply();
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -835,7 +798,7 @@ public class TransientAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -845,12 +808,14 @@ public class TransientAttributeTest extends TestCase
    * defined. This is expected to fail, so the Exception is caught and compared
    * to its expected value.
    */
+  @Request
+  @Test
   public void testRequiredWithBlankValueValidateMethod()
   {
     try
     {
       requiredWithBlankValueValidateMethod();
-      fail("Attribute.validateRequired() accepted a blank value on a required field.");
+      Assert.fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
     catch (ProblemException e)
     {
@@ -862,7 +827,7 @@ public class TransientAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -878,13 +843,15 @@ public class TransientAttributeTest extends TestCase
    * Tests Attribute.validateSystem() by trying to modify a system-only
    * attribute.
    */
+  @Request
+  @Test
   public void testImmutable()
   {
     try
     {
       transientDAO.apply();
       immutable();
-      fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
+      Assert.fail("Attribute.validateMutable() allowed a user to modify an immutable attribute.");
     }
     catch (ProblemException e)
     {
@@ -896,7 +863,7 @@ public class TransientAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
@@ -911,12 +878,14 @@ public class TransientAttributeTest extends TestCase
    * Tests Attribute.validateMutable() by trying to modify an immutable
    * attribute.
    */
+  @Request
+  @Test
   public void testSystem()
   {
     try
     {
       system();
-      fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
+      Assert.fail("Attribute.validateSystem() allowed a user to modify a SYSTEM attribute.");
     }
     catch (ProblemException e)
     {
@@ -928,7 +897,7 @@ public class TransientAttributeTest extends TestCase
       }
       else
       {
-        fail(e.getMessage());
+        Assert.fail(e.getMessage());
       }
     }
   }
@@ -943,6 +912,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal character and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testCharacter()
   {
     try
@@ -958,25 +929,27 @@ public class TransientAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a String that is too long
    */
+  @Request
+  @Test
   public void testCharWithLongString()
   {
     try
     {
       // TEST_CHARACTER has a limit of 10 characters
       transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "This string is too long.");
-      fail("Accepted a String that was too large.");
+      Assert.fail("Accepted a String that was too large.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -987,6 +960,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Changes the DB size of an attribute.
    */
+  @Request
+  @Test
   public void testCharChangeSize()
   {
     MdAttributeCharacterDAO mdAttributeCharacter = (MdAttributeCharacterDAO) ( transientDAO.getAttributeIF("testCharacterChangeSize").getMdAttribute() ).getBusinessDAO();
@@ -1002,8 +977,9 @@ public class TransientAttributeTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
-      // fail("Attribute testCharacterChangeSize originally was defined to a size of 16.  An attempt to redefine it to 32 failed.");
+      Assert.fail(e.getMessage());
+      // Assert.fail("Attribute testCharacterChangeSize originally was defined
+      // to a size of 16. An attempt to redefine it to 32 failed.");
       return;
     }
 
@@ -1011,7 +987,7 @@ public class TransientAttributeTest extends TestCase
     {
       // Test with a string of 33 characters
       transientDAO.setValue("testCharacterChangeSize", "012345678901234567890123456789012");
-      fail("Attribute testCharacterChangeSize originally was redefined to a size of 32, but it accepted a string of size 33.");
+      Assert.fail("Attribute testCharacterChangeSize originally was redefined to a size of 32, but it accepted a string of size 33.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -1023,6 +999,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal text and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testTextStoreRetrieve()
   {
     try
@@ -1038,12 +1016,12 @@ public class TransientAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -1051,6 +1029,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a CLOB and then stores->retrieves->compares the values to make sure
    * retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testClobStoreRetrieve()
   {
     try
@@ -1066,18 +1046,20 @@ public class TransientAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests some text that is too long
    */
+  @Request
+  @Test
   public void testTooLongText()
   {
     if (! ( Database.instance() instanceof PostgreSQL ))
@@ -1096,7 +1078,7 @@ public class TransientAttributeTest extends TestCase
         // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
         transientDAO.setValue("testText", buffer.toString());
 
-        fail("Accepted a String that was too large.");
+        Assert.fail("Accepted a String that was too large.");
       }
       catch (AttributeLengthCharacterException e)
       {
@@ -1108,6 +1090,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a blank (which is acceptable) String
    */
+  @Request
+  @Test
   public void testCharWithEmptyString()
   {
     try
@@ -1116,7 +1100,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -1124,6 +1108,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal boolean and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testBoolean()
   {
     try
@@ -1139,24 +1125,26 @@ public class TransientAttributeTest extends TestCase
 
       if (Boolean.parseBoolean(retrieved.getValue()) != Boolean.parseBoolean( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests AttributeBoolean.validate() with an invalid value
    */
+  @Request
+  @Test
   public void testBooleanInvalid()
   {
     try
     {
       transientDAO.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "rawr");
-      fail("AttributeBoolean accepted an invalid value.");
+      Assert.fail("AttributeBoolean accepted an invalid value.");
     }
     catch (AttributeValueException e)
     {
@@ -1168,6 +1156,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal integer and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testInteger()
   {
     try
@@ -1183,25 +1173,27 @@ public class TransientAttributeTest extends TestCase
 
       if (Integer.parseInt(retrieved.getValue()) != Integer.parseInt( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an integer with an alphabetic String
    */
+  @Request
+  @Test
   public void testIntegerWithAlphas()
   {
     try
     {
       // Try to set an alphabetic string to an int
       transientDAO.setValue("testInteger", "This isn't a number");
-      fail("An integer accepted alpha input");
+      Assert.fail("An integer accepted alpha input");
     }
     catch (AttributeValueException e)
     {
@@ -1212,13 +1204,15 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests an unacceptably large number
    */
+  @Request
+  @Test
   public void testIntegerWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in an int
       transientDAO.setValue("testInteger", "2147483648");
-      fail("Accepted a number too large to fit in an integer");
+      Assert.fail("Accepted a number too large to fit in an integer");
     }
     catch (AttributeValueException e)
     {
@@ -1230,6 +1224,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal long and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testLong()
   {
     try
@@ -1245,25 +1241,27 @@ public class TransientAttributeTest extends TestCase
 
       if (Long.parseLong(retrieved.getValue()) != Long.parseLong( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an alphabetic String
    */
+  @Request
+  @Test
   public void testLongWithAlphas()
   {
     try
     {
       // Try to set an alphabetic string to a long
       transientDAO.setValue("testLong", "This isn't a number");
-      fail("Accepted alpha input into a long");
+      Assert.fail("Accepted alpha input into a long");
     }
     catch (DataAccessException e)
     {
@@ -1274,13 +1272,15 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests an unacceptably large number
    */
+  @Request
+  @Test
   public void testLongWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in a long
       transientDAO.setValue("testLong", "1234567890123456789012345678901234567890");
-      fail("Accepted a number too large to fit in a long");
+      Assert.fail("Accepted a number too large to fit in a long");
     }
     catch (AttributeValueException e)
     {
@@ -1292,6 +1292,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal float and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testFloat()
   {
     try
@@ -1307,18 +1309,20 @@ public class TransientAttributeTest extends TestCase
 
       if (Float.parseFloat(retrieved.getValue()) != Float.parseFloat( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a float
    */
+  @Request
+  @Test
   public void testFloatWithInt()
   {
     try
@@ -1327,13 +1331,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number
    */
+  @Request
+  @Test
   public void testFloatWithExponent()
   {
     try
@@ -1342,13 +1348,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (but acceptable) number
    */
+  @Request
+  @Test
   public void testFloatWithLong()
   {
     try
@@ -1357,20 +1365,22 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an unacceptably large float
    */
+  @Request
+  @Test
   public void testFloatWithLargeNumber()
   {
     try
     {
       // This number is far too large to fit in a float
       transientDAO.setValue("testFloat", "12345678901234567890123456789012345678901234567890");
-      fail("Accepted a number too large to fit in a float");
+      Assert.fail("Accepted a number too large to fit in a float");
     }
     catch (AttributeValueException e)
     {
@@ -1382,6 +1392,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal double and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDouble()
   {
     try
@@ -1397,18 +1409,20 @@ public class TransientAttributeTest extends TestCase
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a double
    */
+  @Request
+  @Test
   public void testDoubleWithInt()
   {
     try
@@ -1417,13 +1431,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number into a double
    */
+  @Request
+  @Test
   public void testDoubleWithExponent()
   {
     try
@@ -1432,19 +1448,21 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an unacceptably large exponent double
    */
+  @Request
+  @Test
   public void testDoubleWithLargeExponent()
   {
     try
     {
       transientDAO.setValue("testDouble", "123.456E7890");
-      fail("Accepted a number too large to fit in a double");
+      Assert.fail("Accepted a number too large to fit in a double");
     }
     catch (AttributeValueException e)
     {
@@ -1456,6 +1474,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal decimal and then stores->retrieves->compares the values to
    * make sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDecimal()
   {
     try
@@ -1471,18 +1491,20 @@ public class TransientAttributeTest extends TestCase
 
       if (Double.parseDouble(retrieved.getValue()) != Double.parseDouble( ( value )))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests an int cast to a decimal
    */
+  @Request
+  @Test
   public void testDecimalWithInt()
   {
     try
@@ -1491,13 +1513,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a large (exponent) number into a decimal
    */
+  @Request
+  @Test
   public void testDecimalWithExponent()
   {
     try
@@ -1506,7 +1530,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -1514,6 +1538,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal time and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testTime()
   {
     try
@@ -1528,24 +1554,26 @@ public class TransientAttributeTest extends TestCase
       AttributeTime retrieved = (AttributeTime) transientDAO.getAttributeIF(key);
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value.");
+        Assert.fail("The stored database value for " + key + " does not equal the input value.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests with a completely invalid time
    */
+  @Request
+  @Test
   public void testTimeInvalid()
   {
     try
     {
       transientDAO.setValue("testTime", "This isn't a time");
-      fail("Attribute accepted an invalid time");
+      Assert.fail("Attribute accepted an invalid time");
     }
     catch (AttributeValueException e)
     {
@@ -1556,12 +1584,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a time that is too early
    */
+  @Request
+  @Test
   public void testTimeLowerBound()
   {
     try
     {
       transientDAO.setValue("testTime", "-00:00:01");
-      fail("Accepted too early of a time");
+      Assert.fail("Accepted too early of a time");
     }
     catch (AttributeValueException e)
     {
@@ -1572,12 +1602,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a time that is too late
    */
+  @Request
+  @Test
   public void testTimeUpperBound()
   {
     try
     {
       transientDAO.setValue("testTime", "23:59:60");
-      fail("Accepted too late of a time");
+      Assert.fail("Accepted too late of a time");
     }
     catch (AttributeValueException e)
     {
@@ -1589,6 +1621,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal date and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDate()
   {
     try
@@ -1604,25 +1638,27 @@ public class TransientAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a completely invalid date
    */
+  @Request
+  @Test
   public void testDateInvalid()
   {
     try
     {
       // This is a datetime, not a date
       transientDAO.setValue("testDate", "2005-12-31 2:15:32");
-      fail("Attribute accepted an invalid Date");
+      Assert.fail("Attribute accepted an invalid Date");
     }
     catch (DataAccessException e)
     {
@@ -1633,12 +1669,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a date that is too early
    */
+  @Request
+  @Test
   public void testDateLowerBound()
   {
     try
     {
       transientDAO.setValue("testDate", "1752-01-01");
-      fail("Accepted too early of a date");
+      Assert.fail("Accepted too early of a date");
     }
     catch (AttributeValueException e)
     {
@@ -1649,12 +1687,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a date that is too late
    */
+  @Request
+  @Test
   public void testDateUpperBound()
   {
     try
     {
       transientDAO.setValue("testDate", "2005-01-32");
-      fail("Accepted too late of a date");
+      Assert.fail("Accepted too late of a date");
     }
     catch (DataAccessException e)
     {
@@ -1666,6 +1706,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a normal date and then stores->retrieves->compares the values to make
    * sure retrieved value is the same as the input.
    */
+  @Request
+  @Test
   public void testDateTime()
   {
     try
@@ -1681,25 +1723,27 @@ public class TransientAttributeTest extends TestCase
 
       if (!retrieved.getValue().equals(value))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests with a completely invalid date
    */
+  @Request
+  @Test
   public void testDateTimeInvalid()
   {
     try
     {
       // This is a date, not a time
       transientDAO.setValue("testDateTime", "2005-06-15");
-      fail("Accepted an invalid String");
+      Assert.fail("Accepted an invalid String");
     }
     catch (AttributeValueException e)
     {
@@ -1710,12 +1754,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a datetime that is too early
    */
+  @Request
+  @Test
   public void testDateTimeLowerBound()
   {
     try
     {
       transientDAO.setValue("testDateTime", "1752-01-01 00:00:00");
-      fail("Accepted too early of a datetime");
+      Assert.fail("Accepted too early of a datetime");
     }
     catch (AttributeValueException e)
     {
@@ -1726,12 +1772,14 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a datetime that is too late
    */
+  @Request
+  @Test
   public void testDateTimeUpperBound()
   {
     try
     {
       transientDAO.setValue("testDateTime", "2005-13-01 23:59:59");
-      fail("Accepted too late of a datetime");
+      Assert.fail("Accepted too late of a datetime");
     }
     catch (AttributeValueException e)
     {
@@ -1742,6 +1790,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests setting a reference.
    */
+  @Request
+  @Test
   public void testReference()
   {
     BusinessDAO reference = BusinessDAO.newInstance(SessionMasterTestSetup.REFERENCE_CLASS.getType());
@@ -1749,12 +1799,12 @@ public class TransientAttributeTest extends TestCase
 
     try
     {
-      transientDAO.setValue("testReference", reference.getId());
-      assertTrue(transientDAO.getAttributeIF("testReference") instanceof AttributeReference);
+      transientDAO.setValue("testReference", reference.getOid());
+      Assert.assertTrue(transientDAO.getAttributeIF("testReference") instanceof AttributeReference);
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1765,6 +1815,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests setting a reference attribute to an invalid target object.
    */
+  @Request
+  @Test
   public void testSetInvalidReference()
   {
     BusinessDAO badReference = BusinessDAO.newInstance(SessionMasterTestSetup.SOME_CLASS.getType());
@@ -1772,9 +1824,9 @@ public class TransientAttributeTest extends TestCase
 
     try
     {
-      transientDAO.setValue("testReference", badReference.getId());
+      transientDAO.setValue("testReference", badReference.getOid());
       transientDAO.getAttributeIF("testReference");
-      fail("AttributeReference accepted a reference to an object of the wrong type.");
+      Assert.fail("AttributeReference accepted a reference to an object of the wrong type.");
     }
     catch (InvalidReferenceException e)
     {
@@ -1789,6 +1841,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests dereferencing a reference.
    */
+  @Request
+  @Test
   public void testDereferenceReference()
   {
     BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.REFERENCE_CLASS.getType());
@@ -1796,16 +1850,16 @@ public class TransientAttributeTest extends TestCase
 
     try
     {
-      transientDAO.setValue("testReference", reference.getId());
+      transientDAO.setValue("testReference", reference.getOid());
       transientDAO.apply();
       AttributeReference fo = (AttributeReference) transientDAO.getAttributeIF("testReference");
-      assertEquals(reference.getId(), transientDAO.getAttributeIF("testReference").getValue());
-      assertEquals(reference.getId(), fo.dereference().getId());
-      assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
+      Assert.assertEquals(reference.getOid(), transientDAO.getAttributeIF("testReference").getValue());
+      Assert.assertEquals(reference.getOid(), fo.dereference().getOid());
+      Assert.assertEquals(reference.getAttributeIF("refChar").getValue(), fo.dereference().getAttributeIF("refChar").getValue());
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -1813,6 +1867,8 @@ public class TransientAttributeTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStruct()
   {
     try
@@ -1838,22 +1894,22 @@ public class TransientAttributeTest extends TestCase
       // get the three phone numbers
       if (!transientDAO.getStructValue("homePhone", "areaCode").equals("303") || !transientDAO.getStructValue("homePhone", "prefix").equals("979") || !transientDAO.getStructValue("homePhone", "suffix").equals("7745"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
 
       if (!transientDAO.getStructValue("cellPhone", "areaCode").equals("720") || !transientDAO.getStructValue("cellPhone", "prefix").equals("363") || !transientDAO.getStructValue("cellPhone", "suffix").equals("8174"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
 
       if (!transientDAO.getStructValue("workPhone", "areaCode").equals("606") || !transientDAO.getStructValue("workPhone", "prefix").equals("980") || !transientDAO.getStructValue("workPhone", "suffix").equals("4370"))
       {
-        fail("Failed to correctly persist and retrieve a struct attribute value.");
+        Assert.fail("Failed to correctly persist and retrieve a struct attribute value.");
       }
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -1861,6 +1917,8 @@ public class TransientAttributeTest extends TestCase
    * Make sure we cannot add an attribute to a class with the same name as an
    * attribute inherited from a supertype.
    */
+  @Request
+  @Test
   public void testDuplicateInheritedAttribute()
   {
     MdViewDAO other = null;
@@ -1878,7 +1936,7 @@ public class TransientAttributeTest extends TestCase
       other.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
       other.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       other.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      other.setValue(MdViewInfo.SUPER_MD_VIEW, attributeMdView.getId());
+      other.setValue(MdViewInfo.SUPER_MD_VIEW, attributeMdView.getOid());
       other.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       other.apply();
 
@@ -1892,11 +1950,11 @@ public class TransientAttributeTest extends TestCase
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, other.getOid());
       float1DO.apply();
 
       // if we hit the line below, then our check failed
-      fail("A subclass was able to declare an attribute of the same name as held by its superclass.");
+      Assert.fail("A subclass was able to declare an attribute of the same name as held by its superclass.");
     }
     catch (DuplicateAttributeInInheritedHierarchyException e)
     {
@@ -1915,6 +1973,8 @@ public class TransientAttributeTest extends TestCase
    * A test to make sure that attribute names cannot exceed
    * Constants.MAX_DB_IDENTIFIER_SIZE in length.
    */
+  @Request
+  @Test
   public void testMaxIdentifierSize()
   {
     MdAttributeFloatDAO float1DO = null;
@@ -1931,10 +1991,10 @@ public class TransientAttributeTest extends TestCase
       float1DO.setValue(MdAttributeFloatInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       float1DO.setValue(MdAttributeFloatInfo.LENGTH, "10");
       float1DO.setValue(MdAttributeFloatInfo.DECIMAL, "2");
-      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      float1DO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       float1DO.apply();
 
-      fail("An attribute identifier length is too long, but was accepted by the system.");
+      Assert.fail("An attribute identifier length is too long, but was accepted by the system.");
     }
     catch (AttributeLengthCharacterException e)
     {
@@ -1952,6 +2012,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * A reference should only be allowed to reference a class, never an object.
    */
+  @Request
+  @Test
   public void testReferenceReferenceRelationship()
   {
     try
@@ -1962,11 +2024,11 @@ public class TransientAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeReference.apply();
 
-      fail("A reference was incorrectly able to reference a relationship.");
+      Assert.fail("A reference was incorrectly able to reference a relationship.");
     }
     catch (InvalidReferenceException e)
     {
@@ -1978,6 +2040,8 @@ public class TransientAttributeTest extends TestCase
    * Make sure MdAttributeReference only reference BusinessDAOs and not
    * Relationships
    */
+  @Request
+  @Test
   public void testReferenceReference()
   {
     BusinessDAO referenceDAO = BusinessDAO.newInstance(SessionMasterTestSetup.REFERENCE_CLASS.getType());
@@ -1991,11 +2055,11 @@ public class TransientAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceDAO.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceDAO.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getOid());
       mdAttributeReference.apply();
 
-      fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
+      Assert.fail("An " + MdAttributeReferenceDAO.CLASS + " was incorrectly able to reference a relatioship.");
     }
     catch (InvalidReferenceException e)
     {
@@ -2010,6 +2074,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a valid blob using a byte array.
    */
+  @Request
+  @Test
   public void testBlobWithBytes()
   {
     try
@@ -2023,7 +2089,7 @@ public class TransientAttributeTest extends TestCase
       // make sure the cached blob value is correct
       if (!EntityAttributeTest.equalsBytes(value, blob.getBlobAsBytes()))
       {
-        fail("The cached value for " + key + " does not equal the input value");
+        Assert.fail("The cached value for " + key + " does not equal the input value");
       }
       transientDAO.apply();
 
@@ -2032,13 +2098,13 @@ public class TransientAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(value, blobRetrieved.getBlobAsBytes()))
       {
-        fail("The stored database value for " + key + " does not equal the input value");
+        Assert.fail("The stored database value for " + key + " does not equal the input value");
       }
     }
     catch (Exception e)
     {
       e.printStackTrace();
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2047,6 +2113,8 @@ public class TransientAttributeTest extends TestCase
    * blob. This method won't apply the blob data to the database as it tests the
    * attribute's ability to manipulate data without using the JDBC API.
    */
+  @Request
+  @Test
   public void testBlobManipulationCache()
   {
     try
@@ -2066,7 +2134,7 @@ public class TransientAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: first round.");
       }
 
       // change the blob value again
@@ -2078,7 +2146,7 @@ public class TransientAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target2, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: second round.");
       }
 
       // final manipulation to write past the end of the current blob
@@ -2090,18 +2158,20 @@ public class TransientAttributeTest extends TestCase
 
       if (!EntityAttributeTest.equalsBytes(target3, blob.getBlobAsBytes()))
       {
-        fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
+        Assert.fail("AttributeBlob.setBlobAsBytes() failed to manipulate the blob in cache: final round.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Truncates a blob in the cache and tests to make sure it is successful.
    */
+  @Request
+  @Test
   public void testBlobTruncateCache()
   {
     try
@@ -2116,18 +2186,20 @@ public class TransientAttributeTest extends TestCase
 
       if (length != 3)
       {
-        fail("The cached blob value did not get truncated correctly.");
+        Assert.fail("The cached blob value did not get truncated correctly.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Changes the size of a blob to test if the size is truncated if necessary.
    */
+  @Request
+  @Test
   public void testBlobChangeSize()
   {
     try
@@ -2148,12 +2220,12 @@ public class TransientAttributeTest extends TestCase
 
       if (length != value2.length || !EntityAttributeTest.equalsBytes(rValue, value2))
       {
-        fail("The cached blob value did not get truncated correctly when the size changed.");
+        Assert.fail("The cached blob value did not get truncated correctly when the size changed.");
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2161,6 +2233,8 @@ public class TransientAttributeTest extends TestCase
    * Tests a blob by storing bytes in the blob cache and then getting it back
    * and testing for correctness.
    */
+  @Request
+  @Test
   public void testBlobGetBytesCache()
   {
     try
@@ -2176,14 +2250,14 @@ public class TransientAttributeTest extends TestCase
       // test all bytes
       if (value.length != allBytes.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < value.length; i++)
       {
         if (value[i] != allBytes[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
@@ -2194,27 +2268,29 @@ public class TransientAttributeTest extends TestCase
 
       if (subBytes.length != target.length)
       {
-        fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
+        Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct number of cached bytes.");
       }
 
       for (int i = 0; i < target.length; i++)
       {
         if (subBytes[i] != target[i])
         {
-          fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
+          Assert.fail("AttributeBlob.getBlobAsBytes() did not return the correct cached bytes.");
           break;
         }
       }
     }
     catch (Exception e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests a blob attribute with a size that is too large.
    */
+  @Request
+  @Test
   public void testBlobInvalidSize()
   {
     try
@@ -2225,7 +2301,7 @@ public class TransientAttributeTest extends TestCase
       AttributeBlob blob = (AttributeBlob) transientDAO.getAttribute(key);
       blob.setBlobAsBytes(value);
 
-      fail("An attribute blob was able to exceed the maximum size.");
+      Assert.fail("An attribute blob was able to exceed the maximum size.");
     }
     catch (AttributeLengthByteException e)
     {
@@ -2236,6 +2312,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests a single value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testSingle()
   {
     try
@@ -2247,13 +2325,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Sets and tests multiple values on an enumerated attribute
    */
+  @Request
+  @Test
   public void testAddMultiple()
   {
     try
@@ -2267,13 +2347,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the default value on an enumerated attribute
    */
+  @Request
+  @Test
   public void testDefault()
   {
     try
@@ -2284,13 +2366,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests adding a value an applying the object.
    */
+  @Request
+  @Test
   public void testAdd()
   {
     try
@@ -2302,13 +2386,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deletion of an item (with other items still remaining)
    */
+  @Request
+  @Test
   public void testDelete()
   {
     try
@@ -2322,13 +2408,15 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteDefault()
   {
     try
@@ -2340,20 +2428,22 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests the deletion of the default item (leaving the value blank)
    */
+  @Request
+  @Test
   public void testDeleteRequired()
   {
     try
     {
       transientDAO.removeItem(SINGLE, coloradoItemId);
       transientDAO.apply();
-      fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
+      Assert.fail("An empty value on a required enumeration (" + SINGLE + ") was accepted.");
     }
     catch (ProblemException e)
     {
@@ -2365,7 +2455,7 @@ public class TransientAttributeTest extends TestCase
       }
       else
       {
-        fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        Assert.fail(EmptyValueProblem.class.getName() + " was not thrown.");
       }
     }
   }
@@ -2373,6 +2463,8 @@ public class TransientAttributeTest extends TestCase
   /**
    * Tests explicitly adding the default item to the enumeration
    */
+  @Request
+  @Test
   public void testAddDefault()
   {
     try
@@ -2384,7 +2476,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2392,6 +2484,8 @@ public class TransientAttributeTest extends TestCase
    * Tests adding an item to a single-select enumeration, which changes the
    * selection to the added item.
    */
+  @Request
+  @Test
   public void testAddToSingle()
   {
     transientDAO.apply();
@@ -2403,14 +2497,16 @@ public class TransientAttributeTest extends TestCase
     AttributeEnumeration attribute = (AttributeEnumeration) transientDAO.getAttribute(SINGLE);
     Set<String> list = attribute.getCachedEnumItemIdSet();
     if (list.size() != 1)
-      fail("Single-select Enumeration allowed multiple items.");
+      Assert.fail("Single-select Enumeration allowed multiple items.");
     if (!list.contains(californiaItemId))
-      fail("Single-select Enumeration did not update item selection.");
+      Assert.fail("Single-select Enumeration did not update item selection.");
   }
 
   /**
    * Tests adding the same items repeatedly to the enumeration
    */
+  @Request
+  @Test
   public void testRepeatedAdd()
   {
     try
@@ -2432,7 +2528,7 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
@@ -2440,6 +2536,8 @@ public class TransientAttributeTest extends TestCase
    * Tests deleting the same item multiple times (thus deleting an item that
    * isn't present)
    */
+  @Request
+  @Test
   public void testRepeatedDelete()
   {
     try
@@ -2459,42 +2557,46 @@ public class TransientAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidDelete()
   {
     try
     {
       transientDAO.apply();
-      transientDAO.removeItem(MULTIPLE, "Not an ID");
+      transientDAO.removeItem(MULTIPLE, "Not an OID");
       transientDAO.apply();
 
       checkEnumState(transientDAO, MULTIPLE, mdAttrEnumMultiple, coloradoItemId);
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
   }
 
   /**
    * Tests deleting an item that isn't valid on the enumeration
    */
+  @Request
+  @Test
   public void testInvalidAdd()
   {
     try
     {
       transientDAO.apply();
-      transientDAO.addItem(MULTIPLE, "Not an ID");
+      transientDAO.addItem(MULTIPLE, "Not an OID");
       transientDAO.apply();
 
       checkEnumState(transientDAO, MULTIPLE, mdAttrEnumMultiple, coloradoItemId);
-      fail("State accepted an invalid item.");
+      Assert.fail("State accepted an invalid item.");
     }
     catch (AttributeValueException e)
     {
@@ -2503,7 +2605,7 @@ public class TransientAttributeTest extends TestCase
   }
 
   /**
-   * Gets a new instance of the transientDAO and checks for the number and id of
+   * Gets a new instance of the transientDAO and checks for the number and oid of
    * each state passed in (varibale number of arguments).
    * 
    * @param states
@@ -2516,14 +2618,14 @@ public class TransientAttributeTest extends TestCase
 
     if (l.size() != states.length)
     {
-      fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
+      Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" expected " + states.length + " states in " + field + ", found " + l.size());
     }
 
     for (String state : states)
     {
       if (!l.contains(state))
       {
-        fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
+        Assert.fail("Instance of \"" + EntityMasterTestSetup.TEST_CLASS.getType() + "\" does not contain all of the expected values in " + field);
       }
     }
 

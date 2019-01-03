@@ -48,9 +48,9 @@ public class MdAttributeReference_Q extends MdAttributeConcrete_Q implements MdA
   }
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    *
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedServerGetterRefId()
   {
@@ -58,9 +58,9 @@ public class MdAttributeReference_Q extends MdAttributeConcrete_Q implements MdA
   }
 
   /**
-   * Special case for generating an id getter for reference attributes.
+   * Special case for generating an oid getter for reference attributes.
    *
-   * @return reference id getter.
+   * @return reference oid getter.
    */
   public String generatedClientGetterRefId()
   {

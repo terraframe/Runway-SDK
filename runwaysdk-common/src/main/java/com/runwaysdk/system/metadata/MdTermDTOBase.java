@@ -45,9 +45,9 @@ public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusi
     return CLASS;
   }
   
-  public static com.runwaysdk.system.metadata.MdTermDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdTermDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdTermDTO) dto;
   }
@@ -65,7 +65,7 @@ public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusi
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdTermQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -78,10 +78,10 @@ public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusi
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdTermDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdTermDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdTermDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdTermDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -91,10 +91,10 @@ public abstract class MdTermDTOBase extends com.runwaysdk.system.metadata.MdBusi
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdTermDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdTermDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdTermDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdTermDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest.business.ontology;
 
 @com.runwaysdk.business.ClassSignature(hash = -147226281)
-public class AlphabetDescriptionControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class AlphabetDescriptionControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController";
   protected javax.servlet.http.HttpServletRequest req;
@@ -125,15 +125,15 @@ public class AlphabetDescriptionControllerBase implements com.runwaysdk.generati
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.failDelete");
   }
   
-  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:id", post=false)
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:oid", post=false)
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.java";
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.edit");
   }
   
-  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:id", post=false)
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:oid", post=false)
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.java";
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.failEdit");
@@ -167,15 +167,15 @@ public class AlphabetDescriptionControllerBase implements com.runwaysdk.generati
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.failUpdate");
   }
   
-  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:id", post=false)
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:oid", post=false)
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.java";
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.view");
   }
   
-  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:id", post=false)
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  @com.runwaysdk.controller.ActionParameters(parameters="java.lang.String:oid", post=false)
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.java";
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.jstest.business.ontology.AlphabetDescriptionController.failView");

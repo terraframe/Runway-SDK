@@ -55,23 +55,23 @@ public class BuildDomain
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JS Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     mdTerm.apply();
     
     MdTermRelationshipDAO mdTermRelationship = MdTermRelationshipDAO.newInstance();
     mdTermRelationship.setValue(MdTreeInfo.NAME, "Sequential");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Sequential Relationship");
-    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Previous Letter");
-    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getOid());
     mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
     mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Next Letter");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
     mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
     mdTermRelationship.setGenerateMdController(false);
-    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getOid());
     mdTermRelationship.apply();
     
 //    QualifiedTypeJob job = new QualifiedTypeJob();

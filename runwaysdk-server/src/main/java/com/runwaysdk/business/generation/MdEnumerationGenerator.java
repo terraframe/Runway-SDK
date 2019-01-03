@@ -21,6 +21,8 @@ package com.runwaysdk.business.generation;
 import java.util.Map;
 import java.util.TreeMap;
 
+
+
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.constants.ComponentInfo;
@@ -33,7 +35,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.EnumerationMaster;
 
@@ -136,10 +137,6 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
   {
     getWriter().write("public enum " + enumName + " implements " + BusinessEnumeration.class.getName());
 
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(", " + Reloadable.class.getName());
-    }
     getWriter().writeLine("");
 
     getWriter().openBracket();
@@ -213,7 +210,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
       }
     }
 
-    addGetter(String.class.getName(), ComponentInfo.ID);
+    addGetter(String.class.getName(), ComponentInfo.OID);
     addGetter(String.class.getName(), EnumerationMasterInfo.NAME);
     addDisplayLabelGetter();
   }

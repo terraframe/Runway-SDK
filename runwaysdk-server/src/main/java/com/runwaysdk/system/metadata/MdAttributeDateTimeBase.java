@@ -70,9 +70,9 @@ public abstract class MdAttributeDateTimeBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static MdAttributeDateTime get(String id)
+  public static MdAttributeDateTime get(String oid)
   {
-    return (MdAttributeDateTime) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeDateTime) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeDateTime getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdAttributeDateTimeBase extends com.runwaysdk.system.metad
     return (MdAttributeDateTime) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeDateTime lock(java.lang.String id)
+  public static MdAttributeDateTime lock(java.lang.String oid)
   {
-    MdAttributeDateTime _instance = MdAttributeDateTime.get(id);
+    MdAttributeDateTime _instance = MdAttributeDateTime.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeDateTime unlock(java.lang.String id)
+  public static MdAttributeDateTime unlock(java.lang.String oid)
   {
-    MdAttributeDateTime _instance = MdAttributeDateTime.get(id);
+    MdAttributeDateTime _instance = MdAttributeDateTime.get(oid);
     _instance.unlock();
     
     return _instance;

@@ -109,7 +109,7 @@ public class CharacterConditionDAO extends BasicConditionDAO implements Characte
 
       if (mdField instanceof MdWebMultipleTermDAOIF)
       {
-        List<Entity> entities = extraEntities.get(mdField.getId());
+        List<Entity> entities = extraEntities.get(mdField.getOid());
 
         if (entities != null)
         {
@@ -133,7 +133,7 @@ public class CharacterConditionDAO extends BasicConditionDAO implements Characte
   /**
    * IMPORTANT: I am making the assumption that multi-term values are stored as
    * relationships, and that the list of entities associated with this field is
-   * actually a list of relationships where the child id is the value which
+   * actually a list of relationships where the child oid is the value which
    * should be checked for condition validation. Additionally, the equals
    * condition is treated as a contains condition and not equals is treated as
    * not-contains.
@@ -150,7 +150,7 @@ public class CharacterConditionDAO extends BasicConditionDAO implements Characte
     for (Entity entity : entities)
     {
       Relationship relationship = (Relationship) entity;
-      values.add(relationship.getChildId());
+      values.add(relationship.getChildOid());
     }
 
     Operation operation = this.getOperation();
@@ -209,8 +209,8 @@ public class CharacterConditionDAO extends BasicConditionDAO implements Characte
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static CharacterConditionDAOIF get(String id)
+  public static CharacterConditionDAOIF get(String oid)
   {
-    return (CharacterConditionDAOIF) BusinessDAO.get(id);
+    return (CharacterConditionDAOIF) BusinessDAO.get(oid);
   }
 }

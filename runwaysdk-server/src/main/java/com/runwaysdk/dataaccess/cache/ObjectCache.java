@@ -37,18 +37,15 @@ import com.runwaysdk.business.generation.ClientMarker;
 import com.runwaysdk.business.generation.ServerMarker;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.constants.BusinessInfo;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -63,7 +60,6 @@ import com.runwaysdk.constants.MdMessageInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTableInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -90,7 +86,6 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -115,32 +110,24 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
-import com.runwaysdk.dataaccess.TransientDAOFactory;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.Diskstore;
-import com.runwaysdk.dataaccess.database.ControllerDAOFactory;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DefaultEnumerationInfo;
 import com.runwaysdk.dataaccess.database.DefaultMdEntityInfo;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.StructDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
-import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
-import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataException;
 import com.runwaysdk.dataaccess.transaction.ITaskListener;
 import com.runwaysdk.dataaccess.transaction.LockObject;
-import com.runwaysdk.facade.WebServiceAdapter;
-import com.runwaysdk.facade.wsdd.WebServiceDeployer;
 import com.runwaysdk.generation.CommonMarker;
 import com.runwaysdk.util.IdParser;
 import com.runwaysdk.util.ServerInitializerFacade;
-import com.runwaysdk.web.json.JSONWebServiceAdapter;
 
 /**
  * Manages collections of all EntityDAO classes. All EntityDAO CRUD operations
@@ -153,9 +140,9 @@ import com.runwaysdk.web.json.JSONWebServiceAdapter;
  */
 public class ObjectCache
 {
-  private static ObjectStore                         globalCache;
+  private static ObjectStore globalCache;
 
-  final static Logger                                logger                          = LoggerFactory.getLogger(ObjectCache.class);
+  final static Logger        logger = LoggerFactory.getLogger(ObjectCache.class);
 
   static
   {
@@ -273,29 +260,29 @@ public class ObjectCache
   }
 
   /**
-   * Returns a BusinessDAO of the given id in the database.
+   * Returns a BusinessDAO of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the database
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database
    * 
    * <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> BusinessDAO representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return DataAccessIF instance of the given id
+   * @param oid
+   *          element oid of an item in the database
+   * @return DataAccessIF instance of the given oid
    */
-  public static BusinessDAOIF getBusinessDAO(String id)
+  public static BusinessDAOIF getBusinessDAO(String oid)
   {
-    EntityDAOIF entityDAO = getEntityDAO(id);
+    EntityDAOIF entityDAO = getEntityDAO(oid);
 
     if (! ( entityDAO instanceof BusinessDAO ))
     {
-      String errmsg = "Object with id [" + id + "] exists but it is not a BusinessDAO.";
+      String errmsg = "Object with oid [" + oid + "] exists but it is not a BusinessDAO.";
       throw new UnexpectedTypeException(errmsg);
     }
 
@@ -303,29 +290,29 @@ public class ObjectCache
   }
 
   /**
-   * Returns a StructDAO of the given id in the database.
+   * Returns a StructDAO of the given oid in the database.
    * 
    * <br/>
-   * <b>Precondition:</b> id != null <br/>
-   * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the database
+   * <b>Precondition:</b> oid != null <br/>
+   * <b>Precondition:</b> !oid.trim().equals("") <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database
    * 
    * <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> StructDAO representing the item in the database of
-   * the given id is returned
+   * the given oid is returned
    * 
-   * @param id
-   *          element id of an item in the database
-   * @return DataAccessIF instance of the given id
+   * @param oid
+   *          element oid of an item in the database
+   * @return DataAccessIF instance of the given oid
    */
-  public static StructDAOIF getSructObject(String id)
+  public static StructDAOIF getSructObject(String oid)
   {
-    EntityDAOIF entityDAO = getEntityDAO(id);
+    EntityDAOIF entityDAO = getEntityDAO(oid);
 
     if (! ( entityDAO instanceof StructDAO ))
     {
-      String errmsg = "Object with id [" + id + "] exists but it is not a StructDAO.";
+      String errmsg = "Object with oid [" + oid + "] exists but it is not a StructDAO.";
       throw new UnexpectedTypeException(errmsg);
     }
 
@@ -334,16 +321,16 @@ public class ObjectCache
 
   /**
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  public static RelationshipDAOIF getRelationshipDAO(String id)
+  public static RelationshipDAOIF getRelationshipDAO(String oid)
   {
-    EntityDAOIF entityDAO = getEntityDAO(id);
+    EntityDAOIF entityDAO = getEntityDAO(oid);
 
     if (! ( entityDAO instanceof RelationshipDAOIF ))
     {
-      String errmsg = "Object with id [" + id + "] exists but is not a Relationship as expected.";
+      String errmsg = "Object with oid [" + oid + "] exists but is not a Relationship as expected.";
       throw new UnexpectedTypeException(errmsg);
     }
 
@@ -352,16 +339,16 @@ public class ObjectCache
 
   /**
    * 
-   * @param id
+   * @param oid
    * @return
    */
-  public static ElementDAOIF getElementDAO(String id)
+  public static ElementDAOIF getElementDAO(String oid)
   {
-    EntityDAOIF entityDAO = getEntityDAO(id);
+    EntityDAOIF entityDAO = getEntityDAO(oid);
 
     if (! ( entityDAO instanceof ElementDAOIF ))
     {
-      String errmsg = "Object with id [" + id + "] exists but is not a Element as expected.";
+      String errmsg = "Object with oid [" + oid + "] exists but is not a Element as expected.";
       throw new UnexpectedTypeException(errmsg);
     }
 
@@ -369,44 +356,46 @@ public class ObjectCache
   }
 
   /**
-   * Fetches an object with the given ID. If the object has been modified during a transaction and the request 
-   * is from that transaction, this object will not come from the global {@link ObjectCache} but instead will
-   * come from a transaction cache.
+   * Fetches an object with the given OID. If the object has been modified during
+   * a transaction and the request is from that transaction, this object will
+   * not come from the global {@link ObjectCache} but instead will come from a
+   * transaction cache.
    * 
-   * @param id
+   * @param oid
    * @return
    * @throws DataNotFoundException
-   *           when the id does not represent a valid entity.
+   *           when the oid does not represent a valid entity.
    */
-  public static EntityDAOIF getEntityDAO(String id)
+  public static EntityDAOIF getEntityDAO(String oid)
   {
-    return _internalGetEntityDAO(id);
+    return _internalGetEntityDAO(oid);
   }
-  
+
   /**
-   * Fetches an object with the given ID from the cache (or directly from the database, depending on its type)
-   * and should be used for internal purposes only, as it does not take into account whether the object
-   * has been modified during the transaction.
+   * Fetches an object with the given OID from the cache (or directly from the
+   * database, depending on its type) and should be used for internal purposes
+   * only, as it does not take into account whether the object has been modified
+   * during the transaction.
    * 
-   * @param id
+   * @param oid
    * @return
    * @throws DataNotFoundException
-   *           when the id does not represent a valid entity.
+   *           when the oid does not represent a valid entity.
    */
-  public static EntityDAOIF _internalGetEntityDAO(String id)
+  public static EntityDAOIF _internalGetEntityDAO(String oid)
   {
-    ( LockObject.getLockObject() ).checkTransactionLock(id);
+    ( LockObject.getLockObject() ).checkTransactionLock(oid);
 
-    EntityDAOIF returnObject = ObjectCache.getEntityDAOIFfromCache(id);
+    EntityDAOIF returnObject = ObjectCache.getEntityDAOIFfromCache(oid);
 
     if (returnObject == null)
     {
       // get the appropriate collection class for the entity type
-      MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+      MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
 
       if (! ( mdClassIF instanceof MdEntityDAOIF ))
       {
-        String errMsg = "Object with id [" + id + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
+        String errMsg = "Object with oid [" + oid + "] is not defined by a [" + MdEntityInfo.CLASS + "]";
         throw new DataNotFoundException(errMsg, mdClassIF);
       }
 
@@ -414,22 +403,23 @@ public class ObjectCache
 
       // The collection class may or may not use caching. If caching is used,
       // a cached EntityDAO is returned
-      returnObject = entityDAOCollection.getEntityInstance(id);
+      returnObject = entityDAOCollection.getEntityInstance(oid);
     }
 
     return returnObject;
   }
 
   /**
-   * Fetches an object with the given key for the given type. If the object has been modified during a transaction and the request 
-   * is from that transaction, this object will not come from the global {@link ObjectCache} but instead will
-   * come from a transaction cache. 
+   * Fetches an object with the given key for the given type. If the object has
+   * been modified during a transaction and the request is from that
+   * transaction, this object will not come from the global {@link ObjectCache}
+   * but instead will come from a transaction cache.
    * 
    * @param type
    * @param key
    * @return
    * @throws DataNotFoundException
-   *           when the id does not represent a valid entity.
+   *           when the oid does not represent a valid entity.
    */
   public static EntityDAOIF getEntityDAO(String type, String key)
   {
@@ -437,17 +427,18 @@ public class ObjectCache
     // a cached EntityDAO is returned
     return _internalGetEntityDAO(type, key);
   }
-  
+
   /**
-   * Fetches an object with the given key for the given type. from the cache (or directly from the database, depending on its type)
-   * and should be used for internal purposes only, as it does not take into account whether the object
+   * Fetches an object with the given key for the given type. from the cache (or
+   * directly from the database, depending on its type) and should be used for
+   * internal purposes only, as it does not take into account whether the object
    * has been modified during the transaction.
    * 
    * @param type
    * @param key
    * @return
    * @throws DataNotFoundException
-   *           when the id does not represent a valid entity.
+   *           when the oid does not represent a valid entity.
    */
   public static EntityDAOIF _internalGetEntityDAO(String type, String key)
   {
@@ -496,7 +487,7 @@ public class ObjectCache
    */
   public static void updateCache(EntityDAO entityDAO)
   {
-    // Look up the type of the given id
+    // Look up the type of the given oid
     String entityType = entityDAO.getType();
 
     // get the appropriate collection class for the type
@@ -516,7 +507,7 @@ public class ObjectCache
    */
   public static void removeCache(EntityDAO entityDAO)
   {
-    // Look up the type of the given id
+    // Look up the type of the given oid
     String entityType = entityDAO.getType();
 
     // get the appropriate collection class for the type
@@ -526,7 +517,7 @@ public class ObjectCache
   }
 
   /**
-   * Removes the {@link EntityDAO} with the given id from the cache so that it
+   * Removes the {@link EntityDAO} with the given oid from the cache so that it
    * can be refreshed on the next request for the object.
    *
    * <br/>
@@ -535,12 +526,12 @@ public class ObjectCache
    * <br/>
    * <b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
    *
-   * @param id
+   * @param oid
    *          for the {@link EntityDAO} to remove from this collection
    */
   public static void clearCacheForRefresh(String entityId)
   {
-    // Look up the type of the given id
+    // Look up the type of the given oid
     String entityType = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(entityId)).definesType();
 
     // get the appropriate collection class for the type
@@ -551,29 +542,29 @@ public class ObjectCache
 
   /**
    * Returns a list of parent relationships of the given type from the cache for
-   * a {@link BusinessDAOIF} with the given id.
+   * a {@link BusinessDAOIF} with the given oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * @return
    */
-  protected static List<RelationshipDAOIF> getParentRelationshipsFromCache(String id, String relationshipType)
+  protected static List<RelationshipDAOIF> getParentRelationshipsFromCache(String oid, String relationshipType)
   {
-    return globalCache.getParentRelationshipsFromCache(id, relationshipType);
+    return globalCache.getParentRelationshipsFromCache(oid, relationshipType);
   }
 
   /**
    * Returns a list of child relationships of the given type from the cache for
-   * a {@link BusinessDAOIF} with the given id.
+   * a {@link BusinessDAOIF} with the given oid.
    * 
-   * @param id
+   * @param oid
    * @param relationshipType
    * 
    * @return
    */
-  protected static List<RelationshipDAOIF> getChildRelationshipsFromCache(String id, String relationshipType)
+  protected static List<RelationshipDAOIF> getChildRelationshipsFromCache(String oid, String relationshipType)
   {
-    return globalCache.getChildRelationshipsFromCache(id, relationshipType);
+    return globalCache.getChildRelationshipsFromCache(oid, relationshipType);
   }
 
   /**
@@ -588,7 +579,7 @@ public class ObjectCache
   }
 
   /**
-   * Updates the stored id if it has changed for the {@link RelationshipDAOIF}
+   * Updates the stored oid if it has changed for the {@link RelationshipDAOIF}
    * to the parent and child relationships of the parent and child objects in
    * the cache.
    * 
@@ -618,16 +609,16 @@ public class ObjectCache
 
   /**
    * Removes all parent relationships of the given type for the
-   * {@link BusinessDAOIF} with the given id.
+   * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param childId
+   * @param childOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  protected static void removeAllParentRelationshipsOfType(String childId, String relationshipType, boolean deletedObject)
+  protected static void removeAllParentRelationshipsOfType(String childOid, String relationshipType, boolean deletedObject)
   {
-    globalCache.removeAllParentRelationshipsOfType(childId, relationshipType, deletedObject);
+    globalCache.removeAllParentRelationshipsOfType(childOid, relationshipType, deletedObject);
   }
 
   /**
@@ -647,29 +638,29 @@ public class ObjectCache
 
   /**
    * Removes all child relationships of the given type for the
-   * {@link BusinessDAOIF} with the given id.
+   * {@link BusinessDAOIF} with the given oid.
    * 
-   * @param parentId
+   * @param parentOid
    * @param relationshipType
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  protected static void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject)
+  protected static void removeAllChildRelationshipsOfType(String parentOid, String relationshipType, boolean deletedObject)
   {
-    globalCache.removeAllChildRelationshipsOfType(parentId, relationshipType, deletedObject);
+    globalCache.removeAllChildRelationshipsOfType(parentOid, relationshipType, deletedObject);
   }
 
   /**
-   * Returns the {@link EntityDAOIF} from the cache with the given id or null if
-   * the object with the given id is not in the cache.
+   * Returns the {@link EntityDAOIF} from the cache with the given oid or null if
+   * the object with the given oid is not in the cache.
    * 
-   * @param id
-   * @return {@link EntityDAOIF} from the cache with the given id or null if the
-   *         object with the given id is not in the cache.
+   * @param oid
+   * @return {@link EntityDAOIF} from the cache with the given oid or null if the
+   *         object with the given oid is not in the cache.
    */
-  public static EntityDAOIF getEntityDAOIFfromCache(String id)
+  public static EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    return globalCache.getEntityDAOIFfromCache(id);
+    return globalCache.getEntityDAOIFfromCache(oid);
   }
 
   /**
@@ -686,10 +677,10 @@ public class ObjectCache
 
   /**
    * DO NOT CALL THIS METHOD UNLESS YOU KNOW WHAT YOU ARE DOING - Updates the
-   * changed id for the given {@link EntityDAOIF} in the cache.
+   * changed oid for the given {@link EntityDAOIF} in the cache.
    * 
    * <br/>
-   * <b>Precondition:</b> Calling method has checked whether the id has changed.
+   * <b>Precondition:</b> Calling method has checked whether the oid has changed.
    * 
    * @param oldEntityId
    * @param entityDAOIF
@@ -707,9 +698,9 @@ public class ObjectCache
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    */
-  protected static void removeEntityDAOIFfromCache(String id, boolean deletedObject)
+  protected static void removeEntityDAOIFfromCache(String oid, boolean deletedObject)
   {
-    globalCache.removeEntityDAOIFfromCache(id, deletedObject);
+    globalCache.removeEntityDAOIFfromCache(oid, deletedObject);
   }
 
   /**
@@ -726,9 +717,9 @@ public class ObjectCache
     Map<String, Map<String, Attribute>> tupleMap = i.next();
     while (tupleMap != null)
     {
-      String id = tupleMap.keySet().iterator().next();
-      structDAOids.add(id);
-      Map<String, Attribute> attributeMap = tupleMap.get(id);
+      String oid = tupleMap.keySet().iterator().next();
+      structDAOids.add(oid);
+      Map<String, Attribute> attributeMap = tupleMap.get(oid);
       StructDAO structDAO = StructDAOFactory.factoryMethod(attributeMap, EntityTypes.METADATADISPLAYLABEL.getType());
       ObjectCache.putEntityDAOIFintoCache(structDAO);
 
@@ -740,9 +731,9 @@ public class ObjectCache
     tupleMap = i.next();
     while (tupleMap != null)
     {
-      String id = tupleMap.keySet().iterator().next();
-      structDAOids.add(id);
-      Map<String, Attribute> attributeMap = tupleMap.get(id);
+      String oid = tupleMap.keySet().iterator().next();
+      structDAOids.add(oid);
+      Map<String, Attribute> attributeMap = tupleMap.get(oid);
       StructDAO structDAO = StructDAOFactory.factoryMethod(attributeMap, EntityTypes.MD_LOCALIZABLE_MESSAGE.getType());
       ObjectCache.putEntityDAOIFintoCache(structDAO);
 
@@ -828,77 +819,73 @@ public class ObjectCache
         fireTaskProgress(100);
       }
 
-      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment() || !LocalProperties.getCopyArtifactsOnStart())
-      {
-        extractDatabaseSourceAndClasses = false;
-      }
-
-      // Write .class files for enums
-      for (String enumType : Database.getAllEnumTypes())
-      {
-        MdEnumerationDAOIF mdEnumIF = ObjectCache.getMdEnumerationDAO(enumType);
-
-        if (mdEnumIF == null)
-        {
-          String error = "MdEnumeration [" + enumType + "] was not found";
-          throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(MdEnumerationInfo.CLASS));
-        }
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdEnumerationDAO) mdEnumIF ).writeJavaToFile();
-        }
-      }
-
-      // add collection of transient types
-      for (String transientType : TransientDAOFactory.getAllTransientNames())
-      {
-        MdTransientDAOIF mdTransientIF = ObjectCache.getMdTransientDAO(transientType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdTransientDAO) mdTransientIF ).writeJavaToFile();
-        }
-      }
-
-      // add collection of transient types
-      for (String controllerType : ControllerDAOFactory.getAllControllerNames())
-      {
-        MdControllerDAOIF mdControllerIF = ObjectCache.getMdControllerDAO(controllerType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdControllerDAO) mdControllerIF ).writeJavaToFile();
-        }
-      }
-
-      // Build collections based off of metadata. Metadata has been cached
-      // from
-      // above
-      for (String entityType : EntityDAOFactory.getAllEntityNames())
-      {
-        MdEntityDAOIF mdEntityIF = ObjectCache.getMdEntityDAO(entityType);
-
-        if (extractDatabaseSourceAndClasses)
-        {
-          // This cast is OK. The method does not modify the object.
-          ( (MdEntityDAO) mdEntityIF ).writeJavaToFile();
-        }
-      }
-
-      // add the default services
-
-      if (CommonProperties.getContainerWebServiceEnabled())
-      {
-        // deploy the web services
-        WebServiceDeployer serviceDeployer = new WebServiceDeployer();
-        serviceDeployer.addService(WebServiceAdapter.class);
-        serviceDeployer.addService(JSONWebServiceAdapter.class);
-        serviceDeployer.deploy();
-      }
+      // if (LocalProperties.isDevelopEnvironment() ||
+      // LocalProperties.isTestEnvironment() ||
+      // !LocalProperties.getCopyArtifactsOnStart())
+      // {
+      // extractDatabaseSourceAndClasses = false;
+      // }
+      //
+      // // Write .class files for enums
+      // for (String enumType : Database.getAllEnumTypes())
+      // {
+      // MdEnumerationDAOIF mdEnumIF =
+      // ObjectCache.getMdEnumerationDAO(enumType);
+      //
+      // if (mdEnumIF == null)
+      // {
+      // String error = "MdEnumeration [" + enumType + "] was not found";
+      // throw new DataNotFoundException(error,
+      // MdTypeDAO.getMdTypeDAO(MdEnumerationInfo.CLASS));
+      // }
+      //
+      // if (extractDatabaseSourceAndClasses)
+      // {
+      // // This cast is OK. The method does not modify the object.
+      // ( (MdEnumerationDAO) mdEnumIF ).writeJavaToFile();
+      // }
+      // }
+      //
+      // // add collection of transient types
+      // for (String transientType : TransientDAOFactory.getAllTransientNames())
+      // {
+      // MdTransientDAOIF mdTransientIF =
+      // ObjectCache.getMdTransientDAO(transientType);
+      //
+      // if (extractDatabaseSourceAndClasses)
+      // {
+      // // This cast is OK. The method does not modify the object.
+      // ( (MdTransientDAO) mdTransientIF ).writeJavaToFile();
+      // }
+      // }
+      //
+      // // add collection of transient types
+      // for (String controllerType :
+      // ControllerDAOFactory.getAllControllerNames())
+      // {
+      // MdControllerDAOIF mdControllerIF =
+      // ObjectCache.getMdControllerDAO(controllerType);
+      //
+      // if (extractDatabaseSourceAndClasses)
+      // {
+      // // This cast is OK. The method does not modify the object.
+      // ( (MdControllerDAO) mdControllerIF ).writeJavaToFile();
+      // }
+      // }
+      //
+      // // Build collections based off of metadata. Metadata has been cached
+      // // from
+      // // above
+      // for (String entityType : EntityDAOFactory.getAllEntityNames())
+      // {
+      // MdEntityDAOIF mdEntityIF = ObjectCache.getMdEntityDAO(entityType);
+      //
+      // if (extractDatabaseSourceAndClasses)
+      // {
+      // // This cast is OK. The method does not modify the object.
+      // ( (MdEntityDAO) mdEntityIF ).writeJavaToFile();
+      // }
+      // }
 
       extractDatabaseSourceAndClasses = true;
 
@@ -907,10 +894,10 @@ public class ObjectCache
       String dateTimeFormat = Constants.DATETIME_FORMAT;
       java.util.Date endTime = new java.util.Date();
       long totalTime = endTime.getTime() - startTime.getTime();
-      
+
       String logMessage = "The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n";
-     
-//System.out.println(logMessage);      
+
+      // System.out.println(logMessage);
 
       logger.info(logMessage);
     }
@@ -959,12 +946,6 @@ public class ObjectCache
     MdEnumerationStrategy mdEnumerationStrategy = new MdEnumerationStrategy(MdEnumerationInfo.CLASS);
     mdEnumerationStrategy.reload();
     tempStrategyMap.put(MdEnumerationInfo.CLASS, mdEnumerationStrategy);
-
-    fireTaskProgress(1);
-
-    MdControllerStrategy mdControllerStrategy = new MdControllerStrategy(MdControllerInfo.CLASS);
-    mdControllerStrategy.reload();
-    tempStrategyMap.put(MdControllerInfo.CLASS, mdControllerStrategy);
 
     fireTaskProgress(1);
 
@@ -1476,7 +1457,7 @@ public class ObjectCache
    */
   private static void clearChildCollection(MdElementDAO childMdElement)
   {
-    childMdElement.getAttribute(MdElementInfo.CACHE_ALGORITHM).setValue(EntityCacheMaster.CACHE_NOTHING.getId());
+    childMdElement.getAttribute(MdElementInfo.CACHE_ALGORITHM).setValue(EntityCacheMaster.CACHE_NOTHING.getOid());
     childMdElement.save(true);
   }
 
@@ -1504,7 +1485,7 @@ public class ObjectCache
 
     // This is necessary or else infinite recursion is caused, as calling
     // getSuperClasses will call this method again.
-    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
+    if (entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
     {
       return strategyMap.get(MdClassInfo.CLASS);
     }
@@ -1547,7 +1528,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
    * <b>Precondition:</b> !entityType.trim().equals("") <br/>
-   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a mdStructIF instance of the metadata for the
    * given class (mdStructIF().definesType().equals(entityType)
@@ -1591,7 +1573,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
    * <b>Precondition:</b> !entityType.trim().equals("") <br/>
-   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a MdStructIF instance of the metadata for the
    * given class (MdStructIF().definesType().equals(entityType)
@@ -1655,33 +1638,30 @@ public class ObjectCache
     mdType = getMdClassDAOReturnNull(type);
     if (mdType == null)
     {
-      mdType = getMdControllerDAOReturnNull(type);
+      mdType = getMdFormDAOReturnNull(type);
       if (mdType == null)
       {
-        mdType = getMdFormDAOReturnNull(type);
-        if (mdType == null)
-        {
-          mdType = getMdEnumerationDAO(type);
-        }
+        mdType = getMdEnumerationDAO(type);
       }
     }
 
     return mdType;
   }
-  
+
   /**
-   * Returns an {@link MdTableClassIF} instance of the metadata for the
-   * given type.
+   * Returns an {@link MdTableClassIF} instance of the metadata for the given
+   * type.
    * 
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
    * <b>Precondition:</b> !entityType.trim().equals("") <br/>
-   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdEntityIF instance of the metadata for the
    * given class ({@link MdTableClassIF#definesType()}.equals(tableClassType)}
    * 
    * @param tableClassType
-   * @return  {@link MdTableClassIF} instance of the metadata for the given type.
+   * @return {@link MdTableClassIF} instance of the metadata for the given type.
    */
   public static MdTableClassIF getMdTableClassIF(String tableClassType)
   {
@@ -1703,7 +1683,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
    * <b>Precondition:</b> !entityType.trim().equals("") <br/>
-   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdEntityIF instance of the metadata for the
    * given class (MdEntityIF().definesType().equals(entityType)
    * 
@@ -1729,7 +1710,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> utilType != null <br/>
    * <b>Precondition:</b> !utilType.trim().equals("") <br/>
-   * <b>Precondition:</b> utilType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> utilType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdUtilIF instance of the metadata for the
    * given class (MdUtilIF().definesType().equals(utilType)
    * 
@@ -1755,7 +1737,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> veiwType != null <br/>
    * <b>Precondition:</b> !veiwType.trim().equals("") <br/>
-   * <b>Precondition:</b> veiwType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> veiwType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdViewIF instance of the metadata for the
    * given class (MdViewIF().definesType().equals(veiwType)
    * 
@@ -1781,7 +1764,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> transientType != null <br/>
    * <b>Precondition:</b> !transientType.trim().equals("") <br/>
-   * <b>Precondition:</b> transientType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> transientType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdTransientIF instance of the metadata for
    * the given class (MdTransientIF().definesType().equals(transientType)
    * 
@@ -1807,7 +1791,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> exceptionType != null <br/>
    * <b>Precondition:</b> !exceptionType.trim().equals("") <br/>
-   * <b>Precondition:</b> exceptionType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> exceptionType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdExceptionIF instance of the metadata for
    * the given class (MdExceptionIF().definesType().equals(exceptionType)
    * 
@@ -1833,7 +1818,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> problemType != null <br/>
    * <b>Precondition:</b> !problemType.trim().equals("") <br/>
-   * <b>Precondition:</b> problemType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> problemType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdProblemIF instance of the metadata for
    * the given class (MdProblemIF().definesType().equals(problemType)
    * 
@@ -1859,7 +1845,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> messageType != null <br/>
    * <b>Precondition:</b> !messageType.trim().equals("") <br/>
-   * <b>Precondition:</b> messageType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> messageType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdMessageIF instance of the metadata for
    * the given class (MdMessageIF().definesType().equals(messageType)
    * 
@@ -1885,7 +1872,8 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> warningType != null <br/>
    * <b>Precondition:</b> !warningType.trim().equals("") <br/>
-   * <b>Precondition:</b> warningType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> warningType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdWarningIF instance of the metadata for
    * the given class (MdWarningIF().definesType().equals(warningType)
    * 
@@ -2013,19 +2001,19 @@ public class ObjectCache
   }
 
   /**
-   * Returns a MdClassIF instance with a root id that matches the given value.
+   * Returns a MdClassIF instance with a root oid that matches the given value.
    * 
    * <br/>
    * <b>Precondition:</b> rootId != null <br/>
    * <b>Precondition:</b> !rootId.trim().equals("") <br/>
-   * <b>Precondition:</b> rootId is the root of an id that is a valid class
+   * <b>Precondition:</b> rootId is the root of an oid that is a valid class
    * defined in the database <br/>
    * <b>Postcondition:</b> Returns a MdClassIF where
-   * IdParser.parseRootFromId(mdClass.getId()).equals(rootId)
+   * IdParser.parseRootFromId(mdClass.getOid()).equals(rootId)
    * 
    * @param rootId
    *          of the MdClass.
-   * @return MdClassIF instance with a root id that matches the given value.
+   * @return MdClassIF instance with a root oid that matches the given value.
    */
   public static MdClassDAOIF getMdClassDAOByRootId(String rootId)
   {
@@ -2042,7 +2030,7 @@ public class ObjectCache
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * parent.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -2062,7 +2050,7 @@ public class ObjectCache
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * child.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -2078,46 +2066,6 @@ public class ObjectCache
     }
 
     return ( (MdClassStrategy) mdClassStrategy ).getChildMdRelationshipDAOids(mdBusinessDAOid);
-  }
-
-  /**
-   * Returns an <code>MdControllerDAOIF</code> instance of the metadata for the
-   * given type. Throws <code>DataNotFoundException</code> if the type is
-   * unknown.
-   * 
-   * @param type
-   * @return <code>MdControllerDAOIF</code>
-   */
-  public static MdControllerDAOIF getMdControllerDAO(String type)
-  {
-    MdControllerStrategy mdControllerStrategy = (MdControllerStrategy) strategyMap.get(MdControllerInfo.CLASS);
-
-    String controllerId = mdControllerStrategy.getMdControllerId(type);
-
-    return (MdControllerDAOIF) ObjectCache.getEntityDAO(controllerId);
-  }
-
-  /**
-   * Returns an <code>MdControllerDAOIF</code> instance of the metadata for the
-   * given type. Throws null if the type is unknown.
-   * 
-   * @param type
-   * @return <code>MdControllerDAOIF</code>
-   */
-  public static MdControllerDAOIF getMdControllerDAOReturnNull(String type)
-  {
-    MdControllerStrategy mdControllerStrategy = (MdControllerStrategy) strategyMap.get(MdControllerInfo.CLASS);
-
-    String controllerId = mdControllerStrategy.getMdControllerIdReturnNull(type);
-
-    if (controllerId != null)
-    {
-      return (MdControllerDAOIF) ObjectCache.getEntityDAO(controllerId);
-    }
-    else
-    {
-      return null;
-    }
   }
 
   public static MdFormDAOIF getMdFormDAOgetMdFormDAO(String type)
@@ -2296,7 +2244,7 @@ public class ObjectCache
 
   /**
    * Returns all child Relationship objects for the BusinessDAO with the given
-   * id that are of the given relationship type. Request is routed to the
+   * oid that are of the given relationship type. Request is routed to the
    * collection responsible for relationships of the given relationship type.
    * 
    * <br/>
@@ -2309,14 +2257,14 @@ public class ObjectCache
    * <b>Precondition:</b> relationshipType.trim represents a valid relationship
    * name <br/>
    * <b>Postcondition:</b> Returns all child Relationship objects for the
-   * BusinessDAO with the given id that are of the given relationship type.
+   * BusinessDAO with the given oid that are of the given relationship type.
    * 
    * @param businessDAOid
-   *          BusinessDAO id.
+   *          BusinessDAO oid.
    * @param relationshipType
    *          name of the relationship type.
    * @return all child Relationship objects for the BusinessDAO with the given
-   *         id that are of the given relationship type.
+   *         oid that are of the given relationship type.
    * @throws Throwable
    */
   public static List<RelationshipDAOIF> getChildren(String businessDAOid, String relationshipType)
@@ -2347,7 +2295,7 @@ public class ObjectCache
 
   /**
    * Returns all parent Relationship objects for the BusinessDAO with the given
-   * id that are of the given type. Request is routed to the collection
+   * oid that are of the given type. Request is routed to the collection
    * responsible for relationships of the given type.
    * 
    * <br/>
@@ -2355,16 +2303,17 @@ public class ObjectCache
    * <b>Precondition:</b> !businessDAOid.trim().equals("") <br/>
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Precondition:</b> !relationshipType.trim().equals("") <br/>
-   * <b>Precondition:</b> relationshipType represents a valid relationship type <br/>
+   * <b>Precondition:</b> relationshipType represents a valid relationship type
+   * <br/>
    * <b>Postcondition:</b> Returns all parent Relationship objects for the
-   * BusinessDAO with the given id that are of the given type.
+   * BusinessDAO with the given oid that are of the given type.
    * 
    * @param businessDAOid
-   *          BusinessDAO id
+   *          BusinessDAO oid
    * @param relationshipType
    *          name of the relationship
    * @return all parent Relationship objects for the BusinessDAO with the given
-   *         id that are of the given type
+   *         oid that are of the given type
    */
   public static List<RelationshipDAOIF> getParents(String businessDAOid, String relationshipType)
   {
@@ -2377,7 +2326,7 @@ public class ObjectCache
 
   /**
    * Returns all parent Relationship objects for the BusinessDAO with the given
-   * id that are of the given type. Request is routed to the collection
+   * oid that are of the given type. Request is routed to the collection
    * responsible for relationships of the given type.
    * 
    * <br/>
@@ -2388,14 +2337,14 @@ public class ObjectCache
    * <b>Precondition:</b> relationshipType.trim() represents a valid
    * relationship type <br/>
    * <b>Postcondition:</b> Returns all parent Relationship objects for the
-   * BusinessDAO with the given id that are of the given type.
+   * BusinessDAO with the given oid that are of the given type.
    * 
    * @param businessDAOid
-   *          BusinessDAO id.
+   *          BusinessDAO oid.
    * @param relationshipType
    *          type of the relationship.
    * @return all parent Relationship objects for the BusinessDAO with the given
-   *         id that are of the given type.
+   *         oid that are of the given type.
    */
   public static List<RelationshipDAOIF> getParentsFromCache(String businessDAOid, String relationshipType)
   {

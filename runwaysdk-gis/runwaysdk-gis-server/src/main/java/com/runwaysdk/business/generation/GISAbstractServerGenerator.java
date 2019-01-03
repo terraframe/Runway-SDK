@@ -19,10 +19,10 @@
 package com.runwaysdk.business.generation;
 
 import com.runwaysdk.business.generation.AbstractServerGenerator.PluginIF;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.gis.Util;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.constants.RunwayGisProperties;
-import com.runwaysdk.constants.LocalProperties;
 
 public class GISAbstractServerGenerator implements PluginIF
 {

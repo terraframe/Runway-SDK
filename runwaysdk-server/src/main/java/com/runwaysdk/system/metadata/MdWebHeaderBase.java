@@ -61,9 +61,9 @@ public abstract class MdWebHeaderBase extends com.runwaysdk.system.metadata.MdWe
     return CLASS;
   }
   
-  public static MdWebHeader get(String id)
+  public static MdWebHeader get(String oid)
   {
-    return (MdWebHeader) com.runwaysdk.business.Business.get(id);
+    return (MdWebHeader) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebHeader getByKey(String key)
@@ -71,17 +71,17 @@ public abstract class MdWebHeaderBase extends com.runwaysdk.system.metadata.MdWe
     return (MdWebHeader) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebHeader lock(java.lang.String id)
+  public static MdWebHeader lock(java.lang.String oid)
   {
-    MdWebHeader _instance = MdWebHeader.get(id);
+    MdWebHeader _instance = MdWebHeader.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebHeader unlock(java.lang.String id)
+  public static MdWebHeader unlock(java.lang.String oid)
   {
-    MdWebHeader _instance = MdWebHeader.get(id);
+    MdWebHeader _instance = MdWebHeader.get(oid);
     _instance.unlock();
     
     return _instance;

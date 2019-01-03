@@ -22,14 +22,14 @@ public abstract class FormField extends FormFieldBase
 {
   private static final long serialVersionUID = 343989660;
   
-  public FormField(String parentId, String childId)
+  public FormField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public FormField(com.runwaysdk.system.metadata.MdForm parent, com.runwaysdk.system.metadata.MdField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

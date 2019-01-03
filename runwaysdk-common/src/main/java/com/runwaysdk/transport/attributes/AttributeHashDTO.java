@@ -35,7 +35,7 @@ public class AttributeHashDTO extends AttributeEncryptionDTO implements Serializ
 {
 
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = -1204812329992037944L;
 

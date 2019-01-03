@@ -71,7 +71,7 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
     }
     else
     {
-      setValue(MDMETHOD, value.getId());
+      setValue(MDMETHOD, value.getOid());
     }
   }
   
@@ -98,60 +98,60 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO> getAllMdMethod()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO> getAllMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO> getAllMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO> getAllMdMethodRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO> getAllMdMethodRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO> getAllMdMethodRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdMethodMethodActorDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.MdMethodMethodActorDTO addMdMethod(com.runwaysdk.system.metadata.MdMethodDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MdMethodMethodActorDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MdMethodMethodActorDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdMethodMethodActorDTO addMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdMethodDTO parent)
+  public static com.runwaysdk.system.metadata.MdMethodMethodActorDTO addMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdMethodDTO parent)
   {
-    return (com.runwaysdk.system.metadata.MdMethodMethodActorDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    return (com.runwaysdk.system.metadata.MdMethodMethodActorDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
   public void removeMdMethod(com.runwaysdk.system.metadata.MdMethodMethodActorDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.MdMethodMethodActorDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllMdMethod()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
-  public static void removeAllMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllMdMethod(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.MdMethodMethodActorDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.MethodActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.MethodActorDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.MethodActorDTO) dto;
   }
@@ -169,7 +169,7 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.MethodActorQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -182,10 +182,10 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.MethodActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.MethodActorDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.MethodActorDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.MethodActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -195,10 +195,10 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.MethodActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.MethodActorDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.MethodActorDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.MethodActorDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

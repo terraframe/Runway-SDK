@@ -114,13 +114,13 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.AndFieldCondition andFieldCondition)
     {
       if(andFieldCondition == null) return this.EQ((java.lang.String)null);
-      return this.EQ(andFieldCondition.getId());
+      return this.EQ(andFieldCondition.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.AndFieldCondition andFieldCondition)
     {
       if(andFieldCondition == null) return this.NE((java.lang.String)null);
-      return this.NE(andFieldCondition.getId());
+      return this.NE(andFieldCondition.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
 
       for (int i=0; i<andFieldCondition.length; i++)
       {
-        itemIdArray[i] = andFieldCondition[i].getId();
+        itemIdArray[i] = andFieldCondition[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
 
       for (int i=0; i<andFieldCondition.length; i++)
       {
-        itemIdArray[i] = andFieldCondition[i].getId();
+        itemIdArray[i] = andFieldCondition[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
 
       for (int i=0; i<andFieldCondition.length; i++)
       {
-        itemIdArray[i] = andFieldCondition[i].getId();
+        itemIdArray[i] = andFieldCondition[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
 
       for (int i=0; i<andFieldCondition.length; i++)
       {
-        itemIdArray[i] = andFieldCondition[i].getId();
+        itemIdArray[i] = andFieldCondition[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class AndFieldConditionQuery extends com.runwaysdk.system.metadata.Compo
 
       for (int i=0; i<andFieldCondition.length; i++)
       {
-        itemIdArray[i] = andFieldCondition[i].getId();
+        itemIdArray[i] = andFieldCondition[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

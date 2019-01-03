@@ -70,9 +70,9 @@ public abstract class MdWebSingleTermBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static MdWebSingleTerm get(String id)
+  public static MdWebSingleTerm get(String oid)
   {
-    return (MdWebSingleTerm) com.runwaysdk.business.Business.get(id);
+    return (MdWebSingleTerm) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebSingleTerm getByKey(String key)
@@ -80,17 +80,17 @@ public abstract class MdWebSingleTermBase extends com.runwaysdk.system.metadata.
     return (MdWebSingleTerm) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebSingleTerm lock(java.lang.String id)
+  public static MdWebSingleTerm lock(java.lang.String oid)
   {
-    MdWebSingleTerm _instance = MdWebSingleTerm.get(id);
+    MdWebSingleTerm _instance = MdWebSingleTerm.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebSingleTerm unlock(java.lang.String id)
+  public static MdWebSingleTerm unlock(java.lang.String oid)
   {
-    MdWebSingleTerm _instance = MdWebSingleTerm.get(id);
+    MdWebSingleTerm _instance = MdWebSingleTerm.get(oid);
     _instance.unlock();
     
     return _instance;

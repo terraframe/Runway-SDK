@@ -114,13 +114,13 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeFile mdAttributeFile)
     {
       if(mdAttributeFile == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeFile.getId());
+      return this.EQ(mdAttributeFile.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeFile mdAttributeFile)
     {
       if(mdAttributeFile == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeFile.getId());
+      return this.NE(mdAttributeFile.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeFile.length; i++)
       {
-        itemIdArray[i] = mdAttributeFile[i].getId();
+        itemIdArray[i] = mdAttributeFile[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeFile.length; i++)
       {
-        itemIdArray[i] = mdAttributeFile[i].getId();
+        itemIdArray[i] = mdAttributeFile[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeFile.length; i++)
       {
-        itemIdArray[i] = mdAttributeFile[i].getId();
+        itemIdArray[i] = mdAttributeFile[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeFile.length; i++)
       {
-        itemIdArray[i] = mdAttributeFile[i].getId();
+        itemIdArray[i] = mdAttributeFile[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdAttributeFileQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeFile.length; i++)
       {
-        itemIdArray[i] = mdAttributeFile[i].getId();
+        itemIdArray[i] = mdAttributeFile[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

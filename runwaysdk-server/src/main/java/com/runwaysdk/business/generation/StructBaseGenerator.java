@@ -55,9 +55,9 @@ public class StructBaseGenerator extends EntityBaseGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static " + this.getSubClassName() + " get(String id)");
+    getWriter().writeLine("public static " + this.getSubClassName() + " get(String oid)");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + this.getSubClassName() + ") " + StructInfo.CLASS + ".get(id);");
+    getWriter().writeLine("return (" + this.getSubClassName() + ") " + StructInfo.CLASS + ".get(oid);");
     getWriter().closeBracket();
     getWriter().writeLine("");
 

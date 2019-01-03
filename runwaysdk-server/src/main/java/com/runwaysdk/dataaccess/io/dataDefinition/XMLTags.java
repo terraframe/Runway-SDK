@@ -104,6 +104,11 @@ public interface XMLTags
    * The xml name of the abstract attribute in the class tag
    */
   public static final String   ABSTRACT_ATTRIBUTE               = "isAbstract";
+  
+  /**
+   * The xml name of the generate source attribute in the class tag
+   */
+  public static final String   GENERATE_SOURCE                  = "generateSource";
 
   /**
    * The xml name of the extends attribute in the class tag
@@ -194,7 +199,12 @@ public interface XMLTags
   public static final String   LOCALSTRUCT_ATTRIBUTE            = "localStruct";
 
   /**
-   * The xml tag for an MdAttributeInteger
+   * The xml tag for an {@link MdAttributeUUIDDAOIF}
+   */
+  public static final String   UUID_TAG                         = "uuid";
+  
+  /**
+   * The xml tag for an {@link MdAttributeIntegerDAOIF}
    */
   public static final String   INTEGER_TAG                      = "integer";
 
@@ -384,9 +394,9 @@ public interface XMLTags
   public static final String   REMOVE_ENUM_ITEM_TAG             = "removeEnumItem";
 
   /**
-   * The xml name of the id attribute for enumeration_instance and instance tags
+   * The xml name of the oid attribute for enumeration_instance and instance tags
    */
-  public static final String   ID_ATTRIBUTE                     = "id";
+  public static final String   ID_ATTRIBUTE                     = "oid";
 
   /**
    * The xml tag for the Business type
@@ -404,7 +414,7 @@ public interface XMLTags
   public static final String   ATTRIBUTE_TAG                    = "attribute";
 
   /**
-   * The xml tag for an enumeration id selection of a AttributeEnumeration
+   * The xml tag for an enumeration oid selection of a AttributeEnumeration
    */
   public static final String   ATTRIBUTE_ENUMERATION_TAG        = "attributeEnumeration";
 
@@ -792,8 +802,6 @@ public interface XMLTags
    * MdParameter
    */
   public static final String[] TYPE_TAGS                        = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG, XMLTags.MD_VIEW_TAG, XMLTags.MD_UTIL_TAG, XMLTags.MD_ENUMERATION_TAG };
-
-  public static final String   GENERATE_CONTROLLER              = "generateController";
 
   public static final String   ENTITY_TABLE                     = "table";
 

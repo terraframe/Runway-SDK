@@ -77,7 +77,7 @@ public class DimensionOperationHandler extends OperationHandler implements TagHa
 
         for (MdAttributeDimensionDAOIF mdAttributeDimension : list)
         {
-          this.setPermission(operation, mdAttributeDimension.getId(), context);
+          this.setPermission(operation, mdAttributeDimension.getOid(), context);
         }
       }
       else
@@ -86,7 +86,7 @@ public class DimensionOperationHandler extends OperationHandler implements TagHa
         MdDimensionDAOIF mdDimension = MdDimensionDAO.get(MdDimensionInfo.CLASS, key);
         MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
 
-        this.setPermission(operation, mdAttributeDimension.getId(), context);
+        this.setPermission(operation, mdAttributeDimension.getOid(), context);
       }
     }
   }

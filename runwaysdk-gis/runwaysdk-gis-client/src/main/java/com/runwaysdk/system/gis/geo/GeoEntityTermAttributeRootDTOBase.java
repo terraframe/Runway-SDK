@@ -24,9 +24,9 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot";
   private static final long serialVersionUID = 1766463844;
   
-  public GeoEntityTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentId, java.lang.String childId)
+  public GeoEntityTermAttributeRootDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   
@@ -49,7 +49,7 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -146,7 +146,7 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -331,7 +331,7 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -444,31 +444,31 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
   
   public com.runwaysdk.system.metadata.MdAttributeTermDTO getParent()
   {
-    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentId());
+    return com.runwaysdk.system.metadata.MdAttributeTermDTO.get(getRequest(), super.getParentOid());
   }
   
     public com.runwaysdk.system.gis.geo.GeoEntityDTO getChild()
   {
-    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildId());
+    return com.runwaysdk.system.gis.geo.GeoEntityDTO.get(getRequest(), super.getChildOid());
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(id);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
     return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO) dto;
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId)
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("parent_id", "EQ", parentId);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
     return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
-  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childId)
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
   {
     com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
-    queryDTO.addCondition("child_id", "EQ", childId);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
     return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO) clientRequest.queryRelationships(queryDTO);
   }
   public void apply()
@@ -484,7 +484,7 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -497,10 +497,10 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -510,10 +510,10 @@ public abstract class GeoEntityTermAttributeRootDTOBase extends com.runwaysdk.bu
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

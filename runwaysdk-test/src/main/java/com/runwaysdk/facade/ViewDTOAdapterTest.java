@@ -20,76 +20,47 @@ package com.runwaysdk.facade;
 
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.View;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
-import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
 
+
+@RunWith(ClasspathTestRunner.class)
 public class ViewDTOAdapterTest extends SessionDTOAdapterTest
 {
-  public static Test suite()
+  @BeforeClass
+  @Request
+  public static void classSetUp()
   {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(ViewDTOAdapterTest.class);
+    label = "default";
+    systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        label = "default";
-        systemSession =
-          ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
-        clientRequest = systemSession.getRequest();
+    source = "package com.test.controller;\n" + "public class " + parentMdSessionTypeName + " extends " + parentMdSessionTypeName + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "  public " + parentMdSessionTypeName + "() {" + "   super();" + "}\n" + "  public static " + parentMdSessionTypeName + " get(String oid)\n" + "  {\n" + "    return (" + parentMdSessionTypeName + ") " + View.class.getName() + ".get(oid);\n" + "  }\n" + "  public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getOid();" + "}\n" + "\n" + "  public void apply()\n" + "  {\n" + "    " + SessionIF.class.getName() + " session = " + Session.class.getName() + ".getCurrentSession();" + "    " + SingleActorDAOIF.class.getName() + " userIF = session.getUser();" + "    this.setOwner(userIF);"
+        + "    super.apply();" + "  }\n" + "}";
 
-        moreSetup();
-
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
+    childMdSession = MdViewDAO.newInstance();
+    parentMdSession = MdViewDAO.newInstance();
+    
+    modelSetUp();
+    finalizeSetup();    
   }
-
-
-  protected static void moreSetup()
+  
+  @AfterClass
+  public static void classTearDown()
   {
-    source = "package com.test.controller;\n"
-      + "public class "+parentMdSessionTypeName+" extends "+parentMdSessionTypeName+TypeGeneratorInfo.BASE_SUFFIX+" implements "+Reloadable.class.getName()+"\n"
-      + "{\n"
-      + "  public "+parentMdSessionTypeName+"() {" + "   super();" + "}\n"
-      + "  public static "+parentMdSessionTypeName+" get(String id)\n"
-      + "  {\n"
-      + "    return ("+parentMdSessionTypeName+") "+View.class.getName()+".get(id);\n"
-      + "  }\n"
-      + "  public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}\n"
-      + "\n"
-      + "  public void apply()\n"
-      + "  {\n"
-      + "    "+SessionIF.class.getName()+" session = "+Session.class.getName()+".getCurrentSession();"
-      + "    "+SingleActorDAOIF.class.getName()+" userIF = session.getUser();"
-      + "    this.setOwner(userIF);"
-      + "    super.apply();"
-      + "  }\n"
-      + "}";
-
-    childMdSession = clientRequest.newBusiness(MdViewInfo.CLASS);
-    parentMdSession = clientRequest.newBusiness(MdViewInfo.CLASS);
+    systemSession.logout();
   }
-
 }

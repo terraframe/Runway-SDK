@@ -194,13 +194,13 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.IndicatorPrimitive indicatorPrimitive)
     {
       if(indicatorPrimitive == null) return this.EQ((java.lang.String)null);
-      return this.EQ(indicatorPrimitive.getId());
+      return this.EQ(indicatorPrimitive.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.IndicatorPrimitive indicatorPrimitive)
     {
       if(indicatorPrimitive == null) return this.NE((java.lang.String)null);
-      return this.NE(indicatorPrimitive.getId());
+      return this.NE(indicatorPrimitive.getOid());
     }
 
   public com.runwaysdk.system.metadata.AggregationFunctionQuery.IndicatorAggregateFunctionQueryIF getIndicatorFunction()
@@ -311,7 +311,7 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorPrimitive.length; i++)
       {
-        itemIdArray[i] = indicatorPrimitive[i].getId();
+        itemIdArray[i] = indicatorPrimitive[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -323,7 +323,7 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorPrimitive.length; i++)
       {
-        itemIdArray[i] = indicatorPrimitive[i].getId();
+        itemIdArray[i] = indicatorPrimitive[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -335,7 +335,7 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorPrimitive.length; i++)
       {
-        itemIdArray[i] = indicatorPrimitive[i].getId();
+        itemIdArray[i] = indicatorPrimitive[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -347,7 +347,7 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorPrimitive.length; i++)
       {
-        itemIdArray[i] = indicatorPrimitive[i].getId();
+        itemIdArray[i] = indicatorPrimitive[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -359,7 +359,7 @@ public  class IndicatorPrimitiveQuery extends com.runwaysdk.system.metadata.Indi
 
       for (int i=0; i<indicatorPrimitive.length; i++)
       {
-        itemIdArray[i] = indicatorPrimitive[i].getId();
+        itemIdArray[i] = indicatorPrimitive[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

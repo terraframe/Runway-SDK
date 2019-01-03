@@ -23,15 +23,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -118,7 +114,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
     {
       Set<Operation> operations = new TreeSet<Operation>();
 
-      List<RelationshipDAOIF> list = RelationshipDAO.get(this.getId(), metadata.getId(), RelationshipTypes.TYPE_PERMISSION.getType());
+      List<RelationshipDAOIF> list = RelationshipDAO.get(this.getOid(), metadata.getOid(), RelationshipTypes.TYPE_PERMISSION.getType());
 
       if (list != null && list.size() > 0)
       {
@@ -132,7 +128,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
         for (BusinessDAOIF op : ops)
         {
           // Add the proper operation
-          operations.add(OperationManager.getOperation(op.getId()));
+          operations.add(OperationManager.getOperation(op.getOid()));
         }
       }
 
@@ -153,14 +149,12 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * @param operations
    *          A list of the operations to grant permission on
    * @param metadataId
-   *          The id of the metadata
+   *          The oid of the metadata
    */
   @Transaction
   public void grantPermission(List<Operation> operations, String metadataId)
   {
-    validateId(metadataId);
-
-    RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+    RelationshipDAO permission = getPermissions(this.getOid(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
     boolean isChanged = false;
@@ -169,9 +163,9 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
     {
       validateOperation(o, metadataId);
 
-      if (!attribute.getCachedEnumItemIdSet().contains(o.getId()))
+      if (!attribute.getCachedEnumItemIdSet().contains(o.getOid()))
       {
-        permission.addItem(ActorDAO.OPERATION_ATTR, o.getId());
+        permission.addItem(ActorDAO.OPERATION_ATTR, o.getOid());
         isChanged = true;
       }
     }
@@ -193,21 +187,19 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * @param operation
    *          The operation to
    * @param metadataId
-   *          The id of the metadata
+   *          The oid of the metadata
    */
   @Transaction
   public void grantPermission(Operation operation, String metadataId)
   {
-    validateId(metadataId);
-
     validateOperation(operation, metadataId);
 
-    RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+    RelationshipDAO permission = getPermissions(this.getOid(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
-    if (!attribute.getCachedEnumItemIdSet().contains(operation.getId()))
+    if (!attribute.getCachedEnumItemIdSet().contains(operation.getOid()))
     {
-      permission.addItem(ActorDAO.OPERATION_ATTR, operation.getId());
+      permission.addItem(ActorDAO.OPERATION_ATTR, operation.getOid());
 
       permission.apply();
 
@@ -226,7 +218,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * @param operation
    *          The operation to remove from the permisison set
    * @param metadataId
-   *          The id of the metadata
+   *          The oid of the metadata
    */
   @Transaction
   public void revokePermission(Operation operation, String metadataId)
@@ -237,7 +229,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
 
     try
     {
-      list = RelationshipDAO.get(super.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+      list = RelationshipDAO.get(super.getOid(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
     }
     catch (DataAccessException e)
     {
@@ -249,9 +241,9 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
       RelationshipDAO permission = list.get(0).getRelationshipDAO();
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAOIF.OPERATION_ATTR);
 
-      if (attribute.getCachedEnumItemIdSet().contains(operation.getId()))
+      if (attribute.getCachedEnumItemIdSet().contains(operation.getOid()))
       {
-        permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
+        permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getOid());
 
         permission.apply();
 
@@ -279,7 +271,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * @param operation
    *          The operation to remove from the permisison set
    * @param metadataId
-   *          The id of the metadata
+   *          The oid of the metadata
    */
   @Transaction
   public void revokePermission(Operation[] operations, String metadataId)
@@ -290,7 +282,7 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
 
     try
     {
-      list = RelationshipDAO.get(super.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+      list = RelationshipDAO.get(super.getOid(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
     }
     catch (DataAccessException e)
     {
@@ -307,9 +299,9 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
       // remove all operations in the list
       for (Operation operation : operations)
       {
-        if (attribute.getCachedEnumItemIdSet().contains(operation.getId()))
+        if (attribute.getCachedEnumItemIdSet().contains(operation.getOid()))
         {
-          permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
+          permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getOid());
 
           isChanged = true;
         }
@@ -339,14 +331,14 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * @pre: get(mdTypeId) instance of MetaData
    * 
    * @param metadataId
-   *          The id of the MetaData
+   *          The oid of the MetaData
    */
   @Transaction
   public void revokeAllPermissions(String metadataId)
   {
     try
     {
-      List<RelationshipDAOIF> list = RelationshipDAO.get(super.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+      List<RelationshipDAOIF> list = RelationshipDAO.get(super.getOid(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
 
       if (list != null && list.size() > 0)
       {
@@ -374,35 +366,12 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
   }
 
   /**
-   * Validate the given mdTypeId, throws an exception if the id is not valid
-   * 
-   * @param metadataId
-   *          The id to a MetaDataType
-   */
-  private void validateId(String metadataId)
-  {
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(metadataId));
-
-    // Not allowed to set permissions on an MdState, set the permissions on the
-    // MdRelationship that defines the MdState
-    if (mdClassIF.definesType().equals(MdStateMachineInfo.CLASS))
-    {
-      MdStateMachineDAOIF machine = MdStateMachineDAO.get(metadataId);
-
-      MdBusinessDAOIF stateMachineOwner = machine.getStateMachineOwner();
-
-      String error = "State Machine [" + machine.definesType() + "] cannot have permissions. Add them to [" + stateMachineOwner.definesType() + "] instead.";
-      throw new RBACExceptionInvalidStateMachine(error, machine, machine.getStateMachineOwner());
-    }
-  }
-
-  /**
-   * Validate that the operation is valid for a given id
+   * Validate that the operation is valid for a given oid
    * 
    * @param operation
    *          The operation to validate
    * @param businessId
-   *          the id to validate against
+   *          the oid to validate against
    */
   private void validateOperation(Operation operation, String businessId)
   {
@@ -440,27 +409,27 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
    * Gets the permission relationship between an actor and an object of a given
    * type If the permission does not exist then it creates an new relationship
    * 
-   * @param parentId
-   *          The id to the parent object
-   * @param childId
-   *          The id ot the child object
+   * @param parentOid
+   *          The oid to the parent object
+   * @param childOid
+   *          The oid ot the child object
    * @param type
    *          The type of relationship
    * @return The relationship of the given type with the respective parent and
-   *         child id
+   *         child oid
    */
-  private RelationshipDAO getPermissions(String parentId, String childId, String type)
+  private RelationshipDAO getPermissions(String parentOid, String childOid, String type)
   {
     RelationshipDAO permission = null;
 
     // If the permission relationship does not already exist then create it
     try
     {
-      permission = RelationshipDAO.get(parentId, childId, type).get(0).getRelationshipDAO();
+      permission = RelationshipDAO.get(parentOid, childOid, type).get(0).getRelationshipDAO();
     }
     catch (DataAccessException e)
     {
-      permission = RelationshipDAO.newInstance(parentId, childId, type);
+      permission = RelationshipDAO.newInstance(parentOid, childOid, type);
     }
 
     return permission;
@@ -480,6 +449,6 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
 
   public int hashCode()
   {
-    return this.getId().hashCode();
+    return this.getOid().hashCode();
   }
 }

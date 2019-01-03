@@ -30,15 +30,15 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
 
 import com.google.inject.Inject;
+import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
-import com.runwaysdk.constants.DatabaseProperties;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class PostGIS extends PostgreSQL
@@ -88,9 +88,11 @@ public class PostGIS extends PostgreSQL
 
     LinkedList<String> statements = new LinkedList<String>();
 
-    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON "+SPATIAL_REF_SYS+" TO "
+    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON
+    // "+SPATIAL_REF_SYS+" TO "
     // + userName);
-    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON "+GEOMETRY_COLUMNS+" TO "
+    // statements.add("GRANT SELECT, INSERT, UPDATE, DELETE ON
+    // "+GEOMETRY_COLUMNS+" TO "
     // + userName);
 
     statements.add("CREATE EXTENSION IF NOT EXISTS postgis");
@@ -139,9 +141,10 @@ public class PostGIS extends PostgreSQL
    * 
    * @return java.sql.Connection object
    */
-  public Connection getConnection()
+  @Override
+  public Connection getConnectionRaw()
   {
-    Connection conn = super.getConnection();
+    Connection conn = super.getConnectionRaw();
 
     PGConnection pgConn = (PGConnection) conn;
 
@@ -153,6 +156,9 @@ public class PostGIS extends PostgreSQL
     try
     {
       pgConn.addDataType("geometry", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("public.geometry", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("\"public\".\"geometry\"", org.postgis.jts.JtsGeometry.class);
+      pgConn.addDataType("PGgeometry", org.postgis.jts.JtsGeometry.class);
       pgConn.addDataType("box3d", org.postgis.PGbox3d.class);
       pgConn.addDataType("box2d", org.postgis.PGbox2d.class);
     }
@@ -164,19 +170,18 @@ public class PostGIS extends PostgreSQL
 
     return pgConn;
   }
-  
+
   /**
-   * Drops and then remakes the application schema, effectively dropping all tables. If the database is spatially 
-   * enabled and the application schema is 'public' then PostGIS will be recreated as well.
+   * Drops and then remakes the application schema, effectively dropping all
+   * tables. If the database is spatially enabled and the application schema is
+   * 'public' then PostGIS will be recreated as well.
    */
   public void dropAll()
   {
     String schema = this.getApplicationNamespace();
-    
-    this.parseAndExecute("DROP SCHEMA " + schema + " CASCADE;\n" + 
-        "CREATE SCHEMA " + schema + ";\n" + 
-        "GRANT ALL ON SCHEMA " + schema + " TO postgres;");
-    
+
+    this.parseAndExecute("DROP SCHEMA " + schema + " CASCADE;\n" + "CREATE SCHEMA " + schema + ";\n" + "GRANT ALL ON SCHEMA " + schema + " TO postgres;");
+
     if (schema.equals("public"))
     {
       this.parseAndExecute("CREATE EXTENSION postgis");

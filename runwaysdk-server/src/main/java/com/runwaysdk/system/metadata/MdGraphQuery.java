@@ -114,13 +114,13 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdGraph mdGraph)
     {
       if(mdGraph == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdGraph.getId());
+      return this.EQ(mdGraph.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdGraph mdGraph)
     {
       if(mdGraph == null) return this.NE((java.lang.String)null);
-      return this.NE(mdGraph.getId());
+      return this.NE(mdGraph.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
 
       for (int i=0; i<mdGraph.length; i++)
       {
-        itemIdArray[i] = mdGraph[i].getId();
+        itemIdArray[i] = mdGraph[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
 
       for (int i=0; i<mdGraph.length; i++)
       {
-        itemIdArray[i] = mdGraph[i].getId();
+        itemIdArray[i] = mdGraph[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
 
       for (int i=0; i<mdGraph.length; i++)
       {
-        itemIdArray[i] = mdGraph[i].getId();
+        itemIdArray[i] = mdGraph[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
 
       for (int i=0; i<mdGraph.length; i++)
       {
-        itemIdArray[i] = mdGraph[i].getId();
+        itemIdArray[i] = mdGraph[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdGraphQuery extends com.runwaysdk.system.metadata.MdRelationshipQ
 
       for (int i=0; i<mdGraph.length; i++)
       {
-        itemIdArray[i] = mdGraph[i].getId();
+        itemIdArray[i] = mdGraph[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

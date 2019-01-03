@@ -20,8 +20,6 @@ package com.runwaysdk.facade;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,10 +37,11 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
-public class SerializeObjectCacheTest extends TestCase
+public class SerializeObjectCacheTest
 {
   private static final String ATTRIBUTE_NAME = "testBoolean";
 
+  @Request
   @Test
   public void testSerializeObjectCache()
   {

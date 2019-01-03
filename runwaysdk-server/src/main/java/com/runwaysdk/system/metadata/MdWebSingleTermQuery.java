@@ -134,13 +134,13 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebSingleTerm mdWebSingleTerm)
     {
       if(mdWebSingleTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebSingleTerm.getId());
+      return this.EQ(mdWebSingleTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebSingleTerm mdWebSingleTerm)
     {
       if(mdWebSingleTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebSingleTerm.getId());
+      return this.NE(mdWebSingleTerm.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
@@ -203,7 +203,7 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
 
       for (int i=0; i<mdWebSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTerm[i].getId();
+        itemIdArray[i] = mdWebSingleTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
 
       for (int i=0; i<mdWebSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTerm[i].getId();
+        itemIdArray[i] = mdWebSingleTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
 
       for (int i=0; i<mdWebSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTerm[i].getId();
+        itemIdArray[i] = mdWebSingleTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
 
       for (int i=0; i<mdWebSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTerm[i].getId();
+        itemIdArray[i] = mdWebSingleTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
 
       for (int i=0; i<mdWebSingleTerm.length; i++)
       {
-        itemIdArray[i] = mdWebSingleTerm[i].getId();
+        itemIdArray[i] = mdWebSingleTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -44,7 +44,7 @@ public interface MdEnumerationDAOIF extends MdTypeDAOIF
    */
   public static final String TABLE_NAME_COLUMN         = "table_name";
   /**
-   * Column name of ID of an enumeration attribute of a BusinessDAO
+   * Column name of OID of an enumeration attribute of a BusinessDAO
    * 
    */
   public static final String SET_ID_COLUMN             = "set_id";
@@ -102,10 +102,10 @@ public interface MdEnumerationDAOIF extends MdTypeDAOIF
 
   /**
    * Adds the given enumeration item to this enumeration.
-   * @param id id of the enumerationItem item to add.
+   * @param oid oid of the enumerationItem item to add.
    */
   @Transaction
-  public void addEnumItem(String id);
+  public void addEnumItem(String oid);
 
   /**
    *Returns the MdBusinessIF that defines the master list of

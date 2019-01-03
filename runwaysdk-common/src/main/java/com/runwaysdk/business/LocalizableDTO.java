@@ -92,9 +92,9 @@ public abstract class LocalizableDTO extends TransientDTO
       if (request != null)
       {
         Locale locale = request.getLocales()[0];
-        String id = this.getMd().getId();
+        String oid = this.getMd().getOid();
 
-        MdExceptionDTO mdExceptionDTO = MdExceptionDTO.get(getRequest(), id);
+        MdExceptionDTO mdExceptionDTO = MdExceptionDTO.get(getRequest(), oid);
         MdLocalizableMessageDTO messages = mdExceptionDTO.getMessage();
         l = messages.getValue(locale);
 

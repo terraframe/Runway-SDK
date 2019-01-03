@@ -33,7 +33,7 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GLOBALID = "globalId";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -131,7 +131,7 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -163,20 +163,20 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.mobile.LocalIdMapping.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -371,7 +371,7 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -428,9 +428,9 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
     return CLASS;
   }
   
-  public static LocalIdMapping get(String id)
+  public static LocalIdMapping get(String oid)
   {
-    return (LocalIdMapping) com.runwaysdk.business.Business.get(id);
+    return (LocalIdMapping) com.runwaysdk.business.Business.get(oid);
   }
   
   public static LocalIdMapping getByKey(String key)
@@ -438,17 +438,17 @@ public abstract class LocalIdMappingBase extends com.runwaysdk.business.Business
     return (LocalIdMapping) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static LocalIdMapping lock(java.lang.String id)
+  public static LocalIdMapping lock(java.lang.String oid)
   {
-    LocalIdMapping _instance = LocalIdMapping.get(id);
+    LocalIdMapping _instance = LocalIdMapping.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static LocalIdMapping unlock(java.lang.String id)
+  public static LocalIdMapping unlock(java.lang.String oid)
   {
-    LocalIdMapping _instance = LocalIdMapping.get(id);
+    LocalIdMapping _instance = LocalIdMapping.get(oid);
     _instance.unlock();
     
     return _instance;

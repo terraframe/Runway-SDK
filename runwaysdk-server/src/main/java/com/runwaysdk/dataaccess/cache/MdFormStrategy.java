@@ -60,7 +60,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
   }
 
   /**
-   * Returns an id of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
+   * Returns an oid of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
    * Throws <code>DataNotFoundException</code> if the type is not known.
    *
    * <br/><b>Precondition:</b> facadeType != null <br/><b>Precondition:</b>
@@ -88,7 +88,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
   }
 
   /**
-   * Returns an id of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
+   * Returns an oid of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
    * Returns null if the type is not known.
    *
    * <br/><b>Precondition:</b> facadeType != null <br/><b>Precondition:</b>
@@ -155,12 +155,12 @@ public class MdFormStrategy extends MetaDataObjectStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.updateCache(entityDAO);
 
       MdFormDAO mdForm = (MdFormDAO) entityDAO;
-      this.mdFormMapId.put(mdForm.definesType(), mdForm.getId());
+      this.mdFormMapId.put(mdForm.definesType(), mdForm.getOid());
     }
   }
 
@@ -176,7 +176,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
    */
   public void removeCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.removeCache(entityDAO);
 

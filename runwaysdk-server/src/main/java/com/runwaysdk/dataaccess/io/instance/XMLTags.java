@@ -37,8 +37,8 @@ public interface XMLTags
   public static final String ATTRIBUTE_TAG            = "attribute";
   public static final String ATTRIBUTE_VALUE_TAG      = "value";
 
-  public static final String PARENT_ID_TAG            = "parentId";
-  public static final String CHILD_ID_TAG             = "childId";
+  public static final String PARENT_OID_TAG            = "parentOid";
+  public static final String CHILD_OID_TAG             = "childOid";
 
   /**
    *  Attributes of the reference tag, see datatype.xsd for full description
@@ -48,6 +48,6 @@ public interface XMLTags
   /**
    *   Attributes of the enum_instance tag, see PrototypeMetaData.xsd for full description
    */
-  public static final String ID_TAG                   = "id";
+  public static final String ID_TAG                   = "oid";
 
 }

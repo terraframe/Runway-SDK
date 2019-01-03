@@ -22,9 +22,9 @@ public class ProblemInheritanceDTO extends ProblemInheritanceDTOBase
 {
   private static final long serialVersionUID = 1583298681;
   
-  public ProblemInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ProblemInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

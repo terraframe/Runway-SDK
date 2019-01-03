@@ -22,9 +22,9 @@ public abstract class RelationshipSystemDTO extends RelationshipSystemDTOBase
 {
   private static final long serialVersionUID = 476791438;
   
-  public RelationshipSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public RelationshipSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

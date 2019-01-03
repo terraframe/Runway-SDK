@@ -154,13 +154,13 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeHash mdAttributeHash)
     {
       if(mdAttributeHash == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeHash.getId());
+      return this.EQ(mdAttributeHash.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeHash mdAttributeHash)
     {
       if(mdAttributeHash == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeHash.getId());
+      return this.NE(mdAttributeHash.getOid());
     }
 
   public com.runwaysdk.system.metadata.HashMethodsQuery.HashOptionsQueryIF getHashMethod()
@@ -237,7 +237,7 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeHash.length; i++)
       {
-        itemIdArray[i] = mdAttributeHash[i].getId();
+        itemIdArray[i] = mdAttributeHash[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -249,7 +249,7 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeHash.length; i++)
       {
-        itemIdArray[i] = mdAttributeHash[i].getId();
+        itemIdArray[i] = mdAttributeHash[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -261,7 +261,7 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeHash.length; i++)
       {
-        itemIdArray[i] = mdAttributeHash[i].getId();
+        itemIdArray[i] = mdAttributeHash[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -273,7 +273,7 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeHash.length; i++)
       {
-        itemIdArray[i] = mdAttributeHash[i].getId();
+        itemIdArray[i] = mdAttributeHash[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -285,7 +285,7 @@ public  class MdAttributeHashQuery extends com.runwaysdk.system.metadata.MdAttri
 
       for (int i=0; i<mdAttributeHash.length; i++)
       {
-        itemIdArray[i] = mdAttributeHash[i].getId();
+        itemIdArray[i] = mdAttributeHash[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

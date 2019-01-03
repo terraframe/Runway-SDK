@@ -154,13 +154,13 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTransient mdTransient)
     {
       if(mdTransient == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdTransient.getId());
+      return this.EQ(mdTransient.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdTransient mdTransient)
     {
       if(mdTransient == null) return this.NE((java.lang.String)null);
-      return this.NE(mdTransient.getId());
+      return this.NE(mdTransient.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getExtendable()
@@ -243,7 +243,7 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
 
       for (int i=0; i<mdTransient.length; i++)
       {
-        itemIdArray[i] = mdTransient[i].getId();
+        itemIdArray[i] = mdTransient[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -255,7 +255,7 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
 
       for (int i=0; i<mdTransient.length; i++)
       {
-        itemIdArray[i] = mdTransient[i].getId();
+        itemIdArray[i] = mdTransient[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -267,7 +267,7 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
 
       for (int i=0; i<mdTransient.length; i++)
       {
-        itemIdArray[i] = mdTransient[i].getId();
+        itemIdArray[i] = mdTransient[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -279,7 +279,7 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
 
       for (int i=0; i<mdTransient.length; i++)
       {
-        itemIdArray[i] = mdTransient[i].getId();
+        itemIdArray[i] = mdTransient[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -291,7 +291,7 @@ public  class MdTransientQuery extends com.runwaysdk.system.metadata.MdClassQuer
 
       for (int i=0; i<mdTransient.length; i++)
       {
-        itemIdArray[i] = mdTransient[i].getId();
+        itemIdArray[i] = mdTransient[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

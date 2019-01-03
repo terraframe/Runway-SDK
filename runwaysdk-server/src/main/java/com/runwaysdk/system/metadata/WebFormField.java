@@ -22,14 +22,14 @@ public class WebFormField extends WebFormFieldBase
 {
   private static final long serialVersionUID = -1659230998;
   
-  public WebFormField(String parentId, String childId)
+  public WebFormField(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public WebFormField(com.runwaysdk.system.metadata.MdWebForm parent, com.runwaysdk.system.metadata.MdWebField child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

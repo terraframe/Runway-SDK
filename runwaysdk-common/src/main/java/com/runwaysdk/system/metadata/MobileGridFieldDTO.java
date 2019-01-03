@@ -22,9 +22,9 @@ public class MobileGridFieldDTO extends MobileGridFieldDTOBase
 {
   private static final long serialVersionUID = -1841950597;
   
-  public MobileGridFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public MobileGridFieldDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -61,7 +61,7 @@ import com.runwaysdk.manager.widgets.WidgetVisitor;
 
 public abstract class EntityView extends ViewPart implements IViewPart
 {
-  public static final String            ID = "com.runwaysdk.view.EntityView";
+  public static final String            OID = "com.runwaysdk.view.EntityView";
 
   private IComponentObject              entity;
 
@@ -145,8 +145,8 @@ public abstract class EntityView extends ViewPart implements IViewPart
     {
       RelationshipObject relationship = (RelationshipObject) entity;
 
-      this.createRelationshipContent(content, Localizer.getMessage("PARENT_ID"), relationship.getParentId());
-      this.createRelationshipContent(content, Localizer.getMessage("CHILD_ID"), relationship.getChildId());
+      this.createRelationshipContent(content, Localizer.getMessage("PARENT_OID"), relationship.getParentOid());
+      this.createRelationshipContent(content, Localizer.getMessage("CHILD_OID"), relationship.getChildOid());
     }
 
     List<MdAttributeDAOIF> attributes = this.entity.definesMdAttributes();

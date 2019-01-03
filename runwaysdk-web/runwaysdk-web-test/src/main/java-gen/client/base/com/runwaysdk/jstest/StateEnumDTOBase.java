@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = 255115855)
-public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationMasterDTO implements com.runwaysdk.generation.loader.Reloadable
+public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationMasterDTO implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.StateEnum";
   private static final long serialVersionUID = 255115855;
@@ -185,9 +185,9 @@ public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationM
     return (com.runwaysdk.transport.metadata.AttributeStructMdDTO) getAttributeDTO(STATEPHONE).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.jstest.StateEnumDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.jstest.StateEnumDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.jstest.StateEnumDTO) dto;
   }
@@ -205,7 +205,7 @@ public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationM
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.jstest.StateEnumQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -218,10 +218,10 @@ public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationM
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.jstest.StateEnumDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.StateEnumDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.StateEnumDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.jstest.StateEnumDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -231,10 +231,10 @@ public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationM
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.jstest.StateEnumDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.jstest.StateEnumDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.StateEnumDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.jstest.StateEnumDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

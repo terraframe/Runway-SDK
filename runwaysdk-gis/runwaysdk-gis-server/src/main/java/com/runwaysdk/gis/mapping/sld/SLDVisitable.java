@@ -18,9 +18,8 @@
  */
 package com.runwaysdk.gis.mapping.sld;
 
-import com.runwaysdk.generation.loader.Reloadable;
 
-public interface SLDVisitable extends Reloadable
+public interface SLDVisitable
 {
 
 }

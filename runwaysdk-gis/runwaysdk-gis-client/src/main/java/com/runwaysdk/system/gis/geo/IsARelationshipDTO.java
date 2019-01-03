@@ -22,9 +22,9 @@ public class IsARelationshipDTO extends IsARelationshipDTOBase
 {
   private static final long serialVersionUID = 1929711048;
   
-  public IsARelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public IsARelationshipDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

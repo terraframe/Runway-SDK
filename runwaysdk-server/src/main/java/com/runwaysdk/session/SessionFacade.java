@@ -107,7 +107,7 @@ public class SessionFacade
    * @param password The password of the {@link UserDAO}
    * @param locales locale of the user
    *
-   * @return id of the newly created {@link Session}.
+   * @return oid of the newly created {@link Session}.
    */
   public static String logIn(String username, String password, Locale[] locales)
   {
@@ -127,7 +127,7 @@ public class SessionFacade
    * @param dimensionKey The dimension key of the dimension set to this session.
    * @param locales locale of the user
    *
-   * @return id of the newly created {@link Session}.
+   * @return oid of the newly created {@link Session}.
    */
   public static String logIn(String username, String password, String dimensionKey, Locale[] locales)
   {
@@ -146,7 +146,7 @@ public class SessionFacade
    * @param password The password of the {@link UserDAO}
    * @param locales locale of the user
    *
-   * @return id of the newly created {@link Session}.
+   * @return oid of the newly created {@link Session}.
    */
   public static String logIn(SingleActorDAOIF user, Locale[] locales)
   {
@@ -166,7 +166,7 @@ public class SessionFacade
    * @param dimensionKey The dimension key of the dimension set to this session.
    * @param locales locale of the user
    *
-   * @return id of the newly created {@link Session}.
+   * @return oid of the newly created {@link Session}.
    */
   public static String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
   {
@@ -179,7 +179,7 @@ public class SessionFacade
    * Sets the dimension of an existing {@link Session}.
    * 
    * @param dimensionKey key of a {@link MdDimension}.
-   * @param sessionId The id of the {@link Session}.
+   * @param sessionId The oid of the {@link Session}.
    */
   public static void setDimension(String dimensionKey, String sessionId)
   {
@@ -193,7 +193,7 @@ public class SessionFacade
    * the permissions of the new {@link UserDAO}.  In addition, this
    * method ensures that the {@link UserDAO} is not at it's {@link Session} limit.
    *
-   * @param sessionId The id of the {@link Session}
+   * @param sessionId The oid of the {@link Session}
    * @param username The name of the {@link UserDAO}
    * @param password The password of the {@link UserDAO}
    */
@@ -217,7 +217,7 @@ public class SessionFacade
   /**
    * Renews the amount of time a {@link Session} has till it expires.
    *
-   * @param sessionId The id of the {@link Session} to renew
+   * @param sessionId The oid of the {@link Session} to renew
    */
   public static void renewSession(String sessionId)
   {
@@ -228,7 +228,7 @@ public class SessionFacade
   /**
    * Sets the amount of time a {@link Session} has till it expires.
    * 
-   * @param sessionId The id of the {@link Session} to renew
+   * @param sessionId The oid of the {@link Session} to renew
    * @param time The time the session has until it expires.
    */
   public static void setSessionTime(String sessionId, int time) {
@@ -261,7 +261,7 @@ public class SessionFacade
    * Check if the {@link UserDAO} of the {@link Session} has the
    * permissions to execute an {@link Session} on an object.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The {@link Operation} to check access on
    * @param mutable The entity to check permissions on
    *
@@ -274,28 +274,12 @@ public class SessionFacade
 
     return session.checkAccess(o, mutable);
   }
-
-  /**
-   * Checks if the session has permissions on the given state
-   *
-   * @param o The operation to execute
-   * @param stateId id of the state
-   *
-   * @return If access has been granted
-   */
-  public static boolean checkAccess(String sessionId, Operation o, String stateId)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    return session.checkAccess(o, stateId);
-  }
-
+  
   /**
    * Checks all types involved in building a {@link ValueObject} to see if
    * the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param valueObject The object to test permissions on
    *
@@ -312,7 +296,7 @@ public class SessionFacade
   /**
    * Checks to see if the given permission exists for that type.
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param o The operation to execute
    * @param mdTypeIF The object to test permissions on
    *
@@ -337,7 +321,7 @@ public class SessionFacade
    * {@link MetadataDAO} of the {@link MdAttributeDAOIF} as well as permissions of the
    * entity owner and entity state.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param operation The {@link Operation} to check
    * @param mutabale The Component to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
@@ -362,38 +346,11 @@ public class SessionFacade
   }
 
   /**
-   * Returns true if permission exists for the given operation on the attribute and the given defining type state.
-   *
-   * @param sessionId The id of the {@link Session} to check
-   * @param operation
-   * @param stateId
-   * @param mdAttribute
-   * @return operations for the given attribute and the state of the type that defines it.
-   */
-  public static boolean checkAttributeAccess(String sessionId, Operation operation, String stateId, MdAttributeDAOIF mdAttribute)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    boolean userPermission = session.checkAttributeAccess(operation, stateId, mdAttribute);
-
-    if (userPermission)
-    {
-      return true;
-    }
-    else
-    {
-      return session.checkAttributeAccess(operation, stateId, mdAttribute.getMdAttributeConcrete());
-    }
-  }
-
-
-  /**
    * Performs a check if the {@link UserDAO} of the {@link Session} has attribute
    * type permissions for a given {@link Operation}. Checks for permissions on the
    * {@link MetadataDAO} of the {@link MdAttributeDAOIF}.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param operation The {@link Operation} to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
    *
@@ -422,7 +379,7 @@ public class SessionFacade
    * permissions on the {@link Metadata} of the {@link MdAttributeDAOIF}
    * as well as permissions of the {@link Struct} owner.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param operation The {@link Operation} to check
    * @param struct The {@link Struct} to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
@@ -452,7 +409,7 @@ public class SessionFacade
    * checks against the {@link MetadataDAO}.  It does not take into
    * account permissions that exist on entity state.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param operation The {@link Operation} to check
    * @param mdAttribute The {@link MdAttributeDAOIF} which defines the given attribute
    *
@@ -496,7 +453,7 @@ public class SessionFacade
    * Checks access for the {@link UserDAO} of the {@link Session} on an
    * ADD_CHILD, ADD_PARENT, DELETE_CHILD, and DELETE_PARENT {@link Operation}.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param o The {@link Operation} to check
    * @param business The {@link Business} object the relationship is being added to.
    * @param mdRelationshipId The relationship metadata for the relationship being created
@@ -512,32 +469,12 @@ public class SessionFacade
     return session.checkRelationshipAccess(o, business, mdRelationshipId);
   }
 
-
-  /**
-   * Check if the {@link UserDAO} of the {@link Session} has
-   * {@link Operation#PROMOTE} access on a transition.
-   *
-   * @parm sessionId The id of the {@link Session} to check
-   * @param entity The {@link Business} object to check acces on
-   * @param transitionName The name of the transition to check promotion on
-   *
-   * @return If the {@link UserDAO} of the {@link Session} has the permission
-   *         to execute {@link Operation#PROMOTE} on the given transition
-   */
-  public static boolean checkPromoteAccess(String sessionId, Business business, String transitionName)
-  {
-    SessionCache cache = SessionFacade.getSessionCache();
-    Session session = cache.getSession(sessionId);
-
-    return session.checkPromoteAccess(business, transitionName);
-  }
-
   /**
    * Check if the {@link UserDAO} of the {@link Session} has
    * {@link Operation} access on an instance
    * {@link MdMethodDAO}.
    *
-   * @param sessionId The id of the {@link Session} to check
+   * @param sessionId The oid of the {@link Session} to check
    * @param operation operation to check
    * @param entity The {@link Mutable} object which will invoke the method.
    * @param mdMethodIF The {@link MdMethodDAO} of the method to be executed.
@@ -557,7 +494,7 @@ public class SessionFacade
    * Check if the {@link UserDAO} of the {@link Session} has
    * {@link Operation} access on a static {@link MdMethodDAO}.
    *
-   * @parm sessionId The id of the {@link Session} to check
+   * @parm sessionId The oid of the {@link Session} to check
    * @param mdMethodIF The {@link MdMethodDAO} of the method to be executed.
    *
    * @return If the {@link UserDAO} of the {@link Session} has the permission
@@ -575,7 +512,7 @@ public class SessionFacade
    * Closes a {@link Session} in the {@link SessionCache}.  If the {@link Session}
    * does not exist then this method does nothing.
    *
-   * @param sessionId The id of a {@link Session}.
+   * @param sessionId The oid of a {@link Session}.
    */
   public static void closeSession(String sessionId)
   {
@@ -595,10 +532,10 @@ public class SessionFacade
   }
 
   /**
-   * Checks if a {@link Session} of the given id exists
+   * Checks if a {@link Session} of the given oid exists
    * in the {@link SessionCache}.
    *
-   * @param sessionId The id of the {@link Session}.
+   * @param sessionId The oid of the {@link Session}.
    *
    * @return true if the {@link Session} exists, false otherwise.
    */
@@ -618,7 +555,7 @@ public class SessionFacade
    * Returns the {@link UserDAO} which has logged into the given {@link Session}.
    * If there is no {@link UserDAO} logged in then this method returns null.
    *
-   * @param sessionId The id of the {@link Session}
+   * @param sessionId The oid of the {@link Session}
    *
    * @return The {@link UserDAO} which has logged into the given {@link Session}.
    */
@@ -639,7 +576,7 @@ public class SessionFacade
   /**
    * Sets the user of a session
    *
-   * @param sessionId The id of the session
+   * @param sessionId The oid of the session
    * @param user The user of the new session
    */
   public static void setUser(String sessionId, String userId)
@@ -651,7 +588,7 @@ public class SessionFacade
   }
 
   /**
-   * Returns the {@link Session} corresponding to the given {@link Session} id.
+   * Returns the {@link Session} corresponding to the given {@link Session} oid.
    * This method breaks the protection provided by the {@link SessionFacade} and
    * can lead to inconsistencies in the {@link SessionCache} if changes are
    * written to the {@link Session}. For example, renewing or setting the
@@ -660,9 +597,9 @@ public class SessionFacade
    * method should only be used when the {@link Session} is guranteed to be read
    * only.
    *
-   * @param sessionId The id of the {@link Session}
+   * @param sessionId The oid of the {@link Session}
    *
-   * @return {@link Session} with the given session id.
+   * @return {@link Session} with the given session oid.
    */
   static SessionIF getSession(String sessionId)
   {
@@ -681,7 +618,7 @@ public class SessionFacade
 
   /**
    * Sets the flag denoting if the {@link Session} corresponding to the session
-   * id should close at the end of its current request.
+   * oid should close at the end of its current request.
    *
    * @param sessionId Id of session
    * @param closeOnRequest Boolean flag
@@ -708,8 +645,8 @@ public class SessionFacade
   /**
    * Retrieves a {@link Session} which will be used in a request.
    *
-   * @param sessionId The id of the session to retrieve
-   * @return {@link Session} corresponding to the session id
+   * @param sessionId The oid of the session to retrieve
+   * @return {@link Session} corresponding to the session oid
    */
   public static Session getSessionForRequest(String sessionId)
   {
@@ -720,16 +657,16 @@ public class SessionFacade
 
   /**
    * @param sessionId Id of the {@link Session}
-   * @param id Id of the desired {@link Mutable} object
+   * @param oid Id of the desired {@link Mutable} object
    *
    * @return A {@link Mutable} object stored in the given {@link Session}
    */
-  public static Mutable get(String sessionId, String id)
+  public static Mutable get(String sessionId, String oid)
   {
     SessionCache cache = SessionFacade.getSessionCache();
     Session session = cache.getSession(sessionId);
 
-    return session.get(id);
+    return session.get(oid);
   }
 
   /**

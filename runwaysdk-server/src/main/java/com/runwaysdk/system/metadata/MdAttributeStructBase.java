@@ -73,7 +73,7 @@ public abstract class MdAttributeStructBase extends com.runwaysdk.system.metadat
     }
     else
     {
-      setValue(MDSTRUCT, value.getId());
+      setValue(MDSTRUCT, value.getOid());
     }
   }
   
@@ -82,9 +82,9 @@ public abstract class MdAttributeStructBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdAttributeStruct get(String id)
+  public static MdAttributeStruct get(String oid)
   {
-    return (MdAttributeStruct) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeStruct) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeStruct getByKey(String key)
@@ -92,17 +92,17 @@ public abstract class MdAttributeStructBase extends com.runwaysdk.system.metadat
     return (MdAttributeStruct) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeStruct lock(java.lang.String id)
+  public static MdAttributeStruct lock(java.lang.String oid)
   {
-    MdAttributeStruct _instance = MdAttributeStruct.get(id);
+    MdAttributeStruct _instance = MdAttributeStruct.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeStruct unlock(java.lang.String id)
+  public static MdAttributeStruct unlock(java.lang.String oid)
   {
-    MdAttributeStruct _instance = MdAttributeStruct.get(id);
+    MdAttributeStruct _instance = MdAttributeStruct.get(oid);
     _instance.unlock();
     
     return _instance;

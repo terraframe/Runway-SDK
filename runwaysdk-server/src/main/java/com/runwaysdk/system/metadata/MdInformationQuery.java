@@ -438,13 +438,13 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdInformation mdInformation)
     {
       if(mdInformation == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdInformation.getId());
+      return this.EQ(mdInformation.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdInformation mdInformation)
     {
       if(mdInformation == null) return this.NE((java.lang.String)null);
-      return this.NE(mdInformation.getId());
+      return this.NE(mdInformation.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdInformationQuery.MdInformationQueryReferenceIF getSuperMdInformation()
@@ -753,7 +753,7 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
 
       for (int i=0; i<mdInformation.length; i++)
       {
-        itemIdArray[i] = mdInformation[i].getId();
+        itemIdArray[i] = mdInformation[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -765,7 +765,7 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
 
       for (int i=0; i<mdInformation.length; i++)
       {
-        itemIdArray[i] = mdInformation[i].getId();
+        itemIdArray[i] = mdInformation[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -777,7 +777,7 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
 
       for (int i=0; i<mdInformation.length; i++)
       {
-        itemIdArray[i] = mdInformation[i].getId();
+        itemIdArray[i] = mdInformation[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -789,7 +789,7 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
 
       for (int i=0; i<mdInformation.length; i++)
       {
-        itemIdArray[i] = mdInformation[i].getId();
+        itemIdArray[i] = mdInformation[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -801,7 +801,7 @@ public  class MdInformationQuery extends com.runwaysdk.system.metadata.MdMessage
 
       for (int i=0; i<mdInformation.length; i++)
       {
-        itemIdArray[i] = mdInformation[i].getId();
+        itemIdArray[i] = mdInformation[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

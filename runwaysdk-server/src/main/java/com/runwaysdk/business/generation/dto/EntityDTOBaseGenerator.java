@@ -65,7 +65,7 @@ public abstract class EntityDTOBaseGenerator extends ClassDTOBaseGenerator
   {
     getWriter().writeLine("public void delete()");
     getWriter().openBracket();
-    getWriter().writeLine("getRequest().delete(this.getId());");
+    getWriter().writeLine("getRequest().delete(this.getOid());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

@@ -49,7 +49,7 @@ public interface MdFieldDAOIF extends MetadataDAOIF
   public MdFormDAOIF getMdForm();
 
   /**
-   * Returns the id of the MdForm that defines this MdField.
+   * Returns the oid of the MdForm that defines this MdField.
    * 
    * @return
    */

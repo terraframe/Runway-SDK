@@ -78,22 +78,22 @@ public class Sandbox
     mdAttributeMultiReference.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for multi reference attributes");
     mdAttributeMultiReference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeMultiReference");
     mdAttributeMultiReference.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeMultiReference.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeConcrete.getId());
+    mdAttributeMultiReference.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeConcrete.getOid());
     mdAttributeMultiReference.setGenerateMdController(false);
     mdAttributeMultiReference.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = MdAttributeReferenceDAO.newInstance();
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getOid());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME, "mdBusiness");
     mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference MdBusiness");
     mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference MdBusiness");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusiness.getOid());
     mdAttributeReference.apply();
 
     MdAttributeCharacterDAO tableName = MdAttributeCharacterDAO.newInstance();
-    tableName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getId());
+    tableName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getOid());
     tableName.setValue(MdAttributeCharacterInfo.NAME, MdAttributeMultiReferenceInfo.TABLE_NAME);
     tableName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Table name");
     tableName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Table name");
@@ -103,7 +103,7 @@ public class Sandbox
     tableName.apply();
 
     MdAttributeCharacterDAO defaultValue = MdAttributeCharacterDAO.newInstance();
-    defaultValue.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getId());
+    defaultValue.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdAttributeMultiReference.getOid());
     defaultValue.setValue(MdAttributeCharacterInfo.NAME, MdAttributeMultiReferenceInfo.DEFAULT_VALUE);
     defaultValue.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Default value");
     defaultValue.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Default value");
@@ -118,7 +118,7 @@ public class Sandbox
     mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Metadata definition for multi term attributes");
     mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdAttributeMultiTerm");
     mdAttributeMultiTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getId());
+    mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getOid());
     mdAttributeMultiTerm.setGenerateMdController(false);
     mdAttributeMultiTerm.apply();
   }

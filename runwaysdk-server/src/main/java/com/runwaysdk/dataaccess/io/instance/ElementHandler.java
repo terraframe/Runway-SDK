@@ -37,7 +37,7 @@ import com.runwaysdk.dataaccess.transaction.ThreadTransactionState;
 /**
  * Handles the <relationship_instance> tag in the instance importer. See
  * http:\\www.runwaysdk.com\schema\instance.xsd for the entire importer schema.
- * Imports the type, parentId, childId, and Id attributes of a Relationship.
+ * Imports the type, parentOid, childOid, and Id attributes of a Relationship.
  * After importing the previous attributes this passes control to the appropiate
  * handler for other system and user defined attributes of the Relationship, eg,
  * owner.

@@ -41,9 +41,9 @@ public abstract class MdTreeBase extends com.runwaysdk.system.metadata.MdGraph
     return CLASS;
   }
   
-  public static MdTree get(String id)
+  public static MdTree get(String oid)
   {
-    return (MdTree) com.runwaysdk.business.Business.get(id);
+    return (MdTree) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdTree getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdTreeBase extends com.runwaysdk.system.metadata.MdGraph
     return (MdTree) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdTree lock(java.lang.String id)
+  public static MdTree lock(java.lang.String oid)
   {
-    MdTree _instance = MdTree.get(id);
+    MdTree _instance = MdTree.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdTree unlock(java.lang.String id)
+  public static MdTree unlock(java.lang.String oid)
   {
-    MdTree _instance = MdTree.get(id);
+    MdTree _instance = MdTree.get(oid);
     _instance.unlock();
     
     return _instance;

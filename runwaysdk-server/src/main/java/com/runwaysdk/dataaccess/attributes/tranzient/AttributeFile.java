@@ -102,7 +102,7 @@ public class AttributeFile extends Attribute implements AttributeFileIF
     
     QueryFactory qFactory = new QueryFactory();
     BusinessDAOQuery doQ = qFactory.businessDAOQuery(refMdClass.definesType());
-    doQ.WHERE(doQ.aCharacter(EntityInfo.ID).EQ(valueToValidate));
+    doQ.WHERE(doQ.aUUID(EntityInfo.OID).EQ(valueToValidate));
       
     if (doQ.getCount() == 0)
     {

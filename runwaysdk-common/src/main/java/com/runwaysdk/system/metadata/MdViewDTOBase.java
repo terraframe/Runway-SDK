@@ -239,7 +239,7 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
     }
     else
     {
-      setValue(SUPERMDVIEW, value.getId());
+      setValue(SUPERMDVIEW, value.getOid());
     }
   }
   
@@ -266,168 +266,168 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllChildViews()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllChildViewsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllChildViewsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllChildViewsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ViewInheritanceDTO addChildViews(com.runwaysdk.system.metadata.MdViewDTO child)
   {
-    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ViewInheritanceDTO addChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdViewDTO child)
+  public static com.runwaysdk.system.metadata.ViewInheritanceDTO addChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdViewDTO child)
   {
-    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   public void removeChildViews(com.runwaysdk.system.metadata.ViewInheritanceDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ViewInheritanceDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllChildViews()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
-  public static void removeAllChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllChildViews(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO> getAllVirtualAttribute()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO> getAllVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO> getAllVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeVirtualDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO> getAllVirtualAttributeRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO> getAllVirtualAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO> getAllVirtualAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ClassAttributeVirtualDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ClassAttributeVirtualDTO addVirtualAttribute(com.runwaysdk.system.metadata.MdAttributeVirtualDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeVirtualDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeVirtualDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ClassAttributeVirtualDTO addVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeVirtualDTO child)
+  public static com.runwaysdk.system.metadata.ClassAttributeVirtualDTO addVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeVirtualDTO child)
   {
-    return (com.runwaysdk.system.metadata.ClassAttributeVirtualDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ClassAttributeVirtualDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   public void removeVirtualAttribute(com.runwaysdk.system.metadata.ClassAttributeVirtualDTO relationship)
   {
-    getRequest().deleteChild(relationship.getId());
+    getRequest().deleteChild(relationship.getOid());
   }
   
   public static void removeVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO relationship)
   {
-    clientRequestIF.deleteChild(relationship.getId());
+    clientRequestIF.deleteChild(relationship.getOid());
   }
   
   public void removeAllVirtualAttribute()
   {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
-  public static void removeAllVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllVirtualAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.metadata.ClassAttributeVirtualDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllParentView()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO> getAllParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdViewDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllParentViewRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllParentViewRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO> getAllParentViewRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.ViewInheritanceDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.ViewInheritanceDTO addParentView(com.runwaysdk.system.metadata.MdViewDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.ViewInheritanceDTO addParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdViewDTO parent)
+  public static com.runwaysdk.system.metadata.ViewInheritanceDTO addParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdViewDTO parent)
   {
-    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    return (com.runwaysdk.system.metadata.ViewInheritanceDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
   public void removeParentView(com.runwaysdk.system.metadata.ViewInheritanceDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.ViewInheritanceDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllParentView()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
-  public static void removeAllParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllParentView(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.ViewInheritanceDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdViewDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdViewDTO) dto;
   }
@@ -445,7 +445,7 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdViewQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -458,10 +458,10 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdViewDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdViewDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdViewDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdViewDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -471,10 +471,10 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdViewDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdViewDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdViewDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdViewDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

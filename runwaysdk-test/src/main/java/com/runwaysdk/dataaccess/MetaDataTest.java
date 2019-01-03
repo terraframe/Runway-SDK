@@ -27,11 +27,10 @@ package com.runwaysdk.dataaccess;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
@@ -75,74 +74,28 @@ import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.RequiredUniquenessConstraintException;
+import com.runwaysdk.session.Request;
 
 /**
  * @author nathan
  *
  */
-public class MetaDataTest extends TestCase
+public class MetaDataTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   private static TypeInfo METADATA_TEST = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MetaDataTest");
 
-  private static TypeInfo STRUCT   = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Struct");
+  private static TypeInfo STRUCT        = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "Struct");
 
-  /**
-   * Constructor for AttributeTest.
-   *
-   * @param name
-   */
-  public MetaDataTest(String name)
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
-    super(name);
+    MdStructDAO.getMdStructDAO(STRUCT.getType()).getBusinessDAO().delete();
+    MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType()).getBusinessDAO().delete();
   }
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(MetaDataTest.suite()));
-  }
-
-  /**
-   * A suite() takes <b>this </b> <code>MetaData.class</code> and wraps it in
-   * <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   *
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MetaDataTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        MdStructDAO.getMdStructDAO(STRUCT.getType()).getBusinessDAO().delete();
-        MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType()).getBusinessDAO().delete();
-      }
-    };
-
-    return wrapper;
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     // Create the TEST data type
@@ -154,7 +107,6 @@ public class MetaDataTest extends TestCase
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdElementInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
 
@@ -165,7 +117,6 @@ public class MetaDataTest extends TestCase
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Struct");
-    mdStruct.setGenerateMdController(false);
     mdStruct.setValue(MdStructInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
@@ -173,19 +124,19 @@ public class MetaDataTest extends TestCase
 
     MdAttributeCharacterDAO mdAttrChar = MdAttributeCharacterDAO.newInstance();
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "someCharacter1");
-    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Some Character 1");
+    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Character 1");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStructIF.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStructIF.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttrChar.apply();
 
     mdAttrChar = MdAttributeCharacterDAO.newInstance();
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "someCharacter2");
-    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Some Character 2");
+    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Character 2");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStructIF.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStructIF.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "8");
     mdAttrChar.apply();
   }
@@ -193,20 +144,21 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure we can set the publish attribute on the root of a hierarchy.
    */
+  @Request
+  @Test
   public void testValidPublishHierarchyRoot()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
     MdBusinessDAO subMdBusiness = MdBusinessDAO.newInstance();
-    subMdBusiness.setValue(MdBusinessInfo.NAME, METADATA_TEST.getTypeName()+"_Sub");
+    subMdBusiness.setValue(MdBusinessInfo.NAME, METADATA_TEST.getTypeName() + "_Sub");
     subMdBusiness.setValue(MdBusinessInfo.PACKAGE, METADATA_TEST.getPackageName());
     subMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Type Sublcass");
     subMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
+    subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getOid());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    subMdBusiness.setGenerateMdController(false);
     subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
@@ -219,17 +171,17 @@ public class MetaDataTest extends TestCase
       mdBusiness.setIsPublished(false);
       mdBusiness.apply();
 
-      MdBusinessDAOIF subMdBusinessIF = MdBusinessDAO.get(subMdBusiness.getId());
+      MdBusinessDAOIF subMdBusinessIF = MdBusinessDAO.get(subMdBusiness.getOid());
 
       if (subMdBusinessIF.isPublished())
       {
-        fail("Attribute ["+MdClassInfo.PUBLISH+"] on subclass was not modified with the attribute on the root of the hierarchy was modified.");
+        Assert.fail("Attribute [" + MdClassInfo.PUBLISH + "] on subclass was not modified with the attribute on the root of the hierarchy was modified.");
       }
 
     }
-    catch(Throwable e)
+    catch (Throwable e)
     {
-      fail("Unable to change the publish attribute on a MdBusiness that is the root of a hierarchy: "+e.getMessage());
+      Assert.fail("Unable to change the publish attribute on a MdBusiness that is the root of a hierarchy: " + e.getMessage());
     }
     finally
     {
@@ -239,7 +191,7 @@ public class MetaDataTest extends TestCase
         mdBusiness.apply();
       }
 
-      subMdBusiness = MdBusinessDAO.get(subMdBusiness.getId()).getBusinessDAO();
+      subMdBusiness = MdBusinessDAO.get(subMdBusiness.getOid()).getBusinessDAO();
       subMdBusiness.delete();
     }
   }
@@ -247,20 +199,21 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure we can set the publish attribute on the root of a hierarchy.
    */
+  @Request
+  @Test
   public void testInvalidPublishHierarchyRoot()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
     MdBusinessDAO subMdBusiness = MdBusinessDAO.newInstance();
-    subMdBusiness.setValue(MdBusinessInfo.NAME, METADATA_TEST.getTypeName()+"_Sub");
+    subMdBusiness.setValue(MdBusinessInfo.NAME, METADATA_TEST.getTypeName() + "_Sub");
     subMdBusiness.setValue(MdBusinessInfo.PACKAGE, METADATA_TEST.getPackageName());
     subMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     subMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Type Sublcass");
     subMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Type");
     subMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getId());
+    subMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusinessIF.getOid());
     subMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    subMdBusiness.setGenerateMdController(false);
     subMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     subMdBusiness.apply();
 
@@ -269,9 +222,9 @@ public class MetaDataTest extends TestCase
       subMdBusiness.setIsPublished(false);
       subMdBusiness.apply();
 
-      fail("Able to change the publish attribute on a MdBusiness that is not the root of a hierarchy.");
+      Assert.fail("Able to change the publish attribute on a MdBusiness that is not the root of a hierarchy.");
     }
-    catch(ClassPublishException e)
+    catch (ClassPublishException e)
     {
       // This is expected
     }
@@ -284,6 +237,8 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure that references do not point to Structs.
    */
+  @Request
+  @Test
   public void testReferenceNoStruct()
   {
     MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
@@ -294,16 +249,16 @@ public class MetaDataTest extends TestCase
     {
       MdAttributeReferenceDAO mdAttributeReference = MdAttributeReferenceDAO.newInstance();
       mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME, "testSomeReference");
-      mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Some Test Reference");
+      mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Test Reference");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdStructIF.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getOid());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdStructIF.getOid());
       mdAttributeReference.apply();
 
       // The test should throw an exception - delete this object if it didn't
       mdAttributeReference.delete();
-      fail("A reference attribute was defined that points to instances of a struct.");
+      Assert.fail("A reference attribute was defined that points to instances of a struct.");
     }
     catch (InvalidReferenceException e)
     {
@@ -316,6 +271,8 @@ public class MetaDataTest extends TestCase
    * extendable. Subclasses of Constants.ROOT_ENUMERATION_ATTRIBUTE_CLASS cannot
    * be extended.
    */
+  @Request
+  @Test
   public void testInvalidNewEnummerationExtendable()
   {
     TypeInfo testEnumerationMaster = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestEnumerationMaster");
@@ -330,8 +287,7 @@ public class MetaDataTest extends TestCase
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Master");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-    mdBusiness.setGenerateMdController(false);
+    mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getOid());
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
     try
@@ -345,21 +301,22 @@ public class MetaDataTest extends TestCase
     }
     // should this test fail, delete this object
     mdBusiness.delete();
-    fail("A master enumeration type was defined to be extendible.  Enumeration classes cannot be extended.");
+    Assert.fail("A master enumeration type was defined to be extendible.  Enumeration classes cannot be extended.");
   }
 
   /**
    * Makes sure that a class that extends EnumerationMaster cannot define an
    * MdAttributeEnumeration.
    */
+  @Request
+  @Test
   public void testExtendEnumerationMasterDefineEnumeration()
   {
     MdBusinessDAO mdBusiness = null;
     MdBusinessDAO stateEnumMdBusiness = null;
     try
     {
-      TypeInfo testEnumerationMaster = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE,
-          "TestEnumerationMaster");
+      TypeInfo testEnumerationMaster = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestEnumerationMaster");
 
       MdBusinessDAOIF enumerationMaster = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
 
@@ -371,8 +328,7 @@ public class MetaDataTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Enumeration Master");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getOid());
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
@@ -385,8 +341,7 @@ public class MetaDataTest extends TestCase
       stateEnumMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "States of the Union");
       stateEnumMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-      stateEnumMdBusiness.setGenerateMdController(false);
+      stateEnumMdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getOid());
       stateEnumMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       stateEnumMdBusiness.apply();
 
@@ -397,24 +352,24 @@ public class MetaDataTest extends TestCase
       mdEnumeration.setStructValue(MdEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test");
       mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-      mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getId());
+      mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, stateEnumMdBusiness.getOid());
       mdEnumeration.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdEnumeration.apply();
 
-
-      // now (incorrectly) define an MdAttributeEnumeration on an MdBusiness that extends EnumerationMaster
+      // now (incorrectly) define an MdAttributeEnumeration on an MdBusiness
+      // that extends EnumerationMaster
       MdAttributeEnumerationDAO mdAttrEnum = MdAttributeEnumerationDAO.newInstance();
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.NAME, "someEnumeration");
-      mdAttrEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "some enum");
+      mdAttrEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some enum");
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, "");
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
+      mdAttrEnum.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
       mdAttrEnum.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
       mdAttrEnum.apply();
 
-      fail("An MdBusiness that extends EnumerationMaster cannot define an MdAttributeEnumeration.");
+      Assert.fail("An MdBusiness that extends EnumerationMaster cannot define an MdAttributeEnumeration.");
     }
     catch (CannotAddAttriubteToClassException e)
     {
@@ -428,9 +383,10 @@ public class MetaDataTest extends TestCase
   }
 
   /**
-   * Make sure that a reference attribute cannot be added to basic
-   * classes.
+   * Make sure that a reference attribute cannot be added to basic classes.
    */
+  @Request
+  @Test
   public void testReferenceAttributeForAStruct()
   {
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(STRUCT.getType());
@@ -443,18 +399,17 @@ public class MetaDataTest extends TestCase
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     String referenceMdBusinessId = mdBusiness.apply();
 
     MdAttributeReferenceDAO mdAttributeReference = MdAttributeReferenceDAO.newInstance();
     mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME, "testReference");
-    mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
+    mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessId);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdStructIF.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdStructIF.getOid());
 
     try
     {
@@ -462,7 +417,7 @@ public class MetaDataTest extends TestCase
 
       // the two lines below should not execute
       mdAttributeReference.delete();
-      fail("A reference was added to a struct.");
+      Assert.fail("A reference was added to a struct.");
     }
     catch (AttributeOfWrongTypeForClassException e)
     {
@@ -477,17 +432,19 @@ public class MetaDataTest extends TestCase
   /**
    * Make sure that struct attributes cannot be added to struct.
    */
+  @Request
+  @Test
   public void testStructAttributeForAStruct()
   {
     MdStructDAOIF mdStructIF = MdStructDAO.getMdStructDAO(STRUCT.getType());
 
     MdAttributeStructDAO mdAttrStruct = MdAttributeStructDAO.newInstance();
     mdAttrStruct.setValue(MdAttributeStructInfo.NAME, "testSomeStruct2");
-    mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Test Struct 2");
+    mdAttrStruct.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Test Struct 2");
     mdAttrStruct.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrStruct.setValue(MdAttributeStructInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdStructIF.getId());
-    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStructIF.getId());
+    mdAttrStruct.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdStructIF.getOid());
+    mdAttrStruct.setValue(MdAttributeStructInfo.MD_STRUCT, mdStructIF.getOid());
     try
     {
       mdAttrStruct.apply();
@@ -499,12 +456,14 @@ public class MetaDataTest extends TestCase
     }
     // should this test fail, delete this object
     mdAttrStruct.delete();
-    fail("A struct attribute was added to a struct.");
+    Assert.fail("A struct attribute was added to a struct.");
   }
 
   /**
    * Make sure that structs cannot be extended.
    */
+  @Request
+  @Test
   public void testDoNotExtendBStruct()
   {
     TypeInfo testExtendedBasic = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TestExtendBasic");
@@ -522,14 +481,13 @@ public class MetaDataTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit attempting to extend a struct");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdStructIF.getId());
-      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdStructIF.getOid());
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
       // should this test fail, delete this object
       mdBusiness.delete();
-      fail("A new class was allowed to extend a struct.");
+      Assert.fail("A new class was allowed to extend a struct.");
     }
     catch (InvalidReferenceException e)
     {
@@ -541,17 +499,19 @@ public class MetaDataTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    *
    */
+  @Request
+  @Test
   public void testRequiredUniqueAttribute()
   {
     MdStructDAOIF mdStruct = MdStructDAO.getMdStructDAO(STRUCT.getType());
 
     MdAttributeCharacterDAO mdAttrChar = MdAttributeCharacterDAO.newInstance();
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "uniqueRequired");
-    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique But Not Required");
+    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique But Not Required");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttrChar.addItem(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStruct.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStruct.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "32");
 
     try
@@ -565,13 +525,13 @@ public class MetaDataTest extends TestCase
         // This is expected
         return;
       }
-      fail("RequiredUniquenessConstraintException was thrown even though the database should support Unique NonRequired columns");
+      Assert.fail("RequiredUniquenessConstraintException was thrown even though the database should support Unique NonRequired columns");
     }
     mdAttrChar.delete();
-    
+
     if (!Database.allowsUniqueNonRequiredColumns())
     {
-      fail("An attribute was defined to be unique, yet was not set to be required.  All unique attributes must be required.");
+      Assert.fail("An attribute was defined to be unique, yet was not set to be required.  All unique attributes must be required.");
     }
   }
 
@@ -579,30 +539,32 @@ public class MetaDataTest extends TestCase
    * Tests that an attribute that should be unique should also be required.
    *
    */
+  @Request
+  @Test
   public void testRequiredUniqueAttributeGroup()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
 
     MdAttributeCharacterDAO mdAttrChar = MdAttributeCharacterDAO.newInstance();
     mdAttrChar.setValue(MdAttributeCharacterInfo.NAME, "uniqueAttrGroupRequired");
-    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Unique Attribute Group But Not Required");
+    mdAttrChar.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Unique Attribute Group But Not Required");
     mdAttrChar.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrChar.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttrChar.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
     mdAttrChar.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttrChar.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, metaDataMdBusiness.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, metaDataMdBusiness.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
-    mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
+    mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
 
     try
     {
       // add the unique group index
       mdIndex.addAttribute(mdAttrChar, 0);
-      fail("An attribute was defined to be part of a unique attribute group, yet was not set to be required.  All such attributes must be required.");
+      Assert.fail("An attribute was defined to be part of a unique attribute group, yet was not set to be required.  All such attributes must be required.");
     }
     catch (RequiredUniquenessConstraintException e)
     {
@@ -616,11 +578,13 @@ public class MetaDataTest extends TestCase
   }
 
   /**
-   * Make an existing attribute on the TEST class unique, and check to make
-   * sure that a database index for that attribute was created. Change the
-   * attribute back to not being unique and check that the database no longer
-   * has the index.
+   * Make an existing attribute on the TEST class unique, and check to make sure
+   * that a database index for that attribute was created. Change the attribute
+   * back to not being unique and check that the database no longer has the
+   * index.
    */
+  @Request
+  @Test
   public void testUniqueAttributeDatabaseIndex()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
@@ -628,11 +592,11 @@ public class MetaDataTest extends TestCase
     MdAttributeCharacterDAO mdAttribute1 = MdAttributeCharacterDAO.newInstance();
     mdAttribute1.setValue(MdAttributeCharacterInfo.NAME, "attrUniqueChar");
     mdAttribute1.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttribute1.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Text Attribute Group Text");
+    mdAttribute1.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Text");
     mdAttribute1.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttribute1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute1.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttribute1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
 
     try
     {
@@ -642,30 +606,30 @@ public class MetaDataTest extends TestCase
 
       if (Database.uniqueAttributeExists(mdBusiness.getTableName(), "attr_unique_char", mdAttribute1.getIndexName()))
       {
-        fail("A database unique index was created for an attribute that was not set to be unique.");
+        Assert.fail("A database unique index was created for an attribute that was not set to be unique.");
       }
 
-      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
       mdAttribute1.apply();
 
       if (!Database.uniqueAttributeExists(mdBusiness.getTableName(), "attr_unique_char", mdAttribute1.getIndexName()))
       {
-        fail("A database unique index was not created for an attribute that was set to be unique.");
+        Assert.fail("A database unique index was not created for an attribute that was set to be unique.");
       }
 
-      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
       mdAttribute1.apply();
 
       if (Database.uniqueAttributeExists(mdBusiness.getTableName(), "attr_unique_char", mdAttribute1.getIndexName()))
       {
         mdAttribute1.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-        fail("A database unique index was not dropped for an attribute that was set to be unique.");
+        Assert.fail("A database unique index was not dropped for an attribute that was set to be unique.");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -678,11 +642,13 @@ public class MetaDataTest extends TestCase
   }
 
   /**
-   * Give an existing attribute on the TEST a non unique index, and check to make
-   * sure that a database index for that attribute was created. Change the
+   * Give an existing attribute on the TEST a non unique index, and check to
+   * make sure that a database index for that attribute was created. Change the
    * attribute back to not being unique and check that the database no longer
    * has the index.
    */
+  @Request
+  @Test
   public void testNonUniqueAttributeDatabaseIndex()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
@@ -690,11 +656,11 @@ public class MetaDataTest extends TestCase
     MdAttributeConcreteDAO mdAttribute1 = MdAttributeCharacterDAO.newInstance();
     mdAttribute1.setValue(MdAttributeCharacterInfo.NAME, "attrNonUniqueChar");
     mdAttribute1.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttribute1.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Text Attribute Group Text");
+    mdAttribute1.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Text");
     mdAttribute1.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttribute1.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute1.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttribute1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttribute1.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
 
     try
     {
@@ -704,30 +670,30 @@ public class MetaDataTest extends TestCase
 
       if (Database.nonUniqueAttributeExists(mdBusiness.getTableName(), "attr_non_unique_char", mdAttribute1.getIndexName()))
       {
-        fail("A database non unique index was created for an attribute that was not set to be non unique.");
+        Assert.fail("A database non unique index was created for an attribute that was not set to be non unique.");
       }
 
-      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdAttribute1.apply();
 
       if (!Database.nonUniqueAttributeExists(mdBusiness.getTableName(), "attr_non_unique_char", mdAttribute1.getIndexName()))
       {
-        fail("A database non unique index was not created for an attribute that was set to be non unique.");
+        Assert.fail("A database non unique index was not created for an attribute that was set to be non unique.");
       }
 
-      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+      mdAttribute1.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
       mdAttribute1.apply();
 
       if (Database.nonUniqueAttributeExists(mdBusiness.getTableName(), "attr_non_unique_char", mdAttribute1.getIndexName()))
       {
         mdAttribute1.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-        fail("A database non unique index was not dropped for an attribute that was set to be not unique.");
+        Assert.fail("A database non unique index was not dropped for an attribute that was set to be not unique.");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
@@ -744,12 +710,14 @@ public class MetaDataTest extends TestCase
    * attribute group. Check the database to ensure that no index was created.
    * Make both attributes participate in the uniqueness constraint. Check the
    * database to ensure that an index was created for both attributes. Remove
-   * one attribute from the unique attribute group. Check the database to
-   * ensure that the old index is deleted and a new index is created containing
-   * only the one attribute that participates in the unique attribute group.
-   * Remove the remaining attribute from the group and ensure that the database
-   * has dropped the index.
+   * one attribute from the unique attribute group. Check the database to ensure
+   * that the old index is deleted and a new index is created containing only
+   * the one attribute that participates in the unique attribute group. Remove
+   * the remaining attribute from the group and ensure that the database has
+   * dropped the index.
    */
+  @Request
+  @Test
   public void testUniqueAttributeGroupDatabaseIndex()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
@@ -758,20 +726,20 @@ public class MetaDataTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "testAttributeGroupCharacter2");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.COLUMN_NAME, "test_attr_group_char2");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Text");
+    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Text");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
 
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttributeGroupInteger2");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.COLUMN_NAME, "test_attr_group_int2");
-    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Text Attribute Group Integer");
+    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Integer");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
 
     try
     {
@@ -780,13 +748,13 @@ public class MetaDataTest extends TestCase
 
       String metaDataTestTableName = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType()).getTableName();
 
-      MdEntityDAOIF mdEntity = (MdEntityDAOIF)mdAttributeCharacter.definedByClass();
+      MdEntityDAOIF mdEntity = (MdEntityDAOIF) mdAttributeCharacter.definedByClass();
 
       // Should be an index
       MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-      mdIndex.setValue(MdIndexInfo.MD_ENTITY, metaDataMdBusiness.getId());
+      mdIndex.setValue(MdIndexInfo.MD_ENTITY, metaDataMdBusiness.getOid());
       mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
-      mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
+      mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
       mdIndex.apply();
 
       // add the unique group index
@@ -802,12 +770,12 @@ public class MetaDataTest extends TestCase
       columnNameList.add("test_attr_group_int2");
       if (!Database.groupAttributeIndexExists(metaDataTestTableName, mdIndex.getIndexName(), columnNameList))
       {
-        fail("A database unique attribute group index was not created for a set of attributes that do participate in a unique attribute group.");
+        Assert.fail("A database unique attribute group index was not created for a set of attributes that do participate in a unique attribute group.");
       }
-      mdEntity = (MdEntityDAOIF)mdAttributeCharacter.definedByClass();
+      mdEntity = (MdEntityDAOIF) mdAttributeCharacter.definedByClass();
       if (mdEntity.getUniqueIndexes().size() == 0)
       {
-        fail("Class \"" + mdEntity.definesType() + "\" has a unique attribute group.");
+        Assert.fail("Class \"" + mdEntity.definesType() + "\" has a unique attribute group.");
       }
 
       mdIndex.removeAttribute(mdAttributeInteger);
@@ -815,62 +783,69 @@ public class MetaDataTest extends TestCase
       // Should not be an index
       if (Database.getGroupIndexAttributes(metaDataTestTableName, mdIndex.getIndexName()).size() > 0)
       {
-        fail("A database unique attribute group index was not dropped for a set of attributes in which one attribute was removed from the group.");
+        Assert.fail("A database unique attribute group index was not dropped for a set of attributes in which one attribute was removed from the group.");
       }
-      mdEntity = (MdEntityDAOIF)mdAttributeCharacter.definedByClass();
+      mdEntity = (MdEntityDAOIF) mdAttributeCharacter.definedByClass();
       if (mdEntity.getUniqueIndexes().size() > 1)
       {
-        fail("Class \"" + mdEntity.definesType() + "\" does not have a unique attribute group.");
+        Assert.fail("Class \"" + mdEntity.definesType() + "\" does not have a unique attribute group.");
       }
 
-      mdAttributeCharacter.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
+      mdAttributeCharacter.addItem(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getOid());
       mdAttributeCharacter.apply();
 
       // Should not be an index
       if (Database.getGroupIndexAttributes(metaDataTestTableName, mdIndex.getIndexName()).size() > 0)
       {
-        fail("A database unique attribute group index was not dropped for a set of attributes in which one attribute was removed from the group.");
+        Assert.fail("A database unique attribute group index was not dropped for a set of attributes in which one attribute was removed from the group.");
       }
-      mdEntity = (MdEntityDAOIF)mdAttributeCharacter.definedByClass();
+      mdEntity = (MdEntityDAOIF) mdAttributeCharacter.definedByClass();
       if (mdEntity.getUniqueIndexes().size() > 1)
       {
-        fail("Class \"" + mdEntity.definesType() + "\" does not have a unique attribute group.");
+        Assert.fail("Class \"" + mdEntity.definesType() + "\" does not have a unique attribute group.");
       }
 
     }
     catch (DataAccessException e)
     {
-      fail(e.toString());
+      Assert.fail(e.toString());
     }
     finally
     {
       try
       {
-        mdAttributeCharacter = MdAttributeCharacterDAO.get(mdAttributeCharacter.getId()).getBusinessDAO();
+        mdAttributeCharacter = MdAttributeCharacterDAO.get(mdAttributeCharacter.getOid()).getBusinessDAO();
         if (mdAttributeCharacter != null && !mdAttributeCharacter.isNew())
         {
           mdAttributeCharacter.delete();
         }
       }
-      catch (DataNotFoundException e) {}
+      catch (DataNotFoundException e)
+      {
+      }
 
       try
       {
-        mdAttributeInteger = MdAttributeIntegerDAO.get(mdAttributeInteger.getId()).getBusinessDAO();
+        mdAttributeInteger = MdAttributeIntegerDAO.get(mdAttributeInteger.getOid()).getBusinessDAO();
         if (mdAttributeInteger != null && !mdAttributeInteger.isNew())
         {
           mdAttributeInteger.delete();
         }
       }
-      catch (DataNotFoundException e) {}
+      catch (DataNotFoundException e)
+      {
+      }
     }
   }
 
   /**
-   * Ensure that an attribute added to an MdIndex via an IndexAttribute relationship is actually defined by
-   * the MdEntity that the MdIndex is defined on.
+   * Ensure that an attribute added to an MdIndex via an IndexAttribute
+   * relationship is actually defined by the MdEntity that the MdIndex is
+   * defined on.
    *
    */
+  @Request
+  @Test
   public void testValidIndexDefinition()
   {
     MdBusinessDAOIF metaDataMdBusiness = MdBusinessDAO.getMdBusinessDAO(METADATA_TEST.getType());
@@ -879,21 +854,21 @@ public class MetaDataTest extends TestCase
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "testAttributeGroupCharacter3");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.COLUMN_NAME, "test_attr_group_char3");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "32");
-    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Text Attribute Group Text");
+    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Text");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
     mdAttributeCharacter.apply();
 
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testAttributeGroupInteger3");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.COLUMN_NAME, "test_attr_group_int3");
-    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "Text Attribute Group Integer");
+    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Attribute Group Integer");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, metaDataMdBusiness.getOid());
     mdAttributeInteger.apply();
 
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
@@ -907,9 +882,9 @@ public class MetaDataTest extends TestCase
     mdBusiness.apply();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getId());
+    mdIndex.setValue(MdIndexInfo.MD_ENTITY, mdBusiness.getOid());
     mdIndex.setValue(MdIndexInfo.UNIQUE, MdAttributeBooleanInfo.TRUE);
-    mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
+    mdIndex.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Index");
     mdIndex.apply();
 
     RelationshipDAO relationshipDAO1 = mdIndex.addChild(mdAttributeCharacter, IndexAttributeInfo.CLASS);
@@ -920,7 +895,7 @@ public class MetaDataTest extends TestCase
     {
       relationshipDAO1.apply();
       relationshipDAO2.apply();
-      fail("Able to add attribute to an ["+MdIndexInfo.CLASS+ "] that are not defined by the same ["+MdElementInfo.CLASS+"] that the index is defined on.");
+      Assert.fail("Able to add attribute to an [" + MdIndexInfo.CLASS + "] that are not defined by the same [" + MdElementInfo.CLASS + "] that the index is defined on.");
     }
     catch (InvalidAttributeForIndexDefinitionException ex)
     {
@@ -955,10 +930,11 @@ public class MetaDataTest extends TestCase
     }
   }
 
-
   /**
    * Tests that a type can't extend MdAttribute.
    */
+  @Request
+  @Test
   public void testExtendAttribute()
   {
     MdBusinessDAO mdBusiness = null;
@@ -974,12 +950,11 @@ public class MetaDataTest extends TestCase
       mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getId());
-      mdBusiness.setGenerateMdController(false);
+      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getOid());
       mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdBusiness.apply();
 
-      fail("A type was able to extend MdAttribute (this isn't allowed).");
+      Assert.fail("A type was able to extend MdAttribute (this isn't allowed).");
     }
     catch (DataAccessException e)
     {
@@ -987,7 +962,7 @@ public class MetaDataTest extends TestCase
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -996,10 +971,11 @@ public class MetaDataTest extends TestCase
     }
   }
 
-
   /**
    * Tests to make sure that an attribute cannot be added to an MdElement.
    */
+  @Request
+  @Test
   public void testAddAttributeToMdRelationshipClassAttirbute()
   {
     MdAttributeIntegerDAO mdAttributeInteger = null;
@@ -1009,33 +985,37 @@ public class MetaDataTest extends TestCase
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
 
       mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME,               "testInvalidInteger");
-      mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "bad integer attribute");
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE,      "");
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE,             MdAttributeBooleanInfo.TRUE);
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdRelationship.getId());
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testInvalidInteger");
+      mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "bad integer attribute");
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
       mdAttributeInteger.apply();
 
-      fail("An attribute was added to relationship ["+RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType()+"] (this is not allowed)");
+      Assert.fail("An attribute was added to relationship [" + RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType() + "] (this is not allowed)");
     }
-    catch(CannotAddAttriubteToClassException e)
+    catch (CannotAddAttriubteToClassException e)
     {
       // we want to land here.
     }
-    catch(Exception e)
+    catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
-      if(mdAttributeInteger != null && mdAttributeInteger.isAppliedToDB()) mdAttributeInteger.delete();
+      if (mdAttributeInteger != null && mdAttributeInteger.isAppliedToDB())
+        mdAttributeInteger.delete();
     }
   }
 
   /**
-   * Tests to make sure that an attribute cannot be added to an MdAttribute or a subclass.
+   * Tests to make sure that an attribute cannot be added to an MdAttribute or a
+   * subclass.
    */
+  @Request
+  @Test
   public void testAddAttributeToMdAttribute()
   {
     MdAttributeIntegerDAO mdAttributeInteger = null;
@@ -1045,27 +1025,28 @@ public class MetaDataTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(MdAttributeIntegerInfo.CLASS);
 
       mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME,               "testInvalidInteger");
-      mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "bad integer attribute");
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE,      "");
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE,             MdAttributeBooleanInfo.TRUE);
-      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "testInvalidInteger");
+      mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "bad integer attribute");
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+      mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, mdBusiness.getOid());
       mdAttributeInteger.apply();
 
-      fail("An attribute was added to an MdAttribute (this is not allowed)");
+      Assert.fail("An attribute was added to an MdAttribute (this is not allowed)");
     }
-    catch(CannotAddAttriubteToClassException e)
+    catch (CannotAddAttriubteToClassException e)
     {
       // we want to land here.
     }
-    catch(Exception e)
+    catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     finally
     {
-      if(mdAttributeInteger != null && mdAttributeInteger.isAppliedToDB()) mdAttributeInteger.delete();
+      if (mdAttributeInteger != null && mdAttributeInteger.isAppliedToDB())
+        mdAttributeInteger.delete();
     }
   }
 }

@@ -22,9 +22,9 @@ public abstract class ClassInheritanceDTO extends ClassInheritanceDTOBase
 {
   private static final long serialVersionUID = -2024694670;
   
-  public ClassInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public ClassInheritanceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

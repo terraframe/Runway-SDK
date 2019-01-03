@@ -258,13 +258,13 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebGroup mdWebGroup)
     {
       if(mdWebGroup == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebGroup.getId());
+      return this.EQ(mdWebGroup.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebGroup mdWebGroup)
     {
       if(mdWebGroup == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebGroup.getId());
+      return this.NE(mdWebGroup.getOid());
     }
 
 
@@ -423,7 +423,7 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebGroup.length; i++)
       {
-        itemIdArray[i] = mdWebGroup[i].getId();
+        itemIdArray[i] = mdWebGroup[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -435,7 +435,7 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebGroup.length; i++)
       {
-        itemIdArray[i] = mdWebGroup[i].getId();
+        itemIdArray[i] = mdWebGroup[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -447,7 +447,7 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebGroup.length; i++)
       {
-        itemIdArray[i] = mdWebGroup[i].getId();
+        itemIdArray[i] = mdWebGroup[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -459,7 +459,7 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebGroup.length; i++)
       {
-        itemIdArray[i] = mdWebGroup[i].getId();
+        itemIdArray[i] = mdWebGroup[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -471,7 +471,7 @@ public  class MdWebGroupQuery extends com.runwaysdk.system.metadata.MdWebFieldQu
 
       for (int i=0; i<mdWebGroup.length; i++)
       {
-        itemIdArray[i] = mdWebGroup[i].getId();
+        itemIdArray[i] = mdWebGroup[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

@@ -85,7 +85,7 @@ public abstract class CompositeSessionCache extends SessionCache
   {
     Session session = logInCommon(username, password, locales);
 
-    return session.getId();
+    return session.getOid();
   }
 
   @Override
@@ -95,7 +95,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
     session.setDimension(dimensionKey);
 
-    return session.getId();
+    return session.getOid();
   }
   
   @Override
@@ -103,7 +103,7 @@ public abstract class CompositeSessionCache extends SessionCache
   {
     Session session = logInCommon(user, locales);
 
-    return session.getId();
+    return session.getOid();
   }
   
   @Override
@@ -113,7 +113,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
     session.setDimension(dimensionKey);
 
-    return session.getId();
+    return session.getOid();
   }
 
   private Session logInCommon(String username, String password, Locale[] locales)
@@ -124,21 +124,21 @@ public abstract class CompositeSessionCache extends SessionCache
     {
       this.addSession(session);
 
-      this.changeLogin(username, password, session.getId());
+      this.changeLogin(username, password, session.getOid());
     }
     catch (InvalidLoginException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (InactiveUserException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (MaximumSessionsException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     return session;
@@ -152,21 +152,21 @@ public abstract class CompositeSessionCache extends SessionCache
     {
       this.addSession(session);
       
-      this.changeLogin(user, session.getId());
+      this.changeLogin(user, session.getOid());
     }
     catch (InvalidLoginException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (InactiveUserException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     catch (MaximumSessionsException e)
     {
-      this.closeSession(session.getId());
+      this.closeSession(session.getOid());
       throw e;
     }
     return session;
@@ -207,7 +207,7 @@ public abstract class CompositeSessionCache extends SessionCache
         throw new InvalidLoginException(devMessage);
       }
 
-      String userId = user.getId();
+      String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = this.getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -247,7 +247,7 @@ public abstract class CompositeSessionCache extends SessionCache
    * Sets the dimension of an existing {@link Session}.
    * 
    * @param sessionId
-   *          The id of the {@link Session}.
+   *          The oid of the {@link Session}.
    * @param dimensionKey
    *          key of a {@link MdDimension}.
    */
@@ -333,7 +333,7 @@ public abstract class CompositeSessionCache extends SessionCache
         throw new InactiveUserException(devMessage, user);
       }
 
-      String userId = user.getId();
+      String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = this.getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
@@ -415,7 +415,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
             // Skip the session if its in the first cache since we've already
             // returned it.
-            if (firstCache.containsSession(next.getId()))
+            if (firstCache.containsSession(next.getOid()))
             {
               continue;
             }
@@ -480,14 +480,14 @@ public abstract class CompositeSessionCache extends SessionCache
 
   /**
    * Returns the {@link SessionCache} which contains the {@link Session} with
-   * the corresponding id. This method also provides the logic to determine
+   * the corresponding oid. This method also provides the logic to determine
    * which {@link SessionCache} to use for a given {@link Session}.
    * 
    * @param sessionId
-   *          The session id
+   *          The session oid
    * 
    * @return The {@link SessionCache} which contains the {@link Session} with
-   *         the given id.
+   *         the given oid.
    */
   protected abstract SessionCache getCache(String sessionId);
 }

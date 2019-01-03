@@ -18,22 +18,14 @@
  */
 package com.runwaysdk;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.ExceptionConstants;
 
 public class ClientCommonExceptionTest
 {
-  String[] exceptions = new String[] {
-      ExceptionConstants.AttributeException.getExceptionClass(),
-      ExceptionConstants.ConfigurationException.getExceptionClass(),
-      ExceptionConstants.ConversionException.getExceptionClass(),
-      ExceptionConstants.CoreException.getExceptionClass(),
-      ExceptionConstants.ForbiddenMethodException.getExceptionClass(),
-      ExceptionConstants.LoaderDecoratorException.getExceptionClass(),
-      ExceptionConstants.ProgrammingErrorException.getExceptionClass(),
-      ExceptionConstants.SystemException.getExceptionClass()
-  };
+  String[] exceptions = new String[] { ExceptionConstants.AttributeException.getExceptionClass(), ExceptionConstants.ConfigurationException.getExceptionClass(), ExceptionConstants.ConversionException.getExceptionClass(), ExceptionConstants.CoreException.getExceptionClass(), ExceptionConstants.ForbiddenMethodException.getExceptionClass(), ExceptionConstants.LoaderDecoratorException.getExceptionClass(), ExceptionConstants.ProgrammingErrorException.getExceptionClass(), ExceptionConstants.SystemException.getExceptionClass() };
 
   @Test
   public void testCommonExceptionProcessor()

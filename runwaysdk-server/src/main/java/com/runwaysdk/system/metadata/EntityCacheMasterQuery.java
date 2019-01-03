@@ -126,7 +126,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.ClassCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -145,7 +145,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.ClassCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -164,7 +164,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.RelationshipCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -183,7 +183,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.RelationshipCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -202,7 +202,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.StructCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -221,7 +221,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
     com.runwaysdk.business.BusinessQuery businessQuery = queryFactory.businessQuery(com.runwaysdk.system.metadata.MdEnumeration.CLASS);
     com.runwaysdk.dataaccess.MdEnumerationDAOIF mdEnumerationIF = com.runwaysdk.dataaccess.metadata.MdEnumerationDAO.getMdEnumerationDAO(com.runwaysdk.system.metadata.StructCache.CLASS); 
-    businessQuery.WHERE(businessQuery.id().EQ(mdEnumerationIF.getId()));
+    businessQuery.WHERE(businessQuery.oid().EQ(mdEnumerationIF.getOid()));
 
     relationshipQuery.WHERE(relationshipQuery.hasParent(businessQuery));
 
@@ -268,13 +268,13 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.EntityCacheMaster entityCacheMaster)
     {
       if(entityCacheMaster == null) return this.EQ((java.lang.String)null);
-      return this.EQ(entityCacheMaster.getId());
+      return this.EQ(entityCacheMaster.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.EntityCacheMaster entityCacheMaster)
     {
       if(entityCacheMaster == null) return this.NE((java.lang.String)null);
-      return this.NE(entityCacheMaster.getId());
+      return this.NE(entityCacheMaster.getOid());
     }
 
   public com.runwaysdk.query.SelectableInteger getCacheCode()
@@ -436,7 +436,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<classCache.length; i++)
       {
-        enumIdArray[i] = classCache[i].getId();
+        enumIdArray[i] = classCache[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -448,7 +448,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<classCache.length; i++)
       {
-        enumIdArray[i] = classCache[i].getId();
+        enumIdArray[i] = classCache[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -460,7 +460,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<classCache.length; i++)
       {
-        enumIdArray[i] = classCache[i].getId();
+        enumIdArray[i] = classCache[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -472,7 +472,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<classCache.length; i++)
       {
-        enumIdArray[i] = classCache[i].getId();
+        enumIdArray[i] = classCache[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -484,7 +484,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<classCache.length; i++)
       {
-        enumIdArray[i] = classCache[i].getId();
+        enumIdArray[i] = classCache[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -508,7 +508,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<relationshipCache.length; i++)
       {
-        enumIdArray[i] = relationshipCache[i].getId();
+        enumIdArray[i] = relationshipCache[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -520,7 +520,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<relationshipCache.length; i++)
       {
-        enumIdArray[i] = relationshipCache[i].getId();
+        enumIdArray[i] = relationshipCache[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -532,7 +532,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<relationshipCache.length; i++)
       {
-        enumIdArray[i] = relationshipCache[i].getId();
+        enumIdArray[i] = relationshipCache[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -544,7 +544,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<relationshipCache.length; i++)
       {
-        enumIdArray[i] = relationshipCache[i].getId();
+        enumIdArray[i] = relationshipCache[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -556,7 +556,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<relationshipCache.length; i++)
       {
-        enumIdArray[i] = relationshipCache[i].getId();
+        enumIdArray[i] = relationshipCache[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -580,7 +580,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<structCache.length; i++)
       {
-        enumIdArray[i] = structCache[i].getId();
+        enumIdArray[i] = structCache[i].getOid();
       }
 
       return this.containsAny(enumIdArray);
@@ -592,7 +592,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<structCache.length; i++)
       {
-        enumIdArray[i] = structCache[i].getId();
+        enumIdArray[i] = structCache[i].getOid();
       }
 
       return this.notContainsAny(enumIdArray);
@@ -604,7 +604,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<structCache.length; i++)
       {
-        enumIdArray[i] = structCache[i].getId();
+        enumIdArray[i] = structCache[i].getOid();
       }
 
       return this.containsAll(enumIdArray);
@@ -616,7 +616,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<structCache.length; i++)
       {
-        enumIdArray[i] = structCache[i].getId();
+        enumIdArray[i] = structCache[i].getOid();
       }
 
       return this.notContainsAll(enumIdArray);
@@ -628,7 +628,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<structCache.length; i++)
       {
-        enumIdArray[i] = structCache[i].getId();
+        enumIdArray[i] = structCache[i].getOid();
       }
 
       return this.containsExactly(enumIdArray);
@@ -678,7 +678,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<entityCacheMaster.length; i++)
       {
-        itemIdArray[i] = entityCacheMaster[i].getId();
+        itemIdArray[i] = entityCacheMaster[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -690,7 +690,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<entityCacheMaster.length; i++)
       {
-        itemIdArray[i] = entityCacheMaster[i].getId();
+        itemIdArray[i] = entityCacheMaster[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -702,7 +702,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<entityCacheMaster.length; i++)
       {
-        itemIdArray[i] = entityCacheMaster[i].getId();
+        itemIdArray[i] = entityCacheMaster[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -714,7 +714,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<entityCacheMaster.length; i++)
       {
-        itemIdArray[i] = entityCacheMaster[i].getId();
+        itemIdArray[i] = entityCacheMaster[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -726,7 +726,7 @@ public  class EntityCacheMasterQuery extends com.runwaysdk.system.EnumerationMas
 
       for (int i=0; i<entityCacheMaster.length; i++)
       {
-        itemIdArray[i] = entityCacheMaster[i].getId();
+        itemIdArray[i] = entityCacheMaster[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

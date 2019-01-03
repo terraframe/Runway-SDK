@@ -136,21 +136,21 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -382,9 +382,9 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -435,13 +435,13 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.ReadableIdGenerator readableIdGenerator)
     {
       if(readableIdGenerator == null) return this.EQ((java.lang.String)null);
-      return this.EQ(readableIdGenerator.getId());
+      return this.EQ(readableIdGenerator.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.ReadableIdGenerator readableIdGenerator)
     {
       if(readableIdGenerator == null) return this.NE((java.lang.String)null);
-      return this.NE(readableIdGenerator.getId());
+      return this.NE(readableIdGenerator.getOid());
     }
 
   public com.runwaysdk.query.SelectableLong getCounter()
@@ -512,21 +512,21 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -717,9 +717,9 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -775,7 +775,7 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
 
       for (int i=0; i<readableIdGenerator.length; i++)
       {
-        itemIdArray[i] = readableIdGenerator[i].getId();
+        itemIdArray[i] = readableIdGenerator[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -787,7 +787,7 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
 
       for (int i=0; i<readableIdGenerator.length; i++)
       {
-        itemIdArray[i] = readableIdGenerator[i].getId();
+        itemIdArray[i] = readableIdGenerator[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -799,7 +799,7 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
 
       for (int i=0; i<readableIdGenerator.length; i++)
       {
-        itemIdArray[i] = readableIdGenerator[i].getId();
+        itemIdArray[i] = readableIdGenerator[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -811,7 +811,7 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
 
       for (int i=0; i<readableIdGenerator.length; i++)
       {
-        itemIdArray[i] = readableIdGenerator[i].getId();
+        itemIdArray[i] = readableIdGenerator[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -823,7 +823,7 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
 
       for (int i=0; i<readableIdGenerator.length; i++)
       {
-        itemIdArray[i] = readableIdGenerator[i].getId();
+        itemIdArray[i] = readableIdGenerator[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -896,21 +896,21 @@ public  class ReadableIdGeneratorQuery extends com.runwaysdk.query.GeneratedBusi
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.query.SelectableUUID getOid()
   {
-    return getId(null);
+    return getOid(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.ID, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.ReadableIdGenerator.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()

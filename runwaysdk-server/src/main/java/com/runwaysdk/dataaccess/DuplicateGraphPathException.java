@@ -36,12 +36,12 @@ public class DuplicateGraphPathException extends RelationshipConstraintException
   /**
    * Id of the parent object in the relationship.
    */
-  private String parentId;
+  private String parentOid;
 
   /**
    * Id of the child object in the relationship.
    */
-  private String childId;
+  private String childOid;
 
   /**
    * Thrown when an attempt is made to create a graph relationship between a parent and a child that already
@@ -108,14 +108,14 @@ public class DuplicateGraphPathException extends RelationshipConstraintException
   /**
    *
    * @param mdRelationshipIF
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    */
-  public void init(MdRelationshipDAOIF mdRelationshipIF, String parentId, String childId)
+  public void init(MdRelationshipDAOIF mdRelationshipIF, String parentOid, String childOid)
   {
     this.mdRelationshipIF  = mdRelationshipIF;
-    this.parentId          = parentId;
-    this.childId           = childId;
+    this.parentOid          = parentOid;
+    this.childOid           = childOid;
   }
 
 
@@ -128,12 +128,12 @@ public class DuplicateGraphPathException extends RelationshipConstraintException
   public String getLocalizedMessage()
   {
     if (this.mdRelationshipIF != null &&
-        this.parentId         != null &&
-        this.childId          != null)
+        this.parentOid         != null &&
+        this.childOid          != null)
     {
-      Business parentBusiness = Business.get(this.parentId);
+      Business parentBusiness = Business.get(this.parentOid);
       String childRelLabel = this.mdRelationshipIF.getChildDisplayLabel(this.getLocale());
-      Business childBusiness = Business.get(this.childId);
+      Business childBusiness = Business.get(this.childOid);
 
       return  ServerExceptionMessageLocalizer.duplicateGraphPathException(
           this.getLocale(), parentBusiness.toString(), childRelLabel, childBusiness.toString());

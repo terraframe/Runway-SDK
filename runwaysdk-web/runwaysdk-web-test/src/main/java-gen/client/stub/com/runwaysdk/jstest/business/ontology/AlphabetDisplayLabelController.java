@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest.business.ontology;
 
-public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControllerBase implements com.runwaysdk.generation.loader.Reloadable
+public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControllerBase implements com.runwaysdk.generation.loader.
 {
   public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/business/ontology/AlphabetDisplayLabel/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";
@@ -30,18 +30,18 @@ public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControll
   
   public void cancel(com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(dto.getId());
+    this.view(dto.getOid());
   }
   public void failCancel(com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.edit(dto.getId());
+    this.edit(dto.getOid());
   }
   public void create(com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -70,15 +70,15 @@ public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControll
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO dto = com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO.get(super.getClientRequest(), id);
+    com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO dto = com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO.get(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(id);
+    this.view(oid);
   }
   public void newInstance() throws java.io.IOException, javax.servlet.ServletException
   {
@@ -96,7 +96,7 @@ public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControll
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -108,13 +108,13 @@ public class AlphabetDisplayLabelController extends AlphabetDisplayLabelControll
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }

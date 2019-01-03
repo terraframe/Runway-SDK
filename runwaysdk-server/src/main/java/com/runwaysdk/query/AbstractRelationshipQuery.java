@@ -27,9 +27,9 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 
 
@@ -64,8 +64,8 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
       throw new QueryException(error);
     }
 
-    this.parentAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.PARENT_ID;
-    this.childAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.CHILD_ID;
+    this.parentAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.PARENT_OID;
+    this.childAttributeQualifiedName = this.getMdEntityIF().definesType()+"."+RelationshipInfo.CHILD_OID;
   }
 
   /**
@@ -92,18 +92,18 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     String definingTableAlias = this.getTableAlias("", tableName);
 
     ColumnInfo columnInfo = new ColumnInfo(tableName, definingTableAlias,
-        RelationshipDAOIF.PARENT_ID_COLUMN, this.getColumnAlias("", RelationshipDAOIF.PARENT_ID_COLUMN));
+        RelationshipDAOIF.PARENT_OID_COLUMN, this.getColumnAlias("", RelationshipDAOIF.PARENT_OID_COLUMN));
     columnInfoMap2.put(this.parentAttributeQualifiedName, columnInfo);
 
     columnInfo = new ColumnInfo(tableName, definingTableAlias,
-        RelationshipDAOIF.CHILD_ID_COLUMN, this.getColumnAlias("", RelationshipDAOIF.CHILD_ID_COLUMN));
+        RelationshipDAOIF.CHILD_OID_COLUMN, this.getColumnAlias("", RelationshipDAOIF.CHILD_OID_COLUMN));
     columnInfoMap2.put(this.childAttributeQualifiedName, columnInfo);
   }
 
   /**
    * Build the select clause for this query, including all attributes required
    * to instantiate instances of this object.
-   * @param mdAttributeIDMap Key: MdAttribute.getId() Value: MdAttributeIF
+   * @param mdAttributeIDMap Key: MdAttribute.getOid() Value: MdAttributeIF
    * @return select clause for this query.
    */
   protected StringBuffer buildSelectClause(MdTableClassIF _mdTableClassIF,  Set<Join> tableJoinSet2,
@@ -125,38 +125,38 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentId()
+  public AttributeUUID parentOid()
   {
-    return this.parentId(null, null);
+    return this.parentOid(null, null);
   }
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.PARENT_ID.
+   * attribute is the Relationship.PARENT_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter parentId(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeUUID parentOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
 
-    // The parent ID field is defined by the
+    // The parent OID field is defined by the
     Set<Join> characterTableJoinSet = new HashSet<Join>();
 
-    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_OID has no medadata that defines it.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to PARENT_OID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeUUIDDAOIF mdAttributeIF = (MdAttributeUUIDDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
-    AttributeCharacter attributeCharacter =
-      new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    attributeCharacter.setAttributeName(RelationshipInfo.PARENT_ID);
-    attributeCharacter.setColumnName(RelationshipDAOIF.PARENT_ID_COLUMN);
+    AttributeUUID attributeCharacter =
+      new AttributeUUID(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    attributeCharacter.setAttributeName(RelationshipInfo.PARENT_OID);
+    attributeCharacter.setColumnName(RelationshipDAOIF.PARENT_OID_COLUMN);
     attributeCharacter.recomputeColumnAlias();
 
     return attributeCharacter;
@@ -165,39 +165,39 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childId()
+  public AttributeUUID childOid()
   {
-    return this.childId(null, null);
+    return this.childOid(null, null);
   }
 
   /**
    * Returns an attribute character statement object where the name of the
-   * attribute is the Relationship.CHILD_ID.
+   * attribute is the Relationship.CHILD_OID.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
-  public AttributeCharacter childId(String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeUUID childOid(String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String definingTableName = this.getMdEntityIF().getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
 
-    // The parent ID field is defined by the
+    // The parent OID field is defined by the
     Set<Join> characterTableJoinSet = new HashSet<Join>();
 
-    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_ID has no metadata that defines it.
-    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to CHILD_ID.
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_OID has no metadata that defines it.
+    // So, I just gave it the one for the OID field, and then hardcoded the name of the attribute to CHILD_OID.
 
-    MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeUUIDDAOIF mdAttributeIF = (MdAttributeUUIDDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.OID);
 
-    AttributeCharacter attributeCharacter =
-      new AttributeCharacter(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    AttributeUUID attributeCharacter =
+      new AttributeUUID(mdAttributeIF, this.getMdEntityIF().definesType(), definingTableName, definingTableAlias, this, characterTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
-    attributeCharacter.setAttributeName(RelationshipInfo.CHILD_ID);
-    attributeCharacter.setColumnName(RelationshipDAOIF.CHILD_ID_COLUMN);
+    attributeCharacter.setAttributeName(RelationshipInfo.CHILD_OID);
+    attributeCharacter.setColumnName(RelationshipDAOIF.CHILD_OID_COLUMN);
     attributeCharacter.recomputeColumnAlias();
 
     return attributeCharacter;
@@ -214,11 +214,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.childId(), abstractObjectQuery.id());
+      return new ValueJoinConditionEq(this.childOid(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.childId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionEq(this.childOid(), abstractObjectQuery.oid());
     }
   }
 
@@ -232,11 +232,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionEq(this.childOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionEq(this.childOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
   }
 
@@ -250,11 +250,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.childId(), abstractObjectQuery.id());
+      return new ValueJoinConditionNotEq(this.childOid(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.childId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionNotEq(this.childOid(), abstractObjectQuery.oid());
     }
   }
 
@@ -268,11 +268,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionNotEq(this.childOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.childId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionNotEq(this.childOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
   }
 
@@ -286,11 +286,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.parentId(), abstractObjectQuery.id());
+      return new ValueJoinConditionEq(this.parentOid(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.parentId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionEq(this.parentOid(), abstractObjectQuery.oid());
     }
   }
 
@@ -304,11 +304,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionEq(this.parentOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionEq(this.parentOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
   }
 
@@ -322,11 +322,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || abstractObjectQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.parentId(), abstractObjectQuery.id());
+      return new ValueJoinConditionNotEq(this.parentOid(), abstractObjectQuery.oid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.parentId(), abstractObjectQuery.id());
+      return new SubSelectBasicConditionNotEq(this.parentOid(), abstractObjectQuery.oid());
     }
   }
 
@@ -340,11 +340,11 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
   {
     if (this.isUsedInValueQuery() || generatedBusinessQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new ValueJoinConditionNotEq(this.parentOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq(this.parentId(), (AttributeCharacter)generatedBusinessQuery.getId());
+      return new SubSelectBasicConditionNotEq(this.parentOid(), (AttributeUUID)generatedBusinessQuery.getOid());
     }
   }
 }

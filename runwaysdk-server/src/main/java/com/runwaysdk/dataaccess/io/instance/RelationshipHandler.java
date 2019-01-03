@@ -34,7 +34,7 @@ import com.runwaysdk.dataaccess.resolver.IConflictResolver;
 /**
  * Handles the <relationship_instance> tag in the instance importer. See
  * http:\\www.runwaysdk.com\schema\instance.xsd for the entire importer schema.
- * Imports the type, parentId, childId, and Id attributes of a Relationship.
+ * Imports the type, parentOid, childOid, and Id attributes of a Relationship.
  * After importing the previous attributes this passes control to the appropiate
  * handler for other system and user defined attributes of the Relationship, eg,
  * owner.
@@ -87,8 +87,8 @@ public class RelationshipHandler extends ElementHandler
 
     String type = attributes.getValue(XMLTags.TYPE_TAG);
     String databaseId = attributes.getValue(XMLTags.ID_TAG);
-    String parentId = attributes.getValue(XMLTags.PARENT_ID_TAG);
-    String childId = attributes.getValue(XMLTags.CHILD_ID_TAG);
+    String parentOid = attributes.getValue(XMLTags.PARENT_OID_TAG);
+    String childOid = attributes.getValue(XMLTags.CHILD_OID_TAG);
 
     // Import a new 'type' Relationship
     try
@@ -109,11 +109,11 @@ public class RelationshipHandler extends ElementHandler
     }
     catch (DataAccessException e)
     {
-      this.elementDAO = RelationshipDAO.newInstance(parentId, childId, type);
+      this.elementDAO = RelationshipDAO.newInstance(parentOid, childOid, type);
       this.isNew = true;
 
-      // Set the imported id
-      Attribute attribute = elementDAO.getAttribute(EntityInfo.ID);
+      // Set the imported oid
+      Attribute attribute = elementDAO.getAttribute(EntityInfo.OID);
       attribute.setValue(databaseId);
 
       this.skipProcessing = false;

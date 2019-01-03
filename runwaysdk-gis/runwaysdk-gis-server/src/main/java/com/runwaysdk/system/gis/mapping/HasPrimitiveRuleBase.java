@@ -32,7 +32,7 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -43,9 +43,9 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
   public static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -609452316;
   
-  public HasPrimitiveRuleBase(String parentId, String childId)
+  public HasPrimitiveRuleBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public java.util.Date getCreateDate()
@@ -128,24 +128,24 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.HasPrimitiveRule.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -284,7 +284,7 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -351,9 +351,9 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
     return (com.runwaysdk.system.gis.mapping.PrimitiveRule) super.getChild();
   }
   
-  public static HasPrimitiveRule get(String id)
+  public static HasPrimitiveRule get(String oid)
   {
-    return (HasPrimitiveRule) com.runwaysdk.business.Relationship.get(id);
+    return (HasPrimitiveRule) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static HasPrimitiveRule getByKey(String key)
@@ -361,17 +361,17 @@ public abstract class HasPrimitiveRuleBase extends com.runwaysdk.business.Relati
     return (HasPrimitiveRule) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static HasPrimitiveRule lock(java.lang.String id)
+  public static HasPrimitiveRule lock(java.lang.String oid)
   {
-    HasPrimitiveRule _instance = HasPrimitiveRule.get(id);
+    HasPrimitiveRule _instance = HasPrimitiveRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static HasPrimitiveRule unlock(java.lang.String id)
+  public static HasPrimitiveRule unlock(java.lang.String oid)
   {
-    HasPrimitiveRule _instance = HasPrimitiveRule.get(id);
+    HasPrimitiveRule _instance = HasPrimitiveRule.get(oid);
     _instance.unlock();
     
     return _instance;

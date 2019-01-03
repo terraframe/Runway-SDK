@@ -164,13 +164,13 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   * Returns the id of this object.
+   * Returns the oid of this object.
    * 
-   * @return A unique id.
+   * @return A unique oid.
    */
-  public String getId()
+  public String getOid()
   {
-    return this.exceptionDTO.getId();
+    return this.exceptionDTO.getOid();
   }
 
   /**
@@ -323,10 +323,10 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * If this is called on the front end, it will return all BusinessDTOs for
-   * which this object has an internal mapping. If this object only has the id
+   * which this object has an internal mapping. If this object only has the oid
    * of an enumItem, it will fetch the generic BusinessDTO for it via the
    * clientRequest. If this is called on the back-end, it will only return the
-   * BusinessDTOs that it has references to. If it only has an id for an
+   * BusinessDTOs that it has references to. If it only has an oid for an
    * enumItem, it does not return the BusinessDTO for it. This is OK, as on the
    * back-end, the object should contain all BusinessDTOs. On the front-end, the
    * method addEnumItem(String) may have been called, but the object does not
@@ -334,7 +334,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
    * 
    * @param attributeName
    *          The name of the attribute to retrieve all items.
-   * @returns A List of strings where each string is an item id. An emptry list
+   * @returns A List of strings where each string is an item oid. An emptry list
    *          is returned if no items exist for the attribute.
    */
   public List<? extends BusinessDTO> getEnumValues(String attributeName)
@@ -392,8 +392,8 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     // Throw client side
     if (this.getLocale() != null)
     {
-      String id = this.getMd().getId();
-      MdExceptionDTO mdExceptionDTO = MdExceptionDTO.get(getRequest(), id);
+      String oid = this.getMd().getOid();
+      MdExceptionDTO mdExceptionDTO = MdExceptionDTO.get(getRequest(), oid);
       MdLocalizableMessageDTO messages = mdExceptionDTO.getMessage();
       return messages.getValue(this.getLocale());
     }

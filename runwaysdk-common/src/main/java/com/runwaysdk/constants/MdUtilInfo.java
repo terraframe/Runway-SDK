@@ -26,12 +26,12 @@ public interface MdUtilInfo extends MdSessionInfo
   public static final String CLASS          = Constants.METADATA_PACKAGE+".MdUtil";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE       = "20080226NM000000000000000000000300000000000000000000000000000001"; 
+  public static final String ID_VALUE       = "614123bc-6d66-395b-b87c-53297700003a"; 
   
   /**
-   * ID.
+   * OID.
    */
   public static final String SUPER_MD_UTIL  = "superMdUtil"; 
 }

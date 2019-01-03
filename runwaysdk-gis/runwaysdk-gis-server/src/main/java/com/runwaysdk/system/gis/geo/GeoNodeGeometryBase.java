@@ -77,7 +77,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
     else
     {
-      setValue(DISPLAYLABELATTRIBUTE, value.getId());
+      setValue(DISPLAYLABELATTRIBUTE, value.getOid());
     }
   }
   
@@ -117,7 +117,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
     else
     {
-      setValue(GEOMETRYATTRIBUTE, value.getId());
+      setValue(GEOMETRYATTRIBUTE, value.getOid());
     }
   }
   
@@ -157,7 +157,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
     else
     {
-      setValue(IDENTIFIERATTRIBUTE, value.getId());
+      setValue(IDENTIFIERATTRIBUTE, value.getOid());
     }
   }
   
@@ -197,7 +197,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
     else
     {
-      setValue(MULTIPOLYGONATTRIBUTE, value.getId());
+      setValue(MULTIPOLYGONATTRIBUTE, value.getOid());
     }
   }
   
@@ -237,7 +237,7 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     }
     else
     {
-      setValue(POINTATTRIBUTE, value.getId());
+      setValue(POINTATTRIBUTE, value.getOid());
     }
   }
   
@@ -246,9 +246,9 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     return CLASS;
   }
   
-  public static GeoNodeGeometry get(String id)
+  public static GeoNodeGeometry get(String oid)
   {
-    return (GeoNodeGeometry) com.runwaysdk.business.Business.get(id);
+    return (GeoNodeGeometry) com.runwaysdk.business.Business.get(oid);
   }
   
   public static GeoNodeGeometry getByKey(String key)
@@ -256,17 +256,17 @@ public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.G
     return (GeoNodeGeometry) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static GeoNodeGeometry lock(java.lang.String id)
+  public static GeoNodeGeometry lock(java.lang.String oid)
   {
-    GeoNodeGeometry _instance = GeoNodeGeometry.get(id);
+    GeoNodeGeometry _instance = GeoNodeGeometry.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static GeoNodeGeometry unlock(java.lang.String id)
+  public static GeoNodeGeometry unlock(java.lang.String oid)
   {
-    GeoNodeGeometry _instance = GeoNodeGeometry.get(id);
+    GeoNodeGeometry _instance = GeoNodeGeometry.get(oid);
     _instance.unlock();
     
     return _instance;

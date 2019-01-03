@@ -538,13 +538,13 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMethod mdMethod)
     {
       if(mdMethod == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMethod.getId());
+      return this.EQ(mdMethod.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMethod mdMethod)
     {
       if(mdMethod == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMethod.getId());
+      return this.NE(mdMethod.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -947,7 +947,7 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdMethod.length; i++)
       {
-        itemIdArray[i] = mdMethod[i].getId();
+        itemIdArray[i] = mdMethod[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -959,7 +959,7 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdMethod.length; i++)
       {
-        itemIdArray[i] = mdMethod[i].getId();
+        itemIdArray[i] = mdMethod[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -971,7 +971,7 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdMethod.length; i++)
       {
-        itemIdArray[i] = mdMethod[i].getId();
+        itemIdArray[i] = mdMethod[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -983,7 +983,7 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdMethod.length; i++)
       {
-        itemIdArray[i] = mdMethod[i].getId();
+        itemIdArray[i] = mdMethod[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -995,7 +995,7 @@ public  class MdMethodQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdMethod.length; i++)
       {
-        itemIdArray[i] = mdMethod[i].getId();
+        itemIdArray[i] = mdMethod[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

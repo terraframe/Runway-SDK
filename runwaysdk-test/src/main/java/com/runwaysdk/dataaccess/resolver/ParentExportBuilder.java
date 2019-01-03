@@ -56,7 +56,7 @@ public class ParentExportBuilder extends ExportBuilder<Void>
     parent = BusinessDAO.newInstance(parentType);
     parent.apply();
 
-    relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), relationshipType);
+    relationship = RelationshipDAO.newInstance(parent.getOid(), child.getOid(), relationshipType);
     relationship.apply();
   }
 

@@ -36,7 +36,7 @@ public class WaitSecondJob implements ExecutableJobIF
   {
     throw new UnsupportedOperationException();
     
-//    ExecutableJob job = ExecutableJob.get(executionContext.getJob().getId());
+//    ExecutableJob job = ExecutableJob.get(executionContext.getJob().getOid());
 //    job.lock();
 //    job.setRunning(true);
 //    job.setCompleted(false);
@@ -59,7 +59,7 @@ public class WaitSecondJob implements ExecutableJobIF
 //    try
 //    {
 //      while (job.getCompleted() == false && (job.getRunning() == true || job.getPaused() == true)) {
-//        job = ExecutableJob.get(job.getId());
+//        job = ExecutableJob.get(job.getOid());
 //        synchronized(job) {
 //          if (job.getCanceled() == true) {
 //            job.lock();
@@ -74,7 +74,7 @@ public class WaitSecondJob implements ExecutableJobIF
 //          this.wait(1000);
 //        }
 //        
-//        job = ExecutableJob.get(job.getId());
+//        job = ExecutableJob.get(job.getOid());
 //        synchronized(job) {
 //          if (job.getPaused() == false) {
 //            job.lock();

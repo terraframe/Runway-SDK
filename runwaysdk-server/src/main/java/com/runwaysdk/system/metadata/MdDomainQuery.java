@@ -174,13 +174,13 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdDomain mdDomain)
     {
       if(mdDomain == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdDomain.getId());
+      return this.EQ(mdDomain.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdDomain mdDomain)
     {
       if(mdDomain == null) return this.NE((java.lang.String)null);
-      return this.NE(mdDomain.getId());
+      return this.NE(mdDomain.getOid());
     }
 
   public com.runwaysdk.system.metadata.MetadataDisplayLabelQuery.MetadataDisplayLabelQueryStructIF getDisplayLabel()
@@ -277,7 +277,7 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdDomain.length; i++)
       {
-        itemIdArray[i] = mdDomain[i].getId();
+        itemIdArray[i] = mdDomain[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -289,7 +289,7 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdDomain.length; i++)
       {
-        itemIdArray[i] = mdDomain[i].getId();
+        itemIdArray[i] = mdDomain[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -301,7 +301,7 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdDomain.length; i++)
       {
-        itemIdArray[i] = mdDomain[i].getId();
+        itemIdArray[i] = mdDomain[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -313,7 +313,7 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdDomain.length; i++)
       {
-        itemIdArray[i] = mdDomain[i].getId();
+        itemIdArray[i] = mdDomain[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -325,7 +325,7 @@ public  class MdDomainQuery extends com.runwaysdk.system.metadata.MetadataQuery
 
       for (int i=0; i<mdDomain.length; i++)
       {
-        itemIdArray[i] = mdDomain[i].getId();
+        itemIdArray[i] = mdDomain[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

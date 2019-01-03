@@ -116,7 +116,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      setValue(CREATEDBY, value.getId());
+      setValue(CREATEDBY, value.getOid());
     }
   }
   
@@ -165,7 +165,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -251,7 +251,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      setValue(LASTUPDATEDBY, value.getId());
+      setValue(LASTUPDATEDBY, value.getOid());
     }
   }
   
@@ -300,7 +300,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      setValue(LOCKEDBY, value.getId());
+      setValue(LOCKEDBY, value.getOid());
     }
   }
   
@@ -349,7 +349,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -410,9 +410,9 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(SEQ).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.business.ElementSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.business.ElementSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.business.ElementSystemDTO) dto;
   }
@@ -430,7 +430,7 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.business.ElementQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -443,10 +443,10 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.business.ElementSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.ElementSystemDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.ElementSystemDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.business.ElementSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -456,10 +456,10 @@ public abstract class ElementSystemDTOBase extends com.runwaysdk.business.Entity
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.business.ElementSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.business.ElementSystemDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.business.ElementSystemDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.business.ElementSystemDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

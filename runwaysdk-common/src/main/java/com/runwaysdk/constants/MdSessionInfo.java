@@ -26,7 +26,7 @@ public interface MdSessionInfo extends MdTransientInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdSession";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "20080226NM000000000000000000000100000000000000000000000000000001"; 
+  public static final String ID_VALUE  = "ff1d7f06-67f8-3b72-b31c-a8164900003a"; 
 }

@@ -32,11 +32,6 @@ public class MdRelationshipPermissionHandler extends MdClassPermissionHandler im
   public MdRelationshipPermissionHandler(ImportManager manager)
   {
     super(manager);
-
-    DirectionalStatePermissionHandler handler = new DirectionalStatePermissionHandler(manager);
-
-    this.addHandler(XMLTags.PARENT_STATE_PERMISSION_TAG, handler);
-    this.addHandler(XMLTags.CHILD_STATE_PERMISSION_TAG, handler);
   }
 
   /*

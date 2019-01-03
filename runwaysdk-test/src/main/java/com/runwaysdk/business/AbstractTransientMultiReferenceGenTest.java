@@ -24,18 +24,18 @@ package com.runwaysdk.business;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.Test;
 
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.session.Request;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -55,7 +55,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
+public abstract class AbstractTransientMultiReferenceGenTest
 {
   public abstract MdAttributeMultiReferenceDAO getMdAttribute();
 
@@ -71,6 +71,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testApply() throws Exception
   {
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
@@ -80,10 +82,12 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) method.invoke(view);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(this.contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddMultiple() throws Exception
   {
     Business value1 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
@@ -106,9 +110,9 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
         List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
         Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
+        Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
+        Assert.assertTrue(contains(results, value1.getOid()));
+        Assert.assertTrue(contains(results, value2.getOid()));
       }
       finally
       {
@@ -122,6 +126,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testAddDuplicates() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -134,10 +140,12 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
     Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+    Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testClear() throws Exception
   {
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
@@ -151,6 +159,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemove() throws Exception
   {
     Business value = BusinessFacade.get(this.getDefaultValue());
@@ -166,6 +176,8 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testRemoveUnsetItem() throws Exception
   {
     Business value = BusinessFacade.newBusiness(this.getMdTerm().definesType());
@@ -182,7 +194,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
       List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
 
       Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
+      Assert.assertTrue(contains(results, this.getDefaultValue().getOid()));
     }
     finally
     {
@@ -192,14 +204,14 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
 
   /**
    * @param results
-   * @param id
+   * @param oid
    * @return
    */
-  private boolean contains(List<? extends Business> results, String id)
+  private boolean contains(List<? extends Business> results, String oid)
   {
     for (Business result : results)
     {
-      if (result.getId().equals(id))
+      if (result.getOid().equals(oid))
       {
         return true;
       }

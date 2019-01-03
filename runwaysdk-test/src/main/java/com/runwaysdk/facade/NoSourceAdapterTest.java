@@ -30,19 +30,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.ServerSideException;
-import com.runwaysdk.TestSuiteTF;
 import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
@@ -62,7 +62,6 @@ import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AdminConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
@@ -75,7 +74,6 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
-import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
@@ -102,9 +100,7 @@ import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.PhoneNumberInfo;
@@ -115,8 +111,8 @@ import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DuplicateDataExceptionDTO;
-import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
@@ -124,7 +120,36 @@ import com.runwaysdk.dataaccess.UnexpectedTypeExceptionDTO;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblemDTO;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblemDTO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundExceptionDTO;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.query.ConditionOperator;
 import com.runwaysdk.session.AttributeWritePermissionExceptionDTO;
 import com.runwaysdk.session.CreatePermissionExceptionDTO;
@@ -132,8 +157,6 @@ import com.runwaysdk.session.DeleteChildPermissionExceptionDTO;
 import com.runwaysdk.session.DeleteParentPermissionExceptionDTO;
 import com.runwaysdk.session.DeletePermissionExceptionDTO;
 import com.runwaysdk.session.GrantAttributePermissionExceptionDTO;
-import com.runwaysdk.session.GrantAttributeStatePermissionExceptionDTO;
-import com.runwaysdk.session.GrantStatePermissionExceptionDTO;
 import com.runwaysdk.session.GrantTypePermissionExceptionDTO;
 import com.runwaysdk.session.ImportDomainExecuteExceptionDTO;
 import com.runwaysdk.session.InvalidLoginExceptionDTO;
@@ -141,9 +164,8 @@ import com.runwaysdk.session.ReadChildPermissionExceptionDTO;
 import com.runwaysdk.session.ReadParentPermissionExceptionDTO;
 import com.runwaysdk.session.ReadPermissionExceptionDTO;
 import com.runwaysdk.session.ReadTypePermissionExceptionDTO;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RevokeAttributePermissionExceptionDTO;
-import com.runwaysdk.session.RevokeAttributeStatePermissionExceptionDTO;
-import com.runwaysdk.session.RevokeStatePermissionExceptionDTO;
 import com.runwaysdk.session.RevokeTypePermissionExceptionDTO;
 import com.runwaysdk.transport.attributes.AttributeBlobDTO;
 import com.runwaysdk.transport.attributes.AttributeBooleanDTO;
@@ -175,180 +197,147 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
+import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
+import com.runwaysdk.vault.VaultDAO;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
 
-public class NoSourceAdapterTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class NoSourceAdapterTest
 {
-  protected static String            pack                           = "com.test.controller";
+  protected static String                       pack                           = "com.test.controller";
 
-  protected static BusinessDTO       tommyUser                      = null;
+  protected static BusinessDAO                  tommyUser                      = null;
 
-  protected static BusinessDTO       littleBillyTables              = null;
+  protected static BusinessDAO                  littleBillyTables              = null;
 
-  protected static ClientSession     systemSession                  = null;
+  protected static ClientSession                systemSession                  = null;
 
-  protected static ClientRequestIF   clientRequest                  = null;
+  protected static ClientRequestIF              clientRequest                  = null;
 
-  protected static BusinessDTO       childMdBusiness                = null;
+  protected static MdBusinessDAO                childMdBusiness                = null;
 
-  protected static String            childMdBusinessType            = null;
+  protected static String                       childMdBusinessType            = null;
 
-  protected static BusinessDTO       parentMdBusiness               = null;
+  protected static MdBusinessDAO                parentMdBusiness               = null;
 
-  protected static String            parentMdBusinessType           = null;
+  protected static String                       parentMdBusinessType           = null;
 
-  protected static BusinessDTO       mdView                         = null;
+  protected static MdViewDAO                    mdView                         = null;
 
-  protected static String            mdViewType                     = null;
+  protected static String                       mdViewType                     = null;
 
-  protected static BusinessDTO       childInstance                  = null;
+  protected static BusinessDTO                  childInstance                  = null;
 
-  protected static BusinessDTO       parentInstance                 = null;
+  protected static BusinessDTO                  parentInstance                 = null;
 
-  private static BusinessDTO         mdRelationship                 = null;
+  private static MdRelationshipDAO              mdRelationship                 = null;
 
-  protected static String            mdRelationshipType             = null;
+  protected static String                       mdRelationshipType             = null;
 
-  protected static RelationshipDTO   relInstance                    = null;
+  protected static RelationshipDTO              relInstance                    = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO_2      = null;
-
-  private static BusinessDTO         stateMachine                   = null;
-
-  protected static String            stateMachineType               = null;
-
-  protected static BusinessDTO       state1                         = null;
-
-  protected static BusinessDTO       state2                         = null;
-
-  protected static RelationshipDTO   transition                     = null;
-
-  protected static RelationshipDTO   transition2                    = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO_2      = null;
 
   /* Md references for attribute metadata tests */
-  protected static BusinessDTO       mdAttributeBlobDTO             = null;
+  protected static MdAttributeBlobDAO           mdAttributeBlobDTO             = null;
 
-  protected static BusinessDTO       testUserMd                     = null;
+  protected static MdBusinessDAO                testUserMd                     = null;
 
-  protected static String            testUserType                   = null;
+  protected static String                       testUserType                   = null;
 
-  protected static BusinessDTO       mdAttributeBooleanDTO          = null;
+  protected static MdAttributeBooleanDAO        mdAttributeBooleanDTO          = null;
 
-  protected static BusinessDTO       mdAttributeConversionDTO       = null;
+  protected static MdAttributeCharacterDAO      mdAttributeConversionDTO       = null;
 
-  protected static BusinessDTO       mdAttributeIntegerDTO          = null;
+  protected static MdAttributeIntegerDAO        mdAttributeIntegerDTO          = null;
 
-  protected static BusinessDTO       mdAttributeLongDTO             = null;
+  protected static MdAttributeLongDAO           mdAttributeLongDTO             = null;
 
-  protected static BusinessDTO       mdAttributeDecimalDTO          = null;
+  protected static MdAttributeDecimalDAO        mdAttributeDecimalDTO          = null;
 
-  protected static BusinessDTO       mdAttributeDoubleDTO           = null;
+  protected static MdAttributeDoubleDAO         mdAttributeDoubleDTO           = null;
 
-  protected static BusinessDTO       mdAttributeFloatDTO            = null;
+  protected static MdAttributeFloatDAO          mdAttributeFloatDTO            = null;
 
-  protected static BusinessDTO       mdAttributeDateTimeDTO         = null;
+  protected static MdAttributeDateTimeDAO       mdAttributeDateTimeDTO         = null;
 
-  protected static BusinessDTO       mdAttributeFileDTO             = null;
+  protected static MdAttributeFileDAO           mdAttributeFileDTO             = null;
 
-  protected static BusinessDTO       mdAttributeDateDTO             = null;
+  protected static MdAttributeDateDAO           mdAttributeDateDTO             = null;
 
-  protected static BusinessDTO       mdAttributeTimeDTO             = null;
+  protected static MdAttributeTimeDAO           mdAttributeTimeDTO             = null;
 
-  protected static BusinessDTO       suitMaster                     = null;
+  protected static MdBusinessDAO                suitMaster                     = null;
 
-  protected static String            suitMasterType                 = null;
+  protected static String                       suitMasterType                 = null;
 
-  protected static BusinessDTO       structMdBusiness               = null;
+  protected static MdStructDAO                  structMdBusiness               = null;
 
-  protected static String            structType                     = null;
+  protected static String                       structType                     = null;
 
-  protected static BusinessDTO       suitMdEnumeration              = null;
+  protected static MdEnumerationDAO             suitMdEnumeration              = null;
 
-  protected static String            suitMdEnumerationType          = null;
+  protected static String                       suitMdEnumerationType          = null;
 
-  protected static List<String>      suitEnumNames;
+  protected static List<String>                 suitEnumNames;
 
-  protected static List<String>      suitEnumDisplayLabels;
+  protected static List<String>                 suitEnumDisplayLabels;
 
-  protected static BusinessDTO       enumMdAttribute                = null;
+  protected static MdAttributeCharacterDAO      enumMdAttribute                = null;
 
-  protected static BusinessDTO       mdAttributeEnumerationDTO      = null;
+  protected static MdAttributeEnumerationDAO    mdAttributeEnumerationDTO      = null;
 
-  protected static BusinessDTO       mdAttributeMultiReferenceDTO   = null;
+  protected static MdAttributeMultiReferenceDAO mdAttributeMultiReferenceDTO   = null;
 
-  protected static BusinessDTO       mdAttributeMultiTermDTO        = null;
+  protected static MdAttributeMultiTermDAO      mdAttributeMultiTermDTO        = null;
 
-  protected static BusinessDTO       mdAttributeStructDTO           = null;
+  protected static MdAttributeStructDAO         mdAttributeStructDTO           = null;
 
-  protected static BusinessDTO       refClass                       = null;
+  protected static MdBusinessDAO                refClass                       = null;
 
-  protected static BusinessDTO       termClass                      = null;
+  protected static MdTermDAO                    termClass                      = null;
 
-  protected static String            refType                        = null;
+  protected static String                       refType                        = null;
 
-  protected static String            termType                       = null;
+  protected static String                       termType                       = null;
 
-  protected static BusinessDTO       mdAttributeReferenceDTO        = null;
+  protected static MdAttributeReferenceDAO      mdAttributeReferenceDTO        = null;
 
-  protected static BusinessDTO       mdAttributeTermDTO             = null;
+  protected static MdAttributeTermDAO           mdAttributeTermDTO             = null;
 
-  protected static BusinessDTO       mdAttributeHashDTO             = null;
+  protected static MdAttributeHashDAO           mdAttributeHashDTO             = null;
 
-  protected static BusinessDTO       mdAttributeSymmetricDTO        = null;
+  protected static MdAttributeSymmetricDAO      mdAttributeSymmetricDTO        = null;
 
-  protected static BusinessDTO       mdAttributeCharacterDTO        = null;
+  protected static MdAttributeCharacterDAO      mdAttributeCharacterDTO        = null;
 
-  protected static BusinessDTO       mdAttributeVirtualCharacterDTO = null;
+  protected static MdAttributeVirtualDAO        mdAttributeVirtualCharacterDTO = null;
 
-  protected static BusinessDTO       mdAttributeTextDTO             = null;
+  protected static MdAttributeTextDAO           mdAttributeTextDTO             = null;
 
-  protected static BusinessDTO       mdAttributeClobDTO             = null;
+  protected static MdAttributeClobDAO           mdAttributeClobDTO             = null;
 
-  protected static BusinessDTO       vault                          = null;
+  protected static VaultDAO                     vault                          = null;
 
-  protected static BusinessDTO       relMdAttributeLongDTO          = null;
+  protected static MdAttributeLongDAO           relMdAttributeLongDTO          = null;
 
-  protected static BusinessDTO       structMdAttributeCharDTO       = null;
+  protected static MdAttributeCharacterDAO      structMdAttributeCharDTO       = null;
 
-  protected static BusinessDTO       hearts                         = null;
+  protected static BusinessDAO                  hearts                         = null;
 
-  protected static BusinessDTO       clubs                          = null;
+  protected static BusinessDAO                  clubs                          = null;
 
-  protected static BusinessDTO       spades                         = null;
+  protected static BusinessDAO                  spades                         = null;
 
-  protected static BusinessDTO       diamonds                       = null;
+  protected static BusinessDAO                  diamonds                       = null;
 
-  protected static List<BusinessDTO> suits                          = new LinkedList<BusinessDTO>();
+  protected static List<BusinessDAO>            suits                          = new LinkedList<BusinessDAO>();
 
-  protected static final byte[]      bytes                          = { 1, 2, 3, 4 };
+  protected static final byte[]                 bytes                          = { 1, 2, 3, 4 };
 
-  protected static final byte[]      bytes2                         = { 2, 3, 4, 5, 6 };
-
-  public static Test suite()
-  {
-    TestSuiteTF suite = new TestSuiteTF();
-    suite.addTestSuite(NoSourceAdapterTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-        clientRequest = systemSession.getRequest();
-        classSetUp();
-        finalizeSetup();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
+  protected static final byte[]                 bytes2                         = { 2, 3, 4, 5, 6 };
 
   protected ClientSession createAnonymousSession()
   {
@@ -365,79 +354,89 @@ public class NoSourceAdapterTest extends TestCase
     return clientSession.getRequest();
   }
 
+  @BeforeClass
   public static void classSetUp()
   {
+    systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+    clientRequest = systemSession.getRequest();
+    classSetUpRequest();
+    finalizeSetup();
+  }
+
+  @Request
+  public static void classSetUpRequest()
+  {
     // create a new TestUser type with a phone number struct
-    testUserMd = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    testUserMd = MdBusinessDAO.newInstance();
     testUserMd.setValue(MdBusinessInfo.NAME, "TestUser");
     testUserMd.setValue(MdBusinessInfo.PACKAGE, pack);
     testUserMd.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     testUserMd.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "User Subclass");
     testUserMd.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, UserInfo.ID_VALUE);
     testUserMd.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(testUserMd);
+    testUserMd.apply();
 
-    testUserType = definesType(testUserMd);
+    testUserType = testUserMd.definesType();
 
-    tommyUser = clientRequest.newBusiness(testUserType);
+    tommyUser = BusinessDAO.newInstance(testUserType);
     tommyUser.setValue(UserInfo.USERNAME, "Tommy");
     tommyUser.setValue(UserInfo.PASSWORD, "music");
-    clientRequest.createBusiness(tommyUser);
+    tommyUser.apply();
 
-    littleBillyTables = clientRequest.newBusiness(testUserType);
+    littleBillyTables = BusinessDAO.newInstance(testUserType);
     littleBillyTables.setValue(UserInfo.USERNAME, "Billy");
     littleBillyTables.setValue(UserInfo.PASSWORD, "Tables");
-    clientRequest.createBusiness(littleBillyTables);
+    littleBillyTables.apply();
 
-    suitMaster = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, "SuitMaster");
     suitMaster.setValue(MdBusinessInfo.PACKAGE, pack);
     suitMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
     suitMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     suitMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
     suitMaster.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(suitMaster);
+    suitMaster.apply();
 
-    suitMdEnumeration = clientRequest.newBusiness(MdEnumerationInfo.CLASS);
+    suitMdEnumeration = MdEnumerationDAO.newInstance();
     suitMdEnumeration.setValue(MdEnumerationInfo.NAME, "SuitEnum");
     suitMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, pack);
     suitMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    suitMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
+    suitMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getOid());
     suitMdEnumeration.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(suitMdEnumeration);
+    suitMdEnumeration.apply();
 
     suitMdEnumerationType = pack + ".SuitEnum";
 
-    enumMdAttribute = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    enumMdAttribute = MdAttributeCharacterDAO.newInstance();
     enumMdAttribute.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     enumMdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "32");
     enumMdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
     enumMdAttribute.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "I wish I was a reference field!");
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    enumMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, suitMaster.getId());
-    clientRequest.createBusiness(enumMdAttribute);
+    enumMdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, suitMaster.getOid());
+    enumMdAttribute.apply();
 
-    structMdBusiness = clientRequest.newBusiness(MdStructInfo.CLASS);
+    structMdBusiness = MdStructDAO.newInstance();
     structMdBusiness.setValue(MdStructInfo.NAME, "StructTest");
     structMdBusiness.setValue(MdStructInfo.PACKAGE, pack);
     structMdBusiness.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A strct");
     structMdBusiness.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "junit struct");
     structMdBusiness.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(structMdBusiness);
+    structMdBusiness.apply();
 
-    structMdAttributeCharDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    structMdAttributeCharDTO = MdAttributeCharacterDAO.newInstance();
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.NAME, "structChar");
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     structMdAttributeCharDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "struct string");
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, structMdBusiness.getId());
-    clientRequest.createBusiness(structMdAttributeCharDTO);
+    structMdAttributeCharDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, structMdBusiness.getOid());
+    structMdAttributeCharDTO.apply();
 
-    childMdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    childMdBusiness = MdBusinessDAO.newInstance();
     childMdBusiness.setValue(MdBusinessInfo.NAME, "ChildTest");
     childMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
     childMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -446,38 +445,28 @@ public class NoSourceAdapterTest extends TestCase
     childMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     childMdBusiness.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(childMdBusiness);
+    childMdBusiness.apply();
 
-    BusinessDTO phoneNumber = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
+    MdAttributeStructDAO phoneNumber = MdAttributeStructDAO.newInstance();
     phoneNumber.setValue(MdAttributeStructInfo.NAME, "phoneNumber");
     phoneNumber.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Phone Number");
-    phoneNumber.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testUserMd.getId());
+    phoneNumber.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, testUserMd.getOid());
     phoneNumber.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     phoneNumber.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    phoneNumber.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getId());
-    phoneNumber.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(phoneNumber);
+    phoneNumber.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getOid());
+    phoneNumber.apply();
 
-    mdAttributeCharacterDTO_2 = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO_2 = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.NAME, "refChar");
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.SIZE, "32");
     mdAttributeCharacterDTO_2.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "I wish I was a reference field!");
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO_2);
+    mdAttributeCharacterDTO_2.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, childMdBusiness.getOid());
+    mdAttributeCharacterDTO_2.apply();
 
-    stateMachine = clientRequest.newBusiness(MdStateMachineInfo.CLASS);
-    stateMachine.setValue(MdStateMachineInfo.NAME, "ChildStateMachine");
-    stateMachine.setValue(MdStateMachineInfo.PACKAGE, pack);
-    stateMachine.setStructValue(MdStateMachineInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child State Machine");
-    stateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, childMdBusiness.getId());
-    stateMachine.setValue(MdStateMachineInfo.SUPER_MD_BUSINESS, EntityTypes.STATE_MASTER.getId());
-    stateMachine.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(stateMachine);
-
-    parentMdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    parentMdBusiness = MdBusinessDAO.newInstance();
     parentMdBusiness.setValue(MdBusinessInfo.NAME, "ParentTest");
     parentMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
     parentMdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -485,12 +474,12 @@ public class NoSourceAdapterTest extends TestCase
     parentMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     parentMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     parentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    parentMdBusiness.addEnumItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.toString());
+    parentMdBusiness.addItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
     parentMdBusiness.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
-    clientRequest.createBusiness(parentMdBusiness);
+    parentMdBusiness.apply();
 
-    mdAttributeBooleanDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    mdAttributeBooleanDTO = MdAttributeBooleanDAO.newInstance();
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.NAME, "aBoolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -498,10 +487,10 @@ public class NoSourceAdapterTest extends TestCase
     mdAttributeBooleanDTO.setStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean desc");
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBooleanDTO);
+    mdAttributeBooleanDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeBooleanDTO.apply();
 
-    BusinessDTO mdAttributeBooleanImmutableDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    MdAttributeBooleanDAO mdAttributeBooleanImmutableDTO = MdAttributeBooleanDAO.newInstance();
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.NAME, "anImmutableBoolean");
     mdAttributeBooleanImmutableDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Immutable Boolean");
     mdAttributeBooleanImmutableDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
@@ -510,57 +499,57 @@ public class NoSourceAdapterTest extends TestCase
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBooleanImmutableDTO);
+    mdAttributeBooleanImmutableDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeBooleanImmutableDTO.apply();
 
-    mdAttributeCharacterDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeCharacterDTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacter");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
     mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character desc");
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO);
+    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeCharacterDTO.apply();
 
-    mdAttributeConversionDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    mdAttributeConversionDTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.NAME, "aHiddenCharacter");
     mdAttributeConversionDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hidden Character");
     mdAttributeConversionDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hidden Character desc");
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
+    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.GENERATE_ACCESSOR, MdAttributeBooleanInfo.FALSE);
-    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeConversionDTO);
+    mdAttributeConversionDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeConversionDTO.apply();
 
-    BusinessDTO mdAttributeCharGroupIndex1_DTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    MdAttributeCharacterDAO mdAttributeCharGroupIndex1_DTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacterGroupIndex1");
     mdAttributeCharGroupIndex1_DTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character Group Index 1");
     mdAttributeCharGroupIndex1_DTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character for a group index");
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharGroupIndex1_DTO);
+    mdAttributeCharGroupIndex1_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeCharGroupIndex1_DTO.apply();
 
-    BusinessDTO mdAttributeCharGroupIndex2_DTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    MdAttributeCharacterDAO mdAttributeCharGroupIndex2_DTO = MdAttributeCharacterDAO.newInstance();
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.NAME, "aCharacterGroupIndex2");
     mdAttributeCharGroupIndex2_DTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character Group Index 2");
     mdAttributeCharGroupIndex2_DTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character for a group index");
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharGroupIndex2_DTO);
+    mdAttributeCharGroupIndex2_DTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeCharGroupIndex2_DTO.apply();
 
-    mdAttributeDecimalDTO = clientRequest.newBusiness(MdAttributeDecimalInfo.CLASS);
+    mdAttributeDecimalDTO = MdAttributeDecimalDAO.newInstance();
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
-    mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -568,27 +557,27 @@ public class NoSourceAdapterTest extends TestCase
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.LENGTH, "16");
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDecimalDTO);
+    mdAttributeDecimalDTO.apply();
 
-    mdAttributeDoubleDTO = clientRequest.newBusiness(MdAttributeDoubleInfo.CLASS);
+    mdAttributeDoubleDTO = MdAttributeDoubleDAO.newInstance();
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.NAME, "aDouble");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.LENGTH, "16");
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeDoubleDTO);
+    mdAttributeDoubleDTO.apply();
 
-    mdAttributeFloatDTO = clientRequest.newBusiness(MdAttributeFloatInfo.CLASS);
+    mdAttributeFloatDTO = MdAttributeFloatDAO.newInstance();
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.NAME, "aFloat");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
-    mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -596,9 +585,9 @@ public class NoSourceAdapterTest extends TestCase
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.LENGTH, "16");
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DECIMAL, "4");
-    clientRequest.createBusiness(mdAttributeFloatDTO);
+    mdAttributeFloatDTO.apply();
 
-    mdAttributeIntegerDTO = clientRequest.newBusiness(MdAttributeIntegerInfo.CLASS);
+    mdAttributeIntegerDTO = MdAttributeIntegerDAO.newInstance();
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.NAME, "anInteger");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer");
     mdAttributeIntegerDTO.setStructValue(MdAttributeIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Integer Desc");
@@ -607,90 +596,90 @@ public class NoSourceAdapterTest extends TestCase
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeIntegerDTO);
+    mdAttributeIntegerDTO.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeIntegerDTO.apply();
 
-    mdAttributeLongDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    mdAttributeLongDTO = MdAttributeLongDAO.newInstance();
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.NAME, "aLong");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long");
     mdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Long Desc");
-    mdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttributeLongDTO.setValue(MdAttributeLongInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeLongDTO);
+    mdAttributeLongDTO.apply();
 
-    mdAttributeDateDTO = clientRequest.newBusiness(MdAttributeDateInfo.CLASS);
+    mdAttributeDateDTO = MdAttributeDateDAO.newInstance();
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.NAME, "aDate");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date");
     mdAttributeDateDTO.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Date Desc");
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDTO.setValue(MdAttributeDateInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeDateDTO.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeDateDTO);
+    mdAttributeDateDTO.setValue(MdAttributeDateInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeDateDTO.apply();
 
-    mdAttributeDateTimeDTO = clientRequest.newBusiness(MdAttributeDateTimeInfo.CLASS);
+    mdAttributeDateTimeDTO = MdAttributeDateTimeDAO.newInstance();
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.NAME, "aDateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime");
     mdAttributeDateTimeDTO.setStructValue(MdAttributeDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A DateTime Desc");
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeDateTimeDTO);
+    mdAttributeDateTimeDTO.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeDateTimeDTO.apply();
 
-    mdAttributeTimeDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    mdAttributeTimeDTO = MdAttributeTimeDAO.newInstance();
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.NAME, "aTime");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time");
     mdAttributeTimeDTO.setStructValue(MdAttributeTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Time Desc");
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeTimeDTO);
+    mdAttributeTimeDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeTimeDTO.apply();
 
     // add an MdAttributeBlob to the new type
-    mdAttributeBlobDTO = clientRequest.newBusiness(MdAttributeBlobInfo.CLASS);
+    mdAttributeBlobDTO = MdAttributeBlobDAO.newInstance();
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.NAME, "aBlob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "some blob");
     mdAttributeBlobDTO.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Blob desc");
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeBlobDTO);
+    mdAttributeBlobDTO.setValue(MdAttributeBlobInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeBlobDTO.apply();
 
-    mdAttributeEnumerationDTO = clientRequest.newBusiness(MdAttributeEnumerationInfo.CLASS);
+    mdAttributeEnumerationDTO = MdAttributeEnumerationDAO.newInstance();
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.NAME, "anEnum");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated Attribute");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated desc");
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitMdEnumeration.getId());
-    clientRequest.createBusiness(mdAttributeEnumerationDTO);
+    mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, suitMdEnumeration.getOid());
+    mdAttributeEnumerationDTO.apply();
 
-    mdAttributeHashDTO = clientRequest.newBusiness(MdAttributeHashInfo.CLASS);
+    mdAttributeHashDTO = MdAttributeHashDAO.newInstance();
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.NAME, "aHash");
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setValue(MdAttributeHashInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hashed Attributed");
     mdAttributeHashDTO.setStructValue(MdAttributeHashInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Hash Desc");
-    mdAttributeHashDTO.addEnumItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.toString());
-    mdAttributeHashDTO.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeHashDTO);
+    mdAttributeHashDTO.addItem(MdAttributeHashInfo.HASH_METHOD, HashMethods.MD5.getOid());
+    mdAttributeHashDTO.setValue(MdAttributeHashInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeHashDTO.apply();
 
-    mdAttributeFileDTO = clientRequest.newBusiness(MdAttributeFileInfo.CLASS);
+    mdAttributeFileDTO = MdAttributeFileDAO.newInstance();
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.NAME, "aFile");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File");
     mdAttributeFileDTO.setStructValue(MdAttributeFileInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A File Desc");
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeFileDTO.setValue(MdAttributeFileInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeFileDTO.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeFileDTO);
+    mdAttributeFileDTO.setValue(MdAttributeFileInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeFileDTO.apply();
 
     // class for ref object attribute
-    refClass = clientRequest.newBusiness(MdBusinessInfo.CLASS);
+    refClass = MdBusinessDAO.newInstance();
     refClass.setValue(MdBusinessInfo.NAME, "RefClass");
     refClass.setValue(MdBusinessInfo.PACKAGE, pack);
     refClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -699,20 +688,20 @@ public class NoSourceAdapterTest extends TestCase
     refClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     refClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     refClass.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(refClass);
+    refClass.apply();
 
-    mdAttributeReferenceDTO = clientRequest.newBusiness(MdAttributeReferenceInfo.CLASS);
+    mdAttributeReferenceDTO = MdAttributeReferenceDAO.newInstance();
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.NAME, "aReference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference");
     mdAttributeReferenceDTO.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Reference Desc");
-    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
-    clientRequest.createBusiness(mdAttributeReferenceDTO);
+    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getOid());
+    mdAttributeReferenceDTO.apply();
 
     // class for term object attribute
-    termClass = clientRequest.newBusiness(MdTermInfo.CLASS);
+    termClass = MdTermDAO.newInstance();
     termClass.setValue(MdBusinessInfo.NAME, "TermClass");
     termClass.setValue(MdBusinessInfo.PACKAGE, pack);
     termClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -720,78 +709,78 @@ public class NoSourceAdapterTest extends TestCase
     termClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit term object");
     termClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     termClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(termClass);
+    termClass.apply();
 
-    mdAttributeTermDTO = clientRequest.newBusiness(MdAttributeTermInfo.CLASS);
+    mdAttributeTermDTO = MdAttributeTermDAO.newInstance();
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.NAME, "aTerm");
     mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term");
     mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term Desc");
-    mdAttributeTermDTO.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeTermDTO);
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getOid());
+    mdAttributeTermDTO.apply();
 
-    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO = MdAttributeMultiReferenceDAO.newInstance();
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getOid());
+    mdAttributeMultiReferenceDTO.apply();
 
-    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO = MdAttributeMultiTermDAO.newInstance();
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
     mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
-    clientRequest.createBusiness(mdAttributeMultiTermDTO);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getOid());
+    mdAttributeMultiTermDTO.apply();
 
-    mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
+    mdAttributeStructDTO = MdAttributeStructDAO.newInstance();
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
-    mdAttributeStructDTO.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeStructDTO.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct Desc");
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeStructDTO.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getId());
-    clientRequest.createBusiness(mdAttributeStructDTO);
+    mdAttributeStructDTO.setValue(MdAttributeStructInfo.MD_STRUCT, EntityTypes.PHONE_NUMBER.getOid());
+    mdAttributeStructDTO.apply();
 
-    mdAttributeSymmetricDTO = clientRequest.newBusiness(MdAttributeSymmetricInfo.CLASS);
+    mdAttributeSymmetricDTO = MdAttributeSymmetricDAO.newInstance();
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.NAME, "aSym");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Attribute");
     mdAttributeSymmetricDTO.setStructValue(MdAttributeSymmetricInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Symmetric Desc");
-    mdAttributeSymmetricDTO.addEnumItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.toString());
+    mdAttributeSymmetricDTO.addItem(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.DES.getOid());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "56");
-    mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeSymmetricDTO.setValue(MdAttributeSymmetricInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdAttributeSymmetricDTO);
+    mdAttributeSymmetricDTO.apply();
 
-    mdAttributeTextDTO = clientRequest.newBusiness(MdAttributeTextInfo.CLASS);
+    mdAttributeTextDTO = MdAttributeTextDAO.newInstance();
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.NAME, "aText");
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text");
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTextDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Text Desc");
-    mdAttributeTextDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeTextDTO);
+    mdAttributeTextDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeTextDTO.apply();
 
-    mdAttributeClobDTO = clientRequest.newBusiness(MdAttributeClobInfo.CLASS);
+    mdAttributeClobDTO = MdAttributeClobDAO.newInstance();
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.NAME, "aClob");
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob");
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setValue(MdAttributeTextInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeClobDTO.setStructValue(MdAttributeTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob Desc");
-    mdAttributeClobDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeClobDTO);
+    mdAttributeClobDTO.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, parentMdBusiness.getOid());
+    mdAttributeClobDTO.apply();
 
-    mdRelationship = clientRequest.newBusiness(MdRelationshipInfo.CLASS);
+    mdRelationship = MdRelationshipDAO.newInstance();
     mdRelationship.setValue(MdRelationshipInfo.NAME, "DtoRel");
     mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.PACKAGE, pack);
@@ -799,59 +788,59 @@ public class NoSourceAdapterTest extends TestCase
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parentMdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parentMdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent dto");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, childMdBusiness.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, childMdBusiness.getOid());
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child dto");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "testChild");
     mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdRelationship);
+    mdRelationship.apply();
 
-    addAttributesToQuery(parentMdBusiness.getId());
+    addAttributesToQuery(parentMdBusiness.getOid());
 
     // Add attributes to the relationship to query
-    BusinessDTO businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    BusinessDAO businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "relChar");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
     businessDTO.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
+    businessDTO.apply();
 
-    relMdAttributeLongDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    relMdAttributeLongDTO = MdAttributeLongDAO.newInstance();
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.NAME, "relLong");
     relMdAttributeLongDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A long to query.");
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "123321");
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     relMdAttributeLongDTO.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    relMdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(relMdAttributeLongDTO);
+    relMdAttributeLongDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
+    relMdAttributeLongDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    businessDTO = MdAttributeTimeDAO.newInstance();
     businessDTO.setValue(MdAttributeTimeInfo.NAME, "relTime");
     businessDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A time to query.");
     businessDTO.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    businessDTO = MdAttributeBooleanDAO.newInstance();
     businessDTO.setValue(MdAttributeBooleanInfo.NAME, "relBoolean");
     businessDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A boolean to query.");
     businessDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdRelationship.getOid());
+    businessDTO.apply();
 
-    mdView = clientRequest.newBusiness(MdViewInfo.CLASS);
+    mdView = MdViewDAO.newInstance();
     mdView.setValue(MdViewInfo.NAME, "TestView");
     mdView.setValue(MdViewInfo.PACKAGE, pack);
     mdView.setValue(MdViewInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -861,52 +850,46 @@ public class NoSourceAdapterTest extends TestCase
     mdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
 
-    clientRequest.createBusiness(mdView);
+    mdView.apply();
 
-    mdViewType = definesType(mdView);
+    mdViewType = mdView.definesType();
 
-    mdAttributeVirtualCharacterDTO = clientRequest.newBusiness(MdAttributeVirtualInfo.CLASS);
-    mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeCharacterDTO.getId());
-    mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdView.getId());
-    clientRequest.createBusiness(mdAttributeVirtualCharacterDTO);
+    mdAttributeVirtualCharacterDTO = MdAttributeVirtualDAO.newInstance();
+    mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.MD_ATTRIBUTE_CONCRETE, mdAttributeCharacterDTO.getOid());
+    mdAttributeVirtualCharacterDTO.setValue(MdAttributeVirtualInfo.DEFINING_MD_VIEW, mdView.getOid());
+    mdAttributeVirtualCharacterDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "objectId");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Original Object Id");
     businessDTO.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdView.getId());
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdView.getOid());
+    businessDTO.apply();
 
-    addAttributesToQuery(mdView.getId());
+    addAttributesToQuery(mdView.getOid());
 
-    vault = clientRequest.newBusiness(VaultInfo.CLASS);
+    vault = VaultDAO.newInstance();
     vault.setValue(VaultInfo.VAULT_NAME, "vault1");
-    clientRequest.createBusiness(vault);
+    vault.apply();
 
-    childMdBusinessType = definesType(childMdBusiness);
-    parentMdBusinessType = definesType(parentMdBusiness);
-    stateMachineType = definesType(stateMachine);
-    mdRelationshipType = definesType(mdRelationship);
-    refType = definesType(refClass);
-    termType = definesType(termClass);
-    structType = definesType(structMdBusiness);
+    childMdBusinessType = childMdBusiness.definesType();
+    parentMdBusinessType = parentMdBusiness.definesType();
+    mdRelationshipType = mdRelationship.definesType();
+    refType = refClass.definesType();
+    termType = termClass.definesType();
+    structType = structMdBusiness.definesType();
 
     suitMasterType = suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME);
 
   }
 
-  private static String definesType(BusinessDTO mdBusinessDTO)
-  {
-    return pack + "." + mdBusinessDTO.getValue(MdTypeInfo.NAME);
-  }
-
   private static void addAttributesToQuery(String mdClassId)
   {
     // START attributes to the parent mdentity to query
-    BusinessDTO businessDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
+    BusinessDAO businessDTO = MdAttributeCharacterDAO.newInstance();
     businessDTO.setValue(MdAttributeCharacterInfo.NAME, "queryChar");
     businessDTO.setValue(MdAttributeCharacterInfo.SIZE, "32");
     businessDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A string");
@@ -914,81 +897,71 @@ public class NoSourceAdapterTest extends TestCase
     businessDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeCharacterInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeLongInfo.CLASS);
+    businessDTO = MdAttributeLongDAO.newInstance();
     businessDTO.setValue(MdAttributeLongInfo.NAME, "queryLong");
     businessDTO.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A long to query.");
-    businessDTO.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
-    businessDTO.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeLongInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeLongInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeLongInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeLongInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeTimeInfo.CLASS);
+    businessDTO = MdAttributeTimeDAO.newInstance();
     businessDTO.setValue(MdAttributeTimeInfo.NAME, "queryTime");
     businessDTO.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A time to query.");
     businessDTO.setValue(MdAttributeTimeInfo.DEFAULT_VALUE, "");
     businessDTO.setValue(MdAttributeTimeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeTimeInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
 
-    businessDTO = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
+    businessDTO = MdAttributeBooleanDAO.newInstance();
     businessDTO.setValue(MdAttributeBooleanInfo.NAME, "queryBoolean");
     businessDTO.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A boolean to query.");
     businessDTO.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     businessDTO.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     businessDTO.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdClassId);
-    clientRequest.createBusiness(businessDTO);
+    businessDTO.apply();
     // END add attributes to query
   }
 
+  @Request
   public static void finalizeSetup()
   {
-    String mdStateType = stateMachineType;
-
-    state1 = clientRequest.newBusiness(mdStateType);
-    state1.setValue(StateMasterDAOIF.STATE_NAME, "FirstState");
-    state1.clearEnum(StateMasterDAOIF.ENTRY_STATE);
-    state1.addEnumItem(StateMasterDAOIF.ENTRY_STATE, StateMasterDAOIF.Entry.DEFAULT_ENTRY_STATE.toString());
-    state1.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(state1);
-
     suitEnumNames = new LinkedList<String>();
     suitEnumDisplayLabels = new LinkedList<String>();
 
-    hearts = clientRequest.newBusiness(suitMasterType);
+    hearts = BusinessDAO.newInstance(suitMasterType);
     hearts.setValue("refChar", "Some other string");
     hearts.setValue(EnumerationMasterInfo.NAME, "HEARTS");
     hearts.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hearts");
-    clientRequest.createBusiness(hearts);
+    hearts.apply();
     suitEnumNames.add(hearts.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(hearts.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    clubs = clientRequest.newBusiness(suitMasterType);
+    clubs = BusinessDAO.newInstance(suitMasterType);
     clubs.setValue("refChar", "Some other string: Clubs");
     clubs.setValue(EnumerationMasterInfo.NAME, "CLUBS");
     clubs.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clubs");
-    clientRequest.createBusiness(clubs);
+    clubs.apply();
     suitEnumNames.add(clubs.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(clubs.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    spades = clientRequest.newBusiness(suitMasterType);
+    spades = BusinessDAO.newInstance(suitMasterType);
     spades.setValue("refChar", "Some other string: Spades");
     spades.setValue(EnumerationMasterInfo.NAME, "SPADES");
     spades.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Spades");
-    clientRequest.createBusiness(spades);
+    spades.apply();
     suitEnumNames.add(spades.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(spades.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
-    diamonds = clientRequest.newBusiness(suitMasterType);
+    diamonds = BusinessDAO.newInstance(suitMasterType);
     diamonds.setValue("refChar", "Some other string: Diamonds");
     diamonds.setValue(EnumerationMasterInfo.NAME, "DIAMONDS");
     diamonds.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Diamonds");
-    clientRequest.createBusiness(diamonds);
+    diamonds.apply();
     suitEnumNames.add(diamonds.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(diamonds.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
@@ -997,41 +970,41 @@ public class NoSourceAdapterTest extends TestCase
     suits.add(spades);
     suits.add(diamonds);
 
-    MutableDTO _mdAttributeEnumerationDTO = clientRequest.get(mdAttributeEnumerationDTO.getId());
+    MutableDTO _mdAttributeEnumerationDTO = clientRequest.get(mdAttributeEnumerationDTO.getOid());
     clientRequest.lock((ElementDTO) _mdAttributeEnumerationDTO);
-    _mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, diamonds.getId());
+    _mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, diamonds.getOid());
     clientRequest.update(_mdAttributeEnumerationDTO);
   }
 
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
-    clientRequest.delete(mdView.getId());
+    TestFixtureFactory.delete(mdView);
 
-    clientRequest.delete(mdRelationship.getId());
+    TestFixtureFactory.delete(mdRelationship);
 
-    clientRequest.delete(childMdBusiness.getId());
+    TestFixtureFactory.delete(childMdBusiness);
 
-    clientRequest.delete(parentMdBusiness.getId());
+    TestFixtureFactory.delete(parentMdBusiness);
 
-    clientRequest.delete(structMdBusiness.getId());
+    TestFixtureFactory.delete(structMdBusiness);
 
-    clientRequest.delete(refClass.getId());
+    TestFixtureFactory.delete(refClass);
 
-    clientRequest.delete(termClass.getId());
+    TestFixtureFactory.delete(termClass);
 
-    clientRequest.delete(suitMaster.getId());
+    TestFixtureFactory.delete(suitMaster);
 
-    clientRequest.delete(vault.getId());
-
-    state1 = null;
+    TestFixtureFactory.delete(vault);
 
     suits.clear();
 
-    clientRequest.delete(littleBillyTables.getId());
+    TestFixtureFactory.delete(littleBillyTables);
 
-    clientRequest.delete(tommyUser.getId());
+    TestFixtureFactory.delete(tommyUser);
 
-    clientRequest.delete(testUserMd.getId());
+    TestFixtureFactory.delete(testUserMd);
 
     systemSession.logout();
   }
@@ -1051,7 +1024,7 @@ public class NoSourceAdapterTest extends TestCase
     clientRequest.createBusiness(childInstance);
 
     // relationship instance
-    relInstance = clientRequest.addParent(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    relInstance = clientRequest.addParent(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     relInstance.setValue("relChar", "controller query");
     relInstance.setValue("relLong", "100");
     relInstance.setValue("relBoolean", MdAttributeBooleanInfo.TRUE);
@@ -1065,7 +1038,7 @@ public class NoSourceAdapterTest extends TestCase
     if (parentInstance != null)
     {
       clientRequest.lock(parentInstance);
-      clientRequest.delete(parentInstance.getId());
+      clientRequest.delete(parentInstance.getOid());
     }
 
     if (childInstance != null)
@@ -1096,14 +1069,11 @@ public class NoSourceAdapterTest extends TestCase
     return _parentInstance;
   }
 
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(new EntityMasterTestSetup(AdapterTest.suite()));
-  }
-
+  @Request
+  @Test
   public void testUserRoleMap()
   {
-    clientRequest.assignMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
+    clientRequest.assignMember(tommyUser.getOid(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyRequest = getRequest(tommySession);
@@ -1111,14 +1081,16 @@ public class NoSourceAdapterTest extends TestCase
     Map<String, String> roleMap = tommyRequest.getSessionUserRoles();
 
     Assert.assertEquals(roleMap.size(), 2);
-    assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
-    assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.ROLE_ADMIN_ROLE));
+    Assert.assertTrue(roleMap.containsKey(RoleDAOIF.DEVELOPER_ROLE));
 
     tommySession.logout();
 
-    clientRequest.removeMember(tommyUser.getId(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
+    clientRequest.removeMember(tommyUser.getOid(), RoleDAOIF.ROLE_ADMIN_ROLE, RoleDAOIF.DEVELOPER_ROLE);
   }
 
+  @Request
+  @Test
   public void testGetBusinessDTOsForEnumItems()
   {
     List<String> requestedNamesList = new ArrayList<String>();
@@ -1154,6 +1126,8 @@ public class NoSourceAdapterTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testGetInvalidEnumeration()
   {
     List<String> requestedNamesList = new ArrayList<String>();
@@ -1182,6 +1156,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEmptyValueProblem()
   {
     BusinessDTO parent = clientRequest.newBusiness(parentMdBusinessType);
@@ -1251,11 +1227,13 @@ public class NoSourceAdapterTest extends TestCase
     {
       if (!parent.isNewInstance())
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testDuplicateColumnDataInDatabase()
   {
     BusinessDTO parent1 = createParentInstance(clientRequest);
@@ -1275,7 +1253,8 @@ public class NoSourceAdapterTest extends TestCase
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
       // if (!e.getDeveloperMessage().contains("[aCharacter]")) {
-      // Assert.fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: ["
+      // Assert.fail("Expected to find the string \"[aCharacter]\" within the
+      // exception's developer message: ["
       // + e.getDeveloperMessage() + "].");
       // }
       String check = "[A Character]";
@@ -1286,14 +1265,16 @@ public class NoSourceAdapterTest extends TestCase
     }
     finally
     {
-      clientRequest.delete(parent1.getId());
+      clientRequest.delete(parent1.getOid());
       if (!parent2.isNewInstance())
       {
-        clientRequest.delete(parent2.getId());
+        clientRequest.delete(parent2.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testJSONObjectQuery() throws JSONException
   {
     createQueryInstances();
@@ -1335,6 +1316,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetChildren()
   {
     BusinessDTO child1 = null;
@@ -1360,11 +1343,11 @@ public class NoSourceAdapterTest extends TestCase
       parent = this.createParentInstance(clientRequest);
 
       // add the children to the parent
-      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getId(), child1.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getOid(), child1.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getId(), child2.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getOid(), child2.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getId(), child3.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getOid(), child3.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       List<BusinessDTO> definedObjects = new LinkedList<BusinessDTO>();
@@ -1372,15 +1355,15 @@ public class NoSourceAdapterTest extends TestCase
       definedObjects.add(child2);
       definedObjects.add(child3);
 
-      // retrieve the children and check for id matches
-      List<? extends BusinessDTO> returnedObjects = (List<? extends BusinessDTO>) clientRequest.getChildren(parent.getId(), mdRelationshipType);
+      // retrieve the children and check for oid matches
+      List<? extends BusinessDTO> returnedObjects = (List<? extends BusinessDTO>) clientRequest.getChildren(parent.getOid(), mdRelationshipType);
       for (BusinessDTO defRel : definedObjects)
       {
         boolean foundMatch = false;
         for (BusinessDTO returnRel : returnedObjects)
         {
           // look for a relationship match
-          if (defRel.getId().equals(returnRel.getId()))
+          if (defRel.getOid().equals(returnRel.getOid()))
           {
             foundMatch = true;
           }
@@ -1394,19 +1377,21 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent != null)
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
 
       if (child1 != null)
-        clientRequest.delete(child1.getId());
+        clientRequest.delete(child1.getOid());
 
       if (child2 != null)
-        clientRequest.delete(child2.getId());
+        clientRequest.delete(child2.getOid());
 
       if (child3 != null)
-        clientRequest.delete(child3.getId());
+        clientRequest.delete(child3.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testGetParents()
   {
     BusinessDTO parent1 = null;
@@ -1430,11 +1415,11 @@ public class NoSourceAdapterTest extends TestCase
       clientRequest.createBusiness(child);
 
       // add the children to the parent
-      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addParent(parent3.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addParent(parent3.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       List<BusinessDTO> definedObjects = new LinkedList<BusinessDTO>();
@@ -1442,15 +1427,15 @@ public class NoSourceAdapterTest extends TestCase
       definedObjects.add(parent2);
       definedObjects.add(parent3);
 
-      // retrieve the children and check for id matches
-      List<? extends BusinessDTO> returnedObjects = (List<? extends BusinessDTO>) clientRequest.getParents(child.getId(), mdRelationshipType);
+      // retrieve the children and check for oid matches
+      List<? extends BusinessDTO> returnedObjects = (List<? extends BusinessDTO>) clientRequest.getParents(child.getOid(), mdRelationshipType);
       for (BusinessDTO defRel : definedObjects)
       {
         boolean foundMatch = false;
         for (BusinessDTO returnRel : returnedObjects)
         {
           // look for a relationship match
-          if (defRel.getId().equals(returnRel.getId()))
+          if (defRel.getOid().equals(returnRel.getOid()))
           {
             foundMatch = true;
           }
@@ -1464,16 +1449,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent1 != null)
-        clientRequest.delete(parent1.getId());
+        clientRequest.delete(parent1.getOid());
 
       if (parent2 != null)
-        clientRequest.delete(parent2.getId());
+        clientRequest.delete(parent2.getOid());
 
       if (parent3 != null)
-        clientRequest.delete(parent3.getId());
+        clientRequest.delete(parent3.getOid());
 
       if (child != null)
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
     }
   }
 
@@ -1481,6 +1466,8 @@ public class NoSourceAdapterTest extends TestCase
    * Creates a few relationships and then gets the children.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetChildRelationships()
   {
     BusinessDTO child1 = null;
@@ -1506,11 +1493,11 @@ public class NoSourceAdapterTest extends TestCase
       parent = this.createParentInstance(clientRequest);
 
       // add the children to the parent
-      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getId(), child1.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getOid(), child1.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getId(), child2.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getOid(), child2.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getId(), child3.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getOid(), child3.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       List<RelationshipDTO> definedRels = new LinkedList<RelationshipDTO>();
@@ -1518,17 +1505,17 @@ public class NoSourceAdapterTest extends TestCase
       definedRels.add(relDTO2);
       definedRels.add(relDTO3);
 
-      // retrieve the children and check for id matches
-      List<RelationshipDTO> returnedRels = (List<RelationshipDTO>) clientRequest.getChildRelationships(parent.getId(), mdRelationshipType);
+      // retrieve the children and check for oid matches
+      List<RelationshipDTO> returnedRels = (List<RelationshipDTO>) clientRequest.getChildRelationships(parent.getOid(), mdRelationshipType);
       for (RelationshipDTO defRel : definedRels)
       {
         boolean foundMatch = false;
         for (RelationshipDTO returnRel : returnedRels)
         {
           // look for a relationship match
-          if (defRel.getId().equals(returnRel.getId()))
+          if (defRel.getOid().equals(returnRel.getOid()))
           {
-            if (defRel.getChildId().equals(returnRel.getChildId()) && defRel.getParentId().equals(returnRel.getParentId()))
+            if (defRel.getChildOid().equals(returnRel.getChildOid()) && defRel.getParentOid().equals(returnRel.getParentOid()))
             {
               foundMatch = true;
             }
@@ -1543,16 +1530,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent != null)
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
 
       if (child1 != null)
-        clientRequest.delete(child1.getId());
+        clientRequest.delete(child1.getOid());
 
       if (child2 != null)
-        clientRequest.delete(child2.getId());
+        clientRequest.delete(child2.getOid());
 
       if (child3 != null)
-        clientRequest.delete(child3.getId());
+        clientRequest.delete(child3.getOid());
     }
   }
 
@@ -1560,6 +1547,8 @@ public class NoSourceAdapterTest extends TestCase
    * Creates a few relationships and then gets the parents.
    */
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testGetParentRelationships()
   {
     BusinessDTO parent1 = null;
@@ -1585,11 +1574,11 @@ public class NoSourceAdapterTest extends TestCase
       // create the relationships
 
       // add the children to the parent
-      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addParent(parent3.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addParent(parent3.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       List<RelationshipDTO> definedRels = new LinkedList<RelationshipDTO>();
@@ -1597,17 +1586,17 @@ public class NoSourceAdapterTest extends TestCase
       definedRels.add(relDTO2);
       definedRels.add(relDTO3);
 
-      // retrieve the children and check for id matches
-      List<RelationshipDTO> returnedRels = (List<RelationshipDTO>) clientRequest.getParentRelationships(child.getId(), mdRelationshipType);
+      // retrieve the children and check for oid matches
+      List<RelationshipDTO> returnedRels = (List<RelationshipDTO>) clientRequest.getParentRelationships(child.getOid(), mdRelationshipType);
       for (RelationshipDTO defRel : definedRels)
       {
         boolean foundMatch = false;
         for (RelationshipDTO returnRel : returnedRels)
         {
           // look for a relationship match
-          if (defRel.getId().equals(returnRel.getId()))
+          if (defRel.getOid().equals(returnRel.getOid()))
           {
-            if (defRel.getChildId().equals(returnRel.getChildId()) && defRel.getParentId().equals(returnRel.getParentId()))
+            if (defRel.getChildOid().equals(returnRel.getChildOid()) && defRel.getParentOid().equals(returnRel.getParentOid()))
             {
               foundMatch = true;
             }
@@ -1622,22 +1611,24 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent1 != null)
-        clientRequest.delete(parent1.getId());
+        clientRequest.delete(parent1.getOid());
 
       if (parent2 != null)
-        clientRequest.delete(parent2.getId());
+        clientRequest.delete(parent2.getOid());
 
       if (parent3 != null)
-        clientRequest.delete(parent3.getId());
+        clientRequest.delete(parent3.getOid());
 
       if (child != null)
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
     }
   }
 
   /**
    * Adds a child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChild()
   {
     BusinessDTO child = null;
@@ -1648,22 +1639,24 @@ public class NoSourceAdapterTest extends TestCase
       clientRequest.createBusiness(child);
       parent = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
     }
     finally
     {
       if (child != null)
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
 
       if (parent != null)
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
     }
   }
 
   /**
    * Deletes a child in a relationship.
    */
+  @Request
+  @Test
   public void testDeleteChild()
   {
     BusinessDTO child = null;
@@ -1676,24 +1669,26 @@ public class NoSourceAdapterTest extends TestCase
 
       parent = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
       // delete the child
       clientRequest.lock(relDTO);
-      clientRequest.deleteChild(relDTO.getId());
+      clientRequest.deleteChild(relDTO.getOid());
     }
     finally
     {
       if (child != null)
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
 
       if (parent != null)
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteChildren()
   {
     BusinessDTO child1 = null;
@@ -1715,18 +1710,18 @@ public class NoSourceAdapterTest extends TestCase
       child3 = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child3);
 
-      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getId(), child1.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addChild(parent.getOid(), child1.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getId(), child2.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addChild(parent.getOid(), child2.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getId(), child3.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addChild(parent.getOid(), child3.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       // delete the children
-      clientRequest.deleteChildren(parent.getId(), mdRelationshipType);
+      clientRequest.deleteChildren(parent.getOid(), mdRelationshipType);
 
       // make sure the children were deleted
-      List<RelationshipDTO> retrievedChildren = (List<RelationshipDTO>) clientRequest.getChildRelationships(parent.getId(), mdRelationshipType);
+      List<RelationshipDTO> retrievedChildren = (List<RelationshipDTO>) clientRequest.getChildRelationships(parent.getOid(), mdRelationshipType);
 
       // there should not be any children
       if (retrievedChildren.size() != 0)
@@ -1737,20 +1732,22 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent != null)
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
 
       if (child1 != null)
-        clientRequest.delete(child1.getId());
+        clientRequest.delete(child1.getOid());
 
       if (child2 != null)
-        clientRequest.delete(child2.getId());
+        clientRequest.delete(child2.getOid());
 
       if (child3 != null)
-        clientRequest.delete(child3.getId());
+        clientRequest.delete(child3.getOid());
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testDeleteParents()
   {
     BusinessDTO parent1 = null;
@@ -1770,18 +1767,18 @@ public class NoSourceAdapterTest extends TestCase
 
       parent3 = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO1 = clientRequest.addParent(parent1.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO1);
-      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO2 = clientRequest.addParent(parent2.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO2);
-      RelationshipDTO relDTO3 = clientRequest.addParent(parent2.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO3 = clientRequest.addParent(parent2.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO3);
 
       // delete the parents
-      clientRequest.deleteParents(child.getId(), mdRelationshipType);
+      clientRequest.deleteParents(child.getOid(), mdRelationshipType);
 
       // make sure the parents were deleted
-      List<RelationshipDTO> retrievedParents = (List<RelationshipDTO>) clientRequest.getParentRelationships(child.getId(), mdRelationshipType);
+      List<RelationshipDTO> retrievedParents = (List<RelationshipDTO>) clientRequest.getParentRelationships(child.getOid(), mdRelationshipType);
 
       // there should not be any parents
       if (retrievedParents.size() != 0)
@@ -1792,19 +1789,21 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       if (parent1 != null)
-        clientRequest.delete(parent1.getId());
+        clientRequest.delete(parent1.getOid());
 
       if (parent2 != null)
-        clientRequest.delete(parent2.getId());
+        clientRequest.delete(parent2.getOid());
 
       if (parent3 != null)
-        clientRequest.delete(parent3.getId());
+        clientRequest.delete(parent3.getOid());
 
       if (child != null)
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testDeleteParent()
   {
     BusinessDTO child = null;
@@ -1816,23 +1815,23 @@ public class NoSourceAdapterTest extends TestCase
       clientRequest.createBusiness(child);
       parent = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO = clientRequest.addParent(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addParent(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
       // delete the parent
       clientRequest.lock(relDTO);
-      clientRequest.deleteParent(relDTO.getId());
+      clientRequest.deleteParent(relDTO.getOid());
     }
     finally
     {
       if (child != null)
       {
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
       }
 
       if (parent != null)
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
     }
   }
@@ -1840,6 +1839,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds an invalid child to a relationship.
    */
+  @Request
+  @Test
   public void testAddChildInvalid()
   {
     BusinessDTO child = null;
@@ -1848,7 +1849,7 @@ public class NoSourceAdapterTest extends TestCase
       child = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child);
 
-      RelationshipDTO relDTO = clientRequest.addChild(child.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addChild(child.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
       Assert.fail("An invalid relationship occured through Facade.addChild()");
@@ -1861,7 +1862,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       if (child != null)
       {
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
       }
     }
   }
@@ -1869,6 +1870,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds a valid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParent()
   {
     BusinessDTO child = null;
@@ -1881,19 +1884,19 @@ public class NoSourceAdapterTest extends TestCase
 
       parent = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO = clientRequest.addParent(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addParent(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
     }
     finally
     {
       if (child != null)
       {
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
       }
 
       if (parent != null)
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
     }
   }
@@ -1901,6 +1904,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Adds an invalid parent to a relationship.
    */
+  @Request
+  @Test
   public void testAddParentInvalid()
   {
     BusinessDTO parent = null;
@@ -1908,7 +1913,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       parent = this.createParentInstance(clientRequest);
 
-      RelationshipDTO relDTO = clientRequest.addParent(parent.getId(), parent.getId(), mdRelationshipType);
+      RelationshipDTO relDTO = clientRequest.addParent(parent.getOid(), parent.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relDTO);
 
       Assert.fail("An invalid relationship occured through Facade.addParent()");
@@ -1921,7 +1926,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       if (parent != null)
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
     }
   }
@@ -1929,6 +1934,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testUpdateEntity()
   {
     // attributes for the new business object
@@ -1963,7 +1970,7 @@ public class NoSourceAdapterTest extends TestCase
       if (testDTO != null)
       {
         clientRequest.lock(testDTO);
-        clientRequest.delete(testDTO.getId());
+        clientRequest.delete(testDTO.getOid());
       }
     }
   }
@@ -1971,6 +1978,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity through the controller.
    */
+  @Request
+  @Test
   public void testImmutableAttributeEntity()
   {
     // attributes for the new business object
@@ -2011,7 +2020,7 @@ public class NoSourceAdapterTest extends TestCase
       if (testDTO != null)
       {
         clientRequest.lock(testDTO);
-        clientRequest.delete(testDTO.getId());
+        clientRequest.delete(testDTO.getOid());
       }
     }
   }
@@ -2019,6 +2028,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Updates an entity in an invalid fashion by setting an attribute incorrectly
    */
+  @Request
+  @Test
   public void testUpateEntityInvalid()
   {
     BusinessDTO testDTO = null;
@@ -2052,7 +2063,7 @@ public class NoSourceAdapterTest extends TestCase
       if (testDTO != null)
       {
         clientRequest.lock(testDTO);
-        clientRequest.delete(testDTO.getId());
+        clientRequest.delete(testDTO.getOid());
       }
     }
   }
@@ -2060,6 +2071,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Deletes an entity.
    */
+  @Request
+  @Test
   public void testDeleteEntity()
   {
     BusinessDTO businessDTO = null;
@@ -2070,11 +2083,11 @@ public class NoSourceAdapterTest extends TestCase
       businessDTO = this.createParentInstance(clientRequest);
 
       clientRequest.lock(businessDTO);
-      clientRequest.delete(businessDTO.getId());
+      clientRequest.delete(businessDTO.getOid());
 
       // Now try to get the object that was created. If it was deleted, it
       // should error out.
-      clientRequest.get(businessDTO.getId());
+      clientRequest.get(businessDTO.getOid());
 
       Assert.fail("An entity was not correctly deleted");
     }
@@ -2087,6 +2100,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tries to double-delete an entity, which should Assert.fail.
    */
+  @Request
+  @Test
   public void testDeleteEntityInvalid()
   {
     try
@@ -2105,6 +2120,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewInstance()
   {
     BusinessDTO businessDTO = clientRequest.newBusiness(parentMdBusinessType);
@@ -2118,6 +2135,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Attempts to create an invalid instance of a fake type.
    */
+  @Request
+  @Test
   public void testNewInstanceInvalid()
   {
     try
@@ -2137,9 +2156,11 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   /**
-   * Ensures that the id changes between a new <code>BusinessDTO</code> and when
+   * Ensures that the oid changes between a new <code>BusinessDTO</code> and when
    * the DTO is applied
    */
+  @Request
+  @Test
   public void testSameId()
   {
     BusinessDTO businessDTO = null;
@@ -2148,17 +2169,17 @@ public class NoSourceAdapterTest extends TestCase
     {
       // create the entity and then delete it
       businessDTO = this.initParentInstance();
-      String id = businessDTO.getId();
+      String oid = businessDTO.getOid();
 
       clientRequest.createBusiness(businessDTO);
 
-      assertFalse("ID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", id.equals(businessDTO.getId()));
+      Assert.assertFalse("OID of a new " + BusinessDTO.class.getName() + " did not change when it was applied.", oid.equals(businessDTO.getOid()));
     }
     finally
     {
       if (businessDTO != null)
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
     }
   }
@@ -2166,6 +2187,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Get all instances.
    */
+  @Request
+  @Test
   public void testGetAllInstancesEmpty()
   {
     try
@@ -2183,6 +2206,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Gets a valid instance.
    */
+  @Request
+  @Test
   public void testInstance()
   {
     BusinessDTO businessDTO = null;
@@ -2192,9 +2217,9 @@ public class NoSourceAdapterTest extends TestCase
       // create the entity and then delete it
       businessDTO = this.createParentInstance(clientRequest);
 
-      BusinessDTO retrieved = (BusinessDTO) clientRequest.get(businessDTO.getId());
+      BusinessDTO retrieved = (BusinessDTO) clientRequest.get(businessDTO.getOid());
 
-      Assert.assertEquals(businessDTO.getId(), retrieved.getId());
+      Assert.assertEquals(businessDTO.getOid(), retrieved.getOid());
 
     }
     catch (Exception e)
@@ -2205,7 +2230,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       if (businessDTO != null)
       {
-        clientRequest.delete(businessDTO.getId());
+        clientRequest.delete(businessDTO.getOid());
       }
     }
   }
@@ -2213,6 +2238,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Attempts to grab an invalid instance.
    */
+  @Request
+  @Test
   public void testInstanceInvalid()
   {
     try
@@ -2234,6 +2261,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLogin()
   {
     BusinessDTO user = null;
@@ -2256,7 +2285,7 @@ public class NoSourceAdapterTest extends TestCase
       if (user != null)
       {
         clientRequest.lock(user);
-        clientRequest.delete(user.getId());
+        clientRequest.delete(user.getOid());
       }
     }
   }
@@ -2264,6 +2293,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testLoginAnonymous()
   {
     ClientSession anonymousSession = null;
@@ -2288,6 +2319,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Tests a valid login through the controller.
    */
+  @Request
+  @Test
   public void testChangeLogin()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -2311,18 +2344,20 @@ public class NoSourceAdapterTest extends TestCase
       if (user != null)
       {
         clientRequest.lock(user);
-        clientRequest.delete(user.getId());
+        clientRequest.delete(user.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testGetSessionUser()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS);
     MdAttributeDAOIF mdAttributeIF = mdBusinessIF.definesAttribute(UserInfo.USERNAME);
 
-    clientRequest.grantTypePermission(tommyUser.getId(), mdBusinessIF.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), mdAttributeIF.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdBusinessIF.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), mdAttributeIF.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2341,8 +2376,8 @@ public class NoSourceAdapterTest extends TestCase
     {
       tommySession.logout();
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdBusinessIF.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeIF.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdBusinessIF.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeIF.getOid(), Operation.READ.name());
     }
 
   }
@@ -2350,6 +2385,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Log in an invalid user.
    */
+  @Request
+  @Test
   public void testLoginInvalid()
   {
     try
@@ -2367,6 +2404,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationDTO()
   {
     BusinessDTO user = clientRequest.newBusiness(parentMdBusinessType);
@@ -2378,9 +2417,11 @@ public class NoSourceAdapterTest extends TestCase
     BusinessDTO locale = suit.get(0);
 
     // test the values on the locale. English is the default.
-    Assert.assertEquals(locale.getId(), diamonds.getId());
+    Assert.assertEquals(locale.getOid(), diamonds.getOid());
   }
 
+  @Request
+  @Test
   public void testNoAccessorConversion()
   {
     BusinessDTO parent = null;
@@ -2390,17 +2431,19 @@ public class NoSourceAdapterTest extends TestCase
       parent = this.createParentInstance(clientRequest);
       String value = parent.getValue("aHiddenCharacter");
 
-      assertTrue(value != null && !value.equals(""));
+      Assert.assertTrue(value != null && !value.equals(""));
     }
     finally
     {
       if (parent != null)
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReference()
   {
     String attributeName = "aMultiReference";
@@ -2414,31 +2457,33 @@ public class NoSourceAdapterTest extends TestCase
 
       BusinessDTO instance = this.initParentInstance();
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
       clientRequest.createBusiness(instance);
 
       try
       {
-        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getOid());
 
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
       }
       finally
       {
         clientRequest.lock(instance);
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiReferenceGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
@@ -2449,31 +2494,33 @@ public class NoSourceAdapterTest extends TestCase
     {
       BusinessDTO instance = this.initParentInstance();
       instance.clearMultiItems("aMultiReference");
-      instance.addMultiItem("aMultiReference", term.getId());
+      instance.addMultiItem("aMultiReference", term.getOid());
       clientRequest.createBusiness(instance);
 
       try
       {
-        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getOid());
 
         List<String> results = (List<String>) test.getMultiItems("aMultiReference");
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
       }
       finally
       {
         clientRequest.lock(instance);
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTerm()
   {
     String attributeName = "aMultiTerm";
@@ -2487,31 +2534,33 @@ public class NoSourceAdapterTest extends TestCase
 
       BusinessDTO instance = this.initParentInstance();
       instance.clearMultiItems(attributeName);
-      instance.addMultiItem(attributeName, term.getId());
+      instance.addMultiItem(attributeName, term.getOid());
       clientRequest.createBusiness(instance);
 
       try
       {
-        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getOid());
 
         List<String> results = test.getMultiItems(attributeName);
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term.getId(), results.get(0));
+        Assert.assertEquals(term.getOid(), results.get(0));
       }
       finally
       {
         clientRequest.lock(instance);
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term);
-      clientRequest.delete(term.getId());
+      clientRequest.delete(term.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testAttributeMultiTermGeneration() throws Exception
   {
     BusinessDTO term2 = clientRequest.newBusiness(termType);
@@ -2522,31 +2571,33 @@ public class NoSourceAdapterTest extends TestCase
     {
       BusinessDTO instance = this.initParentInstance();
       instance.clearMultiItems("aMultiTerm");
-      instance.addMultiItem("aMultiTerm", term2.getId());
+      instance.addMultiItem("aMultiTerm", term2.getOid());
       clientRequest.createBusiness(instance);
 
       try
       {
-        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getOid());
 
         List<String> results = test.getMultiItems("aMultiTerm");
 
         Assert.assertEquals(1, results.size());
-        Assert.assertEquals(term2.getId(), results.get(0));
+        Assert.assertEquals(term2.getOid(), results.get(0));
       }
       finally
       {
         clientRequest.lock(instance);
-        clientRequest.delete(instance.getId());
+        clientRequest.delete(instance.getOid());
       }
     }
     finally
     {
       clientRequest.lock(term2);
-      clientRequest.delete(term2.getId());
+      clientRequest.delete(term2.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testStructDTO()
   {
     BusinessDTO user = null;
@@ -2593,14 +2644,16 @@ public class NoSourceAdapterTest extends TestCase
       if (user != null)
       {
         clientRequest.lock(user);
-        clientRequest.delete(user.getId());
+        clientRequest.delete(user.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_CHILD.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2610,12 +2663,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildRelationships(parentInstance.getOid(), mdRelationshipType);
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -2628,17 +2681,19 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_CHILD.name());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildRelationshipsPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2648,12 +2703,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildRelationships(parentInstance.getOid(), mdRelationshipType);
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -2666,14 +2721,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2684,12 +2741,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildRelationships(parentInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read child relationships without READ_CHILD permissions.");
     }
     catch (ReadChildPermissionExceptionDTO e)
@@ -2703,15 +2760,17 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_CHILD.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2721,12 +2780,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildren(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildren(parentInstance.getOid(), mdRelationshipType);
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -2739,17 +2798,19 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_CHILD.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_CHILD.name());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadChildrenPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2759,12 +2820,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildren(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildren(parentInstance.getOid(), mdRelationshipType);
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -2777,14 +2838,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadChildrenPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2795,12 +2858,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getChildren(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildren(parentInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read child relationships without READ_CHILD permissions.");
     }
     catch (ReadChildPermissionExceptionDTO e)
@@ -2814,15 +2877,17 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_PARENT.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2832,12 +2897,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParentRelationships(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParentRelationships(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -2850,17 +2915,19 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentRelationshipsPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2870,12 +2937,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParentRelationships(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParentRelationships(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -2888,14 +2955,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentRelationshipsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -2906,12 +2975,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParentRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getParentRelationships(parentInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read parent relationships without READ_PARENT permissions.");
     }
     catch (ReadParentPermissionExceptionDTO e)
@@ -2925,15 +2994,17 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_PARENT.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2943,12 +3014,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParents(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParents(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -2961,17 +3032,19 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testTypeReadParentsPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -2981,12 +3054,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParents(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParents(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -2999,14 +3072,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidTypeReadParentsPermissions()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -3017,12 +3092,12 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = clientRequest.newBusiness(childMdBusinessType);
     clientRequest.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
     try
     {
-      tommyProxy.getParents(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getParents(parentInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read parent relationships without READ_PARENT permissions.");
     }
     catch (ReadParentPermissionExceptionDTO e)
@@ -3036,18 +3111,20 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
-    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_CHILD.name());
+    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_CHILD.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3057,15 +3134,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildRelationships(parentInstance.getOid(), mdRelationshipType);
     }
     catch (ReadChildPermissionExceptionDTO e)
     {
@@ -3078,18 +3155,20 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_CHILD.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_CHILD.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions1()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3099,15 +3178,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getChildRelationships(parentInstance.getId(), mdRelationshipType);
+      tommyProxy.getChildRelationships(parentInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read child relationships without READ_CHILD permissions on owner.");
     }
     catch (ReadChildPermissionExceptionDTO e)
@@ -3121,20 +3200,22 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_CHILD.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_CHILD.name());
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadChildRelationshipsPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.ADD_CHILD.name());
-    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.ADD_CHILD.name());
+    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3144,16 +3225,16 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = tommyProxy.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = tommyProxy.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     tommyProxy.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.ADD_CHILD.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.ADD_CHILD.name());
 
     try
     {
-      tommyProxy.get(relationshipDTO.getId());
+      tommyProxy.get(relationshipDTO.getOid());
     }
     catch (ReadPermissionExceptionDTO e)
     {
@@ -3166,20 +3247,22 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadChildRelationshipsPermissions2()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.ADD_CHILD.name());
-    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.ADD_CHILD.name());
+    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3190,16 +3273,16 @@ public class NoSourceAdapterTest extends TestCase
     tommyProxy.createBusiness(childInstance);
 
     // Tommy is not the owner of the relationship instance
-    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addChild(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.ADD_CHILD.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.ADD_CHILD.name());
 
     try
     {
-      tommyProxy.get(relationshipDTO.getId());
+      tommyProxy.get(relationshipDTO.getOid());
       Assert.fail("Able to read child relationships with READ permissions on owner, but user is not the owner.");
     }
     catch (ReadPermissionExceptionDTO e)
@@ -3213,19 +3296,21 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ.name());
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentRelationshipsPermissions()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3235,15 +3320,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getParentRelationships(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParentRelationships(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3256,18 +3341,20 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentRelationshipsPermissions()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3277,15 +3364,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getParentRelationships(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParentRelationships(childInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read parent relationships without READ_PARENT permissions on owner.");
     }
     catch (ReadParentPermissionExceptionDTO e)
@@ -3299,19 +3386,21 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testOwnerReadParentsPermissions()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3321,15 +3410,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getParents(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParents(childInstance.getOid(), mdRelationshipType);
     }
     catch (ReadParentPermissionExceptionDTO e)
     {
@@ -3342,18 +3431,20 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidOwnerReadParentsPermissions()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -3363,15 +3454,15 @@ public class NoSourceAdapterTest extends TestCase
     childInstance = tommyProxy.newBusiness(childMdBusinessType);
     tommyProxy.createBusiness(childInstance);
 
-    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getId(), childInstance.getId(), mdRelationshipType);
+    RelationshipDTO relationshipDTO = clientRequest.addParent(parentInstance.getOid(), childInstance.getOid(), mdRelationshipType);
     clientRequest.createRelationship(relationshipDTO);
 
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.CREATE.name());
-    clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.CREATE.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.CREATE.name());
 
     try
     {
-      tommyProxy.getParents(childInstance.getId(), mdRelationshipType);
+      tommyProxy.getParents(childInstance.getOid(), mdRelationshipType);
       Assert.fail("Able to read parent relationships without READ_PARENT permissions on owner.");
     }
     catch (ReadParentPermissionExceptionDTO e)
@@ -3385,14 +3476,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.deleteChild(relationshipDTO.getId());
-      clientRequest.delete(parentInstance.getId());
-      clientRequest.delete(childInstance.getId());
+      clientRequest.deleteChild(relationshipDTO.getOid());
+      clientRequest.delete(parentInstance.getOid());
+      clientRequest.delete(childInstance.getOid());
 
-      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getId(), Operation.READ_PARENT.name());
+      clientRequest.revokeTypePermission(RoleDAOIF.OWNER_ID, mdRelationship.getOid(), Operation.READ_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testGrantGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -3403,13 +3496,13 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF billyRequest = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.GRANT.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.GRANT.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.WRITE.name());
-      tommyRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      tommyRequest.grantTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      tommyRequest.grantTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       billySession = this.createSession("Billy", "Tables");
       billyRequest = getRequest(billySession);
@@ -3418,12 +3511,12 @@ public class NoSourceAdapterTest extends TestCase
       clientRequest.createBusiness(testObject);
 
       billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
+      billyRequest.delete(testObject.getOid());
 
-      tommyRequest.revokeTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.WRITE.name());
-      tommyRequest.revokeTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      tommyRequest.revokeTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      tommyRequest.revokeTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.GRANT.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.GRANT.name());
     }
     catch (Exception e)
     {
@@ -3443,6 +3536,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantPermission()
   {
     ClientSession tommySession = null;
@@ -3452,7 +3547,7 @@ public class NoSourceAdapterTest extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.WRITE.name());
+      tommyRequest.grantTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
     }
     catch (GrantTypePermissionExceptionDTO e)
     {
@@ -3471,6 +3566,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokePermission()
   {
     ClientSession tommySession = null;
@@ -3480,7 +3577,7 @@ public class NoSourceAdapterTest extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.revokeTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.WRITE.name());
+      tommyRequest.revokeTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
     }
     catch (RevokeTypePermissionExceptionDTO e)
     {
@@ -3499,122 +3596,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
-  public void testGrantGrantStateAttributePermission()
-  {
-    BusinessDTO testObject = null;
-
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    ClientSession billySession = null;
-    ClientRequestIF billyRequest = null;
-
-    try
-    {
-      clientRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.GRANT.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      billySession = this.createSession("Billy", "Tables");
-      billyRequest = getRequest(billySession);
-
-      billyRequest.lock(testObject);
-      testObject.setValue("refChar", "I am all that is man!");
-      billyRequest.update(testObject);
-
-      billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
-
-      tommyRequest.revokeAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.GRANT.name());
-
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-
-      if (billySession != null)
-      {
-        billySession.logout();
-      }
-    }
-  }
-
-  public void testInvalidGrantGrantStateAttributePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-    }
-    catch (GrantAttributeStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  public void testInvalidGrantRevokeStateAttributePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.revokeAttributeStatePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-    }
-    catch (RevokeAttributeStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
+  @Request
+  @Test
   public void testGrantGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -3627,9 +3610,9 @@ public class NoSourceAdapterTest extends TestCase
 
     try
     {
-      clientRequest.grantTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
+      clientRequest.grantTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
 
-      clientRequest.grantAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.GRANT.name());
+      clientRequest.grantAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.GRANT.name());
 
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
@@ -3637,7 +3620,7 @@ public class NoSourceAdapterTest extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.grantAttributePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      tommyRequest.grantAttributePermission(littleBillyTables.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
 
       billySession = this.createSession("Billy", "Tables");
       billyRequest = getRequest(billySession);
@@ -3647,13 +3630,13 @@ public class NoSourceAdapterTest extends TestCase
       billyRequest.update(testObject);
 
       billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
+      billyRequest.delete(testObject.getOid());
 
-      tommyRequest.revokeAttributePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      tommyRequest.revokeAttributePermission(littleBillyTables.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
 
-      clientRequest.revokeTypePermission(littleBillyTables.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.GRANT.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.GRANT.name());
     }
     catch (Exception e)
     {
@@ -3673,6 +3656,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantGrantAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3683,7 +3668,7 @@ public class NoSourceAdapterTest extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.grantAttributePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      tommyRequest.grantAttributePermission(littleBillyTables.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
     }
     catch (GrantAttributePermissionExceptionDTO e)
     {
@@ -3702,6 +3687,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testInvalidGrantRevokeAttributePermission()
   {
     ClientSession tommySession = null;
@@ -3712,7 +3699,7 @@ public class NoSourceAdapterTest extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.revokeAttributePermission(littleBillyTables.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      tommyRequest.revokeAttributePermission(littleBillyTables.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
     }
     catch (RevokeAttributePermissionExceptionDTO e)
     {
@@ -3731,114 +3718,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
-  public void testGrantGrantStatePermission()
-  {
-    BusinessDTO testObject = null;
-
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    ClientSession billySession = null;
-    ClientRequestIF billyRequest = null;
-
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.GRANT.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      billySession = this.createSession("Billy", "Tables");
-      billyRequest = getRequest(billySession);
-
-      billyRequest.lock(testObject);
-      billyRequest.delete(testObject.getId());
-
-      tommyRequest.revokeStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.GRANT.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-
-      if (billySession != null)
-      {
-        billySession.logout();
-      }
-    }
-  }
-
-  public void testInvalidGrantGrantStatePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.grantStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-    }
-    catch (GrantStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  public void testInvalidGrantRevokeStatePermission()
-  {
-    ClientSession tommySession = null;
-    ClientRequestIF tommyRequest = null;
-
-    try
-    {
-      tommySession = this.createSession("Tommy", "music");
-      tommyRequest = getRequest(tommySession);
-
-      tommyRequest.revokeStatePermission(littleBillyTables.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-    }
-    catch (RevokeStatePermissionExceptionDTO e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
+  @Request
+  @Test
   public void testGrantTypeReadWritePermission()
   {
     BusinessDTO testObject = null;
@@ -3846,9 +3727,9 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name());
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.WRITE.name());
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -3856,7 +3737,7 @@ public class NoSourceAdapterTest extends TestCase
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
 
-      BusinessDTO businessDTO = (BusinessDTO) tommyProxy.get(testObject.getId());
+      BusinessDTO businessDTO = (BusinessDTO) tommyProxy.get(testObject.getOid());
 
       // make sure the readable and writable flag is set to true
       if (!businessDTO.isReadable() || !businessDTO.isWritable())
@@ -3869,10 +3750,10 @@ public class NoSourceAdapterTest extends TestCase
       if (tommyProxy != null)
       {
         tommyProxy.lock(testObject);
-        tommyProxy.delete(testObject.getId());
+        tommyProxy.delete(testObject.getOid());
       }
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
 
       if (tommySession != null)
       {
@@ -3881,6 +3762,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoWritePermission()
   {
     BusinessDTO testObject = null;
@@ -3888,8 +3771,8 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -3897,7 +3780,7 @@ public class NoSourceAdapterTest extends TestCase
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
 
-      BusinessDTO businessDTO = (BusinessDTO) tommyProxy.get(testObject.getId());
+      BusinessDTO businessDTO = (BusinessDTO) tommyProxy.get(testObject.getOid());
 
       // make sure the readable and writable flag is set to true
       if (businessDTO.isWritable())
@@ -3908,8 +3791,8 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       clientRequest.lock(testObject);
-      clientRequest.delete(testObject.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name());
+      clientRequest.delete(testObject.getOid());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name());
 
       if (tommySession != null)
       {
@@ -3918,6 +3801,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_DeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -3925,8 +3810,8 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.assignMember(tommyUser.getId(), RoleDAOIF.DEVELOPER_ROLE);
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.assignMember(tommyUser.getOid(), RoleDAOIF.DEVELOPER_ROLE);
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -3934,7 +3819,7 @@ public class NoSourceAdapterTest extends TestCase
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
 
-      tommyProxy.get(testObject.getId());
+      tommyProxy.get(testObject.getOid());
 
       Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
@@ -3942,7 +3827,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       // We want to land here
       // Make sure there is a developer message
-      assertTrue(!e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(!e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
@@ -3951,9 +3836,9 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       clientRequest.lock(testObject);
-      clientRequest.delete(testObject.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
-      clientRequest.removeMember(tommyUser.getId(), RoleDAOIF.DEVELOPER_ROLE);
+      clientRequest.delete(testObject.getOid());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
+      clientRequest.removeMember(tommyUser.getOid(), RoleDAOIF.DEVELOPER_ROLE);
 
       if (tommySession != null)
       {
@@ -3962,6 +3847,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadPermission_NoDeveloperMessage()
   {
     BusinessDTO testObject = null;
@@ -3969,7 +3856,9 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -3977,7 +3866,7 @@ public class NoSourceAdapterTest extends TestCase
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
 
-      tommyProxy.get(testObject.getId());
+      tommyProxy.get(testObject.getOid());
 
       Assert.fail("Read or Write permission on a type were not properly set in the DTO");
     }
@@ -3985,7 +3874,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       // We want to land here
       // Make sure there is no developer message
-      assertTrue(e.getDeveloperMessage().equals(""));
+      Assert.assertTrue(e.getDeveloperMessage().equals(""));
     }
     catch (Throwable e)
     {
@@ -3994,8 +3883,8 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       clientRequest.lock(testObject);
-      clientRequest.delete(testObject.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.delete(testObject.getOid());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       if (tommySession != null)
       {
@@ -4004,6 +3893,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermission()
   {
     BusinessDTO testObject = null;
@@ -4011,8 +3902,8 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.WRITE.name());
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -4021,9 +3912,9 @@ public class NoSourceAdapterTest extends TestCase
       clientRequest.createBusiness(testObject);
 
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.DELETE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
     }
     catch (Exception e)
     {
@@ -4038,6 +3929,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4045,7 +3938,7 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), suitMaster.getId(), Operation.READ.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), suitMaster.getOid(), Operation.READ.name());
 
       enumItem = clientRequest.newBusiness(suitMasterType);
       enumItem.setValue("refChar", "some string");
@@ -4069,8 +3962,8 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       clientRequest.lock(enumItem);
-      clientRequest.delete(enumItem.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), suitMaster.getId(), Operation.READ.name());
+      clientRequest.delete(enumItem.getOid());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), suitMaster.getOid(), Operation.READ.name());
 
       if (tommySession != null)
       {
@@ -4079,6 +3972,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypeNoReadEnumWritePermission()
   {
     BusinessDTO enumItem = null;
@@ -4109,7 +4004,7 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       clientRequest.lock(enumItem);
-      clientRequest.delete(enumItem.getId());
+      clientRequest.delete(enumItem.getOid());
       if (tommySession != null)
       {
         tommySession.logout();
@@ -4117,39 +4012,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
-  public void testGrantStatePermission()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.WRITE.name(), Operation.DELETE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.DELETE.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
+  @Request
+  @Test
   public void testGrantAttributePermission()
   {
     BusinessDTO testObject = null;
@@ -4157,9 +4021,9 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
 
-      clientRequest.grantAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
 
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
@@ -4172,11 +4036,11 @@ public class NoSourceAdapterTest extends TestCase
       tommyProxy.update(testObject);
 
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.WRITE.name());
     }
     catch (Exception e)
     {
@@ -4191,51 +4055,13 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
-  public void testGrantStateAttributePermission()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-
-      testObject.setValue("refChar", "I am all that is man!");
-      tommyProxy.update(testObject);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name(), Operation.DELETE.name());
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.WRITE.name());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
+  @Request
+  @Test
   public void testGrantTypePermissionInvalid()
   {
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), "not_a_proper_permission");
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), "not_a_proper_permission");
 
       Assert.fail("An invalid type of permission was added to a user.");
     }
@@ -4249,6 +4075,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissions()
   {
     BusinessDTO testObject = null;
@@ -4256,7 +4084,7 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
@@ -4266,7 +4094,7 @@ public class NoSourceAdapterTest extends TestCase
 
       // delete the object
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
     }
     catch (Exception e)
     {
@@ -4281,39 +4109,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
-  public void testGrantStatePermissions()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantStatePermission(tommyUser.getId(), state1.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.revokeStatePermission(tommyUser.getId(), state1.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
+  @Request
+  @Test
   public void testGrantAttributePermissions()
   {
     BusinessDTO testObject = null;
@@ -4321,9 +4118,9 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
-      clientRequest.grantAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.READ.name(), Operation.WRITE.name());
+      clientRequest.grantAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.READ.name(), Operation.WRITE.name());
 
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
@@ -4336,7 +4133,7 @@ public class NoSourceAdapterTest extends TestCase
       tommyProxy.update(testObject);
 
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
     }
     catch (Exception e)
     {
@@ -4344,9 +4141,9 @@ public class NoSourceAdapterTest extends TestCase
     }
     finally
     {
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       if (tommySession != null)
       {
@@ -4355,6 +4152,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantAttributePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4362,7 +4161,7 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       testObject = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(testObject);
@@ -4387,52 +4186,11 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
 
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      if (tommySession != null)
-      {
-        tommySession.logout();
-      }
-    }
-  }
-
-  public void testGrantStateAttributePermissions()
-  {
-    BusinessDTO testObject = null;
-    ClientSession tommySession = null;
-    ClientRequestIF tommyProxy = null;
-    try
-    {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.grantAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.READ.name(), Operation.WRITE.name());
-
-      testObject = clientRequest.newBusiness(childMdBusinessType);
-      clientRequest.createBusiness(testObject);
-
-      tommySession = this.createSession("Tommy", "music");
-      tommyProxy = getRequest(tommySession);
-      tommyProxy.lock(testObject);
-
-      testObject.setValue("refChar", "I am all that is man!");
-      tommyProxy.update(testObject);
-
-      tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      clientRequest.revokeTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
-
-      clientRequest.revokeAttributeStatePermission(tommyUser.getId(), mdAttributeCharacterDTO_2.getId(), state1.getId(), Operation.READ.name(), Operation.WRITE.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO_2.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       if (tommySession != null)
       {
@@ -4441,6 +4199,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGrantTypePermissionsInvalid()
   {
     BusinessDTO testObject = null;
@@ -4448,7 +4208,7 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.READ.name(), Operation.WRITE.name());
 
       testObject = this.createParentInstance(clientRequest);
 
@@ -4456,7 +4216,7 @@ public class NoSourceAdapterTest extends TestCase
       tommyProxy = getRequest(tommySession);
       // delete the object
       tommyProxy.lock(testObject);
-      tommyProxy.delete(testObject.getId());
+      tommyProxy.delete(testObject.getOid());
 
       Assert.fail("A user was able to delete an object without permission.");
     }
@@ -4481,11 +4241,13 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       clientRequest.lock(testObject);
-      clientRequest.delete(testObject.getId());
+      clientRequest.delete(testObject.getOid());
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatch()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4499,13 +4261,15 @@ public class NoSourceAdapterTest extends TestCase
     }
 
     BusinessDTO user = users.get(0);
-    if (!user.getId().equals(tommyUser.getId()))
+    if (!user.getOid().equals(tommyUser.getOid()))
     {
       Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserExactMatchComplicated()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4519,13 +4283,15 @@ public class NoSourceAdapterTest extends TestCase
     }
 
     BusinessDTO user = users.get(0);
-    if (!user.getId().equals(tommyUser.getId()))
+    if (!user.getOid().equals(tommyUser.getOid()))
     {
       Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testQueryUserWildCard()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(testUserType);
@@ -4539,13 +4305,15 @@ public class NoSourceAdapterTest extends TestCase
     }
 
     BusinessDTO user = users.get(0);
-    if (!user.getId().equals(tommyUser.getId()))
+    if (!user.getOid().equals(tommyUser.getOid()))
     {
       Assert.fail("The user 'Tommy' couldn't be found with a query.");
     }
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryNumber()
   {
     createQueryInstances();
@@ -4563,7 +4331,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       BusinessDTO instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4580,7 +4348,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4598,7 +4366,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4614,6 +4382,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryChar()
   {
     createQueryInstances();
@@ -4631,7 +4401,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       BusinessDTO instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4646,7 +4416,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4662,6 +4432,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryBoolean()
   {
     createQueryInstances();
@@ -4679,7 +4451,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       BusinessDTO instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4694,7 +4466,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = parents.get(0);
-      if (!instance.getId().equals(parentInstance.getId()))
+      if (!instance.getOid().equals(parentInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4710,6 +4482,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinessRelationshipQueryMoment()
   {
     createQueryInstances();
@@ -4727,7 +4501,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       RelationshipDTO instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4744,7 +4518,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4762,7 +4536,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4778,6 +4552,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryNumber()
   {
     createQueryInstances();
@@ -4795,7 +4571,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       RelationshipDTO instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4812,7 +4588,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4830,7 +4606,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4846,6 +4622,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryChar()
   {
     createQueryInstances();
@@ -4863,7 +4641,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       RelationshipDTO instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4878,7 +4656,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4894,6 +4672,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesRelationshipQueryBoolean()
   {
     createQueryInstances();
@@ -4911,7 +4691,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       RelationshipDTO instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4926,7 +4706,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4942,6 +4722,8 @@ public class NoSourceAdapterTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
+  @Request
+  @Test
   public void testBusinesObjectQueryMoment()
   {
     createQueryInstances();
@@ -4959,7 +4741,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       RelationshipDTO instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4976,7 +4758,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -4994,7 +4776,7 @@ public class NoSourceAdapterTest extends TestCase
       }
 
       instance = rels.get(0);
-      if (!instance.getId().equals(relInstance.getId()))
+      if (!instance.getOid().equals(relInstance.getOid()))
       {
         Assert.fail("A query did not find a proper match.");
       }
@@ -5009,9 +4791,11 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectQueryReadPermission()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -5037,15 +4821,17 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.READ.name());
       destroyQueryInstances();
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeReadPermission()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
-    clientRequest.grantAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdView.getOid(), Operation.READ.name());
+    clientRequest.grantAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -5057,7 +4843,7 @@ public class NoSourceAdapterTest extends TestCase
       testViewDTO.setValue("aCharacter", "some value");
       tommyProxy.createSessionComponent(testViewDTO);
 
-      ViewDTO viewDTO = (ViewDTO) tommyProxy.get(testViewDTO.getId());
+      ViewDTO viewDTO = (ViewDTO) tommyProxy.get(testViewDTO.getOid());
 
       AttributeDTO attributeDTO = ComponentDTOFacade.getAttributeDTO(viewDTO, "aCharacter");
 
@@ -5074,15 +4860,17 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
-      clientRequest.revokeAttributePermission(tommyUser.getId(), mdAttributeCharacterDTO.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdView.getOid(), Operation.READ.name());
+      clientRequest.revokeAttributePermission(tommyUser.getOid(), mdAttributeCharacterDTO.getOid(), Operation.READ.name());
       destroyQueryInstances();
     }
   }
 
+  @Request
+  @Test
   public void testViewVirtualAttributeN0ReadPermission()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdView.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -5094,7 +4882,7 @@ public class NoSourceAdapterTest extends TestCase
       testViewDTO.setValue("aCharacter", "some value");
       tommyProxy.createSessionComponent(testViewDTO);
 
-      ViewDTO viewDTO = (ViewDTO) tommyProxy.get(testViewDTO.getId());
+      ViewDTO viewDTO = (ViewDTO) tommyProxy.get(testViewDTO.getOid());
 
       AttributeDTO attributeDTO = ComponentDTOFacade.getAttributeDTO(viewDTO, "aCharacter");
 
@@ -5124,14 +4912,16 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdView.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdView.getOid(), Operation.READ.name());
       destroyQueryInstances();
     }
   }
 
+  @Request
+  @Test
   public void testBusinesObjectNoQueryReadPermission()
   {
-    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
+    clientRequest.revokeTypePermission(tommyUser.getOid(), parentMdBusiness.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -5159,6 +4949,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testViewObjectNoQueryReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5191,9 +4983,11 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryReadPermission()
   {
-    clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+    clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
 
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
@@ -5216,11 +5010,13 @@ public class NoSourceAdapterTest extends TestCase
     finally
     {
       tommySession.logout();
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.READ.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.READ.name());
       destroyQueryInstances();
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryNoReadPermission()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5254,7 +5050,7 @@ public class NoSourceAdapterTest extends TestCase
   // return the hash value.
   // Due to security concerns, we return an empty string for hash values, so
   // this test will always Assert.fail.
-  // public void testHashDTO()
+  // @Request @Test public void testHashDTO()
   // {
   // try
   // {
@@ -5300,6 +5096,8 @@ public class NoSourceAdapterTest extends TestCase
    * EntityDTO.isLockedByCurrentUser() return true if the object is locked by
    * the current user and false otherwise.
    */
+  @Request
+  @Test
   public void testCurrentUserLockValue()
   {
     BusinessDTO testObject = null;
@@ -5307,7 +5105,7 @@ public class NoSourceAdapterTest extends TestCase
     ClientRequestIF tommyProxy = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), childMdBusiness.getId(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name(), Operation.DELETE.name(), Operation.WRITE.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -5326,7 +5124,7 @@ public class NoSourceAdapterTest extends TestCase
       // now make sure the SYSTEM user has the lock value set to false
       // (since it
       // didn't lock it, Tommy did)
-      BusinessDTO temp = (BusinessDTO) clientRequest.get(testObject.getId());
+      BusinessDTO temp = (BusinessDTO) clientRequest.get(testObject.getOid());
       if (temp.isLockedByCurrentUser())
       {
         Assert.fail("The SYSTEM user is marked as locking an object which it did not.");
@@ -5340,7 +5138,7 @@ public class NoSourceAdapterTest extends TestCase
     {
       if (tommyProxy != null)
       {
-        tommyProxy.delete(testObject.getId());
+        tommyProxy.delete(testObject.getOid());
       }
 
       if (tommySession != null)
@@ -5350,27 +5148,33 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
 
     Assert.assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
     Assert.assertEquals(parentMdBusiness.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
-    Assert.assertEquals(parentMdBusiness.getId(), instance.getMd().getId());
+    Assert.assertEquals(parentMdBusiness.getOid(), instance.getMd().getOid());
   }
 
+  @Request
+  @Test
   public void testRelationshipMetadata()
   {
     RelationshipDTO instance = (RelationshipDTO) clientRequest.newMutable(mdRelationshipType);
 
     Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
     Assert.assertEquals(mdRelationship.getStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
-    Assert.assertEquals(mdRelationship.getId(), instance.getMd().getId());
+    Assert.assertEquals(mdRelationship.getOid(), instance.getMd().getOid());
 
     Assert.assertEquals(parentMdBusinessType, instance.getMd().getParentMdBusiness());
     Assert.assertEquals(childMdBusinessType, instance.getMd().getChildMdBusiness());
   }
 
+  @Request
+  @Test
   public void testBooleanMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5381,6 +5185,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(mdAttributeBooleanDTO.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getNegativeDisplayLabel());
   }
 
+  @Request
+  @Test
   public void testBlobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5389,6 +5195,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeBlobDTO, md);
   }
 
+  @Request
+  @Test
   public void testReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5399,6 +5207,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), refType);
   }
 
+  @Request
+  @Test
   public void testTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5409,6 +5219,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiReferenceMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5419,6 +5231,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testMultiTermMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5429,6 +5243,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  @Request
+  @Test
   public void testDateTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5437,6 +5253,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testDateMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5445,6 +5263,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateDTO, md);
   }
 
+  @Request
+  @Test
   public void testTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5453,16 +5273,20 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeTimeDTO, md);
   }
 
+  @Request
+  @Test
   public void testIdMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
-    AttributeCharacterMdDTO md = instance.getIdMd();
+    AttributeUUIDMdDTO md = instance.getOidMd();
 
-    Assert.assertEquals(md.getName(), EntityInfo.ID);
+    Assert.assertEquals(md.getName(), EntityInfo.OID);
     Assert.assertEquals(md.isRequired(), true);
     Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testTypeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5473,6 +5297,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(md.isSystem(), true);
   }
 
+  @Request
+  @Test
   public void testIntegerMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5481,6 +5307,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeIntegerDTO, md);
   }
 
+  @Request
+  @Test
   public void testLongMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5489,6 +5317,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeLongDTO, md);
   }
 
+  @Request
+  @Test
   public void testDecimalMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5497,6 +5327,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDecimalDTO, md);
   }
 
+  @Request
+  @Test
   public void testDoubleMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5505,6 +5337,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDoubleDTO, md);
   }
 
+  @Request
+  @Test
   public void testFloatMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5513,6 +5347,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeFloatDTO, md);
   }
 
+  @Request
+  @Test
   public void testTextMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5521,6 +5357,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeTextDTO, md);
   }
 
+  @Request
+  @Test
   public void testClobMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5529,6 +5367,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeClobDTO, md);
   }
 
+  @Request
+  @Test
   public void testCharacterMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5538,6 +5378,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
   }
 
+  @Request
+  @Test
   public void testStructMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5547,6 +5389,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
   }
 
+  @Request
+  @Test
   public void testEnumerationMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5559,7 +5403,7 @@ public class NoSourceAdapterTest extends TestCase
 
     // check all enum values
     Map<String, String> enumNameMap = md.getEnumItems();
-    for (BusinessDTO suit : suits)
+    for (BusinessDAO suit : suits)
     {
       String expectedName = suit.getValue(EnumerationMasterInfo.NAME);
       if (!enumNameMap.containsKey(expectedName))
@@ -5569,6 +5413,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testHashMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5578,6 +5424,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testSymmetricMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -5587,11 +5435,13 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
   }
 
+  @Request
+  @Test
   public void testNewVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
 
-    InputStream stream = clientRequest.getSecureFile(fileDTO.getId());
+    InputStream stream = clientRequest.getSecureFile(fileDTO.getOid());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
@@ -5613,25 +5463,27 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
 
     BusinessDTO businessDTO = this.initParentInstance();
-    businessDTO.setValue("aFile", fileDTO.getId());
+    businessDTO.setValue("aFile", fileDTO.getOid());
     clientRequest.createBusiness(businessDTO);
 
     try
     {
       // Load file into the client file cache
-      clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getId()).close();
+      clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getOid()).close();
     }
     catch (IOException e1)
     {
       Assert.fail(e1.getMessage());
     }
 
-    InputStream stream = clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getId());
+    InputStream stream = clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getOid());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
@@ -5657,15 +5509,17 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(i, bytes.length);
   }
 
+  @Request
+  @Test
   public void testGetVaultFileNotCached()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
 
     BusinessDTO businessDTO = this.initParentInstance();
-    businessDTO.setValue("aFile", fileDTO.getId());
+    businessDTO.setValue("aFile", fileDTO.getOid());
     clientRequest.createBusiness(businessDTO);
 
-    InputStream stream = clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getId());
+    InputStream stream = clientRequest.getSecureFile("aFile", businessDTO.getType(), fileDTO.getOid());
 
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
@@ -5692,6 +5546,8 @@ public class NoSourceAdapterTest extends TestCase
 
   }
 
+  @Request
+  @Test
   public void testNoPermissionGetVaultFile()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -5700,12 +5556,12 @@ public class NoSourceAdapterTest extends TestCase
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
 
     BusinessDTO businessDTO = this.initParentInstance();
-    businessDTO.setValue("aFile", fileDTO.getId());
+    businessDTO.setValue("aFile", fileDTO.getOid());
     clientRequest.createBusiness(businessDTO);
 
     try
     {
-      tommyProxy.getSecureFile("aFile", businessDTO.getType(), businessDTO.getId());
+      tommyProxy.getSecureFile("aFile", businessDTO.getType(), businessDTO.getOid());
 
       Assert.fail("Able to retrieve a cached secure file without permissions");
     }
@@ -5723,10 +5579,12 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testDeleteVaultFile()
   {
     BusinessDTO fileDTO = clientRequest.newSecureFile("file", "txt", new ByteArrayInputStream(bytes));
-    String fileId = fileDTO.getId();
+    String fileId = fileDTO.getOid();
 
     clientRequest.delete(fileId);
 
@@ -5745,6 +5603,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNewFile()
   {
     // FIXME fix for web services
@@ -5754,7 +5614,7 @@ public class NoSourceAdapterTest extends TestCase
 
       try
       {
-        InputStream stream = clientRequest.getFile(fileDTO.getId());
+        InputStream stream = clientRequest.getFile(fileDTO.getOid());
 
         // Ensure that the file is the same
         BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
@@ -5777,18 +5637,20 @@ public class NoSourceAdapterTest extends TestCase
       }
       finally
       {
-        clientRequest.delete(fileDTO.getId());
+        clientRequest.delete(fileDTO.getOid());
       }
     }
   }
 
+  @Request
+  @Test
   public void testDeleteFile()
   {
     // FIXME fix for web services
     // if (! ( clientRequest instanceof WebServiceClientRequest ))
     {
       BusinessDTO fileDTO = clientRequest.newFile("test/", "file", "txt", new ByteArrayInputStream(bytes));
-      String fileId = fileDTO.getId();
+      String fileId = fileDTO.getOid();
 
       clientRequest.delete(fileId);
 
@@ -5816,13 +5678,13 @@ public class NoSourceAdapterTest extends TestCase
    * @param mdAttribute
    * @param mdDTO
    */
-  protected static void checkAttributeMd(BusinessDTO mdAttribute, AttributeMdDTO md)
+  protected static void checkAttributeMd(MdAttributeDAOIF mdAttribute, AttributeMdDTO md)
   {
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDisplayLabel());
     Assert.assertEquals(mdAttribute.getStructValue(MdAttributeConcreteInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), md.getDescription());
     Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.REQUIRED)), md.isRequired());
     Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.IMMUTABLE)), md.isImmutable());
-    Assert.assertEquals(mdAttribute.getId(), md.getId());
+    Assert.assertEquals(mdAttribute.getOid(), md.getOid());
     Assert.assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeConcreteInfo.SYSTEM)), md.isSystem());
     Assert.assertEquals(mdAttribute.getValue(MdAttributeConcreteInfo.NAME), md.getName());
 
@@ -5848,6 +5710,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    *
    */
+  @Request
+  @Test
   public void testDirectionalDeleteChild()
   {
     ClientSession tommySession = null;
@@ -5856,7 +5720,7 @@ public class NoSourceAdapterTest extends TestCase
     BusinessDTO child = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.DELETE_CHILD.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.DELETE_CHILD.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -5866,10 +5730,10 @@ public class NoSourceAdapterTest extends TestCase
       child = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child);
 
-      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relationshipDTO);
 
-      tommyProxy.deleteChild(relationshipDTO.getId());
+      tommyProxy.deleteChild(relationshipDTO.getOid());
     }
     catch (ServerSideException e)
     {
@@ -5881,12 +5745,14 @@ public class NoSourceAdapterTest extends TestCase
       {
         tommySession.logout();
       }
-      clientRequest.delete(parent.getId());
-      clientRequest.delete(child.getId());
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.DELETE_CHILD.name());
+      clientRequest.delete(parent.getOid());
+      clientRequest.delete(child.getOid());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.DELETE_CHILD.name());
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteChildInvalid()
   {
     ClientSession tommySession = null;
@@ -5903,10 +5769,10 @@ public class NoSourceAdapterTest extends TestCase
       child = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child);
 
-      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relationshipDTO);
 
-      tommyProxy.deleteChild(relationshipDTO.getId());
+      tommyProxy.deleteChild(relationshipDTO.getOid());
 
       Assert.fail("The user Tommy does not have permission to delete a child");
     }
@@ -5924,11 +5790,13 @@ public class NoSourceAdapterTest extends TestCase
       {
         tommySession.logout();
       }
-      clientRequest.delete(parent.getId());
-      clientRequest.delete(child.getId());
+      clientRequest.delete(parent.getOid());
+      clientRequest.delete(child.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParent()
   {
     ClientSession tommySession = null;
@@ -5937,7 +5805,7 @@ public class NoSourceAdapterTest extends TestCase
     BusinessDTO child = null;
     try
     {
-      clientRequest.grantTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.DELETE_PARENT.name());
+      clientRequest.grantTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.DELETE_PARENT.name());
 
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
@@ -5947,10 +5815,10 @@ public class NoSourceAdapterTest extends TestCase
       child = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child);
 
-      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relationshipDTO);
 
-      tommyProxy.deleteParent(relationshipDTO.getId());
+      tommyProxy.deleteParent(relationshipDTO.getOid());
     }
     catch (ServerSideException e)
     {
@@ -5964,16 +5832,18 @@ public class NoSourceAdapterTest extends TestCase
       }
       if (parent != null)
       {
-        clientRequest.delete(parent.getId());
+        clientRequest.delete(parent.getOid());
       }
       if (child != null)
       {
-        clientRequest.delete(child.getId());
+        clientRequest.delete(child.getOid());
       }
-      clientRequest.revokeTypePermission(tommyUser.getId(), mdRelationship.getId(), Operation.DELETE_PARENT.name());
+      clientRequest.revokeTypePermission(tommyUser.getOid(), mdRelationship.getOid(), Operation.DELETE_PARENT.name());
     }
   }
 
+  @Request
+  @Test
   public void testDirectionalDeleteParentInvalid()
   {
     ClientSession tommySession = null;
@@ -5990,10 +5860,10 @@ public class NoSourceAdapterTest extends TestCase
       child = clientRequest.newBusiness(childMdBusinessType);
       clientRequest.createBusiness(child);
 
-      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getId(), child.getId(), mdRelationshipType);
+      RelationshipDTO relationshipDTO = clientRequest.addChild(parent.getOid(), child.getOid(), mdRelationshipType);
       clientRequest.createRelationship(relationshipDTO);
 
-      tommyProxy.deleteParent(relationshipDTO.getId());
+      tommyProxy.deleteParent(relationshipDTO.getOid());
 
       Assert.fail("The user Tommy does not have permission to delete a child");
     }
@@ -6011,8 +5881,8 @@ public class NoSourceAdapterTest extends TestCase
       {
         tommySession.logout();
       }
-      clientRequest.delete(parent.getId());
-      clientRequest.delete(child.getId());
+      clientRequest.delete(parent.getOid());
+      clientRequest.delete(child.getOid());
     }
   }
 
@@ -6020,6 +5890,8 @@ public class NoSourceAdapterTest extends TestCase
    * Makes sure that a queryDTO for a given type returns the attributes that the
    * query type defines.
    */
+  @Request
+  @Test
   public void testQueryDTODefinedAttributes()
   {
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
@@ -6076,6 +5948,8 @@ public class NoSourceAdapterTest extends TestCase
     checkAttributeMd(mdAttributeDateDTO, aDate.getAttributeMdDTO());
   }
 
+  @Request
+  @Test
   public void testQueryDTObasics()
   {
     // queries for objects using the basic properties of the queryDTO
@@ -6099,22 +5973,26 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(queryDTO.getResultSet().size(), 3);
   }
 
+  @Request
+  @Test
   public void testStructQueryDTO()
   {
     StructQueryDTO queryDTO = (StructQueryDTO) clientRequest.getQuery(structType);
 
     AttributeCharacterDTO charDTO = (AttributeCharacterDTO) queryDTO.getAttributeDTO(structMdAttributeCharDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(charDTO);
+    Assert.assertNotNull(charDTO);
 
     Assert.assertEquals(queryDTO.getType(), structType);
   }
 
+  @Request
+  @Test
   public void testRelationshipQueryDTO()
   {
     RelationshipQueryDTO queryDTO = (RelationshipQueryDTO) clientRequest.getQuery(mdRelationshipType);
 
     AttributeLongDTO longDTO = (AttributeLongDTO) queryDTO.getAttributeDTO(relMdAttributeLongDTO.getValue(MdAttributeCharacterInfo.NAME));
-    assertNotNull(longDTO);
+    Assert.assertNotNull(longDTO);
     Assert.assertEquals(longDTO.getValue(), "123321"); // test the default value
 
     Assert.assertEquals(queryDTO.getParentMdBusiness(), parentMdBusinessType);
@@ -6122,6 +6000,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(queryDTO.getType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testBusinessQueryDTO()
   {
     BusinessQueryDTO parentQueryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
@@ -6141,6 +6021,8 @@ public class NoSourceAdapterTest extends TestCase
     Assert.assertEquals(asChild.getRelationshipType(), mdRelationshipType);
   }
 
+  @Request
+  @Test
   public void testImportDomainModel()
   {
     String location = TestConstants.Path.XMLFiles + "/standaloneSetTest.xml";
@@ -6161,7 +6043,7 @@ public class NoSourceAdapterTest extends TestCase
       List<? extends BusinessDTO> resultSet = queryDTO.getResultSet();
 
       Assert.assertEquals(1, resultSet.size());
-      clientRequest.delete(resultSet.get(0).getId());
+      clientRequest.delete(resultSet.get(0).getOid());
     }
     catch (IOException e)
     {
@@ -6169,6 +6051,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testNoPermissionImportDomainModel()
   {
     ClientSession tommySession = this.createSession("Tommy", "music");
@@ -6199,6 +6083,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminValid()
   {
     try
@@ -6212,6 +6098,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testAccessAdminInvalid()
   {
     ClientSession tommySession = null;
@@ -6237,6 +6125,8 @@ public class NoSourceAdapterTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testProxyLoggedIn()
   {
     ClientSession anonymousSession = this.createAnonymousSession();
@@ -6285,6 +6175,8 @@ public class NoSourceAdapterTest extends TestCase
   /**
    * Creates a valid instance of a type.
    */
+  @Request
+  @Test
   public void testNewDisconnectedEntity()
   {
     BusinessDTO user = clientRequest.newBusiness(testUserType);
@@ -6294,8 +6186,8 @@ public class NoSourceAdapterTest extends TestCase
 
     try
     {
-      clientRequest.grantTypePermission(user.getId(), parentMdBusiness.getId(), Operation.READ.name());
-      clientRequest.grantTypePermission(user.getId(), parentMdBusiness.getId(), Operation.READ_ALL.name());
+      clientRequest.grantTypePermission(user.getOid(), parentMdBusiness.getOid(), Operation.READ.name());
+      clientRequest.grantTypePermission(user.getOid(), parentMdBusiness.getOid(), Operation.READ_ALL.name());
 
       ClientSession session = this.createSession("Test", "Test");
 
@@ -6308,7 +6200,7 @@ public class NoSourceAdapterTest extends TestCase
         Assert.assertEquals(parentMdBusinessType, entityDTO.getType());
 
         // Ensure that the disconnected flag is set to true
-        assertTrue(entityDTO.isDisconnected());
+        Assert.assertTrue(entityDTO.isDisconnected());
 
         // Ensure the the user can set values
         entityDTO.setValue("aBoolean", MdAttributeBooleanInfo.TRUE);
@@ -6333,7 +6225,7 @@ public class NoSourceAdapterTest extends TestCase
     }
     finally
     {
-      clientRequest.delete(user.getId());
+      clientRequest.delete(user.getOid());
     }
   }
 }

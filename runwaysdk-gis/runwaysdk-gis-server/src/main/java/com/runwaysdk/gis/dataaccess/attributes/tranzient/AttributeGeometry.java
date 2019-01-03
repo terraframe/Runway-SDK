@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
+import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
 import com.runwaysdk.gis.dataaccess.AttributeGeometryIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
-import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
 import com.vividsolutions.jts.geom.Geometry;
 
 public abstract class AttributeGeometry extends Attribute implements AttributeGeometryIF

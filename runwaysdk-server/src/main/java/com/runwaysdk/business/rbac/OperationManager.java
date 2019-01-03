@@ -21,7 +21,6 @@ package com.runwaysdk.business.rbac;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -37,7 +36,6 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.DomainTupleDAOIF;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 
-
 public class OperationManager
 {
   /**
@@ -48,43 +46,38 @@ public class OperationManager
   /**
    * The set of operations valid for a MdMethod
    */
-  private Set<Operation> mdMethodOperations;
+  private Set<Operation>          mdMethodOperations;
 
   /**
    * The set of operations valid for a MdBusiness
    */
-  private Set<Operation> mdBusinessOperations;
+  private Set<Operation>          mdBusinessOperations;
 
   /**
    * The set of operations valid for a MdRelationship
    */
-  private Set<Operation> mdRelationshipOperations;
+  private Set<Operation>          mdRelationshipOperations;
 
   /**
    * The set of operations valid for a MdSessions
    */
-  private Set<Operation> mdSessionOperations;
+  private Set<Operation>          mdSessionOperations;
 
   /**
    * The set of operations valid for a MdAttribute
    */
-  private Set<Operation> mdAttributeOperations;
+  private Set<Operation>          mdAttributeOperations;
 
   /**
    * The set of operations valid for a BusinessDAO
    */
-  private Set<Operation> businessDAOoperations;
-
-  /**
-   * The set of operations valid for a State
-   */
-  private Set<Operation> stateOperations;
+  private Set<Operation>          businessDAOoperations;
 
   /**
    * The set of operations valid when the Metadata attribute on TypeTuple
    * references a MdRelationship.
    */
-  private Set<Operation> tupleMdRelationshipOperations;
+  private Set<Operation>          tupleMdRelationshipOperations;
 
   private OperationManager()
   {
@@ -160,21 +153,6 @@ public class OperationManager
     businessDAOoperations.add(Operation.GRANT);
     businessDAOoperations.add(Operation.REVOKE);
 
-    stateOperations = new TreeSet<Operation>();
-    stateOperations.add(Operation.WRITE);
-    stateOperations.add(Operation.READ);
-    stateOperations.add(Operation.DELETE);
-    stateOperations.add(Operation.DENY_WRITE);
-    stateOperations.add(Operation.DENY_READ);
-    stateOperations.add(Operation.DENY_DELETE);
-    stateOperations.add(Operation.PROMOTE);
-    stateOperations.add(Operation.ADD_CHILD);
-    stateOperations.add(Operation.ADD_PARENT);
-    stateOperations.add(Operation.DELETE_CHILD);
-    stateOperations.add(Operation.DELETE_PARENT);
-    stateOperations.add(Operation.GRANT);
-    stateOperations.add(Operation.REVOKE);
-
     mdMethodOperations = new TreeSet<Operation>();
     mdMethodOperations.add(Operation.EXECUTE);
     mdMethodOperations.add(Operation.GRANT);
@@ -193,14 +171,15 @@ public class OperationManager
   /**
    * Returns the set of valid operations of a given businessDAO.
    *
-   * @param businessDAO The BusinessDAO to get the valid operations.
+   * @param businessDAO
+   *          The BusinessDAO to get the valid operations.
    * @return Returns the set of valid operations of a given businessDAO.
    */
   public Set<Operation> getValidOperations(BusinessDAOIF businessDAO)
   {
-    if(businessDAO instanceof MdClassDimensionDAOIF)
+    if (businessDAO instanceof MdClassDimensionDAOIF)
     {
-      businessDAO = ((MdClassDimensionDAOIF) businessDAO).definingMdClass();
+      businessDAO = ( (MdClassDimensionDAOIF) businessDAO ).definingMdClass();
     }
 
     if (businessDAO instanceof MdBusinessDAOIF || businessDAO instanceof MdStructDAOIF)
@@ -223,48 +202,24 @@ public class OperationManager
     {
       DomainTupleDAOIF tuple = (DomainTupleDAOIF) businessDAO;
       MetadataDAOIF metadata = tuple.getMetaData();
-      StateMasterDAOIF statemaster = tuple.getStateMaster();
 
-      if(metadata != null && statemaster != null)
-      {
-        if(metadata instanceof MdRelationshipDAOIF)
-        {
-          return tupleMdRelationshipOperations;
-        }
-
-        return mdAttributeOperations;
-      }
-      else if(statemaster != null && metadata == null)
-      {
-        return stateOperations;
-      }
-      else if (metadata != null && statemaster == null)
-      {
-        return getValidOperations(metadata);
-      }
-
-      //Return empty set
-      return new TreeSet<Operation>();
+      return getValidOperations(metadata);
     }
     else if (businessDAO instanceof TypeTupleDAOIF)
     {
-      //If the MetaData attribute references a MdRelationship
-      //then return the StateMaster-MdRelationship operations
-      //else return the StateMaster-MdAttribute operations
+      // If the MetaData attribute references a MdRelationship
+      // then return the StateMaster-MdRelationship operations
+      // else return the StateMaster-MdAttribute operations
 
       TypeTupleDAOIF typeTuple = (TypeTupleDAOIF) businessDAO;
       MetadataDAOIF metadata = typeTuple.getMetaData();
 
-      if(metadata instanceof MdRelationshipDAOIF)
+      if (metadata instanceof MdRelationshipDAOIF)
       {
         return tupleMdRelationshipOperations;
       }
 
       return mdAttributeOperations;
-    }
-    else if (businessDAO instanceof StateMasterDAOIF)
-    {
-      return stateOperations;
     }
     else if (businessDAO instanceof MdMethodDAOIF)
     {
@@ -281,7 +236,7 @@ public class OperationManager
    */
   public static OperationManager getOperationManager()
   {
-    if(operationManager == null)
+    if (operationManager == null)
     {
       operationManager = new OperationManager();
     }
@@ -290,24 +245,25 @@ public class OperationManager
   }
 
   /**
-   * Returns the Operation that corresponds to a given id
+   * Returns the Operation that corresponds to a given oid
    *
-   * @param id The id of the Operation
-   * @return The corresponding enumeration Operation of a given id
+   * @param oid
+   *          The oid of the Operation
+   * @return The corresponding enumeration Operation of a given oid
    */
-  public static Operation getOperation(String id)
+  public static Operation getOperation(String oid)
   {
     // Iterate over each operation and check for a match
     for (Operation operation : Operation.values())
     {
-      if (id.equals(operation.getId()))
+      if (oid.equals(operation.getOid()))
       {
         return operation;
       }
     }
 
     // No matching operations found
-    String error = "Cannot find operation [" + id + "] - the id is not recognized.";
+    String error = "Cannot find operation [" + oid + "] - the oid is not recognized.";
     throw new DataNotFoundException(error, Operation.READ.getMdBusiness());
   }
 
@@ -320,7 +276,7 @@ public class OperationManager
   public static Operation[] getOperations(String[] ids)
   {
     Operation[] operations = new Operation[ids.length];
-    for(int i=0; i<ids.length; i++)
+    for (int i = 0; i < ids.length; i++)
     {
       operations[i] = getOperation(ids[i]);
     }
@@ -347,26 +303,28 @@ public class OperationManager
     for (BusinessDAOIF op : ops)
     {
       // Add the proper operation
-      operations.add(OperationManager.getOperation(op.getId()));
+      operations.add(OperationManager.getOperation(op.getOid()));
     }
 
     return operations;
   }
 
-
   /**
-   * Determines if a businessDAO in a list is referring, aka has the same id , to an Operation
+   * Determines if a businessDAO in a list is referring, aka has the same oid ,
+   * to an Operation
    *
-   * @param list The list of businessDAOs
-   * @param o The operation to compare for
+   * @param list
+   *          The list of businessDAOs
+   * @param o
+   *          The operation to compare for
    * @return If the list of businessDAO contains the operation o
    */
   public static boolean containsOperation(BusinessDAOIF[] list, Operation o)
   {
 
-    for(BusinessDAOIF businessDAO : list)
+    for (BusinessDAOIF businessDAO : list)
     {
-      if(businessDAO.getId().equals(o.getId()))
+      if (businessDAO.getOid().equals(o.getOid()))
       {
         return true;
       }

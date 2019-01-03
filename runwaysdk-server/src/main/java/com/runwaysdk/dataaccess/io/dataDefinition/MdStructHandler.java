@@ -99,16 +99,16 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
       // Change to an everything caching algorithm
       if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
       {
-        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getOid());
       }
       // Change to a nonthing caching algorithm
       else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
       {
-        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getOid());
       }
       else
       {
-        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getOid());
       }
     }
 
@@ -118,18 +118,12 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
       mdStructDAO.setTableName(tableName);
     }
 
-    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-    if (generateController != null)
-    {
-      mdStructDAO.setGenerateMdController(new Boolean(generateController));
-    }
-
     // Make sure the name has not already been defined
     if (!this.getManager().isCreated(mdStructDAO.definesType()))
     {
       mdStructDAO.apply();
 
-      this.getManager().addMapping(mdStructDAO.definesType(), mdStructDAO.getId());
+      this.getManager().addMapping(mdStructDAO.definesType(), mdStructDAO.getOid());
     }
 
     context.setObject(MdTypeInfo.CLASS, mdStructDAO);

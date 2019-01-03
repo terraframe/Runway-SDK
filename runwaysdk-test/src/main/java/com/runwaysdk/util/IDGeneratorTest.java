@@ -18,15 +18,20 @@
  */
 package com.runwaysdk.util;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class IDGeneratorTest extends TestCase
+import com.runwaysdk.session.Request;
+
+public class IDGeneratorTest
 {
+  @Request
+  @Test
   public void testGenerateId()
   {
     String key = "com.test.TestBusiness1.method";
 
-    assertEquals(IDGenerator.generateId(key), IDGenerator.generateId(key));
-    assertEquals(32, IDGenerator.generateId(key).length());
+    Assert.assertEquals(IDGenerator.generateId(key), IDGenerator.generateId(key));
+    Assert.assertEquals(32, IDGenerator.generateId(key).length());
   }
 }

@@ -41,9 +41,9 @@ public abstract class MdWebLongBase extends com.runwaysdk.system.metadata.MdWebN
     return CLASS;
   }
   
-  public static MdWebLong get(String id)
+  public static MdWebLong get(String oid)
   {
-    return (MdWebLong) com.runwaysdk.business.Business.get(id);
+    return (MdWebLong) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdWebLong getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdWebLongBase extends com.runwaysdk.system.metadata.MdWebN
     return (MdWebLong) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdWebLong lock(java.lang.String id)
+  public static MdWebLong lock(java.lang.String oid)
   {
-    MdWebLong _instance = MdWebLong.get(id);
+    MdWebLong _instance = MdWebLong.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdWebLong unlock(java.lang.String id)
+  public static MdWebLong unlock(java.lang.String oid)
   {
-    MdWebLong _instance = MdWebLong.get(id);
+    MdWebLong _instance = MdWebLong.get(oid);
     _instance.unlock();
     
     return _instance;

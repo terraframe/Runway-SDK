@@ -62,9 +62,9 @@ public abstract class CompositeFieldConditionDAO extends FieldConditionDAO imple
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static CompositeFieldConditionDAOIF get(String id)
+  public static CompositeFieldConditionDAOIF get(String oid)
   {
-    return (CompositeFieldConditionDAOIF) BusinessDAO.get(id);
+    return (CompositeFieldConditionDAOIF) BusinessDAO.get(oid);
   }
 
   public FieldConditionDAOIF getFirstCondition()

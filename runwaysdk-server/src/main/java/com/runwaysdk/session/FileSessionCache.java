@@ -72,12 +72,12 @@ public class FileSessionCache extends ManagedUserSessionCache
   private String               rootDirectory;
 
   /**
-   * The session id of the public session
+   * The session oid of the public session
    */
   private String               publicSessionId;
 
   /**
-   * A cache of sessions, the mapping between the session id and the Session
+   * A cache of sessions, the mapping between the session oid and the Session
    */
   private Map<String, Session> sessions;
 
@@ -120,14 +120,14 @@ public class FileSessionCache extends ManagedUserSessionCache
     Session publicSession = new Session(CommonProperties.getDefaultLocale());
     publicSession.setExpirationTime(-1);
 
-    this.publicSessionId = publicSession.getId();
+    this.publicSessionId = publicSession.getOid();
     this.addSession(publicSession);
   }
 
   @Override
   protected void addSession(Session session)
   {
-    if (!sessions.containsKey(session.getId()))
+    if (!sessions.containsKey(session.getOid()))
     {
       putSessionOnFileSystem(session, true);
     }
@@ -152,7 +152,7 @@ public class FileSessionCache extends ManagedUserSessionCache
 
     try
     {
-      String sessionId = session.getId();
+      String sessionId = session.getOid();
       String directory = this.getDirectory(sessionId);
 
       // Create the directory structure and get the session file
@@ -211,7 +211,7 @@ public class FileSessionCache extends ManagedUserSessionCache
 
     try
     {
-      // Do nothing if the sessionId is equal to the public session id
+      // Do nothing if the sessionId is equal to the public session oid
       if (!sessionId.equals(publicSessionId))
       {
         Session session = this.getSession(sessionId);
@@ -334,12 +334,12 @@ public class FileSessionCache extends ManagedUserSessionCache
     super.changeLogIn(username, password, session);
 
     // Update the session on the cache with the user logged in
-    if (!sessions.containsKey(session.getId()))
+    if (!sessions.containsKey(session.getOid()))
     {
       this.putSessionOnFileSystem(session, false);
     }
 
-    return session.getId();
+    return session.getOid();
   }
 
   @Override
@@ -419,7 +419,7 @@ public class FileSessionCache extends ManagedUserSessionCache
    * Sets the dimension of an existing {@link Session}.
    * 
    * @param sessionId
-   *          The id of the {@link Session}.
+   *          The oid of the {@link Session}.
    * @param dimensionKey
    *          key of a {@link MdDimension}.
    */
@@ -505,9 +505,9 @@ public class FileSessionCache extends ManagedUserSessionCache
 
   /**
    * @param sessionId
-   *          The session id
+   *          The session oid
    * @return Fully qualified directory location of a Session with the given
-   *         session id.
+   *         session oid.
    */
   private String getDirectory(String sessionId)
   {
@@ -697,7 +697,11 @@ public class FileSessionCache extends ManagedUserSessionCache
       String name = desc.getName();
       try
       {
-        return LoaderDecorator.load(name);
+        return LoaderDecorator.loadClass(name);
+      }
+      catch (ClassNotFoundException ex)
+      {
+        return super.resolveClass(desc);
       }
       catch (RuntimeException ex)
       {

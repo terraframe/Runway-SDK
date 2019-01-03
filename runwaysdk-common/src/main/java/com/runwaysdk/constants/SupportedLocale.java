@@ -32,9 +32,9 @@ public enum SupportedLocale
   public static final String LOCALE_LABEL = "localeLabel";
   
   /**
-   * The id of the locale
+   * The oid of the locale
    */
-  private String id;
+  private String oid;
   
   /**
    * The label of the local
@@ -44,20 +44,20 @@ public enum SupportedLocale
   /**
    * Enum constructor
    * 
-   * @param id
+   * @param oid
    */
-  private SupportedLocale(String id, String localeLabel)
+  private SupportedLocale(String oid, String localeLabel)
   {
-    this.id = id;
+    this.oid = oid;
     this.localeLabel = localeLabel;
   }
   
   /**
-   * Returns the id 
+   * Returns the oid 
    */
-  public String getId()
+  public String getOid()
   {
-    return id;
+    return oid;
   }
   
   /**

@@ -24,12 +24,12 @@ import com.runwaysdk.dataaccess.EntityDAO;
 public class DeleteConflictResolver extends ConflictAdapter
 {
   private UserDAO reference;
-  
+
   public DeleteConflictResolver(UserDAO reference)
   {
     this.reference = reference;
   }
-  
+
   @Override
   public void resolve(final ImportConflict conflict)
   {
@@ -39,7 +39,7 @@ public class DeleteConflictResolver extends ConflictAdapter
       public void run()
       {
         EntityDAO entityDAO = conflict.getEntityDAO();
-        EntityDAO referenceDAO = strategy.get(reference.getId()).getEntityDAO();
+        EntityDAO referenceDAO = strategy.get(reference.getOid()).getEntityDAO();
 
         strategy.delete(referenceDAO);
         strategy.delete(entityDAO);

@@ -18,48 +18,22 @@
  */
 package com.runwaysdk.session;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.runwaysdk.ClasspathTestRunner;
 
+@RunWith(ClasspathTestRunner.class)
 public class MemorySessionTest extends SessionTest
 {
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps
-   * it in <code>MasterTestSetup</code>. The returned class is a suite of all
-   * the tests in <code>AttributeTest</code>, with the global setUp() and
-   * tearDown() methods from <code>MasterTestSetup</code>.
-   * 
-   * @return A suite of tests wrapped in global setUp and tearDown methods
-   */
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    
-    suite.addTestSuite(MemorySessionTest.class);
-    
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-    
-    return wrapper;
-  }
-  
-  /**
    * The setup done before the test suite is run
    */
+  @Request
+  @BeforeClass
   public static void classSetUp()
   {
     SessionCacheInjector.createInjector(new Module()
@@ -67,20 +41,22 @@ public class MemorySessionTest extends SessionTest
       public void configure(Binder binder)
       {
         binder.bind(SessionCache.class).toInstance(new MemorySessionCache());
-      }      
+      }
     });
-        
+
     SessionFacade.reloadCache();
- 
+
     SessionTest.classSetUp();
   }
-  
+
+  @Request
+  @AfterClass
   public static void classTearDown()
   {
     SessionTest.classTearDown();
     SessionFacade.clearSessions();
-    
-    //Return the facade that the cache uses to its original form
+
+    // Return the facade that the cache uses to its original form
     SessionCacheInjector.reloadInjector();
     SessionFacade.reloadCache();
   }

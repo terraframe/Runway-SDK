@@ -31,9 +31,9 @@ public abstract class MobileFormFieldBase extends com.runwaysdk.system.metadata.
   public final static String CLASS = "com.runwaysdk.system.metadata.MobileFormField";
   private static final long serialVersionUID = -1145182059;
   
-  public MobileFormFieldBase(String parentId, String childId)
+  public MobileFormFieldBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class MobileFormFieldBase extends com.runwaysdk.system.metadata.
     return (com.runwaysdk.system.metadata.MdMobileField) super.getChild();
   }
   
-  public static MobileFormField get(String id)
+  public static MobileFormField get(String oid)
   {
-    return (MobileFormField) com.runwaysdk.business.Relationship.get(id);
+    return (MobileFormField) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static MobileFormField getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class MobileFormFieldBase extends com.runwaysdk.system.metadata.
     return (MobileFormField) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static MobileFormField lock(java.lang.String id)
+  public static MobileFormField lock(java.lang.String oid)
   {
-    MobileFormField _instance = MobileFormField.get(id);
+    MobileFormField _instance = MobileFormField.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MobileFormField unlock(java.lang.String id)
+  public static MobileFormField unlock(java.lang.String oid)
   {
-    MobileFormField _instance = MobileFormField.get(id);
+    MobileFormField _instance = MobileFormField.get(oid);
     _instance.unlock();
     
     return _instance;

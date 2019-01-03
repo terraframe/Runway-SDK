@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.format.AbstractFormatFactory;
 import com.runwaysdk.format.FormatFactory;
 import com.runwaysdk.transport.attributes.AttributeDTO;
@@ -157,6 +159,10 @@ public abstract class JSONToDTO
     else if (type.equals(MdAttributeBooleanInfo.CLASS))
     {
       handler = new AttributeBooleanDTOHandler(attribute);
+    }
+    else if (type.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      handler = new AttributeUUIDDTOHandler(attribute);
     }
     else
     {
@@ -399,6 +405,34 @@ public abstract class JSONToDTO
     }
   }
 
+  private class AttributeUUIDDTOHandler extends AttributeDTOHandler
+  {
+    private AttributeUUIDDTOHandler(JSONObject attribute)
+    {
+      super(attribute);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
+     */
+    @Override
+    protected String getValue() throws JSONException
+    {
+      try
+      {
+        return attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+      }
+      catch (JSONException e)
+      {
+        return super.getValue();
+      }
+    }
+  }
+  
   /**
    * Sets the metadata for AttributeEnumerationDTOs
    */

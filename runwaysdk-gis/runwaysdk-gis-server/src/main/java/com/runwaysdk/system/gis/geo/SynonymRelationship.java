@@ -22,20 +22,20 @@ public class SynonymRelationship extends SynonymRelationshipBase
 {
   private static final long serialVersionUID = 713061867;
   
-  public SynonymRelationship(String parentId, String childId)
+  public SynonymRelationship(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public SynonymRelationship(com.runwaysdk.system.gis.geo.GeoEntity parent, com.runwaysdk.system.gis.geo.Synonym child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
   @Override
   public String buildKey()
   {
-    return this.getParentId() + this.getChildId();
+    return this.getParentOid() + this.getChildOid();
   }
   
 }

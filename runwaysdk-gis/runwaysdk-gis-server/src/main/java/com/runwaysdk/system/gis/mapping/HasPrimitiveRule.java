@@ -22,14 +22,14 @@ public class HasPrimitiveRule extends HasPrimitiveRuleBase
 {
   private static final long serialVersionUID = 1314121511;
   
-  public HasPrimitiveRule(String parentId, String childId)
+  public HasPrimitiveRule(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public HasPrimitiveRule(com.runwaysdk.system.gis.mapping.CompositeRule parent, com.runwaysdk.system.gis.mapping.PrimitiveRule child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

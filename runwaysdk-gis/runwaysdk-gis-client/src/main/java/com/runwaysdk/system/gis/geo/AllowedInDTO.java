@@ -22,9 +22,9 @@ public class AllowedInDTO extends AllowedInDTOBase
 {
   private static final long serialVersionUID = 1638635210;
   
-  public AllowedInDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentId, String childId)
+  public AllowedInDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {
-    super(clientRequest, parentId, childId);
+    super(clientRequest, parentOid, childOid);
     
   }
   

@@ -22,15 +22,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -49,108 +48,60 @@ import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.controller.ServletMethod;
 import com.runwaysdk.controller.URLConfigurationManager;
 import com.runwaysdk.controller.UnknownServletException;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.request.MockServletRequest;
 import com.runwaysdk.request.MockServletResponse;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 
-public class DelegatingServletTest extends TestCase
+@RunWith(ClasspathTestRunner.class)
+public class DelegatingServletTest
 {
   private static ClientSession session;
 
-  private static BusinessDTO   mdBusiness;
+  private static MdBusinessDAO     mdBusiness;
 
-  private static BusinessDTO   mdRelationship;
+  private static MdRelationshipDAO mdRelationship;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(DelegatingServletTest.class);
+  private static String            mdRelationshipType;
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      @Override
-      protected void setUp() throws Exception
-      {
-        classSetup();
-      }
+  private static String            mdBusinessType;
 
-      @Override
-      protected void tearDown() throws Exception
-      {
-        classTeardown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
+  @Request
+  @BeforeClass
   public static void classSetup()
   {
+    mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    mdBusinessType = mdBusiness.definesType();
+
+    TestFixtureFactory.addCharacterAttribute(mdBusiness).apply();
+
+    mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness, mdBusiness);
+    mdRelationship.apply();
+
+    mdRelationshipType = mdRelationship.definesType();
+
     session = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-    ClientRequestIF clientRequest = session.getRequest();
-
-    mdBusiness = clientRequest.newBusiness(MdBusinessInfo.CLASS);
-    mdBusiness.setValue(MdBusinessInfo.NAME, "TestBusiness");
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test");
-    mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration Master List");
-    mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdBusiness);
-
-    BusinessDTO mdAttributeCharacterDTO = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
-    mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
-    mdAttributeCharacterDTO.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character desc");
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.toString());
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.SIZE, "64");
-    mdAttributeCharacterDTO.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-    clientRequest.createBusiness(mdAttributeCharacterDTO);
-
-    mdRelationship = clientRequest.newBusiness(MdRelationshipInfo.CLASS);
-    mdRelationship.setValue(MdRelationshipInfo.NAME, "TestRelationship");
-    mdRelationship.setValue(MdRelationshipInfo.PACKAGE, "test");
-    mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship");
-    mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusiness.getId());
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
-    mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent dto");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusiness.getId());
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
-    mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child dto");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "testParent");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "testChild");
-    mdRelationship.setValue(MdRelationshipInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    clientRequest.createBusiness(mdRelationship);
-
   }
 
+  @Request
+  @AfterClass
   public static void classTeardown()
   {
-    ClientRequestIF request = session.getRequest();
-
-    request.delete(mdBusiness.getId());
-
     session.logout();
+    
+    TestFixtureFactory.delete(mdRelationship);
+    TestFixtureFactory.delete(mdBusiness);
+
   }
 
+  @Request
+  @Test
   public void testdelegate() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -188,6 +139,8 @@ public class DelegatingServletTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBasicParameter() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -226,11 +179,13 @@ public class DelegatingServletTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testBasicDTOParameter() throws Exception
   {
     ClientRequestIF request = session.getRequest();
 
-    BusinessDTO dto = request.newBusiness("test.TestBusiness");
+    BusinessDTO dto = request.newBusiness(mdBusinessType);
     dto.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Value");
     request.createBusiness(dto);
 
@@ -262,7 +217,7 @@ public class DelegatingServletTest extends TestCase
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.OID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(200, resp.getStatus());
@@ -275,15 +230,17 @@ public class DelegatingServletTest extends TestCase
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testRunwayJSONDTOParameter() throws Exception
   {
     ClientRequestIF request = session.getRequest();
 
-    BusinessDTO dto = request.newBusiness("test.TestBusiness");
+    BusinessDTO dto = request.newBusiness(mdBusinessType);
     dto.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Value");
     request.createBusiness(dto);
 
@@ -315,7 +272,7 @@ public class DelegatingServletTest extends TestCase
         JSONObject test = response.getJSONObject("dto");
 
         Assert.assertEquals(dto.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getString(TestFixConst.ATTRIBUTE_CHARACTER));
-        Assert.assertEquals(dto.getId(), test.getString(ComponentInfo.ID));
+        Assert.assertEquals(dto.getOid(), test.getString(ComponentInfo.OID));
         Assert.assertEquals(dto.getType(), test.getString(ComponentInfo.TYPE));
 
         Assert.assertEquals(200, resp.getStatus());
@@ -328,10 +285,12 @@ public class DelegatingServletTest extends TestCase
     }
     finally
     {
-      request.delete(dto.getId());
+      request.delete(dto.getOid());
     }
   }
 
+  @Request
+  @Test
   public void testInvalidUri() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");
@@ -341,7 +300,7 @@ public class DelegatingServletTest extends TestCase
     try
     {
       MockServletRequest req = new MockServletRequest();
-      req.setServletPath("test/bad");
+      req.setServletPath("test/invalid");
 
       MockServletResponse resp = new MockServletResponse();
 
@@ -368,6 +327,8 @@ public class DelegatingServletTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testGetOnPost() throws Exception
   {
     InputStream istream = this.getClass().getResourceAsStream("/testmap.xml");

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -78,7 +80,6 @@ import com.runwaysdk.constants.MdGraphInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
-import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
@@ -102,6 +103,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
+import com.runwaysdk.system.metadata.MdAttributeUUID;
 import com.runwaysdk.util.Base64;
 
 /**
@@ -120,7 +122,7 @@ public class XMLImporter
 
   static final String                DOMAIN_TAG = "@@domain";
 
-  Pattern                            idPattern  = Pattern.compile("\\w{64}");
+  Pattern                            idPattern  = Pattern.compile("[\\w-]{36}");
 
   public static void main(String args[])
   {
@@ -336,7 +338,7 @@ public class XMLImporter
       Element relationship = (Element) relationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(relationship, "id"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(relationship, "oid"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_OID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_OID));
 
     }
 
@@ -347,7 +349,7 @@ public class XMLImporter
       Element entityIndex = (Element) entityIndexRelationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(entityIndex, "id"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(entityIndex, "oid"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_OID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_OID));
 
     }
 
@@ -363,14 +365,14 @@ public class XMLImporter
     for (int i = 0; i < objects.getLength(); i++)
     {
       Element object = (Element) objects.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
+      insert(getValueFromChildTag(object, EntityInfo.OID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
 
     NodeList structs = root.getElementsByTagName("struct");
     for (int i = 0; i < structs.getLength(); i++)
     {
       Element object = (Element) structs.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
+      insert(getValueFromChildTag(object, EntityInfo.OID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
   }
 
@@ -515,7 +517,7 @@ public class XMLImporter
       prepSmtVars.add("?");
       values.add(itemId);
       String tableName = ( inheritanceMap.get(enumerationType) ).getTableName();
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
       preparedStatementList.add(preparedStmt);
@@ -539,7 +541,7 @@ public class XMLImporter
   {
     // Create the table
     NodeList attributes = object.getElementsByTagName("attribute");
-    String id = null;
+    String oid = null;
     String entity_name = null;
     String package_name = null;
     String table_name = null;
@@ -550,9 +552,9 @@ public class XMLImporter
     for (int i = 0; i < attributes.getLength(); i++)
     {
       Element attribute = (Element) attributes.item(i);
-      if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.ID))
+      if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.OID))
       {
-        id = getValueFromChildTag(attribute, "value");
+        oid = getValueFromChildTag(attribute, "value");
       }
       else if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.NAME))
       {
@@ -583,14 +585,14 @@ public class XMLImporter
       {
         isAbstract = getValueFromChildTag(attribute, "value");
       }
-      if (entity_name != null && package_name != null && table_name != null && isAbstract != null && index1_name != null && index2_name != null && id != null)
+      if (entity_name != null && package_name != null && table_name != null && isAbstract != null && index1_name != null && index2_name != null && oid != null)
       {
         break;
       }
     }
 
     // create the table in the database
-    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(MdTermInfo.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
+    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(MdTermInfo.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS))
     {
       Database.createClassTable(table_name);
     }
@@ -611,7 +613,7 @@ public class XMLImporter
     }
     else if (metaDataType.equals(MdEnumerationInfo.CLASS))
     {
-      Database.createEnumerationTable(table_name, id);
+      Database.createEnumerationTable(table_name, oid);
     }
 
     String type = package_name + "." + entity_name;
@@ -642,8 +644,8 @@ public class XMLImporter
     String type = getValueFromChildTag(mdAttribute, EntityInfo.TYPE);
     String name = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.NAME);
     String columnName = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.COLUMN_NAME);
-    // ID is automatically added to all tables. Don't add it here.
-    if (name.equalsIgnoreCase(EntityInfo.ID))
+    // OID is automatically added to all tables. Don't add it here.
+    if (name.equalsIgnoreCase(EntityInfo.OID))
     {
       return;
     }
@@ -687,13 +689,13 @@ public class XMLImporter
     Element cacheIndexType = (Element) mdAttribute.getElementsByTagName(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE).item(0);
     String index_id = getValueFromChildTag(cacheIndexType, MdEnumerationInfo.ITEM_ID);
 
-    if (index_id.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS))
+    if (index_id.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getOid()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
       Database.addUniqueIndex(table, columnName, indexName);
     }
-    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
+    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getOid()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
@@ -703,15 +705,15 @@ public class XMLImporter
 
   /**
    * 
-   * @param id
+   * @param oid
    * @param type
    * @param attributes
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    */
-  private void insert(String id, String type, Element attributes, String parentId, String childId)
+  private void insert(String oid, String type, Element attributes, String parentOid, String childOid)
   {
-    validateId(id);
+    validateId(oid);
 
     List<List<Element>> attributeLists = new LinkedList<List<Element>>();
 
@@ -745,7 +747,7 @@ public class XMLImporter
     List<List<Object>> valueList = new ArrayList<List<Object>>(inheritanceList.size());
     List<List<String>> attributeTypeList = new ArrayList<List<String>>(inheritanceList.size());
 
-    // Add the ID attribute to all tables in the inherited hierarchy
+    // Add the OID attribute to all tables in the inherited hierarchy
     for (int i = 0; i < inheritanceList.size(); i++)
     {
       List<String> fields = new LinkedList<String>();
@@ -755,8 +757,8 @@ public class XMLImporter
 
       fields.add(EntityDAOIF.ID_COLUMN);
       prepSmtVars.add("?");
-      values.add(id);
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      values.add(oid);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       columnNameList.add(fields);
       prepSmtVarList.add(prepSmtVars);
@@ -782,8 +784,8 @@ public class XMLImporter
           value = CommonProperties.getDomain();
         }
 
-        // ID is automatically added to all lists in the inheritance hierarchy
-        if (name.equalsIgnoreCase(EntityInfo.ID))
+        // OID is automatically added to all lists in the inheritance hierarchy
+        if (name.equalsIgnoreCase(EntityInfo.OID))
         {
           continue;
         }
@@ -846,18 +848,18 @@ public class XMLImporter
 
       PreparedStatement preparedStmt = null;
 
-      if (parentId != null && childId != null && !tableName.equals(ElementInfo.CLASS))
+      if (parentOid != null && childOid != null && !tableName.equals(ElementInfo.CLASS))
       {
-        // Add the parent_id and child_id values to a relationship table
-        columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
+        // Add the parent_oid and child_oid values to a relationship table
+        columnNames.add(RelationshipDAOIF.PARENT_OID_COLUMN);
         prepSmtVars.add("?");
-        values.add(parentId);
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        values.add(parentOid);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
-        columnNames.add(RelationshipDAOIF.CHILD_ID_COLUMN);
+        columnNames.add(RelationshipDAOIF.CHILD_OID_COLUMN);
         prepSmtVars.add("?");
-        values.add(childId);
-        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        values.add(childOid);
+        attributeTypes.add(MdAttributeUUIDInfo.CLASS);
       }
 
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
@@ -869,12 +871,12 @@ public class XMLImporter
     Database.executeStatementBatch(preparedStatementList);
   }
 
-  private void validateId(String id)
+  private void validateId(String oid)
   {
-    Matcher matcher = idPattern.matcher(id);
+    Matcher matcher = idPattern.matcher(oid);
     if (!matcher.matches())
     {
-      String msg = "The id [" + id + "] is invalid";
+      String msg = "The oid [" + oid + "] is invalid";
       throw new XMLException(msg);
     }
   }
@@ -889,7 +891,7 @@ public class XMLImporter
     List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
 
     String entityType = getValueFromChildTag(mdAttribute, EntityInfo.TYPE);
-    String id = null;
+    String oid = null;
 
     EnityInfo classInfo = inheritanceMap.get(entityType);
 
@@ -908,11 +910,11 @@ public class XMLImporter
       List<String> attributeTypes = new LinkedList<String>();
 
       fields.add(EntityDAOIF.ID_COLUMN);
-      id = getValueFromChildTag(mdAttribute, EntityInfo.ID);
-      validateId(id);
+      oid = getValueFromChildTag(mdAttribute, EntityInfo.OID);
+      validateId(oid);
       prepSmtVars.add("?");
-      values.add(id);
-      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      values.add(oid);
+      attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
       fieldList.add(fields);
       prepSmtVarList.add(prepSmtVars);
@@ -924,7 +926,7 @@ public class XMLImporter
     for (int i = 0; i < attributes.getLength(); i++)
     {
       Node next = attributes.item(i);
-      if (! ( next instanceof Element ) || next.getNodeName().equalsIgnoreCase(EntityInfo.ID))
+      if (! ( next instanceof Element ) || next.getNodeName().equalsIgnoreCase(EntityInfo.OID))
       {
         continue;
       }
@@ -989,7 +991,8 @@ public class XMLImporter
         }
         else if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL) || name.equals(MdAttributeConcreteInfo.DESCRIPTION))
         {
-          value = ServerIDGenerator.nextID() + "NM200904120000000000000000000030";
+//          value = ServerIDGenerator.nextID() + "NM200904120000000000000000000030";
+          value = ServerIDGenerator.nextID() + "0287";
 
           NodeList nextChildren = next.getChildNodes();
 
@@ -1001,7 +1004,7 @@ public class XMLImporter
           columnNames.add(MdAttributeConcreteDAOIF.ID_COLUMN);
           prepSmtVars.add("?");
           values.add(value);
-          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+          attributeTypes.add(MdAttributeUUIDInfo.CLASS);
 
           columnNames.add(MdAttributeConcreteDAOIF.KEY_COLUMN);
           prepSmtVars.add("?");

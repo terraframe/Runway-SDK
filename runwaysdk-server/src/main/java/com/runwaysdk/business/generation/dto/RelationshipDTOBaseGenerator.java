@@ -96,9 +96,9 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   protected void writeConstructor()
   {
-    getWriter().writeLine("public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, " + String.class.getName() + " parentId, " + String.class.getName() + " childId)");
+    getWriter().writeLine("public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, " + String.class.getName() + " parentOid, " + String.class.getName() + " childOid)");
     getWriter().openBracket();
-    getWriter().writeLine("super(clientRequest, parentId, childId);");
+    getWriter().writeLine("super(clientRequest, parentOid, childOid);");
     getWriter().writeLine("");
     getWriter().closeBracket();
     getWriter().writeLine("");
@@ -136,9 +136,9 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   private void writeGet()
   {
-    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
+    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String oid)");
     getWriter().openBracket();
-    getWriter().writeLine(RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName() + ") clientRequest.get(id);");
+    getWriter().writeLine(RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName() + ") clientRequest.get(oid);");
     getWriter().writeLine("");
     getWriter().writeLine("return (" + this.getDTOStubClassType() + ") dto;");
     getWriter().closeBracket();
@@ -152,10 +152,10 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
     String queryType = type + QUERY_DTO_SUFFIX;
     String relationshipQuery = RelationshipQueryDTO.class.getName();
 
-    getWriter().writeLine("public static " + queryType + " parentQuery(" + ClientRequestIF.class.getName() + " clientRequest, String parentId)");
+    getWriter().writeLine("public static " + queryType + " parentQuery(" + ClientRequestIF.class.getName() + " clientRequest, String parentOid)");
     getWriter().openBracket();
     getWriter().writeLine(relationshipQuery + " queryDTO = (" + relationshipQuery + ") clientRequest.getQuery(" + typeDTO + ".CLASS);");
-    getWriter().writeLine("queryDTO.addCondition(\"" + RelationshipInfo.PARENT_ID + "\", \"" + QueryConditions.EQUALS + "\", parentId);");
+    getWriter().writeLine("queryDTO.addCondition(\"" + RelationshipInfo.PARENT_OID + "\", \"" + QueryConditions.EQUALS + "\", parentOid);");
     getWriter().writeLine("return (" + queryType + ") clientRequest.queryRelationships(queryDTO);");
     getWriter().closeBracket();
   }
@@ -167,10 +167,10 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
     String queryType = type + QUERY_DTO_SUFFIX;
     String relationshipQuery = RelationshipQueryDTO.class.getName();
 
-    getWriter().writeLine("public static " + queryType + " childQuery(" + ClientRequestIF.class.getName() + " clientRequest, String childId)");
+    getWriter().writeLine("public static " + queryType + " childQuery(" + ClientRequestIF.class.getName() + " clientRequest, String childOid)");
     getWriter().openBracket();
     getWriter().writeLine(relationshipQuery + " queryDTO = (" + relationshipQuery + ") clientRequest.getQuery(" + typeDTO + ".CLASS);");
-    getWriter().writeLine("queryDTO.addCondition(\"" + RelationshipInfo.CHILD_ID + "\", \"" + QueryConditions.EQUALS + "\", childId);");
+    getWriter().writeLine("queryDTO.addCondition(\"" + RelationshipInfo.CHILD_OID + "\", \"" + QueryConditions.EQUALS + "\", childOid);");
     getWriter().writeLine("return (" + queryType + ") clientRequest.queryRelationships(queryDTO);");
     getWriter().closeBracket();
   }
@@ -210,13 +210,13 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
 
     if (parentDTO.equals(BusinessDTO.class.getName()))
     {
-      getWriter().writeLine(BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getParentId());");
+      getWriter().writeLine(BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getParentOid());");
       getWriter().writeLine("");
       getWriter().writeLine("return dto;");
     }
     else
     {
-      getWriter().writeLine("return " + parentDTO + ".get(getRequest(), super.getParentId());");
+      getWriter().writeLine("return " + parentDTO + ".get(getRequest(), super.getParentOid());");
     }
 
     getWriter().closeBracket();
@@ -238,13 +238,13 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
 
     if (childDTO.equals(BusinessDTO.class.getName()))
     {
-      getWriter().writeLine("" + BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getChildId());");
+      getWriter().writeLine("" + BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getChildOid());");
       getWriter().writeLine("");
       getWriter().writeLine("return dto;");
     }
     else
     {
-      getWriter().writeLine("return " + childDTO + ".get(getRequest(), super.getChildId());");
+      getWriter().writeLine("return " + childDTO + ".get(getRequest(), super.getChildOid());");
     }
 
     getWriter().closeBracket();

@@ -70,9 +70,9 @@ public abstract class HashMethodsBase extends com.runwaysdk.system.EnumerationMa
     return CLASS;
   }
   
-  public static HashMethods get(String id)
+  public static HashMethods get(String oid)
   {
-    return (HashMethods) com.runwaysdk.business.Business.get(id);
+    return (HashMethods) com.runwaysdk.business.Business.get(oid);
   }
   
   public static HashMethods getByKey(String key)
@@ -85,17 +85,17 @@ public abstract class HashMethodsBase extends com.runwaysdk.system.EnumerationMa
     return (HashMethods) com.runwaysdk.business.Business.getEnumeration(com.runwaysdk.system.metadata.HashMethods.CLASS ,enumName);
   }
   
-  public static HashMethods lock(java.lang.String id)
+  public static HashMethods lock(java.lang.String oid)
   {
-    HashMethods _instance = HashMethods.get(id);
+    HashMethods _instance = HashMethods.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static HashMethods unlock(java.lang.String id)
+  public static HashMethods unlock(java.lang.String oid)
   {
-    HashMethods _instance = HashMethods.get(id);
+    HashMethods _instance = HashMethods.get(oid);
     _instance.unlock();
     
     return _instance;

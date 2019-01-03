@@ -30,7 +30,7 @@ import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.Test;
+
 import junit.framework.TestSuite;
 
 import org.apache.commons.io.IOUtils;

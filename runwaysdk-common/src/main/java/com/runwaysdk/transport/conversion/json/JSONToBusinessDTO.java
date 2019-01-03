@@ -18,18 +18,14 @@
  */
 package com.runwaysdk.transport.conversion.json;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
-import com.runwaysdk.constants.JSON;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class JSONToBusinessDTO extends JSONToElementDTO
@@ -71,20 +67,6 @@ public class JSONToBusinessDTO extends JSONToElementDTO
   {
     BusinessDTO businessDTO = ComponentDTOFacade.buildBusinessDTO(null, type, attributeMap,
         newInstance, readable, writable, modified,  toString, lockedByCurrentUser);
-    
-    JSONObject json = getJSON();
-    
-    // state
-    businessDTO.setState(json.getString(JSON.BUSINESS_DTO_STATE.getLabel()));
-    
-    JSONArray transitions = json.getJSONArray(JSON.BUSINESS_DTO_TRANSITIONS.getLabel());
-    
-    List<String> transitionList = new LinkedList<String>();
-    for(int i=0; i<transitions.length(); i++)
-    {
-      transitionList.add(transitions.getString(i));
-    }
-    businessDTO.setTransitions(transitionList);
     
     return businessDTO;
   }

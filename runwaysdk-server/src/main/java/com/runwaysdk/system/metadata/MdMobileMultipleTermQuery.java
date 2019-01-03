@@ -114,13 +114,13 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdMobileMultipleTerm mdMobileMultipleTerm)
     {
       if(mdMobileMultipleTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdMobileMultipleTerm.getId());
+      return this.EQ(mdMobileMultipleTerm.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdMobileMultipleTerm mdMobileMultipleTerm)
     {
       if(mdMobileMultipleTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdMobileMultipleTerm.getId());
+      return this.NE(mdMobileMultipleTerm.getOid());
     }
 
   }
@@ -163,7 +163,7 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdMobileMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileMultipleTerm[i].getId();
+        itemIdArray[i] = mdMobileMultipleTerm[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -175,7 +175,7 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdMobileMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileMultipleTerm[i].getId();
+        itemIdArray[i] = mdMobileMultipleTerm[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -187,7 +187,7 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdMobileMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileMultipleTerm[i].getId();
+        itemIdArray[i] = mdMobileMultipleTerm[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -199,7 +199,7 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdMobileMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileMultipleTerm[i].getId();
+        itemIdArray[i] = mdMobileMultipleTerm[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -211,7 +211,7 @@ public  class MdMobileMultipleTermQuery extends com.runwaysdk.system.metadata.Md
 
       for (int i=0; i<mdMobileMultipleTerm.length; i++)
       {
-        itemIdArray[i] = mdMobileMultipleTerm[i].getId();
+        itemIdArray[i] = mdMobileMultipleTerm[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

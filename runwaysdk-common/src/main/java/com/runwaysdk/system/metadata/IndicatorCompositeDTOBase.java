@@ -74,7 +74,7 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
     }
     else
     {
-      setValue(LEFTOPERAND, value.getId());
+      setValue(LEFTOPERAND, value.getOid());
     }
   }
   
@@ -206,7 +206,7 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
     }
     else
     {
-      setValue(RIGHTOPERAND, value.getId());
+      setValue(RIGHTOPERAND, value.getOid());
     }
   }
   
@@ -233,60 +233,60 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO> getAllGetMdAttributeIndicator()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO> getAllGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO> getAllGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeIndicatorDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO> getAllGetMdAttributeIndicatorRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO> getAllGetMdAttributeIndicatorRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO> getAllGetMdAttributeIndicatorRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeIndicatorDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.AttributeIndicatorDTO addGetMdAttributeIndicator(com.runwaysdk.system.metadata.MdAttributeIndicatorDTO parent)
   {
-    return (com.runwaysdk.system.metadata.AttributeIndicatorDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (com.runwaysdk.system.metadata.AttributeIndicatorDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.AttributeIndicatorDTO addGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeIndicatorDTO parent)
+  public static com.runwaysdk.system.metadata.AttributeIndicatorDTO addGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdAttributeIndicatorDTO parent)
   {
-    return (com.runwaysdk.system.metadata.AttributeIndicatorDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    return (com.runwaysdk.system.metadata.AttributeIndicatorDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
   public void removeGetMdAttributeIndicator(com.runwaysdk.system.metadata.AttributeIndicatorDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.AttributeIndicatorDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllGetMdAttributeIndicator()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
-  public static void removeAllGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllGetMdAttributeIndicator(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.AttributeIndicatorDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.IndicatorCompositeDTO) dto;
   }
@@ -304,7 +304,7 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.IndicatorCompositeQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -317,10 +317,10 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.IndicatorCompositeDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.IndicatorCompositeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -330,10 +330,10 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.IndicatorCompositeDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.IndicatorCompositeDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.IndicatorCompositeDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

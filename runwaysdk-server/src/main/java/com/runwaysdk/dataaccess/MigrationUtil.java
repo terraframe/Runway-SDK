@@ -78,11 +78,11 @@ public class MigrationUtil
       MdClassDAOIF mdClassDAOIF = mdAttrRef.definedByClass();
       
       AttributeEnumerationIF index = (AttributeEnumerationIF) mdAttrRef.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-      String derefId = index.dereference()[0].getId();
+      String derefId = index.dereference()[0].getOid();
 
-      if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+      if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getOid()))
       {
-        mdAttrRef.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+        mdAttrRef.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
         mdAttrRef.apply();
         
         logger.info("DEFAULT SET for "+mdClassDAOIF.definesType()+"."+mdAttrRef.definesAttribute()+" "+index.dereference()[0].getName());

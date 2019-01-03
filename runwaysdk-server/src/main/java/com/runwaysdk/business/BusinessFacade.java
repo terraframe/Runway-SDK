@@ -20,16 +20,12 @@ package com.runwaysdk.business;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAOIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.RelationshipDTOInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -58,11 +54,8 @@ import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.TransientDAOFactory;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.ValueObject;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -88,18 +81,6 @@ public class BusinessFacade
   public static SingleActorDAOIF getLockedByDAO(Element element)
   {
     return element.getLockedByDAO();
-  }
-
-  /**
-   * Returns the current state of the Business parameter
-   * 
-   * @param object
-   *          A Business
-   * @return The current state of object
-   */
-  public static StateMasterDAOIF currentState(Business object)
-  {
-    return object.currentState();
   }
 
   /**
@@ -464,18 +445,18 @@ public class BusinessFacade
   /**
    * Returns a new instance of a business relationship. The returned instance is type-safe if the relationship is not a reserved type.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param type
    * @return
    */
-  public static Relationship newRelationship(String parentId, String childId, String type)
+  public static Relationship newRelationship(String parentOid, String childOid, String type)
   {
     Relationship relationship = null;
 
     if (isReservedType(type))
     {
-      relationship = new Relationship(parentId, childId, type);
+      relationship = new Relationship(parentOid, childOid, type);
     }
     else
     {
@@ -483,7 +464,7 @@ public class BusinessFacade
       {
         Class<?> clazz = LoaderDecorator.load(type);
         Constructor<?> constructor = clazz.getConstructor(String.class, String.class);
-        relationship = (Relationship) constructor.newInstance(parentId, childId);
+        relationship = (Relationship) constructor.newInstance(parentOid, childOid);
       }
       catch (InstantiationException e)
       {
@@ -724,24 +705,24 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Element with the given id
+   * Returns the type-safe (through reflection) instance of the Element with the given oid
    * 
    * @return
    */
-  public static Element getElement(String id)
+  public static Element getElement(String oid)
   {
-    ElementDAOIF elementDAOIF = ElementDAO.get(id);
+    ElementDAOIF elementDAOIF = ElementDAO.get(oid);
     return (Element) get(elementDAOIF);
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Entity with the given id
+   * Returns the type-safe (through reflection) instance of the Entity with the given oid
    * 
    * @return
    */
-  public static Entity getEntity(String id)
+  public static Entity getEntity(String oid)
   {
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
     return get(entityDAO);
   }
 
@@ -802,7 +783,7 @@ public class BusinessFacade
     }
     else if (mdClassIF instanceof MdRelationshipDAOIF)
     {
-      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_ID, RelationshipDTOInfo.EMPTY_CHILD_ID, type);
+      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_OID, RelationshipDTOInfo.EMPTY_CHILD_OID, type);
     }
     else if (mdClassIF instanceof MdStructDAOIF)
     {
@@ -812,83 +793,6 @@ public class BusinessFacade
     {
       String message = "The type [" + type + "] does not represent a [" + Entity.class.getName() + "] class.";
       throw new UnexpectedTypeException(message);
-    }
-  }
-
-  /**
-   * Given a Business object, this method returns a list of all possible transitions (transition names) available to that object in its current state. If the object does not partake in a state machine
-   * or if there are no possible transitions available, then an empty list is returned.
-   * 
-   * @param business
-   * @return
-   */
-  public static List<String> getTransitions(Business business)
-  {
-    List<String> transitions = new LinkedList<String>();
-
-    // check for a state machine and the transitions/states
-    MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(business.getType());
-    if (mdBusiness.hasStateMachine())
-    {
-      MdStateMachineDAOIF mdStateMachine = mdBusiness.definesMdStateMachine();
-      for (StateMasterDAOIF stateMasterIF : mdStateMachine.definesStateMasters())
-      {
-        String stateName = stateMasterIF.getValue(StateMasterDAOIF.STATE_NAME);
-
-        if (stateName.equals(business.getState()))
-        {
-          for (TransitionDAOIF transition : mdStateMachine.definesTransitions(stateMasterIF))
-          {
-            String name = transition.getName();
-
-            transitions.add(name);
-          }
-
-          break;
-        }
-      }
-    }
-
-    return transitions;
-  }
-
-  /**
-   * Returns the current state of the mutable object if there is one. If the mutable object does not have a state then null is returned
-   * 
-   * @param mutable
-   *          The mutable object to get state
-   * @return The current state of the mutable object, or null
-   */
-  public static StateMasterDAOIF getState(Mutable mutable)
-  {
-    if (mutable instanceof Business)
-    {
-      // Get the current state of the BusinessDAO
-      Business business = (Business) mutable;
-
-      return BusinessFacade.currentState(business);
-    }
-
-    return null;
-  }
-
-  public static StateMasterDAOIF getSink(Entity entity, String transitionName)
-  {
-    StateMasterDAOIF source = BusinessFacade.getState(entity);
-
-    if (source == null)
-    {
-      return null;
-    }
-
-    // Get the sink state
-    try
-    {
-      return source.getNextState(transitionName);
-    }
-    catch (DataNotFoundException e)
-    {
-      return null;
     }
   }
 

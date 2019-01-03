@@ -60,8 +60,8 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
    * @param sessionId
    * @param type
    * @param attributeMap
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param newInstance
    * @param readable
    * @param writable
@@ -72,7 +72,7 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
       boolean newInstance, boolean readable, boolean writable, boolean modified)
   {
     return ComponentDTOFacade.buildRelationshipDTO(
-        null,  this.getComponentIF().getType(), attributeMap, this.getComponentIF().getParentId(), this.getComponentIF().getChildId(),
+        null,  this.getComponentIF().getType(), attributeMap, this.getComponentIF().getParentOid(), this.getComponentIF().getChildOid(),
         newInstance, readable, writable, modified, this.getComponentIF().toString(), this.getComponentIF().checkUserLock());
   }
   /**
@@ -106,7 +106,7 @@ public class RelationshipToRelationshipDTO extends ElementToElementDTO
 
       Locale locale = Session.getCurrentLocale();
 
-      return new RelationshipTypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getId(), parentMdBusiness, childMdBusiness);
+      return new RelationshipTypeMd(this.getMdTypeIF().getDisplayLabel(locale), this.getMdTypeIF().getDescription(locale), this.getMdTypeIF().getOid(), parentMdBusiness, childMdBusiness, this.getMdTypeIF().isGenerateSource());
     }
     else
     {

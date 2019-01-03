@@ -41,9 +41,9 @@ public abstract class MdAttributeMultiPointBase extends com.runwaysdk.system.gis
     return CLASS;
   }
   
-  public static MdAttributeMultiPoint get(String id)
+  public static MdAttributeMultiPoint get(String oid)
   {
-    return (MdAttributeMultiPoint) com.runwaysdk.business.Business.get(id);
+    return (MdAttributeMultiPoint) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdAttributeMultiPoint getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class MdAttributeMultiPointBase extends com.runwaysdk.system.gis
     return (MdAttributeMultiPoint) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdAttributeMultiPoint lock(java.lang.String id)
+  public static MdAttributeMultiPoint lock(java.lang.String oid)
   {
-    MdAttributeMultiPoint _instance = MdAttributeMultiPoint.get(id);
+    MdAttributeMultiPoint _instance = MdAttributeMultiPoint.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdAttributeMultiPoint unlock(java.lang.String id)
+  public static MdAttributeMultiPoint unlock(java.lang.String oid)
   {
-    MdAttributeMultiPoint _instance = MdAttributeMultiPoint.get(id);
+    MdAttributeMultiPoint _instance = MdAttributeMultiPoint.get(oid);
     _instance.unlock();
     
     return _instance;

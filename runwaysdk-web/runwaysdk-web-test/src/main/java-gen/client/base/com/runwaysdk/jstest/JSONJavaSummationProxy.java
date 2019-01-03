@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 @com.runwaysdk.business.ClassSignature(hash = -1531135838)
-public class JSONJavaSummationProxy extends JSONSummationProxy implements com.runwaysdk.generation.loader.Reloadable
+public class JSONJavaSummationProxy extends JSONSummationProxy implements com.runwaysdk.generation.loader.
 {
   public static final String CLASS = "com.runwaysdk.jstest.JSONJavaSummationProxy";
   

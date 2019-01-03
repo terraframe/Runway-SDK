@@ -25,7 +25,6 @@ import java.util.Map;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
@@ -50,7 +49,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
   protected static final String                       DELIMETER      = "+";
 
   /**
-   * Eclipse auto generated serial ID
+   * Eclipse auto generated serial OID
    */
   private static final long serialVersionUID = -6190657962345427054L;
 
@@ -71,8 +70,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    */
   public String getSignature()
   {
-    String signature = "Metadata["+this.getMetaData().getSignature()+"]"+
-    " StateMaster["+this.getStateMaster().getSignature()+"]";
+    String signature = "Metadata["+this.getMetaData().getSignature()+"]";
     return signature;
   }
 
@@ -120,9 +118,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
     return ((AttributeLocalIF)this.getAttributeIF(TypeTupleDAOIF.DISPLAY_LABEL)).getLocalValues();
   }
   
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.rbac.CommonStateIF#getState()
-   */
   public MetadataDAOIF getMetaData()
   {
     AttributeReference metadata = (AttributeReference) this.getAttribute(TypeTupleDAOIF.METADATA);
@@ -133,21 +128,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
     }
 
     return (MetadataDAOIF) metadata.dereference();
-  }
-
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.rbac.CommonStateIF#getCommon()
-   */
-  public StateMasterDAOIF getStateMaster()
-  {
-    AttributeReference statemaster = (AttributeReference) this.getAttribute(TypeTupleDAOIF.STATE_MASTER);
-
-    if(statemaster.getValue().equals(""))
-    {
-      return null;
-    }
-
-    return (StateMasterDAOIF) statemaster.dereference();
   }
 
   /* (non-Javadoc)
@@ -169,9 +149,9 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static TypeTupleDAOIF get(String id)
+  public static TypeTupleDAOIF get(String oid)
   {
-    EntityDAOIF entityDAO = EntityDAO.get(id);
+    EntityDAOIF entityDAO = EntityDAO.get(oid);
     TypeTupleDAOIF attributeObject = (TypeTupleDAOIF) entityDAO;
 
     return attributeObject;
@@ -191,8 +171,8 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    * Finds a TypeTuple with the given StateMasterIF-MetaData pairing.
    * If the pairing does not exist then returns a null value.
    *
-   * @param metadataId The id of the MetaData on the pairing
-   * @param stateMasterId The id of the StateMasterIF of the pairing
+   * @param metadataId The oid of the MetaData on the pairing
+   * @param stateMasterId The oid of the StateMasterIF of the pairing
    * @return The TypeTuple which represents the pairing or a null value.
    */
   public static TypeTupleDAOIF findTuple(String metadataId, String stateMasterId)
@@ -243,16 +223,6 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
    */
   protected void validateUniqueness()
   {
-    MetadataDAOIF metadata = this.getMetaData();
-    StateMasterDAOIF statemaster = this.getStateMaster();
-
-    TypeTupleDAOIF tuple = TypeTupleDAO.findTuple(metadata.getId(), statemaster.getId());
-
-    if(tuple != null)
-    {
-      String msg = "A [" + this.getType() + "] already exists with the combination of [" + metadata.getId() + "] and [" + statemaster.getId() + "]";
-      throw new RuntimeException(msg);
-    }
   }
 
   protected void validateMetadata()
@@ -264,7 +234,7 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
 
       if (! ( metadata instanceof MdRelationshipDAO || metadata instanceof MdAttributeConcreteDAOIF ))
       {
-        String msg = "Invalid value [" + metadata.getId() + "].  The attribute [" + TypeTupleDAOIF.METADATA + "] must reference a ["
+        String msg = "Invalid value [" + metadata.getOid() + "].  The attribute [" + TypeTupleDAOIF.METADATA + "] must reference a ["
             + MdAttributeConcreteInfo.CLASS + "] or a [" + MdRelationshipInfo.CLASS + "]";
 
         throw new TupleDefinitionException(msg, this);

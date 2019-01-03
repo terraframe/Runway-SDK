@@ -79,15 +79,15 @@ public class MdWebGroupDAO extends MdWebFieldDAO implements MdWebGroupDAOIF
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdWebGroupDAOIF get(String id)
+  public static MdWebGroupDAOIF get(String oid)
   {
-    return (MdWebGroupDAOIF) BusinessDAO.get(id);
+    return (MdWebGroupDAOIF) BusinessDAO.get(oid);
   }
 
   @Override
   public TreeDAO addField(MdWebFieldDAOIF mdWebField)
   {
-    return TreeDAO.newInstance(this.getId(), mdWebField.getId(), RelationshipTypes.WEB_GROUP_FIELD.getType());
+    return TreeDAO.newInstance(this.getOid(), mdWebField.getOid(), RelationshipTypes.WEB_GROUP_FIELD.getType());
   }
 
   /*
@@ -117,7 +117,7 @@ public class MdWebGroupDAO extends MdWebFieldDAO implements MdWebGroupDAOIF
     BusinessDAOQuery q = f.businessDAOQuery(MdWebField.CLASS);
     RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
 
-    relQ.WHERE(relQ.parentId().EQ(this.getId()));
+    relQ.WHERE(relQ.parentOid().EQ(this.getOid()));
     q.WHERE(q.isChildIn(relQ));
 
     q.ORDER_BY_ASC(q.aInteger(MdWebField.FIELDORDER));

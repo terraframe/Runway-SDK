@@ -28,8 +28,8 @@ public interface AttributeNotificationDTO extends NotificationDTOIF
   public static final String NO_COMPONENT = "---";
   
   /**
-   * Returns the id of the component that defines the attributed.
-   * @return id of the component that defines the attributed.
+   * Returns the oid of the component that defines the attributed.
+   * @return oid of the component that defines the attributed.
    */
   public String getComponentId();
   

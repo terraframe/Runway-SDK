@@ -21,8 +21,9 @@ package com.runwaysdk.business.generation;
 import java.util.Iterator;
 import java.util.Map;
 
+
+
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
-import com.runwaysdk.generation.loader.Reloadable;
 
 
 /**
@@ -70,10 +71,6 @@ public abstract class Java5EnumGenerator extends AbstractGenerator
   protected void addEnumName(String enumName)
   {
     getWriter().write("public enum " + enumName);
-    if (!this.getMdTypeDAOIF().isSystemPackage())
-    {
-      getWriter().write(Reloadable.IMPLEMENTS);
-    }
     getWriter().writeLine("");
     
     getWriter().openBracket();
@@ -210,19 +207,19 @@ public abstract class Java5EnumGenerator extends AbstractGenerator
   }
 
   /**
-   * Writes the dereference method, which takes a String ID as a parameter and returns the
-   * associated enum item, or <code>null</code> if the id isn't recognized
+   * Writes the dereference method, which takes a String OID as a parameter and returns the
+   * associated enum item, or <code>null</code> if the oid isn't recognized
    * 
    * @param name
    *          Name of the enum
    */
   protected void addGet(String name)
   {
-    getWriter().writeLine("public static " + name + " get(String id)");
+    getWriter().writeLine("public static " + name + " get(String oid)");
     getWriter().openBracket();
     getWriter().writeLine("for (" + name + " e : " + name + ".values())");
     getWriter().openBracket();
-    getWriter().writeLine("if (e.getId().equals(id))");
+    getWriter().writeLine("if (e.getOid().equals(oid))");
     getWriter().openBracket();
     getWriter().writeLine("return e;");
     getWriter().closeBracket();

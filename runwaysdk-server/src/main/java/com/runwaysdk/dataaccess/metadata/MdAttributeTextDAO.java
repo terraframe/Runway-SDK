@@ -173,9 +173,9 @@ public class MdAttributeTextDAO extends MdAttributePrimitiveDAO implements MdAtt
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeTextDAOIF get(String id)
+  public static MdAttributeTextDAOIF get(String oid)
   {
-    return (MdAttributeTextDAOIF) BusinessDAO.get(id);
+    return (MdAttributeTextDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

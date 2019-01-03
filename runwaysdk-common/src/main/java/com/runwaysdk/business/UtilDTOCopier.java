@@ -35,7 +35,7 @@ public class UtilDTOCopier extends SessionDTOCopier
  {
    this(clientRequest, source, null, typeSafe, typeSafeAttributes);
    
-   if (typeSafe)
+   if (typeSafe && source.getMd().isGenerateSource())
    {
      this.dest = ConversionFacade.createDynamicUtilDTO(null, source.getType());
      this.dest.setClientRequest(clientRequest);

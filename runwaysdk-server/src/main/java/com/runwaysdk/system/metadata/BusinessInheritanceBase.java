@@ -31,9 +31,9 @@ public abstract class BusinessInheritanceBase extends com.runwaysdk.system.metad
   public final static String CLASS = "com.runwaysdk.system.metadata.BusinessInheritance";
   private static final long serialVersionUID = -598433549;
   
-  public BusinessInheritanceBase(String parentId, String childId)
+  public BusinessInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class BusinessInheritanceBase extends com.runwaysdk.system.metad
     return (com.runwaysdk.system.metadata.MdBusiness) super.getChild();
   }
   
-  public static BusinessInheritance get(String id)
+  public static BusinessInheritance get(String oid)
   {
-    return (BusinessInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (BusinessInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static BusinessInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class BusinessInheritanceBase extends com.runwaysdk.system.metad
     return (BusinessInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static BusinessInheritance lock(java.lang.String id)
+  public static BusinessInheritance lock(java.lang.String oid)
   {
-    BusinessInheritance _instance = BusinessInheritance.get(id);
+    BusinessInheritance _instance = BusinessInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static BusinessInheritance unlock(java.lang.String id)
+  public static BusinessInheritance unlock(java.lang.String oid)
   {
-    BusinessInheritance _instance = BusinessInheritance.get(id);
+    BusinessInheritance _instance = BusinessInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

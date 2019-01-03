@@ -22,9 +22,6 @@ import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 
-
-
-
 /**
  * Convenience class that allows easy access to the test.properties file.
  * 
@@ -36,7 +33,7 @@ public class TestProperties
    * The test.properties configuration file
    */
   private ConfigurationReaderIF props;
-  
+
   /**
    * Private constructor loads the test.properties configuration
    */
@@ -44,26 +41,27 @@ public class TestProperties
   {
     props = ConfigurationManager.getReader(ConfigGroup.TEST, "test.properties");
   }
-  
+
   /**
-   * A holder class for access to the singleton. Allows for lazy instantiation and thread
-   * safety because the class is not loaded until the first access to INSTANCE.
+   * A holder class for access to the singleton. Allows for lazy instantiation
+   * and thread safety because the class is not loaded until the first access to
+   * INSTANCE.
    */
   private static class Singleton
   {
     private static final TestProperties INSTANCE = new TestProperties();
   }
-  
+
   public static int getAppLockTreadNumber()
   {
     return Singleton.INSTANCE.props.getInteger("appLock.numThreads");
   }
-  
+
   public static int getUserLockTreadNumber()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.numThreads");
   }
-  
+
   public static int getUserLockModCacheTreadNumber()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modCache.numThreads");
@@ -73,7 +71,7 @@ public class TestProperties
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modType.numThreads");
   }
-  
+
   public static int getUserLockModPublicPermissionsTreadNumber()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modPublicPermissions.numThreads");
@@ -83,17 +81,17 @@ public class TestProperties
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modRolePermissions.numThreads");
   }
-  
+
   public static int getUserLockModOwnerPermissionsTreadNumber()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modOwnerPermissions.numThreads");
   }
-  
+
   public static int getUserRoleMethodExecutePermissions()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modRoleMethodExecutePermissions.numThreads");
   }
-  
+
   public static int getMethodCreatePermissions()
   {
     return Singleton.INSTANCE.props.getInteger("userLock.modMethodCreatePermissions.numThreads");
@@ -103,17 +101,17 @@ public class TestProperties
   {
     return Singleton.INSTANCE.props.getInteger("relLock.cardinality.numThreads");
   }
-  
+
   public static int getSeleniumPort()
   {
     return Singleton.INSTANCE.props.getInteger("selenium.port");
   }
-  
+
   public static String getSeleniumServer()
   {
     return Singleton.INSTANCE.props.getString("selenium.server");
   }
-  
+
   public static String getWebtestAddress()
   {
     return Singleton.INSTANCE.props.getString("webtest.address");
@@ -122,13 +120,13 @@ public class TestProperties
   public static String getWebtestWebapp()
   {
     return Singleton.INSTANCE.props.getString("webtest.webapp");
-  }  
+  }
 
   public static boolean getMockWebServiceTests()
   {
     return Boolean.parseBoolean(Singleton.INSTANCE.props.getString("mockWebServiceTests"));
   }
-  
+
   public static boolean getWebServiceTests()
   {
     return Boolean.parseBoolean(Singleton.INSTANCE.props.getString("webServiceTests"));
@@ -137,25 +135,25 @@ public class TestProperties
   public static String[] getSeleniumBrowser()
   {
     String browsersString = Singleton.INSTANCE.props.getString("selenium.browser");
-    
+
     String[] browsers = browsersString.split(",");
-    for(int i=0; i<browsers.length; i++)
+    for (int i = 0; i < browsers.length; i++)
     {
       browsers[i] = browsers[i].trim();
     }
     return browsers;
   }
-  
+
   public static String getWebTestClientBin()
   {
     return Singleton.INSTANCE.props.getString("webtest.client.bin");
   }
-  
+
   public static String getWebTestCommonBin()
   {
     return Singleton.INSTANCE.props.getString("webtest.common.bin");
   }
-  
+
   public static String getWebTestServerBin()
   {
     return Singleton.INSTANCE.props.getString("webtest.server.bin");

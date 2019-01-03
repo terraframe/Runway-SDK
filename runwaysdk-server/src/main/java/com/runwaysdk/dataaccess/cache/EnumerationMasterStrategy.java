@@ -115,7 +115,7 @@ public class EnumerationMasterStrategy extends CacheAllBusinessDAOstrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.updateCache(entityDAO);
 
@@ -136,7 +136,7 @@ public class EnumerationMasterStrategy extends CacheAllBusinessDAOstrategy
    */
   public void removeCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    synchronized(entityDAO.getOid())
     {
       super.removeCache(entityDAO);
 

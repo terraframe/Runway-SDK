@@ -98,7 +98,7 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
 
   /**
    *Applies the state of this EnumerationItem to the database.  If this is a new EnumerationItem,
-   * then records are created in the database and an ID is created.  If this is not a
+   * then records are created in the database and an OID is created.  If this is not a
    * new EnumerationItem, then records are modified in the database.
    *
    * <br/><b>Precondition:</b>   Attribues must have correct values as defined in their meta data.
@@ -108,13 +108,13 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    * @param validateRequired ture if attributes should be checked for required values,
    *                         false otherwise.  Basic struct classes may or
    *                         may not need required attributes validated.
-   * @return ID of the EnumerationItem.
+   * @return OID of the EnumerationItem.
    * @throws DataAccessException if an attribute contains a value that is not
    *         correct with respect to the metadata.
    */
   public String save(boolean validateRequired)
   {
-    // Enumeration item ids are cached on individual attributeEnumerations. If the id of the enum item has 
+    // Enumeration item ids are cached on individual attributeEnumerations. If the oid of the enum item has 
     // changed, then so must the cached attributes.
     if (this.hasIdChanged())
     {
@@ -191,9 +191,9 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    * <br/><b>Precondition:</b>   isNew == false
    * <br/><b>Postcondition:</b>  EnumerationItem is deleted from the database
    * <br/><b>Postcondition:</b>  child relationships are removed
-   *        (RelationshipFactory.getChildren(this.getId(), "")).length == 0
+   *        (RelationshipFactory.getChildren(this.getOid(), "")).length == 0
    * <br/><b>Postcondition:</b>  parent relationships are removed
-   *        (RelationshipFactory.getParents(this.getId(), "")).length == 0
+   *        (RelationshipFactory.getParents(this.getOid(), "")).length == 0
    *
    *
    * @param businessContext true if this is being called from a business context, false
@@ -210,12 +210,12 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     for (RelationshipDAOIF relationshipIF : relationships)
     {
       MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF)relationshipIF.getParent();
-      Database.deleteEumerationItemFromLinkTable(mdEnumerationIF.getTableName(), this.getId());
+      Database.deleteEumerationItemFromLinkTable(mdEnumerationIF.getTableName(), this.getOid());
     }
 
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttributeQuery = queryFactory.businessDAOQuery(MdAttributeEnumerationInfo.CLASS);
-    mdAttributeQuery.WHERE(mdAttributeQuery.aCharacter(MdAttributeEnumerationInfo.DEFAULT_VALUE).EQ(this.getId()));
+    mdAttributeQuery.WHERE(mdAttributeQuery.aCharacter(MdAttributeEnumerationInfo.DEFAULT_VALUE).EQ(this.getOid()));
 
     OIterator<BusinessDAOIF> mdAttributeIterator = mdAttributeQuery.getIterator();
     while(mdAttributeIterator.hasNext())
@@ -226,7 +226,7 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     }
 
     mdAttributeQuery = queryFactory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
-    mdAttributeQuery.WHERE(mdAttributeQuery.aCharacter(MdAttributeReferenceInfo.DEFAULT_VALUE).EQ(this.getId()));
+    mdAttributeQuery.WHERE(mdAttributeQuery.aCharacter(MdAttributeReferenceInfo.DEFAULT_VALUE).EQ(this.getOid()));
 
     mdAttributeIterator = mdAttributeQuery.getIterator();
     while(mdAttributeIterator.hasNext())
@@ -292,9 +292,9 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static EnumerationItemDAOIF get(String id)
+  public static EnumerationItemDAOIF get(String oid)
   {
-    return (EnumerationItemDAOIF) BusinessDAO.get(id);
+    return (EnumerationItemDAOIF) BusinessDAO.get(oid);
   }
 
 }

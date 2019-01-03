@@ -21,6 +21,8 @@ package com.runwaysdk.business.generation;
 import java.util.Map;
 import java.util.Set;
 
+
+
 import com.runwaysdk.business.StructIterator;
 import com.runwaysdk.business.StructQuery;
 import com.runwaysdk.constants.LocalProperties;
@@ -31,7 +33,6 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.generation.CommonGenerationUtil;
-import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.AttributeLocal;
 import com.runwaysdk.query.AttributeLocalIF;
 import com.runwaysdk.query.AttributeStruct;
@@ -250,11 +251,6 @@ public class StructQueryAPIGenerator extends EntityQueryAPIGenerator
       write(this.srcBuffer, " extends " + SelectableStruct.class.getName());
     }
 
-    if (!getMdClassIF().isSystemPackage())
-    {
-      writeLine(this.srcBuffer, ", " + Reloadable.class.getName());
-    }
-
     writeLine(this.srcBuffer, "  {");
 
     writeLine(this.srcBuffer, "");
@@ -287,11 +283,6 @@ public class StructQueryAPIGenerator extends EntityQueryAPIGenerator
     }
 
     write(this.srcBuffer, " implements " + getAttrStructIntefaceName(this.getMdClassIF().getTypeName()));
-
-    if (!getMdClassIF().isSystemPackage())
-    {
-      writeLine(this.srcBuffer, ", " + Reloadable.class.getName());
-    }
 
     writeLine(this.srcBuffer, "  {");
 

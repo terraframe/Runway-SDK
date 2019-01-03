@@ -124,60 +124,60 @@ public abstract class MdWebPrimitiveDTOBase extends com.runwaysdk.system.metadat
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO> getAllGrid()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO> getAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO> getAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdWebSingleTermGridDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
   public java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO> getAllGridRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO> getAllGridRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO> getAllGridRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.WebGridFieldDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
   public com.runwaysdk.system.metadata.WebGridFieldDTO addGrid(com.runwaysdk.system.metadata.MdWebSingleTermGridDTO parent)
   {
-    return (com.runwaysdk.system.metadata.WebGridFieldDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WebGridFieldDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.WebGridFieldDTO addGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdWebSingleTermGridDTO parent)
+  public static com.runwaysdk.system.metadata.WebGridFieldDTO addGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.metadata.MdWebSingleTermGridDTO parent)
   {
-    return (com.runwaysdk.system.metadata.WebGridFieldDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    return (com.runwaysdk.system.metadata.WebGridFieldDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
   public void removeGrid(com.runwaysdk.system.metadata.WebGridFieldDTO relationship)
   {
-    getRequest().deleteParent(relationship.getId());
+    getRequest().deleteParent(relationship.getOid());
   }
   
   public static void removeGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.WebGridFieldDTO relationship)
   {
-    clientRequestIF.deleteParent(relationship.getId());
+    clientRequestIF.deleteParent(relationship.getOid());
   }
   
   public void removeAllGrid()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
-  public static void removeAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllGrid(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
+    clientRequestIF.deleteParents(oid, com.runwaysdk.system.metadata.WebGridFieldDTO.CLASS);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdWebPrimitiveDTO) dto;
   }
@@ -195,7 +195,7 @@ public abstract class MdWebPrimitiveDTOBase extends com.runwaysdk.system.metadat
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdWebPrimitiveQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -208,10 +208,10 @@ public abstract class MdWebPrimitiveDTOBase extends com.runwaysdk.system.metadat
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWebPrimitiveDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWebPrimitiveDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -221,10 +221,10 @@ public abstract class MdWebPrimitiveDTOBase extends com.runwaysdk.system.metadat
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdWebPrimitiveDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdWebPrimitiveDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdWebPrimitiveDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

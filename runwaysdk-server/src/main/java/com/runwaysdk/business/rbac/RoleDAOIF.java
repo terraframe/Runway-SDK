@@ -60,7 +60,7 @@ public interface RoleDAOIF extends ActorDAOIF
    */
   public static String PUBLIC_ROLE = "PUBLIC";
 
-  public static String PUBLIC_ROLE_ID = "0000000000000000000000000000097500000000000000000000000000000507";
+  public static String PUBLIC_ROLE_ID = "c0667978-6b25-3c6e-8e26-17af79000056";
 
   /**
    * The name of the role that allows a User to access the admin screen.
@@ -72,28 +72,28 @@ public interface RoleDAOIF extends ActorDAOIF
    */
   public static String ADMIN_ROLE = "Administrator";
 
-  public static String ADMIN_ROLE_ID = "0000000000000000000000000000070100000000000000000000000000000507";
+  public static String ADMIN_ROLE_ID = "38b06a0c-a6df-3439-8d33-e93ea5000056";
 
   /**
    * The name of the role adminstrator role.
    */
   public static String ROLE_ADMIN_ROLE = "RoleAdministrator";
 
-  public static String ROLE_ADMIN_ROLE_ID = "NM20080620000000000000000000000200000000000000000000000000000507";
+  public static String ROLE_ADMIN_ROLE_ID = "6f267be1-d26d-3238-95a9-aa6714000056";
 
   /**
    * The name of the developer role.
    */
   public static String DEVELOPER_ROLE = "Developer";
 
-  public static String DEVELOPER_ROLE_ID = "NM20080620000000000000000000000100000000000000000000000000000507";
+  public static String DEVELOPER_ROLE_ID = "12a6a7ce-bfb8-35e0-bc11-32933d000056";
 
   /**
    * The name of the owner role, The owner role represents the permisisons entitled to the owner of an instance
    */
   public static String OWNER_ROLE = "OWNER";
 
-  public static String OWNER_ID = "0000000000000000000000000000070300000000000000000000000000000507";
+  public static String OWNER_ID = "9b239a69-816e-32ee-bf2f-79c238000056";
 
 
   /* (non-Javadoc)
@@ -150,7 +150,7 @@ public interface RoleDAOIF extends ActorDAOIF
    * Returns all of the operations a role has on a object
    * @pre get(mdTypeId) instanceof Metadata
    *
-   * @param mdTypeId The id of the MdType
+   * @param mdTypeId The oid of the MdType
    * @return A list of all operations the role has permissions for
    */
   //public Set<Operation> operationsOnObject(String mdTypeId);
@@ -173,7 +173,7 @@ public interface RoleDAOIF extends ActorDAOIF
   /**
    * Returns all of the roles which a role inherits
    *
-   * @param roleId The id of the role
+   * @param roleId The oid of the role
    * @return A list of all role ids which the given role inherits
    */
   public Set<RoleDAOIF> getSuperRoles();
@@ -181,7 +181,7 @@ public interface RoleDAOIF extends ActorDAOIF
   /**
    * Returns all of the roles which inherit from a role
    *
-   * @param roleId The id of the role
+   * @param roleId The oid of the role
    * @return A list of all role ids which inherit the given role
    */
   public Set<RoleDAOIF> getSubRoles();

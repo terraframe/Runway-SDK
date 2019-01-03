@@ -29,7 +29,7 @@ public interface JSONWebFieldConstants
 
   public static final String TYPE         = "type";
 
-  public static final String ID           = "id";
+  public static final String OID           = "oid";
 
   public static final String DATA_ID      = "dataId";
 

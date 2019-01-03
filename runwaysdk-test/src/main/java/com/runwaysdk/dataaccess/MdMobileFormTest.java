@@ -18,64 +18,55 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.runwaysdk.session.Request;
 
 public class MdMobileFormTest extends MdFormDAOTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(MdMobileFormTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-  
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     defineMdClasses();
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     destroyMdClasses();
   }
-  
+
   /**
    * Tests the metadata on the MdForm instance.
    */
+  @Request
+  @Test
   public void testFormMetadata()
   {
-    
+
   }
-  
+
   /**
    * Tests the relationships between the form and its fields.
    */
+  @Request
+  @Test
   public void testFields()
   {
-    
+
   }
-  
+
   /**
    * Tests the character field metadata.
    */
+  @Request
+  @Test
   public void testCharacter()
   {
-    
+
   }
 }

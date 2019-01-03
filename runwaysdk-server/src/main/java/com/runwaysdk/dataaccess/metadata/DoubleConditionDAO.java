@@ -114,9 +114,9 @@ public class DoubleConditionDAO extends BasicConditionDAO implements DoubleCondi
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static DoubleConditionDAOIF get(String id)
+  public static DoubleConditionDAOIF get(String oid)
   {
-    return (DoubleConditionDAOIF) BusinessDAO.get(id);
+    return (DoubleConditionDAOIF) BusinessDAO.get(oid);
   }
 
   @Override

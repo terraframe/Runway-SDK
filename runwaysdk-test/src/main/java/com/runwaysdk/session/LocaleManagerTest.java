@@ -22,117 +22,85 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Locale;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class LocaleManagerTest extends TestCase
+import com.runwaysdk.ClasspathTestRunner;
+
+@RunWith(ClasspathTestRunner.class)
+public class LocaleManagerTest
 {
-  @Override
-  public TestResult run()
-  {
-    return super.run();
-  }
-
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-  
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(LocaleManagerTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-
-  
-  protected static void classSetUp()
-  {
-  }
-
-  protected static void classTearDown()
-  {
-  }
-
   private Locale[] getLocales()
   {
-    return new Locale[]{this.getSouthernLocale(), Locale.US, Locale.ENGLISH, Locale.CANADA_FRENCH, Locale.GERMANY};
+    return new Locale[] { this.getSouthernLocale(), Locale.US, Locale.ENGLISH, Locale.CANADA_FRENCH, Locale.GERMANY };
   }
 
   private Locale getSouthernLocale()
   {
     return new Locale("en", "us", "south");
   }
-  
+
+  @Request
+  @Test
   public void testBestFit()
   {
     Locale southern = this.getSouthernLocale();
     Locale[] locales = this.getLocales();
     Collection<Locale> set = new LinkedList<Locale>();
-    
+
     set.add(southern);
     set.add(Locale.US);
     set.add(Locale.ENGLISH);
-    
+
     Locale locale = new LocaleManager(locales, set).getBestFitLocale();
-    
-    assertEquals(southern, locale);
+
+    Assert.assertEquals(southern, locale);
   }
-  
+
+  @Request
+  @Test
   public void testTie()
   {
     Locale[] locales = this.getLocales();
     Collection<Locale> set = new LinkedList<Locale>();
-    
+
     set.add(Locale.GERMANY);
     set.add(Locale.CANADA_FRENCH);
-    
+
     Locale locale = new LocaleManager(locales, set).getBestFitLocale();
-    
-    assertEquals(Locale.CANADA_FRENCH, locale);    
+
+    Assert.assertEquals(Locale.CANADA_FRENCH, locale);
   }
 
+  @Request
+  @Test
   public void testNoFit()
   {
     Locale[] locales = this.getLocales();
     Collection<Locale> set = new LinkedList<Locale>();
-    
+
     set.add(Locale.CHINESE);
     set.add(Locale.JAPANESE);
-    
+
     Locale locale = new LocaleManager(locales, set).getBestFitLocale();
-    
-    assertEquals(this.getSouthernLocale(), locale);    
+
+    Assert.assertEquals(this.getSouthernLocale(), locale);
   }
-  
+
+  @Request
+  @Test
   public void testDefault()
   {
     Locale[] locales = this.getLocales();
-    
+
     Locale locale = new LocaleManager(locales).getBestFitLocale();
-    
-    assertEquals(this.getSouthernLocale(), locale);    
+
+    Assert.assertEquals(this.getSouthernLocale(), locale);
   }
-  
+
+  @Request
+  @Test
   public void testCompleteMatch()
   {
     Locale en = Locale.ENGLISH;
@@ -140,14 +108,14 @@ public class LocaleManagerTest extends TestCase
     Locale en_GB = new Locale("en", "GB");
     Locale nl_BE = new Locale("nl", "BE");
 
-    Locale[] locales = new Locale[]{en_US, en, nl_BE, en_GB};
-    Collection<Locale> supported = new LinkedList<Locale>();    
+    Locale[] locales = new Locale[] { en_US, en, nl_BE, en_GB };
+    Collection<Locale> supported = new LinkedList<Locale>();
     supported.add(en);
     supported.add(en_GB);
     supported.add(nl_BE);
-    
+
     Locale locale = new LocaleManager(locales, supported).getBestFitLocale();
-    
-    assertEquals(en, locale);
+
+    Assert.assertEquals(en, locale);
   }
 }

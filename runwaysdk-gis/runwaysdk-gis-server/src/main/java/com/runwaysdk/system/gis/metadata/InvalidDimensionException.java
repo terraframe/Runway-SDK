@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.system.gis.metadata;
 
-import com.runwaysdk.gis.GISCommonExceptionMessageLocalizer;
 import com.runwaysdk.dataaccess.metadata.MetadataException;
+import com.runwaysdk.gis.GISCommonExceptionMessageLocalizer;
 
 public class InvalidDimensionException extends MetadataException
 {

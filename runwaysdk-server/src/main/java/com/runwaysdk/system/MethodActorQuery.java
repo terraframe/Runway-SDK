@@ -294,13 +294,13 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.MethodActor methodActor)
     {
       if(methodActor == null) return this.EQ((java.lang.String)null);
-      return this.EQ(methodActor.getId());
+      return this.EQ(methodActor.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.MethodActor methodActor)
     {
       if(methodActor == null) return this.NE((java.lang.String)null);
-      return this.NE(methodActor.getId());
+      return this.NE(methodActor.getOid());
     }
 
   public com.runwaysdk.system.metadata.MdMethodQuery.MdMethodQueryReferenceIF getMdMethod()
@@ -493,7 +493,7 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<methodActor.length; i++)
       {
-        itemIdArray[i] = methodActor[i].getId();
+        itemIdArray[i] = methodActor[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -505,7 +505,7 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<methodActor.length; i++)
       {
-        itemIdArray[i] = methodActor[i].getId();
+        itemIdArray[i] = methodActor[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -517,7 +517,7 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<methodActor.length; i++)
       {
-        itemIdArray[i] = methodActor[i].getId();
+        itemIdArray[i] = methodActor[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -529,7 +529,7 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<methodActor.length; i++)
       {
-        itemIdArray[i] = methodActor[i].getId();
+        itemIdArray[i] = methodActor[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -541,7 +541,7 @@ public  class MethodActorQuery extends com.runwaysdk.system.SingleActorQuery
 
       for (int i=0; i<methodActor.length; i++)
       {
-        itemIdArray[i] = methodActor[i].getId();
+        itemIdArray[i] = methodActor[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

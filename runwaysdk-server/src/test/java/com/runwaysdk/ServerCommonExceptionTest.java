@@ -18,6 +18,7 @@
  */
 package com.runwaysdk;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.ExceptionConstants;
@@ -47,7 +48,7 @@ public class ServerCommonExceptionTest
   }
 
   @Test
-//  @Request
+  // @Request
   public void testInRequest()
   {
     for (String exception : exceptions)

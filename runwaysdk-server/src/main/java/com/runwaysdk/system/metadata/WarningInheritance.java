@@ -22,14 +22,14 @@ public class WarningInheritance extends WarningInheritanceBase
 {
   private static final long serialVersionUID = 1229405888103L;
   
-  public WarningInheritance(String parentId, String childId)
+  public WarningInheritance(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public WarningInheritance(com.runwaysdk.system.metadata.MdWarning parent, com.runwaysdk.system.metadata.MdWarning child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

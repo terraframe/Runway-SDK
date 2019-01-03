@@ -26,9 +26,9 @@ public interface MdProblemInfo extends MdNotificationInfo
   public static final String CLASS   = Constants.METADATA_PACKAGE+".MdProblem";
   
   /**
-   * ID.
+   * OID.
    */
-  public static final String ID_VALUE  = "20071130NM000000000000000000001700000000000000000000000000000001"; 
+  public static final String ID_VALUE  = "313b3336-ea89-3d17-bb6e-a118bc00003a"; 
   
   /**
    * Super defining class

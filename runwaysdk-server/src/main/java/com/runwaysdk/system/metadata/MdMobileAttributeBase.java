@@ -73,7 +73,7 @@ public abstract class MdMobileAttributeBase extends com.runwaysdk.system.metadat
     }
     else
     {
-      setValue(DEFININGMDATTRIBUTE, value.getId());
+      setValue(DEFININGMDATTRIBUTE, value.getOid());
     }
   }
   
@@ -82,9 +82,9 @@ public abstract class MdMobileAttributeBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static MdMobileAttribute get(String id)
+  public static MdMobileAttribute get(String oid)
   {
-    return (MdMobileAttribute) com.runwaysdk.business.Business.get(id);
+    return (MdMobileAttribute) com.runwaysdk.business.Business.get(oid);
   }
   
   public static MdMobileAttribute getByKey(String key)
@@ -92,17 +92,17 @@ public abstract class MdMobileAttributeBase extends com.runwaysdk.system.metadat
     return (MdMobileAttribute) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static MdMobileAttribute lock(java.lang.String id)
+  public static MdMobileAttribute lock(java.lang.String oid)
   {
-    MdMobileAttribute _instance = MdMobileAttribute.get(id);
+    MdMobileAttribute _instance = MdMobileAttribute.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static MdMobileAttribute unlock(java.lang.String id)
+  public static MdMobileAttribute unlock(java.lang.String oid)
   {
-    MdMobileAttribute _instance = MdMobileAttribute.get(id);
+    MdMobileAttribute _instance = MdMobileAttribute.get(oid);
     _instance.unlock();
     
     return _instance;

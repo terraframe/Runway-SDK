@@ -45,6 +45,7 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 
@@ -126,6 +127,10 @@ public class AttributeFactory
     {
       attribute = new AttributeBoolean(attributeName, mdAttributeKey, definingType, (String) attributeValue);
     }
+    else if (attributeType.equals(MdAttributeUUIDInfo.CLASS))
+    {
+      attribute = new AttributeUUID(attributeName, mdAttributeKey, definingType, (String) attributeValue);
+    }
     else if (attributeType.equals(MdAttributeTimeInfo.CLASS))
     {
       attribute = new AttributeTime(attributeName, mdAttributeKey, definingType, (String) attributeValue);
@@ -175,7 +180,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeStruct(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeStruct(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else
@@ -188,7 +193,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeLocalCharacter(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeLocalCharacter(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else
@@ -201,7 +206,7 @@ public class AttributeFactory
       if (attributeValue instanceof StructDAO)
       {
         StructDAO structDAO = (StructDAO) attributeValue;
-        attribute = new AttributeLocalText(attributeName, mdAttributeKey, definingType, structDAO.getId(), structDAO);
+        attribute = new AttributeLocalText(attributeName, mdAttributeKey, definingType, structDAO.getOid(), structDAO);
       }
       // only call for new instances
       else

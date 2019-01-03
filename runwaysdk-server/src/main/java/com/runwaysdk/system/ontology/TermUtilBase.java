@@ -29,7 +29,7 @@ package com.runwaysdk.system.ontology;
 public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   private static final long serialVersionUID = -946656427;
   
   public TermUtilBase()
@@ -37,20 +37,20 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     super();
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.TermUtil.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()
@@ -58,24 +58,24 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return CLASS;
   }
   
-  public static TermUtil get(String id)
+  public static TermUtil get(String oid)
   {
-    return (TermUtil) com.runwaysdk.business.Util.get(id);
+    return (TermUtil) com.runwaysdk.business.Util.get(oid);
   }
   
-  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
-  {
-    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
-    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
-  }
-  
-  public static com.runwaysdk.business.Relationship addLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childOid, java.lang.String oldParentOid, java.lang.String oldRelType, java.lang.String newParentOid, java.lang.String newRelType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
+  public static com.runwaysdk.business.Relationship addLink(java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentOid, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
@@ -111,7 +111,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static void removeLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  public static void removeLink(java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

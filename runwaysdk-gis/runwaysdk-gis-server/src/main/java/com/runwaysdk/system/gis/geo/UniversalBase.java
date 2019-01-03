@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1702054576)
+@com.runwaysdk.business.ClassSignature(hash = -1192708600)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -43,17 +43,20 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   private com.runwaysdk.business.Struct displayLabel = null;
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String ID = "id";
+  public static java.lang.String GEOMETRYTYPE = "geometryType";
+  public static java.lang.String ISLEAFTYPE = "isLeafType";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String MDBUSINESS = "mdBusiness";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSALID = "universalId";
-  private static final long serialVersionUID = -1702054576;
+  private static final long serialVersionUID = -1192708600;
   
   public UniversalBase()
   {
@@ -90,7 +93,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -150,7 +153,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -174,24 +177,86 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
-  public String getId()
+  public void setEntityDomainId(java.lang.String oid)
   {
-    return getValue(ID);
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
+    }
   }
   
-  public void validateId()
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.gis.geo.GeometryType> getGeometryType()
   {
-    this.validateAttribute(ID);
+    return (java.util.List<com.runwaysdk.system.gis.geo.GeometryType>) getEnumValues(GEOMETRYTYPE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getIdMd()
+  public void addGeometryType(com.runwaysdk.system.gis.geo.GeometryType value)
+  {
+    if(value != null)
+    {
+      addEnumItem(GEOMETRYTYPE, value.getOid());
+    }
+  }
+  
+  public void removeGeometryType(com.runwaysdk.system.gis.geo.GeometryType value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(GEOMETRYTYPE, value.getOid());
+    }
+  }
+  
+  public void clearGeometryType()
+  {
+    clearEnum(GEOMETRYTYPE);
+  }
+  
+  public void validateGeometryType()
+  {
+    this.validateAttribute(GEOMETRYTYPE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getGeometryTypeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ID);
+    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(GEOMETRYTYPE);
+  }
+  
+  public Boolean getIsLeafType()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISLEAFTYPE));
+  }
+  
+  public void validateIsLeafType()
+  {
+    this.validateAttribute(ISLEAFTYPE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsLeafTypeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISLEAFTYPE);
+  }
+  
+  public void setIsLeafType(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISLEAFTYPE, "");
+    }
+    else
+    {
+      setValue(ISLEAFTYPE, java.lang.Boolean.toString(value));
+    }
   }
   
   public String getKeyName()
@@ -250,7 +315,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -278,7 +343,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -294,6 +359,74 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
+  public com.runwaysdk.system.metadata.MdBusiness getMdBusiness()
+  {
+    if (getValue(MDBUSINESS).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdBusiness.get(getValue(MDBUSINESS));
+    }
+  }
+  
+  public String getMdBusinessOid()
+  {
+    return getValue(MDBUSINESS);
+  }
+  
+  public void validateMdBusiness()
+  {
+    this.validateAttribute(MDBUSINESS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getMdBusinessMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(MDBUSINESS);
+  }
+  
+  public void setMdBusiness(com.runwaysdk.system.metadata.MdBusiness value)
+  {
+    if(value == null)
+    {
+      setValue(MDBUSINESS, "");
+    }
+    else
+    {
+      setValue(MDBUSINESS, value.getOid());
+    }
+  }
+  
+  public void setMdBusinessId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(MDBUSINESS, "");
+    }
+    else
+    {
+      setValue(MDBUSINESS, oid);
+    }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -306,7 +439,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -330,7 +463,19 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
+    }
+  }
+  
+  public void setOwnerId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, oid);
     }
   }
   
@@ -643,9 +788,9 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
   }
   
-  public static Universal get(String id)
+  public static Universal get(String oid)
   {
-    return (Universal) com.runwaysdk.business.Business.get(id);
+    return (Universal) com.runwaysdk.business.Business.get(oid);
   }
   
   public static Universal getByKey(String key)
@@ -670,17 +815,17 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static Universal lock(java.lang.String id)
+  public static Universal lock(java.lang.String oid)
   {
-    Universal _instance = Universal.get(id);
+    Universal _instance = Universal.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static Universal unlock(java.lang.String id)
+  public static Universal unlock(java.lang.String oid)
   {
-    Universal _instance = Universal.get(id);
+    Universal _instance = Universal.get(oid);
     _instance.unlock();
     
     return _instance;

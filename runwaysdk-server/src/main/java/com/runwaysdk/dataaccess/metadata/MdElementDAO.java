@@ -153,7 +153,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
 
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an ID is created.
+   * BusinessDAO, then records are created in the database and an OID is created.
    * If this is not a new BusinessDAO, then records are modified in the database.
    *
    * <br/><b>Precondition:</b> Attributes must have correct values as defined
@@ -165,7 +165,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
    *          true if attributes should be checked for required values, false
    *          otherwise. StructDAOs used by struct attributes may or may not
    *          need required attributes validated.
-   * @return ID of the BusinessDAO.
+   * @return OID of the BusinessDAO.
    * @throws DataAccessException
    *           if an attribute contains a value that is not correct with respect
    *           to the metadata.
@@ -173,7 +173,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
   public String save(boolean validateRequired)
   {
     boolean applied = this.isAppliedToDB();
-    String id = super.save(validateRequired);
+    String oid = super.save(validateRequired);
 
     if (this.isNew() && !applied)
     {
@@ -189,7 +189,7 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
       this.updateInheritanceRelationshipKey();
     }
 
-    return id;
+    return oid;
   }
 
   /**
@@ -383,9 +383,9 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
    *
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdElementDAOIF get(String id)
+  public static MdElementDAOIF get(String oid)
   {
-    return (MdElementDAOIF) BusinessDAO.get(id);
+    return (MdElementDAOIF) BusinessDAO.get(oid);
   }
 
   public final String getTableOfStubAttributes()

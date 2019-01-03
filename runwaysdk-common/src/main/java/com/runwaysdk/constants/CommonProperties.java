@@ -129,21 +129,6 @@ public class CommonProperties
     return instance().getString("server.modules.loader");
   }
 
-  public static String getContainerWebServiceDeployURL()
-  {
-    return instance().getString("container.webservice.deployURL");
-  }
-
-  public static boolean getContainerWebServiceEnabled()
-  {
-    return instance().getBoolean("container.webservice.enable", false);
-  }
-
-  public static int getContainerWebServiceCallTimeout()
-  {
-    return instance().getInteger("container.webservice.callTimeout");
-  }
-
   public static String getRMIService()
   {
     return instance().getString("java.rmi.service");

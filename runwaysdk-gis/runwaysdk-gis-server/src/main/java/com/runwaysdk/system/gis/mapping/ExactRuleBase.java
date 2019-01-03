@@ -41,9 +41,9 @@ public abstract class ExactRuleBase extends com.runwaysdk.system.gis.mapping.Pri
     return CLASS;
   }
   
-  public static ExactRule get(String id)
+  public static ExactRule get(String oid)
   {
-    return (ExactRule) com.runwaysdk.business.Business.get(id);
+    return (ExactRule) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ExactRule getByKey(String key)
@@ -51,17 +51,17 @@ public abstract class ExactRuleBase extends com.runwaysdk.system.gis.mapping.Pri
     return (ExactRule) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static ExactRule lock(java.lang.String id)
+  public static ExactRule lock(java.lang.String oid)
   {
-    ExactRule _instance = ExactRule.get(id);
+    ExactRule _instance = ExactRule.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ExactRule unlock(java.lang.String id)
+  public static ExactRule unlock(java.lang.String oid)
   {
-    ExactRule _instance = ExactRule.get(id);
+    ExactRule _instance = ExactRule.get(oid);
     _instance.unlock();
     
     return _instance;

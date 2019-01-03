@@ -134,13 +134,13 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebGeo mdWebGeo)
     {
       if(mdWebGeo == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebGeo.getId());
+      return this.EQ(mdWebGeo.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebGeo mdWebGeo)
     {
       if(mdWebGeo == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebGeo.getId());
+      return this.NE(mdWebGeo.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
@@ -203,7 +203,7 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
 
       for (int i=0; i<mdWebGeo.length; i++)
       {
-        itemIdArray[i] = mdWebGeo[i].getId();
+        itemIdArray[i] = mdWebGeo[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -215,7 +215,7 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
 
       for (int i=0; i<mdWebGeo.length; i++)
       {
-        itemIdArray[i] = mdWebGeo[i].getId();
+        itemIdArray[i] = mdWebGeo[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -227,7 +227,7 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
 
       for (int i=0; i<mdWebGeo.length; i++)
       {
-        itemIdArray[i] = mdWebGeo[i].getId();
+        itemIdArray[i] = mdWebGeo[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -239,7 +239,7 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
 
       for (int i=0; i<mdWebGeo.length; i++)
       {
-        itemIdArray[i] = mdWebGeo[i].getId();
+        itemIdArray[i] = mdWebGeo[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -251,7 +251,7 @@ public  class MdWebGeoQuery extends com.runwaysdk.system.metadata.MdWebAttribute
 
       for (int i=0; i<mdWebGeo.length; i++)
       {
-        itemIdArray[i] = mdWebGeo[i].getId();
+        itemIdArray[i] = mdWebGeo[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

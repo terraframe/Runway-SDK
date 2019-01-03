@@ -25,8 +25,6 @@ package com.runwaysdk.dataaccess;
 import java.io.Serializable;
 import java.util.List;
 
-import com.runwaysdk.business.state.StateMasterDAOIF;
-
 
 /**
  * @author nathan
@@ -87,19 +85,7 @@ public interface BusinessDAOIF extends ElementDAOIF, Serializable
   public String getStructValue(String structAttributeName, String attributeName);
 
   /**
-   * Returns the currents state of the businessDAO
-   * @return
-   */
-  public StateMasterDAOIF currentState();
-
-  /**
-   * Returns true if the data object has a current state
-   * @return
-   */
-  public boolean hasState();
-
-  /**
-   * Returns a copy of the given BusinessDAO instance, with a new id and mastered at the current site.
+   * Returns a copy of the given BusinessDAO instance, with a new oid and mastered at the current site.
    * The state of the object is new and has not been applied to the database.
    *
    * @return a copy of the given BusinessDAO instance

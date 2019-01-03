@@ -31,9 +31,9 @@ public abstract class WarningInheritanceBase extends com.runwaysdk.system.metada
   public final static String CLASS = "com.runwaysdk.system.metadata.WarningInheritance";
   private static final long serialVersionUID = 571562451;
   
-  public WarningInheritanceBase(String parentId, String childId)
+  public WarningInheritanceBase(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   protected String getDeclaredType()
@@ -51,9 +51,9 @@ public abstract class WarningInheritanceBase extends com.runwaysdk.system.metada
     return (com.runwaysdk.system.metadata.MdWarning) super.getChild();
   }
   
-  public static WarningInheritance get(String id)
+  public static WarningInheritance get(String oid)
   {
-    return (WarningInheritance) com.runwaysdk.business.Relationship.get(id);
+    return (WarningInheritance) com.runwaysdk.business.Relationship.get(oid);
   }
   
   public static WarningInheritance getByKey(String key)
@@ -61,17 +61,17 @@ public abstract class WarningInheritanceBase extends com.runwaysdk.system.metada
     return (WarningInheritance) com.runwaysdk.business.Relationship.get(CLASS, key);
   }
   
-  public static WarningInheritance lock(java.lang.String id)
+  public static WarningInheritance lock(java.lang.String oid)
   {
-    WarningInheritance _instance = WarningInheritance.get(id);
+    WarningInheritance _instance = WarningInheritance.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static WarningInheritance unlock(java.lang.String id)
+  public static WarningInheritance unlock(java.lang.String oid)
   {
-    WarningInheritance _instance = WarningInheritance.get(id);
+    WarningInheritance _instance = WarningInheritance.get(oid);
     _instance.unlock();
     
     return _instance;

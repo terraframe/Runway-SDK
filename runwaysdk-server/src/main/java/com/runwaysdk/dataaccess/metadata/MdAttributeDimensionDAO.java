@@ -72,8 +72,8 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
     if (this.isNew() && this.isAppliedToDB() == false && !this.isImport())
     {
-      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getId());
-      this.getAttribute(EntityInfo.ID).setValue(newId);
+      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getRootId());
+      this.getAttribute(EntityInfo.OID).setValue(newId);
     }
 
     return super.apply();
@@ -86,7 +86,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
     MdAttributeDAOIF mdAttribute = this.definingMdAttribute();
     this.validateDefaultValue(mdAttribute);
 
-    String id = super.save(businessContext);
+    String oid = super.save(businessContext);
 
     MdDimensionDAOIF mdDimension = this.definingMdDimension();
     MdAttributeDAOIF mdAttributeDAOIF = this.definingMdAttribute();
@@ -94,12 +94,12 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
     boolean required = ( (AttributeBooleanIF) this.getAttributeIF(MdAttributeDimensionInfo.REQUIRED) ).getBooleanValue();
     String defaultValue = this.getAttributeIF(MdAttributeDimensionInfo.DEFAULT_VALUE).getValue();
-    mdAttributeDAO.addAttributeDimension(this.getId(), required, defaultValue, mdDimension.getId());
+    mdAttributeDAO.addAttributeDimension(this.getOid(), required, defaultValue, mdDimension.getOid());
     // this apply puts the object onto the transaction cache so as not to
     // corrupt the object in the global cache
     TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
 
-    return id;
+    return oid;
   }
 
   @Override
@@ -109,7 +109,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
     MdDimensionDAOIF mdDimensionDAOIF = this.definingMdDimension();
     MdAttributeDAO mdAttributeDAO = (MdAttributeDAO) this.definingMdAttribute().getBusinessDAO();
-    mdAttributeDAO.removeMdAttributeDimension(mdDimensionDAOIF.getId());
+    mdAttributeDAO.removeMdAttributeDimension(mdDimensionDAOIF.getOid());
     // this apply puts the object onto the transaction cache so as not to
     // corrupt the object in the global cache
     TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
@@ -210,7 +210,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
   public void setDefiningMdAttribute(MdAttributeDAOIF mdAttributeDAOIF)
   {
-    this.getAttribute(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE).setValue(mdAttributeDAOIF.getId());
+    this.getAttribute(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE).setValue(mdAttributeDAOIF.getOid());
   }
 
   public MdDimensionDAOIF definingMdDimension()
@@ -220,7 +220,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
   public void setDefiningMdDimension(MdDimensionDAOIF mdDimensionDAOIF)
   {
-    this.getAttribute(MdAttributeDimensionInfo.DEFINING_MD_DIMENSION).setValue(mdDimensionDAOIF.getId());
+    this.getAttribute(MdAttributeDimensionInfo.DEFINING_MD_DIMENSION).setValue(mdDimensionDAOIF.getOid());
   }
 
   /**
@@ -252,7 +252,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
       return mdDimension.getKey() + "-" + mdAttribute.getKey();
     }
 
-    return this.getId();
+    return this.getOid();
   }
 
   /*
@@ -260,9 +260,9 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
-  public static MdAttributeDimensionDAOIF get(String id)
+  public static MdAttributeDimensionDAOIF get(String oid)
   {
-    return (MdAttributeDimensionDAOIF) BusinessDAO.get(id);
+    return (MdAttributeDimensionDAOIF) BusinessDAO.get(oid);
   }
 
   public static MdAttributeDimensionDAO newInstance()

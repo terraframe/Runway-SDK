@@ -44,9 +44,6 @@ import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.business.state.StateMasterDAO;
-import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -61,15 +58,12 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MissingKeyNameValue;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.TransientDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
-import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheNoneBusinessDAOStrategy;
@@ -82,7 +76,6 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.MetadataDisplayLabelDDLCommand;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
-import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -301,18 +294,18 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   after(Entity entity) : clearAppLock(entity)
   {
-    this.getState().addUnsetAppLocksSet(entity.getId());
+    this.getState().addUnsetAppLocksSet(entity.getOid());
   }
 
   // these objects should be unlocked at the end of the session request
-  protected pointcut setRelLock(String parentId, String childId)
-    : (execution (* com.runwaysdk.dataaccess.transaction.LockRelationship.recordRelLock(String, String)) && args(parentId, childId))
+  protected pointcut setRelLock(String parentOid, String childOid)
+    : (execution (* com.runwaysdk.dataaccess.transaction.LockRelationship.recordRelLock(String, String)) && args(parentOid, childOid))
   && cflow(topLevelTransactions());
 
-  before(String parentId, String childId) :  setRelLock(parentId, childId)
+  before(String parentOid, String childOid) :  setRelLock(parentOid, childOid)
   {
-    this.getState().addSetAppLocksSet(parentId);
-    this.getState().addSetAppLocksSet(childId);
+    this.getState().addSetAppLocksSet(parentOid);
+    this.getState().addSetAppLocksSet(childOid);
   }
 
   protected pointcut reloadGlobalPublicPermissions()
@@ -356,7 +349,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     : updatedEntityDAO(entityDAO)
   {
     // Set a default key value if one has not been not been provided
-    // Set the key to the id if no value has been specified.
+    // Set the key to the oid if no value has been specified.
     Attribute keyAttribute = entityDAO.getAttribute(ComponentInfo.KEY);
     String keyValue = keyAttribute.getValue();
 
@@ -369,22 +362,22 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       {
         String devMessg = 
             "Objects of type ["+mdEntityDAOIF.definesType()+"] require a value for the ["+EntityInfo.KEY+"] "+
-            "attribute in order to generate a deterministic ID.";
+            "attribute in order to generate a deterministic OID.";
          throw new MissingKeyNameValue(devMessg, mdEntityDAOIF);
       }
       else
       {
-        // If the key has been modified, then we must change the ID
-        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+        // If the key has been modified, then we must change the OID
+        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getOid()))
         {          
-          String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
-          String newRootId = ServerIDGenerator.hashedId(keyValue);
+          String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
+          String newRootId = ServerIDGenerator.generateId(keyValue);
           String newId = IdParser.buildId(newRootId, mdTypeRootId);
-          String currentId = entityDAO.getId();
+          String currentId = entityDAO.getOid();
           
           if(!newId.equals(currentId))
           {
-            entityDAO.setId(newId);
+            entityDAO.setOid(newId);
              
             if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
             {
@@ -400,7 +393,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (keyValue.trim().equals(""))
       {
-        keyAttribute.setValue(entityDAO.getId());
+        keyAttribute.setValue(entityDAO.getOid());
       }
     }    
     
@@ -529,32 +522,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     }
   }
 
-  // MdAction objects that have been updated or created.
-  protected pointcut updateMdAction(MdActionDAO mdAction)
-  :(execution (* com.runwaysdk.dataaccess.metadata.MdActionDAO.save(..)) && target(mdAction));
-
-  before(MdActionDAO mdAction)
-    : updateMdAction(mdAction)
-  {
-    if (!mdAction.isImport())
-    {
-      this.getTransactionCache().updatedMdAction_CodeGen(mdAction);
-    }
-  }
-
-  // MdAction objects that have been deleted.
-  protected pointcut deletedMdAction(MdActionDAO mdAction)
-  :(execution (* com.runwaysdk.dataaccess.metadata.MdActionDAO.delete(..)) && target(mdAction));
-
-  before(MdActionDAO mdAction)
-    : deletedMdAction(mdAction)
-  {
-    if (!mdAction.isImport())
-    {
-      this.getTransactionCache().updatedMdAction_CodeGen(mdAction);
-    }
-  }
-
   // MdParameter objects that have been created or the return type is updated..
   protected pointcut updatedMdParameter(MdParameterDAO mdParameter)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdParameterDAO.save(..)) && target(mdParameter));
@@ -578,90 +545,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     if (!mdParameter.isImport())
     {
       this.getTransactionCache().updatedMdParameter_CodeGen(mdParameter);
-    }
-  }
-
-  protected pointcut createStateMaster(StateMasterDAO stateMaster)
-  :(execution (* com.runwaysdk.business.state.StateMasterDAO.save(..)) && this(stateMaster));
-
-  before(StateMasterDAO stateMaster)
-  : createStateMaster(stateMaster)
-  {
-    this.getTransactionCache().updatedStateMaster(stateMaster);
-  }
-
-  protected pointcut getDefinesStateMasters(MdStateMachineDAO mdStateMachine)
-  :(call (* com.runwaysdk.business.state.MdStateMachineDAOIF.definesStateMasters()) && target(mdStateMachine));
-
-  List<StateMasterDAOIF> around(MdStateMachineDAO mdStateMachine)
-  : getDefinesStateMasters(mdStateMachine)
-  {
-    List<StateMasterDAOIF> cachedStateMasterList = this.getTransactionCache().getUpdatedStateMasters(mdStateMachine.definesType());
-
-    if (cachedStateMasterList.size() > 0)
-    {
-      List<StateMasterDAOIF> states = new LinkedList<StateMasterDAOIF>();
-      List<String> list = EntityDAO.getEntityIdsDB(mdStateMachine.definesType());
-
-      for (String id : list)
-      {
-        states.add(StateMasterDAO.get(id));
-      }
-
-      return states;
-    }
-    else
-    {
-      return proceed(mdStateMachine);
-    }
-
-  }
-
-  protected pointcut createTransition(TransitionDAO transitionDAO)
-  :(execution (* com.runwaysdk.dataaccess.TransitionDAO.save(..)) && this(transitionDAO));
-
-  before(TransitionDAO transitionDAO)
-  : createTransition(transitionDAO)
-  {
-    this.getTransactionCache().updatedTransition(transitionDAO);
-  }
-
-  protected pointcut deleteTransition(TransitionDAO transitionDAO)
-  :(execution (* com.runwaysdk.dataaccess.TransitionDAO.delete(..)) && this(transitionDAO));
-
-  before(TransitionDAO transitionDAO)
-  : deleteTransition(transitionDAO)
-  {
-    this.getTransactionCache().updatedTransition(transitionDAO);
-  }
-
-  protected pointcut getDefinesTransitions(MdStateMachineDAO mdStateMachine)
-  :(call (* com.runwaysdk.business.state.MdStateMachineDAOIF.definesTransitions()) && target(mdStateMachine));
-
-  List<TransitionDAOIF> around(MdStateMachineDAO mdStateMachine)
-  : getDefinesTransitions(mdStateMachine)
-  {
-    MdRelationshipDAOIF mdTransition = mdStateMachine.getMdTransition();
-
-    Set<TransitionDAOIF> cachedTransitionList = this.getTransactionCache().getUpdatedTransitions(mdTransition.definesType());
-
-    if (cachedTransitionList.size() > 0)
-    {
-
-      List<TransitionDAOIF> transitions = new LinkedList<TransitionDAOIF>();
-
-      List<String> list = EntityDAO.getEntityIdsDB(mdTransition.definesType());
-
-      for (String id : list)
-      {
-        transitions.add((TransitionDAOIF) RelationshipDAO.get(id));
-      }
-
-      return transitions;
-    }
-    else
-    {
-      return proceed(mdStateMachine);
     }
   }
 
@@ -735,7 +618,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (!this.getTransactionCache().hasBeenDeletedInTransaction(entity.entityDAO))
       {
-        String error = "Object [" + entity.entityDAO.getId() + "] has already been deleted.";
+        String error = "Object [" + entity.entityDAO.getOid() + "] has already been deleted.";
         throw new StaleEntityException(error, entity.entityDAO);
       }
     }
@@ -785,7 +668,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     {
       if (!this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO))
       {
-        String error = "Object [" + entityDAO.getId() + "] has already been deleted.";
+        String error = "Object [" + entityDAO.getOid() + "] has already been deleted.";
         throw new StaleEntityException(error, entityDAO);
       }
     }
@@ -1239,19 +1122,19 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // Should this object be requested later in the transaction, used the version
   // that was
   // modified but not yet applied.
-  protected pointcut getEntityById(String id)
+  protected pointcut getEntityById(String oid)
     :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(String))
-    && args(id);
+    && args(oid);
 
-  Object around(String id) : getEntityById(id)
+  Object around(String oid) : getEntityById(oid)
   {
     EntityDAOIF entityDAO = null;
 
-    entityDAO = this.getTransactionCache().getEntityDAO(id);
+    entityDAO = this.getTransactionCache().getEntityDAO(oid);
 
     if (entityDAO == null)
     {
-      entityDAO = (EntityDAOIF) proceed(id);
+      entityDAO = (EntityDAOIF) proceed(oid);
     }
 
     return entityDAO;
@@ -1482,7 +1365,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * parent.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -1501,7 +1384,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   /**
    * Returns a set of <code>MdRelationshipDAOIF</code> ids for relationships in
-   * which the <code>MdBusinessDAOIF</code> with the given id participates as a
+   * which the <code>MdBusinessDAOIF</code> with the given oid participates as a
    * child.
    * 
    * @return set of <code>MdRelationshipDAOIF</code> ids
@@ -1531,7 +1414,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getParents(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the id in the global cache could be different
+    // OID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
@@ -1554,7 +1437,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getChildren(relationshipCollection, businessDAOid, relationshipType)
   {
-    // ID could have been changed during the transaction and the id in the global cache could be different
+    // OID could have been changed during the transaction and the oid in the global cache could be different
     String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
     
     List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
@@ -1596,7 +1479,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
    * database deadlock detection Get DML tables -------------------
    * Database.buildSQLInsertStatement(String table, List<String> fields,
    * List<String> values) Database.buildSQLUpdateStatement(String table,
-   * Map<String, String> values, String id)
+   * Map<String, String> values, String oid)
    * 
    * 
    * Get DDL tables ------------------- Database.createClassTable(String table)

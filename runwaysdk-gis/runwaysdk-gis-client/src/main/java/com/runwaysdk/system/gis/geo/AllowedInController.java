@@ -31,20 +31,20 @@ public class AllowedInController extends AllowedInControllerBase
   public void cancel(com.runwaysdk.system.gis.geo.AllowedInDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     dto.unlock();
-    this.view(dto.getId());
+    this.view(dto.getOid());
   }
   public void failCancel(com.runwaysdk.system.gis.geo.AllowedInDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.edit(dto.getId());
+    this.edit(dto.getOid());
   }
-  public void childQuery(java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void childQuery(java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.gis.geo.AllowedInQueryDTO query = com.runwaysdk.system.gis.geo.AllowedInDTO.childQuery(clientRequest, childId);
+    com.runwaysdk.system.gis.geo.AllowedInQueryDTO query = com.runwaysdk.system.gis.geo.AllowedInDTO.childQuery(clientRequest, childOid);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failChildQuery(java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void failChildQuery(java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     resp.sendError(500);
   }
@@ -53,7 +53,7 @@ public class AllowedInController extends AllowedInControllerBase
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -82,24 +82,24 @@ public class AllowedInController extends AllowedInControllerBase
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.system.gis.geo.AllowedInDTO dto = com.runwaysdk.system.gis.geo.AllowedInDTO.lock(super.getClientRequest(), id);
+    com.runwaysdk.system.gis.geo.AllowedInDTO dto = com.runwaysdk.system.gis.geo.AllowedInDTO.lock(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
-    this.view(id);
+    this.view(oid);
   }
-  public void newInstance(java.lang.String parentId, java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void newInstance(java.lang.String parentOid, java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.gis.geo.AllowedInDTO dto = new com.runwaysdk.system.gis.geo.AllowedInDTO(clientRequest, parentId, childId);
+    com.runwaysdk.system.gis.geo.AllowedInDTO dto = new com.runwaysdk.system.gis.geo.AllowedInDTO(clientRequest, parentOid, childOid);
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void failNewInstance(java.lang.String parentId, java.lang.String childId) throws java.io.IOException, javax.servlet.ServletException
+  public void failNewInstance(java.lang.String parentOid, java.lang.String childOid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }
@@ -113,14 +113,14 @@ public class AllowedInController extends AllowedInControllerBase
   {
     resp.sendError(500);
   }
-  public void parentQuery(java.lang.String parentId) throws java.io.IOException, javax.servlet.ServletException
+  public void parentQuery(java.lang.String parentOid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.gis.geo.AllowedInQueryDTO query = com.runwaysdk.system.gis.geo.AllowedInDTO.parentQuery(clientRequest, parentId);
+    com.runwaysdk.system.gis.geo.AllowedInQueryDTO query = com.runwaysdk.system.gis.geo.AllowedInDTO.parentQuery(clientRequest, parentOid);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failParentQuery(java.lang.String parentId) throws java.io.IOException, javax.servlet.ServletException
+  public void failParentQuery(java.lang.String parentOid) throws java.io.IOException, javax.servlet.ServletException
   {
     resp.sendError(500);
   }
@@ -129,7 +129,7 @@ public class AllowedInController extends AllowedInControllerBase
     try
     {
       dto.apply();
-      this.view(dto.getId());
+      this.view(dto.getOid());
     }
     catch(com.runwaysdk.ProblemExceptionDTO e)
     {
@@ -141,13 +141,13 @@ public class AllowedInController extends AllowedInControllerBase
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.system.gis.geo.AllowedInDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.system.gis.geo.AllowedInDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();
   }

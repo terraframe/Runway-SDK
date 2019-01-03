@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -2045050489)
+@com.runwaysdk.business.ClassSignature(hash = 988913983)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -165,21 +165,44 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType()
   {
-    return getId(null);
+    return getGeometryType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE);
+
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, mdAttributeIF, this, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE);
+
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
+  {
+    return getIsLeafType(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -260,6 +283,46 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness()
+  {
+    return getMdBusiness(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS);
+
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS);
+
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.gis.geo.Universal.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -373,6 +436,10 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (name.equals(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS)) 
+    {
+       return new com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
@@ -395,6 +462,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.system.gis.geo.UniversalDisplayLabelQuery.UniversalDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE)) 
+    {
+       return new com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -1146,9 +1228,12 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType();
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias);
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType();
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1161,6 +1246,12 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness();
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -1354,13 +1445,13 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.gis.geo.Universal universal)
     {
       if(universal == null) return this.EQ((java.lang.String)null);
-      return this.EQ(universal.getId());
+      return this.EQ(universal.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.gis.geo.Universal universal)
     {
       if(universal == null) return this.NE((java.lang.String)null);
-      return this.NE(universal.getId());
+      return this.NE(universal.getOid());
     }
 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
@@ -1448,21 +1539,38 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType()
   {
-    return getId(null);
+    return getGeometryType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
+  {
+    return getIsLeafType(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1531,6 +1639,40 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness()
+  {
+    return getMdBusiness(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.Universal.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.Universal.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -2334,6 +2476,10 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (name.equals(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS)) 
+    {
+       return new com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
@@ -2356,6 +2502,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.system.gis.geo.UniversalDisplayLabelQuery.UniversalDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE)) 
+    {
+       return new com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -2388,9 +2549,12 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getId();
-    public com.runwaysdk.query.SelectableChar getId(String alias);
-    public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType();
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias);
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType();
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -2403,6 +2567,12 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness();
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -2449,7 +2619,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -2461,7 +2631,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -2473,7 +2643,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -2485,7 +2655,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -2497,7 +2667,7 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
 
       for (int i=0; i<universal.length; i++)
       {
-        itemIdArray[i] = universal[i].getId();
+        itemIdArray[i] = universal[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);
@@ -2587,21 +2757,38 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getId()
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType()
   {
-    return getId(null);
+    return getGeometryType(null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, null);
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
+  public com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF getGeometryType(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.gis.geo.Universal.ID, alias, displayLabel);
+    return (com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQueryIF)this.get(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType()
+  {
+    return getIsLeafType(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsLeafType(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.gis.geo.Universal.ISLEAFTYPE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -2670,6 +2857,40 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness()
+  {
+    return getMdBusiness(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.Universal.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.gis.geo.Universal.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -2777,6 +2998,10 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     {
        return new com.runwaysdk.system.SingleActorQuery.SingleActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (name.equals(com.runwaysdk.system.gis.geo.Universal.MDBUSINESS)) 
+    {
+       return new com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
@@ -2799,6 +3024,21 @@ public  class UniversalQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     else if (name.equals(com.runwaysdk.system.gis.geo.Universal.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.system.gis.geo.UniversalDisplayLabelQuery.UniversalDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.gis.geo.Universal.GEOMETRYTYPE)) 
+    {
+       return new com.runwaysdk.system.gis.geo.GeometryTypeMasterQuery.GeometryTypeQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {

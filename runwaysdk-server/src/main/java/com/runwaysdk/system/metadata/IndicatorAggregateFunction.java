@@ -53,10 +53,10 @@ public enum IndicatorAggregateFunction implements com.runwaysdk.business.Busines
     this.enumeration = enumeration;
   }
   
-  public java.lang.String getId()
+  public java.lang.String getOid()
   {
     loadEnumeration();
-    return enumeration.getId();
+    return enumeration.getOid();
   }
   
   public java.lang.String getEnumName()
@@ -71,11 +71,11 @@ public enum IndicatorAggregateFunction implements com.runwaysdk.business.Busines
     return enumeration.getDisplayLabel().getValue(com.runwaysdk.session.Session.getCurrentLocale());
   }
   
-  public static IndicatorAggregateFunction get(String id)
+  public static IndicatorAggregateFunction get(String oid)
   {
     for (IndicatorAggregateFunction e : IndicatorAggregateFunction.values())
     {
-      if (e.getId().equals(id))
+      if (e.getOid().equals(oid))
       {
         return e;
       }

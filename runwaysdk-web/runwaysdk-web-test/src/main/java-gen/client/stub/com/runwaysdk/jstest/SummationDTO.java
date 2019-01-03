@@ -19,7 +19,7 @@
 package com.runwaysdk.jstest;
 
 public abstract class SummationDTO extends SummationDTOBase
- implements com.runwaysdk.generation.loader.Reloadable{
+ implements com.runwaysdk.generation.loader.{
   private static final long serialVersionUID = 739333772;
   
   public SummationDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

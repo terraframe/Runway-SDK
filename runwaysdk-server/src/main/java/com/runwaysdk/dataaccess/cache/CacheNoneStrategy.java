@@ -44,30 +44,30 @@ public abstract class CacheNoneStrategy extends CacheStrategy
   }
 
   /**
-   * Retrieves the EntityDAO with the given id from the collection.  The
+   * Retrieves the EntityDAO with the given oid from the collection.  The
    * database is queried since this collection does not cache any EntityDAOs.
    *
-   * <br/><b>Precondition:</b>  id != null
-   * <br/><b>Precondition:</b>  !id.trim().equals("")
-   * <br/><b>Precondition:</b>  id is a valid id of a EntityDAO
+   * <br/><b>Precondition:</b>  oid != null
+   * <br/><b>Precondition:</b>  !oid.trim().equals("")
+   * <br/><b>Precondition:</b>  oid is a valid oid of a EntityDAO
    * <br/><b>Postcondition:</b> return value may not be null
    *
-   * @param  id of the desire EntityDAO
-   * @return EntityDAO with the given id
-   * @throws DataAccessException a EntityDAO with the given id does not exist
+   * @param  oid of the desire EntityDAO
+   * @return EntityDAO with the given oid
+   * @throws DataAccessException a EntityDAO with the given oid does not exist
    *         in the database
    */
-  public EntityDAOIF getEntityInstance(String id)
+  public EntityDAOIF getEntityInstance(String oid)
   {
     EntityDAOIF returnEntityDAO = null;
 
-    returnEntityDAO = this.getFromFactory(id);
+    returnEntityDAO = this.getFromFactory(oid);
 
     if (returnEntityDAO == null)
     {
-      MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(id));
+      MdClassDAOIF metadata = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(oid));
 
-      String errMsg = "An instance of [" + metadata.definesType() + "] with id [" + id
+      String errMsg = "An instance of [" + metadata.definesType() + "] with oid [" + oid
         + "] could not be found. [" + metadata.definesType() + "] caches none.";
 
       throw new DataNotFoundException(errMsg, metadata);
@@ -135,7 +135,7 @@ public abstract class CacheNoneStrategy extends CacheStrategy
   public void updateCache(EntityDAO entityDAO) {}
   
   /**
-   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   * Updates the changed oid for the given {@link EntityDAOIF} in the cache.
    *
    * This collection does not cache anything, so this method does nothing.
    *

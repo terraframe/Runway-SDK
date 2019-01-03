@@ -27,6 +27,56 @@
     <!-- 
           The GIS metadata exporter depends on all of this metadata being in the com.runwaysdk.system.gis.geo package.
      -->
+
+<!-- New Metadata -->
+    <enumerationMaster name="com.runwaysdk.system.gis.geo.GeometryTypeMaster" label="Geometry Types Master" generateController="false"/>
+    
+    <object key="POINT" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="POINT" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Point" />
+      </attributeStruct>
+    </object>
+    
+    <object key="LINE" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="LINE" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Line" />
+      </attributeStruct>
+    </object> 
+    
+    <object key="POLYGON" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="POLYGON" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="Polygon" />
+      </attributeStruct>
+    </object>
+    
+     <object key="MULTIPOINT" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTIPOINT" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiPoint" />
+      </attributeStruct>
+    </object>
+    
+    <object key="MULTILINE" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTILINE" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiLine" />
+      </attributeStruct>
+    </object>
+    
+    <object key="MULTIPOLYGON" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <attribute name="enumName" value="MULTIPOLYGON" />
+      <attributeStruct name="displayLabel">
+        <attribute name="defaultLocale" value="MultiPolygon" />
+      </attributeStruct>
+    </object>
+    
+
+    <mdEnumeration name="com.runwaysdk.system.gis.geo.GeometryType" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
+      <includeAll />
+    </mdEnumeration>
   
     <mdTerm isAbstract="false" description="Universal" hasDeterministicId="true" removable="false" name="com.runwaysdk.system.gis.geo.Universal" label="Universal" table="universal" publish="true" extendable="true" generateController="true" cacheAlgorithm="everything">
       <mdMethod static="true" description="Returns the Root Universal" name="getRoot" label="getRoot" returnType="com.runwaysdk.system.gis.geo.Universal">
@@ -37,8 +87,12 @@
         <mdParameter order="2" description="relationshipType" name="relationshipType" label="relationshipType" type="java.lang.String" />
       </mdMethod>
       <attributes>
-        <char removable="true" label="Unique Id" indexType="unique index" description="Universal name" name="universalId" size="100" immutable="false" required="true" />
-        <localChar removable="true" label="Description" description="Description" name="description" immutable="false" required="false" size="255" />
+        <char name="universalId" label="Unique Id" removable="true" indexType="unique index" description="Universal name" size="100" immutable="false" required="true" />
+        <localChar name="description" description="Description" removable="true" label="Description" immutable="false" required="false" size="255" />
+<!-- New Metadata -->
+        <reference name="mdBusiness" label="MdBusiness" required="false" immutable="false" type="com.runwaysdk.system.metadata.MdBusiness" indexType="non-unique index" />
+        <boolean name="isLeafType" required="true" defaultValue="false" label="Is Leaf Type" immutable="true"/>
+        <enumeration name="geometryType" label="Geometry Type" required="true" type="com.runwaysdk.system.gis.geo.GeometryType" defaultValue="MULTIPOLYGON" selectMultiple="false" />
       </attributes>
     </mdTerm>
 
@@ -70,7 +124,11 @@
         <char name="geoId" size="50" required="true" indexType="unique index" label="Geo Id" />
         <text name="wkt" required="false" label="WKT" description="The WKT string of the geometry" />
         <reference name="universal" label="Universal" required="true" immutable="false" type="com.runwaysdk.system.gis.geo.Universal" indexType="non-unique index" />
-        <point name="geoPoint" dimension="2" srid="4326" required="false" label="Geo Point" />
+        <point name="geoPoint" dimension="2" srid="4326" required="false" label="Point" />
+        <linestring name="geoLine" dimension="2" srid="4326" required="false" label="Line" />
+        <polygon name="geoPolygon" dimension="2" srid="4326" required="false" label="Polygon" />
+        <multipoint name="geoMultiPoint" dimension="2" srid="4326" required="false" label="Multi Polygon" /> 
+        <multilinestring name="geoMultiLine" dimension="2" srid="4326" required="false" label="Multi Line" /> 
         <multipolygon name="geoMultiPolygon" dimension="2" srid="4326" required="false" label="Geo Multi Polygon" />
       </attributes>
     </mdTerm>
@@ -144,6 +202,10 @@
       <attributeStruct name="description">
         <attribute name="defaultLocale" value="ROOT" />
       </attributeStruct>
+<!-- New Metadata -->
+      <attributeEnumeration name="geometryType">
+          <enumeratedItem name="MULTIPOLYGON" />
+      </attributeEnumeration>
     </object>
 
     <object key="ROOT" type="com.runwaysdk.system.gis.geo.GeoEntity">
@@ -186,6 +248,7 @@
       <includeAll />
     </mdEnumeration>
 
+
     <mdBusiness name="com.runwaysdk.system.gis.geo.GeoEntityProblem" label="Geo entity problem" generateController="false">
       <attributes>
         <reference name="geoEntity" label="Geo entity" type="com.runwaysdk.system.gis.geo.GeoEntity" required="true" indexType="non-unique index" />
@@ -217,83 +280,4 @@
     </mdBusiness>
     <mdBusiness name="com.runwaysdk.system.gis.geo.GeoNodeEntity" label="Geo node entity" isAbstract="false" extends="com.runwaysdk.system.gis.geo.GeoNode" generateController="false" hasDeterministicId="true" />
   </create>
-  <update>
-    <mdController name="com.runwaysdk.system.gis.geo.UniversalController">
-      <mdAction name="create" isPost="true" isQuery="false">
-        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Universal" />
-        <create>
-          <mdParameter order="1" name="parentId" type="java.lang.String" />
-          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
-        </create>
-      </mdAction>
-      <create>
-        <mdAction name="viewCreate" isPost="true" isQuery="false">
-        </mdAction>
-        <mdAction name="viewUpdate" isPost="true" isQuery="false">
-          <mdParameter order="0" name="id" type="java.lang.String" />
-        </mdAction>
-        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
-          <mdParameter order="0" name="parentId" type="java.lang.String" />
-          <mdParameter order="1" name="relationshipTypes" type="java.lang.String[]" />
-          <mdParameter order="2" name="pageNum" type="java.lang.Integer" />
-          <mdParameter order="3" name="pageSize" type="java.lang.Integer" />
-        </mdAction>
-      </create>
-    </mdController>
-
-    <mdController name="com.runwaysdk.system.gis.geo.GeoEntityController">
-      <mdAction name="create" isPost="true" isQuery="false">
-        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.GeoEntity" />
-        <create>
-          <mdParameter order="1" name="parentId" type="java.lang.String" />
-          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
-        </create>
-      </mdAction>
-      <mdAction name="update" isPost="true" isQuery="false">
-        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.GeoEntity" />
-        <create>
-          <mdParameter order="1" name="parentId" type="java.lang.String" />
-          <mdParameter order="2" name="relationshipType" type="java.lang.String" />
-        </create>
-      </mdAction>
-      <create>
-        <mdAction name="viewCreate" isPost="true" isQuery="false">
-          <mdParameter order="0" name="parentId" type="java.lang.String" />
-          <mdParameter order="1" name="relationshipType" type="java.lang.String" />
-        </mdAction>
-        <mdAction name="viewUpdate" isPost="true" isQuery="false">
-          <mdParameter order="0" name="id" type="java.lang.String" />
-          <mdParameter order="1" name="parentId" type="java.lang.String" />
-        </mdAction>
-        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
-          <mdParameter order="0" name="parentId" type="java.lang.String" />
-          <mdParameter order="1" name="relationshipTypes" type="java.lang.String[]" />
-          <mdParameter order="2" name="pageNum" type="java.lang.Integer" />
-          <mdParameter order="3" name="pageSize" type="java.lang.Integer" />
-        </mdAction>
-      </create>
-    </mdController>
-
-    <mdController name="com.runwaysdk.system.gis.geo.SynonymController">
-      <mdAction name="create" isPost="true" isQuery="false">
-        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Synonym" />
-        <create>
-          <mdParameter order="1" name="geoId" type="java.lang.String" />
-        </create>
-      </mdAction>
-      <mdAction name="update" isPost="true" isQuery="false">
-        <mdParameter order="0" name="dto" type="com.runwaysdk.system.gis.geo.Synonym" />
-      </mdAction>
-      <create>
-        <mdAction name="viewCreate" isPost="true" isQuery="false">
-        </mdAction>
-        <mdAction name="viewUpdate" isPost="true" isQuery="false">
-          <mdParameter order="0" name="id" type="java.lang.String" />
-        </mdAction>
-        <mdAction name="getDirectDescendants" isPost="true" isQuery="false">
-          <mdParameter order="0" name="parentId" type="java.lang.String" />
-        </mdAction>
-      </create>
-    </mdController>
-  </update>
 </Runway>

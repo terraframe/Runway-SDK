@@ -34,7 +34,7 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
   public static java.lang.String DISPLAYATTRIBUTE = "displayAttribute";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMATTRIBUTE = "geomAttribute";
-  public static java.lang.String ID = "id";
+  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
@@ -131,7 +131,7 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(DISPLAYATTRIBUTE, value.getId());
+      setValue(DISPLAYATTRIBUTE, value.getOid());
     }
   }
   
@@ -171,7 +171,7 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -211,24 +211,24 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(GEOMATTRIBUTE, value.getId());
+      setValue(GEOMATTRIBUTE, value.getOid());
     }
   }
   
-  public String getId()
+  public String getOid()
   {
-    return getValue(ID);
+    return getValue(OID);
   }
   
   public void validateId()
   {
-    this.validateAttribute(ID);
+    this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.mapping.LayerSQLBuilder.CLASS);
-    return mdClassIF.definesAttribute(ID);
+    return mdClassIF.definesAttribute(OID);
   }
   
   public String getKeyName()
@@ -367,7 +367,7 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -452,9 +452,9 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     return CLASS;
   }
   
-  public static LayerSQLBuilder get(String id)
+  public static LayerSQLBuilder get(String oid)
   {
-    return (LayerSQLBuilder) com.runwaysdk.business.Business.get(id);
+    return (LayerSQLBuilder) com.runwaysdk.business.Business.get(oid);
   }
   
   public static LayerSQLBuilder getByKey(String key)
@@ -462,17 +462,17 @@ public abstract class LayerSQLBuilderBase extends com.runwaysdk.business.Busines
     return (LayerSQLBuilder) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static LayerSQLBuilder lock(java.lang.String id)
+  public static LayerSQLBuilder lock(java.lang.String oid)
   {
-    LayerSQLBuilder _instance = LayerSQLBuilder.get(id);
+    LayerSQLBuilder _instance = LayerSQLBuilder.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static LayerSQLBuilder unlock(java.lang.String id)
+  public static LayerSQLBuilder unlock(java.lang.String oid)
   {
-    LayerSQLBuilder _instance = LayerSQLBuilder.get(id);
+    LayerSQLBuilder _instance = LayerSQLBuilder.get(oid);
     _instance.unlock();
     
     return _instance;

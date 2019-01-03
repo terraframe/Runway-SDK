@@ -21,10 +21,7 @@ package com.runwaysdk.business;
 import java.lang.reflect.Method;
 
 import org.junit.Assert;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -39,18 +36,14 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.generation.loader.GeneratedLoader;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.session.Request;
 
-public class NoSourceGenTest extends TestCase
+public class NoSourceGenTest
 {
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite(NoSourceGenTest.class.getSimpleName());
-    suite.addTestSuite(NoSourceGenTest.class);
-
-    return suite;
-  }
-
+  @Request
+  @Test
   public void testReferenceNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -67,7 +60,7 @@ public class NoSourceGenTest extends TestCase
         MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceMdBusiness, "testReference");
         mdAttributeReference.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestReference");
         Class<?> returnType = method.getReturnType();
 
@@ -85,6 +78,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testMultiReferenceNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -113,6 +108,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testStructNoSource() throws Exception
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
@@ -129,7 +126,7 @@ public class NoSourceGenTest extends TestCase
         MdAttributeStructDAO mdAttributeStruct = TestFixtureFactory.addStructAttribute(mdBusiness, mdStruct, "testStruct");
         mdAttributeStruct.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestStruct");
         Class<?> returnType = method.getReturnType();
 
@@ -147,6 +144,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testLocalStructNoSource() throws Exception
   {
     MdLocalStructDAO mdStruct = TestFixtureFactory.createMdLocalStruct();
@@ -163,7 +162,7 @@ public class NoSourceGenTest extends TestCase
         MdAttributeLocalCharacterDAO mdAttributeLocalCharacter = TestFixtureFactory.addLocalCharacterAttribute(mdBusiness, mdStruct, "testStruct");
         mdAttributeLocalCharacter.apply();
 
-        Class<?> clazz = LoaderDecorator.load(mdBusiness.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdBusiness.definesType());
         Method method = clazz.getMethod("getTestStruct");
         Class<?> returnType = method.getReturnType();
 
@@ -181,6 +180,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testParentAndChildNoSource() throws Exception
   {
     MdBusinessDAO referenceMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -194,7 +195,7 @@ public class NoSourceGenTest extends TestCase
 
       try
       {
-        Class<?> clazz = LoaderDecorator.load(mdRelationship.definesType());
+        Class<?> clazz = GeneratedLoader.createClassLoader().loadClass(mdRelationship.definesType());
         Class<?> returnParent = clazz.getMethod("getParent").getReturnType();
         Class<?> returnChild = clazz.getMethod("getChild").getReturnType();
 
@@ -212,6 +213,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testRelationshipNoSource() throws Exception
   {
     MdBusinessDAO parentMdBusiness = TestFixtureFactory.createMdBusiness1();
@@ -248,6 +251,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationNoSource() throws Exception
   {
     MdBusinessDAO enumMaster = TestFixtureFactory.createEnumClass1();
@@ -285,6 +290,8 @@ public class NoSourceGenTest extends TestCase
     }
   }
 
+  @Request
+  @Test
   public void testEnumerationAttributeNoSource() throws Exception
   {
     MdBusinessDAO enumMaster = TestFixtureFactory.createEnumClass1();

@@ -144,7 +144,7 @@ public abstract class PopupWidget extends ViewPart implements IComponentListener
     if (component != null)
     {
       text.setText(component.getKey());
-      entity.copyAttributes(EntityObject.get(this.component.getId()));
+      entity.copyAttributes(EntityObject.get(this.component.getOid()));
     }
     else
     {

@@ -24,12 +24,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.UserInfo;
-import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -56,7 +53,7 @@ public class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
   @Override
   public String apply()
   {
-    String id = super.apply();
+    String oid = super.apply();
 
     // update role assignment relationship keys
     List<RelationshipDAOIF> childAssignments = this.assignedRolesRel();
@@ -68,15 +65,15 @@ public class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
     }
     
     
-    return id;
+    return oid;
   }
   
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static SingleActorDAOIF get(String id)
+  public static SingleActorDAOIF get(String oid)
   {
-    return (SingleActorDAOIF) BusinessDAO.get(id);
+    return (SingleActorDAOIF) BusinessDAO.get(oid);
   }
   
   /**
@@ -113,17 +110,17 @@ public class SingleActorDAO extends ActorDAO implements SingleActorDAOIF
   }
 
   /**
-   * Returns true if the actor is assigned to the role with the given id, false otherwise.
+   * Returns true if the actor is assigned to the role with the given oid, false otherwise.
    * 
    * @param roleId
    * 
-   * @return true if the actor is assigned to the role with the given id, false otherwise.
+   * @return true if the actor is assigned to the role with the given oid, false otherwise.
    */
   public boolean hasRole(String roleId)
   {
     for(RoleDAOIF roleIF : this.assignedRoles())
     {
-      if (roleIF.getId().equals(roleId))
+      if (roleIF.getOid().equals(roleId))
       {
         return true;
       }

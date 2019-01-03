@@ -41,25 +41,6 @@ public interface MdAttributeCharacterDAOIF extends MdAttributeCharDAOIF
    * @return total maximum length of this character field.
    */
   public String getSize();
-
-  /**
-   * Precondition: assumes this character attribute is an ID. The collection of
-   * <code>AttributeDAO</code> objects do not have their containing reference updated to
-   * the returned <code>MdAttributeReferenceDAO</code> 
-   */
-  public MdAttributeReferenceDAOIF convertToReference();
-  
-  /**
-   * This is used by the query API to allow for parent ids and child ids of relationships to
-   * be used in queries.
-   * 
-   * Precondition: assumes this character attribute is an ID. The collection of
-   * <code>AttributeDAO</code> objects do not have their containing reference updated to
-   * the returned <code>MdAttributeReferenceDAO</code> 
-   * 
-   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
-   */
-  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF);
   
   /**
    * 

@@ -22,14 +22,13 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 
 public class AttributeWritePermissionException extends PermissionException
 {
   /**
-   * Auto-generated serial id.
+   * Auto-generated serial oid.
    */
   private static final long serialVersionUID = 2360190297631758413L;
 

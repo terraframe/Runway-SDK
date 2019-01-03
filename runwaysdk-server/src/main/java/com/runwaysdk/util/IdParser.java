@@ -26,61 +26,63 @@ public class IdParser
 {
 
   /**
-   * Returns the rootId portion of an id string (rootId-type).
+   * Returns the rootId portion of an oid string (rootId-type).
    * 
    * <br/>Precondition:<br/> parameter contains the delimiter character.
    * 
-   * @param id
-   * @return rootId portion of an id string (rootId-type).
+   * @param oid
+   * @return rootId portion of an oid string (rootId-type).
    */
-  public static String parseRootFromId(String id)
+  public static String parseRootFromId(String oid)
   {
     try
     {
-      return id.substring(0, new Integer(DatabaseInfo.ROOT_ID_SIZE).intValue());
+      return oid.substring(0, new Integer(DatabaseInfo.ROOT_ID_SIZE).intValue());
     }
     catch (StringIndexOutOfBoundsException e)
     {
-      String error = "RootId could not be parsed from the id.  Most likely an id or a type is being set where a rootId is required ["+id+"].";
-      throw new InvalidIdException(error, e, id);
+      String error = "RootId could not be parsed from the oid.  Most likely an oid or a type is being set where a rootId is required ["+oid+"].";
+      throw new InvalidIdException(error, e, oid);
     }
   }
   
   /**
-   * Returns the rootid of the defining type from the id string (rootId-typeRootId).
+   * Returns the rootid of the defining type from the oid string (rootId-typeRootId).
    *
    *
-   * @param id
-   * @return rootid of the defining type from the id string (rootId-typeRootId).
+   * @param oid
+   * @return rootid of the defining type from the oid string (rootId-typeRootId).
    */
-  public static String parseMdTypeRootIdFromId(String id)
+  public static String parseMdTypeRootIdFromId(String oid)
   {
     try
     {
-      return id.substring(new Integer(DatabaseInfo.ROOT_ID_SIZE), id.length());
+      String rootId = oid.substring(30, 36);
+      return rootId;
     }
     catch (StringIndexOutOfBoundsException e)
     {
-      String error = MdTypeInfo.CLASS+" id could not be parsed from the id ["+id+"].";
+      String error = MdTypeInfo.CLASS+" oid could not be parsed from the oid ["+oid+"].";
       
-      throw new InvalidIdException(error, e, id);
+      throw new InvalidIdException(error, e, oid);
     }
   }
   
   /**
-   * Returns a id string built from the id root and the id of the defining class.
+   * Returns a oid string built from the oid root and the oid of the defining class.
    * @param rootId of an object.
-   * @param mdClassId id of the class that defines this obuect.
-   * @return id string built from the id root and the id of the defining class.
+   * @param mdClassId oid of the class that defines this obuect.
+   * @return oid string built from the oid root and the oid of the defining class.
    */
   public static String buildId(String rootId, String mdClassId)
   {
-    return rootId+parseRootFromId(mdClassId);
+//    return rootId+parseRootFromId(mdClassId);
+    return rootId+mdClassId; //parseRootFromId(mdClassId);
   }
 
-  public static boolean validId(String id)
+  public static boolean validId(String oid)
   {
-    return (id != null && id.length() == 64);
+    return (oid != null && oid.length() == 36);
   }
 
 }

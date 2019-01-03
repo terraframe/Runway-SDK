@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.jstest;
 
-public class SubClass extends SubClassBase implements com.runwaysdk.generation.loader.Reloadable
+public class SubClass extends SubClassBase implements com.runwaysdk.generation.loader.
 {
   private static final long serialVersionUID = 496609881;
   

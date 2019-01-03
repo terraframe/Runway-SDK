@@ -125,7 +125,7 @@ public abstract class ElementSystemBase extends com.runwaysdk.business.EntitySys
     }
     else
     {
-      setValue(ENTITYDOMAIN, value.getId());
+      setValue(ENTITYDOMAIN, value.getOid());
     }
   }
   
@@ -237,7 +237,7 @@ public abstract class ElementSystemBase extends com.runwaysdk.business.EntitySys
     }
     else
     {
-      setValue(OWNER, value.getId());
+      setValue(OWNER, value.getOid());
     }
   }
   
@@ -278,9 +278,9 @@ public abstract class ElementSystemBase extends com.runwaysdk.business.EntitySys
     return CLASS;
   }
   
-  public static ElementSystem get(String id)
+  public static ElementSystem get(String oid)
   {
-    return (ElementSystem) com.runwaysdk.business.Business.get(id);
+    return (ElementSystem) com.runwaysdk.business.Business.get(oid);
   }
   
   public static ElementSystem getByKey(String key)
@@ -288,17 +288,17 @@ public abstract class ElementSystemBase extends com.runwaysdk.business.EntitySys
     return (ElementSystem) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static ElementSystem lock(java.lang.String id)
+  public static ElementSystem lock(java.lang.String oid)
   {
-    ElementSystem _instance = ElementSystem.get(id);
+    ElementSystem _instance = ElementSystem.get(oid);
     _instance.lock();
     
     return _instance;
   }
   
-  public static ElementSystem unlock(java.lang.String id)
+  public static ElementSystem unlock(java.lang.String oid)
   {
-    ElementSystem _instance = ElementSystem.get(id);
+    ElementSystem _instance = ElementSystem.get(oid);
     _instance.unlock();
     
     return _instance;

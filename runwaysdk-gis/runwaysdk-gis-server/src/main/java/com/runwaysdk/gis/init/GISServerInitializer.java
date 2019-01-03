@@ -18,25 +18,17 @@
  */
 package com.runwaysdk.gis.init;
 
-import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.business.generation.AbstractClientGenerator;
 import com.runwaysdk.business.generation.AbstractServerGenerator;
 import com.runwaysdk.business.generation.GISAbstractClientGenerator;
 import com.runwaysdk.business.generation.GISAbstractServerGenerator;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
-import com.runwaysdk.dataaccess.io.FileStreamSource;
-import com.runwaysdk.dataaccess.io.ResourceStreamSource;
-import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportVisitor;
-import com.runwaysdk.dataaccess.io.dataDefinition.GISImportPlugin;
 import com.runwaysdk.dataaccess.io.dataDefinition.GISExportVisitor;
-import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.GISImportPlugin;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser;
 import com.runwaysdk.dataaccess.io.dataDefinition.XMLTags;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
@@ -46,7 +38,6 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
 import com.runwaysdk.gis.constants.MdWebPointInfo;
-import com.runwaysdk.gis.constants.RunwayGisProperties;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;

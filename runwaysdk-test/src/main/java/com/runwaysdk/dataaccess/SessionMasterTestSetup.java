@@ -18,10 +18,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestResult;
-
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -48,14 +44,8 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
  * @version $Revision 1.0 $
  * @since
  */
-public class SessionMasterTestSetup extends TestSetup
+public class SessionMasterTestSetup
 {
-  @Override
-  public void run(TestResult testResult)
-  {
-    super.run(testResult);
-  }
-
   public static final String     JUNIT_PACKAGE        = EntityMasterTestSetup.JUNIT_PACKAGE;
 
   public static final TypeInfo   PARENT_SESSION_CLASS = new TypeInfo(JUNIT_PACKAGE, "ParentSession");
@@ -93,9 +83,8 @@ public class SessionMasterTestSetup extends TestSetup
    * @param activeType
    *          Specifies the session type that the attributes will be defined on.
    */
-  public SessionMasterTestSetup(Test suite, TypeInfo activeType)
+  public SessionMasterTestSetup(TypeInfo activeType)
   {
-    super(suite);
     this.activeType = activeType;
   }
 
@@ -106,7 +95,7 @@ public class SessionMasterTestSetup extends TestSetup
    * then be used to run tests on.
    */
   @Transaction
-  protected void setUp() throws Exception
+  public void setUp()
   {
     try
     {
@@ -129,7 +118,7 @@ public class SessionMasterTestSetup extends TestSetup
       childMdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "First ever defined view.");
       childMdView.setValue(MdViewInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       childMdView.setValue(MdViewInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      childMdView.setValue(MdViewInfo.SUPER_MD_VIEW, parentMdView.getId());
+      childMdView.setValue(MdViewInfo.SUPER_MD_VIEW, parentMdView.getOid());
       childMdView.setValue(MdViewInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       childMdView.apply();
 
@@ -182,7 +171,7 @@ public class SessionMasterTestSetup extends TestSetup
    * transitively deletes all of the attributes as well.
    */
   @Transaction
-  protected void tearDown()
+  public void tearDown()
   {
     try
     {

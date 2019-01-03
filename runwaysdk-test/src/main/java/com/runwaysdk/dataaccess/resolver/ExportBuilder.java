@@ -21,6 +21,8 @@ package com.runwaysdk.dataaccess.resolver;
 import java.io.File;
 import java.util.LinkedList;
 
+import org.junit.Before;
+
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ImportLogInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -37,6 +39,7 @@ import com.runwaysdk.dataaccess.transaction.TransactionExportManager;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Request;
 
 public abstract class ExportBuilder<E>
 {
@@ -52,7 +55,7 @@ public abstract class ExportBuilder<E>
 
     ServerProperties.setLogTransactions(false);
 
-    setup();
+    this.setUp();
 
     ServerProperties.setLogTransactions(true);
 
@@ -93,7 +96,9 @@ public abstract class ExportBuilder<E>
 
   }
 
-  protected void setup()
+  @Request
+  @Before
+  public void setUp()
   {
 
   }

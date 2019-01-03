@@ -38,6 +38,7 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -46,10 +47,10 @@ import com.runwaysdk.dataaccess.EnumerationAttributeItem;
 import com.runwaysdk.dataaccess.GraphDAO;
 import com.runwaysdk.dataaccess.IndexAttributeDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTreeDAOIF;
 import com.runwaysdk.dataaccess.MetadataRelationshipDAO;
@@ -57,7 +58,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipRecursionException;
 import com.runwaysdk.dataaccess.TermRelationshipDAO;
-import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TreeDAO;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -106,7 +106,6 @@ public class RelationshipDAOFactory
     metaDataRelationshipSet.add(RelationshipTypes.METADATA_RELATIONSHIP.getType());
     metaDataRelationshipSet.add(RelationshipTypes.PROBLEM_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.RELATIONSHIP_INHERITANCE.getType());
-    metaDataRelationshipSet.add(RelationshipTypes.TRANSITION_RELATIONSHIP.getType());
     metaDataRelationshipSet.add(RelationshipTypes.TYPE_PERMISSION.getType());
     metaDataRelationshipSet.add(RelationshipTypes.UTIL_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.VIEW_INHERITANCE.getType());
@@ -128,7 +127,7 @@ public class RelationshipDAOFactory
 
   /**
    * Returns an array of Relationship objects that represent child relationships
-   * (of the given relationship type) of the BusinessDAO with the given id. If
+   * (of the given relationship type) of the BusinessDAO with the given oid. If
    * <code>relationshipType</code> is an empty String, then Relationship objects
    * of all types will be returned.
    * 
@@ -138,20 +137,20 @@ public class RelationshipDAOFactory
    * <b>Precondition:</b> mdRelationshipId != null <br/>
    * <b>Postcondition:</b> Returns a LinkedList of Relationship objects that
    * represent child relationships (of the given relationship type) of the
-   * BusinessDAO with the given id.
+   * BusinessDAO with the given oid.
    * 
    * @param businessDAOid
-   *          id of the BusinessDAO
+   *          oid of the BusinessDAO
    * @param relationshipType
    *          Type of the relationship
    * @return An array of Relationship objects that represent child relationships
    *         (of the given relationship type) of the BusinessDAO with the given
-   *         id.
+   *         oid.
    */
   public static List<RelationshipDAOIF> getChildren(String businessDAOid, String relationshipType)
   {
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(relationshipType);
-    relationshipQuery.WHERE(relationshipQuery.parentId().EQ(businessDAOid));
+    relationshipQuery.WHERE(relationshipQuery.parentOid().EQ(businessDAOid));
 
     MdAttributeConcreteDAOIF sortMdAttribute = MdRelationshipDAO.getMdRelationshipDAO(relationshipType).getSortMdAttribute();
 
@@ -166,7 +165,7 @@ public class RelationshipDAOFactory
   /**
    * Returns an array of Relationship objects that represent parent
    * relationships (of the given relationship type) of the BusinessDAO with the
-   * given id. If <code>reationshipNameId</code> is an empty String, then
+   * given oid. If <code>reationshipNameId</code> is an empty String, then
    * Relationship objects of all types will be returned.
    * 
    * <br/>
@@ -175,20 +174,20 @@ public class RelationshipDAOFactory
    * <b>Precondition:</b> relationshipType != null <br/>
    * <b>Postcondition:</b> Returns a LinkedList of Relationship objects that
    * represent parent relationships (of the given relationship type) of the
-   * BusinessDAO with the given id.
+   * BusinessDAO with the given oid.
    * 
    * @param businessDAOid
-   *          ID of the BusinessDAO
+   *          OID of the BusinessDAO
    * @param relationshipType
    *          Type of the relationship
    * @return an array of Relationship objects that represent parent
    *         relationships (of the given relationship type) with the BusinessDAO
-   *         with the given id
+   *         with the given oid
    */
   public static List<RelationshipDAOIF> getParents(String businessDAOid, String relationshipType)
   {
     RelationshipDAOQuery relationshipQuery = new QueryFactory().relationshipDAOQuery(relationshipType);
-    relationshipQuery.WHERE(relationshipQuery.childId().EQ(businessDAOid));
+    relationshipQuery.WHERE(relationshipQuery.childOid().EQ(businessDAOid));
 
     MdAttributeConcreteDAOIF sortMdAttribute = MdRelationshipDAO.getMdRelationshipDAO(relationshipType).getSortMdAttribute();
 
@@ -231,47 +230,47 @@ public class RelationshipDAOFactory
    * create a recursive relationship.
    * 
    * <br/>
-   * <b>Precondition:</b> parentId != null <br/>
-   * <b>Precondition:</b> !parentId.trim().equals("") <br/>
-   * <b>Precondition:</b> parentId represents a valid BusinessDAO in the
+   * <b>Precondition:</b> parentOid != null <br/>
+   * <b>Precondition:</b> !parentOid.trim().equals("") <br/>
+   * <b>Precondition:</b> parentOid represents a valid BusinessDAO in the
    * database
    * 
    * <br/>
-   * <b>Precondition:</b> childId != null <br/>
-   * <b>Precondition:</b> !childId().equals("") <br/>
-   * <b>Precondition:</b> childId represents a valid BusinessDAO in the database
+   * <b>Precondition:</b> childOid != null <br/>
+   * <b>Precondition:</b> !childOid().equals("") <br/>
+   * <b>Precondition:</b> childOid represents a valid BusinessDAO in the database
    * 
-   * @param parentId
-   *          id of the parent BusinessDAO
-   * @param childId
-   *          id of the child BusinessDAO
+   * @param parentOid
+   *          oid of the parent BusinessDAO
+   * @param childOid
+   *          oid of the child BusinessDAO
    * @param relationshipType
-   *          id of the metadata BusinessDAO that defines this relationship type
+   *          oid of the metadata BusinessDAO that defines this relationship type
    * @throws DataAccessException
    *           if adding the given child to the given parent will create a
    *           recursive relationship.
    */
-  public static void recursiveLinkCheck(String parentId, String childId, String relationshipType)
+  public static void recursiveLinkCheck(String parentOid, String childOid, String relationshipType)
   {
     Stack<String> idStack = new Stack<String>();
-    idStack.push(childId);
+    idStack.push(childOid);
 
     while (!idStack.isEmpty())
     {
-      String childIdOnStack = idStack.pop();
+      String childOidOnStack = idStack.pop();
 
-      for (RelationshipDAOIF relationship : ObjectCache.getChildren(childIdOnStack, relationshipType))
+      for (RelationshipDAOIF relationship : ObjectCache.getChildren(childOidOnStack, relationshipType))
       {
-        if (relationship.getChildId().equals(parentId))
+        if (relationship.getChildOid().equals(parentOid))
         {
           MdRelationshipDAOIF mdRelationship = (MdRelationshipDAOIF) MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
-          String error = "Relationship [" + mdRelationship.definesType() + "] cannot be created.  The child object [" + relationship.getChildId() + "] already has the parent [" + parentId + "] as a child.  " + "This would cause an infinite recursive relationship.";
-          throw new RelationshipRecursionException(error, mdRelationship, parentId, childId);
+          String error = "Relationship [" + mdRelationship.definesType() + "] cannot be created.  The child object [" + relationship.getChildOid() + "] already has the parent [" + parentOid + "] as a child.  " + "This would cause an infinite recursive relationship.";
+          throw new RelationshipRecursionException(error, mdRelationship, parentOid, childOid);
         }
         else
         {
-          idStack.push(relationship.getChildId());
+          idStack.push(relationship.getChildOid());
         }
       }
     }
@@ -280,12 +279,12 @@ public class RelationshipDAOFactory
   /**
    * Returns a new Relationship instance object.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return new Relationship instance object.
    */
-  public static RelationshipDAO newInstance(String parentId, String childId, String relationshipType)
+  public static RelationshipDAO newInstance(String parentOid, String childOid, String relationshipType)
   {
     // get the meta data for the given class
     MdEntityDAOIF mdEntityIF = MdEntityDAO.getMdEntityDAO(relationshipType);
@@ -313,7 +312,7 @@ public class RelationshipDAOFactory
       attributeMap.putAll(EntityDAOFactory.createRecordsForEntity(superMdRelationshipIF));
     }
 
-    RelationshipDAO newRelationshipObject = factoryMethod(parentId, childId, attributeMap, mdRelationship.definesType(), true);
+    RelationshipDAO newRelationshipObject = factoryMethod(parentOid, childOid, attributeMap, mdRelationship.definesType(), true);
 
     newRelationshipObject.setIsNew(true);
     newRelationshipObject.setAppliedToDB(false);
@@ -322,25 +321,25 @@ public class RelationshipDAOFactory
 
     // This used to be in EntityDAO.save(), but has been moved here to help with
     // distributed issues
-    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getId());
-    newRelationshipObject.getAttribute(EntityInfo.ID).setValue(newId);
+    String newId = IdParser.buildId(ServerIDGenerator.nextID(), mdEntityIF.getRootId());
+    newRelationshipObject.getAttribute(EntityInfo.OID).setValue(newId);
 
     return newRelationshipObject;
   }
 
   /**
-   * Returns the relationship object with the given id.
+   * Returns the relationship object with the given oid.
    * 
-   * @param id
-   *          of the relationship id.
-   * @return relationship object with the given id.
+   * @param oid
+   *          of the relationship oid.
+   * @return relationship object with the given oid.
    */
-  public static RelationshipDAOIF get(String id)
+  public static RelationshipDAOIF get(String oid)
   {
-    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(id);
+    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(oid);
     List<RelationshipDAOIF> relationshipList = queryRelationshipObjects(relationshipQuery);
 
-    // If the Relationship list is null, then a Relationship with the given ID
+    // If the Relationship list is null, then a Relationship with the given OID
     // does not exist.
     if (relationshipList.size() == 0)
     {
@@ -430,7 +429,7 @@ public class RelationshipDAOFactory
     ResultSet results = Database.query(sqlStmt);
 
     // ThreadRefactor: get rid of this map.
-    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    // Key: OID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdTableClassIF> definedByMdTableClassMap = new HashMap<String, MdTableClassIF>();
     // This is map improves performance.
     // Key: type Values: List of MdAttributeIF objects that an instance of the
@@ -496,7 +495,7 @@ public class RelationshipDAOFactory
    * @param columnInfoMap
    *          contains information about attributes used in the query
    * @param definedByMdTableClassMap
-   *          sort of a hack. It is a map where the key is the id of an
+   *          sort of a hack. It is a map where the key is the oid of an
    *          MdAttribute and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
@@ -510,19 +509,19 @@ public class RelationshipDAOFactory
     // Get the attributes
     Map<String, Attribute> attributeMap = EntityDAOFactory.getAttributesFromQuery(columnInfoMap, definedByMdTableClassMap, MdAttributeIFList, results);
 
-    String parentAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.PARENT_ID;
-    String childAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.CHILD_ID;
+    String parentAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.PARENT_OID;
+    String childAttributeQualifiedName = relationshipQuery.getMdEntityIF().definesType() + "." + RelationshipInfo.CHILD_OID;
 
-    ColumnInfo parentIdColumnInfo = columnInfoMap.get(parentAttributeQualifiedName);
-    ColumnInfo childIdColumnInfo = columnInfoMap.get(childAttributeQualifiedName);
+    ColumnInfo parentOidColumnInfo = columnInfoMap.get(parentAttributeQualifiedName);
+    ColumnInfo childOidColumnInfo = columnInfoMap.get(childAttributeQualifiedName);
 
-    String parentColumnAlias = parentIdColumnInfo.getColumnAlias();
-    String parentIdValue = (String) AttributeFactory.getColumnValueFromRow(results, parentColumnAlias, MdAttributeCharacterInfo.CLASS, false);
+    String parentColumnAlias = parentOidColumnInfo.getColumnAlias();
+    String parentOidValue = (String) AttributeFactory.getColumnValueFromRow(results, parentColumnAlias, MdAttributeUUIDInfo.CLASS, false);
 
-    String childColumnAlias = childIdColumnInfo.getColumnAlias();
-    String childIdValue = (String) AttributeFactory.getColumnValueFromRow(results, childColumnAlias, MdAttributeCharacterInfo.CLASS, false);
+    String childColumnAlias = childOidColumnInfo.getColumnAlias();
+    String childOidValue = (String) AttributeFactory.getColumnValueFromRow(results, childColumnAlias, MdAttributeUUIDInfo.CLASS, false);
 
-    RelationshipDAO relationshipDAO = factoryMethod(parentIdValue, childIdValue, attributeMap, type, true);
+    RelationshipDAO relationshipDAO = factoryMethod(parentOidValue, childOidValue, attributeMap, type, true);
     return relationshipDAO;
   }
 
@@ -533,14 +532,14 @@ public class RelationshipDAOFactory
    * 
    * <b>Precondition:</b>Assumes that the given relationship type is concrete.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param relationshipType
    * @return list of relationship objects of the given type with the given
    *         parent and child ids. Throws an exception if the relationship does
    *         not exist.
    */
-  public static List<RelationshipDAOIF> get(String parentId, String childId, String relationshipType)
+  public static List<RelationshipDAOIF> get(String parentOid, String childOid, String relationshipType)
   {
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
 
@@ -550,7 +549,7 @@ public class RelationshipDAOFactory
       throw new AbstractInstantiationException(error, mdRelationshipIF);
     }
 
-    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(parentId, childId, relationshipType);
+    RelationshipDAOQuery relationshipQuery = RelationshipDAOQuery.getRelationshipInstance(parentOid, childOid, relationshipType);
 
     return queryRelationshipObjects(relationshipQuery);
   }
@@ -558,43 +557,43 @@ public class RelationshipDAOFactory
   /**
    * This is called when the core boots up.
    * 
-   * @param id
-   * @param parentId
-   * @param childId
+   * @param oid
+   * @param parentOid
+   * @param childOid
    * @param attributeMap
    * @param relationshipType
    * @return
    */
-  public static RelationshipDAO get(String id, String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType)
+  public static RelationshipDAO get(String oid, String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType)
   {
-    return factoryMethod(parentId, childId, attributeMap, relationshipType, false);
+    return factoryMethod(parentOid, childOid, attributeMap, relationshipType, false);
   }
 
   /**
    * Instantiates a relationship object using the given attributes.
    * 
-   * @param parentId
-   * @param childId
+   * @param parentOid
+   * @param childOid
    * @param attributeMap
    * @param relationshipType
    * @param useCache
    *          true if the cache has been instantiated, false otherwise.
    * @return
    */
-  public static RelationshipDAO factoryMethod(String parentId, String childId, Map<String, Attribute> attributeMap, String relationshipType, boolean useCache)
+  public static RelationshipDAO factoryMethod(String parentOid, String childOid, Map<String, Attribute> attributeMap, String relationshipType, boolean useCache)
   {
     if (relationshipType.equals(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType()))
     {
-      return new EnumerationAttributeItem(parentId, childId, attributeMap, relationshipType);
+      return new EnumerationAttributeItem(parentOid, childOid, attributeMap, relationshipType);
     }
     else if (relationshipType.equals(IndexAttributeInfo.CLASS))
     {
-      return new IndexAttributeDAO(parentId, childId, attributeMap, relationshipType);
+      return new IndexAttributeDAO(parentOid, childOid, attributeMap, relationshipType);
     }
 
     if (metaDataRelationshipSet.contains(relationshipType))
     {
-      return new MetadataRelationshipDAO(parentId, childId, attributeMap, relationshipType);
+      return new MetadataRelationshipDAO(parentOid, childOid, attributeMap, relationshipType);
     }
 
     // Metadata always uses tree relationships.
@@ -606,31 +605,26 @@ public class RelationshipDAOFactory
 
       if (mdRelationshipIF instanceof MdTermRelationshipDAOIF)
       {
-        return new TermRelationshipDAO(parentId, childId, attributeMap, relationshipType);
+        return new TermRelationshipDAO(parentOid, childOid, attributeMap, relationshipType);
       }
       else if (mdRelationshipIF instanceof MdTreeDAOIF)
       {
-        return new TreeDAO(parentId, childId, attributeMap, relationshipType);
+        return new TreeDAO(parentOid, childOid, attributeMap, relationshipType);
       }
       else if (mdRelationshipIF instanceof MdGraphDAOIF)
       {
         MdRelationshipDAOIF superMdRelationshipIF = mdRelationshipIF.getSuperClass();
 
-        if (superMdRelationshipIF != null && superMdRelationshipIF.definesType().equals(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()))
-        {
-          return new TransitionDAO(parentId, childId, attributeMap, relationshipType);
-        }
-
-        return new GraphDAO(parentId, childId, attributeMap, relationshipType);
+        return new GraphDAO(parentOid, childOid, attributeMap, relationshipType);
       }
       else
       {
-        return new RelationshipDAO(parentId, childId, attributeMap, relationshipType);
+        return new RelationshipDAO(parentOid, childOid, attributeMap, relationshipType);
       }
     }
     else
     {
-      return new TreeDAO(parentId, childId, attributeMap, relationshipType);
+      return new TreeDAO(parentOid, childOid, attributeMap, relationshipType);
     }
   }
 }

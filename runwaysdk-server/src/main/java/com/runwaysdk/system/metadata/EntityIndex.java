@@ -22,14 +22,14 @@ public class EntityIndex extends EntityIndexBase
 {
   private static final long serialVersionUID = 1229405888129L;
   
-  public EntityIndex(String parentId, String childId)
+  public EntityIndex(String parentOid, String childOid)
   {
-    super(parentId, childId);
+    super(parentOid, childOid);
   }
   
   public EntityIndex(com.runwaysdk.system.metadata.MdEntity parent, com.runwaysdk.system.metadata.MdIndex child)
   {
-    this(parent.getId(), child.getId());
+    this(parent.getOid(), child.getOid());
   }
   
 }

@@ -121,9 +121,9 @@ public abstract class MdElementDTOBase extends com.runwaysdk.system.metadata.MdE
     return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ISABSTRACT).getAttributeMdDTO();
   }
   
-  public static com.runwaysdk.system.metadata.MdElementDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)
+  public static com.runwaysdk.system.metadata.MdElementDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(id);
+    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
     
     return (com.runwaysdk.system.metadata.MdElementDTO) dto;
   }
@@ -141,7 +141,7 @@ public abstract class MdElementDTOBase extends com.runwaysdk.system.metadata.MdE
   }
   public void delete()
   {
-    getRequest().delete(this.getId());
+    getRequest().delete(this.getOid());
   }
   
   public static com.runwaysdk.system.metadata.MdElementQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
@@ -154,10 +154,10 @@ public abstract class MdElementDTOBase extends com.runwaysdk.system.metadata.MdE
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdElementDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdElementDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdElementDTO.CLASS, "lock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdElementDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -167,10 +167,10 @@ public abstract class MdElementDTOBase extends com.runwaysdk.system.metadata.MdE
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.metadata.MdElementDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static com.runwaysdk.system.metadata.MdElementDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{id};
+    Object[] _parameters = new Object[]{oid};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.MdElementDTO.CLASS, "unlock", _declaredTypes);
     return (com.runwaysdk.system.metadata.MdElementDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }

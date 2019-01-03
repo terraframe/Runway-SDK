@@ -234,13 +234,13 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebDate mdWebDate)
     {
       if(mdWebDate == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdWebDate.getId());
+      return this.EQ(mdWebDate.getOid());
     }
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdWebDate mdWebDate)
     {
       if(mdWebDate == null) return this.NE((java.lang.String)null);
-      return this.NE(mdWebDate.getId());
+      return this.NE(mdWebDate.getOid());
     }
 
   public com.runwaysdk.query.SelectableBoolean getAfterTodayExclusive()
@@ -403,7 +403,7 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
 
       for (int i=0; i<mdWebDate.length; i++)
       {
-        itemIdArray[i] = mdWebDate[i].getId();
+        itemIdArray[i] = mdWebDate[i].getOid();
       }
 
       return this.containsAny(itemIdArray);
@@ -415,7 +415,7 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
 
       for (int i=0; i<mdWebDate.length; i++)
       {
-        itemIdArray[i] = mdWebDate[i].getId();
+        itemIdArray[i] = mdWebDate[i].getOid();
       }
 
       return this.notContainsAny(itemIdArray);
@@ -427,7 +427,7 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
 
       for (int i=0; i<mdWebDate.length; i++)
       {
-        itemIdArray[i] = mdWebDate[i].getId();
+        itemIdArray[i] = mdWebDate[i].getOid();
       }
 
       return this.containsAll(itemIdArray);
@@ -439,7 +439,7 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
 
       for (int i=0; i<mdWebDate.length; i++)
       {
-        itemIdArray[i] = mdWebDate[i].getId();
+        itemIdArray[i] = mdWebDate[i].getOid();
       }
 
       return this.notContainsAll(itemIdArray);
@@ -451,7 +451,7 @@ public  class MdWebDateQuery extends com.runwaysdk.system.metadata.MdWebMomentQu
 
       for (int i=0; i<mdWebDate.length; i++)
       {
-        itemIdArray[i] = mdWebDate[i].getId();
+        itemIdArray[i] = mdWebDate[i].getOid();
       }
 
       return this.containsExactly(itemIdArray);

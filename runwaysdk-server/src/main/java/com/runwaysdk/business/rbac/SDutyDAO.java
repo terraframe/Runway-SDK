@@ -125,7 +125,7 @@ public class SDutyDAO extends BusinessDAO implements SDutyDAOIF, SpecializedDAOI
     }
     else
     {
-      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(role.getId(), this.getId(), SDCONFLICTINGROLES);
+      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(role.getOid(), this.getOid(), SDCONFLICTINGROLES);
       relationshipDAO.apply();
     }
   } 
@@ -135,11 +135,11 @@ public class SDutyDAO extends BusinessDAO implements SDutyDAOIF, SpecializedDAOI
    * Removes an existing role from an existing SSD set
    * @pre: role != null
    *  
-   * @param roleId The id of the role
+   * @param roleId The oid of the role
    */
   public void deleteSSDRoleMember(RoleDAO role)
   {
-    RelationshipDAO relationshipDAO = RelationshipDAO.get(role.getId(), this.getId(), SDCONFLICTINGROLES).get(0).getRelationshipDAO();
+    RelationshipDAO relationshipDAO = RelationshipDAO.get(role.getOid(), this.getOid(), SDCONFLICTINGROLES).get(0).getRelationshipDAO();
     
     relationshipDAO.delete();    
   }
@@ -299,9 +299,9 @@ public class SDutyDAO extends BusinessDAO implements SDutyDAOIF, SpecializedDAOI
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
    */
-  public static SDutyDAOIF get(String id)
+  public static SDutyDAOIF get(String oid)
   {
-    return (SDutyDAOIF) BusinessDAO.get(id);
+    return (SDutyDAOIF) BusinessDAO.get(oid);
   }
 
 }

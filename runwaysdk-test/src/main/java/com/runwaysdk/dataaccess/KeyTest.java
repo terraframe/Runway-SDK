@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.dataaccess;
 
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexTypes;
@@ -30,56 +30,42 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.session.Request;
 
-public class KeyTest extends TestCase
+public class KeyTest
 {
-  private static MdBusinessDAO  mdBusiness;
+  private static MdBusinessDAO mdBusiness;
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(KeyTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-
-    };
-
-    return wrapper;
-  }
-
-  protected static void classSetUp()
+  @Request
+  @BeforeClass
+  public static void classSetUp()
   {
     mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.setGenerateMdController(false);
     mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.apply();
   }
 
-  protected static void classTearDown()
+  @Request
+  @AfterClass
+  public static void classTearDown()
   {
     TestFixtureFactory.delete(mdBusiness);
   }
 
+  @Request
+  @Test
   public void testIndex()
   {
     MdAttributeConcreteDAOIF mdAttribute = mdBusiness.definesAttribute(EntityInfo.KEY);
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) mdAttribute.getAttributeIF(MdAttributeEnumerationInfo.INDEX_TYPE);
     EnumerationItemDAOIF[] dereference = attribute.dereference();
 
-    assertEquals(1, dereference.length);
-    assertEquals(IndexTypes.UNIQUE_INDEX.getId(), dereference[0].getId());
+    Assert.assertEquals(1, dereference.length);
+    Assert.assertEquals(IndexTypes.UNIQUE_INDEX.getOid(), dereference[0].getOid());
   }
 
+  @Request
+  @Test
   public void testDuplicateKey()
   {
     String key = "test_key";
@@ -88,9 +74,9 @@ public class KeyTest extends TestCase
     business1.setKey(key);
     business1.apply();
 
-    BusinessDAOIF business1IF = BusinessDAO.get(business1.getId());
+    BusinessDAOIF business1IF = BusinessDAO.get(business1.getOid());
 
-    assertEquals(key, business1IF.getKey());
+    Assert.assertEquals(key, business1IF.getKey());
 
     try
     {
@@ -98,11 +84,11 @@ public class KeyTest extends TestCase
       business2.setKey(key);
       business2.apply();
 
-      fail("Failed to throw duplicate database exception when keys are the same");
+      Assert.fail("Failed to throw duplicate database exception when keys are the same");
     }
-    catch(DuplicateDataException e)
+    catch (DuplicateDataException e)
     {
-      //This is expected
+      // This is expected
     }
   }
 }
