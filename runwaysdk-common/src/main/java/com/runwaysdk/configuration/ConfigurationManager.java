@@ -143,7 +143,8 @@ public class ConfigurationManager
         throw new RunwayConfigurationException(msg);
       }
 
-      configResolver = new CommonsConfigurationResolver();
+      // Hardcoded default configuration resolver if none is specified
+      configResolver = new EnvironmentConfigurationResolver();
     }
   }
 

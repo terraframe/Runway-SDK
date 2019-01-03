@@ -59,35 +59,6 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     {
       cconfig.addConfiguration(this.getRuntimeProperties());
     }
-
-    this.loadProperties("instance.properties");
-    this.loadProperties("platform.properties");
-  }
-
-  private void loadProperties(String fileName)
-  {
-    try
-    {
-      String path = ConfigGroup.COMMON.getPath() + fileName;
-
-      // Read the configuration
-      URL url = CommonsConfigurationReader.class.getClassLoader().getResource(path);
-
-      if (url != null)
-      {
-        cconfig.addConfiguration(new PropertiesConfiguration(url));
-
-        log.trace("Loading [" + fileName + "] configuration overrides.");
-      }
-      else
-      {
-        log.info("Did not find " + fileName + ". No overrides were loaded.");
-      }
-    }
-    catch (ConfigurationException e)
-    {
-      log.error(e.getLocalizedMessage(), e);
-    }
   }
 
   /**
@@ -145,7 +116,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   /*
    * Calculate any special properties that only have values at runtime.
    */
-  private BaseConfiguration getRuntimeProperties()
+  protected BaseConfiguration getRuntimeProperties()
   {
     BaseConfiguration properties = new BaseConfiguration();
 

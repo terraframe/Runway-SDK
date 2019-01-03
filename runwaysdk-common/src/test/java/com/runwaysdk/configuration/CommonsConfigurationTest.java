@@ -130,10 +130,4 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   // Assert.assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
   // Assert.assertEquals("overridden/testValue3", timeZone);
   // }
-
-  @Test
-  public void testPlatformOverride()
-  {
-    Assert.assertEquals(new Integer(1201), (Integer) CommonProperties.getSessionTime());
-  }
 }
