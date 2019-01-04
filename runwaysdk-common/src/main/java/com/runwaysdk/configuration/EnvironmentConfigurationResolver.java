@@ -27,7 +27,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
  * 
  * The hierarchy of configuration is as follows: envcfg -> appcfg -> properties file
  * 
- * The environment configuration is used to resolve the application's runtime configuration set (appcfg).
+ * The environment configuration (envcfg) is used to resolve the application's runtime configuration set (appcfg).
  * 
  * All of these resources are specified external to the deployable artifact and as such not resolvable directly from the classpath.
  * 
@@ -45,6 +45,8 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
   private PropertiesConfiguration pEnvCfg;
   
   private Boolean isInitialized = false;
+  
+  public static final String DEFAULT_APP_CFG = "dev";
 
   public EnvironmentConfigurationResolver()
   {
@@ -117,28 +119,28 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
     }
     
     File fEnvCfgProps = new File(envCfg, "envcfg.properties");
-    if (!fEnvCfgProps.exists())
-    {
-      return;
-    }
     
     try
     {
-      this.pEnvCfg = new PropertiesConfiguration(fEnvCfgProps);
+      String sAppCfg = DEFAULT_APP_CFG;
+      if (fEnvCfgProps.exists())
+      {
+        this.pEnvCfg = new PropertiesConfiguration(fEnvCfgProps);
+        
+        String sPropAppCfg = pEnvCfg.getString("appcfg");
+        if (sPropAppCfg != null && sPropAppCfg.length() > 0)
+        {
+          sAppCfg = sPropAppCfg;
+        }
+      }
       
-      String sEnvironment = pEnvCfg.getString("appcfg");
-      if (sEnvironment == null || sEnvironment.length() == 0)
+      File fAppCfg = new File(envCfg, sAppCfg);
+      if (!fAppCfg.exists() || !fAppCfg.isDirectory())
       {
         return;
       }
       
-      File fEnvironment = new File(envCfg, sEnvironment);
-      if (!fEnvironment.exists() || !fEnvironment.isDirectory())
-      {
-        return;
-      }
-      
-      this.appCfg = fEnvironment;
+      this.appCfg = fAppCfg;
     }
     catch (ConfigurationException e)
     {
