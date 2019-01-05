@@ -135,16 +135,16 @@ public class ConfigurationManager
     }
     else
     {
-      URL runwayProps = ConfigurationManager.class.getClassLoader().getResource("runwaysdk");
-
-      if (runwayProps == null)
-      {
-        String msg = "Runway SDK configuration files are missing. Runway expects at the classpath root either 1) A configuration directory called runwaysdk or 2) A master.properties file with associated profile directories or 3) A flattened profile with terraframe.properties.";
-        throw new RunwayConfigurationException(msg);
-      }
-
       // Hardcoded default configuration resolver if none is specified
       configResolver = new EnvironmentConfigurationResolver();
+
+      URL serverProps = configResolver.getResource(ConfigGroup.SERVER, "server.properties");
+      
+      if (serverProps == null)
+      {
+        String msg = "Runway SDK configuration files are missing. Runway expects at the classpath root either 1) An envcfg or appcfg java system variable pointing to a valid configuration set or 2) A configuration directory called runwaysdk or 3) A master.properties file with associated profile directories or 4) A flattened profile with terraframe.properties.";
+        throw new RunwayConfigurationException(msg);
+      }
     }
   }
 
