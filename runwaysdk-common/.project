@@ -33,26 +33,4 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>base</name>
-			<type>2</type>
-			<location>/Users/nathan/git/Runway-SDK/runwaysdk-test/src/main/java-gen/server/base</location>
-		</link>
-		<link>
-			<name>base1</name>
-			<type>2</type>
-			<location>/Users/nathan/git/Runway-SDK/runwaysdk-test/src/main/java-gen/client/base</location>
-		</link>
-		<link>
-			<name>stub</name>
-			<type>2</type>
-			<location>/Users/nathan/git/Runway-SDK/runwaysdk-test/src/main/java-gen/server/stub</location>
-		</link>
-		<link>
-			<name>stub1</name>
-			<type>2</type>
-			<location>/Users/nathan/git/Runway-SDK/runwaysdk-test/src/main/java-gen/client/stub</location>
-		</link>
-	</linkedResources>
 </projectDescription>
