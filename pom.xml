@@ -33,6 +33,7 @@
     <module>runwaysdk-common</module>
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
+    <module>runwaysdk-localization</module>
     <module>runwaysdk-test</module>
     <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>

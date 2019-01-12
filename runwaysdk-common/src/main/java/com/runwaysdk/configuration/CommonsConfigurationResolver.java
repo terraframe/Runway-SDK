@@ -23,12 +23,9 @@ import java.net.URL;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
@@ -149,15 +146,15 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   public URL getResource(ConfigGroupIF configGroup, String name)
   {
     String location = "classpath:" + configGroup.getPath() + name;
-    URL resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+    URL url = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name); // TODO : Support supplied classloaders?
 
-    if (resource == null)
+    if (url == null)
     {
       String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getOidentifier() + "] at location [" + location + "] with configResolver [" + this.toString() + "].";
       throw new RunwayConfigurationException(msg);
     }
 
-    return resource;
+    return url;
   }
 
   @Override
