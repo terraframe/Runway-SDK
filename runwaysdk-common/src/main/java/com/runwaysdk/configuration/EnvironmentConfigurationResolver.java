@@ -27,17 +27,17 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
-import java.nio.file.Path;
-import java.util.Properties;
+import java.util.Collection;
 
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 /**
@@ -92,7 +92,30 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
     
     if (appCfg == null)
     {
-      logger.error("The application's configuration directory (appcfg) has not been resolved! Using default Java resource loader strategy.");
+      File searchCfg = searchParentsForCfg();
+      
+      if (searchCfg != null && searchCfg.exists())
+      {
+        if (searchCfg.getName().equals("envcfg"))
+        {
+          this.setEnvCfg(searchCfg);
+          logger.warn("Found environment configuration directory [" + searchCfg.getAbsolutePath() + "] by searching the filesystem. This may not be the correct configuration but we'll try it. You should be setting the java system variable 'appcfg' or 'envcfg'");
+        }
+        else
+        {
+          this.setAppCfg(searchCfg);
+          logger.warn("Found app configuration directory [" + searchCfg.getAbsolutePath() + "] by searching the filesystem. This may not be the correct configuration but we'll try it. You should be setting the java system variable 'appcfg' or 'envcfg'");
+        }
+        
+        if (pEnvCfg != null)
+        {
+          cconfig.addConfiguration(pEnvCfg);
+        }
+        
+        return;
+      }
+      
+      logger.error("The application's configuration directory (appcfg) has not been resolved! You should be setting the java system variable 'appcfg' or 'envcfg'. Falling back to default Java resource loader strategy (which may cause errors).");
     }
     else
     {
@@ -103,6 +126,45 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
         cconfig.addConfiguration(pEnvCfg);
       }
     }
+  }
+  
+  /**
+   * Sort of a convenience method, but it checks the parent directory structures looking for an 'envcfg' or 'appcfg' directory. If it finds it, it uses it.
+   * This is helpful for running java classes in test projects.
+   */
+  private File searchParentsForCfg()
+  {
+    File current = this.getDeployedPath();
+    
+    class CfgFileFilter implements IOFileFilter {
+      @Override
+      public boolean accept(File file)
+      {
+        return file.isDirectory() && (file.getName().equals("envcfg") || file.getName().equals("appcfg"));
+      }
+
+      @Override
+      public boolean accept(File dir, String name)
+      {
+        return dir.isDirectory() && (name.equals("envcfg") || name.equals("appcfg"));
+      }
+    }
+    
+    while (current != null && current.exists())
+    {
+      Collection<File> found = FileUtils.listFilesAndDirs(current, new CfgFileFilter(), new CfgFileFilter());
+    
+      found.remove(current);
+      
+      if (found.size() > 0)
+      {
+        return found.iterator().next();
+      }
+
+      current = current.getParentFile();
+    }
+    
+    return null;
   }
   
   private void load()

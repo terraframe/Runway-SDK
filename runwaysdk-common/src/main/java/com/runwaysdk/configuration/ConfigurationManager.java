@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import com.runwaysdk.util.ClasspathResource;
+
 /**
  * Manages access to all configuration resources used by Runway SDK and provides an inversion of control mechanism for configuration resolving.
  * 
@@ -69,10 +71,17 @@ public class ConfigurationManager
       return "ConfigGroup : " + getOidentifier();
     }
   }
+  
+  private static ConfigurationManager instance = null;
 
-  public static class Singleton
+  public static synchronized ConfigurationManager getInstance()
   {
-    public static final ConfigurationManager INSTANCE = new ConfigurationManager();
+    if (instance == null)
+    {
+      instance = new ConfigurationManager();
+    }
+    
+    return instance;
   }
 
   private ConfigurationResolverIF configResolver;
@@ -138,11 +147,20 @@ public class ConfigurationManager
       // Hardcoded default configuration resolver if none is specified
       configResolver = new EnvironmentConfigurationResolver();
 
-      URL serverProps = configResolver.getResource(ConfigGroup.SERVER, "server.properties");
+      URL serverProps = null;
+      
+      try
+      {
+        serverProps = configResolver.getResource(ConfigGroup.SERVER, "server.properties");
+      }
+      catch (RunwayConfigurationException ex)
+      {
+        
+      }
       
       if (serverProps == null)
       {
-        String msg = "Runway SDK configuration files are missing. Runway expects at the classpath root either 1) An envcfg or appcfg java system variable pointing to a valid configuration set or 2) A configuration directory called runwaysdk or 3) A master.properties file with associated profile directories or 4) A flattened profile with terraframe.properties.";
+        String msg = "Runway SDK configuration files are missing. Runway expects either 1) An envcfg or appcfg java system variable pointing to a valid configuration set or 2) A configuration directory at the classpath root called runwaysdk";
         throw new RunwayConfigurationException(msg);
       }
     }
@@ -155,7 +173,7 @@ public class ConfigurationManager
 
   public static ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)
   {
-    return Singleton.INSTANCE.iGetReader(configGroup, config);
+    return ConfigurationManager.getInstance().iGetReader(configGroup, config);
   }
 
   public void iSetConfigResolver(ConfigurationResolverIF configResolver)
@@ -170,7 +188,7 @@ public class ConfigurationManager
 
   public static void setConfigResolver(ConfigurationResolverIF configResolver)
   {
-    Singleton.INSTANCE.iSetConfigResolver(configResolver);
+    ConfigurationManager.getInstance().iSetConfigResolver(configResolver);
   }
 
   private URL iGetResource(ConfigGroupIF configGroup, String name, boolean throwEx)
@@ -200,7 +218,7 @@ public class ConfigurationManager
 
   public static URL getResource(ConfigGroupIF configGroup, String name)
   {
-    return Singleton.INSTANCE.iGetResource(configGroup, name, true);
+    return ConfigurationManager.getInstance().iGetResource(configGroup, name, true);
   }
 
   public boolean iCheckExistence(ConfigGroupIF configGroup, String name)
@@ -228,6 +246,6 @@ public class ConfigurationManager
 
   public static boolean checkExistence(ConfigGroupIF configGroup, String name)
   {
-    return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
+    return ConfigurationManager.getInstance().iCheckExistence(configGroup, name);
   }
 }

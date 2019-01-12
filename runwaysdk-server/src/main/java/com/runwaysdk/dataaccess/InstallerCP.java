@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.runwaysdk.ClasspathResource;
+import com.runwaysdk.util.ClasspathResource;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;

@@ -23,7 +23,7 @@ import java.io.File;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
-import com.runwaysdk.ClasspathResource;
+import com.runwaysdk.util.ClasspathResource;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.ResourceStreamSource;
