@@ -24,7 +24,7 @@
       <mdException
         name="com.runwaysdk.localization.exception.ExpectedSheetException"
         label="Expected Sheet Exception"
-        message="Expected to find a sheet (tab) of name [{sheetName}] in the spreadsheet. This import has failed.">
+        message="Expected to find a sheet of name [{sheetName}] in the spreadsheet. This import has failed.">
         <attributes>
           <text name="sheetName" label="Sheet Name" description="The name of the sheet we expected to find" />
         </attributes>
@@ -33,7 +33,7 @@
       <mdException
         name="com.runwaysdk.localization.exception.ExpectedColumnException"
         label="Expected Column Exception"
-        message="Expected to find a column of name [{columnName}] on sheet (tab) of name [{sheetName}] in the spreadsheet. This import has failed.">
+        message="Expected to find a column of name [{columnName}] on sheet of name [{sheetName}] in the spreadsheet. This import has failed.">
         <attributes>
           <text name="columnName" label="Column Name" description="The name of the column we expected to find." />
           <text name="sheetName" label="Sheet Name" description="The name of the sheet we expected to find." />
