@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.gis.geo;
 
@@ -40,6 +40,12 @@ import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.TermUtil;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class GeoEntity extends GeoEntityBase
 {
@@ -138,6 +144,32 @@ public class GeoEntity extends GeoEntityBase
         Geometry geo = geometryHelper.parseGeometry(wkt);
         this.setGeoPoint(geometryHelper.getGeoPoint(geo));
         this.setGeoMultiPolygon(geometryHelper.getGeoMultiPolygon(geo));
+
+        // Populate the correct geo field
+        if (geo instanceof Polygon)
+        {
+          this.setGeoPolygon((Polygon) geo);
+        }
+        else if (geo instanceof MultiPolygon)
+        {
+          this.setGeoMultiPolygon((MultiPolygon) geo);
+        }
+        else if (geo instanceof LineString)
+        {
+          this.setGeoLine((LineString) geo);
+        }
+        else if (geo instanceof MultiLineString)
+        {
+          this.setGeoMultiLine((MultiLineString) geo);
+        }
+        else if (geo instanceof Point)
+        {
+          this.setGeoPoint((Point) geo);
+        }
+        else if (geo instanceof MultiPoint)
+        {
+          this.setGeoMultiPoint((MultiPoint) geo);
+        }
 
         // reset the geoData to the filtered WKT as parsed by JTS
         this.setWkt(geo.toText());
@@ -408,7 +440,7 @@ public class GeoEntity extends GeoEntityBase
       synonyms.close();
     }
   }
-  
+
   @Override
   public String getLabel()
   {
