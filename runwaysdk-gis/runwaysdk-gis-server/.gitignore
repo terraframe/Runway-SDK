@@ -10,7 +10,6 @@
 /.classpath
 /.settings
 /bin
-/.gitignore
 /ajcore.*
 /test.xml
 /vault

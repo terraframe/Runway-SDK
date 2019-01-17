@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.patcher;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -49,7 +50,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.ClasspathResource;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -69,6 +69,7 @@ import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.util.ClasspathResource;
 
 public class RunwayPatcher
 {
@@ -312,7 +313,7 @@ public class RunwayPatcher
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
     {
-      logger.info("Importing domain classpath resource [" + resource.getName() + "].");
+      logger.info("Importing [" + resource.getName() + "].");
       
       Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
@@ -339,14 +340,7 @@ public class RunwayPatcher
         }
         else if (resource.getNameExtension().equals("xml"))
         {
-          if (resource.getName().equals("(0000000000010000)universal.xml")) // TODO : Don't hardcode this
-          {
-            SAXImporter.runImport(new ResourceStreamSource(resource.getAbsolutePath()), null);
-          }
-          else
-          {
-            VersionHandler.runImport(resource, Action.DO_IT, null);
-          }
+          VersionHandler.runImport(resource, Action.DO_IT, null);
         }
         else if (resource.getNameExtension().equals("java"))
         {

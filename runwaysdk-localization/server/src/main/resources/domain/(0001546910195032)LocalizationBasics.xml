@@ -1,0 +1,90 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK GIS(tm).
+
+    Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdException
+        name="com.runwaysdk.localization.exception.ExpectedSheetException"
+        label="Expected Sheet Exception"
+        message="Expected to find a sheet of name [{sheetName}] in the spreadsheet. This import has failed.">
+        <attributes>
+          <text name="sheetName" label="Sheet Name" description="The name of the sheet we expected to find" />
+        </attributes>
+      </mdException>
+      
+      <mdException
+        name="com.runwaysdk.localization.exception.ExpectedColumnException"
+        label="Expected Column Exception"
+        message="Expected to find a column of name [{columnName}] on sheet of name [{sheetName}] in the spreadsheet. This import has failed.">
+        <attributes>
+          <text name="columnName" label="Column Name" description="The name of the column we expected to find." />
+          <text name="sheetName" label="Sheet Name" description="The name of the sheet we expected to find." />
+        </attributes>
+      </mdException>
+    
+      <mdException
+        name="com.runwaysdk.localization.exception.LocaleNotInstalledException"
+        label="Locale Not Installed Exception"
+        message="Locale [{localeString}] is not installed. Please install it before importing.">
+        <attributes>
+          <char name="localeString" label="Locale String" description="String representation of the locale" size="64" />
+        </attributes>
+      </mdException>
+      
+      <mdWarning
+        name="com.runwaysdk.localization.exception.LocalizedRowIgnoredWarning"
+        label="Localized Import Row Ignored Warning"
+        description="Thrown when importing the localization spreadsheet and a row references data that cannot be found"
+        message="Ignored row {row} on sheet {sheet} because the data could not be found.">
+        <attributes>
+          <char
+            name="sheet"
+            label="Sheet"
+            description="Sheet name"
+            size="64"/>
+          <integer
+            name="row"
+            label="Row"
+            description="Row number"
+            rejectNegative="true"/>
+        </attributes>
+      </mdWarning>
+      
+      <mdBusiness name="com.runwaysdk.localization.LocalizedValueStore" cacheAlgorithm="everything" >
+        <attributes>
+          <localText name="storeValue" label="storeValue" required="true"/>
+          <text name="storeKey" label="storeKey" required="true" indexType="unique index"/>
+          <text name="storeTag" label="storeTag" required="false"/>
+        </attributes>
+      </mdBusiness>
+    </create>
+    <update>
+    
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.localization.exception.LocaleNotInstalledException" type="com.runwaysdk.system.metadata.MdException"></object>
+      <object key="com.runwaysdk.localization.exception.LocalizedRowIgnoredWarning" type="com.runwaysdk.system.metadata.MdWarning"></object>
+      <object key="com.runwaysdk.localization.LocalizedValueStore" type="com.runwaysdk.system.metadata.MdBusiness"></object>
+    </delete>
+  </undoIt>
+</version>

@@ -31,13 +31,16 @@ public class LegacyPropertiesSupport
   
   private boolean isLegacy;
   
-  /**
-   * A holder class for access to the singleton. Allows for lazy instantiation and thread
-   * safety because the class is not loaded until the first access to INSTANCE.
-   */
-  private static class Singleton
+  private static LegacyPropertiesSupport instance = null;
+
+  public static synchronized LegacyPropertiesSupport getInstance()
   {
-    private static LegacyPropertiesSupport INSTANCE = new LegacyPropertiesSupport();
+    if (instance == null)
+    {
+      instance = new LegacyPropertiesSupport();
+    }
+    
+    return instance;
   }
   
   /**
@@ -45,12 +48,12 @@ public class LegacyPropertiesSupport
    */
   protected static void dumpInstance()
   {
-    LegacyPropertiesSupport.Singleton.INSTANCE = new LegacyPropertiesSupport();
+    instance = new LegacyPropertiesSupport();
   }
   
   public LegacyPropertiesSupport()
   {
-    this.isLegacy = !(ConfigurationManager.Singleton.INSTANCE.getConfigResolver() instanceof CommonsConfigurationResolver);
+    this.isLegacy = !(ConfigurationManager.getInstance().getConfigResolver() instanceof CommonsConfigurationResolver);
     
     // Email Properties
     legacyToModern.put("smtp.host", "email.host");
@@ -82,11 +85,6 @@ public class LegacyPropertiesSupport
     }
   }
   
-  public static LegacyPropertiesSupport getInstance()
-  {
-    return LegacyPropertiesSupport.Singleton.INSTANCE;
-  }
-  
   /**
    * @return Returns true if the system is reading from legacy properties files.
    * 
@@ -94,7 +92,7 @@ public class LegacyPropertiesSupport
    * legacy properties anymore then you'll need to make sure the java code that calls
    * this still makes sense.
    */
-  public static boolean isLegacy() { return LegacyPropertiesSupport.Singleton.INSTANCE.iIsLegacy(); }
+  public static boolean isLegacy() { return LegacyPropertiesSupport.getInstance().iIsLegacy(); }
   public boolean iIsLegacy()
   {
     return this.isLegacy;
@@ -103,7 +101,7 @@ public class LegacyPropertiesSupport
   /**
    * Returns the legacy string, if the system is using legacy configuration. Otherwise it returns the 'notLegacy' value.
    */
-  public static String pickRelevant(String legacy, String notLegacy) { return LegacyPropertiesSupport.Singleton.INSTANCE.iPickRelevant(legacy, notLegacy); }
+  public static String pickRelevant(String legacy, String notLegacy) { return LegacyPropertiesSupport.getInstance().iPickRelevant(legacy, notLegacy); }
   public String iPickRelevant(String legacy, String notLegacy)
   {
     if (this.isLegacy)
@@ -118,7 +116,7 @@ public class LegacyPropertiesSupport
    * 
    * @param property The name of the legacy property.
    */
-  public static String getProperty(String property) { return LegacyPropertiesSupport.Singleton.INSTANCE.iGetProperty(property); }
+  public static String getProperty(String property) { return LegacyPropertiesSupport.getInstance().iGetProperty(property); }
   public String iGetProperty(String property)
   {
     if (legacyToModern.containsKey(property))
