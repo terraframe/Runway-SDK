@@ -40,6 +40,12 @@ import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.TermUtil;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class GeoEntity extends GeoEntityBase
 {
@@ -138,6 +144,32 @@ public class GeoEntity extends GeoEntityBase
         Geometry geo = geometryHelper.parseGeometry(wkt);
         this.setGeoPoint(geometryHelper.getGeoPoint(geo));
         this.setGeoMultiPolygon(geometryHelper.getGeoMultiPolygon(geo));
+
+        // Populate the correct geo field
+        if (geo instanceof Polygon)
+        {
+          this.setGeoPolygon((Polygon) geo);
+        }
+        else if (geo instanceof MultiPolygon)
+        {
+          this.setGeoMultiPolygon((MultiPolygon) geo);
+        }
+        else if (geo instanceof LineString)
+        {
+          this.setGeoLine((LineString) geo);
+        }
+        else if (geo instanceof MultiLineString)
+        {
+          this.setGeoMultiLine((MultiLineString) geo);
+        }
+        else if (geo instanceof Point)
+        {
+          this.setGeoPoint((Point) geo);
+        }
+        else if (geo instanceof MultiPoint)
+        {
+          this.setGeoMultiPoint((MultiPoint) geo);
+        }
 
         // reset the geoData to the filtered WKT as parsed by JTS
         this.setWkt(geo.toText());
@@ -408,7 +440,7 @@ public class GeoEntity extends GeoEntityBase
       synonyms.close();
     }
   }
-  
+
   @Override
   public String getLabel()
   {
