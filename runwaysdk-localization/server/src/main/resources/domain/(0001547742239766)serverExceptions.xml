@@ -1,0 +1,1273 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+	  <create>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CacheCodeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CacheCodeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Type [{0}] cannot cache [{1}], because it inherits from [{2}], which caches [{3}].  Please select a different caching algorithm." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidStructOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidStructOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for a struct." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MethodDefinitionException_NameExists">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MethodDefinitionException_NameExists" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] already has a method with the name [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CompilerException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CompilerException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Your request created compile errors in business classes.\n{0}" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidRefOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidRefOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for a reference." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDoesNotExistExceptionWithType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeDoesNotExistExceptionWithType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] on [{1}] does not exist." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RevokeStatePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RevokeStatePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to revoke permissions on the state [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidColumnNameException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidColumnNameException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The column name [{0}] is not valid.  Column names must begin with a letter, then followed by a letter, number, or an underscore." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CannotDeleteReferencedObject">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CannotDeleteReferencedObject" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot delete [{0}].  Attribute [{1}] on type [{2}] references it and is a required attribute." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="TransactionImportInvalidItem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="TransactionImportInvalidItem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An error occurred when importing a record that originated from site {0}.  The error is: {1}." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An error was encountered while assigning permissions.  Please alert your support staff if the problem continues." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RequiredUniquenessConstraintException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RequiredUniquenessConstraintException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Attribute [{0}] cannot participate in a uniqueness constraint because it isn&apos;t required." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueCannotBePositiveProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueCannotBePositiveProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]. Value cannot be positive." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ImportingDatabaseRecords">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ImportingDatabaseRecords" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Importing database records:" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidSessionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidSessionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Your session has expired.  Please log in." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionAttribute">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionAttribute" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="StaleEntityException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="StaleEntityException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is out of date - please update and try your operation again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExtractingFilesMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExtractingFilesMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Extracting Files:" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ParameterDefinitionException_OrderExists">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ParameterDefinitionException_OrderExists" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] already has parameter [{1}] with order [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateMdEnumerationDefinitionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateMdEnumerationDefinitionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A [{0}] already exists for [{1}] with type name [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionSingleActorConflictingRole">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionSingleActorConflictingRole" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="SingleActor [{0}] cannot be assigned to role [{1}] because it already belongs to conflicting role [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="IdenticalIndexException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="IdenticalIndexException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Index [{1}] on entity [{0}] is invalid. An index is already defined on entity [{0}] with attributes [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidOrderByPrimitiveException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidOrderByPrimitiveException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Only primitive attributes can participate in the ORDER BY clause." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidEnumerationName">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidEnumerationName" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The enummeration name [{0}] is not valid for enumeration [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="SiteException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="SiteException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An object [{0}] owned by site [{1}] cannot be modified by site [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GroovyQueryException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GroovyQueryException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The following groovy query:
+	[{0}]
+	 Produced the following error:
+	[{1}]" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeNotInGroupByOrAggregate">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeNotInGroupByOrAggregate" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="When an attribute is specified as GROUP BY, all attributes must then either be GROUP BY or must be used in an aggregate function.  The attribute [{0}] is neither GROUP BY nor is used in an aggregate function." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RevokeAttributePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RevokeAttributePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to revoke permissions on attribute [{1}] on type [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidEntryStateException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidEntryStateException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="State [{0} on machine [{1}] is not an entry state." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidAttributeTypeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidAttributeTypeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] on class [{1}] is of the wrong type.  The expected type is [{2}] but the given type is [{3}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="UnexpectedTypeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="UnexpectedTypeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An object of an unexpected type was returned.  Please try your operation again.  If the problem continues, alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MaximumSessionsException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MaximumSessionsException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The user [{0}] has the maximum number of sessions open." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidAttributeForIndexDefinitionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidAttributeForIndexDefinitionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Attribute [{1}] is not defined by by [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ValueQueryMissingSelectCaluseException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ValueQueryMissingSelectCaluseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="No attributes were selected to be included in the result of the query." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NumericFieldOverflowException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NumericFieldOverflowException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A specified numeric value is too large for its database column" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NoAggregateInGroupByException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NoAggregateInGroupByException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You cannot group by an aggregate function." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MissingAttributeInSelectForGroupByException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MissingAttributeInSelectForGroupByException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] specified in the GROUP BY section must also be included in the result of the query." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLengthException.Unit.Bytes">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeLengthException.Unit.Bytes" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="bytes" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeInvalidUniquenessConstraintException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeInvalidUniquenessConstraintException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Attribute [{0}] cannot participate in a uniqueness constraint.  Attributes of type [{1}] cannot be unique." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateDataExceptionSingleNoValue">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateDataExceptionSingleNoValue" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An instance of [{0}] already exists with the same value for {1} - please choose a different value." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DeleteUnappliedObjectException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DeleteUnappliedObjectException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] cannot be deleted because it has not yet been applied." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ProblemCollectionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ProblemCollectionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A problem occurred and your operation could not be completed." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AddChildPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AddChildPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to add [{0}] to [{1}] as [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionInvalidSSDConstraint">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionInvalidSSDConstraint" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Role [{0}] invalidates existing constraints on SSD [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AmbiguousAttributeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AmbiguousAttributeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Attribute [{0}] in the select clause is ambiguous." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="PromotePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="PromotePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to promote [{0}] to [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MethodDefinitionException_InvalidReturnType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MethodDefinitionException_InvalidReturnType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The return type [{0}] on method [{1}] is invalid.  Return types must be a Java primitive wrapper class or a predefined class that is published." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateDataExceptionSingle">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateDataExceptionSingle" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An instance of [{0}] already exists with [{1}] as the value for {2} - please choose a different value." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidBooleanOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidBooleanOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for boolean (true/false)." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MissingHavingClauseAttributeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MissingHavingClauseAttributeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] defined by [{1}] in the HAVING clause must also be included in the result of the query or in the GROUP BY section." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueCannotBeNegativeProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueCannotBeNegativeProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]. Value cannot be negative." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReadPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReadPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionTable">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionTable" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The table name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateAttributeDefinedInSubclass">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateAttributeDefinedInSubclass" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot add an attribute named [{0}] to class [{1}] because a child class [{3}] already defines an attribute with that name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDoesNotExistExceptionNoType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeDoesNotExistExceptionNoType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] does not exist." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NeedLockException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NeedLockException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You must have a lock on [{0}] before you can modify it." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReadChildPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReadChildPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read [{0}] on [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipRecursionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipRecursionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Relationship [{0}] cannot be created.  [{1}] already has the parent object [{2}] as a child. This would cause an infinite recursive relationship." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReferenceAttributeNotReferencingClassException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReferenceAttributeNotReferencingClassException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Attribute [{0}] on class [{1}] is a reference attribute but is not configured to reference anything. It cannot contain a value." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReadParentPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReadParentPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read [{0}] on [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueExceptionGeneric">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueExceptionGeneric" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipInvalidObjectException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipInvalidObjectException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is a basic object.  It cannot participate in the [{1}] relationship." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipConstraintException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipConstraintException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The requested operation would violate a constraint on Relationships." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="methodDefinitionException_DefiningType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="methodDefinitionException_DefiningType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Method [{0}] is defined on an invalid type.  [{1}] is not a [{2}] or a [{3}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RoleManagementException_ADD">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RoleManagementException_ADD" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have adequate permissions to add a user to a role." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CacheCodeExceptionShort">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CacheCodeExceptionShort" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Type [{0}] cannot cache [{1}].  Please select a different caching algorithm." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidReferenceException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidReferenceException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value for [{0}] is invalid - it must reference a [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DefaultStateExistsException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DefaultStateExistsException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A default state has already been defined for State Machine [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateDataException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateDataException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An object already exists that has values on attributes that are unique." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RoleNamespaceException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RoleNamespaceException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The rolename [{0}] must be namespaced." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateAttributeInInheritedHierarchy">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateAttributeInInheritedHierarchy" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot add an attribute named [{0}] to class [{1}] because its parent class [{2}] already defines an attribute with that name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeWritePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeWritePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="User [{2}] does not have permission to modify attribute [{1}] on [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NoLocaleException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NoLocaleException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The user [{0}] did not provide a locale when logging in." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueCannotBeZeroProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueCannotBeZeroProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]. Value cannot be zero." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidLoginException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidLoginException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Login failed - please try again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLengthException.Unit.Characters">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeLengthException.Unit.Characters" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="characters" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GrantAttributePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GrantAttributePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to grant permissions on attribute [{1}] on type [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionOwnerRole">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionOwnerRole" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="SingleActor [{0}] cannont be assigned to role [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DeleteChildPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DeleteChildPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to remove [{0}] from [{1}] as [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueBelowRangeProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueBelowRangeProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]. Value cannot be less than [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueAboveRangeProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueAboveRangeProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]. Value cannot be greater than [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidNumberOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidNumberOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for a number." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InactiveUserException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InactiveUserException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The user [{0}] is inactive." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DeleteTypePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DeleteTypePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to delete instances of type [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidBlobOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidBlobOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for a blob." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="WritePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="WritePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to update [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeOfWrongTypeForClassException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeOfWrongTypeForClassException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot add attribute [{0}] to class [{2}].  Class [{2}] cannot define an attribute of type [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionInvalidStateMachine">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionInvalidStateMachine" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="State Machine [{0}] cannot have permissions. Add them to [{1}] instead." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionInvalidOperation">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionInvalidOperation" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Operation [{0}] is not applicable for type [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipInvalidParentDefException2">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipInvalidParentDefException2" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Relationship types must inherit from another relationship type. The given super type [{0}] is a class." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipInvalidParentDefException1">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipInvalidParentDefException1" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Super Relationship [{0}] cannot be extended." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GrantAttributeStatePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GrantAttributeStatePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to grant permissions on attribute [{1}] on type [{0}] in state [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AndCondition">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AndCondition" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] and [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionState">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionState" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The state name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateDataExceptionMultipleNoValues">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateDataExceptionMultipleNoValues" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A instance of [{0}] already exists with the same values for attributes {1} - please choose different values." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CompressingDirectoryMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CompressingDirectoryMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Compressing the directory: {0}" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DeleteParentPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DeleteParentPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to remove [{0}] from [{1}] as [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="FieldValidationProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="FieldValidationProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The attribute [{0}] is not applicable when {1}." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionColumn">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionColumn" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The column name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLengthException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeLengthException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] many not exceed a length of {1} {2}." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RestoringApplicationMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RestoringApplicationMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Restoring application:" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="MetadataCannotBeDeletedException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="MetadataCannotBeDeletedException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Metadata that defines [{0}] cannot be deleted." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidDefinitionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidDefinitionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Your operation created or modified metadata with invalid values.  Please check your input and try again. If the problem continues, please contact your support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ClassLoaderException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ClassLoaderException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Error encountered when loading [{0}].  Please try again.  If the problem continues, alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="BackingUpFileMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="BackingUpFileMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Backing up file: {0}" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDefinitionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeDefinitionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The definition of attribute [{0}] contains an error.  Please check your input and try again. If the problem continues, please contact your support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GroovyQueryExecuteException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GroovyQueryExecuteException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You must be in the [{0}] role to execute arbitrary queries." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="XMLException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="XMLException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A system xml file appears to be corrupt - please notify your technical support team." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionInheritance">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionInheritance" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Role [{0}] cannot inherit from role [{1}] because it would break existing user assignment conflict of intrest constraints." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DomainPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DomainPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to perform this operation.  If you feel you should be able to perform this operation, alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GrantTypePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GrantTypePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to grant permissions on type [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateDataExceptionMultiple">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateDataExceptionMultiple" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A instance of [{0}] already exists with values {1} for attributes {2} - please choose different values." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ParameterDefinitionException_InvalidType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ParameterDefinitionException_InvalidType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The parameter [{0}] is invalid.  Parameters must be a Java primitive wrapper class or a predefined class that is published." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="SynchronizationSequenceGapException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="SynchronizationSequenceGapException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="There cannot be a gap in sequence numbers when importing from another site.  The last imported sequence number from site [{0}] was [{1}], but the current import starts with sequence number [{2}].  Please import from site [{0}] starting with sequence number [{3}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NoAttributeOnIndexException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NoAttributeOnIndexException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Index on [{0}] could not be applied to the database because it does not contain any attributes." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionType">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionType" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The type name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RevokeAttributeStatePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RevokeAttributeStatePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to revoke permissions on attribute [{1}] on type [{0}] in state [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExtractingFileMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExtractingFileMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Extracting file: {0}" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExistingUnlockException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExistingUnlockException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You cannot unlock [{0}] because it is locked by another user." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="FieldCondition">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="FieldCondition" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not [{1}] to [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidMomentOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidMomentOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for date, time, or datetime." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ProgrammingErrorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ProgrammingErrorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A serious programming error has occurred.  Please alert your technical support staff immediately." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="StateException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="StateException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An error was encountered in a state machine.  Please try your operation again.  If the problem continues, alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NameConventionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NameConventionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The name [{0}] violates a naming convention - java style conventions are enforced.  Please consult your documentation for details." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ParameterDefinitionException_NameExists">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ParameterDefinitionException_NameExists" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] already has a parameter with the name [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InheritanceException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InheritanceException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The requested operation would corrupt the inheritance hierarchy." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RelationshipCardinalityException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RelationshipCardinalityException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A [{0}] can only be in {1} [{2}] relationships with objects of type [{4}].  {3} already has {1} [{4}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RBACExceptionInvalidSSDCardinality">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RBACExceptionInvalidSSDCardinality" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The new cardinality of [{0}] is invalid for SSD [{1}] due to existing user-role assignments." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RevokeMethodPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RevokeMethodPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to revoke permissions on method [{1}] defined by [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="SourceElementNotDeclaredException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="SourceElementNotDeclaredException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot update a merged element which does not exist." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidMomentSelectableException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidMomentSelectableException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a date or a time value.  It was passed into a date or a time functio" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateStateDefinitionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateStateDefinitionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A state named [{0}] already exists in the [{1}] state machine." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="BackupCompleteMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="BackupCompleteMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Backup complete" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReservedWordExceptionTransition">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReservedWordExceptionTransition" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The transition name [{0}] is reserved - please specify a different name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidMinMaxOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidMinMaxOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for the [minimum] or [maximum] function." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RoleManagementException_REMOVE">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RoleManagementException_REMOVE" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have adequate permissions to remove a user from a role." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="EncryptionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="EncryptionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Operation cancelled - there was a problem encrypting [{0}].  Please try again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateGraphPathException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateGraphPathException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] already [{1}] [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="SubSelectReturnedMultipleRowsException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="SubSelectReturnedMultipleRowsException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Subquery returns more than 1 row." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExecuteInstancePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExecuteInstancePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to [{1}] on [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidAggregateOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidAggregateOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for an aggregate function." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidIdException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidIdException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Object ID [{0}] is not a valid ID." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="BackingupDatabaseMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="BackingupDatabaseMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Backing up database" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RestoreCompleteMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RestoreCompleteMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Restore complete" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NeedLockforUnlockException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="NeedLockforUnlockException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You must have a lock on [{0}] before you can unlock it." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ImmutableAttributeProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ImmutableAttributeProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] cannot be modified." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidMRUCacheSizeException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidMRUCacheSizeException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] can&apos;t specify a cache size [{1}] for the Most Recently Used Cache Algorithm. Please change the cache size or cache algorithm." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="BackingUpCacheMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="BackingUpCacheMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Backing up cache files." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLengthException.Unit.Byte">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeLengthException.Unit.Byte" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="byte" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="UnimplementedStubException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="UnimplementedStubException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Method [{1}] on type [{0}] has not been implemented." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ClassPublishException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ClassPublishException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Only the root of a class hierarchy can be published.  Class [{0}] is not the root of a class hierarchy." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLengthException.Unit.Character">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeLengthException.Unit.Character" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="character" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDefinitionDecimalException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeDefinitionDecimalException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{1}] on attribute definition [{0}] is invalid.  It must be between [1] and [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDefinitionLengthException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeDefinitionLengthException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{1}] on attribute definition [{0}] is invalid.  It must be an integer greater than 1." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="TransactionVersionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="TransactionVersionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="There was a version mismatch between the file [{1}] and the importer [{0}].  Please update the local node to [{1}] or re-export the file from a node of version [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RevokeTypePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="RevokeTypePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to revoke permissions from type [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExecuteStaticPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExecuteStaticPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to [{1}] on [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DuplicateAttributeDefinition">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DuplicateAttributeDefinition" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot add an attribute named [{0}] to class [{1}] because that class already defines an attribute with that name." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ReadTypePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ReadTypePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DataNotFoundException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DataNotFoundException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The requested [{0}] was not found.  Please verify that all information was correctly entered in your request and try again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidLocaleFormatException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidLocaleFormatException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The locale [{0}] does not have the proper format - please notify your technical support team." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ExistingLockException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="ExistingLockException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is currently being modified by another user.  Please try again later." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AddParentPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AddParentPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to add [{0}] to [{1}] as [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidIdentifierException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidIdentifierException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The identifier [{0}] is not valid.  All identifiers must begin with a letter, an underscore, or a Unicode currency character. Any other symbol, such as a number, is not valid." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidNumericSelectableException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidNumericSelectableException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a numeric value.  It was passed into a numeric function." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeValueException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AttributeValueException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] is not a valid value for [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="SystemAttributeProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="SystemAttributeProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] cannot be modified because it is a system attribute." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DeletePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DeletePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to delete [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AbstractInstantiationException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AbstractInstantiationException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The type [{0}] is abstract, and cannot be instantiated." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AdminScreenAccessException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="AdminScreenAccessException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The user [{0}] does not have access to the Admin Screen." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CannotAddAttriubteToClassException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CannotAddAttriubteToClassException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cannot add attribute [{0}] to class [{1}] or one of its sublasses because attributes cannot be added to that class at runtime." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidStringOperatorException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="InvalidStringOperatorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Comparison operator [{0}] is not valid for text." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CreatePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CreatePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to create [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GrantStatePermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GrantStatePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to grant permissions on the state [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="GrantMethodPermissionException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="GrantMethodPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to grant permissions on method [{1}] defined by [{0}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="VaultException">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="VaultException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="There was a problem accessing the file vault.  Please try again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DroppingTablesMessage">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="DroppingTablesMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Dropping tables:" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="CleaningWebappFolder">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="CleaningWebappFolder" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Cleaning webapp folder: {0}" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="EmptyValueProblem">
+	      <attribute name="storeTag" value="RunwayServerExceptions" />
+	      <attribute name="storeKey" value="EmptyValueProblem" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="[{0}] requires a value." />
+	      </attributeStruct>
+	    </object>
+	  </create>
+  </doIt>
+  <undoIt>
+    <delete>
+    </delete>
+  </undoIt>
+</version>

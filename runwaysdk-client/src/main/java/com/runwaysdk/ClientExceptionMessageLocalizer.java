@@ -20,48 +20,10 @@ package com.runwaysdk;
 
 import java.util.Locale;
 
-import com.terraframe.utf8.UTF8ResourceBundle;
-
-public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
+public class ClientExceptionMessageLocalizer
 {
-  private static final String BUNDLE = "clientExceptions";
-
-  /**
-   * Fetches the parameterized, localized error message template for the given
-   * exception. The variable String arguments represent the parameters in the
-   * template string. For example, given the template "The {0} in the {1}." and
-   * arguments "cat" and "hat", the final String will be "The cat in the hat."
-   * 
-   * @param locale
-   *          The desired locale of the message
-   * @param key
-   *          The name of the Exception whose message is being retrieved
-   * @param params
-   *          The array of parameters to plug into the template string
-   */
-  protected static String getMessage(Locale locale, String key, String... params)
-  {
-    String hashkey = BUNDLE;
-
-    if (locale != null)
-    {
-      hashkey += "-" + locale.toString();
-
-      if (!props.containsKey(hashkey))
-      {
-        props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE, locale));
-      }
-    }
-    else if (!props.containsKey(hashkey))
-    {
-      props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE));
-    }
-
-    String template = props.get(hashkey).getString(key);
-
-    return parseMessage(template, params);
-  }
-
+  private static final String UnspecifiedExceptionMsg = "We are unable to complete your request at this time.  Try again later.  If the problem persists, contact your system administrator.";
+  
   /**
    * Gets the localized message, which indicates an unspecified error.
    * 
@@ -72,7 +34,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String unspecifiedException(Locale locale)
   {
-    return getMessage(locale, "UnspecifiedException");
+    return LocalizationFacade.getMessage(locale, "UnspecifiedException", UnspecifiedExceptionMsg);
   }
 
   /**
@@ -87,7 +49,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     // This is not a cut and paste error. End users will not understand
     // clientRequest errors.
-    return getMessage(locale, "UnspecifiedException");
+    return LocalizationFacade.getMessage(locale, "UnspecifiedException", UnspecifiedExceptionMsg);
   }
 
   /**
@@ -101,7 +63,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String serverSideException(Locale locale)
   {
-    return getMessage(locale, "UnspecifiedException");
+    return LocalizationFacade.getMessage(locale, "UnspecifiedException", UnspecifiedExceptionMsg);
   }
 
   /**
@@ -110,7 +72,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String rmiClientRequestException(Locale locale)
   {
-    return getMessage(locale, "UnspecifiedException");
+    return LocalizationFacade.getMessage(locale, "UnspecifiedException", UnspecifiedExceptionMsg);
   }
 
   /**
@@ -119,7 +81,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String webServiceClientRequestException(Locale locale)
   {
-    return getMessage(locale, "UnspecifiedException");
+    return LocalizationFacade.getMessage(locale, "UnspecifiedException", UnspecifiedExceptionMsg);
   }
 
   /**
@@ -131,7 +93,7 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String shortHandTypeDuplicateException(Locale locale, String typeName)
   {
-    return getMessage(locale, "shortHandTypeDuplicateException", typeName);
+    return LocalizationFacade.getMessage(locale, "shortHandTypeDuplicateException", "The type name [{0}] defines more than one type. Please qualify the type name with a package.", typeName);
   }
 
   /**
@@ -143,26 +105,26 @@ public class ClientExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String shortHandTypeInvalidException(Locale locale, String typeName)
   {
-    return getMessage(locale, "shortHandTypeInvalidException", typeName);
+    return LocalizationFacade.getMessage(locale, "shortHandTypeInvalidException", "The type name [{0}] does not correspond to a valid type. Please retry the operation with a valid type name (or qualified type).", typeName);
   }
 
   public static String unknownServletException(Locale locale, String controllerName)
   {
-    return getMessage(locale, "UnknownServletException", controllerName);
+    return LocalizationFacade.getMessage(locale, "UnknownServletException", "An action at the uri [{0}] does not exist.", controllerName);
   }
 
   public static String illegalURIMethodException(Locale locale, String uri)
   {
-    return getMessage(locale, "IllegalURIMethodException", uri);
+    return LocalizationFacade.getMessage(locale, "IllegalURIMethodException", "The uri [{0}] must be accessed in a POST method.", uri);
   }
 
   public static String nullClientRequestException(Locale locale)
   {
-    return getMessage(locale, "NullClientRequestException");
+    return LocalizationFacade.getMessage(locale, "NullClientRequestException", "Please log in.  If you are already logged in, please log off and back in.");
   }
 
   public static String undefinedControllerAction(Locale locale, String action)
   {
-    return getMessage(locale, "UndefinedControllerAction");
+    return LocalizationFacade.getMessage(locale, "UndefinedControllerAction", "The action [{0}] has not been properly configured. Please alert your technical support team.");
   }
 }

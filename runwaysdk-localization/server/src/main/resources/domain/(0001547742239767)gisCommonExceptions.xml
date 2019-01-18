@@ -1,0 +1,59 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+	  <create>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeLineStringParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributeLineStringParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid line." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeMultiPointParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributeMultiPointParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid multi-point." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeMultiPolygonParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributeMultiPolygonParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid multi-polygon." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeMultiLineStringParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributeMultiLineStringParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid multi-line." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributePointParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributePointParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid point." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidDimensionException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="InvalidDimensionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Dimension value [{0}] on attribute [{1}] is invalid.  Please specify a value between 0 and 4." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributePolygonParseException">
+	      <attribute name="storeTag" value="RunwayGISExceptions" />
+	      <attribute name="storeKey" value="AttributePolygonParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid polygon." />
+	      </attributeStruct>
+	    </object>
+	  </create>
+  </doIt>
+  <undoIt>
+    <delete>
+    </delete>
+  </undoIt>
+</version>

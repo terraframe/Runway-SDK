@@ -1,0 +1,157 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeReadPermissionException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeReadPermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read attribute [{0}] on [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="RunwayException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="RunwayException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="FileWriteException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="FileWriteException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Could not write to file [{0}].  Please close an application that may be accessing the file and try your operation again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeReferenceParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeReferenceParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value on attribute [{0}] does not represent a valid [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="DecimalParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="DecimalParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid decimal number." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeTimeParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeTimeParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid time of the following format: [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="ParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] of the parameter [{1}] is not a valid [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDecimalParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeDecimalParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid decimal." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="LoaderDecoratorException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="LoaderDecoratorException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An error occurred with the class loader.  Please alert your technical support staff." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDateParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeDateParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid date of the following format: [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="FileReadException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="FileReadException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An error occurred while trying to read file [{0}].  Please try your operation again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeTextParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeTextParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid text." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="InvalidSessionException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="InvalidSessionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Your session has expired.  Please log in again." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ConfigurationException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="ConfigurationException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You application is not properly configured.  Please alert your technical support team." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeIntegerParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeIntegerParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid integer." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeCharacterParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeCharacterParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid letter." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="WritingFileMessage">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="WritingFileMessage" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Writing file: [{0}]" />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ConversionException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="ConversionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="A data conversion error occurred.  Please alert your technical support team." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeReferenceParseExceptionWithValue">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeReferenceParseExceptionWithValue" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeDateTimeParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeDateTimeParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] does not represent a valid date and time of the following format: [{2}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeBooleanParseException">
+	      <attribute name="storeTag" value="RunwayCommonExceptions" />
+	      <attribute name="storeKey" value="AttributeBooleanParseException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The value [{0}] on attribute [{1}] must be true or false." />
+	      </attributeStruct>
+	    </object>
+	  </create>
+  </doIt>
+  <undoIt>
+    <delete>
+    </delete>
+  </undoIt>
+</version>

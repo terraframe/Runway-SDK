@@ -1,0 +1,66 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+	  <create>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="NullClientRequestException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="NullClientRequestException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="Please log in.  If you are already logged in, please log off and back in." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="UnspecifiedException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="UnspecifiedException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="We are unable to complete your request at this time.  Try again later.  If the problem persists, contact your system administrator." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="IllegalURIMethodException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="IllegalURIMethodException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The uri [{0}] must be accessed in a POST method." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="shortHandTypeDuplicateException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="shortHandTypeDuplicateException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The type name [{0}] defines more than one type. Please qualify the type name with a package." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="ClientReadAttributePermissionException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="ClientReadAttributePermissionException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="You do not have permission to read attribute [{0}] on [{1}]." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="shortHandTypeInvalidException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="shortHandTypeInvalidException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The type name [{0}] does not correspond to a valid type. Please retry the operation with a valid type name (or qualified type)." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="UnknownServletException">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="UnknownServletException" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="An action at the uri [{0}] does not exist." />
+	      </attributeStruct>
+	    </object>
+	    <object type="com.runwaysdk.localization.LocalizedValueStore" key="UndefinedControllerAction">
+	      <attribute name="storeTag" value="RunwayClientExceptions" />
+	      <attribute name="storeKey" value="UndefinedControllerAction" />
+	      <attributeStruct name="storeValue">
+	        <attribute name="defaultLocale" value="The action [{0}] has not been properly configured. Please alert your technical support team." />
+	      </attributeStruct>
+	    </object>
+	  </create>
+  </doIt>
+  <undoIt>
+    <delete>
+    </delete>
+  </undoIt>
+</version>

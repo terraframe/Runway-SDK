@@ -21,7 +21,9 @@ package com.runwaysdk.localization.configuration;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
+import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
@@ -43,7 +45,20 @@ public class ConfigurationBuilder
     config = new SpreadsheetConfiguration();
     
     this.dimensions = new ArrayList<LocaleDimension>();
+    
+    addInstalledLocales();
+  }
+  
+  private void addInstalledLocales()
+  {
     this.addLocaleDimensions(MdAttributeLocalInfo.DEFAULT_LOCALE);
+    
+    List<Locale> locales = LocalizationFacade.getInstalledLocales();
+    
+    for (Locale locale : locales)
+    {
+      this.addLocaleDimensions(locale.toLanguageTag().replace("-", "_"));
+    }
   }
   
   private void addLocaleDimensions(String localeString)
@@ -55,7 +70,7 @@ public class ConfigurationBuilder
     }
   }
   
-  public AttributeLocalTabConfiguration addLocalizedValueStoreTab(String tabName, String tagName)
+  public AttributeLocalTabConfiguration addLocalizedValueStoreTab(String tabName, List<String> tags)
   {
     List<ColumnConfiguration> columns = new ArrayList<ColumnConfiguration>();
     columns.add(new EntityColumnConfiguration("Key", MdEntity.KEYNAME));
@@ -68,7 +83,10 @@ public class ConfigurationBuilder
     AttributeLocalTabConfiguration valueStoreTab = new AttributeLocalTabConfiguration(tabName, valueStore, dimensions, columns);
     valueStoreTab.setTabWideLocalAttributeName(LocalizedValueStore.getStoreValueMd().definesAttribute());
     valueStoreTab.setTabWideEntityType(LocalizedValueStore.CLASS);
-    valueStoreTab.setValueStoreTagName(tagName);
+    for (String tag : tags)
+    {
+      valueStoreTab.addValueStoreTagName(tag);
+    }
     config.addTab(valueStoreTab);
     
     return valueStoreTab;

@@ -20,7 +20,9 @@ package com.runwaysdk.localization;
 
 import java.io.InputStream;
 import java.sql.Savepoint;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -36,7 +38,6 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Session;
-import com.runwaysdk.system.metadata.MdClass;
 
 public class LocalizedValueStore extends LocalizedValueStoreBase
 {
@@ -44,7 +45,15 @@ public class LocalizedValueStore extends LocalizedValueStoreBase
   
   private static final Logger logger = LoggerFactory.getLogger(LocalizedValueStore.class);
   
-  public static final String TAG_NAME_RUNWAY_EXCEPTION = "RunwayException";
+  public static final String TAG_NAME_RUNWAY_SERVER_EXCEPTIONS = "RunwayServerExceptions";
+  
+  public static final String TAG_NAME_RUNWAY_CLIENT_EXCEPTIONS = "RunwayClientExceptions";
+  
+  public static final String TAG_NAME_RUNWAY_COMMON_EXCEPTIONS = "RunwayCommonExceptions";
+  
+  public static final String TAG_NAME_RUNWAY_GIS_EXCEPTIONS = "RunwayGISExceptions";
+  
+  public static final List<String> TAG_NAME_ALL_RUNWAY_EXCEPTIONS = Arrays.asList(TAG_NAME_RUNWAY_SERVER_EXCEPTIONS, TAG_NAME_RUNWAY_CLIENT_EXCEPTIONS, TAG_NAME_RUNWAY_COMMON_EXCEPTIONS, TAG_NAME_RUNWAY_GIS_EXCEPTIONS);
   
   public static final String TAG_NAME_UI_TEXT = "UIText";
   

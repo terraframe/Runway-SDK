@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.localization.configuration;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
    */
   protected String tabWideEntityType = null;
 
-  protected String valueStoreTagName;
+  protected List<String> valueStoreTagName = new ArrayList<String>();
   
   protected List<LocaleDimension> dimensions;
   
@@ -186,7 +187,13 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
     
     for (LocaleDimension ld : this.dimensions)
     {
-      String value = row.getCell(index).getStringCellValue();
+      Cell cell = row.getCell(index);
+      
+      String value = new String();
+      if (cell != null)
+      {
+        value = row.getCell(index).getStringCellValue();
+      }
       if (value == null)
       {
         value = new String();
@@ -302,9 +309,11 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
         Row row = null;
         for (int i = 0; i < this.columns.size(); ++i)
         {
-          if (valueStoreTagName != null && entity.getType().equals(LocalizedValueStore.CLASS))
+          if (valueStoreTagName.size() > 0 && entity.getType().equals(LocalizedValueStore.CLASS))
           {
-            if (entity.getValue(LocalizedValueStore.STORETAG).equals(valueStoreTagName))
+            String tag = entity.getValue(LocalizedValueStore.STORETAG);
+            
+            if (valueStoreTagName.contains(tag))
             {
               // do default
             }
@@ -335,8 +344,8 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
     this.tabWideEntityType = tabWideEntityType;
   }
 
-  public void setValueStoreTagName(String tagName)
+  public void addValueStoreTagName(String tagName)
   {
-    this.valueStoreTagName = tagName;
+    this.valueStoreTagName.add(tagName);
   }
 }

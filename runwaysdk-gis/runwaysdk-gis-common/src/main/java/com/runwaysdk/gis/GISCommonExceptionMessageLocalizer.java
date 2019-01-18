@@ -19,39 +19,11 @@
 package com.runwaysdk.gis;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
-import com.runwaysdk.ExceptionMessageLocalizer;
+import com.runwaysdk.LocalizationFacade;
 
-public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
+public class GISCommonExceptionMessageLocalizer
 {
-  private static final String BUNDLE = "gisCommonExceptions";
-
-  /**
-   * Fetches the parameterized, localized error message template for the given exception.
-   * The variable String arguments represent the parameters in the template string. For
-   * example, given the template "The {0} in the {1}." and arguments "cat" and "hat", the
-   * final String will be "The cat in the hat."
-   *
-   * @param locale
-   *          The desired locale of the message
-   * @param key
-   *          The name of the Exception whose message is being retrieved
-   * @param params
-   *          The array of parameters to plug into the template string
-   */
-  protected static String getMessage(Locale locale, String key, String... params)
-  {
-    String hashkey = BUNDLE + "-" + locale.toString();
-
-    if (!props.containsKey(hashkey))
-      props.put(hashkey, ResourceBundle.getBundle(BUNDLE, locale));
-
-    String template = props.get(hashkey).getString(key);
-
-    return parseMessage(template, params);
-  }
-
   /**
    * Gets the localized AttributePointParseException message, which indicates an
    * invalid Point.
@@ -64,7 +36,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributePointParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributePointParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributePointParseException", "The value [{0}] on attribute [{1}] does not represent a valid point.", invalidValue, attributeDisplayLabel);
   }
 
   /**
@@ -79,7 +51,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributeLineStringParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributeLineStringParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeLineStringParseException", "The value [{0}] on attribute [{1}] does not represent a valid line.", invalidValue, attributeDisplayLabel);
   }
 
   /**
@@ -94,7 +66,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributePolygonParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributePolygonParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributePolygonParseException", "The value [{0}] on attribute [{1}] does not represent a valid polygon.", invalidValue, attributeDisplayLabel);
   }
 
   /**
@@ -109,7 +81,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributeMultiPointParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributeMultiPointParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeMultiPointParseException", "The value [{0}] on attribute [{1}] does not represent a valid multi-point.", invalidValue, attributeDisplayLabel);
   }
 
   /**
@@ -124,7 +96,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributeMultiLineStringParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributeMultiLineStringParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeMultiLineStringParseException", "The value [{0}] on attribute [{1}] does not represent a valid multi-line.", invalidValue, attributeDisplayLabel);
   }
 
 
@@ -140,7 +112,7 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String attributeMultiPolygonParseException(Locale locale, String attributeDisplayLabel, String invalidValue)
   {
-    return getMessage(locale, "AttributeMultiPolygonParseException", invalidValue, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeMultiPolygonParseException", "The value [{0}] on attribute [{1}] does not represent a valid multi-polygon.", invalidValue, attributeDisplayLabel);
   }
 
   /**
@@ -155,6 +127,6 @@ public class GISCommonExceptionMessageLocalizer extends ExceptionMessageLocalize
    */
   public static String invalidDimensionException(Locale locale, String invalidDimension,  String attributeDisplayLabel)
   {
-    return getMessage(locale, "InvalidDimensionException", invalidDimension, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidDimensionException", "Dimension value [{0}] on attribute [{1}] is invalid.  Please specify a value between 0 and 4.", invalidDimension, attributeDisplayLabel);
   }
 }

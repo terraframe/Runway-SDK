@@ -21,48 +21,8 @@ package com.runwaysdk;
 import java.io.File;
 import java.util.Locale;
 
-import com.terraframe.utf8.UTF8ResourceBundle;
-
-public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
+public class CommonExceptionMessageLocalizer
 {
-  private static final String BUNDLE = "commonExceptions";
-
-  /**
-   * Fetches the parameterized, localized error message template for the given
-   * exception. The variable String arguments represent the parameters in the
-   * template string. For example, given the template "The {0} in the {1}." and
-   * arguments "cat" and "hat", the final String will be "The cat in the hat."
-   *
-   * @param locale
-   *          The desired locale of the message
-   * @param key
-   *          The name of the Exception whose message is being retrieved
-   * @param params
-   *          The array of parameters to plug into the template string
-   */
-  protected static String getMessage(Locale locale, String key, String... params)
-  {
-    String hashkey = BUNDLE;
-
-    if (locale != null)
-    {
-      hashkey += "-" + locale.toString();
-
-      if (!props.containsKey(hashkey))
-      {
-        props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE, locale));
-      }
-    }
-    else if (!props.containsKey(hashkey))
-    {
-      props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE));
-    }
-
-    String template = props.get(hashkey).getString(key);
-
-    return parseMessage(template, params);
-  }
-
   /**
    * Gets the localized {@link InvalidSessionException} message, which is thrown
    * when there is an error in the session layer
@@ -73,7 +33,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidSessionException(Locale locale)
   {
-    return getMessage(locale, "InvalidSessionException");
+    return LocalizationFacade.getMessage(locale, "InvalidSessionException", "Your session has expired.  Please log in again.");
   }
 
   /**
@@ -85,7 +45,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String runwayException(Locale locale)
   {
-    return getMessage(locale, "RunwayException");
+    return LocalizationFacade.getMessage(locale, "RunwayException", "An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.");
   }
 
   /**
@@ -97,7 +57,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String writingFileMessage(Locale locale, String filePathAndName)
   {
-    return getMessage(locale, "WritingFileMessage", filePathAndName);
+    return LocalizationFacade.getMessage(locale, "WritingFileMessage", "Writing file: [{0}]", filePathAndName);
   }
 
   /**
@@ -114,11 +74,11 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     if(file != null)
     {
-      return getMessage(locale, "FileReadException", file.getPath());
+      return LocalizationFacade.getMessage(locale, "FileReadException", "An error occurred while trying to read file [{0}].  Please try your operation again.", file.getPath());
     }
     else
     {
-      return getMessage(locale, "FileReadException", "stream");      
+      return LocalizationFacade.getMessage(locale, "FileReadException", "An error occurred while trying to read file [{0}].  Please try your operation again.", "stream");      
     }
   }
 
@@ -136,11 +96,11 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     if(file != null)
     {
-      return getMessage(locale, "FileWriteException", file.getPath());
+      return LocalizationFacade.getMessage(locale, "FileWriteException", "Could not write to file [{0}].  Please close an application that may be accessing the file and try your operation again.", file.getPath());
     }
     else
     {
-      return getMessage(locale, "FileWriteException", "stream");      
+      return LocalizationFacade.getMessage(locale, "FileWriteException", "Could not write to file [{0}].  Please close an application that may be accessing the file and try your operation again.", "stream");      
     }
   }
 
@@ -157,12 +117,12 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String booleanParseException(Locale locale, String name, String value)
   {
-    return getMessage(locale, "AttributeBooleanParseException", value, name);
+    return LocalizationFacade.getMessage(locale, "AttributeBooleanParseException", "The value [{0}] on attribute [{1}] must be true or false.", value, name);
   }
   
   public static String textParseException(Locale locale, String name, String value)
   {
-    return getMessage(locale, "AttributeTextParseException", value, name);
+    return LocalizationFacade.getMessage(locale, "AttributeTextParseException", "The value [{0}] on attribute [{1}] does not represent a valid text.", value, name);
   }
 
   /**
@@ -178,7 +138,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String integerParseException(Locale locale, String displayLabel, String value)
   {
-    return getMessage(locale, "AttributeIntegerParseException", value, displayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeIntegerParseException", "The value [{0}] on attribute [{1}] does not represent a valid integer.", value, displayLabel);
   }
 
   /**
@@ -194,7 +154,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String decimalParseException(Locale locale, String name, String value)
   {
-    return getMessage(locale, "DecimalParseException", value, name);
+    return LocalizationFacade.getMessage(locale, "DecimalParseException", "The value [{0}] on attribute [{1}] does not represent a valid decimal number.", value, name);
   }
 
   /**
@@ -210,7 +170,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String characterParseException(Locale locale, String name, String value)
   {
-    return getMessage(locale, "AttributeCharacterParseException", value, name);
+    return LocalizationFacade.getMessage(locale, "AttributeCharacterParseException", "The value [{0}] on attribute [{1}] does not represent a valid letter.", value, name);
   }
 
   /**
@@ -228,7 +188,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String referenceParseException(Locale locale, String name, String value, String type)
   {
-    return getMessage(locale, "AttributeReferenceParseExceptionWithValue", value, name, type);
+    return LocalizationFacade.getMessage(locale, "AttributeReferenceParseExceptionWithValue", "The value [{0}] on attribute [{1}] does not represent a valid [{2}].", value, name, type);
   }
 
   /**
@@ -246,7 +206,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String referenceParseException(Locale locale, String name, String type)
   {
-    return getMessage(locale, "AttributeReferenceParseException", name, type);
+    return LocalizationFacade.getMessage(locale, "AttributeReferenceParseException", "The value on attribute [{0}] does not represent a valid [{1}].", name, type);
   }
 
   /**
@@ -262,7 +222,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String dateTimeParseException(Locale locale, String attributeName, String value, String format)
   {
-    return getMessage(locale, "AttributeDateTimeParseException", value, attributeName, format);
+    return LocalizationFacade.getMessage(locale, "AttributeDateTimeParseException", "The value [{0}] on attribute [{1}] does not represent a valid date and time of the following format: [{2}].", value, attributeName, format);
   }
 
   /**
@@ -278,7 +238,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String timeParseException(Locale locale, String attributeName, String value, String format)
   {
-    return getMessage(locale, "AttributeTimeParseException", value, attributeName, format);
+    return LocalizationFacade.getMessage(locale, "AttributeTimeParseException", "The value [{0}] on attribute [{1}] does not represent a valid time of the following format: [{2}].", value, attributeName, format);
   }
 
   /**
@@ -294,7 +254,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String dateParseException(Locale locale, String attributeName, String value, String format)
   {
-    return getMessage(locale, "AttributeDateParseException", value, attributeName, format);
+    return LocalizationFacade.getMessage(locale, "AttributeDateParseException", "The value [{0}] on attribute [{1}] does not represent a valid date of the following format: [{2}].", value, attributeName, format);
   }
 
   /**
@@ -306,7 +266,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String configurationException(Locale locale)
   {
-    return getMessage(locale, "ConfigurationException");
+    return LocalizationFacade.getMessage(locale, "ConfigurationException", "You application is not properly configured.  Please alert your technical support team.");
   }
 
 
@@ -322,7 +282,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String conversionException(Locale locale)
   {
-    return getMessage(locale, "ConversionException");
+    return LocalizationFacade.getMessage(locale, "ConversionException", "A data conversion error occurred.  Please alert your technical support team.");
   }
 
 
@@ -335,7 +295,7 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String loaderDecoratorException(Locale locale)
   {
-    return getMessage(locale, "LoaderDecoratorException");
+    return LocalizationFacade.getMessage(locale, "LoaderDecoratorException", "An error occurred with the class loader.  Please alert your technical support staff.");
   }
 
   /**
@@ -351,6 +311,6 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeReadPermissionException(Locale locale, String attributeDisplayLabel, String classDisplayLabel)
   {
-    return getMessage(locale, "AttributeReadPermissionException", attributeDisplayLabel, classDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeReadPermissionException", "You do not have permission to read attribute [{0}] on [{1}].", attributeDisplayLabel, classDisplayLabel);
   }
 }

@@ -117,54 +117,15 @@ import com.runwaysdk.session.RoleManagementException_REMOVE;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.vault.VaultException;
 import com.runwaysdk.web.AdminScreenAccessException;
-import com.terraframe.utf8.UTF8ResourceBundle;
 
 /**
  * Provides typesafe getter for access to localized business-layer error
  * messages.
  * 
- * @author Eric Grunzke
+ * @author Richard Rowlands
  */
-public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
+public class ServerExceptionMessageLocalizer
 {
-  private static final String BUNDLE = "serverExceptions";
-
-  /**
-   * Fetches the parameterized, localized error message template for the given
-   * exception. The variable String arguments represent the parameters in the
-   * template string. For example, given the template "The {0} in the {1}." and
-   * arguments "cat" and "hat", the final String will be "The cat in the hat."
-   * 
-   * @param locale
-   *          The desired locale of the message
-   * @param key
-   *          The name of the Exception whose message is being retrieved
-   * @param params
-   *          The array of parameters to plug into the template string
-   */
-  protected static String getMessage(Locale locale, String key, String... params)
-  {
-    String hashkey = BUNDLE;
-
-    if (locale != null)
-    {
-      hashkey += "-" + locale.toString();
-
-      if (!props.containsKey(hashkey))
-      {
-        props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE, locale));
-      }
-    }
-    else if (!props.containsKey(hashkey))
-    {
-      props.put(hashkey, UTF8ResourceBundle.getBundle(BUNDLE));
-    }
-
-    String template = props.get(hashkey).getString(key);
-
-    return parseMessage(template, params);
-  }
-
   /**
    * Gets the localized {@link AbstractInstantiationException} message, which
    * indicates an error in a type or attribute definition.
@@ -178,7 +139,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidIdException(Locale locale, String oid)
   {
-    return getMessage(locale, "InvalidIdException", oid);
+    return LocalizationFacade.getMessage(locale, "InvalidIdException", "Object ID [{0}] is not a valid ID.", oid);
   }
 
   /**
@@ -192,7 +153,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String adminScreenAccessException(Locale locale, SingleActorDAOIF user)
   {
-    return getMessage(locale, "AdminScreenAccessException", user.getSingleActorName());
+    return LocalizationFacade.getMessage(locale, "AdminScreenAccessException", "The user [{0}] does not have access to the Admin Screen.", user.getSingleActorName());
   }
 
   /**
@@ -206,7 +167,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String problemCollectionException(Locale locale)
   {
-    return getMessage(locale, "ProblemCollectionException");
+    return LocalizationFacade.getMessage(locale, "ProblemCollectionException", "A problem occurred and your operation could not be completed.");
   }
 
   /**
@@ -222,7 +183,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String abstractInstantiationException(Locale locale, MdClassDAOIF mdClass)
   {
-    return getMessage(locale, "AbstractInstantiationException", mdClass.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AbstractInstantiationException", "The type [{0}] is abstract, and cannot be instantiated.", mdClass.getDisplayLabel(locale));
   }
 
   /**
@@ -238,7 +199,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeDefinitionException(Locale locale, MdAttributeDAOIF mdAttribute)
   {
-    return getMessage(locale, "AttributeDefinitionException", mdAttribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeDefinitionException", "The definition of attribute [{0}] contains an error.  Please check your input and try again. If the problem continues, please contact your support staff.", mdAttribute.getDisplayLabel(locale));
   }
 
   /**
@@ -257,7 +218,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateAttributeInInheritedHierarchy(Locale locale, MdAttributeDAOIF mdAttribute, MdClassDAOIF mdClassIF, MdClassDAOIF parentMdClassIF)
   {
-    return getMessage(locale, "DuplicateAttributeInInheritedHierarchy", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale), parentMdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "DuplicateAttributeInInheritedHierarchy", "Cannot add an attribute named [{0}] to class [{1}] because its parent class [{2}] already defines an attribute with that name.", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale), parentMdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -276,7 +237,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateAttributeDefinedInSubclass(Locale locale, MdAttributeDAOIF mdAttribute, MdClassDAOIF mdClassIF, MdClassDAOIF childMdClassIF)
   {
-    return getMessage(locale, "DuplicateAttributeDefinedInSubclass", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale), childMdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "DuplicateAttributeDefinedInSubclass", "Cannot add an attribute named [{0}] to class [{1}] because a child class [{3}] already defines an attribute with that name.", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale), childMdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -291,7 +252,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateAttributeDefinition(Locale locale, MdAttributeDAOIF mdAttribute, MdClassDAOIF mdClassIF)
   {
-    return getMessage(locale, "DuplicateAttributeDefinition", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "DuplicateAttributeDefinition", "Cannot add an attribute named [{0}] to class [{1}] because that class already defines an attribute with that name.", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -306,7 +267,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String cannotAddAttriubteToClassException(Locale locale, MdAttributeConcreteDAOIF mdAttribute, MdClassDAOIF forbiddenMdClassIF)
   {
-    return getMessage(locale, "CannotAddAttriubteToClassException", mdAttribute.getDisplayLabel(locale), forbiddenMdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "CannotAddAttriubteToClassException", "Cannot add attribute [{0}] to class [{1}] or one of its sublasses because attributes cannot be added to that class at runtime.", mdAttribute.getDisplayLabel(locale), forbiddenMdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -321,7 +282,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeOfWrongTypeForClassException(Locale locale, MdAttributeConcreteDAOIF mdAttribute, MdClassDAOIF mdAttributeDefiningClass, MdClassDAOIF mdClassIF)
   {
-    return getMessage(locale, "AttributeOfWrongTypeForClassException", mdAttribute.getDisplayLabel(locale), mdAttributeDefiningClass.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeOfWrongTypeForClassException", "Cannot add attribute [{0}] to class [{2}].  Class [{2}] cannot define an attribute of type [{1}].", mdAttribute.getDisplayLabel(locale), mdAttributeDefiningClass.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -337,7 +298,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String referenceAttributeNotReferencingClassException(Locale locale, MdAttributeConcreteDAOIF mdAttribute, MdClassDAOIF mdClassIF)
   {
-    return getMessage(locale, "ReferenceAttributeNotReferencingClassException", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "ReferenceAttributeNotReferencingClassException", "Attribute [{0}] on class [{1}] is a reference attribute but is not configured to reference anything. It cannot contain a value.", mdAttribute.getDisplayLabel(locale), mdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -351,7 +312,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeInvalidUniquenessConstraintException(Locale locale, MdAttributeConcreteDAOIF mdAttribute, MdClassDAOIF mdAttributeDefiningClass)
   {
-    return getMessage(locale, "AttributeInvalidUniquenessConstraintException", mdAttribute.getDisplayLabel(locale), mdAttributeDefiningClass.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeInvalidUniquenessConstraintException", "Attribute [{0}] cannot participate in a uniqueness constraint.  Attributes of type [{1}] cannot be unique.", mdAttribute.getDisplayLabel(locale), mdAttributeDefiningClass.getDisplayLabel(locale));
   }
 
   /**
@@ -367,7 +328,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String requiredUniquenessConstraintException(Locale locale, MdAttributeConcreteDAOIF mdAttribute)
   {
-    return getMessage(locale, "RequiredUniquenessConstraintException", mdAttribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "RequiredUniquenessConstraintException", "Attribute [{0}] cannot participate in a uniqueness constraint because it isn't required.", mdAttribute.getDisplayLabel(locale));
   }
 
   /**
@@ -382,7 +343,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String classPublishException(Locale locale, MdClassDAOIF mdClassIF)
   {
-    return getMessage(locale, "ClassPublishException", mdClassIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "ClassPublishException", "Only the root of a class hierarchy can be published.  Class [{0}] is not the root of a class hierarchy.", mdClassIF.getDisplayLabel(locale));
   }
 
   /**
@@ -400,7 +361,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String methodDefinitionException_NameExists(Locale locale, MdMethodDAOIF mdMethod, MdTypeDAOIF definingMdType)
   {
-    return getMessage(locale, "MethodDefinitionException_NameExists", definingMdType.getDisplayLabel(locale), mdMethod.getName());
+    return LocalizationFacade.getMessage(locale, "MethodDefinitionException_NameExists", "[{0}] already has a method with the name [{1}].", definingMdType.getDisplayLabel(locale), mdMethod.getName());
   }
 
   /**
@@ -420,7 +381,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String methodDefinitionException_DefiningType(Locale locale, MdMethodDAOIF mdMethod, MdTypeDAOIF definingMdTypeIF, MdBusinessDAOIF mdClassMdBusiness)
   {
-    return getMessage(locale, "MethodDefinitionException_InvalidParentReference", mdMethod.getDisplayLabel(locale), definingMdTypeIF.getDisplayLabel(locale), mdClassMdBusiness.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "MethodDefinitionException_DefiningType", "Method [{0}] is defined on an invalid type.  [{1}] is not a [{2}] or a [{3}].", mdMethod.getDisplayLabel(locale), definingMdTypeIF.getDisplayLabel(locale), mdClassMdBusiness.getDisplayLabel(locale));
   }
 
   /**
@@ -438,7 +399,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String methodDefinitionException_InvalidReturnType(Locale locale, MdMethodDAOIF mdMethod, String returnType)
   {
-    return getMessage(locale, "MethodDefinitionException_InvalidReturnType", returnType, mdMethod.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "MethodDefinitionException_InvalidReturnType", "The return type [{0}] on method [{1}] is invalid.  Return types must be a Java primitive wrapper class or a predefined class that is published.", returnType, mdMethod.getDisplayLabel(locale));
   }
 
   /**
@@ -456,7 +417,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String parameterDefinitionException_NameExists(Locale locale, MdParameterDAOIF mdParameter, MdMethodDAOIF mdMethod)
   {
-    return getMessage(locale, "ParameterDefinitionException_NameExists", mdMethod.getDisplayLabel(locale), mdParameter.getParameterName());
+    return LocalizationFacade.getMessage(locale, "ParameterDefinitionException_NameExists", "[{0}] already has a parameter with the name [{1}].", mdMethod.getDisplayLabel(locale), mdParameter.getParameterName());
   }
 
   /**
@@ -474,7 +435,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String parameterDefinitionException_OrderExists(Locale locale, MdParameterDAOIF mdParameter, MetadataDAOIF metadata, MdParameterDAOIF existingMdParameter)
   {
-    return getMessage(locale, "ParameterDefinitionException_OrderExists", metadata.getDisplayLabel(locale), existingMdParameter.getParameterName(), mdParameter.getParameterOrder());
+    return LocalizationFacade.getMessage(locale, "ParameterDefinitionException_OrderExists", "[{0}] already has parameter [{1}] with order [{2}].", metadata.getDisplayLabel(locale), existingMdParameter.getParameterName(), mdParameter.getParameterOrder());
   }
 
   /**
@@ -492,7 +453,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   public static String parameterDefinitionException_InvalidType(Locale locale, MdParameterDAOIF mdParameter, ParameterMarker marker)
   {
-    return getMessage(locale, "ParameterDefinitionException_InvalidType", mdParameter.getDisplayLabel(locale), mdParameter.getParameterName(), marker.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "ParameterDefinitionException_InvalidType", "Type [{0}] of parameter [{1}] on method [{2}] is invalid.  Parameter types must be a Java primitive wrapper class or a predefined class that is published.", mdParameter.getDisplayLabel(locale), mdParameter.getParameterName(), marker.getDisplayLabel(locale));
   }
 
   /**
@@ -513,14 +474,14 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
     if (maxLength > 1)
     {
-      unitString = getMessage(locale, "AttributeLengthException.Unit.Characters");
+      unitString = LocalizationFacade.getMessage(locale, "AttributeLengthException.Unit.Characters", "characters");
     }
     else
     {
-      unitString = getMessage(locale, "AttributeLengthException.Unit.Character");
+      unitString = LocalizationFacade.getMessage(locale, "AttributeLengthException.Unit.Character", "character");
     }
 
-    return getMessage(locale, "AttributeLengthException", attribute.getDisplayLabel(locale), maxLength.toString(), unitString);
+    return LocalizationFacade.getMessage(locale, "AttributeLengthException", "[{0}] many not exceed a length of {1} {2}.", attribute.getDisplayLabel(locale), maxLength.toString(), unitString);
   }
 
   /**
@@ -541,14 +502,14 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
     if (maxLength > 1)
     {
-      unitString = getMessage(locale, "AttributeLengthException.Unit.Bytes");
+      unitString = LocalizationFacade.getMessage(locale, "AttributeLengthException.Unit.Bytes", "bytes");
     }
     else
     {
-      unitString = getMessage(locale, "AttributeLengthException.Unit.Byte");
+      unitString = LocalizationFacade.getMessage(locale, "AttributeLengthException.Unit.Byte", "byte");
     }
 
-    return getMessage(locale, "AttributeLengthException", attribute.getDisplayLabel(locale), maxLength.toString(), unitString);
+    return LocalizationFacade.getMessage(locale, "AttributeLengthException", "[{0}] many not exceed a length of {1} {2}.", attribute.getDisplayLabel(locale), maxLength.toString(), unitString);
   }
 
   /**
@@ -564,7 +525,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeTypeException(Locale locale, AttributeIF attribute)
   {
-    return getMessage(locale, "AttributeTypeException", attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeTypeException", "The attribute [{0}] on class [{1}] is of the wrong type.  The expected type is [{2}] but the given type is [{3}].", attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -581,7 +542,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueException(Locale locale, AttributeIF attribute, String value)
   {
-    return getMessage(locale, "AttributeValueException", value, attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeValueException", "[{0}] is not a valid value for [{1}].", value, attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -596,7 +557,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueExceptionGeneric(Locale locale, String value)
   {
-    return getMessage(locale, "AttributeValueExceptionGeneric", value);
+    return LocalizationFacade.getMessage(locale, "AttributeValueExceptionGeneric", "[{0}] is not a valid value.", value);
   }
 
   /**
@@ -615,7 +576,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueAboveRangeException(Locale locale, AttributeIF attribute, String value, String limit)
   {
-    return getMessage(locale, "AttributeValueAboveRangeProblem", value, attribute.getDisplayLabel(locale), limit);
+    return LocalizationFacade.getMessage(locale, "AttributeValueAboveRangeProblem", "[{0}] is not a valid value for [{1}]. Value cannot be greater than [{2}].", value, attribute.getDisplayLabel(locale), limit);
   }
 
   /**
@@ -634,7 +595,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueBelowRangeException(Locale locale, AttributeIF attribute, String value, String limit)
   {
-    return getMessage(locale, "AttributeValueBelowRangeProblem", value, attribute.getDisplayLabel(locale), limit);
+    return LocalizationFacade.getMessage(locale, "AttributeValueBelowRangeProblem", "[{0}] is not a valid value for [{1}]. Value cannot be less than [{2}].", value, attribute.getDisplayLabel(locale), limit);
   }
 
   /**
@@ -652,7 +613,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueCannotBeNegativeException(Locale locale, AttributeIF attribute, String value)
   {
-    return getMessage(locale, "AttributeValueCannotBeNegativeProblem", value, attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeValueCannotBeNegativeProblem", "[{0}] is not a valid value for [{1}]. Value cannot be negative.", value, attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -670,7 +631,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueCannotBePositiveException(Locale locale, AttributeIF attribute, String value)
   {
-    return getMessage(locale, "AttributeValueCannotBePositiveProblem", value, attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeValueCannotBePositiveProblem", "[{0}] is not a valid value for [{1}]. Value cannot be positive.", value, attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -687,7 +648,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeValueCannotBeZeroException(Locale locale, AttributeIF attribute, String value)
   {
-    return getMessage(locale, "AttributeValueCannotBeZeroProblem", value, attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "AttributeValueCannotBeZeroProblem", "[{0}] is not a valid value for [{1}]. Value cannot be zero.", value, attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -710,11 +671,11 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     if (parent != null)
     {
       String parentCacheAlgorithmDisplayLabel = ( (AttributeLocalIF) parent.getCacheAlgorithm().getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(locale);
-      return getMessage(locale, "CacheCodeException", child.getDisplayLabel(locale), childCacheAlgorithmDisplayLabel, parent.getDisplayLabel(locale), parentCacheAlgorithmDisplayLabel);
+      return LocalizationFacade.getMessage(locale, "CacheCodeException", "Type [{0}] cannot cache [{1}], because it inherits from [{2}], which caches [{3}].  Please select a different caching algorithm.", child.getDisplayLabel(locale), childCacheAlgorithmDisplayLabel, parent.getDisplayLabel(locale), parentCacheAlgorithmDisplayLabel);
     }
 
     // We don't have a parent type, so get the shortened message
-    return getMessage(locale, "CacheCodeExceptionShort", child.getDisplayLabel(locale), childCacheAlgorithmDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "CacheCodeExceptionShort", "Type [{0}] cannot cache [{1}].  Please select a different caching algorithm.", child.getDisplayLabel(locale), childCacheAlgorithmDisplayLabel);
   }
 
   /**
@@ -729,7 +690,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String metadataCannotBeDeletedException(Locale locale, MetadataDAO metadata)
   {
-    return getMessage(locale, "MetadataCannotBeDeletedException", metadata.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "MetadataCannotBeDeletedException", "Metadata that defines [{0}] cannot be deleted.", metadata.getDisplayLabel(locale));
   }
 
   /**
@@ -744,7 +705,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String deleteUnappliedObjectException(Locale locale, Entity entity)
   {
-    return getMessage(locale, "DeleteUnappliedObjectException", entity.toString());
+    return LocalizationFacade.getMessage(locale, "DeleteUnappliedObjectException", "[{0}] cannot be deleted because it has not yet been applied.", entity.toString());
   }
 
   /**
@@ -753,7 +714,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String disconnectedEntityException(Locale locale)
   {
-    return getMessage(locale, "DisconnectedEntityException");
+    return LocalizationFacade.getMessage(locale, "DisconnectedEntityException", "A disconnected entity cannot be applied.");
   }
 
   /**
@@ -768,7 +729,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String cannotDeleteReferencedObject(Locale locale, Entity entity, MdEntityDAOIF refMdEntityIF, MdAttributeConcreteDAOIF refMdAttributeIF)
   {
-    return getMessage(locale, "CannotDeleteReferencedObject", entity.toString(), refMdAttributeIF.getDisplayLabel(locale), refMdEntityIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "CannotDeleteReferencedObject", "Cannot delete [{0}].  Attribute [{1}] on type [{2}] references it and is a required attribute.", entity.toString(), refMdAttributeIF.getDisplayLabel(locale), refMdEntityIF.getDisplayLabel(locale));
   }
 
   /**
@@ -785,7 +746,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String roleManagementException_ADD(Locale locale)
   {
-    return getMessage(locale, "RoleManagementException_ADD");
+    return LocalizationFacade.getMessage(locale, "RoleManagementException_ADD", "You do not have adequate permissions to add a user to a role.");
   }
 
   /**
@@ -802,7 +763,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String roleManagementException_REMOVE(Locale locale)
   {
-    return getMessage(locale, "RoleManagementException_REMOVE");
+    return LocalizationFacade.getMessage(locale, "RoleManagementException_REMOVE", "You do not have adequate permissions to remove a user from a role.");
   }
 
   /**
@@ -818,7 +779,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String classLoaderException(Locale locale, MetadataDAOIF metadata)
   {
-    return getMessage(locale, "ClassLoaderException", metadata.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "ClassLoaderException", "Error encountered when loading [{0}].  Please try again.  If the problem continues, alert your technical support staff.", metadata.getDisplayLabel(locale));
   }
 
   /**
@@ -831,7 +792,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String compilerException(Locale locale, String errors)
   {
-    return getMessage(locale, "CompilerException", errors);
+    return LocalizationFacade.getMessage(locale, "CompilerException", "Your request created compile errors in business classes.\\n{0}", errors);
   }
 
   /**
@@ -844,7 +805,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String dataNotFoundException(Locale locale)
   {
-    return getMessage(locale, "DataNotFoundException");
+    return LocalizationFacade.getMessage(locale, "DataNotFoundException", "The requested [{0}] was not found.  Please verify that all information was correctly entered in your request and try again.");
   }
 
   /**
@@ -859,7 +820,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String dataNotFoundException(Locale locale, MetadataDAOIF metadata)
   {
-    return getMessage(locale, "DataNotFoundException", metadata.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "DataNotFoundException", "The requested [{0}] was not found.  Please verify that all information was correctly entered in your request and try again.", metadata.getDisplayLabel(locale));
   }
 
   /**
@@ -878,7 +839,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     String typeDisplayLabel = mdEntityDAOIF.getDisplayLabel(locale);
     String attributeDisplayLabel = mdEntityDAOIF.getAttributeIF(EntityInfo.KEY).getDisplayLabel(locale);
-    return getMessage(locale, "MissingKeyNameValue", typeDisplayLabel, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "MissingKeyNameValue", "Objects of type [{0}] require a value for the [{1}] attribute in order to generate a deterministic ID.", typeDisplayLabel, attributeDisplayLabel);
   }
 
   /**
@@ -896,7 +857,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateDataException(Locale locale)
   {
-    return getMessage(locale, "DuplicateDataException");
+    return LocalizationFacade.getMessage(locale, "DuplicateDataException", "An object already exists that has values on attributes that are unique.");
   }
 
   /**
@@ -914,7 +875,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateDataExceptionSingle(Locale locale, String definingTypeLabel, String attributeDisplayLabel, String value)
   {
-    return getMessage(locale, "DuplicateDataExceptionSingle", definingTypeLabel, value, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "DuplicateDataExceptionSingle", "An instance of [{0}] already exists with [{1}] as the value for {2} - please choose a different value.", definingTypeLabel, value, attributeDisplayLabel);
   }
 
   /**
@@ -930,7 +891,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateDataExceptionSingleNoValue(Locale locale, String definingTypeLabel, String attributeDisplayLabel)
   {
-    return getMessage(locale, "DuplicateDataExceptionSingleNoValue", definingTypeLabel, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "DuplicateDataExceptionSingleNoValue", "An instance of [{0}] already exists with the same value for {1} - please choose a different value.", definingTypeLabel, attributeDisplayLabel);
   }
 
   /**
@@ -948,7 +909,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateDataExceptionMultiple(Locale locale, String definingTypeLabel, String attributeDisplayLabels, String values)
   {
-    return getMessage(locale, "DuplicateDataExceptionMultiple", definingTypeLabel, values, attributeDisplayLabels);
+    return LocalizationFacade.getMessage(locale, "DuplicateDataExceptionMultiple", "A instance of [{0}] already exists with values {1} for attributes {2} - please choose different values.", definingTypeLabel, values, attributeDisplayLabels);
   }
 
   /**
@@ -964,7 +925,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateDataExceptionMultipleNoValues(Locale locale, String definingTypeLabel, String attributeDisplayLabels)
   {
-    return getMessage(locale, "DuplicateDataExceptionMultipleNoValues", definingTypeLabel, attributeDisplayLabels);
+    return LocalizationFacade.getMessage(locale, "DuplicateDataExceptionMultipleNoValues", "A instance of [{0}] already exists with the same values for attributes {1} - please choose different values.", definingTypeLabel, attributeDisplayLabels);
   }
 
   /**
@@ -979,7 +940,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String emptyValueException(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "EmptyValueProblem", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "EmptyValueProblem", "[{0}] requires a value.", attributeDisplayLabel);
   }
 
   /**
@@ -994,7 +955,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String encryptionException(Locale locale, MdAttributeEncryptionDAOIF attribute)
   {
-    return getMessage(locale, "EncryptionException", attribute.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "EncryptionException", "Operation cancelled - there was a problem encrypting [{0}].  Please try again.", attribute.getDisplayLabel(locale));
   }
 
   /**
@@ -1006,7 +967,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String domainPermissionException(Locale locale)
   {
-    return getMessage(locale, "RunwayException");
+    return LocalizationFacade.getMessage(locale, "DomainPermissionException", "You do not have permission to access this domain.");
   }
 
   /**
@@ -1025,17 +986,17 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String siteException(Locale locale, String entityToString, String entitySite, String currentSite)
   {
-    return getMessage(locale, "SiteException", entityToString, entitySite, currentSite);
+    return LocalizationFacade.getMessage(locale, "SiteException", "An object [{0}] owned by site [{1}] cannot be modified by site [{2}].", entityToString, entitySite, currentSite);
   }
 
   public static String sourceElementNotDeclaredException(Locale locale, String value)
   {
-    return getMessage(locale, "SourceElementNotDeclaredException", value);
+    return LocalizationFacade.getMessage(locale, "SourceElementNotDeclaredException", "Cannot update a merged element which does not exist.", value);
   }
 
   public static String xsdDefinitionNotResolvedException(Locale locale, String value)
   {
-    return getMessage(locale, "XSDDefinitionNotResolvedException", value);
+    return LocalizationFacade.getMessage(locale, "XSDDefinitionNotResolvedException", "XSD definition with name [{0}] could not be resolved.", value);
   }
 
   /**
@@ -1049,7 +1010,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String immutableAttributeProblem(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "ImmutableAttributeProblem", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "ImmutableAttributeProblem", "[{0}] cannot be modified.", attributeDisplayLabel);
   }
 
   /**
@@ -1063,7 +1024,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String systemAttributeProblem(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "SystemAttributeProblem", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "SystemAttributeProblem", "[{0}] cannot be modified because it is a system attribute.", attributeDisplayLabel);
   }
 
   /**
@@ -1076,7 +1037,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String inheritanceException(Locale locale)
   {
-    return getMessage(locale, "InheritanceException");
+    return LocalizationFacade.getMessage(locale, "InheritanceException", "The requested operation would corrupt the inheritance hierarchy.");
   }
 
   /**
@@ -1089,7 +1050,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidDefinitionException(Locale locale)
   {
-    return getMessage(locale, "InvalidDefinitionException");
+    return LocalizationFacade.getMessage(locale, "InvalidDefinitionException", "Your operation created or modified metadata with invalid values. Please check your input and try again. If the problem continues, please contact your support staff.");
   }
 
   /**
@@ -1106,7 +1067,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String identicalIndexException(Locale locale, String mdEntityDefinesType, String mdIndexDisplayLabel, String attributes)
   {
-    return getMessage(locale, "IdenticalIndexException");
+    return LocalizationFacade.getMessage(locale, "IdenticalIndexException", "Index [{1}] on entity [{0}] is invalid. An index is already defined on entity [{0}] with attributes [{2}].");
   }
 
   /**
@@ -1122,7 +1083,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeDoesNotExistExceptionNoType(Locale locale, String attributeName)
   {
-    return getMessage(locale, "AttributeDoesNotExistExceptionNoType", attributeName);
+    return LocalizationFacade.getMessage(locale, "AttributeDoesNotExistExceptionNoType", "The attribute [{0}] does not exist.", attributeName);
   }
 
   /**
@@ -1138,7 +1099,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeDoesNotExistExceptionWithType(Locale locale, String attributeName, String classDisplayLabel)
   {
-    return getMessage(locale, "AttributeDoesNotExistExceptionWithType", attributeName, classDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeDoesNotExistExceptionWithType", "The attribute [{0}] on [{1}] does not exist.", attributeName, classDisplayLabel);
   }
 
   /**
@@ -1159,7 +1120,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateMdEnumerationDefinitionException(Locale locale, String mdEnumerationLabel, String masterClassType, String duplicateTypeName)
   {
-    return getMessage(locale, "DuplicateMdEnumerationDefinitionException", mdEnumerationLabel, masterClassType, duplicateTypeName);
+    return LocalizationFacade.getMessage(locale, "DuplicateMdEnumerationDefinitionException", "A [{0}] already exists for [{1}] with type name [{2}].", mdEnumerationLabel, masterClassType, duplicateTypeName);
   }
 
   /**
@@ -1175,7 +1136,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidEnumerationName(Locale locale, String enumName, MdEnumerationDAOIF mdEnumerationIF)
   {
-    return getMessage(locale, "InvalidEnumerationName", enumName, mdEnumerationIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "InvalidEnumerationName", "The enummeration name [{0}] is not valid for enumeration [{1}].", enumName, mdEnumerationIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1194,7 +1155,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidAttributeForIndexDefinitionException(Locale locale, String definesType, String attributeDisplayLabel)
   {
-    return getMessage(locale, "InvalidAttributeForIndexDefinitionException", definesType, attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidAttributeForIndexDefinitionException", "Attribute [{1}] is not defined by by [{0}].", definesType, attributeDisplayLabel);
   }
 
   /**
@@ -1211,7 +1172,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String noAttributeOnIndexException(Locale locale, String definesType)
   {
-    return getMessage(locale, "NoAttributeOnIndexException", definesType);
+    return LocalizationFacade.getMessage(locale, "NoAttributeOnIndexException", "Index on [{0}] could not be applied to the database because it does not contain any attributes.", definesType);
   }
 
   /**
@@ -1237,7 +1198,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     {
       referenceDisplayLabel = reference.getDisplayLabel(Session.getCurrentLocale());
     }
-    return getMessage(locale, "InvalidReferenceException", attribute.getDisplayLabel(locale), referenceDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidReferenceException", "The value for [{0}] is invalid - it must reference a [{1}].", attribute.getDisplayLabel(locale), referenceDisplayLabel);
   }
 
   /**
@@ -1259,7 +1220,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidAttributeTypeException(Locale locale, String attributeDisplayLabel, String definingTypeLabel, String expectedAttributeTypeDisplayLabel, String givenAttributeTypeDisplayLabel)
   {
-    return getMessage(locale, "InvalidAttributeTypeException", attributeDisplayLabel, definingTypeLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidAttributeTypeException", "The attribute [{0}] on class [{1}] is of the wrong type.  The expected type is [{2}] but the given type is [{3}].", attributeDisplayLabel, definingTypeLabel);
   }
 
   /**
@@ -1276,7 +1237,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String lockException(Locale locale, Entity entity, String errorProperty)
   {
-    return getMessage(locale, errorProperty, entity.toString());
+    return LocalizationFacade.getMessage(locale, errorProperty, errorProperty + " [{0}]", entity.toString());
   }
 
   /**
@@ -1291,7 +1252,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String nameConventionException(Locale locale, String name)
   {
-    return getMessage(locale, "NameConventionException", name);
+    return LocalizationFacade.getMessage(locale, "NameConventionException", "The name [{0}] violates a naming convention - java style conventions are enforced.  Please consult your documentation for details.", name);
   }
 
   /**
@@ -1307,7 +1268,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String createPermissionException(Locale locale, ComponentIF componentIF)
   {
-    return getMessage(locale, "CreatePermissionException", componentIF.toString());
+    return LocalizationFacade.getMessage(locale, "CreatePermissionException", "You do not have permission to create [{0}].", componentIF.toString());
   }
 
   /**
@@ -1323,7 +1284,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String deletePermissionException(Locale locale, ComponentIF componentIF)
   {
-    return getMessage(locale, "DeletePermissionException", componentIF.toString());
+    return LocalizationFacade.getMessage(locale, "DeletePermissionException", "You do not have permission to delete [{0}].", componentIF.toString());
   }
 
   /**
@@ -1339,7 +1300,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String readPermissionException(Locale locale, ComponentIF componentIF)
   {
-    return getMessage(locale, "ReadPermissionException", componentIF.toString());
+    return LocalizationFacade.getMessage(locale, "ReadPermissionException", "You do not have permission to read [{0}].", componentIF.toString());
   }
 
   /**
@@ -1356,7 +1317,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String readTypePermissionException(Locale locale, String typeDisplayLabel)
   {
-    return getMessage(locale, "ReadTypePermissionException", typeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "ReadTypePermissionException", "You do not have permission to read [{0}].", typeDisplayLabel);
   }
 
   /**
@@ -1373,7 +1334,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String deleteTypePermissionException(Locale locale, String typeDisplayLabel)
   {
-    return getMessage(locale, "DeleteTypePermissionException", typeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "DeleteTypePermissionException", "You do not have permission to delete instances of type [{0}].", typeDisplayLabel);
   }
 
   /**
@@ -1387,7 +1348,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String groovyQueryExecuteException(Locale locale, String requiredRoleName)
   {
-    return getMessage(locale, "GroovyQueryExecuteException", requiredRoleName);
+    return LocalizationFacade.getMessage(locale, "GroovyQueryExecuteException", "You must be in the [{0}] role to execute arbitrary queries.", requiredRoleName);
   }
 
   /**
@@ -1403,7 +1364,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String writePermissionException(Locale locale, ComponentIF componentIF)
   {
-    return getMessage(locale, "WritePermissionException", componentIF.toString());
+    return LocalizationFacade.getMessage(locale, "WritePermissionException", "You do not have permission to update [{0}].", componentIF.toString());
   }
 
   /**
@@ -1420,7 +1381,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String grantTypePermissionException(Locale locale, MdTypeDAOIF mdTypeIF)
   {
-    return getMessage(locale, "GrantTypePermissionException", mdTypeIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "GrantTypePermissionException", "You do not have permission to grant permissions on type [{0}].", mdTypeIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1439,7 +1400,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String grantMethodPermissionException(Locale locale, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF)
   {
-    return getMessage(locale, "GrantMethodPermissionException", mdTypeIF.getDisplayLabel(locale), mdMethodIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "GrantMethodPermissionException", "You do not have permission to grant permissions on method [{1}] defined by [{0}].", mdTypeIF.getDisplayLabel(locale), mdMethodIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1458,7 +1419,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String grantAttributePermissionException(Locale locale, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF)
   {
-    return getMessage(locale, "GrantAttributePermissionException", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "GrantAttributePermissionException", "You do not have permission to grant permissions on attribute [{1}] on type [{0}].", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1475,7 +1436,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String revokeTypePermissionException(Locale locale, MdTypeDAOIF mdTypeIF)
   {
-    return getMessage(locale, "RevokeTypePermissionException", mdTypeIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "RevokeTypePermissionException", "You do not have permission to revoke permissions from type [{0}].", mdTypeIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1494,7 +1455,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String revokeMethodPermissionException(Locale locale, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF)
   {
-    return getMessage(locale, "RevokeMethodPermissionException", mdTypeIF.getDisplayLabel(locale), mdMethodIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "RevokeMethodPermissionException", "You do not have permission to revoke permissions on method [{1}] defined by [{0}].", mdTypeIF.getDisplayLabel(locale), mdMethodIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1513,7 +1474,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String revokeAttributePermissionException(Locale locale, MdClassDAOIF mdClassIF, MdAttributeConcreteDAOIF mdAttributeIF)
   {
-    return getMessage(locale, "RevokeAttributePermissionException", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale));
+    return LocalizationFacade.getMessage(locale, "RevokeAttributePermissionException", "You do not have permission to revoke permissions on attribute [{1}] on type [{0}].", mdClassIF.getDisplayLabel(locale), mdAttributeIF.getDisplayLabel(locale));
   }
 
   /**
@@ -1529,7 +1490,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String executeStaticPermissionException(Locale locale, String mdTypeDisplayLabel, String mdMethodDislpayLabel)
   {
-    return getMessage(locale, "ExecuteStaticPermissionException", mdTypeDisplayLabel, mdMethodDislpayLabel);
+    return LocalizationFacade.getMessage(locale, "ExecuteStaticPermissionException", "You do not have permission to [{1}] on [{0}].", mdTypeDisplayLabel, mdMethodDislpayLabel);
   }
 
   /**
@@ -1546,7 +1507,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String executeInstancePermissionException(Locale locale, Mutable mutable, String mdMethodDislpayLabel)
   {
-    return getMessage(locale, "ExecuteInstancePermissionException", mutable.toString(), mdMethodDislpayLabel);
+    return LocalizationFacade.getMessage(locale, "ExecuteInstancePermissionException", "You do not have permission to [{1}] on [{0}].", mutable.toString(), mdMethodDislpayLabel);
   }
 
   /**
@@ -1562,7 +1523,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String promotePermissionException(Locale locale, Business busines, String stateLabel)
   {
-    return getMessage(locale, "PromotePermissionException", busines.toString(), stateLabel);
+    return LocalizationFacade.getMessage(locale, "PromotePermissionException", "You do not have permission to promote [{0}] to [{1}].", busines.toString(), stateLabel);
   }
 
   /**
@@ -1582,7 +1543,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String addChildPermissionException(Locale locale, Business childBusiness, Business parentBusiness, String childRelDisplayLabel)
   {
-    return getMessage(locale, "AddChildPermissionException", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AddChildPermissionException", "You do not have permission to add [{0}] to [{1}] as [{2}].", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
   }
 
   /**
@@ -1602,7 +1563,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String addParentPermissionException(Locale locale, Business parentBusiness, Business childBusiness, String childRelDisplayLabel)
   {
-    return getMessage(locale, "AddParentPermissionException", parentBusiness.toString(), childBusiness.toString(), childRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AddParentPermissionException", "You do not have permission to add [{0}] to [{1}] as [{2}].", parentBusiness.toString(), childBusiness.toString(), childRelDisplayLabel);
   }
 
   /**
@@ -1622,7 +1583,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String deleteChildPermissionException(Locale locale, Business childBusiness, Business parentBusiness, String childRelDisplayLabel)
   {
-    return getMessage(locale, "DeleteChildPermissionException", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "DeleteChildPermissionException", "You do not have permission to remove [{0}] from [{1}] as [{2}].", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
   }
 
   /**
@@ -1642,7 +1603,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String deleteParentPermissionException(Locale locale, Business parentBusiness, Business childBusiness, String parentRelDisplayLabel)
   {
-    return getMessage(locale, "DeleteParentPermissionException", parentBusiness.toString(), childBusiness.toString(), parentRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "DeleteParentPermissionException", "You do not have permission to remove [{0}] from [{1}] as [{2}].", parentBusiness.toString(), childBusiness.toString(), parentRelDisplayLabel);
   }
 
   /**
@@ -1660,7 +1621,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String readChildPermissionException(Locale locale, Business parentBusiness, String childRelDisplayLabel)
   {
-    return getMessage(locale, "ReadChildPermissionException", parentBusiness.toString(), childRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "ReadChildPermissionException", "You do not have permission to read [{0}] on [{1}].", parentBusiness.toString(), childRelDisplayLabel);
   }
 
   /**
@@ -1678,7 +1639,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String readParentPermissionException(Locale locale, Business childBusiness, String parentRelDisplayLabel)
   {
-    return getMessage(locale, "ReadParentPermissionException", childBusiness.toString(), parentRelDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "ReadParentPermissionException", "You do not have permission to read [{0}] on [{1}].", childBusiness.toString(), parentRelDisplayLabel);
   }
 
   /**
@@ -1697,7 +1658,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeWritePermissionException(Locale locale, ComponentIF componentIF, MdAttributeDAOIF mdAttribute, SingleActorDAOIF user)
   {
-    return getMessage(locale, "AttributeWritePermissionException", componentIF.toString(), mdAttribute.definesAttribute(), user.getSingleActorName());
+    return LocalizationFacade.getMessage(locale, "AttributeWritePermissionException", "User [{2}] does not have permission to modify attribute [{1}] on [{0}].", componentIF.toString(), mdAttribute.definesAttribute(), user.getSingleActorName());
   }
 
   /**
@@ -1710,7 +1671,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipConstraintException(Locale locale)
   {
-    return getMessage(locale, "RelationshipConstraintException");
+    return LocalizationFacade.getMessage(locale, "RelationshipConstraintException", "The requested operation would violate a constraint on Relationships.");
   }
 
   /**
@@ -1727,7 +1688,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipRecursionException(Locale locale, String treeLabel, String parentUniqueLabel, String childUniqueLabel)
   {
-    return getMessage(locale, "RelationshipRecursionException", treeLabel, parentUniqueLabel, childUniqueLabel);
+    return LocalizationFacade.getMessage(locale, "RelationshipRecursionException", "Relationship [{0}] cannot be created.  [{1}] already has the parent object [{2}] as a child. This would cause an infinite recursive relationship.", treeLabel, parentUniqueLabel, childUniqueLabel);
   }
 
   /**
@@ -1743,7 +1704,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipInvalidParentDefException1(Locale locale, String label)
   {
-    return getMessage(locale, "RelationshipInvalidParentDefException1");
+    return LocalizationFacade.getMessage(locale, "RelationshipInvalidParentDefException1", "Super Relationship [{0}] cannot be extended.");
   }
 
   /**
@@ -1760,7 +1721,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipInvalidParentDefException2(Locale locale, String label)
   {
-    return getMessage(locale, "RelationshipInvalidParentDefException2");
+    return LocalizationFacade.getMessage(locale, "RelationshipInvalidParentDefException2", "Relationship types must inherit from another relationship type. The given super type [{0}] is a class.");
   }
 
   /**
@@ -1778,7 +1739,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipInvalidObjectException(Locale locale, String structTypeLabel, String relationshipTypeLabel)
   {
-    return getMessage(locale, "RelationshipInvalidObjectException", structTypeLabel, relationshipTypeLabel);
+    return LocalizationFacade.getMessage(locale, "RelationshipInvalidObjectException", "[{0}] is a basic object.  It cannot participate in the [{1}] relationship.", structTypeLabel, relationshipTypeLabel);
   }
 
   /**
@@ -1803,7 +1764,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String relationshipCardinalityException(Locale locale, String objectLabel, String cardinality, String relationshipLabel, String instanceLabel, String otherObjectLabel)
   {
-    return getMessage(locale, "RelationshipCardinalityException", objectLabel, cardinality, relationshipLabel, instanceLabel, otherObjectLabel);
+    return LocalizationFacade.getMessage(locale, "RelationshipCardinalityException", "A [{0}] can only be in {1} [{2}] relationships with objects of type [{4}].  {3} already has {1} [{4}].", objectLabel, cardinality, relationshipLabel, instanceLabel, otherObjectLabel);
   }
 
   /**
@@ -1825,7 +1786,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateGraphPathException(Locale locale, String parentUniqueString, String childRelLabel, String childUniqueString)
   {
-    return getMessage(locale, "DuplicateGraphPathException", parentUniqueString, childRelLabel, childUniqueString);
+    return LocalizationFacade.getMessage(locale, "DuplicateGraphPathException", "[{0}] already [{1}] [{2}].", parentUniqueString, childRelLabel, childUniqueString);
   }
 
   /**
@@ -1840,7 +1801,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String reservedWordException(Locale locale, String reservedWord, ReservedWordException.Origin exceptionOrigin)
   {
-    return getMessage(locale, "ReservedWordException" + exceptionOrigin.getKey(), reservedWord);
+    return LocalizationFacade.getMessage(locale, "ReservedWordException" + exceptionOrigin.getKey(), "The name [{0}] is reserved - please specify a different name.", reservedWord);
   }
 
   /**
@@ -1855,7 +1816,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidIdentifierException(Locale locale, String invalidIdentifier)
   {
-    return getMessage(locale, "InvalidIdentifierException", invalidIdentifier);
+    return LocalizationFacade.getMessage(locale, "InvalidIdentifierException", "The identifier [{0}] is not valid.  All identifiers must begin with a letter, an underscore, or a Unicode currency character. Any other symbol, such as a number, is not valid.", invalidIdentifier);
   }
 
   /**
@@ -1870,7 +1831,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidColumnNameException(Locale locale, String invalidColumnName)
   {
-    return getMessage(locale, "InvalidColumnNameException", invalidColumnName);
+    return LocalizationFacade.getMessage(locale, "InvalidColumnNameException", "The column name [{0}] is not valid.  Column names must begin with a letter, then followed by a letter, number, or an underscore.", invalidColumnName);
   }
 
   /**
@@ -1887,7 +1848,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   @Deprecated
   public static String invalidSessionException(Locale locale)
   {
-    return getMessage(locale, "InvalidSessionException");
+    return LocalizationFacade.getMessage(locale, "InvalidSessionException", "Your session has expired.  Please log in.");
   }
 
   /**
@@ -1902,7 +1863,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String staleEntityException(Locale locale, Entity entity)
   {
-    return getMessage(locale, "StaleEntityException", entity.toString());
+    return LocalizationFacade.getMessage(locale, "StaleEntityException", "[{0}] is out of date - please update and try your operation again.", entity.toString());
   }
 
   /**
@@ -1915,7 +1876,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String stateException(Locale locale)
   {
-    return getMessage(locale, "StateException");
+    return LocalizationFacade.getMessage(locale, "StateException", "An error was encountered in a state machine.  Please try your operation again.  If the problem continues, alert your technical support staff.");
   }
 
   /**
@@ -1933,7 +1894,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String duplicateStateDefinitionException(Locale locale, String newState, String type)
   {
-    return getMessage(locale, "DuplicateStateDefinitionException", newState, type);
+    return LocalizationFacade.getMessage(locale, "DuplicateStateDefinitionException", "A state named [{0}] already exists in the [{1}] state machine.", newState, type);
   }
 
   /**
@@ -1951,7 +1912,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String defaultStateExistsException(Locale locale, String type)
   {
-    return getMessage(locale, "DefaultStateExistsException", type);
+    return LocalizationFacade.getMessage(locale, "DefaultStateExistsException", "A default state has already been defined for State Machine [{0}].", type);
   }
 
   /**
@@ -1969,7 +1930,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidEntryStateException(Locale locale, String newState, String type)
   {
-    return getMessage(locale, "InvalidEntryStateException", newState, type);
+    return LocalizationFacade.getMessage(locale, "InvalidEntryStateException", "State [{0} on machine [{1}] is not an entry state.", newState, type);
   }
 
   /**
@@ -1983,7 +1944,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String unexpectedTypeException(Locale locale)
   {
-    return getMessage(locale, "UnexpectedTypeException");
+    return LocalizationFacade.getMessage(locale, "UnexpectedTypeException", "An object of an unexpected type was returned.  Please try your operation again.  If the problem continues, alert your technical support staff.");
   }
 
   /**
@@ -2000,7 +1961,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String unimplementedStubException(Locale locale, String type, String method)
   {
-    return getMessage(locale, "UnimplementedStubException", type, method);
+    return LocalizationFacade.getMessage(locale, "UnimplementedStubException", "Method [{1}] on type [{0}] has not been implemented.", type, method);
   }
 
   /**
@@ -2013,7 +1974,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String vaultException(Locale locale)
   {
-    return getMessage(locale, "VaultException");
+    return LocalizationFacade.getMessage(locale, "VaultException", "There was a problem accessing the file vault.  Please try again.");
   }
 
   /**
@@ -2027,7 +1988,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String xmlException(Locale locale)
   {
-    return getMessage(locale, "XMLException");
+    return LocalizationFacade.getMessage(locale, "XMLException", "A system xml file appears to be corrupt - please notify your technical support team.");
   }
 
   /**
@@ -2043,7 +2004,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidMRUCacheSizeException(Locale locale, MdBusinessDAO mdBusiness)
   {
-    return getMessage(locale, "InvalidMRUCacheException", mdBusiness.definesType(), String.valueOf(mdBusiness.getCacheSize()));
+    return LocalizationFacade.getMessage(locale, "InvalidMRUCacheException", "Invalid MRU Cache size [{0}] [{1}]", mdBusiness.definesType(), String.valueOf(mdBusiness.getCacheSize()));
   }
 
   /**
@@ -2059,7 +2020,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidLoginException(Locale locale)
   {
-    return getMessage(locale, "InvalidLoginException");
+    return LocalizationFacade.getMessage(locale, "InvalidLoginException", "Login failed - please try again.");
   }
 
   /**
@@ -2075,7 +2036,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String maximumSessionsException(Locale locale, SingleActorDAOIF user)
   {
-    return getMessage(locale, "MaximumSessionsException", user.getSingleActorName());
+    return LocalizationFacade.getMessage(locale, "MaximumSessionsException", "The user [{0}] has the maximum number of sessions open.", user.getSingleActorName());
   }
 
   /**
@@ -2091,7 +2052,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String inactiveUserException(Locale locale, UserDAOIF user)
   {
-    return getMessage(locale, "InactiveUserException", user.getSingleActorName());
+    return LocalizationFacade.getMessage(locale, "InactiveUserException", "The user [{0}] is inactive.", user.getSingleActorName());
   }
 
   /**
@@ -2106,47 +2067,47 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String groovyQueryException(Locale locale, String groovyQuery, String queryError)
   {
-    return getMessage(locale, "GroovyQueryException", groovyQuery, queryError);
+    return LocalizationFacade.getMessage(locale, "GroovyQueryException", "The following groovy query:\n[{0}]\n Produced the following error:\n[{1}]", groovyQuery, queryError);
   }
 
   public static String importDomainException(Locale locale, String requiredRole)
   {
-    return getMessage(locale, "ImportDomainExecuteException", requiredRole);
+    return LocalizationFacade.getMessage(locale, "ImportDomainExecuteException", "ImportDomainExecuteException [{0}]", requiredRole);
   }
 
   public static String rBACExceptionInvalidStateMachine(Locale locale, String stateMachineDisplayLabel, String stateMachineOwnerDisplayLabel)
   {
-    return getMessage(locale, "RBACExceptionInvalidStateMachine", stateMachineDisplayLabel, stateMachineOwnerDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidStateMachine", "State Machine [{0}] cannot have permissions. Add them to [{1}] instead.", stateMachineDisplayLabel, stateMachineOwnerDisplayLabel);
   }
 
   public static String rBACExceptionInvalidOperation(Locale locale, String operation, String classDisplayLabel)
   {
-    return getMessage(locale, "RBACExceptionInvalidOperation", operation, classDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidOperation", "Operation [{0}] is not applicable for type [{1}].", operation, classDisplayLabel);
   }
 
   public static String rBACExceptionOwnerRole(Locale locale, String singleActorName, String roleName)
   {
-    return getMessage(locale, "RBACExceptionOwnerRole", singleActorName, roleName);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionOwnerRole", "SingleActor [{0}] cannont be assigned to role [{1}].", singleActorName, roleName);
   }
 
   public static String rBACExceptionSingleActorConflictingRole(Locale locale, String singleActorName, String roleName, String conflictingRoleName)
   {
-    return getMessage(locale, "RBACExceptionSingleActorConflictingRole", singleActorName, roleName, conflictingRoleName);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionSingleActorConflictingRole", "SingleActor [{0}] cannot be assigned to role [{1}] because it already belongs to conflicting role [{2}].", singleActorName, roleName, conflictingRoleName);
   }
 
   public static String rBACExceptionInheritance(Locale locale, String roleName, String conflictingRoleName)
   {
-    return getMessage(locale, "RBACExceptionInheritance", roleName, conflictingRoleName);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionInheritance", "Role [{0}] cannot inherit from role [{1}] because it would break existing user assignment conflict of intrest constraints.", roleName, conflictingRoleName);
   }
 
   public static String rBACExceptionInvalidSSDConstraint(Locale locale, String roleName, String ssdName)
   {
-    return getMessage(locale, "RBACExceptionInvalidSSDConstraint", roleName, ssdName);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidSSDConstraint", "Role [{0}] invalidates existing constraints on SSD [{1}].", roleName, ssdName);
   }
 
   public static String rBACExceptionInvalidSSDCardinality(Locale locale, int cardinality, String ssdName)
   {
-    return getMessage(locale, "RBACExceptionInvalidSSDCardinality", Integer.toString(cardinality), ssdName);
+    return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidSSDCardinality", "The new cardinality of [{0}] is invalid for SSD [{1}] due to existing user-role assignments.", Integer.toString(cardinality), ssdName);
   }
 
   public static String existingMdMethodReferenceException(Locale locale, MdEntityDAO mdEntity, List<ParameterMarker> markers)
@@ -2162,7 +2123,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     ParameterMarker lastMarker = markers.get(markers.size() - 1);
     methodNames.append("[" + lastMarker.getName() + "] of MdType [" + lastMarker.getEnclosingMdTypeDAO().definesType() + "]");
 
-    return getMessage(locale, "ExistingMdMethodReferenceException", mdEntity.definesType(), methodNames.toString());
+    return LocalizationFacade.getMessage(locale, "ExistingMdMethodReferenceException", "ExistingMdMethodReferenceException", mdEntity.definesType(), methodNames.toString());
   }
 
   /**
@@ -2177,7 +2138,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidAggregateOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidAggregateOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidAggregateOperatorException", "Comparison operator [{0}] is not valid for an aggregate function.", invalidOperator);
   }
 
   /**
@@ -2192,7 +2153,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidMinMaxOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidMinMaxOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidMinMaxOperatorException", "Comparison operator [{0}] is not valid for the [minimum] or [maximum] function.", invalidOperator);
   }
 
   /**
@@ -2206,7 +2167,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidNumberOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidNumberOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidNumberOperatorException", "Comparison operator [{0}] is not valid for a number.", invalidOperator);
   }
 
   /**
@@ -2220,7 +2181,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidStringOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidStringOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidStringOperatorException", "Comparison operator [{0}] is not valid for text.", invalidOperator);
   }
 
   /**
@@ -2234,7 +2195,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidBooleanOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidBooleanOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidBooleanOperatorException", "Comparison operator [{0}] is not valid for boolean (true/false).", invalidOperator);
   }
 
   /**
@@ -2249,7 +2210,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidMomentOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidMomentOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidMomentOperatorException", "Comparison operator [{0}] is not valid for date, time, or datetime.", invalidOperator);
   }
 
   /**
@@ -2263,7 +2224,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidBlobOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidBlobOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidBlobOperatorException", "Comparison operator [{0}] is not valid for a blob.", invalidOperator);
   }
 
   /**
@@ -2277,7 +2238,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidStructOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidStructOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidStructOperatorException", "Comparison operator [{0}] is not valid for a struct.", invalidOperator);
   }
 
   /**
@@ -2291,7 +2252,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidRefOperatorException(Locale locale, String invalidOperator)
   {
-    return getMessage(locale, "InvalidRefOperatorException", invalidOperator);
+    return LocalizationFacade.getMessage(locale, "InvalidRefOperatorException", "Comparison operator [{0}] is not valid for a reference.", invalidOperator);
   }
 
   /**
@@ -2304,7 +2265,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String noAggregateInGroupByException(Locale locale)
   {
-    return getMessage(locale, "NoAggregateInGroupByException");
+    return LocalizationFacade.getMessage(locale, "NoAggregateInGroupByException", "You cannot group by an aggregate function.");
   }
 
   /**
@@ -2317,7 +2278,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String subSelectReturnedMultipleRowsException(Locale locale)
   {
-    return getMessage(locale, "SubSelectReturnedMultipleRowsException");
+    return LocalizationFacade.getMessage(locale, "SubSelectReturnedMultipleRowsException", "Subquery returns more than 1 row.");
   }
 
   /**
@@ -2330,7 +2291,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidOrderByPrimitiveException(Locale locale)
   {
-    return getMessage(locale, "InvalidOrderByPrimitiveException");
+    return LocalizationFacade.getMessage(locale, "InvalidOrderByPrimitiveException", "Only primitive attributes can participate in the ORDER BY clause.");
   }
 
   /**
@@ -2344,7 +2305,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidNumericSelectableException(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "InvalidNumericSelectableException", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidNumericSelectableException", "[{0}] is not a numeric value.  It was passed into a numeric function.", attributeDisplayLabel);
   }
 
   /**
@@ -2358,7 +2319,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidMomentSelectableException(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "InvalidMomentSelectableException", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidMomentSelectableException", "[{0}] is not a date or a time value.  It was passed into a date or a time functio", attributeDisplayLabel);
   }
 
   /**
@@ -2370,7 +2331,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String valueQueryMissingSelectCaluseException(Locale locale)
   {
-    return getMessage(locale, "ValueQueryMissingSelectCaluseException");
+    return LocalizationFacade.getMessage(locale, "ValueQueryMissingSelectCaluseException", "No attributes were selected to be included in the result of the query.");
   }
 
   /**
@@ -2383,7 +2344,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String ambiguousAttributeException(Locale locale, String attributeName)
   {
-    return getMessage(locale, "AmbiguousAttributeException", attributeName);
+    return LocalizationFacade.getMessage(locale, "AmbiguousAttributeException", "Attribute [{0}] in the select clause is ambiguous.", attributeName);
   }
 
   /**
@@ -2397,7 +2358,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String missingAttributeInSelectForGroupByException(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "MissingAttributeInSelectForGroupByException", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "MissingAttributeInSelectForGroupByException", "The attribute [{0}] specified in the GROUP BY section must also be included in the result of the query.", attributeDisplayLabel);
   }
 
   /**
@@ -2411,7 +2372,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String missingHavingClauseAttributeException(Locale locale, String attributeDisplayLabel, String definingTypeDisplayLabel)
   {
-    return getMessage(locale, "MissingHavingClauseAttributeException", attributeDisplayLabel, definingTypeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "MissingHavingClauseAttributeException", "The attribute [{0}] defined by [{1}] in the HAVING clause must also be included in the result of the query or in the GROUP BY section.", attributeDisplayLabel, definingTypeDisplayLabel);
   }
 
   /**
@@ -2424,7 +2385,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String attributeNotInGroupByOrAggregate(Locale locale, String attributeDisplayLabel)
   {
-    return getMessage(locale, "AttributeNotInGroupByOrAggregate", attributeDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "AttributeNotInGroupByOrAggregate", "When an attribute is specified as GROUP BY, all attributes must then either be GROUP BY or must be used in an aggregate function.  The attribute [{0}] is neither GROUP BY nor is used in an aggregate function.", attributeDisplayLabel);
   }
 
   /**
@@ -2434,7 +2395,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String backingUpDatabaseMessage(Locale locale)
   {
-    return getMessage(locale, "BackingupDatabaseMessage");
+    return LocalizationFacade.getMessage(locale, "BackingupDatabaseMessage", "Backing up database");
   }
 
   /**
@@ -2446,7 +2407,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String backingUpFileMessage(Locale locale, String filePathAndName)
   {
-    return getMessage(locale, "BackingUpFileMessage", filePathAndName);
+    return LocalizationFacade.getMessage(locale, "BackingUpFileMessage", "Backing up file: {0}", filePathAndName);
   }
 
   /**
@@ -2457,7 +2418,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String restoringApplicationMessage(Locale locale)
   {
-    return getMessage(locale, "RestoringApplicationMessage");
+    return LocalizationFacade.getMessage(locale, "RestoringApplicationMessage", "Restoring application:");
   }
 
   /**
@@ -2468,7 +2429,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String extractingFilesMessage(Locale locale)
   {
-    return getMessage(locale, "ExtractingFilesMessage");
+    return LocalizationFacade.getMessage(locale, "ExtractingFilesMessage", "Extracting Files:");
   }
 
   /**
@@ -2479,7 +2440,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String droppingTablesMessage(Locale locale)
   {
-    return getMessage(locale, "DroppingTablesMessage");
+    return LocalizationFacade.getMessage(locale, "DroppingTablesMessage", "Dropping tables:");
   }
 
   /**
@@ -2490,7 +2451,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String importingDatabaseRecords(Locale locale)
   {
-    return getMessage(locale, "ImportingDatabaseRecords");
+    return LocalizationFacade.getMessage(locale, "ImportingDatabaseRecords", "Importing database records:");
   }
 
   /**
@@ -2502,7 +2463,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String extractingFileMessage(Locale locale, String filePathAndName)
   {
-    return getMessage(locale, "ExtractingFileMessage", filePathAndName);
+    return LocalizationFacade.getMessage(locale, "ExtractingFileMessage", "Extracting file: {0}", filePathAndName);
   }
 
   /**
@@ -2513,7 +2474,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String restoreCompleteMessage(Locale locale)
   {
-    return getMessage(locale, "RestoreCompleteMessage");
+    return LocalizationFacade.getMessage(locale, "RestoreCompleteMessage", "Restore complete");
   }
 
   /**
@@ -2524,7 +2485,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String backupCompleteMessage(Locale locale)
   {
-    return getMessage(locale, "BackupCompleteMessage");
+    return LocalizationFacade.getMessage(locale, "BackupCompleteMessage", "Backup complete");
   }
 
   /**
@@ -2536,7 +2497,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String cleaningWebappFolderMessage(Locale locale, File webappPath)
   {
-    return getMessage(locale, "CleaningWebappFolder", webappPath.getAbsolutePath());
+    return LocalizationFacade.getMessage(locale, "CleaningWebappFolder", "Cleaning webapp folder: {0}", webappPath.getAbsolutePath());
   }
 
   /**
@@ -2549,7 +2510,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String roleNamespaceException(Locale locale, String rolename)
   {
-    return getMessage(locale, "RoleNamespaceException", rolename);
+    return LocalizationFacade.getMessage(locale, "RoleNamespaceException", "The rolename [{0}] must be namespaced.", rolename);
   }
 
   /**
@@ -2562,7 +2523,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String noLocaleException(Locale locale, SingleActorDAOIF user)
   {
-    return getMessage(locale, "NoLocaleException", user.getSingleActorName());
+    return LocalizationFacade.getMessage(locale, "NoLocaleException", "The user [{0}] did not provide a locale when logging in.", user.getSingleActorName());
   }
 
   /**
@@ -2575,7 +2536,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String InvalidLocaleFormatException(Locale locale, String localeString)
   {
-    return getMessage(locale, "InvalidLocaleFormatException", localeString);
+    return LocalizationFacade.getMessage(locale, "InvalidLocaleFormatException", "The locale [{0}] does not have the proper format - please notify your technical support team.", localeString);
   }
 
   /**
@@ -2596,7 +2557,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String synchronizationSequenceGapException(Locale locale, String importSite, Long lastImportedSequence, Long firstExportSequence, Long neededImportSequence)
   {
-    return getMessage(locale, "SynchronizationSequenceGapException", importSite, lastImportedSequence.toString(), firstExportSequence.toString());
+    return LocalizationFacade.getMessage(locale, "SynchronizationSequenceGapException", "There cannot be a gap in sequence numbers when importing from another site.  The last imported sequence number from site [{0}] was [{1}], but the current import starts with sequence number [{2}].  Please import from site [{0}] starting with sequence number [{3}].", importSite, lastImportedSequence.toString(), firstExportSequence.toString());
   }
 
   /**
@@ -2613,7 +2574,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String transactionImportInvalidItem(Locale locale, String componentSiteMaster, String localizedMessage)
   {
-    return getMessage(locale, "TransactionImportInvalidItem", componentSiteMaster, localizedMessage);
+    return LocalizationFacade.getMessage(locale, "TransactionImportInvalidItem", "An error occurred when importing a record that originated from site {0}.  The error is: {1}.", componentSiteMaster, localizedMessage);
   }
 
   /**
@@ -2629,52 +2590,52 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String transactionVersionException(Locale locale, String expectedVersion, String actualVersion)
   {
-    return getMessage(locale, "TransactionVersionException", expectedVersion, actualVersion);
+    return LocalizationFacade.getMessage(locale, "TransactionVersionException", "There was a version mismatch between the file [{1}] and the importer [{0}].  Please update the local node to [{1}] or re-export the file from a node of version [{0}].", expectedVersion, actualVersion);
   }
 
   public static String fieldValidationProblem(Locale locale, String attributeLabel, String condition)
   {
-    return getMessage(locale, "FieldValidationProblem", attributeLabel, condition);
+    return LocalizationFacade.getMessage(locale, "FieldValidationProblem", "The attribute [{0}] is not applicable when {1}.", attributeLabel, condition);
   }
 
   public static String fieldCondition(Locale locale, String fieldLabel, String operationLabel, String value)
   {
-    return getMessage(locale, "FieldCondition", fieldLabel, operationLabel, value);
+    return LocalizationFacade.getMessage(locale, "FieldCondition", "[{0}] is not [{1}] to [{2}].", fieldLabel, operationLabel, value);
   }
 
   public static String andCondition(Locale locale, String firstCondition, String secondCondition)
   {
-    return getMessage(locale, "AndCondition", firstCondition, secondCondition);
+    return LocalizationFacade.getMessage(locale, "AndCondition", "[{0}] and [{1}].", firstCondition, secondCondition);
   }
 
   public static String attributeDefinitionLengthException(Locale locale, MdAttributeDAOIF mdAttribute, int length)
   {
-    return getMessage(locale, "AttributeDefinitionLengthException", mdAttribute.getDisplayLabel(locale), new Integer(length).toString());
+    return LocalizationFacade.getMessage(locale, "AttributeDefinitionLengthException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be an integer greater than 1.", mdAttribute.getDisplayLabel(locale), new Integer(length).toString());
   }
 
   public static String attributeDefinitionDecimalException(Locale locale, MdAttributeDAOIF mdAttribute, int length, int decimal)
   {
-    return getMessage(locale, "AttributeDefinitionDecimalException", mdAttribute.getDisplayLabel(locale), new Integer(length).toString(), new Integer(decimal).toString());
+    return LocalizationFacade.getMessage(locale, "AttributeDefinitionDecimalException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be between [1] and [{2}].", mdAttribute.getDisplayLabel(locale), new Integer(length).toString(), new Integer(decimal).toString());
   }
 
   public static String numericFieldOverflowException(Locale locale)
   {
-    return getMessage(locale, "NumericFieldOverflowException");
+    return LocalizationFacade.getMessage(locale, "NumericFieldOverflowException", "A specified numeric value is too large for its database column");
   }
 
   public static String compressingDirectoryMessage(Locale locale, String backupFileLocation)
   {
-    return getMessage(locale, "CompressingDirectoryMessage", backupFileLocation);
+    return LocalizationFacade.getMessage(locale, "CompressingDirectoryMessage", "Compressing the directory: {0}", backupFileLocation);
   }
 
   public static String backingUpCacheMessage(Locale locale)
   {
-    return getMessage(locale, "BackingUpCacheMessage");
+    return LocalizationFacade.getMessage(locale, "BackingUpCacheMessage", "Backing up cache files.");
   }
 
   public static String fieldConversionException(Locale locale, String fieldLabel)
   {
-    return getMessage(locale, "FieldConversionException", fieldLabel);
+    return LocalizationFacade.getMessage(locale, "FieldConversionException", "FieldConversionException", fieldLabel);
   }
   
   /**
@@ -2686,7 +2647,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidExpressionSyntaxException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
   {
-    return getMessage(locale, "InvalidExpressionSyntaxException", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
+    return LocalizationFacade.getMessage(locale, "InvalidExpressionSyntaxException", "The attribute [{0}] has an invalid expression:\\n{1}", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
   }
 
   /**
@@ -2698,7 +2659,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String expressionException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
   {
-    return getMessage(locale, "ExpressionException", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
+    return LocalizationFacade.getMessage(locale, "ExpressionException", "The expression on attribute [{0}] has an error:\\n{1}", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
   }
 
   /**
@@ -2713,7 +2674,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String loginNotSupportedException(Locale locale, SingleActorDAOIF user)
   {
-    return getMessage(locale, "LoginNotSupportedException", user.getType());
+    return LocalizationFacade.getMessage(locale, "LoginNotSupportedException", "The class [{0}] does not support logging in.", user.getType());
   }
   
   /**
@@ -2728,7 +2689,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String invalidIndicatorDefinition(Locale locale, String _localizedIndicatorDisplayLabel)
   {
-    return getMessage(locale, "InvalidIndicatorDefinition", _localizedIndicatorDisplayLabel);
+    return LocalizationFacade.getMessage(locale, "InvalidIndicatorDefinition", "The indicator attribute definition [{0}] is invalid. The left and right operands must both be either a number or a boolean.", _localizedIndicatorDisplayLabel);
   }
 
 }
