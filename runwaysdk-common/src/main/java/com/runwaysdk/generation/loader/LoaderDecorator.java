@@ -18,8 +18,13 @@
  */
 package com.runwaysdk.generation.loader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LoaderDecorator
 {
+  private static final Logger logger = LoggerFactory.getLogger(LoaderDecorator.class);
+  
   private static volatile LoaderDecorator instance;
 
   private final ReloadableClassLoaderIF   loader;
@@ -89,6 +94,8 @@ public class LoaderDecorator
    */
   public static void reload()
   {
+    logger.error("---------------- RELOADING the classloader! ---------------------");
+    
     LockHolder.lock(instance());
 
     try
