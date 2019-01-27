@@ -3,25 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,21 +39,21 @@ import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 
 public abstract class ComponentQuery
 {
-  protected static String           selectIndent = "     ";
+  protected static String selectIndent = "     ";
 
-  protected QueryFactory            queryFactory;
+  protected QueryFactory  queryFactory;
 
-  private String                    aliasSeed;
+  private String          aliasSeed;
 
-  protected Condition               queryCondition;
+  protected Condition     queryCondition;
 
-  protected List<OrderBy>           orderByList;
+  protected List<OrderBy> orderByList;
 
   /**
    * Whether this ComponentQuery participates in a <code>ValueQuery</code>
    * clause affects how joins are implemented.
    */
-  protected ValueQuery              usedInValueQuery;
+  protected ValueQuery    usedInValueQuery;
 
   protected ComponentQuery(QueryFactory queryFactory)
   {
@@ -78,7 +78,7 @@ public abstract class ComponentQuery
     this.queryCondition = null;
     this.orderByList = new LinkedList<OrderBy>();
   }
-  
+
   /**
    * Returns the alias seed for this query. This is used to ensure proper
    * namespaces.
@@ -182,17 +182,17 @@ public abstract class ComponentQuery
    * @return table alias used for the table that stores instances of this type.
    */
   public abstract String getTableAlias();
-  
+
   /**
-   * @return returns a rank function 
+   * @return returns a rank function
    */
   public abstract RANK RANK();
-  
+
   /**
-   * @return returns a rank function 
+   * @return returns a rank function
    */
   public abstract RANK RANK(String userDefinedAlias);
-  
+
   /**
    * Resets any criteria conditions made on this query.
    */
@@ -427,9 +427,8 @@ public abstract class ComponentQuery
    * @return Attribute statement object.
    */
   public abstract Attribute get(String name);
-  
-  public abstract Selectable getS(String name);
 
+  public abstract Selectable getS(String name);
 
   /**
    * Sort in ascending order.
@@ -509,7 +508,7 @@ public abstract class ComponentQuery
       this.orderByList.add(new OrderBy(selectable, order, sortAlias));
     }
   }
-  
+
   /**
    * Returns a visitor that has traversed this structure.
    * 
@@ -653,7 +652,7 @@ public abstract class ComponentQuery
     BuildSQLVisitor visitor = this.visitQuery();
     fromClauseAttribute.accept(visitor);
 
-    Set<Join> tableJoinSet = new HashSet<Join>();
+    Set<Join> tableJoinSet = new LinkedHashSet<Join>();
     Map<String, String> fromTableMap = this.getFromTableMapInfoForQuery();
 
     tableJoinSet.addAll(visitor.tableJoinSet);
@@ -711,7 +710,7 @@ public abstract class ComponentQuery
   {
     BuildSQLVisitor visitor = this.visitQuery();
 
-    Set<Join> tableJoinSet = new HashSet<Join>();
+    Set<Join> tableJoinSet = new LinkedHashSet<Join>();
     Map<String, String> fromTableMap = this.getFromTableMapInfoForQuery();
 
     tableJoinSet.addAll(visitor.tableJoinSet);
@@ -773,7 +772,7 @@ public abstract class ComponentQuery
    *         type in the select clause.
    */
   protected abstract String getSQL(boolean limitRowRange, int limit, int skip);
-  
+
   protected void buildSelectColumn(StringBuffer selectString, Selectable selectable, MdAttributeConcreteDAOIF mdAttributeIF, ColumnInfo columnInfo)
   {
     if (selectable instanceof AttributeIndicator || selectable instanceof AggregateFunction || selectable instanceof SimpleFunction || selectable instanceof SelectableSubSelect || selectable instanceof SelectableSQL)
@@ -788,7 +787,6 @@ public abstract class ComponentQuery
       selectString.append(selectIndent + columnInfo.getSelectClauseString(mdAttributeIF));
     }
   }
-
 
   /**
    * Adds the DISTINCT keyword to the select string, if required.
@@ -846,8 +844,6 @@ public abstract class ComponentQuery
       firstIteration = false;
     }
   }
-
-
 
   /**
    * 
@@ -907,8 +903,6 @@ public abstract class ComponentQuery
 
   public abstract String getOrderBySQL(OrderBy orderBy);
 
-
-
   /**
    * Builds the from clause for the query including all tables required to
    * instantiate instances of the object..
@@ -921,7 +915,7 @@ public abstract class ComponentQuery
   {
     fromTableMap.putAll(visitor.tableFromMap);
 
-    Set<LeftJoin> leftOuterJoinSet = new HashSet<LeftJoin>();
+    Set<LeftJoin> leftOuterJoinSet = new LinkedHashSet<LeftJoin>();
 
     for (Join tableJoin : tableJoinSet)
     {
@@ -953,22 +947,52 @@ public abstract class ComponentQuery
     fromClause.append("FROM ");
 
     boolean firstIteration = true;
+    
+//    Map<String, List<LeftJoin>> leftJoinMap = new HashMap<String, List<LeftJoin>>();
+//
+//    for (LeftJoin leftOuterTableJoin : leftOuterJoinSet)
+//    {
+//
+//      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+//      {
+//        List<LeftJoin> leftOuterJoinList = new LinkedList<LeftJoin>();
+//        leftOuterJoinList.add(leftOuterTableJoin);
+//        leftJoinMap.put(leftOuterTableJoin.getTableAlias1(), leftOuterJoinList);
+//      }
+//      else
+//      {
+//        List<LeftJoin> leftOuterJoinList = leftJoinMap.get(leftOuterTableJoin.getTableAlias1());
+//        leftOuterJoinList.add(leftOuterTableJoin);
+//      }
+//    }
 
     Map<String, List<LeftJoin>> leftJoinMap = new HashMap<String, List<LeftJoin>>();
+    Map<String, String> chainMap = new HashMap<String, String>();
 
     for (LeftJoin leftOuterTableJoin : leftOuterJoinSet)
     {
-
-      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()) && !chainMap.containsKey(leftOuterTableJoin.getTableAlias1()))
       {
         List<LeftJoin> leftOuterJoinList = new LinkedList<LeftJoin>();
         leftOuterJoinList.add(leftOuterTableJoin);
+        
         leftJoinMap.put(leftOuterTableJoin.getTableAlias1(), leftOuterJoinList);
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), leftOuterTableJoin.getTableAlias1());
+      }
+      else if (chainMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+      {
+        String chainedTableAlias = chainMap.get(leftOuterTableJoin.getTableAlias1());        
+        List<LeftJoin> leftOuterJoinList = leftJoinMap.get(chainedTableAlias);
+        leftOuterJoinList.add(leftOuterTableJoin);
+        
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), chainedTableAlias);
       }
       else
       {
         List<LeftJoin> leftOuterJoinList = leftJoinMap.get(leftOuterTableJoin.getTableAlias1());
         leftOuterJoinList.add(leftOuterTableJoin);
+        
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), leftOuterTableJoin.getTableAlias1());
       }
     }
 
@@ -1060,7 +1084,7 @@ public abstract class ComponentQuery
       String error = "Class [" + mdClassDAOIF.definesType() + "] does not define attribute [" + name + "]";
       throw new QueryException(error);
     }
-    
+
     if (!requestedType.equals(mdAttributeDAOIF.getType()))
     {
       String error = "Attribute [" + name + "] is of type [" + mdAttributeDAOIF.getType() + "], and not [" + requestedType + "] as requested";
@@ -1069,24 +1093,24 @@ public abstract class ComponentQuery
   }
 
   /**
-   * Returns an iterator of {@link ComponentIF} that match the query criteria specified
-   * on this query object.
+   * Returns an iterator of {@link ComponentIF} that match the query criteria
+   * specified on this query object.
    * 
-   * @return iterator of {@link ComponentIF} that match the query criteria specified on
-   *         this query object.
+   * @return iterator of {@link ComponentIF} that match the query criteria
+   *         specified on this query object.
    */
   public abstract OIterator<? extends ComponentIF> getIterator();
 
   /**
-   * Returns an iterator of {@link ComponentIF} that match the query criteria specified
-   * on this query object.
+   * Returns an iterator of {@link ComponentIF} that match the query criteria
+   * specified on this query object.
    * 
    * @param pageSize
    *          number of results per page
    * @param pageNumber
    *          page number
-   * @return iterator of {@link ComponentIF} that match the query criteria specified on
-   *         this query object.
+   * @return iterator of {@link ComponentIF} that match the query criteria
+   *         specified on this query object.
    */
   public abstract OIterator<? extends ComponentIF> getIterator(int pageSize, int pageNumber);
 
@@ -1130,13 +1154,12 @@ public abstract class ComponentQuery
     return this.aliasSeed.hashCode();
   }
 
-  protected AggregateFunction createIndicatorFunction(Selectable attributeInIndictor,
-      EnumerationItemDAOIF aggFuncEnumItem, AggregateFunction aggregateFunction)
+  protected AggregateFunction createIndicatorFunction(Selectable attributeInIndictor, EnumerationItemDAOIF aggFuncEnumItem, AggregateFunction aggregateFunction)
   {
     if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
     {
-       aggregateFunction = new SUM(attributeInIndictor);
-       // , userDefinedAlias, userDefinedDisplayLabel
+      aggregateFunction = new SUM(attributeInIndictor);
+      // , userDefinedAlias, userDefinedDisplayLabel
     }
     else if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.COUNT))
     {
@@ -1159,6 +1182,6 @@ public abstract class ComponentQuery
       aggregateFunction = new STDDEV(attributeInIndictor);
     }
     return aggregateFunction;
-  }  
-  
+  }
+
 }

@@ -21,7 +21,7 @@ package com.runwaysdk.query;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -202,15 +202,15 @@ public class ValueQuery extends ComponentQuery
     this.rawSelectableMap = new HashMap<String, Selectable>();
     this.getRawSelectableComponentQueryMap = new HashMap<String, List<Selectable>>();
     this.entityQueryInRightSideOfLeftJoin = new HashMap<String, TableClassQuery>();
-    this.leftOuterJoinSet = new HashSet<LeftJoin>();
-    this.customInnerJoinSet = new HashSet<InnerJoin>();
+    this.leftOuterJoinSet = new LinkedHashSet<LeftJoin>();
+    this.customInnerJoinSet = new LinkedHashSet<InnerJoin>();
     this.groupByAttributeMap = new HashMap<String, SelectableSingle>();
     this.selectableAggregateList = new LinkedList<SelectableAggregate>();
     this.groupByList = new LinkedList<String>();
     this.selectDistinct = false;
     this.havingCondition = null;
 
-    this.fromClauseValueQueriesInSelectClause = new HashSet<ValueQuery>();
+    this.fromClauseValueQueriesInSelectClause = new LinkedHashSet<ValueQuery>();
 
     this.tableAlias = this.getTableAlias("", "ValueQuery");
 
@@ -562,7 +562,7 @@ public class ValueQuery extends ComponentQuery
     this.fromClauseValueQueriesInSelectClause.clear();
 
     // Find out which entites participate in an outer join
-    Set<String> entityQueryInLeftJoin = new HashSet<String>();
+    Set<String> entityQueryInLeftJoin = new LinkedHashSet<String>();
     for (LeftJoin leftOuterjoin : this.leftOuterJoinSet)
     {
       entityQueryInLeftJoin.addAll(leftOuterjoin.getLeftSideEntityQueryAlias());
@@ -739,43 +739,43 @@ public class ValueQuery extends ComponentQuery
    */
   private void AND(LeftJoin leftOuterJoin)
   {
-    String attributeName = null;
-    String tableName = null;
-
-    // TODO evaluate these conditions because some might be too restrictive and
-    // disallow JOIN chaining
-    for (LeftJoin currLeftOuterJoin : this.leftOuterJoinSet)
-    {
-      // This was removed to allow LEFT JOIN chaining from table A to B twice: A
-      // LEFT JOIN B ... LEFT JOIN B
-      // if
-      // (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
-      // {
-      // attributeName = leftOuterJoin.getColumnName1();
-      // tableName = leftOuterJoin.getTableName1();
-      // }
-      if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias2()))
-      {
-        attributeName = leftOuterJoin.getColumnName2();
-        tableName = leftOuterJoin.getTableName2();
-      }
-      else if (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias2()))
-      {
-        attributeName = leftOuterJoin.getColumnName2();
-        tableName = leftOuterJoin.getTableName2();
-      }
-      else if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias1()))
-      {
-        attributeName = leftOuterJoin.getColumnName1();
-        tableName = leftOuterJoin.getTableName1();
-      }
-    }
-
-    if (attributeName != null)
-    {
-      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
-      throw new QueryException(errMsg);
-    }
+//    String attributeName = null;
+//    String tableName = null;
+//
+//    // TODO evaluate these conditions because some might be too restrictive and
+//    // disallow JOIN chaining
+//    for (LeftJoin currLeftOuterJoin : this.leftOuterJoinSet)
+//    {
+//      // This was removed to allow LEFT JOIN chaining from table A to B twice: A
+//      // LEFT JOIN B ... LEFT JOIN B
+//      // if
+//      // (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
+//      // {
+//      // attributeName = leftOuterJoin.getColumnName1();
+//      // tableName = leftOuterJoin.getTableName1();
+//      // }
+//      if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias2()))
+//      {
+//        attributeName = leftOuterJoin.getColumnName2();
+//        tableName = leftOuterJoin.getTableName2();
+//      }
+//      else if (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias2()))
+//      {
+//        attributeName = leftOuterJoin.getColumnName2();
+//        tableName = leftOuterJoin.getTableName2();
+//      }
+//      else if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias1()))
+//      {
+//        attributeName = leftOuterJoin.getColumnName1();
+//        tableName = leftOuterJoin.getTableName1();
+//      }
+//    }
+//
+//    if (attributeName != null)
+//    {
+//      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
+//      throw new QueryException(errMsg);
+//    }
 
     this.leftOuterJoinSet.add(leftOuterJoin);
 
@@ -1256,7 +1256,7 @@ public class ValueQuery extends ComponentQuery
       {
         BuildSQLVisitor visitor = this.visitQuery();
 
-        Set<Join> tableJoinSet = new HashSet<Join>();
+        Set<Join> tableJoinSet = new LinkedHashSet<Join>();
 
         Map<String, String> fromTableMap = this.getFromTableMapInfoForQuery();
 
@@ -1322,7 +1322,7 @@ public class ValueQuery extends ComponentQuery
       sqlStmt = new StringBuffer();
 
       BuildSQLVisitor visitor = this.visitQuery();
-      Set<Join> tableJoinSet = new HashSet<Join>();
+      Set<Join> tableJoinSet = new LinkedHashSet<Join>();
 
       // Make sure we visit what was specified in the outer join clause.
       for (LeftJoin leftOuterjoin : this.leftOuterJoinSet)
@@ -1413,7 +1413,7 @@ public class ValueQuery extends ComponentQuery
 
     this.appendDistinctToSelectClause(selectString);
 
-    Set<String> hashSet = new HashSet<String>();
+    Set<String> hashSet = new LinkedHashSet<String>();
 
     // Order by fields must also be in the select clause.
     boolean firstIteration = true;
@@ -4065,7 +4065,7 @@ public class ValueQuery extends ComponentQuery
   protected static Attribute attributeFactory(ComponentQuery rootComponentQuery, Selectable selectable, MdTableClassIF definingTableClassIF, String definingTableName, String definingTableAlias, MdAttributeConcreteDAOIF mdAttributeIF, String userDefinedAlias, String userDefinedDisplayLabel)
   {
 
-    Set<Join> attrTableJoinSet = new HashSet<Join>();
+    Set<Join> attrTableJoinSet = new LinkedHashSet<Join>();
 
     Attribute attribute = null;
 

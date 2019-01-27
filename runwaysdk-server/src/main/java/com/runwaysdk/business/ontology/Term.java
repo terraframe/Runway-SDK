@@ -539,7 +539,6 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
    * If Term subclasses do not implement this method then the strategy's configure method is invoked with the Term's CLASS as the parameter.
    * The configureStrategy method is invoked with the OntologyStrategyIF instance as the one and only parameter, and it is invoked immediately after
    * the strategy is instantiated (but not initialized).
-   * 
    * @param strategy
    */
   private static void callConfigureStrategy(String termType, OntologyStrategyIF strategy)

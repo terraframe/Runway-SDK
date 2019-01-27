@@ -138,7 +138,7 @@ public class DDMSAllpathsLogic
 
     try
     {
-      BusinessDAO instance = BusinessDAO.newInstance(strategy.getAllPaths().definesType());
+      BusinessDAO instance = BusinessDAO.newInstance(strategy.getAllPaths(this.relationshipType).definesType());
       instance.setValue(PARENT_TERM_ATTR, parentOid);
       instance.setValue(CHILD_TERM_ATTR, childOid);
       instance.apply();

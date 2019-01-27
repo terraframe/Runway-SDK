@@ -303,7 +303,7 @@ public class AllpathsTestUtil
     {
       DatabaseAllPathsStrategy apStrat = (DatabaseAllPathsStrategy) strategy;
 
-      BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths().definesType());
+      BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths(this.mdTermRel.definesType()).definesType());
       apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getOid()));
       apq.AND(apq.get(DatabaseAllPathsStrategy.PARENT_TERM_ATTR).EQ(parent.getOid()));
       OIterator<? extends Business> it = apq.getIterator();
@@ -331,7 +331,7 @@ public class AllpathsTestUtil
     {
       DatabaseAllPathsStrategy apStrat = (DatabaseAllPathsStrategy) strategy;
 
-      BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths().definesType());
+      BusinessQuery apq = new QueryFactory().businessQuery(apStrat.getAllPaths(this.mdTermRel.definesType()).definesType());
       apq.WHERE(apq.get(DatabaseAllPathsStrategy.CHILD_TERM_ATTR).EQ(child.getOid()));
       Assert.assertEquals("Number of allpaths entries for child [" + child.getDisplayLabel().getValue() + "] is incorrect.", num, apq.getCount());
     }

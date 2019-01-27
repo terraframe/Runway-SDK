@@ -27,25 +27,25 @@ import com.runwaysdk.session.Request;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  EnumerationMasterQueryTest.class,
-  ValueQueryTest.class,
-  ValueQueryReferenceTest.class,
-  ValueQueryMultiReferenceTest.class,
-  ValueQueryMultiTermTest.class,
-  ValueQueryEnumTest.class,
+//  EnumerationMasterQueryTest.class,
+//  ValueQueryTest.class,
+//  ValueQueryReferenceTest.class,
+//  ValueQueryMultiReferenceTest.class,
+//  ValueQueryMultiTermTest.class,
+//  ValueQueryEnumTest.class,
   ValueQueryStructTest.class,
-  MdTableQueryTest.class,
-  
-  ViewQueryTest.class,
-  ExtraQueryTest.class,
-  AttributeComparisonTest.class,
-  AttributeQueryTest.class,
-  EnumerationQueryTest.class,
-  ReferenceQueryTest.class,
-  StructQueryTest.class,
-  RelationshipQueryTest.class,
-  RelationshipAttributeQuery.class,
-  ChildAttributeRelationshipQueryTest.class
+//  MdTableQueryTest.class,
+//  
+//  ViewQueryTest.class,
+//  ExtraQueryTest.class,
+//  AttributeComparisonTest.class,
+//  AttributeQueryTest.class,
+//  EnumerationQueryTest.class,
+//  ReferenceQueryTest.class,
+//  StructQueryTest.class,
+//  RelationshipQueryTest.class,
+//  RelationshipAttributeQuery.class,
+//  ChildAttributeRelationshipQueryTest.class
 })
 public class ChildQueryTestSuite
 {

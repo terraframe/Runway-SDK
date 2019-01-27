@@ -25,12 +25,13 @@ import com.runwaysdk.query.function.AggregateFunctionTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-  ParentQueryTestSuite.class,
+//  ParentQueryTestSuite.class,
   ChildQueryTestSuite.class,
-  AggregateFunctionTestSuite.class,
-  EntityQueryTestSuite.class,
-  StandaloneStructQueryTest.class,
+//  AggregateFunctionTestSuite.class,
+//  EntityQueryTestSuite.class,
+//  StandaloneStructQueryTest.class,
 })
 public class QueryTestSuite
 {
+  
 }

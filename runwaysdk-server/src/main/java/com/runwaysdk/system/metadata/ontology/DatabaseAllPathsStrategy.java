@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.metadata.ontology;
 
@@ -23,7 +23,9 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import org.slf4j.Logger;
@@ -44,12 +46,16 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.ontology.strategy.database.OntologyDatabase;
 import com.runwaysdk.ontology.strategy.database.OntologyDatabaseFactory;
@@ -64,27 +70,30 @@ import com.runwaysdk.system.metadata.MdTerm;
 
 public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 {
-  private static final long  serialVersionUID            = -428490646;
+  private static final long       serialVersionUID            = -428490646;
 
-  private static Logger      logger                      = LoggerFactory.getLogger(DatabaseAllPathsStrategy.class);
+  private static Logger           logger                      = LoggerFactory.getLogger(DatabaseAllPathsStrategy.class);
 
-  public static final String PARENT_TERM_ATTR            = "parentTerm";
+  public static final String      PARENT_TERM_ATTR            = "parentTerm";
 
-  public static final String CHILD_TERM_ATTR             = "childTerm";
+  public static final String      CHILD_TERM_ATTR             = "childTerm";
 
-  public static final String TERM_PARAMETER              = "mdTerm";
+  public static final String      TERM_PARAMETER              = "mdTerm";
 
-  public static final String TERM_RELATIONSHIP_PARAMETER = "mdRelationship";
+  public static final String      TERM_RELATIONSHIP_PARAMETER = "mdRelationship";
 
-  public static final String ALL_PATHS_PARAMETER         = "allPaths";
+  public static final String      ALL_PATHS_PARAMETER         = "allPaths";
 
-  public static final String PARENT_PARAMETER            = "parent";
+  public static final String      PARENT_PARAMETER            = "parent";
 
-  public static final String CHILD_PARAMETER             = "child";
+  public static final String      CHILD_PARAMETER             = "child";
 
-  private MdBusiness         termAllPaths;
+  /**
+   * Map between the relationship type and the MdBusiness
+   */
+  private Map<String, MdBusiness> allPaths;
 
-  private String             termClass;
+  private String                  termClass;
 
   public DatabaseAllPathsStrategy()
   {
@@ -92,27 +101,18 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
+   * @param relationshipType
+   *          TODO
    * @return
    */
-  public MdBusiness getAllPaths()
+  public MdBusiness getAllPaths(String relationshipType)
   {
-    if (this.termAllPaths == null)
+    if (this.allPaths == null || !this.allPaths.containsKey(relationshipType))
     {
-      // MdTerm mdTerm = this.getMdTerm();
-      // String packageName =
-      // mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE,
-      // Constants.ROOT_PACKAGE + ".generated.system");
-      // String typeName = mdTerm.getTypeName() + "AllPathsTable";
-      //
-      // this.termAllPaths = MdBusiness.getMdBusiness(typeName);
-
-      if (this.termAllPaths == null)
-      {
-        throw new ProgrammingErrorException("Strategy has not been initalized.");
-      }
+      throw new ProgrammingErrorException("Strategy has not been initalized.");
     }
 
-    return this.termAllPaths;
+    return this.allPaths.get(relationshipType);
   }
 
   /**
@@ -138,30 +138,42 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   public void configure(String termClass)
   {
     this.termClass = termClass;
+    this.allPaths = new HashMap<String, MdBusiness>();
+
     MdTerm mdTerm = this.getMdTerm();
+    MdTermDAOIF mdTermDAO = MdTermDAO.get(mdTerm.getOid());
 
-    String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-    String typeName = mdTerm.getTypeName() + "AllPathsTable";
+    List<MdRelationshipDAOIF> mdRelationships = mdTermDAO.getAllChildMdRelationships();
 
-    try
+    for (MdRelationshipDAOIF mdRelationship : mdRelationships)
     {
-      this.termAllPaths = MdBusiness.getByKey(packageName + "." + typeName);
-    }
-    catch (DataNotFoundException e)
-    {
-      this.termAllPaths = null;
+      if (mdRelationship instanceof MdTermRelationshipDAO)
+      {
+        String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+        String typeName = mdRelationship.getTypeName() + "AllPathsTable";
+
+        try
+        {
+          this.allPaths.put(mdRelationship.definesType(), MdBusiness.getByKey(packageName + "." + typeName));
+        }
+        catch (DataNotFoundException e)
+        {
+          logger.debug("Unable to find allpaths [" + typeName + "]");
+        }
+      }
+
     }
   }
 
   @Transaction
-  private void createTableMetadata()
+  private void createTableMetadata(String relationshipType)
   {
-    if (this.termAllPaths == null)
+    if (this.allPaths == null || !this.allPaths.containsKey(relationshipType))
     {
       MdTerm mdTerm = this.getMdTerm();
       String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
       String typeName = mdTerm.getTypeName() + "AllPathsTable";
-    
+
       MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
       allPaths.setValue(MdBusinessInfo.NAME, typeName);
       allPaths.setValue(MdBusinessInfo.PACKAGE, packageName);
@@ -169,7 +181,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
       allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
       allPaths.apply();
-  
+
       MdAttributeReferenceDAO mdParentTermAttr = MdAttributeReferenceDAO.newInstance();
       mdParentTermAttr.setValue(MdAttributeReferenceInfo.NAME, PARENT_TERM_ATTR);
       mdParentTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent");
@@ -180,7 +192,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       mdParentTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
       mdParentTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdParentTermAttr.apply();
-  
+
       MdAttributeReferenceDAO mdChildTermAttr = MdAttributeReferenceDAO.newInstance();
       mdChildTermAttr.setValue(MdAttributeReferenceInfo.NAME, CHILD_TERM_ATTR);
       mdChildTermAttr.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child");
@@ -191,13 +203,13 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       mdChildTermAttr.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdTerm.getOid());
       mdChildTermAttr.setValue(MdAttributeReferenceInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getOid());
       mdChildTermAttr.apply();
-  
-      this.termAllPaths = MdBusiness.get(allPaths.getOid());
+
+      this.allPaths.put(relationshipType, MdBusiness.get(allPaths.getOid()));
     }
     else
     {
       // This should never happen
-      logger.error("Table metadata already exists for DatabaseAllPathsStrategy [" + this.termClass + "]. Bad manners!");
+      logger.error("Table metadata already exists for DatabaseAllPathsStrategy [" + relationshipType + "]. Bad manners!");
     }
   }
 
@@ -213,10 +225,10 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       return;
     }
 
-    createTableMetadata();
+    createTableMetadata(relationshipType);
 
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths());
+    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths(relationshipType));
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.initialize(parameters);
@@ -230,7 +242,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
     catch (RuntimeException e)
     {
-      this.getAllPaths().delete();
+      this.getAllPaths(relationshipType).delete();
 
       throw e;
     }
@@ -266,19 +278,24 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       return;
     }
 
-    MdBusiness table = MdBusiness.get(this.getAllPaths().getOid());
+    Set<String> relationshipTypes = this.allPaths.keySet();
 
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put(ALL_PATHS_PARAMETER, table);
+    for (String relationshipType : relationshipTypes)
+    {
+      MdBusiness table = MdBusiness.get(this.getAllPaths(relationshipType).getOid());
 
-    OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
-    database.shutdown(parameters);
+      Map<String, Object> parameters = new HashMap<String, Object>();
+      parameters.put(ALL_PATHS_PARAMETER, table);
 
-    // Delete the termAllPaths MdBusiness
-    table.delete();
+      OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
+      database.shutdown(parameters);
 
-    // The super changes the StrategyState
-    super.shutdown();
+      // Delete the termAllPaths MdBusiness
+      table.delete();
+
+      // The super changes the StrategyState
+      super.shutdown();
+    }
   }
 
   /**
@@ -288,7 +305,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   public void rebuildAllPaths(String relationshipType)
   {
     // Clear all existing all paths records
-    this.clear();
+    this.clear(relationshipType);
 
     MdTerm termDomain = this.getMdTerm();
     MdRelationship termRelationship = MdRelationship.getMdRelationship(relationshipType);
@@ -297,27 +314,28 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(TERM_PARAMETER, termDomain);
     parameters.put(TERM_RELATIONSHIP_PARAMETER, termRelationship);
-    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths());
+    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths(relationshipType));
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.rebuild(parameters);
   }
 
   @Transaction
-  private void clear()
+  private void clear(String relationshipType)
   {
-    String allpathsTable = this.getAllPaths().getTableName();
+    MdBusiness mdBusiness = this.getAllPaths(relationshipType);
+    String allpathsTable = mdBusiness.getTableName();
 
     if (logger.isDebugEnabled())
     {
       // report the number of records that are being deleted
-      BusinessDAOQuery q = new QueryFactory().businessDAOQuery(this.getAllPaths().definesType());
+      BusinessDAOQuery q = new QueryFactory().businessDAOQuery(mdBusiness.definesType());
       long beforeCount = q.getCount();
 
-      logger.debug("The type [" + termAllPaths + "] had [" + beforeCount + "] objects in table [" + allpathsTable + "] BEFORE a complete allpaths rebuild.");
+      logger.debug("The type [" + mdBusiness.definesType() + "] had [" + beforeCount + "] objects in table [" + allpathsTable + "] BEFORE a complete allpaths rebuild.");
     }
 
-    this.getAllPaths().deleteAllTableRecords();
+    mdBusiness.deleteAllTableRecords();
   }
 
   /**
@@ -333,7 +351,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(PARENT_PARAMETER, parent);
     parameters.put(CHILD_PARAMETER, child);
-    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths());
+    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths(relationshipType));
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.copyTerm(parameters);
@@ -380,7 +398,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     QueryFactory f = new QueryFactory();
 
     // restrict the all paths table
-    String allPathsType = this.getAllPaths().definesType();
+    String allPathsType = this.getAllPaths(relationshipType).definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
     String domainType = getMdTerm().definesType();
@@ -430,7 +448,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     QueryFactory f = new QueryFactory();
 
-    String allPathsType = this.getAllPaths().definesType();
+    String allPathsType = this.getAllPaths(relationshipType).definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
     String domainType = getMdTerm().definesType();
@@ -504,7 +522,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     QueryFactory f = new QueryFactory();
 
-    String allPathsType = this.getAllPaths().definesType();
+    String allPathsType = this.getAllPaths(relationshipType).definesType();
     BusinessQuery pathsQ = f.businessQuery(allPathsType);
 
     pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(term.getOid()));
@@ -556,7 +574,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       // Create a new entry into the all paths table between where the term is
       // the
       // parent and the child
-      BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths().definesType());
+      BusinessDAO instance = BusinessDAO.newInstance(this.getAllPaths(relationshipType).definesType());
       instance.setValue(PARENT_TERM_ATTR, term.getOid());
       instance.setValue(CHILD_TERM_ATTR, term.getOid());
       instance.apply();
@@ -587,14 +605,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     private AllPathsDeleteStrategyProvider(Term deleteRoot, String relationshipType)
     {
-      allpaths_table_name = termAllPaths.getTableName();
+      allpaths_table_name = allPaths.get(relationshipType).getTableName();
 
       this.relationshipType = relationshipType;
 
       // Count how many ancestors this term has. This will be used for later
       // calculations
       QueryFactory f = new QueryFactory();
-      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
+      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths(relationshipType).definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
       pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(deleteRoot.getOid()));
       delRootACount = pathsQ.getCount() - 1;
@@ -603,7 +621,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     @Override
     public boolean isTermAlreadyProcessed(Term child, Stack<Term> s, String tempTableName)
     {
-      String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths().getOid()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
+      String childCol = MdBusinessDAO.get(DatabaseAllPathsStrategy.this.getAllPaths(relationshipType).getOid()).definesAttribute(CHILD_TERM_ATTR).getColumnName();
       String allpathsAncestorsSql = Database.selectClause(Arrays.asList("count(*)"), Arrays.asList(allpaths_table_name), Arrays.asList(childCol + " = '" + child.getOid() + "'"));
       ResultSet resultSet = Database.selectFromWhere("count(*)", tempTableName, Term.TEMP_TERM_ID_COL + " = '" + child.getOid() + "' AND (" + allpathsAncestorsSql + ") > " + ( 2 + s.size() + delRootACount ));
       try
@@ -647,7 +665,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       // Count how many ancestors this term has. This will be used for later
       // calculations
       QueryFactory f = new QueryFactory();
-      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths().definesType();
+      String allPathsType = DatabaseAllPathsStrategy.this.getAllPaths(relationshipType).definesType();
       BusinessQuery pathsQ = f.businessQuery(allPathsType);
       pathsQ.WHERE(pathsQ.aReference(CHILD_TERM_ATTR).EQ(child.getOid()));
       long ancestorCount = pathsQ.getCount() - 1;
@@ -669,9 +687,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     try
     {
-      if(it.hasNext())
+      if (it.hasNext())
       {
-        DatabaseAllPathsStrategy strategy = it.next();        
+        DatabaseAllPathsStrategy strategy = it.next();
         return strategy;
       }
     }
@@ -682,35 +700,35 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     DatabaseAllPathsStrategy strategy = new DatabaseAllPathsStrategy();
     strategy.setTermClass(termClass);
-    
+
     return strategy;
   }
-  
+
   @Override
   public void addSynonym(Term term, OntologyEntryIF synonym)
   {
     // TODO Auto-generated method stub
-    
+
   }
-  
+
   @Override
   public void updateSynonym(OntologyEntryIF synonym)
   {
     // TODO Auto-generated method stub
-    
+
   }
-  
+
   @Override
   public void removeSynonym(OntologyEntryIF synonym)
   {
     // TODO Auto-generated method stub
-    
+
   }
-  
+
   @Override
   public void updateLabel(Term term, String label)
   {
     // TODO Auto-generated method stub
-    
+
   }
 }
