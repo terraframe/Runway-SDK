@@ -54,6 +54,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -137,31 +138,33 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Override
   public void configure(String termClass)
   {
-    this.termClass = termClass;
-    this.allPaths = new HashMap<String, MdBusiness>();
-
-    MdTerm mdTerm = this.getMdTerm();
-    MdTermDAOIF mdTermDAO = MdTermDAO.get(mdTerm.getOid());
-
-    List<MdRelationshipDAOIF> mdRelationships = mdTermDAO.getAllChildMdRelationships();
-
-    for (MdRelationshipDAOIF mdRelationship : mdRelationships)
+    if (this.allPaths == null)
     {
-      if (mdRelationship instanceof MdTermRelationshipDAO)
-      {
-        String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-        String typeName = mdRelationship.getTypeName() + "AllPathsTable";
+      this.termClass = termClass;
+      this.allPaths = new HashMap<String, MdBusiness>();
 
-        try
+      MdTerm mdTerm = this.getMdTerm();
+      MdTermDAOIF mdTermDAO = MdTermDAO.get(mdTerm.getOid());
+
+      List<MdRelationshipDAOIF> mdRelationships = mdTermDAO.getAllChildMdRelationships();
+
+      for (MdRelationshipDAOIF mdRelationship : mdRelationships)
+      {
+        if (mdRelationship instanceof MdTermRelationshipDAO)
         {
-          this.allPaths.put(mdRelationship.definesType(), MdBusiness.getByKey(packageName + "." + typeName));
-        }
-        catch (DataNotFoundException e)
-        {
-          logger.debug("Unable to find allpaths [" + typeName + "]");
+          String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+          String typeName = mdRelationship.getTypeName() + "AllPathsTable";
+
+          try
+          {
+            this.allPaths.put(mdRelationship.definesType(), MdBusiness.getByKey(packageName + "." + typeName));
+          }
+          catch (DataNotFoundException e)
+          {
+            logger.debug("Unable to find allpaths [" + typeName + "]");
+          }
         }
       }
-
     }
   }
 
@@ -170,9 +173,10 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     if (this.allPaths == null || !this.allPaths.containsKey(relationshipType))
     {
+      MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
       MdTerm mdTerm = this.getMdTerm();
       String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-      String typeName = mdTerm.getTypeName() + "AllPathsTable";
+      String typeName = mdRelationship.getTypeName() + "AllPathsTable";
 
       MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
       allPaths.setValue(MdBusinessInfo.NAME, typeName);

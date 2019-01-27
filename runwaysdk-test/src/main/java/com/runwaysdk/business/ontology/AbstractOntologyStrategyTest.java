@@ -165,6 +165,7 @@ public abstract class AbstractOntologyStrategyTest
         return DatabaseAllPathsStrategy.factory(mdTermType);
       }
     });
+    strategy.configure(mdTerm.definesType());
     return strategy;
   }
 
