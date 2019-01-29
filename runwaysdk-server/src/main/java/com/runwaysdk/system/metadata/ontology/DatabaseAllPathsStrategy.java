@@ -177,8 +177,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     {
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
       MdTerm mdTerm = this.getMdTerm();
-      String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-      String typeName = mdRelationship.getTypeName() + "AllPathsTable";
+      String packageName = getPackageName(mdTerm);
+      String typeName = getTypeName(mdRelationship);
 
       MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
       allPaths.setValue(MdBusinessInfo.NAME, typeName);
@@ -186,12 +186,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       allPaths.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
       allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
       allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-      
+
       if (strategy != null)
       {
         strategy.preApply(allPaths);
       }
-      
+
       allPaths.apply();
 
       MdAttributeReferenceDAO mdParentTermAttr = MdAttributeReferenceDAO.newInstance();
@@ -301,7 +301,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
       OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
       database.shutdown(parameters);
-      
+
       // Truncate the allpaths table records
       MdBusiness.get(table.getOid()).deleteAllTableRecords();
 
@@ -804,6 +804,16 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   public void updateLabel(Term term, String label)
   {
     // TODO Auto-generated method stub
-
   }
+
+  public static String getPackageName(MdTerm mdTerm)
+  {
+    return mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+  }
+
+  public static String getTypeName(MdRelationshipDAOIF mdRelationship)
+  {
+    return mdRelationship.getTypeName() + "AllPathsTable";
+  }
+
 }
