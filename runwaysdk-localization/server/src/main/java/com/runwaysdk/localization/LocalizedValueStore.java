@@ -33,10 +33,13 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ConfigurationException;
 import com.runwaysdk.dataaccess.DuplicateDataException;
+import com.runwaysdk.dataaccess.EntityDAO;
+import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Session;
 
 public class LocalizedValueStore extends LocalizedValueStoreBase
@@ -81,27 +84,15 @@ public class LocalizedValueStore extends LocalizedValueStoreBase
    */
   public static String localize(String key, Locale locale)
   {
-    LocalizedValueStoreQuery query = new LocalizedValueStoreQuery(new QueryFactory());
-    query.WHERE(query.getStoreKey().EQ(key));
-    
-    OIterator<? extends LocalizedValueStore> it = query.getIterator();
-    
     try
     {
-      if (it.hasNext())
-      {
-        LocalizedValueStore store = it.next();
-        
-        return store.getStoreValue().getValue(locale);
-      }
-      else
-      {
-        return null;
-      }
+      LocalizedValueStore store = LocalizedValueStore.getByKey(key);
+      
+      return store.getStoreValue().getValue(locale);
     }
-    finally
+    catch (DataNotFoundException e)
     {
-      it.close();
+      return null;
     }
   }
   
@@ -114,25 +105,17 @@ public class LocalizedValueStore extends LocalizedValueStoreBase
   {
     Map<String, String> map = new HashMap<String, String>();
     
-    LocalizedValueStoreQuery query = new LocalizedValueStoreQuery(new QueryFactory());
+    List<? extends EntityDAOIF> entityDAOs = ObjectCache.getCachedEntityDAOs(LocalizedValueStore.CLASS);
     
-    OIterator<? extends LocalizedValueStore> it = query.getIterator();
-    
-    try
+    for (EntityDAOIF entityDAOIF : entityDAOs)
     {
-      while (it.hasNext())
-      {
-        LocalizedValueStore store = it.next();
-        
-        String value = store.getStoreValue().getValue(locale);
-        String key = store.getStoreKey();
-        
-        map.put(key, value);
-      }
-    }
-    finally
-    {
-      it.close();
+      EntityDAO entityDAO = (EntityDAO) entityDAOIF;
+      
+      AttributeLocal attrLocal = (AttributeLocal) entityDAO.getAttribute(LocalizedValueStore.STOREVALUE);
+      String value = attrLocal.getValue(locale);
+      String key = entityDAO.getValue(LocalizedValueStore.STOREKEY);
+      
+      map.put(key, value);
     }
     
     return map;
