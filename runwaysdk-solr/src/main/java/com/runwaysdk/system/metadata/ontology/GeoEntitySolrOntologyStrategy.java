@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.business.ontology.InitializationStrategyIF;
 import com.runwaysdk.business.ontology.QualifiedOntologyEntry;
 import com.runwaysdk.business.ontology.QualifiedOntologyEntryIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -96,7 +97,7 @@ public class GeoEntitySolrOntologyStrategy extends SolrOntolgyStrategy implement
   }
 
   @Override
-  public void initialize(String relationshipType)
+  public void initialize(String relationshipType, InitializationStrategyIF strategy)
   {
     if (this.isInitialized())
     {

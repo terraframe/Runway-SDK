@@ -31,6 +31,11 @@ public interface OntologyStrategyIF
    * Initialize the strategy and prepare for usage.
    */
   public void initialize(String relationshipType);
+  
+  /**
+   * Initialize the strategy and prepare for usage.
+   */
+  public void initialize(String relationshipType, InitializationStrategyIF strategy);
 
   /**
    * Prepare for deletion.
@@ -38,10 +43,21 @@ public interface OntologyStrategyIF
   public void shutdown();
 
   /**
+   * Prepare for deletion.
+   */
+  public void shutdown(String relationshipType);
+  
+  /**
    * Reset the strategy back to the initialized state, clearing any and all
    * cached data. The default behavior is to call shutdown then initialize.
    */
   public void reinitialize(String relationshipType);
+  
+  /**
+   * Reset the strategy back to the initialized state, clearing any and all
+   * cached data. The default behavior is to call shutdown then initialize.
+   */
+  public void reinitialize(String relationshipType, InitializationStrategyIF strategy);
 
   /**
    * Copies the child Term and its subtree beneath the given parent Term. The
