@@ -45,9 +45,15 @@ public class CompositeStrategy implements OntologyStrategyIF
   @Override
   public void initialize(String relationshipType)
   {
+    this.initialize(relationshipType, null);
+  }
+
+  @Override
+  public void initialize(String relationshipType, InitializationStrategyIF pStrategy)
+  {
     for (OntologyStrategyIF strategy : strategies)
     {
-      strategy.initialize(relationshipType);
+      strategy.initialize(relationshipType, pStrategy);
     }
   }
 
@@ -61,11 +67,26 @@ public class CompositeStrategy implements OntologyStrategyIF
   }
 
   @Override
-  public void reinitialize(String relationshipType)
+  public void shutdown(String relationshipType)
   {
     for (OntologyStrategyIF strategy : strategies)
     {
-      strategy.reinitialize(relationshipType);
+      strategy.shutdown(relationshipType);
+    }
+  }
+
+  @Override
+  public void reinitialize(String relationshipType)
+  {
+    this.reinitialize(relationshipType, null);
+  }
+
+  @Override
+  public void reinitialize(String relationshipType, InitializationStrategyIF pStrategy)
+  {
+    for (OntologyStrategyIF strategy : strategies)
+    {
+      strategy.reinitialize(relationshipType, pStrategy);
     }
   }
 

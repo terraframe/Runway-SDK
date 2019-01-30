@@ -48,12 +48,18 @@ public class DefaultStrategy implements OntologyStrategyIF
   {
     return true;
   }
+  
+  @Override
+  public void initialize(String relationshipType)
+  {
+    // NO OP
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize()
    */
   @Override
-  public void initialize(String relationshipType)
+  public void initialize(String relationshipType, InitializationStrategyIF strategy)
   {
     // NO OP
   }
@@ -67,14 +73,26 @@ public class DefaultStrategy implements OntologyStrategyIF
     // NO OP
   }
 
+  @Override
+  public void shutdown(String relationshipType)
+  {
+    // NO OP
+  }
+
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize()
    */
   @Override
-  public void reinitialize(String relationshipType)
+  public void reinitialize(String relationshipType, InitializationStrategyIF strategy)
   {
     shutdown();
-    initialize(relationshipType);
+    initialize(relationshipType, strategy);
+  }
+  
+  @Override
+  public void reinitialize(String relationshipType)
+  {
+    this.reinitialize(relationshipType, null);
   }
 
   /**

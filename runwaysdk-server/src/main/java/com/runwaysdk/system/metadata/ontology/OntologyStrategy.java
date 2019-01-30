@@ -19,13 +19,14 @@
 package com.runwaysdk.system.metadata.ontology;
 
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.business.ontology.InitializationStrategyIF;
 
 /**
  * This is the abstract class that ontology strategies with state will extend.
- * The DefaultStrategy DOES NOT extend this class, so use {@link OntologyStrategyIF} to
- * refer to a generic strategy. If you are trying to create a new strategy (with
- * state) then create a new Runway class that extends this or a sibling
- * (DatabaseAllPathsStrategy).
+ * The DefaultStrategy DOES NOT extend this class, so use
+ * {@link OntologyStrategyIF} to refer to a generic strategy. If you are trying
+ * to create a new strategy (with state) then create a new Runway class that
+ * extends this or a sibling (DatabaseAllPathsStrategy).
  */
 public abstract class OntologyStrategy extends OntologyStrategyBase implements OntologyStrategyIF
 {
@@ -36,6 +37,12 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
     super();
   }
 
+  @Override
+  public void initialize(String relationshipType)
+  {
+    this.initialize(relationshipType, null);
+  }
+
   /*
    * Subclasses need to super or the strategy state will not be changed!
    * 
@@ -44,8 +51,13 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
    * .business.ontology.MdTermDAO)
    */
   @Override
-  public void initialize(String relationshipType)
+  public void initialize(String relationshipType, InitializationStrategyIF strategy)
   {
+    if(!this.isNew())
+    {
+      this.appLock();
+    }
+
     this.clearStrategyState();
     this.addStrategyState(StrategyState.INITIALIZED);
     this.apply();
@@ -59,10 +71,16 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
    * .business.ontology.MdTermDAO)
    */
   @Override
-  public void reinitialize(String relationshipType)
+  public void reinitialize(String relationshipType, InitializationStrategyIF strategy)
   {
     shutdown();
-    initialize(relationshipType);
+    initialize(relationshipType, strategy);
+  }
+
+  @Override
+  public void reinitialize(String relationshipType)
+  {
+    this.reinitialize(relationshipType, null);
   }
 
   /*
@@ -75,6 +93,11 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
   @Override
   public void shutdown()
   {
+    if(!this.isNew())
+    {
+      this.appLock();
+    }
+
     this.clearStrategyState();
     this.addStrategyState(StrategyState.UNINITIALIZED);
     this.apply();

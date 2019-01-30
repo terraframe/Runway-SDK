@@ -46,6 +46,7 @@ import com.runwaysdk.business.ontology.DeleteStrategyProviderIF;
 import com.runwaysdk.business.ontology.OntologyEntry;
 import com.runwaysdk.business.ontology.OntologyEntryIF;
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.business.ontology.InitializationStrategyIF;
 import com.runwaysdk.business.ontology.QualifiedOntologyEntry;
 import com.runwaysdk.business.ontology.QualifiedOntologyEntryIF;
 import com.runwaysdk.business.ontology.Term;
@@ -59,21 +60,21 @@ import com.runwaysdk.util.Cache;
 
 public class SolrOntolgyStrategy implements OntologyStrategyIF
 {
-  private static Logger logger = LoggerFactory.getLogger(GeoEntitySolrOntologyStrategy.class);
-  
-  public static String LABEL         = "label";
+  private static Logger logger        = LoggerFactory.getLogger(GeoEntitySolrOntologyStrategy.class);
 
-  public static String OID            = "oid";
+  public static String  LABEL         = "label";
 
-  public static String ENTITY        = "entity";
+  public static String  OID           = "oid";
 
-  public static String QUALIFIER     = "qualifier";
+  public static String  ENTITY        = "entity";
 
-  public static String RELATIONSHIPS = "relationships";
+  public static String  QUALIFIER     = "qualifier";
 
-  private String       termClass;
+  public static String  RELATIONSHIPS = "relationships";
 
-  private String       sortAttriubte;
+  private String        termClass;
+
+  private String        sortAttriubte;
 
   public SolrOntolgyStrategy(String termClass)
   {
@@ -108,17 +109,23 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       throw new ProgrammingErrorException(e);
     }
   }
-
+  
   @Override
   public void initialize(String relationshipType)
+  {
+    this.initialize(relationshipType, null);
+  }
+
+  @Override
+  public void initialize(String relationshipType, InitializationStrategyIF strategy)
   {
     if (this.isInitialized())
     {
       return;
     }
-    
+
     logger.info("Initializing SolrOntolgyStrategy");
-    
+
     try
     {
       SolrCommand command = this.getCommand();
@@ -143,10 +150,10 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       {
         while (it.hasNext())
         {
-//          if (count % 50 == 0)
-//          {
-            logger.info("SolrOntolgyStrategy Processing:" + count + "/" + total + " " + System.currentTimeMillis());
-//          }
+          // if (count % 50 == 0)
+          // {
+          logger.info("SolrOntolgyStrategy Processing:" + count + "/" + total + " " + System.currentTimeMillis());
+          // }
 
           Term term = (Term) it.next();
 
@@ -194,7 +201,7 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
     {
       throw new ProgrammingErrorException(e);
     }
-    
+
     logger.info("SolrOntolgyStrategy finished initializing.");
   }
 
@@ -205,7 +212,13 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
   }
 
   @Override
-  public void reinitialize(String relationshipType)
+  public void shutdown(String relationshipType)
+  {
+    // NO OP
+  }
+
+  @Override
+  public void reinitialize(String relationshipType, InitializationStrategyIF strategy)
   {
     try
     {
@@ -213,12 +226,18 @@ public class SolrOntolgyStrategy implements OntologyStrategyIF
       SolrClient client = command.getClient();
       client.deleteByQuery(OID + ":*");
 
-      this.initialize(relationshipType);
+      this.initialize(relationshipType, strategy);
     }
     catch (SolrServerException | IOException e)
     {
       throw new ProgrammingErrorException(e);
     }
+  }
+
+  @Override
+  public void reinitialize(String relationshipType)
+  {
+    this.reinitialize(relationshipType, null);
   }
 
   @Override
