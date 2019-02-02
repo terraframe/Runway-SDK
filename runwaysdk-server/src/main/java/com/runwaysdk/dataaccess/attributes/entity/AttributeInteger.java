@@ -3,23 +3,25 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created January 12, 2006
  */
 package com.runwaysdk.dataaccess.attributes.entity;
+
+import java.math.BigDecimal;
 
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -65,7 +67,7 @@ public class AttributeInteger extends AttributeNumber
   {
     super(name, mdAttributeKey, definingEntityType, value);
   }
-  
+
   /**
    * Returns the Java primitive type of the value.
    * 
@@ -82,7 +84,26 @@ public class AttributeInteger extends AttributeNumber
       return Integer.parseInt(this.getValue());
     }
   }
-  
+
+  @Override
+  public void setValue(Object value)
+  {
+    if (value != null && value instanceof Integer)
+    {
+      this.setValue(value.toString());
+    }
+    else
+    {
+      super.setValue(value);
+    }
+  }
+
+  @Override
+  public Object getObjectValue()
+  {
+    return this.getTypeSafeValue();
+  }
+
   /**
    * Test if the input String is a valid integer.
    * 

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -38,12 +38,14 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.session.Ownable;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
-
 
 /**
  *
@@ -54,9 +56,9 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   /**
    * 
    */
-  private static final long serialVersionUID = -7718572189379971369L;
-  
-  public final static String CLASS = Element.class.getName();
+  private static final long  serialVersionUID = -7718572189379971369L;
+
+  public final static String CLASS            = Element.class.getName();
 
   public Element()
   {
@@ -65,11 +67,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   /**
    * A generic, type-unsafe getter for struct attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * String
+   * attribute and struct names as Strings, and returns the value as a String
    *
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
    * @return String representation of the struct value
    */
   public String getStructValue(String structName, String attributeName)
@@ -78,7 +81,8 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   }
 
   /**
-   * Returns the value for the attribute that matches the given locale (or a best fit).
+   * Returns the value for the attribute that matches the given locale (or a
+   * best fit).
    *
    * @param localAttributeName
    * @param local
@@ -91,11 +95,13 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   /**
    * A generic, type-unsafe getter for struct blob attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * byte array
+   * attribute and struct names as Strings, and returns the value as a byte
+   * array
    *
-   * @param structName String name of the struct
-   * @param blobName String name of the desired blob attribute
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired blob attribute
    * @return byte[] representation of the struct value
    */
   public byte[] getStructBlob(String structName, String blobName)
@@ -108,7 +114,8 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    * declared type of the list is BusinessEnumeration, but each entry is
    * instantiated through reflection, which allows for accurate actual types.
    *
-   * @param name Name of the attribute enumeration
+   * @param name
+   *          Name of the attribute enumeration
    * @return List of typesafe enumeration options that are selected
    */
   public List<? extends BusinessEnumeration> getStructEnumValues(String structName, String attributeName)
@@ -116,7 +123,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     AttributeStructIF struct = (AttributeStructIF) entityDAO.getAttributeIF(structName);
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) struct.getAttributeIF(attributeName);
 
-    Set<String> ids = (attribute).getCachedEnumItemIdSet();
+    Set<String> ids = ( attribute ).getCachedEnumItemIdSet();
     MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttributeConcrete();
 
     return loadEnumValues(ids, mdAttribute);
@@ -125,30 +132,55 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   /**
    * Returns the Struct associated with an AttributeStruct
    *
-   * @param structName The name of the AttributeStruct
+   * @param structName
+   *          The name of the AttributeStruct
    * @return A Struct representation of the AttributeStruct
    */
   public Struct getStruct(String structName)
   {
-    Struct struct = Struct.instantiate(this, structName);
+    if (this.getMdClass().isGenerateSource())
+    {
+      Struct struct = Struct.instantiate(this, structName);
 
-    return struct;
+      return struct;
+    }
+    else
+    {
+      AttributeStructIF attributeStruct = (AttributeStructIF) this.getEntityDAO().getAttributeIF(structName);
+      StructDAO structDAO = attributeStruct.getStructDAO();
+      MdStructDAOIF mdClassDAO = structDAO.getMdStructDAO();
+
+      if (mdClassDAO instanceof MdLocalStructDAOIF)
+      {
+        LocalStruct struct = new LocalStruct(structDAO);
+        struct.setDataEntity(structDAO);
+        return struct;
+      }
+      else
+      {
+        Struct struct = new Struct(structDAO);
+        struct.setDataEntity(structDAO);
+        return struct;
+      }
+    }
   }
 
   /**
-   * Returns the type unsafe Struct (actual type of Struct) associated with an AttributeStruct
+   * Returns the type unsafe Struct (actual type of Struct) associated with an
+   * AttributeStruct
    *
-   * @param structName The name of the AttributeStruct
+   * @param structName
+   *          The name of the AttributeStruct
    * @return A Struct representation of the AttributeStruct
    */
   public Struct getGenericStruct(String structName)
   {
     MdAttributeDAOIF mdAttributeDAOIF = this.getMdAttributeDAO(structName);
 
-    //The StructDAO that the Struct delegates to
-    //must be the same java object as the StructDAO which
-    //the AttributeStructIF delegates to or else the apply method
-    //will apply a different StructDAO.
+    // The StructDAO that the Struct delegates to
+    // must be the same java object as the StructDAO which
+    // the AttributeStructIF delegates to or else the apply method
+    // will apply a different StructDAO.
     if (mdAttributeDAOIF instanceof MdAttributeLocalDAOIF)
     {
       return new LocalStruct(this, structName);
@@ -163,9 +195,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
    *
-   * @param structName String name of the struct
-   * @param blobName String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructBlob(String structAttributeName, String blobName, byte[] value)
   {
@@ -176,9 +211,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
    *
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructValue(String structName, String attributeName, String _value)
   {
@@ -195,56 +233,69 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   /**
    * Adds an item to an enumerated struct attribute.
    *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void addStructItem(String structName, String attributeName, String value)
   {
-    ((ElementDAO) entityDAO).addStructItem(structName, attributeName, value);
+    ( (ElementDAO) entityDAO ).addStructItem(structName, attributeName, value);
   }
 
   /**
-   * Replaces the items of an enumerated struct attribute. If the attribute
-   * does not allow multiplicity, then the {@code values} collection must
-   * contain only one item.
+   * Replaces the items of an enumerated struct attribute. If the attribute does
+   * not allow multiplicity, then the {@code values} collection must contain
+   * only one item.
    *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param values Collection of enumerated it ids
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param values
+   *          Collection of enumerated it ids
    */
   public void replaceStructItems(String structName, String attributeName, Collection<String> values)
   {
-    ((ElementDAO) entityDAO).replaceStructItems(structName, attributeName, values);
+    ( (ElementDAO) entityDAO ).replaceStructItems(structName, attributeName, values);
   }
 
   /**
    * Remove an item for an enumerated struct attribute.
    *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void removeStructItem(String structName, String attributeName, String value)
   {
-    ((ElementDAO) entityDAO).removeStructItem(structName, attributeName, value);
+    ( (ElementDAO) entityDAO ).removeStructItem(structName, attributeName, value);
   }
 
   /**
    * Clears all the values of a struct enumeration attribute.
    *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
    */
   public void clearStructItems(String structName, String attributeName)
   {
-    ((ElementDAO) entityDAO).clearStructItems(structName, attributeName);
+    ( (ElementDAO) entityDAO ).clearStructItems(structName, attributeName);
   }
 
   /**
-   * Returns a UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
+   * Returns a UserIF object that represents the user that has a lock on this
+   * entity, or null if the entity is not locked.
    *
-   * @return UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
+   * @return UserIF object that represents the user that has a lock on this
+   *         entity, or null if the entity is not locked.
    */
   protected SingleActorDAOIF getLockedByDAO()
   {
@@ -254,12 +305,13 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      return (SingleActorDAOIF)((AttributeReference)entityDAO.getAttributeIF(ElementInfo.LOCKED_BY)).dereference();
+      return (SingleActorDAOIF) ( (AttributeReference) entityDAO.getAttributeIF(ElementInfo.LOCKED_BY) ).dereference();
     }
   }
 
   /**
    * Returns the Actor Data Access Object that owns this object.
+   * 
    * @return Actor Data Access Object that owns this object.
    */
   public ActorDAOIF getOwnerDAO()
@@ -270,10 +322,10 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
     else
     {
-      return (ActorDAOIF)((AttributeReference)entityDAO.getAttributeIF(ElementInfo.OWNER)).dereference();
+      return (ActorDAOIF) ( (AttributeReference) entityDAO.getAttributeIF(ElementInfo.OWNER) ).dereference();
     }
   }
-  
+
   /**
    * Returns the Actor Id that owns this object.
    * 
@@ -284,9 +336,9 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     return getValue(ElementInfo.OWNER);
   }
 
-
   /**
-   * Locks the given Entity by the given user.  This method does not use reflection.
+   * Locks the given Entity by the given user. This method does not use
+   * reflection.
    *
    * <br/>
    * <b>Precondition:</b> userId != null <br/>
@@ -298,22 +350,20 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    *           if the Entity is locked by another user
    */
   public void userLock(String userId)
-  {   
-    (LockObject.getLockObject()).appLock(this.getOid());
-    
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid())).getEntityDAO());
-    
+  {
+    ( LockObject.getLockObject() ).appLock(this.getOid());
+
+    this.setDataEntity( ( EntityDAO.get(this.entityDAO.getOid()) ).getEntityDAO());
+
     // make sure there is no existing user lock
     if (this.hasUserLockFromDifferentUser(userId))
     {
       // Release the Java lock, as it is already locked by another user.
-      (LockObject.getLockObject()).releaseAppLock(this.getOid());
+      ( LockObject.getLockObject() ).releaseAppLock(this.getOid());
 
       String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
-      String errMsg = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot lock entity ["
-          + this.getOid() + "] because it is already locked by user ["
-          + SingleActorDAO.get(lockedBy).getSingleActorName() + "]";
+      String errMsg = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot lock entity [" + this.getOid() + "] because it is already locked by user [" + SingleActorDAO.get(lockedBy).getSingleActorName() + "]";
       throw new LockException(errMsg, this, "ExistingLockException");
     }
 
@@ -321,10 +371,9 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     this.entityDAO.apply();
   }
 
-
   /**
-   * Locks the given Entity by the current session user.  Aspects
-   * take care determining the session user.
+   * Locks the given Entity by the current session user. Aspects take care
+   * determining the session user.
    *
    * @throws DataAccessException
    *           if the Entity is locked by another user
@@ -332,13 +381,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   public void lock()
   {
     SessionIF session = Session.getCurrentSession();
-    
-    if(session != null)
+
+    if (session != null)
     {
       this.userLock(session.getUser().getOid());
     }
   }
-
 
   /**
    * Unlocks the this Entity if the given user has a lock on the object.
@@ -354,11 +402,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    */
   public void releaseUserLock(String userId)
   {
-    (LockObject.getLockObject()).appLock(this.getOid());
+    ( LockObject.getLockObject() ).appLock(this.getOid());
 
-    // If this object has been modified during this transaction, then this should return a reference to the
+    // If this object has been modified during this transaction, then this
+    // should return a reference to the
     // same entityDAO object.
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid()).getEntityDAO()));
+    this.setDataEntity( ( EntityDAO.get(this.entityDAO.getOid()).getEntityDAO() ));
 
     String lockedBy = this.entityDAO.getAttributeIF(ElementInfo.LOCKED_BY).getValue();
 
@@ -368,9 +417,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
       // Entity is locked by a different user
       if (!lockedBy.equals(userId))
       {
-        String error = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot unlock Entity ["
-            + this.getOid() + "] because it is locked by user [" + UserDAO.get(lockedBy).getSingleActorName()
-            + "]";
+        String error = "User [" + UserDAO.get(userId).getSingleActorName() + "] cannot unlock Entity [" + this.getOid() + "] because it is locked by user [" + UserDAO.get(lockedBy).getSingleActorName() + "]";
 
         throw new LockException(error, this, "ExistingUnlockException");
       }
@@ -381,13 +428,12 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     this.entityDAO.apply();
 
     // Release the lock on this object
-    (LockObject.getLockObject()).releaseAppLock(this.getOid());
+    ( LockObject.getLockObject() ).releaseAppLock(this.getOid());
   }
 
-
   /**
-   * Unlocks the given Entity for the current session user.  Aspects
-   * take care determining the session user.
+   * Unlocks the given Entity for the current session user. Aspects take care
+   * determining the session user.
    *
    * @throws DataAccessException
    *           if the Entity is locked by another user
@@ -395,7 +441,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   public void unlock()
   {
     SessionIF session = Session.getCurrentSession();
-    if(session != null)
+    if (session != null)
     {
       this.releaseUserLock(session.getUser().getOid());
     }
@@ -417,39 +463,38 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     }
 
     // Wait until this thread attains a lock on this object
-    (LockObject.getLockObject()).appLock(this.getOid());
+    ( LockObject.getLockObject() ).appLock(this.getOid());
 
-    this.setDataEntity((EntityDAO.get(this.entityDAO.getOid())).getEntityDAO());
+    this.setDataEntity( ( EntityDAO.get(this.entityDAO.getOid()) ).getEntityDAO());
 
     // make sure there is no existing user lock
     if (this.hasUserLockFromDifferentUser(userId))
     {
       // Release the Java lock, as it is already locked by another user.
-      (LockObject.getLockObject()).releaseAppLock(this.getOid());
+      ( LockObject.getLockObject() ).releaseAppLock(this.getOid());
 
       String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
-      String errMsg = "Entity ["
-          + this.getOid() + "] cannot be locked because it is already locked by user ["
-          + UserDAO.get(lockedBy).getSingleActorName() + "]";
+      String errMsg = "Entity [" + this.getOid() + "] cannot be locked because it is already locked by user [" + UserDAO.get(lockedBy).getSingleActorName() + "]";
       throw new LockException(errMsg, this, "ExistingLockException");
     }
 
   }
 
   /**
-   * Returns true if the lockedby field  is populated, meaning a user lock exists on this
-   * object by a different user, false otherwise.
-   * @param userId oid of the user who wants to get a lock on this object
-   * @return true if the lockedby field  is populated, meaning a user lock exists on this
-   * object by a different user, false otherwise.
+   * Returns true if the lockedby field is populated, meaning a user lock exists
+   * on this object by a different user, false otherwise.
+   * 
+   * @param userId
+   *          oid of the user who wants to get a lock on this object
+   * @return true if the lockedby field is populated, meaning a user lock exists
+   *         on this object by a different user, false otherwise.
    */
   protected boolean hasUserLockFromDifferentUser(String userId)
   {
     String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
-    if (!lockedBy.equals(userId) &&
-        !lockedBy.equals(""))
+    if (!lockedBy.equals(userId) && !lockedBy.equals(""))
     {
       Date lastUpdateDate = this.getLastUpdateDate();
       int lockTimeout = ServerProperties.getLockTimeout() * 60 * 1000;
@@ -457,7 +502,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
       long now = new Date().getTime();
 
       // Only error out if the lock has not expired
-      if (now < (lastUpdateDate.getTime() + lockTimeout))
+      if (now < ( lastUpdateDate.getTime() + lockTimeout ))
       {
         return true;
       }
@@ -466,18 +511,17 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     return false;
   }
 
-
-
   /**
    * Checks if the current session user has a lock on this object.
    *
-   * Throws an exception if the currently logged in user does not have a lock on the object.
+   * Throws an exception if the currently logged in user does not have a lock on
+   * the object.
    */
   public void validateLock()
   {
     if (!this.checkUserLock())
     {
-      String errMsg = "User needs a lock in order to modify ["+this.toString()+"]";
+      String errMsg = "User needs a lock in order to modify [" + this.toString() + "]";
       throw new LockException(errMsg, this, "NeedLockException");
     }
   }
@@ -485,18 +529,19 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   /**
    * Checks if the current session user has a lock on this object.
    *
-   * @return true if the current user has a lock on this object, false otherwise.
+   * @return true if the current user has a lock on this object, false
+   *         otherwise.
    */
   public boolean checkUserLock()
   {
     String userLockId = entityDAO.getValue(ElementInfo.LOCKED_BY);
     // Set the lock value that denotes if the current user
     SessionIF session = Session.getCurrentSession();
-    if(session != null)
+    if (session != null)
     {
       String currentUserId = session.getUser().getOid();
 
-      if(currentUserId.equals(userLockId))
+      if (currentUserId.equals(userLockId))
       {
         return true;
       }
@@ -513,9 +558,9 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   /**
    * Deletes this entity from the database. Any attempt to
-   * {@link Entity#apply()} this entity will throw an exception, so it
-   * is the responsibility of the developer to remove references to deleted
-   * instances of Entity.
+   * {@link Entity#apply()} this entity will throw an exception, so it is the
+   * responsibility of the developer to remove references to deleted instances
+   * of Entity.
    */
   public void delete()
   {
@@ -523,20 +568,18 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
     this.appLock();
 
     SessionIF session = Session.getCurrentSession();
-    if(session != null)
+    if (session != null)
     {
       String currentUserId = session.getUser().getOid();
       // make sure there is no existing user lock
       if (this.hasUserLockFromDifferentUser(currentUserId))
       {
         // Release the Java lock, as it is already locked by another user.
-        (LockObject.getLockObject()).releaseAppLock(this.getOid());
+        ( LockObject.getLockObject() ).releaseAppLock(this.getOid());
 
         String lockedBy = this.entityDAO.getValue(ElementInfo.LOCKED_BY);
 
-        String errMsg = "Entity ["
-            + this.getOid() + "] cannot be deleted because it is locked by user ["
-            + UserDAO.get(lockedBy).getSingleActorName() + "]";
+        String errMsg = "Entity [" + this.getOid() + "] cannot be deleted because it is locked by user [" + UserDAO.get(lockedBy).getSingleActorName() + "]";
         throw new LockException(errMsg, this, "ExistingLockException");
       }
     }
@@ -546,17 +589,25 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
   }
 
   /**********************************************************************************/
-  /**                      Generated accessor methods                              **/
+  /** Generated accessor methods **/
   /**********************************************************************************/
-  public static java.lang.String TYPE = "type";
-  public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
+  public static java.lang.String TYPE           = "type";
+
+  public static java.lang.String CREATEDBY      = "createdBy";
+
+  public static java.lang.String CREATEDATE     = "createDate";
+
+  public static java.lang.String LASTUPDATEDBY  = "lastUpdatedBy";
+
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
-  public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String SEQ = "seq";
-  public static java.lang.String OWNER = "owner";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
+
+  public static java.lang.String LOCKEDBY       = "lockedBy";
+
+  public static java.lang.String SEQ            = "seq";
+
+  public static java.lang.String OWNER          = "owner";
+
+  public static java.lang.String ENTITYDOMAIN   = "entityDomain";
 
   public String getType()
   {
@@ -576,7 +627,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setType(String value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(TYPE, "");
     }
@@ -611,7 +662,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setCreatedBy(com.runwaysdk.system.SingleActor value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(CREATEDBY, "");
     }
@@ -639,7 +690,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setCreateDate(java.util.Date value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(CREATEDATE, "");
     }
@@ -674,7 +725,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setLastUpdatedBy(com.runwaysdk.system.SingleActor value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(LASTUPDATEDBY, "");
     }
@@ -702,7 +753,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setLastUpdateDate(java.util.Date value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(LASTUPDATEDATE, "");
     }
@@ -737,7 +788,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setLockedBy(com.runwaysdk.system.Users value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(LOCKEDBY, "");
     }
@@ -765,7 +816,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setSeq(Long value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(SEQ, "");
     }
@@ -800,7 +851,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setOwner(com.runwaysdk.system.Actor value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(OWNER, "");
     }
@@ -835,7 +886,7 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
 
   public void setEntityDomain(com.runwaysdk.system.metadata.MdDomain value)
   {
-    if(value == null)
+    if (value == null)
     {
       setValue(ENTITYDOMAIN, "");
     }

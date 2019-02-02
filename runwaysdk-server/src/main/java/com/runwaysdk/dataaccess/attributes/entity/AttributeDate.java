@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created January 12, 2006
@@ -99,6 +99,30 @@ public class AttributeDate extends AttributeMoment
     }
 
     return returnValue;
+  }
+
+  @Override
+  public void setValue(Object value)
+  {
+    if (value != null && value instanceof Date)
+    {
+      this.setValue(MdAttributeDateUtil.getTypeUnsafeValue((Date) value));
+    }
+    else
+    {
+      super.setValue(value);
+    }
+  }
+
+  @Override
+  public Object getObjectValue()
+  {
+    if (this.getValue() != null && this.getValue().length() > 0)
+    {
+      return MdAttributeDateUtil.getTypeSafeValue(this.getValue());
+    }
+
+    return super.getObjectValue();
   }
 
   /**

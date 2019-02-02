@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
@@ -240,7 +241,8 @@ public class Struct extends Entity implements StructInfo
     MdAttributeDAOIF mdAttribute = component.getMdAttributeDAO(structName).getMdAttributeConcrete();
 
     String oid = mdAttribute.getValue(MdAttributeStructInfo.MD_STRUCT);
-    String structType = MdStructDAO.get(oid).definesType();
+    MdStructDAOIF mdStruct = MdStructDAO.get(oid);
+    String structType = mdStruct.definesType();
 
     try
     {
