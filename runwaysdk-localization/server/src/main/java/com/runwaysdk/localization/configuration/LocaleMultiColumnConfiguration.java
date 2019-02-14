@@ -34,9 +34,9 @@ public class LocaleMultiColumnConfiguration extends ColumnConfiguration
 {
   protected List<LocaleDimension> dimensions;
 
-  public LocaleMultiColumnConfiguration(String dataAttribute, List<LocaleDimension> dimensions)
+  public LocaleMultiColumnConfiguration(List<LocaleDimension> dimensions)
   {
-    super(null, dataAttribute);
+    super(null, null);
     
     this.dimensions = dimensions;
   }
@@ -61,7 +61,7 @@ public class LocaleMultiColumnConfiguration extends ColumnConfiguration
     }
   }
   
-  public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct)
+  public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct, String attributeName)
   {
     int i = index;
     

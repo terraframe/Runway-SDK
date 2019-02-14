@@ -63,6 +63,19 @@ public abstract class TabConfiguration
     }
   }
   
+  public ColumnConfiguration getLocaleColumn()
+  {
+    for (ColumnConfiguration column : columns)
+    {
+      if (column instanceof LocaleMultiColumnConfiguration)
+      {
+        return column;
+      }
+    }
+    
+    return null;
+  }
+  
   public ColumnConfiguration getColumnByAttribute(String attributeName)
   {
     for (ColumnConfiguration column : columns)
@@ -185,5 +198,11 @@ public abstract class TabConfiguration
   public void setImportProgressMonitor(LocalizationImportProgressMonitorIF progressMonitor)
   {
     this.importProgressMonitor = progressMonitor;
+  }
+  
+  @Override
+  public String toString()
+  {
+    return this.sheetName;
   }
 }

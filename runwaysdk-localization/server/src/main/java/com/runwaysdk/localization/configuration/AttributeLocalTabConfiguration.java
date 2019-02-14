@@ -26,6 +26,8 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.CommonProperties;
@@ -60,7 +62,9 @@ import com.runwaysdk.system.metadata.Metadata;
 
 public class AttributeLocalTabConfiguration extends TabConfiguration
 {
-  protected List<String> typeExemptions;
+  private Logger logger = LoggerFactory.getLogger(AttributeLocalTabConfiguration.class);
+  
+  protected List<AttributeLocalQueryCriteria> queryCriterias = new ArrayList<AttributeLocalQueryCriteria>();
   
   protected List<? extends MdAttributeLocal> attributeLocals;
   
@@ -82,12 +86,13 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
   {
     super(sheetName, columns);
     
-    this.typeExemptions = new LinkedList<String>();
-    this.typeExemptions.add("com.runwaysdk.system.metadata.MdAction");
-    this.typeExemptions.add(MdParameter.CLASS);
-    this.typeExemptions.add(MdIndex.CLASS);
-    this.typeExemptions.add(MdMethod.CLASS);
-    this.typeExemptions.add(MdAttributeDimension.CLASS);
+    AttributeLocalQueryCriteria defaultCriteria = new AttributeLocalQueryCriteria();
+    defaultCriteria.definingTypeMustNotInclude("com.runwaysdk.system.metadata.MdAction");
+    defaultCriteria.definingTypeMustNotInclude(MdParameter.CLASS);
+    defaultCriteria.definingTypeMustNotInclude(MdIndex.CLASS);
+    defaultCriteria.definingTypeMustNotInclude(MdMethod.CLASS);
+    defaultCriteria.definingTypeMustNotInclude(MdAttributeDimension.CLASS);
+    this.queryCriterias.add(defaultCriteria);
     
     this.attributeLocals = attributeLocals;
     
@@ -182,7 +187,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
     }
     
     boolean apply = false;
-    ColumnConfiguration columnConfig = this.getColumnByAttribute(attributeName);
+    ColumnConfiguration columnConfig = this.getLocaleColumn();
     int index = columnConfig.getIndex();
     
     for (LocaleDimension ld : this.dimensions)
@@ -231,6 +236,8 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
   private void addAttributeLocals(Sheet sheet, List<? extends MdAttributeLocal> all)
   {
     int r = 1;
+    
+    LocalLoop:
     for (MdAttributeLocal local : all)
     {
       MdTypeDAOIF mdType = MdTypeDAO.get(local.getValue(MdAttributeLocal.DEFININGMDCLASS));
@@ -239,96 +246,116 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
       String definingType = mdType.definesType();
       String attributeName = local.getAttributeName();
 
-      if (typeExemptions.contains(definingType))
+      for (AttributeLocalQueryCriteria criteria : this.queryCriterias)
       {
-        continue;
+        if (!criteria.shouldExportDefiningType(definingType))
+        {
+          continue LocalLoop;
+        }
       }
 
+      EntityLoop:
       for (String id : EntityDAO.getEntityIdsDB(definingType))
       {
-        EntityDAOIF entity = EntityDAO.get(id);
-        StructDAOIF struct = StructDAO.get(entity.getValue(attributeName));
-
-        // Don't export instances mastered at another site
-        if (enforceSiteMaster && !struct.getValue(StructInfo.SITE_MASTER).equals(CommonProperties.getDomain()))
+        try
         {
-          continue;
-        }
-
-        // Some attributes are re-created at the top of every hierarchy. Ignore
-        // them.
-        if (entity instanceof MdAttributeDAOIF)
-        {
-          MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) entity;
-          String definedAttribute = mdAttribute.getValue(MdAttributeConcrete.ATTRIBUTENAME);
-          if (definedAttribute.equalsIgnoreCase(Metadata.OID) || definedAttribute.equalsIgnoreCase(Metadata.CREATEDBY) || definedAttribute.equalsIgnoreCase(Metadata.ENTITYDOMAIN) || definedAttribute.equalsIgnoreCase(Metadata.KEYNAME) || definedAttribute.equalsIgnoreCase(Metadata.LASTUPDATEDATE) || definedAttribute.equalsIgnoreCase(Metadata.LASTUPDATEDBY) || definedAttribute.equalsIgnoreCase(Metadata.LOCKEDBY) || definedAttribute.equalsIgnoreCase(Metadata.OWNER) || definedAttribute.equalsIgnoreCase(Metadata.SEQ) || definedAttribute.equalsIgnoreCase(Metadata.TYPE))
+          EntityDAOIF entity = EntityDAO.get(id);
+          
+          for (AttributeLocalQueryCriteria criteria : this.queryCriterias)
+          {
+            if (!criteria.shouldExportEntity(entity))
+            {
+              continue EntityLoop;
+            }
+          }
+          
+          StructDAOIF struct = StructDAO.get(entity.getValue(attributeName));
+  
+          // Don't export instances mastered at another site
+          if (enforceSiteMaster && !struct.getValue(StructInfo.SITE_MASTER).equals(CommonProperties.getDomain()))
           {
             continue;
           }
-
-          // Selectively get rid of create dates
-          if (definedAttribute.equalsIgnoreCase(Metadata.CREATEDATE))
+  
+          // Some attributes are re-created at the top of every hierarchy. Ignore
+          // them.
+          if (entity instanceof MdAttributeDAOIF)
           {
-            if (mdType.definesType().equals("dss.vector.solutions.general.Email"))
+            MdAttributeDAOIF mdAttribute = (MdAttributeDAOIF) entity;
+            String definedAttribute = mdAttribute.getValue(MdAttributeConcrete.ATTRIBUTENAME);
+            if (definedAttribute.equalsIgnoreCase(Metadata.OID) || definedAttribute.equalsIgnoreCase(Metadata.CREATEDBY) || definedAttribute.equalsIgnoreCase(Metadata.ENTITYDOMAIN) || definedAttribute.equalsIgnoreCase(Metadata.KEYNAME) || definedAttribute.equalsIgnoreCase(Metadata.LASTUPDATEDATE) || definedAttribute.equalsIgnoreCase(Metadata.LASTUPDATEDBY) || definedAttribute.equalsIgnoreCase(Metadata.LOCKEDBY) || definedAttribute.equalsIgnoreCase(Metadata.OWNER) || definedAttribute.equalsIgnoreCase(Metadata.SEQ) || definedAttribute.equalsIgnoreCase(Metadata.TYPE))
             {
               continue;
             }
-            if (mdType.definesType().equals("com.runwaysdk.system.transaction.TransactionRecord"))
+  
+            // Selectively get rid of create dates
+            if (definedAttribute.equalsIgnoreCase(Metadata.CREATEDATE))
             {
-              continue;
+              if (mdType.definesType().equals("dss.vector.solutions.general.Email"))
+              {
+                continue;
+              }
+              if (mdType.definesType().equals("com.runwaysdk.system.transaction.TransactionRecord"))
+              {
+                continue;
+              }
+            }
+  
+            if (definedAttribute.equalsIgnoreCase(Metadata.SITEMASTER))
+            {
+              if (mdType.definesType().equals("com.runwaysdk.system.transaction.TransactionRecord"))
+              {
+                continue;
+              }
             }
           }
-
-          if (definedAttribute.equalsIgnoreCase(Metadata.SITEMASTER))
-          {
-            if (mdType.definesType().equals("com.runwaysdk.system.transaction.TransactionRecord"))
-            {
-              continue;
-            }
-          }
-        }
-
-        // Ignore attribute dimensions
-        if (entity instanceof MdAttributeDimensionDAOIF)
-        {
-          continue;
-        }
-
-        // We don't want to export the attribute definitions of the locales on
-        // our MdLocalStructs
-        if (entity instanceof MdAttributeCharDAOIF)
-        {
-          MdAttributeCharDAOIF mdAttribute = (MdAttributeCharDAOIF) entity;
-          MdClassDAOIF definedByClass = mdAttribute.definedByClass();
-          if (definedByClass instanceof MdLocalStructDAOIF)
+  
+          // Ignore attribute dimensions
+          if (entity instanceof MdAttributeDimensionDAOIF)
           {
             continue;
           }
-        }
-
-        Row row = null;
-        for (int i = 0; i < this.columns.size(); ++i)
-        {
-          if (valueStoreTagName.size() > 0 && entity.getType().equals(LocalizedValueStore.CLASS))
+  
+          // We don't want to export the attribute definitions of the locales on
+          // our MdLocalStructs
+          if (entity instanceof MdAttributeCharDAOIF)
           {
-            String tag = entity.getValue(LocalizedValueStore.STORETAG);
+            MdAttributeCharDAOIF mdAttribute = (MdAttributeCharDAOIF) entity;
+            MdClassDAOIF definedByClass = mdAttribute.definedByClass();
+            if (definedByClass instanceof MdLocalStructDAOIF)
+            {
+              continue;
+            }
+          }
+  
+          Row row = null;
+          for (int i = 0; i < this.columns.size(); ++i)
+          {
+            if (valueStoreTagName.size() > 0 && entity.getType().equals(LocalizedValueStore.CLASS))
+            {
+              String tag = entity.getValue(LocalizedValueStore.STORETAG);
+              
+              if (valueStoreTagName.contains(tag))
+              {
+                // do default
+              }
+              else
+              {
+                continue;
+              }
+            }
             
-            if (valueStoreTagName.contains(tag))
+            if (row == null)
             {
-              // do default
+              row = sheet.createRow(r++);
             }
-            else
-            {
-              continue;
-            }
+            
+            this.columns.get(i).exportData(workbook, sheet, row, entity, mdLocalStruct, struct, attributeName);
           }
-          
-          if (row == null)
-          {
-            row = sheet.createRow(r++);
-          }
-          
-          this.columns.get(i).exportData(workbook, sheet, row, entity, mdLocalStruct, struct);
+        }
+        catch (DataNotFoundException ex)
+        {
+          logger.error("Error occurred while exporting [" + definingType + "." + attributeName + "].", ex);
         }
       }
     }
@@ -347,5 +374,10 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
   public void addValueStoreTagName(String tagName)
   {
     this.valueStoreTagName.add(tagName);
+  }
+  
+  public void addQueryCriteria(AttributeLocalQueryCriteria queryCriteria)
+  {
+    this.queryCriterias.add(queryCriteria);
   }
 }

@@ -36,7 +36,7 @@ public class EntityColumnConfiguration extends ColumnConfiguration
     super(headerLabel, dataAttribute);
   }
 
-  public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct)
+  public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct, String attributeName)
   {
     row.createCell(index).setCellValue(workbook.getCreationHelper().createRichTextString(entity.getValue(this.getDataAttribute())));
   }

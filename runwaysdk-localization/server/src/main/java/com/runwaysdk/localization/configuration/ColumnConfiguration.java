@@ -81,5 +81,5 @@ abstract public class ColumnConfiguration
     sheet.autoSizeColumn(index);
   }
 
-  abstract public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct);
+  abstract public void exportData(Workbook workbook, Sheet sheet, Row row, EntityDAOIF entity, MdLocalStructDAOIF mdLocalStruct, StructDAOIF struct, String attributeName);
 }

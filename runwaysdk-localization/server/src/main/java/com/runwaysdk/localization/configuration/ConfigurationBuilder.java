@@ -32,7 +32,6 @@ import com.runwaysdk.localization.LocaleDimension;
 import com.runwaysdk.localization.LocalizedValueStore;
 import com.runwaysdk.system.metadata.MdAttributeLocal;
 import com.runwaysdk.system.metadata.MdEntity;
-import com.runwaysdk.system.metadata.MdLocalizable;
 
 public class ConfigurationBuilder
 {
@@ -70,11 +69,21 @@ public class ConfigurationBuilder
     }
   }
   
+  /**
+   * Creates a tab in the spreadsheet where the first column is 'key' and the rest of the columns are populated from
+   * the installed locales. The 'key' column maps directly to LocalizedValueStore.STOREKEY. Only localization saved
+   * with the provided tags will be included in this tab.
+   * 
+   * 
+   * @param tabName
+   * @param tags
+   * @return
+   */
   public AttributeLocalTabConfiguration addLocalizedValueStoreTab(String tabName, List<String> tags)
   {
     List<ColumnConfiguration> columns = new ArrayList<ColumnConfiguration>();
     columns.add(new EntityColumnConfiguration("Key", MdEntity.KEYNAME));
-    columns.add(new LocaleMultiColumnConfiguration(LocalizedValueStore.getStoreValueMd().definesAttribute(), dimensions));
+    columns.add(new LocaleMultiColumnConfiguration(dimensions));
     
     List<MdAttributeLocal> valueStore = new LinkedList<MdAttributeLocal>();
     MdAttributeLocal storeValueLocal = (MdAttributeLocal) BusinessFacade.get(LocalizedValueStore.getStoreValueMd());
@@ -92,19 +101,53 @@ public class ConfigurationBuilder
     return valueStoreTab;
   }
   
-  public AttributeLocalTabConfiguration addAttributeLocalTab(String tabName, MdAttributeLocal mdAttrLocal)
+  /**
+   * Creates a tab in the spreadsheet of name `tabName` from the given list of MdAttributeLocal. The attribute name for all MdAttriuteLocal is assumed
+   * to be `attributeName`. Since the attributeName is fixed, there will not be a 'attributeName' column in this tab.
+   * 
+   * @param tabName
+   * @param attributeName
+   * @param mdAttrLocal
+   * @return
+   */
+  public AttributeLocalTabConfiguration addAttributeLocalTab(String tabName, String attributeName, List<MdAttributeLocal> mdAttrLocals)
   {
     List<ColumnConfiguration> columns = new ArrayList<ColumnConfiguration>();
     columns.add(new EntityColumnConfiguration("Key", MdEntity.KEYNAME));
     columns.add(new EntityColumnConfiguration("Type", MdEntity.TYPE));
-//    columns.add(new ArritubuteLocalColumnConfiguration("Attribute Name", MdAttributeLocal.ATTRIBUTENAME));
-    columns.add(new LocaleMultiColumnConfiguration(mdAttrLocal.getAttributeName(), dimensions));
+    columns.add(new LocaleMultiColumnConfiguration(dimensions));
     
     List<MdAttributeLocal> listMdAttrLocal = new LinkedList<MdAttributeLocal>();
-    listMdAttrLocal.add(mdAttrLocal);
+    listMdAttrLocal.addAll(mdAttrLocals);
     
     AttributeLocalTabConfiguration attrLocalTab = new AttributeLocalTabConfiguration(tabName, listMdAttrLocal, dimensions, columns);
-    attrLocalTab.setTabWideLocalAttributeName(MdLocalizable.getMessageMd().definesAttribute());
+    attrLocalTab.setTabWideLocalAttributeName(attributeName);
+    config.addTab(attrLocalTab);
+    
+    return attrLocalTab;
+  }
+  
+  /**
+   * Creates a tab in the spreadsheet of name `tabName` from the given list of MdAttributeLocal. The attribute name is written into the
+   * spreadsheet as a column and is thus dynamic.
+   * 
+   * @param tabName
+   * @param attributeName
+   * @param mdAttrLocal
+   * @return
+   */
+  public AttributeLocalTabConfiguration addDynamicAttributeLocalTab(String tabName, List<MdAttributeLocal> mdAttrLocals)
+  {
+    List<ColumnConfiguration> columns = new ArrayList<ColumnConfiguration>();
+    columns.add(new EntityColumnConfiguration("Key", MdEntity.KEYNAME));
+    columns.add(new EntityColumnConfiguration("Type", MdEntity.TYPE));
+    columns.add(new AttributeLocalAttributeColumnConfiguration("Attribute Name"));
+    columns.add(new LocaleMultiColumnConfiguration(dimensions));
+    
+    List<MdAttributeLocal> listMdAttrLocal = new LinkedList<MdAttributeLocal>();
+    listMdAttrLocal.addAll(mdAttrLocals);
+    
+    AttributeLocalTabConfiguration attrLocalTab = new AttributeLocalTabConfiguration(tabName, listMdAttrLocal, dimensions, columns);
     config.addTab(attrLocalTab);
     
     return attrLocalTab;
