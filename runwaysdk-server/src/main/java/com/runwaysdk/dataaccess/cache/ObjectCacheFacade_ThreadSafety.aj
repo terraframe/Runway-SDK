@@ -51,9 +51,10 @@ public privileged aspect ObjectCacheFacade_ThreadSafety
     
     before() : initCollections()  
     {
+      LockHolder.lockCache(this);
+      
       try
       {
-        LockHolder.lockCache(this);
         if (ObjectCache.initialized == false)
         {
           ObjectCache.init();

@@ -36,7 +36,7 @@ public class LockHolder
   
   public static void lock(Object caller)
   {
-    int wait = 100;
+    int wait = 50;
     while (true)
     {
       if (loaderLock.tryLock())
@@ -58,7 +58,7 @@ public class LockHolder
       }
       
       // Exponential backoff
-      if (wait<3200)
+      if (wait<800)
       {
         wait*=2;
       }
@@ -72,7 +72,7 @@ public class LockHolder
   
   public static void lockCache(Object caller)
   {
-    int wait = 100;
+    int wait = 50;
     while (true)
     {
       if (cacheLock.tryLock())
@@ -83,13 +83,13 @@ public class LockHolder
       // If we get here, then we did not acquire the cache lock
       try
       {
-        // Don't try to wait an object we don't own.  That causes an IllegalMonitorStateException
+        // TODO : This if statement here is stupid and should be removed
         if (Thread.holdsLock(caller))
         {
           caller.wait(wait);
         }
         
-        // If we have the loader lock, release it temporarily
+        // TODO : I have no idea if this code ever actually runs or not. Intuition says that this should never happen, but I can't really prove it.
         if (loaderLock.isHeldByCurrentThread())
         {
           Condition cond = loaderLock.newCondition();
@@ -103,7 +103,7 @@ public class LockHolder
       }
       
       // Exponential backoff
-      if (wait<3200)
+      if (wait<800)
       {
         wait*=2;
       }
