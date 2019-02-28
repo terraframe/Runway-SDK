@@ -43,21 +43,38 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.IDGenerator;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase implements com.runwaysdk.system.scheduler.Job, ExecutableJobIF
 {
   private static final long        serialVersionUID = 328266996;
 
   private Map<String, JobListener> listeners;
 
-  public static final String       JOB_ID_PREPEND   = "_JOB_";
-
   private static final Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
+  
+  private QuartzRunwayJob quartzJob;
 
   public ExecutableJob()
   {
     super();
 
     this.listeners = new LinkedHashMap<String, JobListener>();
+  }
+  
+  public QuartzRunwayJob getQuartzJob()
+  {
+    if (quartzJob != null)
+    {
+      return quartzJob;
+    }
+    else
+    {
+      return new QuartzRunwayJob(this);
+    }
+  }
+  
+  public void setQuartzJob(QuartzRunwayJob quartzJob)
+  {
+    this.quartzJob = quartzJob;
   }
 
   /*
@@ -105,138 +122,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return history;
   }
   
-  @Request
-  private Object[] buildExecutionPrereqs(JobExecutionContext context)
-  {
-    JobHistoryRecord record;
-    ExecutableJob job;
-    JobHistory history;
-    
-    String id = context.getJobDetail().getKey().getName();
-    if (id.startsWith(JOB_ID_PREPEND))
-    {
-      id = id.replaceFirst(JOB_ID_PREPEND, "");
-
-      job = ExecutableJob.get(id);
-
-      history = createNewHistory();
-
-      record = new JobHistoryRecord(job, history);
-      record.apply();
-    }
-    else
-    { 
-      record = JobHistoryRecord.get(id);
-      job = record.getParent();
-      history = record.getChild();
-    }
-    
-    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
-    
-    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension(), executionContext, job.toString()};
-  }
-  
-  /**
-   * Executes the Job within the context of Quartz.
-   */
-  @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException
-  {
-    Object[] prereqs = buildExecutionPrereqs(context);
-    ExecutableJob job = (ExecutableJob) prereqs[0];
-    JobHistory history = (JobHistory) prereqs[1];
-    JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
-    SingleActor user = (SingleActor) prereqs[3];
-    MdDimension dimension = (MdDimension) prereqs[4];
-    ExecutionContext executionContext = (ExecutionContext) prereqs[5];
-    String jobts = (String) prereqs[6];
-    
-    String errorMessage = null;
-    
-    // If the job wants to be run as a particular user then we need to create a session and a request for that user.
-    try
-    {
-      if (user == null)
-      {
-        errorMessage = executeAsSystem(job, history, record, executionContext);
-      }
-      else
-      {
-        String sessionId = logIn(user, dimension);
-        
-        try
-        {
-          errorMessage = executeAsUser(sessionId, job, history, record, executionContext);
-        }
-        finally
-        {
-          logOut(sessionId);
-        }
-      }
-    }
-    catch (Throwable t)
-    {
-      logger.error("An error occurred while executing job " + jobts + ".", t);
-      errorMessage = getMessageFromException(t);
-    }
-    finally
-    {
-      writeHistory(history, executionContext, errorMessage);
-      
-      executeDownstreamJobs(job, errorMessage);
-    }
-  }
-  
-  @Request
-  private void logOut(String sessionId)
-  {
-    SessionFacade.closeSession(sessionId);
-  }
-  
-  @Request
-  private String logIn(SingleActor user, MdDimension dimension)
-  {
-    SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
-    
-    if (dimension == null)
-    {
-      return SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-    }
-    else
-    {
-      return SessionFacade.logIn(userDAO, dimension.getKey(), new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-    }
-  }
-  
-  @Request(RequestType.SESSION)
-  public String executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
-  {
-    return executeJobWithinExistingRequest(job, history, record, executionContext);
-  }
-  
-  @Request
-  public String executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
-  {
-    return executeJobWithinExistingRequest(job, history, record, executionContext);
-  }
-  
-  public String executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext)
-  {
-    String errorMessage = null;
-
-    try
-    {
-      job.execute(executionContext);
-    }
-    catch (Throwable t)
-    {
-      logger.error("An error occurred while executing job " + job.toString() + ".", t);
-      errorMessage = getMessageFromException(t);
-    }
-    
-    return errorMessage;
-  }
-
   @Request
   protected void executeDownstreamJobs(ExecutableJob job, String errorMessage) {
     List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
@@ -357,14 +242,9 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       SchedulerManager.addJobListener(this, jobListener);
     }
 
-    JobHistory jh = createNewHistory();
+    this.getQuartzJob().schedule();
 
-    JobHistoryRecord rec = new JobHistoryRecord(this, jh);
-    rec.apply();
-
-    SchedulerManager.schedule(this, rec.getId());
-
-    return jh;
+    return null;
   }
 
   @Request
@@ -420,11 +300,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
       {
-        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getId(), this.getCronExpression());
+        this.getQuartzJob().schedule();
       }
       else
       {
-        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
+        this.getQuartzJob().unschedule();
       }
     }
   }
@@ -437,8 +317,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   public void delete()
   {
-    // Remove all scheduled jobs
-    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
+    this.getQuartzJob().unschedule();
 
     super.delete();
   }

@@ -50,6 +50,7 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
 /**
@@ -593,10 +594,13 @@ public class GenerationUtil
     {
       return false;
     }
-    else
+    
+    if (mdTypeDAOIF instanceof MdTableDAO)
     {
-      return true;
+      return false;
     }
+    
+    return true;
   }
 
 }

@@ -30,8 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.ehcache.Cache.Entry;
-
+import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -58,6 +57,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.util.IdParser;
 
@@ -401,7 +401,12 @@ public class TransactionCache extends AbstractTransactionCache
 
       for (String mdTypeId : this.deletedMdTypeMap_CodeGeneration.values())
       {
-        mdTypesForClassRemoval.add((MdTypeDAOIF) this.internalGetEntityDAO(mdTypeId));
+        MdTypeDAOIF mdTypeDAO = (MdTypeDAOIF) this.internalGetEntityDAO(mdTypeId);
+        
+        if ( !(mdTypeDAO instanceof MdTableDAO) )
+        {
+          mdTypesForClassRemoval.add(mdTypeDAO);
+        }
       }
 
       return mdTypesForClassRemoval;
@@ -596,14 +601,43 @@ public class TransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
-      if (this.deletedMdAttributeSet_CodeGeneration.size() > 0 || this.deletedMdRelationshipSet_CodeGeneration.size() > 0 || this.deletedEnumerationAttributeItemSet_CodeGeneration.size() > 0 || this.deletedMdTypeMap_CodeGeneration.size() > 0)
+      if (this.deletedMdAttributeSet_CodeGeneration.size() > 0)
+      {
+        Iterator<String> deletedMdAttributeIttr = this.deletedMdAttributeSet_CodeGeneration.iterator();
+
+        while (deletedMdAttributeIttr.hasNext())
+        {
+          String deletedMdAttributeId = deletedMdAttributeIttr.next();
+          MdAttributeDAOIF mdAttributeIF = (MdAttributeDAOIF) this.internalGetEntityDAO(deletedMdAttributeId);
+
+          MdClassDAOIF definingMdClassDAOIF = (MdClassDAOIF) mdAttributeIF.definedByClass();
+          
+          if (GenerationUtil.shouldGenerate(definingMdClassDAOIF))
+          {
+            return true;
+          }
+        }
+      }
+      
+      if (this.deletedMdRelationshipSet_CodeGeneration.size() > 0 || this.deletedEnumerationAttributeItemSet_CodeGeneration.size() > 0)
       {
         return true;
       }
-      else
+      
+      if (this.deletedMdTypeMap_CodeGeneration.size() > 0)
       {
-        return false;
+        for (String mdTypeId : this.deletedMdTypeMap_CodeGeneration.values())
+        {
+          MdTypeDAOIF mdTypeDAO = (MdTypeDAOIF) this.internalGetEntityDAO(mdTypeId);
+          
+          if (GenerationUtil.shouldGenerate(mdTypeDAO))
+          {
+            return true;
+          }
+        }
       }
+      
+      return false;
     }
     finally
     {

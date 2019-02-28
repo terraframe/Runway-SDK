@@ -347,17 +347,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setDimension(MdDimensionDAOIF mdDimensionDAOIF)
   {
+    String key = null;
+    if (mdDimensionDAOIF != null)
+    {
+      key = mdDimensionDAOIF.getKey();
+    }
+    
+    
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
-      if (mdDimensionDAOIF == null)
-      {
-        this.dimensionKey = null;
-      }
-      else
-      {
-        this.dimensionKey = mdDimensionDAOIF.getKey();
-      }
+      this.dimensionKey = key;
     }
     finally
     {
@@ -376,6 +379,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setDimension(String dimensionKey)
   {
+    if (dimensionKey != null)
+    {
+      // Make sure the key is valid. If not, then an exception will be
+      // thrown here.
+      BusinessDAO.get(MdDimensionInfo.CLASS, dimensionKey);
+    }
+    
+    
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
@@ -385,9 +399,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       }
       else
       {
-        // Make sure the key is valid. If not, then an exception will be
-        // thrown here.
-        BusinessDAO.get(MdDimensionInfo.CLASS, dimensionKey);
         this.dimensionKey = dimensionKey;
       }
     }
@@ -406,20 +417,29 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public MdDimensionDAOIF getDimension()
   {
+    String localDimensionKey = null;
+    
+    
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
-      if (this.dimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, this.dimensionKey))
-      {
-        return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, this.dimensionKey);
-      }
-
-      return null;
+      localDimensionKey = this.dimensionKey;
     }
     finally
     {
       this.permissionLock.unlock();
     }
+    
+    
+    if (localDimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, localDimensionKey))
+    {
+      return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, localDimensionKey);
+    }
+
+    return null;
   }
 
   /**
@@ -428,11 +448,15 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean hasUser()
   {
+    UserDAOIF publicUser = UserDAO.getPublicUser();
+    
+    
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
-      UserDAOIF publicUser = UserDAO.getPublicUser();
-
       return !user.equals(publicUser);
     }
     finally
@@ -446,10 +470,16 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void renew()
   {
+    long newTime = System.currentTimeMillis() + timeToLive;
+    
+    
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
-      expirationTime = System.currentTimeMillis() + timeToLive;
+      expirationTime = newTime;
     }
     finally
     {
@@ -462,10 +492,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void expire()
   {
+    long newTime = System.currentTimeMillis() - 1;
+    
+    
     this.permissionLock.lock();
     try
     {
-      expirationTime = System.currentTimeMillis() - 1;
+      expirationTime = newTime;
     }
     finally
     {
@@ -500,6 +533,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, String type)
   {
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
@@ -507,18 +543,21 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       {
         return true;
       }
-
-      if (super.checkTypeAccess(o, type))
-      {
-        return true;
-      }
-
-      return false;
     }
     finally
     {
       this.permissionLock.unlock();
     }
+    
+    
+    
+    if (super.checkTypeAccess(o, type))
+    {
+      return true;
+    }
+    
+    
+    return false;
   }
 
   /*
@@ -530,6 +569,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, MdTypeDAOIF mdTypeIF)
   {
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
@@ -537,18 +579,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       {
         return true;
       }
-
-      if (super.checkTypeAccess(o, mdTypeIF))
-      {
-        return true;
-      }
-
-      return false;
     }
     finally
     {
       this.permissionLock.unlock();
     }
+    
+    
+    if (super.checkTypeAccess(o, mdTypeIF))
+    {
+      return true;
+    }
+    
+    
+    return false;
   }
 
   /**
@@ -563,6 +607,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected boolean checkAccess(Operation o, String stateId)
   {
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
@@ -570,18 +617,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       {
         return true;
       }
-
-      if (super.checkAccess(o, stateId))
-      {
-        return true;
-      }
-
-      return false;
     }
     finally
     {
       this.permissionLock.unlock();
     }
+    
+    
+    if (super.checkAccess(o, stateId))
+    {
+      return true;
+    }
+
+    
+    return false;
   }
 
   /*
@@ -594,6 +643,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkAccess(Operation o, Mutable mutable)
   {
+    // We cannot read from the ObjectCache inside of our permissionLock. The reason is because it can cause deadlocks.
+    // The deadlock occurs because the ObjectCache may be in the middle of a transaction (which blocks us), and the transaction
+    // may require our permissionLock to finish.
     this.permissionLock.lock();
     try
     {
@@ -601,18 +653,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       {
         return true;
       }
-
-      if (super.checkAccess(o, mutable))
-      {
-        return true;
-      }
-
-      return false;
     }
     finally
     {
       this.permissionLock.unlock();
     }
+    
+    
+    if (super.checkAccess(o, mutable))
+    {
+      return true;
+    }
+
+    
+    return false;
   }
 
   @Override

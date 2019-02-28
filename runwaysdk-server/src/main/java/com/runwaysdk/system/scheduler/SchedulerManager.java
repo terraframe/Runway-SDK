@@ -126,6 +126,11 @@ public class SchedulerManager
     }
   }
   
+  public static JobDetail getJobDetail(String id) throws SchedulerException
+  {
+    return scheduler().getJobDetail(JobKey.jobKey(id));
+  }
+  
   /**
    * Starts the Scheduler
    */
@@ -158,7 +163,7 @@ public class SchedulerManager
 
         if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
         {
-          schedule(job, ExecutableJob.JOB_ID_PREPEND + job.getId(), job.getCronExpression());
+          job.getQuartzJob().schedule();
         }
       }
     }
@@ -202,23 +207,21 @@ public class SchedulerManager
     return records;
   }
 
-  public synchronized static void schedule(ExecutableJob job, String id, String... expressions)
+  public synchronized static void schedule(QuartzRunwayJob quartzJob)
   {
     try
     {
-      JobDetail detail = getJobDetail(job, id);
+      JobDetail detail = quartzJob.getJobDetail();
+      
+      String cron = quartzJob.getExecutableJob().getCronExpression();
 
-      if (expressions.length > 0)
+      if (cron.length() > 0)
       {
-        SchedulerManager.removeTriggers(id);
+        SchedulerManager.removeTriggers(quartzJob.getExecutableJob().getId());
 
-        // specify the running period of the job
-        for (String expression : expressions)
-        {
-          Trigger trigger = buildTrigger(detail, expression);
+        Trigger trigger = buildTrigger(detail, cron);
 
-          schedule(detail, trigger);
-        }
+        schedule(detail, trigger);
       }
       else
       {
@@ -268,11 +271,11 @@ public class SchedulerManager
     }
   }
 
-  public synchronized static void remove(ExecutableJob job, String id)
+  public synchronized static void remove(QuartzRunwayJob job)
   {
     try
     {
-      JobKey key = JobKey.jobKey(id);
+      JobKey key = JobKey.jobKey(job.getExecutableJob().getId());
 
       if (scheduler().checkExists(key))
       {
@@ -292,7 +295,7 @@ public class SchedulerManager
    */
   private static Trigger buildTrigger(JobDetail detail, String expression)
   {
-    if (expression == null)
+    if (expression == null || expression.length() == 0)
     {
       return TriggerBuilder.newTrigger().forJob(detail).build();
     }
@@ -300,25 +303,6 @@ public class SchedulerManager
     {
       return TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(expression)).forJob(detail).build();
     }
-  }
-
-  /**
-   * @param job
-   * @throws SchedulerException
-   */
-  private synchronized static JobDetail getJobDetail(ExecutableJob job, String id) throws SchedulerException
-  {
-    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(id));
-
-    if (detail == null)
-    {
-      detail = JobBuilder.newJob(job.getClass()).withIdentity(id).build();
-
-      // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(JobHistoryRecord.ID, id);
-    }
-
-    return detail;
   }
 
   public static void addJobListener(ExecutableJob job, JobListener jobListener)

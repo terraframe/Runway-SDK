@@ -18,9 +18,9 @@
  */
 package com.runwaysdk;
 
-import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
-import com.runwaysdk.patcher.RunwayPatcher;
+import com.runwaysdk.session.SessionTest;
 
 /**
  * !!HEADS UP!!
@@ -46,22 +46,16 @@ import com.runwaysdk.patcher.RunwayPatcher;
  */
 public class Sandbox
 {
-  public static void main(String[] args)
+  public static void main(String[] args) throws InterruptedException
   {
-    String attributeName = "test.value";
-    int index = attributeName.lastIndexOf(".");
-    String structName = attributeName.substring(0, index);
-    String structAttribute = attributeName.substring(index + 1);
+    Semaphore sem = new Semaphore(0);
     
-    System.out.println(structName);    
-    System.out.println(structAttribute);
+    System.out.println("STARTING TEST");
+    
+    junit.textui.TestRunner.run(SessionTest.suite());
+    
+    System.out.println("TEST IS FINISHED");
+    
+    sem.acquire();
   }
-
-//  public static void main(String[] args) throws IOException
-//  {
-//    
-//    RunwayPatcher.main(new String[]{"postgres","postgres","postgres","true"});
-////    Sandbox.bootstrap();
-////    InstallerCP.main(new String[]{"postgres", "postgres", "postgres", "com/runwaysdk/resources/xsd/schema.xsd"});
-//  }  
 }
