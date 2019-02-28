@@ -75,7 +75,7 @@ public class IntegratedOverflowTest extends IntegratedSessionTest
       public void configure(Binder binder)
       {
         OverflowSessionCache sessionCache = new OverflowSessionCache(
-            new MemorySessionCache(3, 5000, 100),
+            new MemorySessionCache(3, 100),
             new FileSessionCache(LocalProperties.getSessionCacheDirectory()));
         
         binder.bind(SessionCache.class).toInstance(sessionCache);

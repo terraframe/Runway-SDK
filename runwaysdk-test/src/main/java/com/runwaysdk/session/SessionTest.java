@@ -430,33 +430,41 @@ public class SessionTest extends TestCase
 
     // Convert the session time(sec) to miliseconds and
     // add enough time to ensure that the a session will expire
-    long sessionTime = ( Session.getSessionTime() + 10 ) * 1000;
-    long waitTime = System.currentTimeMillis() + sessionTime;
-
-    // Get the public session
-    SessionIF publicSession = SessionFacade.getPublicSession();
-    assertNotNull(publicSession);
-
-    // Ensure the session is active
-    assertEquals(true, SessionFacade.containsSession(sessionId));
-
-    // Wait until the session is expired
-    while (System.currentTimeMillis() < waitTime)
-      ;
-
-    // Ensure that the public session has not been cleaned up
-    assertTrue(SessionFacade.containsSession(publicSession.getId()));
-    assertEquals(publicSession.getId(), SessionFacade.getPublicSession().getId());
-
+    SessionCacheCleanupWorker.setPeriod(500);
     try
     {
-      SessionFacade.getSession(sessionId);
-
-      fail("Expired sessions was not cleaned up");
+      long sessionTime = ( Session.getSessionTime() + 10 ) * 1000;
+      long waitTime = System.currentTimeMillis() + sessionTime;
+  
+      // Get the public session
+      SessionIF publicSession = SessionFacade.getPublicSession();
+      assertNotNull(publicSession);
+  
+      // Ensure the session is active
+      assertEquals(true, SessionFacade.containsSession(sessionId));
+  
+      // Wait until the session is expired
+      while (System.currentTimeMillis() < waitTime)
+        ;
+  
+      // Ensure that the public session has not been cleaned up
+      assertTrue(SessionFacade.containsSession(publicSession.getId()));
+      assertEquals(publicSession.getId(), SessionFacade.getPublicSession().getId());
+  
+      try
+      {
+        SessionFacade.getSession(sessionId);
+  
+        fail("Expired sessions was not cleaned up");
+      }
+      catch (InvalidSessionException e)
+      {
+        // This is expected
+      }
     }
-    catch (InvalidSessionException e)
+    finally
     {
-      // This is expected
+      SessionCacheCleanupWorker.setPeriod(SessionCacheCleanupWorker.DEFAULT_PERIOD);
     }
   }
 

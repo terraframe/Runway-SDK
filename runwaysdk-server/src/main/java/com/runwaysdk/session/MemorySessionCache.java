@@ -37,14 +37,10 @@ import com.runwaysdk.system.metadata.MdDimension;
  * expired {@link Session}s from the cache.
  * 
  * @author Justin Smethie
+ * @author Richard Rowlands
  */
-public class MemorySessionCache extends ManagedUserSessionCache implements Runnable
+public class MemorySessionCache extends ManagedUserSessionCache
 {
-  /**
-   * The default amount of time to sleep between expire session checks
-   */
-  private static final int       DEFAULT_PERIOD = 5000;
-
   /**
    * The default number of sessions the cache is limited too.
    */
@@ -61,28 +57,16 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   private Map<String, Session>   sessions;
 
   /**
-   * The thread to check for expired sessions
-   */
-  private Thread                 sessionChecker;
-
-  /**
    * Limit on the number of sessions in the cache. A limit of -1 means that the
    * cache does not have a limit on the number of sessions.
    */
   private final int              limit;
 
   /**
-   * The amount of time between session expiration checks (in miliseconds)
-   */
-  private final int              period;
-
-  /**
    * The public Session
    */
   private Session                publicSession;
   
-  private Boolean                runCleanupThread = true;
-
   /**
    * Creates a new {@link MemorySessionCache} with a default limit of 50,000
    * {@link Session}s objects and a limit of 10,000 unique {@link UserDAO}s. The
@@ -91,7 +75,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
    */
   protected MemorySessionCache()
   {
-    this(DEFAULT_LIMIT, DEFAULT_PERIOD, 10000);
+    this(DEFAULT_LIMIT, 10000);
   }
 
   /**
@@ -109,14 +93,12 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
    */
   @Inject
   protected MemorySessionCache(@Named("limit")
-  int limit, @Named("period")
-  int period, @Named("usersLimit")
+  int limit, @Named("usersLimit")
   int usersLimit)
   {
     super(usersLimit);
 
     this.limit = limit;
-    this.period = period;
 
     this.sessions = new HashMap<String, Session>();
     this.expireHeap = new PriorityQueue<Session>();
@@ -125,19 +107,6 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     this.publicSession.setExpirationTime(-1);
     this.sessions.put(this.publicSession.getId(), this.publicSession);
     this.expireHeap.offer(this.publicSession);
-
-    sessionChecker = new Thread(this, "MemorySessionCache Cleanup");
-    sessionChecker.setDaemon(true);
-    sessionChecker.start();
-    
-    Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        runCleanupThread = false;
-      }
-    }, "MemorySessionCache shutdown thread"));
   }
 
   @Override
@@ -216,35 +185,6 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     finally
     {
       sessionCacheLock.unlock();
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Runnable#run()
-   */
-  public void run()
-  {
-    runInRequest();
-  }
-  
-  @Request
-  private void runInRequest()
-  {
-    while (runCleanupThread)
-    {
-      cleanUp();
-
-      try
-      {
-        Thread.sleep(period);
-      }
-      catch (Exception e)
-      {
-        String errMsg = e.getMessage();
-        throw new ProgrammingErrorException(errMsg);
-      }
     }
   }
 

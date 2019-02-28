@@ -93,6 +93,8 @@ public class SessionFacade
     {
       Injector injector = SessionCacheInjector.getInjector();
       sessionFacade = injector.getInstance(SessionFacade.class);
+      
+      SessionCacheCleanupWorker.startWorkerThread();
     }
 
     return sessionFacade.cache;
