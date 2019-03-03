@@ -22,25 +22,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.SmartException;
-import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.session.CreatePermissionException;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.session.RequestType;
-import com.runwaysdk.session.SessionFacade;
-import com.runwaysdk.system.SingleActor;
-import com.runwaysdk.system.metadata.MdDimension;
-import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.IDGenerator;
 
 public abstract class ExecutableJob extends ExecutableJobBase implements com.runwaysdk.system.scheduler.Job, ExecutableJobIF
@@ -140,6 +129,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements com.run
 
   @Request
   protected void writeHistory(JobHistory history, ExecutionContext executionContext, String errorMessage)
+  {
+    writeHistoryInTrans(history, executionContext, errorMessage);
+  }
+  @Transaction
+  protected void writeHistoryInTrans(JobHistory history, ExecutionContext executionContext,
+      String errorMessage)
   {
     JobHistory jh = JobHistory.get(history.getId());
 

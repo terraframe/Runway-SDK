@@ -6,13 +6,13 @@ import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
 import com.runwaysdk.session.SessionFacade;
@@ -52,6 +52,11 @@ public class QuartzRunwayJob implements org.quartz.Job
   
   @Request
   private Object[] buildExecutionPrereqs(JobExecutionContext context)
+  {
+    return buildExecutionPrereqsInTrans(context);
+  }
+  @Transaction
+  private Object[] buildExecutionPrereqsInTrans(JobExecutionContext context)
   {
     JobHistoryRecord record;
     JobHistory history;
