@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.gis.geo;
 
@@ -357,28 +357,21 @@ public class GeoEntity extends GeoEntityBase
   {
     if (!parent.getOid().equals(GeoEntity.getRoot().getOid()))
     {
-      validateUniversal(this.getUniversal(), ( (GeoEntity) parent ).getUniversal());
+      validateUniversal(this.getUniversal(), ( (GeoEntity) parent ).getUniversal(), relationshipType);
     }
 
     return super.addLink(parent, relationshipType);
   }
 
-  private void validateUniversal(Universal childUniversal, Universal parentUniversal)
+  private void validateUniversal(Universal childUniversal, Universal parentUniversal, String relationshipType)
   {
     /*
      * Ensure that the child's universal is a descendant of the parent's
      * universal
      */
-    List<Term> ancestors = childUniversal.getAllAncestors(AllowedIn.CLASS).getAll();
-
-    if (!ancestors.contains(parentUniversal))
+    if (relationshipType.equals(LocatedIn.CLASS))
     {
-      InvalidGeoEntityUniversalException exception = new InvalidGeoEntityUniversalException();
-      exception.setChildUniversal(childUniversal.getDisplayLabel().getValue());
-      exception.setParentUniversal(parentUniversal.getDisplayLabel().getValue());
-      exception.apply();
-
-      throw exception;
+      validateUniversalRelationship(childUniversal, parentUniversal, AllowedIn.CLASS);
     }
   }
 
@@ -396,7 +389,7 @@ public class GeoEntity extends GeoEntityBase
       while (pareI.hasNext())
       {
         GeoEntity parent = (GeoEntity) pareI.next();
-        this.validateUniversal(this.getUniversal(), parent.getUniversal());
+        this.validateUniversal(this.getUniversal(), parent.getUniversal(), LocatedIn.CLASS);
       }
     }
     finally
@@ -411,7 +404,7 @@ public class GeoEntity extends GeoEntityBase
       while (cit.hasNext())
       {
         GeoEntity child = (GeoEntity) cit.next();
-        child.validateUniversal(child.getUniversal(), this.getUniversal());
+        child.validateUniversal(child.getUniversal(), this.getUniversal(), LocatedIn.CLASS);
       }
     }
     finally
@@ -488,5 +481,20 @@ public class GeoEntity extends GeoEntityBase
         return DatabaseAllPathsStrategy.factory(GeoEntity.CLASS);
       }
     });
+  }
+
+  public static void validateUniversalRelationship(Universal childUniversal, Universal parentUniversal, String universalRelationshipType)
+  {
+    List<Term> ancestors = childUniversal.getAllAncestors(universalRelationshipType).getAll();
+
+    if (!ancestors.contains(parentUniversal))
+    {
+      InvalidGeoEntityUniversalException exception = new InvalidGeoEntityUniversalException();
+      exception.setChildUniversal(childUniversal.getDisplayLabel().getValue());
+      exception.setParentUniversal(parentUniversal.getDisplayLabel().getValue());
+      exception.apply();
+
+      throw exception;
+    }
   }
 }
