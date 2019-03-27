@@ -90,7 +90,7 @@ public class GeoEntity extends GeoEntityBase
 
   @Override
   @Transaction
-  public void beforeDeleteTerm(boolean deleteChildren)
+  public void beforeDeleteTerm()
   {
     GeoEntityProblem.deleteProblems(this);
   }
@@ -357,28 +357,21 @@ public class GeoEntity extends GeoEntityBase
   {
     if (!parent.getOid().equals(GeoEntity.getRoot().getOid()))
     {
-      validateUniversal(this.getUniversal(), ( (GeoEntity) parent ).getUniversal());
+      validateUniversal(this.getUniversal(), ( (GeoEntity) parent ).getUniversal(), relationshipType);
     }
 
     return super.addLink(parent, relationshipType);
   }
 
-  private void validateUniversal(Universal childUniversal, Universal parentUniversal)
+  private void validateUniversal(Universal childUniversal, Universal parentUniversal, String relationshipType)
   {
     /*
      * Ensure that the child's universal is a descendant of the parent's
      * universal
      */
-    List<Term> ancestors = childUniversal.getAllAncestors(AllowedIn.CLASS).getAll();
-
-    if (!ancestors.contains(parentUniversal))
+    if (relationshipType.equals(LocatedIn.CLASS))
     {
-      InvalidGeoEntityUniversalException exception = new InvalidGeoEntityUniversalException();
-      exception.setChildUniversal(childUniversal.getDisplayLabel().getValue());
-      exception.setParentUniversal(parentUniversal.getDisplayLabel().getValue());
-      exception.apply();
-
-      throw exception;
+      validateUniversalRelationship(childUniversal, parentUniversal, AllowedIn.CLASS);
     }
   }
 
@@ -396,7 +389,7 @@ public class GeoEntity extends GeoEntityBase
       while (pareI.hasNext())
       {
         GeoEntity parent = (GeoEntity) pareI.next();
-        this.validateUniversal(this.getUniversal(), parent.getUniversal());
+        this.validateUniversal(this.getUniversal(), parent.getUniversal(), LocatedIn.CLASS);
       }
     }
     finally
@@ -411,7 +404,7 @@ public class GeoEntity extends GeoEntityBase
       while (cit.hasNext())
       {
         GeoEntity child = (GeoEntity) cit.next();
-        child.validateUniversal(child.getUniversal(), this.getUniversal());
+        child.validateUniversal(child.getUniversal(), this.getUniversal(), LocatedIn.CLASS);
       }
     }
     finally
@@ -488,5 +481,20 @@ public class GeoEntity extends GeoEntityBase
         return DatabaseAllPathsStrategy.factory(GeoEntity.CLASS);
       }
     });
+  }
+
+  public static void validateUniversalRelationship(Universal childUniversal, Universal parentUniversal, String universalRelationshipType)
+  {
+    List<Term> ancestors = childUniversal.getAllAncestors(universalRelationshipType).getAll();
+
+    if (!ancestors.contains(parentUniversal))
+    {
+      InvalidGeoEntityUniversalException exception = new InvalidGeoEntityUniversalException();
+      exception.setChildUniversal(childUniversal.getDisplayLabel().getValue());
+      exception.setParentUniversal(parentUniversal.getDisplayLabel().getValue());
+      exception.apply();
+
+      throw exception;
+    }
   }
 }
