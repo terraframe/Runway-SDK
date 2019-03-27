@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.gis.geo;
 
@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.OntologyEntryIF;
 import com.runwaysdk.business.ontology.OntologyStrategyBuilderIF;
@@ -30,13 +31,16 @@ import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.dataaccess.InvalidIdException;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.ValueObject;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.AbortIfProblem;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.geometry.GeometryHelper;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.ValueQuery;
+import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.TermUtil;
 import com.vividsolutions.jts.geom.Geometry;
@@ -93,6 +97,26 @@ public class GeoEntity extends GeoEntityBase
   public void beforeDeleteTerm()
   {
     GeoEntityProblem.deleteProblems(this);
+
+    String mdBusinessOid = this.getUniversal().getMdBusinessOid();
+
+    if (mdBusinessOid != null && mdBusinessOid.length() > 0)
+    {
+      MdBusinessDAOIF mdBusiness = MdBusinessDAO.get(mdBusinessOid);
+
+      if (mdBusiness.definesAttribute("geoEntity") != null)
+      {
+        BusinessQuery query = new QueryFactory().businessQuery(mdBusiness.definesType());
+        query.WHERE(query.aReference("geoEntity").EQ(this.getOid()));
+
+        List<Business> businesses = query.getIterator().getAll();
+
+        for (Business business : businesses)
+        {
+          business.delete();
+        }
+      }
+    }
   }
 
   @Override
