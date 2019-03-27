@@ -95,19 +95,6 @@ public class Universal extends UniversalBase
     // }
     // }
   }
-  
-  @Override
-  public void delete()
-  {
-    MdBusiness mdBusiness = this.getMdBusiness();
-    
-    super.delete();
-    
-    if (mdBusiness != null)
-    {
-      this.getMdBusiness().delete();
-    }
-  }
 
   /**
    * Builds the this object's key name.
@@ -136,12 +123,18 @@ public class Universal extends UniversalBase
     {
       while (iter.hasNext())
       {
-        iter.next().delete();
+        iter.next().delete(false);
       }
     }
     finally
     {
       iter.close();
+    }
+    
+    MdBusiness mdBusiness = this.getMdBusiness();
+    if (mdBusiness != null)
+    {
+      this.getMdBusiness().delete();
     }
   }
 

@@ -90,7 +90,7 @@ public class GeoEntity extends GeoEntityBase
 
   @Override
   @Transaction
-  public void beforeDeleteTerm()
+  public void beforeDeleteTerm(boolean deleteChildren)
   {
     GeoEntityProblem.deleteProblems(this);
   }

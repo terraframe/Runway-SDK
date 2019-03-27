@@ -72,42 +72,7 @@ public class LockHolder
   
   public static void lockCache(Object caller)
   {
-    int wait = 100;
-    while (true)
-    {
-      if (cacheLock.tryLock())
-      {
-        break;
-      }
-      
-      // If we get here, then we did not acquire the cache lock
-      try
-      {
-        // Don't try to wait an object we don't own.  That causes an IllegalMonitorStateException
-        if (Thread.holdsLock(caller))
-        {
-          caller.wait(wait);
-        }
-        
-        // If we have the loader lock, release it temporarily
-        if (loaderLock.isHeldByCurrentThread())
-        {
-          Condition cond = loaderLock.newCondition();
-          cond.await(wait, TimeUnit.MILLISECONDS);
-        }
-        
-        Thread.sleep(wait);
-      }
-      catch (InterruptedException e)
-      {
-      }
-      
-      // Exponential backoff
-      if (wait<3200)
-      {
-        wait*=2;
-      }
-    }
+    cacheLock.lock();
   }
   
   public static void unlockCache()
