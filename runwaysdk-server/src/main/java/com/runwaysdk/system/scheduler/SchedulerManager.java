@@ -206,7 +206,30 @@ public class SchedulerManager
 
     return records;
   }
+  
+  /**
+   * Schedules the job to be run immediately, regardless of any cron expression that may be configured for the job.
+   */
+  public static synchronized void startJob(QuartzRunwayJob quartzJob)
+  {
+    try
+    {
+      JobDetail detail = quartzJob.getJobDetail();
 
+      Trigger trigger = buildTrigger(detail, null);
+
+      schedule(detail, trigger);
+
+    }
+    catch (SchedulerException e)
+    {
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
+    }
+  }
+
+  /**
+   * If the job has a cron expression, it will be scheduled to run in quartz.
+   */
   public synchronized static void schedule(QuartzRunwayJob quartzJob)
   {
     try
@@ -223,12 +246,12 @@ public class SchedulerManager
 
         schedule(detail, trigger);
       }
-      else
-      {
-        Trigger trigger = buildTrigger(detail, null);
-
-        schedule(detail, trigger);
-      }
+//      else
+//      {
+//        Trigger trigger = buildTrigger(detail, null);
+//
+//        schedule(detail, trigger);
+//      }
 
     }
     catch (SchedulerException e)

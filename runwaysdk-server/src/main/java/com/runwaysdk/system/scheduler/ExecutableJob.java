@@ -237,7 +237,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements com.run
       SchedulerManager.addJobListener(this, jobListener);
     }
 
-    this.getQuartzJob().schedule();
+    this.getQuartzJob().start();
 
     return null;
   }

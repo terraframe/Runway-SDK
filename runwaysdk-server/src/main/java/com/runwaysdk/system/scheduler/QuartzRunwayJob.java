@@ -178,9 +178,20 @@ public class QuartzRunwayJob implements org.quartz.Job
     return errorMessage;
   }
 
+  /**
+   * If the job has a cron expression, it will be scheduled to run in quartz.
+   */
   public void schedule()
   {
     SchedulerManager.schedule(this);
+  }
+  
+  /**
+   * Schedules the job to be run immediately, regardless of any cron expression that may be configured for the job.
+   */
+  public void start()
+  {
+    SchedulerManager.startJob(this);
   }
   
   /**
