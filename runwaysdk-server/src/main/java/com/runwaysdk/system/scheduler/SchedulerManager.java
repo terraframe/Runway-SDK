@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -126,6 +125,11 @@ public class SchedulerManager
     }
   }
   
+  public static JobDetail getJobDetail(String id) throws SchedulerException
+  {
+    return scheduler().getJobDetail(JobKey.jobKey(id));
+  }
+  
   /**
    * Starts the Scheduler
    */
@@ -158,7 +162,7 @@ public class SchedulerManager
 
         if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
         {
-          schedule(job, ExecutableJob.JOB_ID_PREPEND + job.getOid(), job.getCronExpression());
+          job.getQuartzJob().schedule();
         }
       }
     }
@@ -201,31 +205,52 @@ public class SchedulerManager
 
     return records;
   }
-
-  public synchronized static void schedule(ExecutableJob job, String oid, String... expressions)
+  
+  /**
+   * Schedules the job to be run immediately, regardless of any cron expression that may be configured for the job.
+   */
+  public static synchronized void startJob(QuartzRunwayJob quartzJob)
   {
     try
     {
-      JobDetail detail = getJobDetail(job, oid);
+      JobDetail detail = quartzJob.getJobDetail();
 
-      if (expressions.length > 0)
+      Trigger trigger = buildTrigger(detail, null);
+
+      schedule(detail, trigger);
+
+    }
+    catch (SchedulerException e)
+    {
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
+    }
+  }
+
+  /**
+   * If the job has a cron expression, it will be scheduled to run in quartz.
+   */
+  public synchronized static void schedule(QuartzRunwayJob quartzJob)
+  {
+    try
+    {
+      JobDetail detail = quartzJob.getJobDetail();
+      
+      String cron = quartzJob.getExecutableJob().getCronExpression();
+
+      if (cron.length() > 0)
       {
-        SchedulerManager.removeTriggers(oid);
+        SchedulerManager.removeTriggers(quartzJob.getExecutableJob().getOid());
 
-        // specify the running period of the job
-        for (String expression : expressions)
-        {
-          Trigger trigger = buildTrigger(detail, expression);
-
-          schedule(detail, trigger);
-        }
-      }
-      else
-      {
-        Trigger trigger = buildTrigger(detail, null);
+        Trigger trigger = buildTrigger(detail, cron);
 
         schedule(detail, trigger);
       }
+//      else
+//      {
+//        Trigger trigger = buildTrigger(detail, null);
+//
+//        schedule(detail, trigger);
+//      }
 
     }
     catch (SchedulerException e)
@@ -268,11 +293,11 @@ public class SchedulerManager
     }
   }
 
-  public synchronized static void remove(ExecutableJob job, String oid)
+  public synchronized static void remove(QuartzRunwayJob job)
   {
     try
     {
-      JobKey key = JobKey.jobKey(oid);
+      JobKey key = JobKey.jobKey(job.getExecutableJob().getOid());
 
       if (scheduler().checkExists(key))
       {
@@ -292,7 +317,7 @@ public class SchedulerManager
    */
   private static Trigger buildTrigger(JobDetail detail, String expression)
   {
-    if (expression == null)
+    if (expression == null || expression.length() == 0)
     {
       return TriggerBuilder.newTrigger().forJob(detail).build();
     }
@@ -300,25 +325,6 @@ public class SchedulerManager
     {
       return TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(expression)).forJob(detail).build();
     }
-  }
-
-  /**
-   * @param job
-   * @throws SchedulerException
-   */
-  private synchronized static JobDetail getJobDetail(ExecutableJob job, String oid) throws SchedulerException
-  {
-    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(oid));
-
-    if (detail == null)
-    {
-      detail = JobBuilder.newJob(job.getClass()).withIdentity(oid).build();
-
-      // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(JobHistoryRecord.OID, oid);
-    }
-
-    return detail;
   }
 
   public static void addJobListener(ExecutableJob job, JobListener jobListener)

@@ -41,14 +41,10 @@ import com.runwaysdk.system.metadata.MdDimension;
  * expired {@link Session}s from the cache.
  * 
  * @author Justin Smethie
+ * @author Richard Rowlands
  */
-public class MemorySessionCache extends ManagedUserSessionCache implements Runnable
+public class MemorySessionCache extends ManagedUserSessionCache
 {
-  /**
-   * The default amount of time to sleep between expire session checks
-   */
-  private static final int       DEFAULT_PERIOD = 5000;
-
   /**
    * The default number of sessions the cache is limited too.
    */
@@ -65,20 +61,10 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   private Map<String, Session>   sessions;
 
   /**
-   * The thread to check for expired sessions
-   */
-  private Thread                 sessionChecker;
-
-  /**
    * Limit on the number of sessions in the cache. A limit of -1 means that the
    * cache does not have a limit on the number of sessions.
    */
   private final int              limit;
-
-  /**
-   * The amount of time between session expiration checks (in miliseconds)
-   */
-  private final int              period;
 
   /**
    * The public Session
@@ -93,7 +79,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
    */
   protected MemorySessionCache()
   {
-    this(DEFAULT_LIMIT, DEFAULT_PERIOD, 10000);
+    this(DEFAULT_LIMIT, 10000);
   }
 
   /**
@@ -111,14 +97,12 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
    */
   @Inject
   protected MemorySessionCache(@Named("limit")
-  int limit, @Named("period")
-  int period, @Named("usersLimit")
+  int limit, @Named("usersLimit")
   int usersLimit)
   {
     super(usersLimit);
 
     this.limit = limit;
-    this.period = period;
 
     this.sessions = new HashMap<String, Session>();
     this.expireHeap = new PriorityQueue<Session>();
@@ -127,10 +111,6 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     this.publicSession.setExpirationTime(-1);
     this.sessions.put(this.publicSession.getOid(), this.publicSession);
     this.expireHeap.offer(this.publicSession);
-
-    sessionChecker = new Thread(this, "Session Cleanup");
-    sessionChecker.setDaemon(true);
-    sessionChecker.start();
   }
 
   @Override
@@ -209,29 +189,6 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     finally
     {
       sessionCacheLock.unlock();
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Runnable#run()
-   */
-  public void run()
-  {
-    while (true)
-    {
-      cleanUp();
-
-      try
-      {
-        Thread.sleep(period);
-      }
-      catch (Exception e)
-      {
-        String errMsg = e.getMessage();
-        throw new ProgrammingErrorException(errMsg);
-      }
     }
   }
 
@@ -438,109 +395,25 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     return this.getSession(sessionId);
   }
   
-  /**
-   * @see com.runwaysdk.session.SessionCache#getIterator()
-   */
-  public SessionIterator getIterator()
+  @Override
+  protected Map<String, SessionIF> getAllSessions()
   {
-    return new MemorySessionIterator();
-  }
-  private class MemorySessionIterator implements SessionIterator
-  {
-    Iterator<Session> iterator;
+    sessionCacheLock.lock();
     
-    Session current;
-    Session next;
-    
-    private MemorySessionIterator()
+    try
     {
-      iterator = sessions.values().iterator();
+      HashMap<String, SessionIF> map = new HashMap<String, SessionIF>();
       
-      privateNext(true);
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#next()
-     */
-    @Override
-    public SessionIF next()
-    {
-      return privateNext(false);
-    }
-    
-    private Session privateNext(boolean isConstructor)
-    {
-      if (next == null && !isConstructor) { throw new NoSuchElementException(); }
-      
-      current = next;
-      
-      while (true)
+      for (Session ses : this.sessions.values())
       {
-        if (iterator.hasNext())
-        {
-          next = iterator.next();
-          
-          // Skip the public session.
-          if (UserDAO.getPublicUser().getOid().equals(next.getUser().getOid()))
-          {
-            continue;
-          }
-          else
-          {
-            break;
-          }
-        }
-        else
-        {
-          next = null;
-          break;
-        }
+        map.put(ses.getOid(), ses);
       }
       
-      return current;
+      return map;
     }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#remove()
-     */
-    @Override
-    public void remove()
+    finally
     {
-      MemorySessionCache.this.closeSession(current.getOid());
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#hasNext()
-     */
-    @Override
-    public boolean hasNext()
-    {
-      return next != null;
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#close()
-     */
-    @Override
-    public void close()
-    {
-      // Do nothing.
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#getAll()
-     */
-    @Override
-    public Collection<SessionIF> getAll()
-    {
-      Collection<SessionIF> sesses = new ArrayList<SessionIF>();
-      
-      while (hasNext())
-      {
-        sesses.add(next());
-      }
-      
-      return sesses;
+      sessionCacheLock.unlock();
     }
   }
 }

@@ -19,43 +19,51 @@
 package com.runwaysdk.system.scheduler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.SmartException;
-import com.runwaysdk.business.rbac.SingleActorDAOIF;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.session.RequestType;
-import com.runwaysdk.session.SessionFacade;
-import com.runwaysdk.system.SingleActor;
-import com.runwaysdk.system.metadata.MdDimension;
-import com.runwaysdk.transport.conversion.ConversionFacade;
+import com.runwaysdk.util.IDGenerator;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase implements ExecutableJobIF
 {
   private static final long        serialVersionUID = 328266996;
 
   private Map<String, JobListener> listeners;
 
-  public static final String       JOB_ID_PREPEND   = "_JOB_";
-
   private final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
+  private QuartzRunwayJob quartzJob;
+  
   public ExecutableJob()
   {
     super();
     
     this.listeners = new LinkedHashMap<String, JobListener>();
+  }
+  
+  public QuartzRunwayJob getQuartzJob()
+  {
+    if (quartzJob != null)
+    {
+      return quartzJob;
+    }
+    else
+    {
+      return new QuartzRunwayJob(this);
+    }
+  }
+  
+  public void setQuartzJob(QuartzRunwayJob quartzJob)
+  {
+    this.quartzJob = quartzJob;
   }
 
   /**
@@ -76,16 +84,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return this.listeners;
   }
   
-  public List<AllJobOperation> getSupportedOperations()
-  {
-    ArrayList<AllJobOperation> ops = new ArrayList<AllJobOperation>();
-    
-    ops.add(AllJobOperation.START);
-//    ops.add(AllJobOperation.CANCEL);
-    
-    return ops;
-  }
-  
   /**
    * Creates, configures and applies a new JobHistory that will be used to record history for the current job execution context.
    *   The beauty of this is that it can be overridden by subclasses if you want to extend JobHistory to record additional stuff.
@@ -103,125 +101,30 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   }
   
   @Request
-  private Object[] buildExecutionPrereqs(JobExecutionContext context)
-  {
-    JobHistoryRecord record;
-    ExecutableJob job;
-    JobHistory history;
-    
-    String oid = context.getJobDetail().getKey().getName();
-    if (oid.startsWith(JOB_ID_PREPEND))
+  protected void executeDownstreamJobs(ExecutableJob job, String errorMessage) {
+    List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
+    if (lDownstreamRel.size() > 0)
     {
-      oid = oid.replaceFirst(JOB_ID_PREPEND, "");
-
-      job = ExecutableJob.get(oid);
-
-      history = createNewHistory();
-
-      record = new JobHistoryRecord(job, history);
-      record.apply();
-    }
-    else
-    { 
-      record = JobHistoryRecord.get(oid);
-      job = record.getParent();
-      history = record.getChild();
-    }
-    
-    return new Object[]{job, history, record, job.getRunAsUser(), job.getRunAsDimension()};
-  }
-  
-  /**
-   * Executes the Job within the context of Quartz.
-   */
-  @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException
-  {
-    Object[] prereqs = buildExecutionPrereqs(context);
-    ExecutableJob job = (ExecutableJob) prereqs[0];
-    JobHistory history = (JobHistory) prereqs[1];
-    JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
-    SingleActor user = (SingleActor) prereqs[3];
-    MdDimension dimension = (MdDimension) prereqs[4];
-    
-    // If the job wants to be run as a particular user then we need to create a session and a request for that user.
-    if (user == null)
-    {
-      executeAsSystem(job, history, record);
-    }
-    else
-    {
-      String sessionId = logIn(user, dimension);
+      DownstreamJobRelationship rel = lDownstreamRel.get(0);
+      ExecutableJob downstream = rel.getChild();
       
-      try
+      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
       {
-        executeAsUser(sessionId, job, history, record);
-      }
-      catch (Throwable t)
-      {
-        logger.error("An error occurred while executing job " + job.toString() + ".", t);
-        throw t;
-      }
-      finally
-      {
-        logOut(sessionId);
+        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
+        downstream.executableJobStart();
       }
     }
   }
-  
-  @Request
-  private void logOut(String sessionId)
-  {
-    SessionFacade.closeSession(sessionId);
-  }
-  
-  @Request
-  private String logIn(SingleActor user, MdDimension dimension)
-  {
-    SingleActorDAOIF userDAO = (SingleActorDAOIF) BusinessFacade.getEntityDAO(user);
-    
-    if (dimension == null)
-    {
-      return SessionFacade.logIn(userDAO, new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-    }
-    else
-    {
-      return SessionFacade.logIn(userDAO, dimension.getKey(), new Locale[]{ConversionFacade.getLocale(userDAO.getLocale())});
-    }
-  }
-  
-  @Request(RequestType.SESSION)
-  public void executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
-  {
-    executeJobWithinExistingRequest(job, history, record);
-  }
-  
-  @Request
-  public void executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record) throws JobExecutionException
-  {
-    executeJobWithinExistingRequest(job, history, record);
-  }
-  
-  public void executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record)
-  {
-    // Execute the job
-    
-    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
 
-    String errorMessage = null;
-
-    try
-    {
-      job.execute(executionContext);
-    }
-    catch (Throwable t)
-    {
-      logger.error("An error occurred while executing job " + job.toString() + ".", t);
-      errorMessage = getMessageFromException(t);
-    }
-    
-    // Configure the history
-
+  @Request
+  protected void writeHistory(JobHistory history, ExecutionContext executionContext, String errorMessage)
+  {
+    writeHistoryInTrans(history, executionContext, errorMessage);
+  }
+  @Transaction
+  protected void writeHistoryInTrans(JobHistory history, ExecutionContext executionContext,
+      String errorMessage)
+  {
     JobHistory jh = JobHistory.get(history.getOid());
 
     jh.appLock();
@@ -244,21 +147,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       }
     }
     jh.apply();
-    
-    
-    // Invoke Downstream jobs
-    List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
-    if (lDownstreamRel.size() > 0)
-    {
-      DownstreamJobRelationship rel = lDownstreamRel.get(0);
-      ExecutableJob downstream = rel.getChild();
-      
-      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
-      {
-        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
-        downstream.executableJobStart();
-      }
-    }
   }
   
   public static String getMessageFromException(Throwable t)
@@ -278,15 +166,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       
       errorMessage = se.localize(com.runwaysdk.session.Session.getCurrentLocale());
       
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getLocalizedMessage();
       }
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getClassDisplayLabel();
       }
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = se.getType();
       }
@@ -295,10 +183,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       errorMessage = t.getLocalizedMessage();
       
-      if (errorMessage == null)
+      if (errorMessage == null || errorMessage.length() == 0)
       {
         errorMessage = t.getMessage();
       }
+    }
+    
+    if (errorMessage == null || errorMessage.length() == 0)
+    {
+      errorMessage = t.getClass().getTypeName();
     }
     
     return errorMessage;
@@ -327,14 +220,9 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       SchedulerManager.addJobListener(this, jobListener);
     }
 
-    JobHistory jh = createNewHistory();
+    this.getQuartzJob().start();
 
-    JobHistoryRecord rec = new JobHistoryRecord(this, jh);
-    rec.apply();
-
-    SchedulerManager.schedule(this, rec.getOid());
-
-    return jh;
+    return null;
   }
 
   @Request
@@ -373,11 +261,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
       {
-        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getOid(), this.getCronExpression());
+        this.getQuartzJob().schedule();
       }
       else
       {
-        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
+        this.getQuartzJob().unschedule();
       }
     }
   }
@@ -390,8 +278,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Override
   public void delete()
   {
-    // Remove all scheduled jobs
-    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getOid());
+    this.getQuartzJob().unschedule();
 
     super.delete();
   }

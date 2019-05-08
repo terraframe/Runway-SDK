@@ -506,58 +506,6 @@ public class SessionTest
   }
 
   /**
-   * Test iterating over sessions
-   */
-  @Request
-  @Test
-  public void testIterateSessions()
-  {
-    Set<String> sessions = new HashSet<String>();
-
-    // 1. Delete all existing sessions
-    SessionFacade.clearSessions();
-
-    // 2. Ensure that the iterator returns no sessions.
-    SessionIterator it = SessionFacade.getIterator();
-    Assert.assertFalse(it.hasNext());
-    boolean didFail = false;
-    try
-    {
-      it.next();
-    }
-    catch (NoSuchElementException e)
-    {
-      didFail = true;
-    }
-    Assert.assertTrue(didFail);
-
-    // 3. Create the allotted number of sessions
-    for (int i = 0; i < sessionLimit; i++)
-    {
-      try
-      {
-        sessions.add(SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() }));
-      }
-      catch (InvalidSessionException e)
-      {
-        Assert.fail("A valid login failed.");
-      }
-    }
-
-    // 4. Ensure that the iterator returns the correct sessions.
-    int count = 0;
-    it = SessionFacade.getIterator();
-    while (it.hasNext())
-    {
-      SessionIF session = it.next();
-      Assert.assertNotNull(session);
-      Assert.assertTrue(sessions.contains(session.getOid()));
-      count++;
-    }
-    Assert.assertEquals(sessionLimit, count);
-  }
-
-  /**
    * Test session limits
    */
   @Request

@@ -62,7 +62,7 @@ public class SessionCacheInjector
       {
         SessionCache defaultCache = new BufferedSessionCache(
             new OverflowSessionCache(
-                new MemorySessionCache(100, 20000, 100),
+                new MemorySessionCache(100, 100),
                 new FileSessionCache( LocalProperties.getSessionCacheDirectory())),
             new MemorySessionCache());
 

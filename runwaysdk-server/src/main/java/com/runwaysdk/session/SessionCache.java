@@ -19,6 +19,7 @@
 package com.runwaysdk.session;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.google.inject.ImplementedBy;
@@ -240,12 +241,11 @@ public abstract class SessionCache
   protected abstract Session getSessionForRequest(String sessionId);
   
   /**
-   * Returns a SessionIterator, which is used to iterate over the
-   * sessions in the SessionCache. The public session is not returned
-   * by the iterator. As with all iterators, make sure to use a try/finally
-   * block and close the iterator in the finally.
+   * Returns a map which represents all {@link Session}s in the system at the current
+   * snapshot in time. The key is the sessionId and the value is the {@link Session}.
+   * This map is not used internally and thus can be modified at will. 
    */
-  protected abstract SessionIterator getIterator();
+  protected abstract Map<String, SessionIF> getAllSessions();
 
   /**
    * Sets the flag denoting if the {@link Session} corresponding to the session oid

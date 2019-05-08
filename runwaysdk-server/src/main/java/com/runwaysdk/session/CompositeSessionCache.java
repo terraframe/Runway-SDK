@@ -20,7 +20,9 @@ package com.runwaysdk.session;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
@@ -354,127 +356,26 @@ public abstract class CompositeSessionCache extends SessionCache
     }
   }
 
-  /**
-   * @see com.runwaysdk.session.SessionCache#getIterator()
-   */
-  public SessionIterator getIterator()
+  @Override
+  public Map<String, SessionIF> getAllSessions()
   {
-    return new CompositeSessionIterator();
-  }
-
-  private class CompositeSessionIterator implements SessionIterator
-  {
-    SessionIterator currentIt;
-
-    SessionIterator firstIt;
-
-    SessionIterator secondIt;
-
-    SessionIF       next;
-
-    private CompositeSessionIterator()
+    sessionCacheLock.lock();
+    
+    try
     {
-      firstIt = firstCache.getIterator();
-      secondIt = secondCache.getIterator();
-      currentIt = firstIt;
-
-      privateNext(true);
+      HashMap<String, SessionIF> exitMap = new HashMap<String, SessionIF>();
+      
+      Map<String, SessionIF> firstMap = firstCache.getAllSessions();
+      exitMap.putAll(firstMap);
+      
+      Map<String, SessionIF> secondMap = secondCache.getAllSessions();
+      exitMap.putAll(secondMap);
+      
+      return exitMap;
     }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#next()
-     */
-    @Override
-    public SessionIF next()
+    finally
     {
-      return privateNext(false);
-    }
-
-    private SessionIF privateNext(boolean isConstructor)
-    {
-      if (next == null && !isConstructor)
-      {
-        throw new NoSuchElementException();
-      }
-
-      SessionIF current = next;
-
-      if (firstIt.hasNext())
-      {
-        next = firstIt.next();
-      }
-      else
-      {
-        currentIt = secondIt;
-
-        while (true)
-        {
-          if (currentIt.hasNext())
-          {
-            next = currentIt.next();
-
-            // Skip the session if its in the first cache since we've already
-            // returned it.
-            if (firstCache.containsSession(next.getOid()))
-            {
-              continue;
-            }
-            else
-            {
-              break;
-            }
-          }
-          else
-          {
-            next = null;
-            break;
-          }
-        }
-      }
-
-      return current;
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#remove()
-     */
-    @Override
-    public void remove()
-    {
-      currentIt.remove();
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#hasNext()
-     */
-    @Override
-    public boolean hasNext()
-    {
-      return next != null;
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#close()
-     */
-    @Override
-    public void close()
-    {
-      firstIt.close();
-      secondIt.close();
-    }
-
-    /**
-     * @see com.runwaysdk.session.SessionIterator#getAll()
-     */
-    @Override
-    public Collection<SessionIF> getAll()
-    {
-      ArrayList<SessionIF> all = new ArrayList<SessionIF>();
-
-      all.addAll(firstIt.getAll());
-      all.addAll(secondIt.getAll());
-
-      return all;
+      sessionCacheLock.unlock();
     }
   }
 

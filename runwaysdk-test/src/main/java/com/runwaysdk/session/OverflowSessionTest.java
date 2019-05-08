@@ -52,7 +52,7 @@ public class OverflowSessionTest extends SessionTest
     {
       public void configure(Binder binder)
       {
-        binder.bind(SessionCache.class).toInstance(new OverflowSessionCache(new MemorySessionCache(3, 5000, 100), new MemorySessionCache()));
+        binder.bind(SessionCache.class).toInstance(new OverflowSessionCache(new MemorySessionCache(3, 100), new MemorySessionCache()));
       }
     });
     SessionFacade.reloadCache();
