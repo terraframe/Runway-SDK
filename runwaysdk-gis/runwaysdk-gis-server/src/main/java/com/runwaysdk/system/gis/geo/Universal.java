@@ -129,14 +129,18 @@ public class Universal extends UniversalBase
     finally
     {
       iter.close();
-    }
-    
+    }    
+  }
+  
+  protected void afterDeleteTerm()
+  {
     MdBusiness mdBusiness = this.getMdBusiness();
     if (mdBusiness != null)
     {
       this.getMdBusiness().delete();
     }
   }
+
 
   /**
    * Returns an array of Universals derived from the given UniversalView
