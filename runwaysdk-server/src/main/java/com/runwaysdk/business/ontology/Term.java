@@ -376,6 +376,9 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
   }
 
   /**
+   * Does a Term level (ontology) calculation if the node is the last node in a tree. DOES NOT calculate if a Universal stores data
+   * in a leaf (disjoint Business) format. Use universal.getIsLeaf() for that purpose. 
+   * 
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */

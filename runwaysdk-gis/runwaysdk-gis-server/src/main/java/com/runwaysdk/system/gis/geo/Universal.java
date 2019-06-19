@@ -359,7 +359,7 @@ public class Universal extends UniversalBase
     this.enforceValidRemoveLink(parent, relationshipType);
   }
 
-  private void enforceValidRemoveLink(Term parent, String relationshipType)
+  public void enforceValidRemoveLink(Term parent, String relationshipType)
   {
     // Its possible that the link between these two universals may exist, but by
     // a different relationship type.

@@ -133,6 +133,11 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // return false;
     // }
   }
+  
+  public boolean isInitialized(String relationshipType)
+  {
+    return this.allPaths != null && this.allPaths.containsKey(relationshipType);
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#configure(java.lang.String)

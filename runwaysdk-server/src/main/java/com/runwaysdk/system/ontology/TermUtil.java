@@ -25,8 +25,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermHacker;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
@@ -35,6 +37,7 @@ import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.ontology.io.TermExporter;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 import com.runwaysdk.system.ontology.io.TermFileFormat;
 
 public class TermUtil extends TermUtilBase
@@ -312,6 +315,8 @@ public class TermUtil extends TermUtilBase
   public static String[] getAllParentRelationships(String termId)
   {
     Term term = (Term) Term.get(termId);
+    
+    OntologyStrategyIF strategy = TermHacker.getStrategy(term);
 
     MdTermDAOIF mdTerm = term.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllParentMdRelationships();
@@ -322,6 +327,11 @@ public class TermUtil extends TermUtilBase
     {
       if (mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
       {
+        if (strategy instanceof DatabaseAllPathsStrategy && !((DatabaseAllPathsStrategy)strategy).isInitialized(mdRelationshipDAOIF.definesType()))
+        {
+          continue;
+        }
+        
         rels.add(mdRelationshipDAOIF.definesType());
       }
     }
@@ -339,6 +349,8 @@ public class TermUtil extends TermUtilBase
   public static String[] getAllChildRelationships(String termId)
   {
     Term term = (Term) Term.get(termId);
+    
+    OntologyStrategyIF strategy = TermHacker.getStrategy(term);
 
     MdTermDAOIF mdTerm = term.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllChildMdRelationships();
@@ -349,6 +361,11 @@ public class TermUtil extends TermUtilBase
     {
       if (mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
       {
+        if (strategy instanceof DatabaseAllPathsStrategy && !((DatabaseAllPathsStrategy)strategy).isInitialized(mdRelationshipDAOIF.definesType()))
+        {
+          continue;
+        }
+        
         rels.add(mdRelationshipDAOIF.definesType());
       }
     }
