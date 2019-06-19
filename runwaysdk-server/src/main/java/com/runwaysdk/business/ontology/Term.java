@@ -125,6 +125,8 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
     
     this.beforeDeleteTerm();
     super.delete();
+    
+    this.afterDeleteTerm();
   }
   
   private String caclulateTempTableName()
@@ -223,6 +225,7 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
           {
             current.beforeDeleteTerm();
             EntityDAO.get(current.getOid()).getEntityDAO().delete();
+            current.afterDeleteTerm();
           }
         }
       }
@@ -319,6 +322,9 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
   protected void beforeDeleteTerm()
   {
     deletePerTerm();
+  }
+  protected void afterDeleteTerm()
+  {
   }
   protected void deletePerTerm()
   {
