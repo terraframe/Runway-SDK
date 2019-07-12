@@ -52,6 +52,10 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionFacade;
+import com.runwaysdk.system.metadata.MdAttribute;
+import com.runwaysdk.system.metadata.MdAttributeDimension;
+import com.runwaysdk.system.metadata.MdDimension;
+import com.runwaysdk.system.metadata.MdDimensionQuery;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
 public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeDAOIF
@@ -161,9 +165,28 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   @Override
   public String apply()
   {
+    String oldKey = this.getKey();
+    Boolean isNew = this.isNew();
+    
     this.setAndBuildKey();
 
-    return super.apply();
+    String newId = super.apply();
+    
+    if (!isNew && !oldKey.equals(this.getKey()))
+    {
+      // Associated MdAttributeDimensions may have been invalidated.
+      MdDimensionQuery query = new MdDimensionQuery(new QueryFactory());
+      MdDimension.getAllInstances(query, null, true, 0, 0);
+      MdDimension[] dimensions = query.getIterator().getAll().toArray(new MdDimension[(int) query.getCount()]);
+      
+      for (MdDimension dimension : dimensions)
+      {
+        MdAttributeDimension attrDim = MdAttributeDimension.getByKey("Dimension." + dimension.getName() + "-" + oldKey);
+        attrDim.apply();
+      }
+    }
+    
+    return newId;
   }
 
   public String save(boolean validateRequired)
