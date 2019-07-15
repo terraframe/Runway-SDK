@@ -181,8 +181,8 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
       
       for (MdDimension dimension : dimensions)
       {
-        MdAttributeDimension attrDim = MdAttributeDimension.getByKey("Dimension." + dimension.getName() + "-" + oldKey);
-        attrDim.apply();
+        MdAttributeDimensionDAO attrDim = (MdAttributeDimensionDAO) MdAttributeDimensionDAO.get(MdAttributeDimension.getByKey("Dimension." + dimension.getName() + "-" + oldKey).getId());
+        attrDim.applyWithAttribute(this);
       }
     }
     

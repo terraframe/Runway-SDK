@@ -78,6 +78,21 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
     return super.apply();
   }
+  
+  protected String applyWithAttribute(MdAttributeDAOIF mdAttr)
+  {
+    String key = buildKey(this.definingMdDimension(), mdAttr);
+
+    this.setKey(key);
+    
+    if (this.isNew() && this.isAppliedToDB() == false && !this.isImport())
+    {
+      String newId = IdParser.buildId(ServerIDGenerator.generateId(this.getKey()), this.getMdClassDAO().getId());
+      this.getAttribute(EntityInfo.ID).setValue(newId);
+    }
+
+    return super.apply();
+  }
 
   public String save(boolean businessContext)
   {

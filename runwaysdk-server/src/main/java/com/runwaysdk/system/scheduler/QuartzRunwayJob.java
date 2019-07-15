@@ -1,7 +1,9 @@
 package com.runwaysdk.system.scheduler;
 
+import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -10,6 +12,7 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -114,6 +117,12 @@ public class QuartzRunwayJob implements org.quartz.Job
           logOut(sessionId);
         }
       }
+    }
+    catch (MessageExceptionDTO msg)
+    {
+      List<String> messages = msg.getMessageStrings();
+      
+      logger.warn("Messages occurred while executing job " + jobts + ". The messages are as follows:\n" + StringUtils.join(messages, ", "), msg);
     }
     catch (Throwable t)
     {
