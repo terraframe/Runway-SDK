@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK GIS(tm).
- *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1645996152)
+@com.runwaysdk.business.ClassSignature(hash = 2074167507)
 public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.TermDTO
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.Universal";
-  private static final long serialVersionUID = -1645996152;
+  private static final long serialVersionUID = 2074167507;
   
   protected UniversalDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -51,6 +33,7 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMETRYTYPE = "geometryType";
+  public static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
   public static java.lang.String ISLEAFTYPE = "isLeafType";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
@@ -268,6 +251,43 @@ public abstract class UniversalDTOBase extends com.runwaysdk.business.ontology.T
   public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getGeometryTypeMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(GEOMETRYTYPE).getAttributeMdDTO();
+  }
+  
+  public Boolean getIsGeometryEditable()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISGEOMETRYEDITABLE));
+  }
+  
+  public void setIsGeometryEditable(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISGEOMETRYEDITABLE, "");
+    }
+    else
+    {
+      setValue(ISGEOMETRYEDITABLE, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isIsGeometryEditableWritable()
+  {
+    return isWritable(ISGEOMETRYEDITABLE);
+  }
+  
+  public boolean isIsGeometryEditableReadable()
+  {
+    return isReadable(ISGEOMETRYEDITABLE);
+  }
+  
+  public boolean isIsGeometryEditableModified()
+  {
+    return isModified(ISGEOMETRYEDITABLE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getIsGeometryEditableMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ISGEOMETRYEDITABLE).getAttributeMdDTO();
   }
   
   public Boolean getIsLeafType()

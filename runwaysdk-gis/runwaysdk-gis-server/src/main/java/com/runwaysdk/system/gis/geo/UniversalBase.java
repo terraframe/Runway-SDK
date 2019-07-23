@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK GIS(tm).
- *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.gis.geo;
 
-@com.runwaysdk.business.ClassSignature(hash = -1192708600)
+@com.runwaysdk.business.ClassSignature(hash = -1307665837)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -44,6 +26,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String GEOMETRYTYPE = "geometryType";
+  public static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
   public static java.lang.String ISLEAFTYPE = "isLeafType";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
@@ -56,7 +39,7 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
   public static java.lang.String UNIVERSALID = "universalId";
-  private static final long serialVersionUID = -1192708600;
+  private static final long serialVersionUID = -1307665837;
   
   public UniversalBase()
   {
@@ -229,6 +212,34 @@ public abstract class UniversalBase extends com.runwaysdk.business.ontology.Term
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(GEOMETRYTYPE);
+  }
+  
+  public Boolean getIsGeometryEditable()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISGEOMETRYEDITABLE));
+  }
+  
+  public void validateIsGeometryEditable()
+  {
+    this.validateAttribute(ISGEOMETRYEDITABLE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsGeometryEditableMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.gis.geo.Universal.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISGEOMETRYEDITABLE);
+  }
+  
+  public void setIsGeometryEditable(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISGEOMETRYEDITABLE, "");
+    }
+    else
+    {
+      setValue(ISGEOMETRYEDITABLE, java.lang.Boolean.toString(value));
+    }
   }
   
   public Boolean getIsLeafType()
