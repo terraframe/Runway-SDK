@@ -1,9 +1,9 @@
 ---
-title: Querybuilder Joins
+title: ValueQueries
 keywords: terraframe, runway, querybuilder, query, join, leftjoin
 last_updated: December 21, 2017
 tags: [metadata]
-summary: "Covers joining tables when using the QueryBuilder"
+summary: "Covers using QueryBuilder ValueQueries"
 sidebar: mydoc_sidebar
 permalink: querybuilder_valuequery.html
 folder: mydoc
