@@ -89,8 +89,8 @@ public abstract class Join implements Component
     this.tableName2  = this.selectable2.getDefiningTableName();
     this.tableAlias2 = this.selectable2.getDefiningTableAlias();
     
-    this.expression1 = this.selectable1.getDefiningTableName()+"."+this.selectable1.getAttribute().getDbColumnName();
-    this.expression2 = this.selectable2.getDefiningTableName()+"."+this.selectable2.getAttribute().getDbColumnName();
+    this.expression1 = this.tableAlias1 + "." + this.columnName1;
+    this.expression2 = this.tableAlias2 + "." + this.columnName2;
   }
 
   /**
