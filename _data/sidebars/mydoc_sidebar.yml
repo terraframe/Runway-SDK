@@ -149,6 +149,23 @@ entries:
     - title: Introduction
       url: /mydoc_localization_introduction.html
       output: web, pdf
+      
+      
+  - title: QueryBuilder
+    output: web, pdf
+    folderitems:
+    
+    - title: Introduction
+      url: /querybuilder_intro.html
+      output: web, pdf
+      
+    - title: Joins
+      url: /querybuilder_joins.html
+      output: web, pdf
+      
+    - title: Value Queries
+      url: /querybuilder_valuequery.html
+      output: web, pdf
 
   # - title: Release Notes
   #   output: web, pdf
