@@ -21,7 +21,7 @@ package com.runwaysdk.query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -660,7 +660,7 @@ public abstract class ComponentQuery
     BuildSQLVisitor visitor = this.visitQuery();
     fromClauseAttribute.accept(visitor);
 
-    Set<Join> tableJoinSet = new HashSet<Join>();
+    Set<Join> tableJoinSet = new LinkedHashSet<Join>();
     Map<String, String> fromTableMap = this.getFromTableMapInfoForQuery();
 
     tableJoinSet.addAll(visitor.tableJoinSet);
@@ -718,7 +718,7 @@ public abstract class ComponentQuery
   {
     BuildSQLVisitor visitor = this.visitQuery();
 
-    Set<Join> tableJoinSet = new HashSet<Join>();
+    Set<Join> tableJoinSet = new LinkedHashSet<Join>();
     Map<String, String> fromTableMap = this.getFromTableMapInfoForQuery();
 
     tableJoinSet.addAll(visitor.tableJoinSet);
@@ -928,7 +928,7 @@ public abstract class ComponentQuery
   {
     fromTableMap.putAll(visitor.tableFromMap);
 
-    Set<LeftJoin> leftOuterJoinSet = new HashSet<LeftJoin>();
+    Set<LeftJoin> leftOuterJoinSet = new LinkedHashSet<LeftJoin>();
 
     for (Join tableJoin : tableJoinSet)
     {
@@ -960,22 +960,52 @@ public abstract class ComponentQuery
     fromClause.append("FROM ");
 
     boolean firstIteration = true;
+    
+//    Map<String, List<LeftJoin>> leftJoinMap = new HashMap<String, List<LeftJoin>>();
+//
+//    for (LeftJoin leftOuterTableJoin : leftOuterJoinSet)
+//    {
+//
+//      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+//      {
+//        List<LeftJoin> leftOuterJoinList = new LinkedList<LeftJoin>();
+//        leftOuterJoinList.add(leftOuterTableJoin);
+//        leftJoinMap.put(leftOuterTableJoin.getTableAlias1(), leftOuterJoinList);
+//      }
+//      else
+//      {
+//        List<LeftJoin> leftOuterJoinList = leftJoinMap.get(leftOuterTableJoin.getTableAlias1());
+//        leftOuterJoinList.add(leftOuterTableJoin);
+//      }
+//    }
 
     Map<String, List<LeftJoin>> leftJoinMap = new HashMap<String, List<LeftJoin>>();
+    Map<String, String> chainMap = new HashMap<String, String>();
 
     for (LeftJoin leftOuterTableJoin : leftOuterJoinSet)
     {
-
-      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+      if (!leftJoinMap.containsKey(leftOuterTableJoin.getTableAlias1()) && !chainMap.containsKey(leftOuterTableJoin.getTableAlias1()))
       {
         List<LeftJoin> leftOuterJoinList = new LinkedList<LeftJoin>();
         leftOuterJoinList.add(leftOuterTableJoin);
+        
         leftJoinMap.put(leftOuterTableJoin.getTableAlias1(), leftOuterJoinList);
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), leftOuterTableJoin.getTableAlias1());
+      }
+      else if (chainMap.containsKey(leftOuterTableJoin.getTableAlias1()))
+      {
+        String chainedTableAlias = chainMap.get(leftOuterTableJoin.getTableAlias1());        
+        List<LeftJoin> leftOuterJoinList = leftJoinMap.get(chainedTableAlias);
+        leftOuterJoinList.add(leftOuterTableJoin);
+        
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), chainedTableAlias);
       }
       else
       {
         List<LeftJoin> leftOuterJoinList = leftJoinMap.get(leftOuterTableJoin.getTableAlias1());
         leftOuterJoinList.add(leftOuterTableJoin);
+        
+        chainMap.put(leftOuterTableJoin.getTableAlias2(), leftOuterTableJoin.getTableAlias1());
       }
     }
 
@@ -1137,8 +1167,7 @@ public abstract class ComponentQuery
     return this.aliasSeed.hashCode();
   }
 
-  protected AggregateFunction createIndicatorFunction(Selectable attributeInIndictor,
-      EnumerationItemDAOIF aggFuncEnumItem, AggregateFunction aggregateFunction)
+  protected AggregateFunction createIndicatorFunction(Selectable attributeInIndictor, EnumerationItemDAOIF aggFuncEnumItem, AggregateFunction aggregateFunction)
   {
     if (aggFuncEnumItem.getValue(EnumerationMasterInfo.NAME).equals(AggregationFunctionInfo.SUM))
     {

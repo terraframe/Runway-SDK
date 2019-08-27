@@ -91,7 +91,7 @@ public abstract class GeneratedTableClassQuery extends GeneratedComponentQuery
    * @see com.runwaysdk.query.GeneratedComponentQuery#get(java.lang.String, java.lang.String)
    */
   @Override
-  public Selectable get(String attributeName, String userDefinedAlias)
+  public Attribute get(String attributeName, String userDefinedAlias)
   {
     return this.getComponentQuery().get(attributeName, userDefinedAlias);
   }
