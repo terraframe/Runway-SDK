@@ -37,11 +37,29 @@ All applications utilize domain models, regardless of whether they are formally 
 
 Runway SDK was built from the ground up to use the MDE paradigm, which treats classes, class attributes, and associations in a domain model as first-order objects through an expressive metamodel API to dynamically manage models and to formally define data integrity and access constraints. This is ideal for applications that require a formal abstraction to manage a dynamic domain model where the datasets modeled in the application cannot be known and programmed up-front and need to continually change. For example, data analysis and integration applications work with datasets that are introduced at runtime, such as spreadsheets and database tables, and those applications needs a formal method, such as the metamodel, for modeling their metadata dynamically. Users also have the ability to define new dataset types on the fly, to specify data integrity constraints on those types, and to specify what user roles are allowed to perform operations on them. The users themselves at runtime are defining and modifying dataset definitions according to the needs of the application. An executable implementation of the model is generated to both decrease software development time and also ensure correctness.
 
+### Class MetaModel Abstraction
+Every metamodel class is defined by an instance of MdBusiness.
+
+*MdBusiness* Is the primary abstraction for defining business classes
+
+*MdRelationship* Defines relationships between business classes
+
+*MdAttribute* Defines attributes on MdClasses
+
+![Class MetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata.png)
+
+### Attribute MetaModel Abstraction
+![AttributeMetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/AttributeHierarchy.png)
+
+### Classes, Relationships, and Attributes
+![AttributeMetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/Metadata%20Objects%20And%20Relationships.png)
 ## Model Transactions and Versioning
 
 In Runway SDK, model definitions can be created, updated, and deleted within a single transaction, including all generated code artifacts. This means that, when importing a new model definition into the application consisting of several class, attribute, and association definitions, the entire transaction will rollback should an error occur and not leave the application in a corrupted state. Source code and even changes to database tables are rolled back. This capability is provided out of the box to provide version update and patch management of the domain model for enterprise applications.
 
 Enterprise applications tend to have very complex domain models. Changing the model involves modifying metadata records and also migrating database tables. Runway SDK has a formal abstraction for managing different versions of the domain model. It automatically generates code that implements the transition between different versions of the model to modify the metadata and database tables accordingly. Included are all updated class, attribute, and association definitions while removing metadata that may have been deprecated between versions. This involves computing the delta of the set of changes to the model and then automatically generating code to configure the domain model metadata. Additionally, it generates SQL DML code to modify the database table structure. It does this all within a transaction! But don’t SQL databases automatically commit when executing a DML command? Yes they do, but Runway SDK utilizes the command design pattern to automatically generate SQL DML code that will restore the database schema to its previous state should an error occur. This mechanism is a critical component for managing the lifecycle of any enterprise application, including patching and upgrading the model, that is provided by Runway SDK out of the box.
 
+## Role Based Access Control
+![AttributeMetaModel Diagram](https://github.com/terraframe/Runway-SDK/blob/v2/doc/design/RBAC.png)
 
 {% include links.html %}
