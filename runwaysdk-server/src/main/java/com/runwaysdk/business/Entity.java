@@ -544,6 +544,13 @@ public abstract class Entity implements Mutable, Serializable
       }
     }
 
+    processExpressionAttributes();
+
+    entityDAO.apply();
+  }
+  
+  public void processExpressionAttributes()
+  {
     // Time to process the expression attributes.
     List<? extends MdAttributeConcreteDAOIF> mdAttrList = this.getMdAttributeDAOs();
 
@@ -637,8 +644,6 @@ public abstract class Entity implements Mutable, Serializable
         }
       }
     }
-
-    entityDAO.apply();
   }
 
   /**
