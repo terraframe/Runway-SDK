@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -42555213)
+@com.runwaysdk.business.ClassSignature(hash = 83504894)
 public abstract class MdWebCommentCommentTextDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebCommentCommentText";
-  private static final long serialVersionUID = -42555213;
+  private static final long serialVersionUID = 83504894;
   
   protected MdWebCommentCommentTextDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -45,6 +45,7 @@ public abstract class MdWebCommentCommentTextDTOBase extends com.runwaysdk.busin
     return CLASS;
   }
   
+  public static java.lang.String D1_DEFAULTLOCALE = "d1_defaultLocale";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String OID = "oid";

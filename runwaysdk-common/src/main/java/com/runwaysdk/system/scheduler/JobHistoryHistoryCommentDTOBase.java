@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -888803287)
+@com.runwaysdk.business.ClassSignature(hash = 1261755976)
 public abstract class JobHistoryHistoryCommentDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryHistoryComment";
-  private static final long serialVersionUID = -888803287;
+  private static final long serialVersionUID = 1261755976;
   
   protected JobHistoryHistoryCommentDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -45,6 +45,7 @@ public abstract class JobHistoryHistoryCommentDTOBase extends com.runwaysdk.busi
     return CLASS;
   }
   
+  public static java.lang.String D1_DEFAULTLOCALE = "d1_defaultLocale";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String OID = "oid";

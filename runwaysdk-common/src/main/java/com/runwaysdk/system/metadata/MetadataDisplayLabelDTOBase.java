@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1678623782)
+@com.runwaysdk.business.ClassSignature(hash = 2063357875)
 public abstract class MetadataDisplayLabelDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MetadataDisplayLabel";
-  private static final long serialVersionUID = -1678623782;
+  private static final long serialVersionUID = 2063357875;
   
   protected MetadataDisplayLabelDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -45,6 +45,7 @@ public abstract class MetadataDisplayLabelDTOBase extends com.runwaysdk.business
     return CLASS;
   }
   
+  public static java.lang.String D1_DEFAULTLOCALE = "d1_defaultLocale";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String OID = "oid";

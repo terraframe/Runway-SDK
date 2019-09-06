@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 582189028)
+@com.runwaysdk.business.ClassSignature(hash = 809093613)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdLocalizableMessageQueryDTO extends com.runwaysdk.business.StructQueryDTO
 {
-private static final long serialVersionUID = 582189028;
+private static final long serialVersionUID = 809093613;
 
   protected MdLocalizableMessageQueryDTO(String type)
   {
