@@ -374,7 +374,7 @@ public abstract class AbstractOntologyStrategyTest
     Assert.assertEquals(3, ancestors.size());
     Assert.assertTrue(ancestors.contains(TermHolder.getTermB()));
     Assert.assertTrue(ancestors.contains(TermHolder.getTermA()));
-    Assert.assertTrue(ancestors.contains(Business.get(this.mdTerm.definesType(), Term.ROOT_KEY)));
+    Assert.assertTrue(ancestors.contains(Business.get(mdTerm.definesType(), Term.ROOT_KEY)));
   }
 
   @Request

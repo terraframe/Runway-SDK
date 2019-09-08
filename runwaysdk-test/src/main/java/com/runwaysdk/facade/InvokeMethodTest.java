@@ -189,6 +189,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       rowCount--;
 
       Assert.assertEquals(recordCount, rowCount);
+      
+      workbook.close();
     }
     finally
     {
@@ -235,6 +237,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       rowCount--;
 
       Assert.assertEquals(recordCount, rowCount);
+      
+      workbook.close();
     }
     finally
     {

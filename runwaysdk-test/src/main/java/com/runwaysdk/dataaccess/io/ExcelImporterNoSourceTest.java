@@ -229,6 +229,8 @@ public class ExcelImporterNoSourceTest
 
     Assert.assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
     Assert.assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
+    
+    workbook.close();
   }
 
   @Request
@@ -309,6 +311,8 @@ public class ExcelImporterNoSourceTest
     finally
     {
       TestFixtureFactory.delete(test);
+      
+      workbook.close();
     }
   }
 
@@ -496,6 +500,8 @@ public class ExcelImporterNoSourceTest
 
     Assert.assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
     Assert.assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
+    
+    workbook.close();
   }
 
   @Request

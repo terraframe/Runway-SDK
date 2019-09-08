@@ -241,7 +241,7 @@ public class EntityGenTest
 
   private static String                       relationshipDTO;
 
-  private static String                       collectionSubDTO;
+//  private static String                       collectionSubDTO;
 
   private static ClientSession                systemSession   = null;
 
@@ -249,9 +249,9 @@ public class EntityGenTest
 
   private static String                       suitEnumDTO;
 
-  private boolean                             didSetup        = false;
-
-  private boolean                             didTeardown     = false;
+//  private boolean                             didSetup        = false;
+//
+//  private boolean                             didTeardown     = false;
 
   @Request
   @Before
@@ -665,7 +665,7 @@ public class EntityGenTest
     mdRelationship.apply();
 
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-    collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+//    collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     suitEnumDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;

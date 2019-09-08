@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -412185632)
+@com.runwaysdk.business.ClassSignature(hash = -1582101135)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -54,6 +36,23 @@ public  class JobHistoryHistoryCommentQuery extends com.runwaysdk.query.Generate
   public String getClassType()
   {
     return com.runwaysdk.system.scheduler.JobHistoryHistoryComment.CLASS;
+  }
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale()
+  {
+    return getD1_defaultLocale(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.D1_DEFAULTLOCALE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.D1_DEFAULTLOCALE, alias, displayLabel);
+
   }
   public com.runwaysdk.query.SelectableChar getDefaultLocale()
   {
@@ -154,6 +153,9 @@ public  class JobHistoryHistoryCommentQuery extends com.runwaysdk.query.Generate
  **/
   public interface JobHistoryHistoryCommentQueryStructIF extends com.runwaysdk.query.AttributeLocalIF  {
 
+    public com.runwaysdk.query.SelectableChar getD1_defaultLocale();
+    public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias);
+    public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getDefaultLocale();
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias);
     public com.runwaysdk.query.SelectableChar getDefaultLocale(String alias, String displayLabel);
@@ -181,6 +183,23 @@ public  class JobHistoryHistoryCommentQuery extends com.runwaysdk.query.Generate
 
   }
 
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale()
+  {
+    return getD1_defaultLocale(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.D1_DEFAULTLOCALE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getD1_defaultLocale(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistoryHistoryComment.D1_DEFAULTLOCALE, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getDefaultLocale()
   {
     return getDefaultLocale(null);
