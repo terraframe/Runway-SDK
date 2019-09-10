@@ -29,7 +29,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
+import com.runwaysdk.dataaccess.database.general.DatabaseServiceIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.terraframe.utf8.UTF8ResourceBundle;
 
@@ -189,11 +189,11 @@ public class DatabaseProperties
    * @return The database the core is running on
    */
   @SuppressWarnings("unchecked")
-  public static Class<AbstractDatabase> getDatabaseClass()
+  public static Class<DatabaseServiceIF> getDatabaseClass()
   {
     String className = Singleton.INSTANCE.vendor_props.getString("databaseClass");
 
-    return (Class<AbstractDatabase>) LoaderDecorator.load(className);
+    return (Class<DatabaseServiceIF>) LoaderDecorator.load(className);
   }
 
   /**

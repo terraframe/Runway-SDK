@@ -46,6 +46,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.patcher.RunwayPatcher;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
@@ -68,11 +69,11 @@ public class Sandbox
     // test();
     // "-- clean = true", "-- rootUser = postgres", "-- rootPass=postgres", "-- templateDb = postgres"
     
-//    RunwayPatcher.main(new String[] { "--clean=true", "--rootUser=postgres" ,"--rootPass=postgres", "--templateDb=postgres"});
+    RunwayPatcher.main(new String[] { "--clean=true", "--rootUser=postgres" ,"--rootPass=postgres", "--templateDb=postgres"});
     
-//    generateSource();
+    generateSource();
   
-//    RunwayPatcher.main(new String[] { "postgres", "postgres", "postgres", "true" });
+    RunwayPatcher.main(new String[] { "postgres", "postgres", "postgres", "true" });
   }
 
   @Request

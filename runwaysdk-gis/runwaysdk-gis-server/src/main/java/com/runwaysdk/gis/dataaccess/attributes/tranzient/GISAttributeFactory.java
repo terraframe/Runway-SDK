@@ -18,10 +18,9 @@
  */
 package com.runwaysdk.gis.dataaccess.attributes.tranzient;
 
-import org.postgis.jts.JtsGeometry;
-
 import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory.PluginIF;
+import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
@@ -51,9 +50,9 @@ public class GISAttributeFactory implements PluginIF
     Attribute attribute = null;
     if (attributeType.equals(MdAttributePointInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof Point)
         {     
@@ -68,9 +67,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeLineStringInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof LineString)
         {     
@@ -85,9 +84,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributePolygonInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof Polygon)
         {     
@@ -102,9 +101,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeMultiPointInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiPoint)
         {     
@@ -119,9 +118,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeMultiLineStringInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiLineString)
         {     
@@ -136,9 +135,9 @@ public class GISAttributeFactory implements PluginIF
     }    
     else if (attributeType.equals(MdAttributeMultiPolygonInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiPolygon)
         {     

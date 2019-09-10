@@ -21,8 +21,6 @@ package com.runwaysdk.gis.dataaccess.attributes.entity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.postgis.jts.JtsGeometry;
-
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -102,9 +100,9 @@ public class GISAttributeFactory implements PluginIF
     Attribute attribute = null;
     if (attributeType.equals(MdAttributePointInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof Point)
         {     
@@ -119,9 +117,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeLineStringInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof LineString)
         {     
@@ -136,9 +134,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributePolygonInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof Polygon)
         {     
@@ -153,9 +151,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeMultiPointInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiPoint)
         {     
@@ -170,9 +168,9 @@ public class GISAttributeFactory implements PluginIF
     }
     else if (attributeType.equals(MdAttributeMultiLineStringInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiLineString)
         {     
@@ -187,9 +185,9 @@ public class GISAttributeFactory implements PluginIF
     }    
     else if (attributeType.equals(MdAttributeMultiPolygonInfo.CLASS))
     {
-      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      if (attributeValue != null)
       {
-        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        Geometry geometry = (Geometry) Database.convertDatabaseValue(attributeValue);
         
         if (geometry instanceof MultiPolygon)
         {     

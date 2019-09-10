@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.database;
 
@@ -24,13 +24,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
 import java.util.Set;
 
-import com.google.inject.Inject;
 import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -41,7 +44,7 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.HardCodedMetadataIterator;
-import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
+import com.runwaysdk.dataaccess.database.general.DatabaseServiceIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
@@ -83,7 +86,8 @@ public class Database
   public static final int    MAX_ATTRIBUTE_NAME_SIZE          = 28;
 
   /**
-   * The size, in characters, of the OID strings for each object in the database.
+   * The size, in characters, of the OID strings for each object in the
+   * database.
    */
   public static final String DATABASE_ID_SIZE                 = "36";
 
@@ -137,30 +141,45 @@ public class Database
   /**
    * Class used to communicate to the concrete database
    */
-  private AbstractDatabase   database;
-
-  /**
-   * Uses google Guice to inject the concrete database implementation.
-   * 
-   * @param database
-   *          Concrete database class
-   */
-  @Inject
-  protected Database(AbstractDatabase database)
-  {
-    this.database = database;
-  }
+  private DatabaseServiceIF  database;
 
   /**
    * The accessor function to the instance of <code>AbstractDatabase</code>.
    * 
    * @return The singelton instance of <code>AbstractDatabase</code>
    */
-  public synchronized static AbstractDatabase instance()
+  public synchronized static DatabaseServiceIF instance()
   {
     if (instance == null)
     {
-      instance = new DatabaseInjector().getDatabase();
+      List<DatabaseServiceIF> configurations = new ArrayList<DatabaseServiceIF>();
+
+      ServiceLoader<DatabaseServiceIF> loader = ServiceLoader.load(DatabaseServiceIF.class, Thread.currentThread().getContextClassLoader());
+
+      try
+      {
+        Iterator<DatabaseServiceIF> it = loader.iterator();
+
+        while (it.hasNext())
+        {
+          configurations.add(it.next());
+        }
+
+      }
+      catch (ServiceConfigurationError serviceError)
+      {
+        throw new RuntimeException(serviceError);
+      }
+
+      if (configurations.size() == 0)
+      {
+        throw new RuntimeException("Unable to find a database service.");
+      }
+      else
+      {
+        // TODO handle the case where more than one database service is supplied
+        instance.database = configurations.get(0);
+      }
     }
 
     return instance.database;
@@ -656,14 +675,14 @@ public class Database
   }
 
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
-   * null, then all objects are returned. Otherwise, the
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid
+   * is null, then all objects are returned. Otherwise, the
    * <code>MdAttributeDimensionDAOIF</code>s for the
    * <code>MdDimensionDAOIF</code> with the given oid.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid is
-   *         null, then all objects are returned. Otherwise, the
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given oid
+   *         is null, then all objects are returned. Otherwise, the
    *         <code>MdAttributeDimensionDAOIF</code>s for the
    *         <code>MdDimensionDAOIF</code> with the given oid.
    */
@@ -1715,11 +1734,12 @@ public class Database
   {
     return instance().getConnection();
   }
-  
+
   /**
    * Returns a raw, unmanaged database connection for usage outside of requests.
    * 
-   * Do not call this unless you have a very good reason! Use getConnection instead.
+   * Do not call this unless you have a very good reason! Use getConnection
+   * instead.
    * 
    * @return
    */
@@ -3099,4 +3119,10 @@ public class Database
   {
     return instance().generateRootId(mdTypeDAO);
   }
+  
+  public static Object convertDatabaseValue(Object value)
+  {
+    return instance().convertDatabaseValue(value);    
+  }
+
 }
