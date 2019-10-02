@@ -20,9 +20,10 @@ package com.runwaysdk.query;
 
 import java.util.Iterator;
 import java.util.List;
+import java.lang.AutoCloseable;
 
 
-public interface OIterator<T> extends Iterator<T>, Iterable<T>
+public interface OIterator<T> extends Iterator<T>, Iterable<T>, AutoCloseable
 {   
   
   /**

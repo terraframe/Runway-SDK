@@ -140,6 +140,7 @@ public class RunwayPatcher
     }
     
     this.ignoreErrors = ignoreErrors;
+    this.timestamps = new TreeSet<Date>();
     
     initialize();
   }
@@ -156,16 +157,6 @@ public class RunwayPatcher
       ordered.add(resource);
 
       map.put(getDate(resource), resource);
-    }
-
-    timestamps = new TreeSet<Date>();
-
-    // Get a list of all the imported versions
-    List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
-
-    for (String timestamp : values)
-    {
-      timestamps.add(new Date(Long.parseLong(timestamp)));
     }
   }
   
@@ -310,6 +301,8 @@ public class RunwayPatcher
   
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
+    refreshTimestamps();
+
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
     {
@@ -395,6 +388,19 @@ public class RunwayPatcher
       }
       
       timestamps.add(timestamp);
+    }
+  }
+
+  protected void refreshTimestamps()
+  {
+    timestamps = new TreeSet<Date>();
+
+    // Get a list of all the imported versions
+    List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+
+    for (String value : values)
+    {
+      timestamps.add(new Date(Long.parseLong(value)));
     }
   }
   
