@@ -27,10 +27,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.business.SmartException;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.util.IDGenerator;
 
 public abstract class ExecutableJob extends ExecutableJobBase implements ExecutableJobIF
 {
@@ -219,10 +220,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
     {
       SchedulerManager.addJobListener(this, jobListener);
     }
+    
+    JobHistory history = this.createNewHistory();
+    
+    JobHistoryRecord record = new JobHistoryRecord(this, history);
+    record.apply();
 
-    this.getQuartzJob().start();
+    this.getQuartzJob().start(record);
 
-    return null;
+    return history;
   }
 
   @Request
@@ -237,10 +243,40 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
     // TODO : Not supported yet.
   }
 
+  /**
+   * If the job can be automatically resumed, it will be started. Otherwise, the history will be set to FAILURE. 
+   */
   @Request
-  public void resume()
+  public synchronized void resume(JobHistoryRecord jhr)
   {
-    // TODO : Not supported yet.
+    if (canResume())
+    {
+      for (JobListener jobListener : this.listeners.values())
+      {
+        SchedulerManager.addJobListener(this, jobListener);
+      }
+      
+      this.getQuartzJob().start(jhr);
+    }
+    else
+    {
+      JobHistory jh = jhr.getChild();
+      
+      jh.clearStatus();
+      jh.addStatus(AllJobStatus.FAILURE);
+      
+      jh.setEndTime(new Date());
+      
+      String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobCannotResume", "The server was shutdown while the job was running."); // TODO : Maybe read the locale from the job owner's locale
+      jh.getHistoryInformation().setValue(msg);
+      
+      jh.apply();
+    }
+  }
+  
+  public boolean canResume()
+  {
+    return false;
   }
 
   @Request

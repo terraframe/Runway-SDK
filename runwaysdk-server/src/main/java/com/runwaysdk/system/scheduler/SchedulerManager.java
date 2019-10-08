@@ -19,7 +19,7 @@
 package com.runwaysdk.system.scheduler;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
@@ -35,20 +35,13 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.NameMatcher;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
 public class SchedulerManager
 {
-
-  /**
-   * 
-   */
-  private static class Singleton
-  {
-    private static final SchedulerManager INSTANCE = new SchedulerManager();
-  }
 
   /**
    * The SchedulerFactory instance to manage all Schedulers.
@@ -60,12 +53,29 @@ public class SchedulerManager
    */
   private Scheduler        scheduler;
 
-  private static boolean   initialized = false;
+  private static SchedulerManager instance = null;
 
-  /**
-   * Constructor to initialize the scheduler factory and default instance.
-   */
   private SchedulerManager()
+  {
+  }
+  
+  private static synchronized SchedulerManager getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new SchedulerManager();
+      instance.initialize();
+    }
+    
+    return instance;
+  }
+  
+  private static Scheduler scheduler()
+  {
+    return SchedulerManager.getInstance().scheduler;
+  }
+  
+  private void initialize()
   {
     factory = new StdSchedulerFactory();
 
@@ -91,37 +101,26 @@ public class SchedulerManager
       }
     }
     
-    faillAllRunning();
-
-    initialized = true;
+    resumeRunningJobs();
   }
   
-  private static Scheduler scheduler()
+  @Request
+  private void resumeRunningJobs()
   {
-    return Singleton.INSTANCE.scheduler;
+    resumeRunningJobsInTrans();
   }
   
-  /**
-   * Sets all RUNNING jobs to FAILURE.
-   */
-  private void faillAllRunning()
+  @Transaction
+  private void resumeRunningJobsInTrans()
   {
-    JobHistoryQuery query = new JobHistoryQuery(new QueryFactory());
-    query.WHERE(query.getStatus().containsAny(AllJobStatus.RUNNING));
-    OIterator<? extends JobHistory> jhs = query.getIterator();
+    Iterator<JobHistoryRecord> it = getRunningJobs().iterator();
     
-    while (jhs.hasNext())
+    while (it.hasNext())
     {
-      JobHistory jh = jhs.next();
+      JobHistoryRecord jhr = it.next();
+      ExecutableJob ej = jhr.getParent();
       
-      jh.clearStatus();
-      jh.addStatus(AllJobStatus.FAILURE);
-      
-      jh.setEndTime(new Date());
-      
-      jh.getHistoryInformation().setValue("The server was shutdown while the job was running."); // TODO : Should be localized
-      
-      jh.apply();
+      ej.resume(jhr);
     }
   }
   
@@ -179,7 +178,6 @@ public class SchedulerManager
   {
     List<JobHistoryRecord> records = new ArrayList<JobHistoryRecord>();
 
-    // Restart any jobs that are running.
     QueryFactory qf = new QueryFactory();
     ExecutableJobQuery ejq = new ExecutableJobQuery(qf);
     JobHistoryQuery jhq = new JobHistoryQuery(qf);
@@ -356,7 +354,7 @@ public class SchedulerManager
 
   public static synchronized boolean initialized()
   {
-    return initialized;
+    return instance != null;
   }
 
   public synchronized static void shutdown()

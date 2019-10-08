@@ -21,6 +21,7 @@ package com.runwaysdk.system.scheduler;
 import java.util.Locale;
 
 import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
@@ -39,7 +41,8 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 /**
- * We can't have Quartz instantiating Runway business objects because it must be done within a request.
+ * Handles the basic integration between Quartz and Runway.
+ * 
  * This class is a wrapper around ExecutableJob which implements the Quartz interface and is used to
  * bootstrap our ExecutableJob Runway context from the more basic Quartz execution context.
  * 
@@ -48,8 +51,13 @@ import com.runwaysdk.transport.conversion.ConversionFacade;
  */
 public class QuartzRunwayJob implements org.quartz.Job
 {
+  public static final String HISTORY_RECORD_ID = "HISTORY_RECORD_ID";
+  
+  public static final String EXECUTABLE_JOB_ID = "EXECUTABLE_JOB_ID";
   
   private Logger logger = LoggerFactory.getLogger(QuartzRunwayJob.class);
+  
+  private JobDetail detail;
   
   private ExecutableJob execJob;
   
@@ -60,7 +68,7 @@ public class QuartzRunwayJob implements org.quartz.Job
   
   public QuartzRunwayJob(ExecutableJob execJob)
   {
-    this.execJob = execJob;
+    this.initialize(execJob);
   }
   
   public ExecutableJob getExecutableJob()
@@ -79,14 +87,23 @@ public class QuartzRunwayJob implements org.quartz.Job
     JobHistoryRecord record;
     JobHistory history;
     
-    String id = context.getJobDetail().getKey().getName();
+    this.detail = context.getJobDetail();
+    JobDataMap dataMap = this.detail.getJobDataMap();
+    
+    execJob = ExecutableJob.get(dataMap.getString(EXECUTABLE_JOB_ID));
 
-    execJob = ExecutableJob.get(id);
-
-    history = execJob.createNewHistory();
-
-    record = new JobHistoryRecord(execJob, history);
-    record.apply();
+    if (dataMap.containsKey(HISTORY_RECORD_ID))
+    {
+      record = JobHistoryRecord.get(dataMap.getString(HISTORY_RECORD_ID));
+      history = record.getChild();
+    }
+    else
+    {
+      history = execJob.createNewHistory();
+  
+      record = new JobHistoryRecord(execJob, history);
+      record.apply();
+    }
     
     execJob.setQuartzJob(this);
     
@@ -207,30 +224,40 @@ public class QuartzRunwayJob implements org.quartz.Job
   /**
    * Schedules the job to be run immediately, regardless of any cron expression that may be configured for the job.
    */
-  public void start()
+  public void start(JobHistoryRecord record)
   {
+    this.detail.getJobDataMap().put(HISTORY_RECORD_ID, record.getOid());
+    
     SchedulerManager.startJob(this);
   }
   
-  /**
-   * @param job
-   * @throws SchedulerException
-   */
+  private void initialize(ExecutableJob execJob)
+  {
+    this.execJob = execJob;
+    
+    try
+    {
+      String id = this.execJob.getOid();
+      
+      this.detail = SchedulerManager.getJobDetail(id);
+  
+      if (this.detail == null)
+      {
+        this.detail = JobBuilder.newJob(this.getClass()).withIdentity(id).build();
+  
+        // Give the Quartz Job a back-reference to the Runway Job
+        this.detail.getJobDataMap().put(EXECUTABLE_JOB_ID, id);
+      }
+    }
+    catch (SchedulerException e)
+    {
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
+    }
+  }
+  
   public synchronized JobDetail getJobDetail() throws SchedulerException
   {
-    String id = this.execJob.getOid();
-    
-    JobDetail detail = SchedulerManager.getJobDetail(id);
-
-    if (detail == null)
-    {
-      detail = JobBuilder.newJob(this.getClass()).withIdentity(id).build();
-
-      // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(JobHistoryRecord.OID, id);
-    }
-
-    return detail;
+    return this.detail;
   }
 
   public void unschedule()

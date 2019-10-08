@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.patcher;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -60,16 +59,14 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
-import com.runwaysdk.dataaccess.io.ResourceStreamSource;
 import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.XMLImporter;
-import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.util.ClasspathResource;
 
 public class RunwayPatcher
 {
@@ -312,7 +309,6 @@ public class RunwayPatcher
 
       // We always want to use the context class loader because it ensures our resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-      InputStream stream = null;
       
       Savepoint sp = null;
       if (ignoreErrors && isTransaction)
@@ -326,10 +322,12 @@ public class RunwayPatcher
         {
           ObjectCache.shutdownGlobalCache();
           
-          stream = resource.getStream();
-          String sql = IOUtils.toString(stream, "UTF-8");
-          
-          Database.executeStatement(sql);
+          try (InputStream stream = resource.openNewStream())
+          {
+            String sql = IOUtils.toString(stream, "UTF-8");
+            
+            Database.executeStatement(sql);
+          }
         }
         else if (resource.getNameExtension().equals("xml"))
         {
@@ -375,10 +373,6 @@ public class RunwayPatcher
         }
         
         try {
-          if (stream != null)
-          {
-            stream.close();
-          }
           schema.close();
         }
         catch (IOException e)

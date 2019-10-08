@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.util;
+package com.runwaysdk.resource;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,7 @@ import org.apache.commons.io.FilenameUtils;
  * 
  * @author Richard Rowlands
  */
-public class ClasspathResource
+public class ClasspathResource implements ApplicationResource
 {
   private String path = null;
   
@@ -121,8 +121,9 @@ public class ClasspathResource
   
   /**
    * Opens a stream to the classpath resource and returns it. If one cannot be opened a ResourceException will be thrown.
+   * Autocloseable paradigm should be used with the returned stream to ensure resources are not leaked.
    */
-  public InputStream getStream()
+  public InputStream openNewStream()
   {
     URL url = this.getURL();
     
@@ -189,7 +190,7 @@ public class ClasspathResource
   /**
    * If the resource is contained within a jar, this will return the jar. If the resource exists on the filesystem this will return the file on the filesystem.
    */
-  public File getFile()
+  public CloseableFile openNewFile()
   {
     URL url = this.getURL();
     
@@ -198,7 +199,7 @@ public class ClasspathResource
       try {
         String jarFileName = URLDecoder.decode(url.getFile(), "UTF-8");
         jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-        return new File(jarFileName);
+        return new CloseableFile(jarFileName);
       }
       catch (UnsupportedEncodingException e)
       {
@@ -207,7 +208,7 @@ public class ClasspathResource
     }
     else
     {
-      return new File(url.getFile());
+      return new CloseableFile(url.getFile());
     }
   }
   
@@ -325,5 +326,32 @@ public class ClasspathResource
   public String toString()
   {
     return "classpath:" + this.getAbsolutePath();
+  }
+
+  @Override
+  public boolean isRemote()
+  {
+    return false;
+  }
+
+  @Override
+  public void close()
+  {
+    
+  }
+
+  @Override
+  public void delete()
+  {
+    if (!isInsideJar())
+    {
+      this.openNewFile().delete();
+    }
+  }
+
+  @Override
+  public File getUnderlyingFile()
+  {
+    return this.openNewFile();
   }
 }

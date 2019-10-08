@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.runwaysdk.util.ClasspathResource;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.resource.ClasspathResource;
 
 public class ResourceStreamSource implements StreamSource
 {
