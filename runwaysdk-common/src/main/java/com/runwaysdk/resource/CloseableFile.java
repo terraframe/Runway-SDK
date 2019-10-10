@@ -43,6 +43,7 @@ public class CloseableFile extends File implements AutoCloseable
   public CloseableFile(URI uri, boolean isTemp)
   {
     super(uri);
+    this.isTemp = isTemp;
   }
   
   public CloseableFile(File parent, String child)
