@@ -37,7 +37,6 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
-import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
@@ -438,6 +437,8 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   @Override
   protected void dmlCommit() throws SQLException
   {
+    this.getGraphDBRequest().commit();
+    
     if (this.conn != null)
     {
       this.conn.commit();
@@ -451,6 +452,8 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   @Override
   protected void dmlRollback() throws SQLException
   {
+    this.getGraphDBRequest().rollback();
+    
     if (this.conn != null)
     {
       this.conn.rollback();

@@ -25,7 +25,7 @@ public enum RelationshipTypes {
   METADATA_RELATIONSHIP(Constants.METADATA_PACKAGE + "." + "MetadataRelationship", "326abc0d-31be-311d-9d65-d000a6000067", "metadata_relationship"),
 
   /**
-   * Relationship that defines inheritance between entites.
+   * Relationship that defines inheritance between entities.
    */
   CLASS_INHERITANCE(Constants.METADATA_PACKAGE + "." + "ClassInheritance", "6550aa0a-296c-3340-a1bc-2209ee000067", "class_inheritance"),
 
@@ -160,7 +160,12 @@ public enum RelationshipTypes {
    * {@link MdAttributeRatioDAOIF} references a {@linL RatioDAOIF}.
    */
 
-  ATTRIBUTE_INDICATOR(Constants.METADATA_PACKAGE + "." + "AttributeIndicator", "6d0b9bb2-6df8-3d7a-9c94-60789d000067", "attribute_indicator");
+  ATTRIBUTE_INDICATOR(Constants.METADATA_PACKAGE + "." + "AttributeIndicator", "6d0b9bb2-6df8-3d7a-9c94-60789d000067", "attribute_indicator"),
+  
+  /**
+   * Relationship that defines inheritance between vertex classes.
+   */
+  VERTEX_INHERITANCE(Constants.METADATA_PACKAGE + "." + "VertexInheritance", "12b33fd5-1697-31b0-8807-e6063e000067", "vertex_inheritance");
   
   
   private String relationshipType;

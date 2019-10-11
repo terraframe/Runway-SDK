@@ -54,14 +54,14 @@ public abstract class Attribute implements AttributeIF
   final private String name;
 
   /**
-   * The Component that contains this Attribute. Not defined on creation, but set by the
-   * containing Component. <br>
+   * The {@link TransientDAO} that contains this Attribute. Not defined on creation, but set by the
+   * containing {@link TransientDAO. <br>
    * <b>invariant </b> containingComponent != null
    */
   private TransientDAO    containingTransientDAO;
 
   /**
-   * Quanified name of the class that defines this attribute. <br>
+   * Qualified name of the class that defines this attribute. <br>
    * <b>invariant </b> definingTransientType != null <br>
    * <b>invariant </b> !definingTransientType.equals("")
    */

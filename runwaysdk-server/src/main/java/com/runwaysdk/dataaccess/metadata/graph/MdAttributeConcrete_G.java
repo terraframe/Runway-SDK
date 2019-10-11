@@ -1,0 +1,235 @@
+package com.runwaysdk.dataaccess.metadata.graph;
+
+import java.sql.PreparedStatement;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
+import com.runwaysdk.dataaccess.AttributeBooleanIF;
+import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
+import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
+import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteStrategy;
+
+public abstract class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
+{
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 2659134669811043650L;
+
+  /**
+   * @param {@link MdAttributeConcreteDAO}
+   */
+  public MdAttributeConcrete_G(MdAttributeConcreteDAO mdAttribute)
+  {
+    super(mdAttribute);
+  }
+  
+  /**
+   * Returns the {@link MdGraphClassDAOIF} that defines this MdAttribute.
+   *
+   * @return the {@link MdGraphClassDAOIF} that defines this MdAttribute.
+   */
+  public MdGraphClassDAOIF definedByClass()
+  {
+    return (MdGraphClassDAOIF) this.getMdAttribute().definedByClass();
+  }
+  
+  
+  protected void preSaveValidate()
+  {
+    super.preSaveValidate();
+ 
+    if (this.getMdAttribute().isNew() && !this.appliedToDB)
+    {
+      // Supply a column name if one was not provided
+      Attribute columnNameAttribute = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.COLUMN_NAME);
+      if (!columnNameAttribute.isModified() || columnNameAttribute.getValue().trim().length() == 0)
+      {
+        // Automatically create a column name
+        columnNameAttribute.setValue(this.getMdAttribute().definesAttribute());
+      }
+      else
+      {
+        // Manually create a column name
+        columnNameAttribute.setValue(columnNameAttribute.getValue().toLowerCase());
+      }
+    }
+    
+    this.nonMdEntityCheckExistingForAttributeOnCreate();
+  }
+  
+  /**
+   * Contains special logic for saving an attribute.
+   */
+  public void save()
+  {
+    this.validate();
+    
+    this.nonMdEntityPostSaveValidationOperations();
+    
+    if (this.getMdAttribute().isNew())
+    {
+      // This attribute may have already been created
+      this.createDbAttribute();
+    }
+
+    this.modifyAttributeRequired();
+    
+    this.modifyAttributeIndex();
+  }
+
+  /**
+   * Deletes an attribute from runway. The <code>BusinessDAO</code> is deleted
+   * from the database and removed from the cache. All relationships pertaining
+   * to this <code>BusinessDAO</code> are also removed as well.
+   *
+   * <br/>
+   * <b>Postcondition: </b> BusinessDAO and all dependencies are removed from
+   * the runway <br/>
+   * <b>Postcondition: </b> Coresponding column from the defining table is
+   * dropped
+   *
+   * @param p_mdAttribute
+   *          Attribute metadata BusinessDAO
+   */
+  public void delete()
+  {
+    // Delete all tuples this MdAttribute is part of
+// Heads up: Graph - do we need to implement this as for MdAttributeConcrete_E?
+//    this.dropTuples();
+
+    // Some dbs require that all tables have at least one column. Therefore, I
+    // am making the assumption that if you are deleting the OID field, then you
+    // are also
+    // dropping the defining type within the same transaction, which will drop
+    // the table.
+    if (!this.getMdAttribute().definesAttribute().equalsIgnoreCase(ComponentInfo.OID))
+    {
+      this.dropAttributeIndex();
+      
+      // drop the attribute from the table
+      this.dropDbAttribute();
+    }
+  }
+  
+  /**
+   * No special validation logic.
+   */
+  protected void validate() 
+  {
+    this.nonMdEntityValidate();
+  }
+  
+  /**
+   * Adds the attribute to the graph database
+   *
+   */
+  protected abstract void createDbAttribute();
+  
+  /**
+   * Drops the attribute from the graph database.
+   *
+   */
+  protected abstract void dropDbAttribute();
+  
+  /**
+   * Modify the index on the attribute.
+   *
+   */
+  private void modifyAttributeIndex()
+  {
+    AttributeEnumerationIF attributeIndex = (AttributeEnumerationIF)this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+    
+    if (attributeIndex.isModified() || this.getMdAttribute().isNew())
+    {
+      IndexTypes newIndexType = this.getMdAttribute().getIndexType();
+      
+      setAttributeIndex(newIndexType);
+    }
+  }  
+  
+  private void dropAttributeIndex()
+  {
+    this.setAttributeIndex(IndexTypes.NO_INDEX);
+  }
+  
+  
+  private void setAttributeIndex(IndexTypes newIndexType)
+  {
+    String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+    String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.COLUMN_NAME).getValue();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();      
+    GraphRequest ddlGraphDBRequest = GraphDBService.getInstance().getDDLGraphDBRequest();   
+    
+    IndexTypes originalIndex = GraphDBService.getInstance().getIndexType(graphRequest, dbClassName, dbAttrName);
+    
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().modifiyAttributeIndex(graphRequest, ddlGraphDBRequest, dbClassName, dbAttrName, newIndexType);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().modifiyAttributeIndex(graphRequest, ddlGraphDBRequest, dbClassName, dbAttrName, originalIndex);
+    
+    GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
+    graphCommand.doIt();
+    
+    String indexName = GraphDBService.getInstance().getIndexName(graphRequest, dbClassName, dbAttrName);
+    
+    if (indexName == null)
+    {
+      indexName = "";
+    }
+    
+    // Update the row in the database, as the {@link MdAttributeConcreteDAO} has already been applied.
+    String tableName = MdAttributeConcreteDAOIF.TABLE;
+    String columnName = MdAttributeConcreteDAOIF.INDEX_TYPE_NAME;
+    String entityOid = this.getMdAttribute().getOid();
+    String prepStmtVar = "?";
+    String newValue = indexName;
+    String attributeType = MdAttributeCharacterInfo.CLASS;
+    PreparedStatement statement = Database.buildPreparedUpdateFieldStatement(tableName, entityOid, columnName, prepStmtVar, newValue, attributeType);
+      
+    List<PreparedStatement> statements = new LinkedList<PreparedStatement>();
+    statements.add(statement);
+      
+    Database.executeStatementBatch(statements);
+ 
+    this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.INDEX_NAME).setValue(indexName);
+  }  
+
+  /**
+   * Modify if the attribute is required or not.
+   *
+   */
+  private void modifyAttributeRequired()
+  {
+    AttributeBooleanIF attributeRequired = (AttributeBooleanIF)this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED);
+    
+    if (attributeRequired.isModified())
+    {
+      boolean required = attributeRequired.getBooleanValue();
+      
+      String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+      String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.COLUMN_NAME).getValue();
+      GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();      
+      GraphRequest ddlGraphDBRequest = GraphDBService.getInstance().getDDLGraphDBRequest();   
+      
+      boolean wasPreviouslyRequired = GraphDBService.getInstance().isAttributeRequired(graphRequest, dbClassName, dbAttrName);
+      
+      GraphDDLCommandAction doItAction = GraphDBService.getInstance().modifiyAttributeRequired(graphRequest, ddlGraphDBRequest, dbClassName, dbAttrName, required);
+      GraphDDLCommandAction undoItAction = GraphDBService.getInstance().modifiyAttributeRequired(graphRequest, ddlGraphDBRequest, dbClassName, dbAttrName, wasPreviouslyRequired);
+      
+      GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
+      graphCommand.doIt();
+    }
+  }
+}

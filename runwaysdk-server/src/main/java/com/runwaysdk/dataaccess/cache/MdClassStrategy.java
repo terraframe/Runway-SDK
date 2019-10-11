@@ -35,7 +35,6 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
-import com.runwaysdk.util.IdParser;
 
 
 public class MdClassStrategy extends MetaDataObjectStrategy

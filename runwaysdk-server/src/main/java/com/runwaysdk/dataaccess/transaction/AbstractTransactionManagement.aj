@@ -76,6 +76,8 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.MetadataDisplayLabelDDLCommand;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -96,22 +98,30 @@ import com.runwaysdk.util.IdParser;
  */
 privileged public abstract aspect AbstractTransactionManagement percflow(topLevelTransactions())
 {
-  protected static boolean   debug        = false;
+  protected static boolean   debug                  = false;
 
   // Connection used for DML statements. This comes from the Request Aspect.
-  protected Connection       conn         = Database.getConnection();
+  protected Connection       conn                   = Database.getConnection();
+  
+  // Connection used for DML statements. This comes from the Request Aspect.
+  protected GraphRequest graphDBRequest           = GraphDBService.getInstance().getGraphDBRequest();
 
   protected TransactionState transactionState;
 
-  protected Log              log          = LogFactory.getLog(AbstractTransactionManagement.class.getName());
+  protected Log              log                    = LogFactory.getLog(AbstractTransactionManagement.class.getName());
 
-  protected boolean          haveCommited = false;
+  protected boolean          haveCommited           = false;
 
   protected TransactionState getState()
   {
     return this.transactionState;
   }
 
+  protected GraphRequest getGraphDBRequest()
+  {
+    return this.graphDBRequest;
+  }
+  
   protected TransactionCacheIF getTransactionCache()
   {
     return this.getState().getCache();
@@ -732,6 +742,16 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     return this.getState().getDDLConn();
   }
 
+  protected pointcut getDDLGraphRequest()
+  :  call(* com.runwaysdk.dataaccess.graph.GraphDBService.getDDLGraphDBRequest())
+  && !within(AbstractTransactionManagement+)
+  && !within(TransactionState+);
+
+  Object around() : getDDLGraphRequest()
+  {  
+    return this.getState().getDDLGraphDBRequest();
+  }
+  
   protected pointcut requestAlreadyHasDDLConnection()
   :  call(boolean Database.requestAlreadyHasDDLConnection())
   && !within(AbstractTransactionManagement+);
@@ -820,6 +840,33 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     // conn + " "+thisEnclosingJoinPointStaticPart.getSourceLocation());
   }
 
+
+  protected pointcut commitGraphRequest()
+  :  call(void com.runwaysdk.dataaccess.graph.GraphRequest+.commit())
+  && !within(com.runwaysdk.session.AbstractRequestManagement+)
+  && !within(AbstractTransactionManagement+)
+  && !within(RequestState+)
+  && !within(com.runwaysdk.dataaccess.transaction.TransactionState+);
+
+  void around() : commitGraphRequest()
+  {
+    // NOT committing the Graph DB 
+  }
+  
+
+  protected pointcut rollbackGraphRequest()
+  :  call(void com.runwaysdk.dataaccess.graph.GraphRequest+.rollback())
+  && !within(com.runwaysdk.session.AbstractRequestManagement+)
+  && !within(AbstractTransactionManagement+)
+  && !within(RequestState+)
+  && !within(com.runwaysdk.dataaccess.transaction.TransactionState+);
+
+  void around() : rollbackGraphRequest()
+  {
+    // NOT rollingback the Graph DB;
+  }
+  
+  
   protected pointcut skipIfProblem()
   : call (@SkipIfProblem * *+.*(..));
 
@@ -871,7 +918,8 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // Rollback the transaction if an error occured
   Object around() : topLevelTransactions()
   {
-
+    this.getGraphDBRequest().beginTransaction();
+    
     Object operationResult = null;
     try
     {
@@ -946,6 +994,11 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       {
         this.ddlCommitAndClose();
       }
+      
+      if (this.getState().getRequestAlreadyHasGraphDDLConnection())
+      {
+        this.getState().getDDLGraphDBRequest().close();
+      }
     }
     catch (SQLException ex)
     {
@@ -961,6 +1014,11 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       if (!Database.sharesDDLandDMLconnection())
       {
         this.ddlRollbackAndClose();
+      }
+      
+      if (this.getState().getRequestAlreadyHasGraphDDLConnection())
+      {
+        this.getState().getDDLGraphDBRequest().close();
       }
     }
     catch (SQLException ex)

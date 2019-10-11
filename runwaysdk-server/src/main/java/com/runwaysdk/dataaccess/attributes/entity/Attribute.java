@@ -52,7 +52,6 @@ import com.runwaysdk.session.Session;
 /**
  * Root Attribute class. All attributes have the following properties in common.
  * 
- * @author Eric
  * @version $Revision: 1.24 $
  * @since 1.4
  */

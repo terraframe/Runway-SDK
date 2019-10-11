@@ -136,6 +136,8 @@ import com.runwaysdk.constants.TransactionRecordInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -247,6 +249,8 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.metadata.ontology.OntologyStrategyDAO;
 import com.runwaysdk.dataaccess.transaction.ImportLogDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
@@ -294,6 +298,10 @@ public class BusinessDAOFactory
     map.put(IndicatorPrimitiveInfo.CLASS, new IndicatorPrimitiveDAO());
     map.put(MdAttributeIndicatorInfo.CLASS, new MdAttributeIndicatorDAO());
 
+    // Graoh Database
+    map.put(MdVertexInfo.CLASS, new MdVertexDAO());
+    map.put(MdEdgeInfo.CLASS, new MdEdgeDAO());
+    
     map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
     map.put(MdBusinessInfo.CLASS, new MdBusinessDAO());

@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess;
 
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 
 public class Installer
@@ -51,7 +52,7 @@ public class Installer
   public static void install(String rootUser, String rootPass, String rootDb, String xsd, String[] xmlFiles)
   {
     Database.initialSetup(rootUser, rootPass, rootDb);
-
+    
     XMLImporter x = new XMLImporter(xsd, xmlFiles);
     x.toDatabase();
   }

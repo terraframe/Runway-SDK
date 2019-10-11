@@ -179,6 +179,7 @@ public aspect PolicyEnforcement
     : call (* com.runwaysdk.dataaccess.EntityDAO.getValue(..))
       && (   (within(com.runwaysdk.dataaccess..*.*) )
           && !within(com.runwaysdk.dataaccess.io..*)
+          && !within(com.runwaysdk.dataaccess.graph..*)
          )
     : "Call EntityDAO.getValue(..) within the persistence layer only when necessary.  Use EntityDAO.getAttribute(..).getValue(..) instead.";
 

@@ -73,6 +73,9 @@ import com.runwaysdk.constants.MdWarningInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdGraphClassInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -86,11 +89,13 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
 import com.runwaysdk.dataaccess.MdFormDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdInformationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
@@ -104,6 +109,7 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -123,6 +129,8 @@ import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataException;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.ITaskListener;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.generation.CommonMarker;
@@ -1732,18 +1740,18 @@ public class ObjectCache
   }
 
   /**
-   * Returns an MdViewIF instance of the metadata for the given type.
+   * Returns an {@link MdViewDAOIF} instance of the metadata for the given type.
    * 
    * <br/>
    * <b>Precondition:</b> veiwType != null <br/>
    * <b>Precondition:</b> !veiwType.trim().equals("") <br/>
    * <b>Precondition:</b> veiwType is a valid class defined in the database
    * <br/>
-   * <b>Postcondition:</b> Returns a MdViewIF instance of the metadata for the
+   * <b>Postcondition:</b> Returns a {@link MdViewDAOIF} instance of the metadata for the
    * given class (MdViewIF().definesType().equals(veiwType)
    * 
    * @param veiwType
-   * @return MdViewIF instance of the metadata for the given type.
+   * @return {@link MdViewDAOIF} instance of the metadata for the given type.
    */
   public static MdViewDAOIF getMdViewDAO(String veiwType)
   {
@@ -1756,6 +1764,65 @@ public class ObjectCache
     }
 
     return (MdViewDAOIF) mdClassIF;
+  }
+  
+  /**
+   * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   * 
+   * <br/>
+   * <b>Precondition:</b> graphClassType != null <br/>
+   * <b>Precondition:</b> !graphClassType.trim().equals("") <br/>
+   * <b>Precondition:</b> graphClassType is a valid class defined in the database
+   * <br/>
+   * <b>Postcondition:</b> Returns a {@link MdGraphClassDAOIF} instance of the metadata for the
+   * given class ({@link MdGraphClassDAOIF}().definesType().equals(graphClassType)
+   * 
+   * @param graphClassType
+   * @return {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   */
+  public static MdGraphClassDAOIF getMdGraphClassDAO(String graphClassType)
+  {
+    MdClassDAOIF mdClassIF = getMdClassDAO(graphClassType);
+
+    if (! ( mdClassIF instanceof MdGraphClassDAOIF ))
+    {
+      String errmsg = "Type [" + graphClassType + "] is not an [" + MdGraphClassInfo.CLASS + "].";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdGraphClassDAOIF) mdClassIF;
+  }
+  
+  /**
+   * @see MdVertexDAO#getMdVertexDAO(String)
+   */
+  public static MdVertexDAOIF getMdVertexDAO(String vertexType)
+  {
+    MdClassDAOIF mdClassIF = getMdClassDAO(vertexType);
+
+    if (! ( mdClassIF instanceof MdVertexDAOIF ))
+    {
+      String errmsg = "Type [" + vertexType + "] is not an [" + MdVertexInfo.CLASS + "].";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdVertexDAOIF) mdClassIF;
+  }
+  
+  /**
+   * @see MdEdgeDAO#getMdEdgeDAO(String)
+   */
+  public static MdEdgeDAOIF getMdEdgeDAO(String vertexType)
+  {
+    MdClassDAOIF mdClassIF = getMdClassDAO(vertexType);
+
+    if (! ( mdClassIF instanceof MdEdgeDAOIF ))
+    {
+      String errmsg = "Type [" + vertexType + "] is not an [" + MdEdgeInfo.CLASS + "].";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdEdgeDAOIF) mdClassIF;
   }
 
   /**

@@ -25,64 +25,64 @@ import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 public interface MdTransientDAOIF extends MdClassDAOIF
 {
   /**
-   * Name of the table used to store intances of this class.
+   * Name of the table used to store instances of this class.
    */
   public static final String TABLE   = "md_transient";
 
   /**
-   *Returns the MdTransientIF that is the root of the hierarchy that this type belongs to.
-   * returns a reference to inself if it is the root.
+   *Returns the {@link MdTransientDAOIF} that is the root of the hierarchy that this type belongs to.
+   * returns a reference to itself if it is the root.
    *
-   * @return MdTransientIF that is the root of the hierarchy that this type belongs to.
-   * returns a reference to inself if it is the root.
+   * @return {@link MdTransientDAOIF} that is the root of the hierarchy that this type belongs to.
+   * returns a reference to itself if it is the root.
    */
   public abstract MdTransientDAOIF getRootMdClassDAO();
   
   /**
-   * Returns an array of MdTransientIF that defines immediate subclasses of this class.
-   * @return an array of MdTransientIF that defines immediate subclasses of this class.
+   * Returns an array of {@link MdTransientDAOIF} that defines immediate subclasses of this class.
+   * @return an array of {@link MdTransientDAOIF} that defines immediate subclasses of this class.
    */
   public List<? extends MdTransientDAOIF> getSubClasses();
   
   /**
-   * Returns a list of MdTransientIF objects that are subclasses of the given
+   * Returns a list of {@link MdTransientDAOIF} objects that are subclasses of the given
    * entity. Only non abstract entities are returned (i.e. entities that can be
    * instantiated)
    * 
-   * @return list of MdTransientIF objects that are subclasses of the given entity.
+   * @return list of {@link MdTransientDAOIF} objects that are subclasses of the given entity.
    *         Only non abstract entities are returned (i.e. entities that can be
    *         instantiated)
    */
   public List<? extends MdTransientDAOIF> getAllConcreteSubClasses();
 
   /**
-   *Returns a list of MdTransientIF objects that represent entites 
+   * Returns a list of {@link MdTransientDAOIF} objects that represent entities 
    * that are subclasses of the given entity, including all recursive entities.
    *
-   * @return list of MdTransientIF objects that represent entites 
+   * @return list of {@link MdTransientDAOIF} objects that represent entities 
    * that are subclasses of the given entity, including all recursive entities.
    */
   public List<? extends MdTransientDAOIF> getAllSubClasses();
 
   /**
-   * Returns an MdTransientIF representing the super class of this class, or null if
+   * Returns an {@link MdTransientDAOIF} representing the super class of this class, or null if
    * it does not have one.
    * 
-   * @return an MdTransientIF representing the super class of this class, or null if
+   * @return an {@link MdTransientDAOIF} representing the super class of this class, or null if
    * it does not have one.
    */
   public MdTransientDAOIF getSuperClass();
 
   /**
-   * Returns a list of MdTransientIF instances representing every
-   * parent of this MdTransientIF partaking in an inheritance relationship.
+   * Returns a list of {@link MdTransientDAOIF} instances representing every
+   * parent of this {@link MdTransientDAOIF} partaking in an inheritance relationship.
    * 
-   * @return a list of MdTransientIF instances that are parents of this class.
+   * @return a list of {@link MdTransientDAOIF} instances that are parents of this class.
    */
   public List<? extends MdTransientDAOIF> getSuperClasses();
   
   /**
-   *Returns the MdAttribute that defines the given attribute for the this entity.  This method
+   *Returns the {@link MdAttributeDAOIF}  that defines the given attribute for the this entity.  This method
    * only works if the attribute is explicitly defined by the this.  In other words, it
    * will return null if the attribute exits for the given entity, but is inherited from a 
    * super entity.

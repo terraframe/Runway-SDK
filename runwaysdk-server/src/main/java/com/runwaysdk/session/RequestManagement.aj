@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.CommonExceptionMessageLocalizer;
@@ -51,6 +52,7 @@ import com.runwaysdk.business.WarningDTO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.transport.conversion.RunwayProblemToRunwayProblemDTO;
@@ -154,7 +156,7 @@ public aspect RequestManagement extends AbstractRequestManagement
     {
     }
   }
-
+  
   // Process any error message that occurs when logging in.
   Object around() :
     execution (* com.runwaysdk.facade.Facade.login(String, String, Locale[]))  ||
@@ -320,6 +322,14 @@ public aspect RequestManagement extends AbstractRequestManagement
 
   after() returning : topLevelSession()
   {
+//    // Close the connection to the graph database
+//    Optional<GraphDBRequest> graphDBRequest = this.getRequestState().getGraphDBRequest();
+//   
+//    if (graphDBRequest.isPresent())
+//    {
+//      graphDBRequest.get().close();
+//    }
+    
     try
     {
       if (this.getRequestState().getSession() != null)
@@ -343,11 +353,19 @@ public aspect RequestManagement extends AbstractRequestManagement
       this.idMap.clear();
       
       this.getRequestState().setSession(null);
-    }
+    }    
   }
 
   after() throwing : topLevelSession()
   {
+    // Close the connection to the graph database
+//    Optional<GraphDBRequest> graphDBRequest = this.getRequestState().getGraphDBRequest();
+//   
+//    if (graphDBRequest.isPresent())
+//    {
+//      graphDBRequest.get().close();
+//    }
+    
     try
     {
       if (this.getRequestState().getSession() != null)

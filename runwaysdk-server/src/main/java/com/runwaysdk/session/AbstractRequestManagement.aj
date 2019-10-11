@@ -54,14 +54,13 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
@@ -76,6 +75,12 @@ import com.runwaysdk.util.IdParser;
  */
 privileged public abstract aspect AbstractRequestManagement percflow(topLevelSession())
 {
+  static
+  {
+    // Initialize the connection pool of the graph database, if one is present
+    GraphDBService.getInstance().initializeConnectionPool();
+  }
+  
   declare                                       precedence : AbstractTransactionManagement+;
 
   protected RequestState                        requestState;
@@ -304,6 +309,30 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
 
+  protected pointcut getGraphRequest()
+//  :  call(Optional<GraphRequest> com.runwaysdk.dataaccess.graph.GraphDBService.getGraphDBRequest())
+    :  call(* com.runwaysdk.dataaccess.graph.GraphDBService.getGraphDBRequest())
+  && !within(RequestState);
+  
+  Object around() : getGraphRequest()
+  {  
+    return this.getRequestState().getGraphDBRequest();
+  }
+  
+  
+  protected pointcut closeGraphRequest()
+  :  call(void com.runwaysdk.dataaccess.graph.GraphRequest+.close())
+  && !within(AbstractRequestManagement+)
+  && !within(AbstractTransactionManagement+)
+  && !within(RequestState+)
+  && !within(com.runwaysdk.dataaccess.transaction.TransactionState+);
+
+  void around() : closeGraphRequest()
+  {
+    // NOT clossing the Graph DB
+  }
+  
+  
   // Trace usage of all connection objects, except those used by assertion
   // checking
   // protected pointcut connectionTrace()

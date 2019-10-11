@@ -30,6 +30,7 @@ import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
@@ -53,7 +54,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   }
 
   /**
-   * Constructs a MdView from the given hashtable of Attributes.
+   * Constructs a {@link MdTransientDAO} from the given hashtable of Attributes.
    *
    * <br/><b>Precondition:</b> attributeMap != null
    * <br/><b>Precondition:</b> type != null <br/>
@@ -61,7 +62,6 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
    *
    * @param attributeMap
    * @param type
-   * @param useCache
    */
   public MdTransientDAO(Map<String, Attribute> attributeMap, String type)
   {
@@ -73,6 +73,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
    *
    * @return true if the type is abstract, false otherwise.
    */
+  @Override
   public boolean isAbstract()
   {
     AttributeBooleanIF attributeBoolean = (AttributeBooleanIF) this.getAttributeIF(MdTransientInfo.ABSTRACT);
@@ -84,6 +85,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
    *
    * @return true if the type can be extended, false otherwise.
    */
+  @Override
   public boolean isExtendable()
   {
     AttributeBooleanIF attributeBoolean = (AttributeBooleanIF) this
@@ -92,31 +94,24 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   }
 
   /**
-   *Returns the MdTransientIF that is the root of the hierarchy that this type belongs to.
-   * returns a reference to inself if it is the root.
-   *
-   * @return MdTransientIF that is the root of the hierarchy that this type belongs to.
-   * returns a reference to inself if it is the root.
+   * @see MdTransientDAOIF#getRootMdClassDAO() 
    */
+  @Override
   public MdTransientDAOIF getRootMdClassDAO()
   {
     return (MdTransientDAOIF)super.getRootMdClassDAO();
   }
+  
   /**
-   * Returns an array of MdTransientIF that defines immediate subclasses of this class.
-   * @return an array of MdTransientIF that defines immediate subclasses of this class.
+   * @see MdTransientDAOIF#getSubClasses() 
    */
+  @Override
   public abstract List<? extends MdTransientDAOIF> getSubClasses();
 
   /**
-   * Returns a list of MdTransientIF objects that are subclasses of the given
-   * entity. Only non abstract entities are returned (i.e. entities that can be
-   * instantiated)
-   *
-   * @return list of MdTransientIF objects that are subclasses of the given entity.
-   *         Only non abstract entities are returned (i.e. entities that can be
-   *         instantiated)
+   * @see MdTransientDAOIF#getSubClasses() 
    */
+  @Override
   @SuppressWarnings("unchecked")
   public List<? extends MdTransientDAOIF> getAllConcreteSubClasses()
   {
@@ -125,14 +120,9 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
 
 
   /**
-   *Returns a list of MdClassIF objects that represent classes
-   * that are subclasses of the given class, including this class,
-   * including all recursive entities.
-   *
-   * @return list of MdClassIF objects that represent classes
-   * that are subclasses of the given class, including this class,
-   * including all recursive entities.
+   * @see MdTransientDAOIF#getAllSubClasses() 
    */
+  @Override
   @SuppressWarnings("unchecked")
   public List<? extends MdTransientDAOIF> getAllSubClasses()
   {
@@ -140,20 +130,15 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   }
 
   /**
-   * Returns an MdTransientIF representing the super class of this class, or null if
-   * it does not have one.
-   *
-   * @return an MdTransientIF representing the super class of this class, or null if
-   * it does not have one.
+   * @see MdTransientDAOIF#getSuperClass() 
    */
+  @Override
   public abstract MdTransientDAOIF getSuperClass();
 
   /**
-   * Returns a list of MdTransientIF instances representing every
-   * parent of this MdTransientIF partaking in an inheritance relationship.
-   *
-   * @return a list of MdTransientIF instances that are parents of this class.
+   * @see MdTransientDAOIF#getSuperClasses() 
    */
+  @Override
   @SuppressWarnings("unchecked")
   public List<? extends MdTransientDAOIF> getSuperClasses()
   {
@@ -161,7 +146,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   }
 
   /**
-   *Returns the MdAttribute that defines the given attribute for the this entity.  This method
+   *Returns the {@link MdAttributeDAOIF} that defines the given attribute for the this entity.  This method
    * only works if the attribute is explicitly defined by the this.  In other words, it
    * will return null if the attribute exits for the given entity, but is inherited from a
    * super entity.
@@ -175,16 +160,16 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
   }
 
   /**
-   * Returns a MdTransientIF instance that defines the class of the given type.
+   * Returns a {@link MdTransientDAOIF} instance that defines the class of the given type.
    *
    * <br/><b>Precondition:</b>  type != null
    * <br/><b>Precondition:</b>  !type.trim().equals("")
    * <br/><b>Precondition:</b>  type is a valid class defined in the database
-   * <br/><b>Postcondition:</b> Returns a MdTransientIF where
+   * <br/><b>Postcondition:</b> Returns a {@link MdTransientDAOIF}  where
    *                            (mdTransient.getType().equals(type)
    *
    * @param  type Name of the class.
-   * @return MdTransientIF instance that defines the class of the given type.
+   * @return {@link MdTransientDAOIF} instance that defines the class of the given type.
    */
   public static MdTransientDAOIF getMdTransientDAO(String transientType)
   {

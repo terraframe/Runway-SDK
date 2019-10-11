@@ -31,6 +31,7 @@ import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.util.ServerInitializerFacade;
 
@@ -53,7 +54,7 @@ public class InstallerCP
   public static void install(String rootUser, String rootPass, String rootDb, String xsd) throws IOException
   {
     Database.initialSetup(rootUser, rootPass, rootDb);
-
+    
     InputStream xsdIS = InstallerCP.class.getClassLoader().getResourceAsStream(xsd);
     if (xsdIS == null)
     {
