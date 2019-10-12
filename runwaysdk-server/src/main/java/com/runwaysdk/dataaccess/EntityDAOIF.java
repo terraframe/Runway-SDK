@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
-import com.runwaysdk.ComponentIF;
-
 public interface EntityDAOIF extends ComponentDAOIF
 {
   /**

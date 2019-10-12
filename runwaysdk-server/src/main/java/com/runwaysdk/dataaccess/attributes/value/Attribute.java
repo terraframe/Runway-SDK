@@ -168,9 +168,9 @@ public abstract class Attribute implements AttributeIF
    * Returns all MdAttributes that are involved in building the select clause.
    * @return all MdAttributes that are involved in building the select clause.
    */
-  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
+  public Set<MdAttributeConcreteDAOIF> getAllMdAttributes()
   {
-    return entityMdAttributeIFset;
+    return this.entityMdAttributeIFset;
   }
 
   /**

@@ -36,7 +36,7 @@ public class AttributeCharacter extends Attribute
   private static final long serialVersionUID = -939122217739547358L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and
+   * Inherited constructor, sets <code>name</code> and
    * <code>definingEntityType</code>.
    * 
    * @param name

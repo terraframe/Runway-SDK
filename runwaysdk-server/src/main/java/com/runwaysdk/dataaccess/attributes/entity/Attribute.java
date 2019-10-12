@@ -693,11 +693,11 @@ public abstract class Attribute implements AttributeIF, Serializable
   }
 
   /**
-   * Returns all MdAttributes that are involved in building the select clause.
+   * Returns all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
    * 
-   * @return all MdAttributes that are involved in building the select clause.
+   * @return all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
    */
-  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
+  public Set<MdAttributeConcreteDAOIF> getAllMdAttributes()
   {
     Set<MdAttributeConcreteDAOIF> set = new HashSet<MdAttributeConcreteDAOIF>();
     set.add(this.getMdAttribute());
@@ -749,8 +749,8 @@ public abstract class Attribute implements AttributeIF, Serializable
   public abstract Attribute attributeClone();
 
   /**
-  *
-  */
+   *
+   */
   public Attribute attributeCopy()
   {
     return this.attributeClone();

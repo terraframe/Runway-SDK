@@ -138,6 +138,7 @@ public abstract class Attribute implements AttributeIF
    *
    * @return name of the attribute
    */
+  @Override
   public String getName()
   {
     return this.name;
@@ -152,6 +153,7 @@ public abstract class Attribute implements AttributeIF
    *
    * @return The Display Label for the attribute, as defined in the Metadata
    */
+  @Override
   public String getDisplayLabel(Locale locale)
   {
     return this.getMdAttribute().getDisplayLabel(locale);
@@ -164,6 +166,7 @@ public abstract class Attribute implements AttributeIF
    * @return map where the key is the locale and the value is the localized
    *   String value.
    */
+  @Override
   public Map<String, String> getDisplayLabes()
   {
     return this.getMdAttribute().getDisplayLabels();
@@ -171,7 +174,7 @@ public abstract class Attribute implements AttributeIF
 
   /**
    * Returns true if the value of the attribute has been modified since the attribute was
-   * last commited to the database, false otherwise.
+   * last committed to the database, false otherwise.
    *
    * <br>
    * <b>Precondition: </b> true <br>
@@ -180,9 +183,10 @@ public abstract class Attribute implements AttributeIF
    * @return true if the attribute has been modified since it was last commited to the
    *         database, false otherwise.
    */
+  @Override
   public boolean isModified()
   {
-    return isModified;
+    return this.isModified;
   }
 
   /**
@@ -209,7 +213,7 @@ public abstract class Attribute implements AttributeIF
   }
 
   /**
-   * Returns the Component that contains this Attribute.
+   * Returns the {@link TransientDAO} that contains this Attribute.
    *
    * <br>
    * <b>Precondition: </b> true <br>
@@ -217,6 +221,7 @@ public abstract class Attribute implements AttributeIF
    *
    * @return the Component that contains this Attribute
    */
+  @Override
   public TransientDAO getContainingComponent()
   {
     if (this.containingTransientDAO == null)
@@ -250,13 +255,14 @@ public abstract class Attribute implements AttributeIF
    *
    * @return name of the attribute
    */
+  @Override
   public String getDefiningClassType()
   {
     return this.definingTransientType;
   }
 
   /**
-   * Returns the formatted value of the attribute.  Some attributes format
+   * Returns the formatted value of the attribute.Some attributes format
    * this value to something other than what is stored in the database.
    *
    * <br>
@@ -265,6 +271,7 @@ public abstract class Attribute implements AttributeIF
    *
    * @return value of the attribute.
    */
+  @Override
   public String getValue()
   {
     return this.value;
@@ -275,6 +282,7 @@ public abstract class Attribute implements AttributeIF
    * @param name
    * @return object stored on the attribute.
    */
+  @Override
   public Object getObjectValue()
   {
     return this.getValue();
@@ -517,7 +525,7 @@ public abstract class Attribute implements AttributeIF
    * Returns all MdAttributes that are involved in building the select clause.
    * @return all MdAttributes that are involved in building the select clause.
    */
-  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
+  public Set<MdAttributeConcreteDAOIF> getAllMdAttributes()
   {
     Set<MdAttributeConcreteDAOIF> set = new HashSet<MdAttributeConcreteDAOIF>();
     set.add(this.getMdAttributeConcrete());
