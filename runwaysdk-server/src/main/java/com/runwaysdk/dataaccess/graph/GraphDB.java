@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 
 public interface GraphDB
@@ -188,6 +189,8 @@ public interface GraphDB
    * @return name of the index, or null if none exists.
    */
   public String getIndexName(GraphRequest graphRequest, String className, String attributeName);
-  
-  
+
+  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute);
+
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required);
 }

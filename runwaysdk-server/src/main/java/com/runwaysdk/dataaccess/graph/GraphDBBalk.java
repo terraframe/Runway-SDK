@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 /**
  * This class implements the Balk pattern for instances where no graph database is present.
@@ -169,5 +170,17 @@ public class GraphDBBalk implements GraphDB
   public String getIndexName(GraphRequest graphRequest, String className, String attributeName)
   {
     return null;
+  }
+
+  @Override
+  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute)
+  {
+    return "String";
+  }
+
+  @Override
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
+  {
+    return new GraphDDLCommandAction(){ public void execute(){}};
   }
 }

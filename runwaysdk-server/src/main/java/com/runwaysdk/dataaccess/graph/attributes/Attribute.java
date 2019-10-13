@@ -9,7 +9,7 @@ import com.runwaysdk.constants.graph.GraphClassInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+//import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.graph.GraphClassDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
