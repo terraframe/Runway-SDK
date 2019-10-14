@@ -1476,9 +1476,12 @@
     </xs:sequence>
   </xs:complexType>
    
-  <xs:complexType name="mdGraphClass">
+  <xs:complexType name="mdGraphClass">  
     <xs:complexContent>
       <xs:extension base="mdClass">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="attributes" type="attributes" minOccurs="0" />
+        </xs:choice>
         <xs:attribute name="dbClassName" type="xs:string" use="optional" />
       </xs:extension>
     </xs:complexContent>

@@ -105,6 +105,7 @@ import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -196,6 +197,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.system.FieldOperation;
@@ -1566,6 +1568,24 @@ public class TestFixtureFactory
     return mdVertex;
   }
 
+  public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child)
+  {
+    return createMdEdge(parent, child, "TestEdge");
+  }
+
+  public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child, String name)
+  {
+    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+    mdEdge.setValue(MdEdgeInfo.NAME, name);
+    mdEdge.setValue(MdEdgeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdEdge Set Test");
+    mdEdge.setStructValue(MdEdgeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdEdge Attributes Test");
+    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, parent.getOid());
+    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, child.getOid());
+
+    return mdEdge;
+  }
+
   /**
    * @return
    */
@@ -1750,5 +1770,4 @@ public class TestFixtureFactory
 
     return mdTable;
   }
-
 }
