@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -104,7 +104,7 @@ public interface XMLTags
    * The xml name of the abstract attribute in the class tag
    */
   public static final String   ABSTRACT_ATTRIBUTE               = "isAbstract";
-  
+
   /**
    * The xml name of the generate source attribute in the class tag
    */
@@ -202,7 +202,7 @@ public interface XMLTags
    * The xml tag for an {@link MdAttributeUUIDDAOIF}
    */
   public static final String   UUID_TAG                         = "uuid";
-  
+
   /**
    * The xml tag for an {@link MdAttributeIntegerDAOIF}
    */
@@ -394,7 +394,8 @@ public interface XMLTags
   public static final String   REMOVE_ENUM_ITEM_TAG             = "removeEnumItem";
 
   /**
-   * The xml name of the oid attribute for enumeration_instance and instance tags
+   * The xml name of the oid attribute for enumeration_instance and instance
+   * tags
    */
   public static final String   ID_ATTRIBUTE                     = "oid";
 
@@ -986,4 +987,8 @@ public interface XMLTags
   public static final String   SELECTABLE                       = "selectable";
 
   public static final String   MD_TABLE_TAG                     = "mdTable";
+
+  public static final String   MD_VERTEX_TAG                    = "mdVertex";
+
+  public static final String   MD_EDGE_TAG                      = "mdEdge";
 }

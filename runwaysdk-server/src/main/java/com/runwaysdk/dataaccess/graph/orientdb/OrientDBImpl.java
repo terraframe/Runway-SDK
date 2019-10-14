@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 import com.orientechnologies.orient.core.db.ODatabasePool;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
@@ -474,7 +475,11 @@ public class OrientDBImpl implements GraphDB
 
           if (oClassIndexType != null)
           {
-            oProperty.createIndex(oClassIndexType);
+            String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0, 30);
+
+            oClass.createIndex(indexName, oClassIndexType, oProperty.getName());
+
+            // oProperty.createIndex(oClassIndexType);
           }
           // Clear the index if it is set to none.
           else

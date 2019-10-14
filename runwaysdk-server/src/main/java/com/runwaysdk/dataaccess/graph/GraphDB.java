@@ -190,7 +190,23 @@ public interface GraphDB
    */
   public String getIndexName(GraphRequest graphRequest, String className, String attributeName);
 
+  /**
+   * @param mdAttribute
+   * 
+   * @return Name of the database column type
+   */
   public String getDbColumnType(MdAttributeConcreteDAO mdAttribute);
 
+  /**
+   * Adds an attribute of the given name and type. 
+   * 
+   * @param graphRequest
+   * @param ddlGraphDBRequest
+   * @param className
+   * @param attributeName
+   * @param columnType
+   * @param required
+   * @return
+   */
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required);
 }

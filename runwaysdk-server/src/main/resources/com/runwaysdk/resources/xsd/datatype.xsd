@@ -67,6 +67,8 @@
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdEdge" type="mdEdge" />            
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
     </xs:choice>
@@ -97,6 +99,8 @@
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdEdge" type="mdEdge" />      
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
   </xs:complexType>
@@ -733,13 +737,6 @@
   </xs:complexType>
 
   <!--Data for the mdRelationship type -->
-  <xs:complexType name="mdRelationshipBase">
-    <xs:complexContent>
-      <xs:extension base="mdElement">
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType name="mdRelationship">
     <xs:sequence>
       <!--The parent mdBusiness of the mdRelationship -->
@@ -1468,5 +1465,63 @@
       <xs:enumeration value="WRITE_CHILD" />
     </xs:restriction>
   </xs:simpleType>
+  
+  <!-- 
+    Graph database add-ons
+   -->
+   
+  <xs:complexType name="mdGraphClassOptions">
+    <xs:sequence>
+      <xs:element name="attributes" type="attributes" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+   
+  <xs:complexType name="mdGraphClass">
+    <xs:complexContent>
+      <xs:extension base="mdClass">
+        <xs:attribute name="dbClassName" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdVertexBase">
+    <xs:complexContent>
+      <xs:extension base="mdGraphClass">
+        <xs:attribute name="isAbstract" type="xs:boolean" use="optional" />      
+        <!--extends: The name of the mdVertex being extended -->
+        <xs:attribute name="extends" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdVertex">
+    <xs:complexContent>
+      <xs:extension base="mdVertexBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdGraphClassOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdEdgeBase">
+    <xs:complexContent>
+      <xs:extension base="mdGraphClass">
+        <xs:attribute name="parent" type="xs:string" />
+        <xs:attribute name="child" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdEdge">
+    <xs:complexContent>
+      <xs:extension base="mdEdgeBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdGraphClassOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
 
 </xs:schema>
