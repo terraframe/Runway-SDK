@@ -720,7 +720,7 @@ public class TestFixtureFactory
     return mdAttributeDimension;
   }
 
-  public static MdAttributeFileDAO addFileAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeFileDAO addFileAttribute(MdClassDAO mdEntity)
   {
     MdAttributeFileDAO mdAttribute = MdAttributeFileDAO.newInstance();
     mdAttribute.setValue(MdAttributeFileInfo.NAME, "testFile");
@@ -735,12 +735,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE);
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, IndexTypes indexType)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdEntity, IndexTypes indexType)
   {
     return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE, indexType);
   }
@@ -780,12 +780,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDecimalDAO addDecimalAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDecimalAttribute(mdEntity, TestFixConst.ATTRIBUTE_DECIMAL);
   }
 
-  public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeDecimalDAO addDecimalAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeDecimalDAO mdAttribute = MdAttributeDecimalDAO.newInstance();
     mdAttribute.setValue(MdAttributeDecimalInfo.NAME, attributeName);
@@ -798,12 +798,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDoubleDAO addDoubleAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDoubleAttribute(mdEntity, TestFixConst.ATTRIBUTE_DOUBLE);
   }
 
-  public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeDoubleDAO addDoubleAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeDoubleDAO mdAttribute = MdAttributeDoubleDAO.newInstance();
     mdAttribute.setValue(MdAttributeDoubleInfo.NAME, attributeName);

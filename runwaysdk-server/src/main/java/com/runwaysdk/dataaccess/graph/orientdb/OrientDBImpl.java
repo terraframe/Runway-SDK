@@ -302,7 +302,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength)
   {
-    return new OrientDBCreateCharacterAction(className, attributeName, OType.STRING.name(), required, maxLength);
+    return new OrientDBCreateCharacterAction(graphRequest, ddlGraphDBRequest, className, attributeName, OType.STRING.name(), required, maxLength);
   }
 
   /**
@@ -312,7 +312,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction modifiyCharacterAttributeLength(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, int newMaxLength)
   {
-    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(className, attributeName)
+    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName)
     {
       @Override
       protected void configure(OProperty oProperty)
@@ -327,7 +327,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
-    return new OrientDBCreatePropertyAction(className, attributeName, columnType, required);
+    return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
   }
 
   /**
@@ -359,7 +359,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction modifiyAttributeRequired(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required)
   {
-    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(className, attributeName)
+    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName)
     {
       @Override
       protected void configure(OProperty oProperty)
@@ -399,7 +399,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
   {
-    GraphDDLCommandAction action = new OrientDBDDLAction()
+    GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
       @Override
       protected void executeDDL(ODatabaseSession db)

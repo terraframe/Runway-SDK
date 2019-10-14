@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.graph.orientdb;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public abstract class OrientDBUpdatePropertyAction extends OrientDBDDLAction
 {
@@ -16,9 +17,9 @@ public abstract class OrientDBUpdatePropertyAction extends OrientDBDDLAction
    * @param columnType
    * @param required
    */
-  public OrientDBUpdatePropertyAction(String className, String attributeName)
+  public OrientDBUpdatePropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
   {
-    super();
+    super(graphRequest, ddlGraphDBRequest);
 
     this.className = className;
     this.attributeName = attributeName;

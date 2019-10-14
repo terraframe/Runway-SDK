@@ -9,6 +9,19 @@ public abstract class OrientDBDDLAction implements GraphDDLCommandAction
   private GraphRequest graphRequest;
 
   private GraphRequest ddlGraphDBRequest;
+  
+  
+
+  /**
+   * @param graphRequest
+   * @param ddlGraphDBRequest
+   */
+  public OrientDBDDLAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest)
+  {
+    super();
+    this.graphRequest = graphRequest;
+    this.ddlGraphDBRequest = ddlGraphDBRequest;
+  }
 
   public void execute()
   {

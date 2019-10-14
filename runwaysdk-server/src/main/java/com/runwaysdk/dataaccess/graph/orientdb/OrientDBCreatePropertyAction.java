@@ -4,6 +4,7 @@ import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class OrientDBCreatePropertyAction extends OrientDBDDLAction
 {
@@ -21,9 +22,9 @@ public class OrientDBCreatePropertyAction extends OrientDBDDLAction
    * @param columnType
    * @param required
    */
-  public OrientDBCreatePropertyAction(String className, String attributeName, String columnType, boolean required)
+  public OrientDBCreatePropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
-    super();
+    super(graphRequest, ddlGraphDBRequest);
 
     this.className = className;
     this.attributeName = attributeName;
