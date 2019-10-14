@@ -12,8 +12,16 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
@@ -304,17 +312,12 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction modifiyCharacterAttributeLength(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, int newMaxLength)
   {
-    GraphDDLCommandAction action = new OrientDBDDLAction()
+    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(className, attributeName)
     {
-      protected void executeDDL(ODatabaseSession db)
+      @Override
+      protected void configure(OProperty oProperty)
       {
-        OClass oClass = db.getClass(className);
-        
-        if (oClass != null)
-        {
-          OProperty oProperty = oClass.getProperty(attributeName);
-          oProperty.setMax(Integer.toString(newMaxLength));
-        }
+        oProperty.setMax(Integer.toString(newMaxLength));
       }
     };
 
@@ -356,28 +359,12 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction modifiyAttributeRequired(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required)
   {
-    GraphDDLCommandAction action = new GraphDDLCommandAction()
+    GraphDDLCommandAction action = new OrientDBUpdatePropertyAction(className, attributeName)
     {
-      public void execute()
+      @Override
+      protected void configure(OProperty oProperty)
       {
-        OrientDBRequest ddlOrientDBRequest = (OrientDBRequest) ddlGraphDBRequest;
-        ODatabaseSession db = ddlOrientDBRequest.getODatabaseSession();
-
-        // make sure the DDL graph request is current on the active thread.
-        db.activateOnCurrentThread();
-
-        OClass oClass = db.getClass(className);
-
-        if (oClass != null)
-        {
-          OProperty oProperty = oClass.getProperty(attributeName);
-          oProperty.setMandatory(required);
-        }
-
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
+        oProperty.setMandatory(required);
       }
     };
 
@@ -412,16 +399,11 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
   {
-    GraphDDLCommandAction action = new GraphDDLCommandAction()
+    GraphDDLCommandAction action = new OrientDBDDLAction()
     {
-      public void execute()
+      @Override
+      protected void executeDDL(ODatabaseSession db)
       {
-        OrientDBRequest ddlOrientDBRequest = (OrientDBRequest) ddlGraphDBRequest;
-        ODatabaseSession db = ddlOrientDBRequest.getODatabaseSession();
-
-        // make sure the DDL graph request is current on the active thread.
-        db.activateOnCurrentThread();
-
         OClass oClass = db.getClass(className);
 
         if (oClass != null)
@@ -429,10 +411,6 @@ public class OrientDBImpl implements GraphDB
           oClass.dropProperty(attributeName);
         }
 
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
       }
     };
 
@@ -610,6 +588,38 @@ public class OrientDBImpl implements GraphDB
     else if (mdAttribute instanceof MdAttributeLongDAOIF)
     {
       return OType.LONG.name();
+    }
+    else if (mdAttribute instanceof MdAttributeDoubleDAOIF)
+    {
+      return OType.DOUBLE.name();
+    }
+    else if (mdAttribute instanceof MdAttributeFloatDAOIF)
+    {
+      return OType.FLOAT.name();
+    }
+    else if (mdAttribute instanceof MdAttributeBooleanDAOIF)
+    {
+      return OType.BOOLEAN.name();
+    }
+    else if (mdAttribute instanceof MdAttributeDateDAOIF)
+    {
+      return OType.DATE.name();
+    }
+    else if (mdAttribute instanceof MdAttributeDateTimeDAOIF)
+    {
+      return OType.DATETIME.name();
+    }
+    else if (mdAttribute instanceof MdAttributeTimeDAOIF)
+    {
+      return OType.DATETIME.name();
+    }
+    else if (mdAttribute instanceof MdAttributeCharDAOIF)
+    {
+      return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeUUIDDAOIF)
+    {
+      return OType.STRING.name();
     }
 
     throw new ProgrammingErrorException("Unknown column type for MdAttribute [" + mdAttribute.getType() + "]");
