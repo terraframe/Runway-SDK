@@ -31,25 +31,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public class OrientDBImpl implements GraphDB
 {
-
-  // Graph TODO - move these into a settings file.
-  public static final String   DB_NAME                = "testdb";
-
-  private static final String  DB_SERVER_URL          = "remote:localhost";
-
-  private static final String  DB_ROOT_USER_NAME      = "root";
-
-  private static final String  DB_ROOT_USER_PASSWORD  = "root";
-
-  // Graph TODO - move these into a settings file.
-  private static final Integer DB_POOL_MIN            = 5;
-
-  private static final Integer DB_POOL_MAX            = 20;
-
-  private static final String  DB_ADMIN_USER_NAME     = "admin";
-
-  private static final String  DB_ADMIN_USER_PASSWORD = "admin";
-
   private OrientDB             orientDB;
 
   private ODatabasePool        pool;
@@ -70,7 +51,7 @@ public class OrientDBImpl implements GraphDB
 
   private OrientDB getRootOrientDB()
   {
-    return new OrientDB(DB_SERVER_URL, DB_ROOT_USER_NAME, DB_ROOT_USER_PASSWORD, OrientDBConfig.defaultConfig());
+    return new OrientDB(OrientDBProperties.getUrl(), OrientDBProperties.getRootUserName(), OrientDBProperties.getRootUserPassword(), OrientDBConfig.defaultConfig());
   }
 
   private void dropDB()
@@ -79,8 +60,8 @@ public class OrientDBImpl implements GraphDB
     //
     // try
     // {
-    this.orientDB.drop(DB_NAME);
-    System.out.println("Dropped OrientDB Database: " + DB_NAME);
+    this.orientDB.drop(OrientDBProperties.getDatabaseName());
+    System.out.println("Dropped OrientDB Database: " + OrientDBProperties.getDatabaseName());
     // }
     // finally
     // {
@@ -94,8 +75,8 @@ public class OrientDBImpl implements GraphDB
     //
     // try
     // {
-    this.orientDB.create(DB_NAME, ODatabaseType.PLOCAL);
-    System.out.println("Created OrientDB Database: " + DB_NAME);
+    this.orientDB.create(OrientDBProperties.getDatabaseName(), ODatabaseType.PLOCAL);
+    System.out.println("Created OrientDB Database: " + OrientDBProperties.getDatabaseName());
     // }
     // finally
     // {
@@ -139,7 +120,7 @@ public class OrientDBImpl implements GraphDB
   {
     // ODatabaseSession dbSession = this.pool.acquire();
 
-    ODatabaseSession dbSession = orientDB.open(OrientDBImpl.DB_NAME, DB_ADMIN_USER_NAME, DB_ADMIN_USER_PASSWORD);
+    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAdminUserName(), OrientDBProperties.getAdminUserPassword());
 
     return new OrientDBRequest(dbSession);
   }
