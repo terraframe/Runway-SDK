@@ -1,0 +1,83 @@
+<!-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved. This file is 
+	part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute 
+	it and/or modify it under the terms of the GNU Lesser General Public License 
+	as published by the Free Software Foundation, either version 3 of the License, 
+	or (at your option) any later version. Runway SDK(tm) is distributed in the 
+	hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+	GNU Lesser General Public License for more details. You should have received 
+	a copy of the GNU Lesser General Public License along with Runway SDK(tm). 
+	If not, see <http://www.gnu.org/licenses />. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.runwaysdk</groupId>
+		<artifactId>runwaysdk-root</artifactId>
+		<version>3.0.22-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>runwaysdk-orientdb</artifactId>
+	<packaging>jar</packaging>
+	<name>runwaysdk-orientdb</name>
+	<url>${runway.url}</url>
+
+	<dependencies>
+        <dependency>
+          <groupId>com.orientechnologies</groupId>
+          <artifactId>orientdb-client</artifactId>
+          <version>3.0.0</version>
+        </dependency>
+		<dependency>
+			<groupId>com.runwaysdk</groupId>
+			<artifactId>runwaysdk-server</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>[2.8,)</versionRange>
+										<goals>
+											<goal>build-classpath</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

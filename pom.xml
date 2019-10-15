@@ -39,6 +39,7 @@
     <module>runwaysdk-archetype</module>
     <module>runwaysdk-gis</module>
     <module>runwaysdk-solr</module>
+    <module>runwaysdk-orientdb</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>

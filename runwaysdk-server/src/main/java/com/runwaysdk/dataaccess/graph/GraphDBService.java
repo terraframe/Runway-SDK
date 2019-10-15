@@ -1,9 +1,11 @@
 package com.runwaysdk.dataaccess.graph;
 
+import java.util.Iterator;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import com.runwaysdk.constants.IndexTypes;
-import com.runwaysdk.dataaccess.graph.orientdb.OrientDBImpl;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public class GraphDBService
@@ -16,36 +18,28 @@ public class GraphDBService
 
   private GraphDBService()
   {
-    // this.loader = ServiceLoader.load(GraphDB.class);
+    this.loader = ServiceLoader.load(GraphDB.class);
 
     this.graphDB = null;
 
-    // try
-    // {
-    // Iterator<GraphDB> i = this.loader.iterator();
-    //
-    // while (i.hasNext())
-    // {
-    // this.graphDB = i.next();
-    // }
-    // }
-    // catch (ServiceConfigurationError serviceError)
-    // {
-    // throw new ProgrammingErrorException(serviceError);
-    // }
-    //
-    // if (this.graphDB == null)
-    // {
-    // this.graphDB = new GraphDBBalk();
-    // }
+    try
+    {
+      Iterator<GraphDB> i = this.loader.iterator();
 
-    this.graphDB = new OrientDBImpl();
+      while (i.hasNext())
+      {
+        this.graphDB = i.next();
+      }
+    }
+    catch (ServiceConfigurationError serviceError)
+    {
+      throw new ProgrammingErrorException(serviceError);
+    }
 
-    // this.graphDB = new GraphDBBalk();
-
-    // this.graphDB = Optional.ofNullable(null);
-
-    // this.graphDB = Optional.of(null);
+    if (this.graphDB == null)
+    {
+      this.graphDB = new GraphDBBalk();
+    }
   }
 
   public static synchronized GraphDBService getInstance()
@@ -148,12 +142,11 @@ public class GraphDBService
   {
     return this.graphDB.createCharacterAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, required, maxLength);
   }
-  
+
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
     return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
   }
-
 
   /**
    * @see GraphDB#modifiyCharacterAttributeLength(GraphRequest, GraphRequest,
