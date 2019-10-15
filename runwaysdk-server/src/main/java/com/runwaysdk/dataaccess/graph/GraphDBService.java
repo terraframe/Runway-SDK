@@ -148,6 +148,11 @@ public class GraphDBService
     return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
   }
 
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
+  {
+    return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);
+  }
+
   /**
    * @see GraphDB#modifiyCharacterAttributeLength(GraphRequest, GraphRequest,
    *      String, String, newMaxLength)

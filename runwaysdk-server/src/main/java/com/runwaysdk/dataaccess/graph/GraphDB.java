@@ -3,95 +3,130 @@ package com.runwaysdk.dataaccess.graph;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
-
 public interface GraphDB
 {
   public void initializeDB();
-  
+
   public void initializeConnectionPool();
-  
+
   public void closeConnectionPool();
-  
+
   public GraphRequest getGraphDBRequest();
-  
+
   /**
-   * Creates a vertex class in the Graph Database. The convention is that the name of the class is the same as the name of the table
-   * in the relational database.
+   * Creates a vertex class in the Graph Database. The convention is that the
+   * name of the class is the same as the name of the table in the relational
+   * database.
    * 
-   * @param graphRequest The DDL {@link GraphRequest}.
-   * @param graphDDLRequest The DDL {@link GraphRequest}.
-   * @param className The name of the table in the graph database that should match the table name in the relational database. 
-   * @return {@link GraphDDLCommandAction} so that it can be executed at the proper time within the transaction.
+   * @param graphRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDDLRequest
+   *          The DDL {@link GraphRequest}.
+   * @param className
+   *          The name of the table in the graph database that should match the
+   *          table name in the relational database.
+   * @return {@link GraphDDLCommandAction} so that it can be executed at the
+   *         proper time within the transaction.
    */
-  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className); 
-  
+  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className);
+
   /**
-   * Deletes a vertex class in the Graph Database. The convention is that the name of the class is the same as the name of the table
-   * in the relational database.
+   * Deletes a vertex class in the Graph Database. The convention is that the
+   * name of the class is the same as the name of the table in the relational
+   * database.
    * 
-   * @param graphRequest The DDL {@link GraphRequest}.
-   * @param graphDDLRequest The DDL {@link GraphRequest}.
-   * @param graphDBRequest The DDL {@link GraphRequest}.
-   * @param className The name of the table in the graph database that should match the table name in the relational database. 
-   * @return {@link GraphDDLCommandAction} so that it can be executed at the proper time within the transaction.
+   * @param graphRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDDLRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDBRequest
+   *          The DDL {@link GraphRequest}.
+   * @param className
+   *          The name of the table in the graph database that should match the
+   *          table name in the relational database.
+   * @return {@link GraphDDLCommandAction} so that it can be executed at the
+   *         proper time within the transaction.
    */
   public GraphDDLCommandAction deleteVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className);
-  
+
   /**
-   * Creates an edge class in the Graph Database. The convention is that the name of the class is the same as the name of the table
-   * in the relational database.
+   * Creates an edge class in the Graph Database. The convention is that the
+   * name of the class is the same as the name of the table in the relational
+   * database.
    * 
-   * @param graphRequest The DDL {@link GraphRequest}.
-   * @param graphDDLRequest The DDL {@link GraphRequest}.
-   * @param edgeClass The name of the table in the graph database that should match the table name in the relational database. 
-   * @param parentVertexClass The name of the table in the graph database of the parent vertex class
-   * @param childVertexClass The name of the table in the graph database of the child vertex.
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @param graphRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDDLRequest
+   *          The DDL {@link GraphRequest}.
+   * @param edgeClass
+   *          The name of the table in the graph database that should match the
+   *          table name in the relational database.
+   * @param parentVertexClass
+   *          The name of the table in the graph database of the parent vertex
+   *          class
+   * @param childVertexClass
+   *          The name of the table in the graph database of the child vertex.
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
   public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String parentVertexClass, String childVertexClass);
-  
+
   /**
-   * Deletes a class in the Graph Database. The convention is that the name of the class is the same as the name of the table
-   * in the relational database.
+   * Deletes a class in the Graph Database. The convention is that the name of
+   * the class is the same as the name of the table in the relational database.
    * 
-   * @param graphRequest The DDL {@link GraphRequest}.
-   * @param graphDDLRequest The DDL {@link GraphRequest}.
-   * @param graphDBRequest The DDL {@link GraphRequest}.
-   * @param className The name of the table in the graph database that should match the table name in the relational database. 
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @param graphRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDDLRequest
+   *          The DDL {@link GraphRequest}.
+   * @param graphDBRequest
+   *          The DDL {@link GraphRequest}.
+   * @param className
+   *          The name of the table in the graph database that should match the
+   *          table name in the relational database.
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
   public GraphDDLCommandAction deleteEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className);
-  
+
   /**
-   * Returns true if the vertex class has been defined in the graph database, false otherwise.
+   * Returns true if the vertex class has been defined in the graph database,
+   * false otherwise.
    * 
    * @param graphRequest
-   * @param className The name of the table in the graph database.
-   * @return true if the vertex class has been defined in the graph database, false otherwise.
+   * @param className
+   *          The name of the table in the graph database.
+   * @return true if the vertex class has been defined in the graph database,
+   *         false otherwise.
    */
   public boolean isVertexClassDefined(GraphRequest graphRequest, String className);
-  
+
   /**
-   * Returns true if the edge class has been defined in the graph database, false otherwise.
+   * Returns true if the edge class has been defined in the graph database,
+   * false otherwise.
    * 
    * @param graphRequest
-   * @param className The name of the table in the graph database.
-   * @return true if the edge class has been defined in the graph database, false otherwise.
+   * @param className
+   *          The name of the table in the graph database.
+   * @return true if the edge class has been defined in the graph database,
+   *         false otherwise.
    */
   public boolean isEdgeClassDefined(GraphRequest graphRequest, String className);
-    
+
   /**
-   * Adds a character attribute of the given name. 
+   * Adds a character attribute of the given name.
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
    * @param className
    * @param attributeName
-   * @param required true if required, false otherwise.
-   * @param maxLength 
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @param required
+   *          true if required, false otherwise.
+   * @param maxLength
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength);  
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength);
 
   /**
    * Modifies the maximum length of the character attribute.
@@ -100,21 +135,25 @@ public interface GraphDB
    * @param ddlGraphDBRequest
    * @param className
    * @param attributeName
-   * @param newMaxLength new max length
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @param newMaxLength
+   *          new max length
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
   public GraphDDLCommandAction modifiyCharacterAttributeLength(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, int newMaxLength);
-  
+
   /**
-   * Returns the maximum length allowed for the character attribute, or 0 if the attribute does not exist.
+   * Returns the maximum length allowed for the character attribute, or 0 if the
+   * attribute does not exist.
    * 
    * @param graphRequest
    * @param className
    * @param attributeName
-   * @return maximum length allowed for the character attribute, or 0 if the attribute does not exist.
+   * @return maximum length allowed for the character attribute, or 0 if the
+   *         attribute does not exist.
    */
   public int getCharacterAttributeMaxLength(GraphRequest graphRequest, String className, String attributeName);
-  
+
   /**
    * Changes the required property on the attribute definition.
    * 
@@ -123,7 +162,8 @@ public interface GraphDB
    * @param className
    * @param attributeName
    * @param required
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
   public GraphDDLCommandAction modifiyAttributeRequired(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required);
 
@@ -136,7 +176,7 @@ public interface GraphDB
    * @return Returns true if the attribute is required, false otherwise.
    */
   public boolean isAttributeRequired(GraphRequest graphRequest, String className, String attributeName);
-  
+
   /**
    * Drop the attribute from the class.
    * 
@@ -144,20 +184,22 @@ public interface GraphDB
    * @param ddlGraphDBRequest
    * @param className
    * @param attributeName
-   * @return {@link GraphDDLCommandAction} so that it can be closed or committed in the command object.
+   * @return {@link GraphDDLCommandAction} so that it can be closed or committed
+   *         in the command object.
    */
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName);
-  
+
   /**
    * Returns true if the attribute is defined on the class, false otherwise.
    * 
    * @param graphDBRequest
    * @param className
    * @param attributeName
-   * @return Returns true if the attribute is defined on the class, false otherwise.
+   * @return Returns true if the attribute is defined on the class, false
+   *         otherwise.
    */
   public boolean isClassAttributeDefined(GraphRequest graphDBRequest, String className, String attributeName);
-    
+
   /**
    * Modifies an index to the given attribute.
    * 
@@ -166,12 +208,14 @@ public interface GraphDB
    * @param className
    * @param attributeName
    * @param indexType
-   * @return {@link GraphRequest} so that it can be closed or committed in the command object.
+   * @return {@link GraphRequest} so that it can be closed or committed in the
+   *         command object.
    */
   public GraphDDLCommandAction modifiyAttributeIndex(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, IndexTypes indexType);
-    
+
   /**
-   * Returns the type of index {@link IndexTypes} defined on the given attribute.
+   * Returns the type of index {@link IndexTypes} defined on the given
+   * attribute.
    * 
    * @param graphRequest
    * @param className
@@ -179,7 +223,7 @@ public interface GraphDB
    * @return he type of index {@link IndexTypes} defined on the given attribute.
    */
   public IndexTypes getIndexType(GraphRequest graphRequest, String className, String attributeName);
-  
+
   /**
    * Returns the name of the index, or null if none exists.
    * 
@@ -198,7 +242,7 @@ public interface GraphDB
   public String getDbColumnType(MdAttributeConcreteDAO mdAttribute);
 
   /**
-   * Adds an attribute of the given name and type. 
+   * Adds an attribute of the given name and type.
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
@@ -209,4 +253,17 @@ public interface GraphDB
    * @return
    */
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required);
+
+  /**
+   * Adds a geometry attribute of the given name and type.
+   * 
+   * @param graphRequest
+   * @param ddlGraphDBRequest
+   * @param className
+   * @param attributeName
+   * @param geometryType
+   * @param required
+   * @return
+   */
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
 }

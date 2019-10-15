@@ -183,4 +183,10 @@ public class GraphDBBalk implements GraphDB
   {
     return new GraphDDLCommandAction(){ public void execute(){}};
   }
+
+  @Override
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
+  {
+    return new GraphDDLCommandAction(){ public void execute(){}};
+  }
 }

@@ -12,6 +12,7 @@ import com.orientechnologies.orient.core.index.OIndex;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.spatial.shape.OShapeType;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
@@ -28,12 +29,18 @@ import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 
 public class OrientDBImpl implements GraphDB
 {
-  private OrientDB             orientDB;
+  private OrientDB      orientDB;
 
-  private ODatabasePool        pool;
+  private ODatabasePool pool;
 
   public OrientDBImpl()
   {
@@ -310,6 +317,12 @@ public class OrientDBImpl implements GraphDB
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
     return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
+  }
+
+  @Override
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
+  {
+    return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);
   }
 
   /**
@@ -606,6 +619,30 @@ public class OrientDBImpl implements GraphDB
     else if (mdAttribute instanceof MdAttributeUUIDDAOIF)
     {
       return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributePointDAOIF)
+    {
+      return OShapeType.POINT.name();
+    }
+    else if (mdAttribute instanceof MdAttributeLineStringDAOIF)
+    {
+      return OShapeType.LINESTRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributePolygonDAOIF)
+    {
+      return OShapeType.POLYGON.name();
+    }
+    else if (mdAttribute instanceof MdAttributeMultiPointDAOIF)
+    {
+      return OShapeType.MULTIPOINT.name();
+    }
+    else if (mdAttribute instanceof MdAttributeMultiLineStringDAOIF)
+    {
+      return OShapeType.MULTILINESTRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeMultiPolygonDAOIF)
+    {
+      return OShapeType.MULTIPOLYGON.name();
     }
 
     throw new ProgrammingErrorException("Unknown column type for MdAttribute [" + mdAttribute.getType() + "]");
