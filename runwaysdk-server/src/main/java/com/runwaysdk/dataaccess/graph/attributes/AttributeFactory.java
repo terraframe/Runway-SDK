@@ -1,5 +1,11 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -11,9 +17,19 @@ import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
 
 public class AttributeFactory
 {
+  private static Map<String, PluginIF> pluginMap = new ConcurrentHashMap<String, PluginIF>();
+
+  public static void registerPlugin(PluginIF pluginFactory)
+  {
+    pluginMap.put(pluginFactory.getModuleIdentifier(), pluginFactory);
+  }
+
   /**
    * Returns an Attribute object of the appropriate sub class for the given
    * DataAccess attribute class.
@@ -84,10 +100,38 @@ public class AttributeFactory
     {
       attribute = new AttributeCharacter(mdAttributeDAOIF, definingType);
     }
-    else
+
+    if (attribute == null)
     {
-      throw new UnsupportedOperationException("Graph AttributeFactory doesn't support the metadata [" + mdAttributeDAOIF.getClass().getName() + "].");
-      // attribute = new AttributeCharacter(mdAttributeDAOIF, definingType);
+      ServiceLoader<GraphAttributeFactoryIF> loader = ServiceLoader.load(GraphAttributeFactoryIF.class);
+
+      try
+      {
+        Iterator<GraphAttributeFactoryIF> i = loader.iterator();
+
+        while (i.hasNext())
+        {
+          GraphAttributeFactoryIF factory = i.next();
+
+          attribute = factory.createGraphAttribute(mdAttributeDAOIF, definingType);
+
+          if (attribute != null)
+          {
+            break;
+          }
+        }
+      }
+      catch (ServiceConfigurationError serviceError)
+      {
+        throw new ProgrammingErrorException(serviceError);
+      }
+    }
+
+    if (attribute == null)
+    {
+      String error = "[" + mdAttributeDAOIF.getType() + "] is not a recognized attribute type.";
+
+      throw new AttributeException(error);
     }
 
     return attribute;

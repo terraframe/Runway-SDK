@@ -22,6 +22,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -118,6 +119,7 @@ public class GISMasterTestSetup
   @Request
   public static void masterSetUp() throws Exception
   {
+    LocalProperties.setSkipCodeGenAndCompile(false);
 
     doSetUp(false);
   }
@@ -385,6 +387,8 @@ public class GISMasterTestSetup
   public static void tearDown() throws Exception
   {
     doTearDown(false);
+    
+    LocalProperties.setSkipCodeGenAndCompile(true);
   }
 
   @Transaction

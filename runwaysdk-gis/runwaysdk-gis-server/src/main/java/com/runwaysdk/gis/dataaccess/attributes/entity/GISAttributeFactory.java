@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.postgis.jts.JtsGeometry;
 
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -205,7 +206,6 @@ public class GISAttributeFactory implements PluginIF
     
     return attribute;
   }
-  
   
   /**
    * 

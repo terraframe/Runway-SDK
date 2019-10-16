@@ -21,29 +21,55 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
 import com.runwaysdk.session.Request;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class VertexObjectTest
 {
-  private static MdVertexDAO             mdVertexDAO;
+  private static MdVertexDAO                   mdVertexDAO;
 
-  private static MdAttributeCharacterDAO mdCharacterAttribute;
+  private static MdAttributeCharacterDAO       mdCharacterAttribute;
 
-  private static MdAttributeIntegerDAO   mdIntegerAttribute;
+  private static MdAttributeIntegerDAO         mdIntegerAttribute;
 
-  private static MdAttributeLongDAO      mdLongAttribute;
+  private static MdAttributeLongDAO            mdLongAttribute;
 
-  private static MdAttributeFloatDAO     mdFloatAttribute;
+  private static MdAttributeFloatDAO           mdFloatAttribute;
 
-  private static MdAttributeDoubleDAO    mdDoubleAttribute;
+  private static MdAttributeDoubleDAO          mdDoubleAttribute;
 
-  private static MdAttributeBooleanDAO   mdBooleanAttribute;
+  private static MdAttributeBooleanDAO         mdBooleanAttribute;
 
-  private static MdAttributeDateDAO      mdDateAttribute;
+  private static MdAttributeDateDAO            mdDateAttribute;
 
-  private static MdAttributeDateTimeDAO  mdDateTimeAttribute;
+  private static MdAttributeDateTimeDAO        mdDateTimeAttribute;
 
-  private static MdAttributeTimeDAO      mdTimeAttribute;
+  private static MdAttributeTimeDAO            mdTimeAttribute;
+
+  private static MdAttributePointDAO           mdPointAttribute;
+
+  private static MdAttributePolygonDAO         mdPolygonAttribute;
+
+  private static MdAttributeLineStringDAO      mdLineStringAttribute;
+
+  private static MdAttributeMultiPointDAO      mdMultiPointAttribute;
+
+  private static MdAttributeMultiPolygonDAO    mdMultiPolygonAttribute;
+
+  private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
 
   @Request
   @BeforeClass
@@ -78,6 +104,24 @@ public class VertexObjectTest
 
     mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
     mdTimeAttribute.apply();
+
+    mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
+    mdPointAttribute.apply();
+
+    mdPolygonAttribute = TestFixtureFactory.addPolygonAttribute(mdVertexDAO);
+    mdPolygonAttribute.apply();
+
+    mdLineStringAttribute = TestFixtureFactory.addLineStringAttribute(mdVertexDAO);
+    mdLineStringAttribute.apply();
+
+    mdMultiPointAttribute = TestFixtureFactory.addMultiPointAttribute(mdVertexDAO);
+    mdMultiPointAttribute.apply();
+
+    mdMultiPolygonAttribute = TestFixtureFactory.addMultiPolygonAttribute(mdVertexDAO);
+    mdMultiPolygonAttribute.apply();
+
+    mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdVertexDAO);
+    mdMultiLineStringAttribute.apply();
   }
 
   @Request
@@ -238,6 +282,120 @@ public class VertexObjectTest
     Assert.assertNotNull(test);
 
     Date value = new Date();
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testPointAttribute()
+  {
+    String attributeName = mdPointAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(191232, 243118));
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testPolygonAttribute()
+  {
+    String attributeName = mdPolygonAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20), new Coordinate(10, 10) });
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testLineStringAttribute()
+  {
+    String attributeName = mdLineStringAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    LineString value = factory.createLineString(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20) });
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testMultiPointAttribute()
+  {
+    String attributeName = mdMultiPointAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    MultiPoint value = factory.createMultiPoint(new Point[] { factory.createPoint(new Coordinate(191232, 243118)) });
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testMultiPolygonAttribute()
+  {
+    String attributeName = mdMultiPolygonAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    MultiPolygon value = factory.createMultiPolygon(new Polygon[] { factory.createPolygon(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20), new Coordinate(10, 10) }) });
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+  }
+
+  @Request
+  @Test
+  public void testMultiLineStringAttribute()
+  {
+    String attributeName = mdMultiLineStringAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
+
+    Assert.assertNotNull(test);
+
+    GeometryFactory factory = new GeometryFactory();
+    MultiLineString value = factory.createMultiLineString(new LineString[] { factory.createLineString(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20) }) });
+
     vertexDAO.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
