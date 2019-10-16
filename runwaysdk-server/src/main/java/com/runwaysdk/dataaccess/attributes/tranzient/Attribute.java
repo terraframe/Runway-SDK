@@ -522,9 +522,10 @@ public abstract class Attribute implements AttributeIF
   }
 
   /**
-   * Returns all MdAttributes that are involved in building the select clause.
-   * @return all MdAttributes that are involved in building the select clause.
+   * Returns all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
+   * @return all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
    */
+  @Override
   public Set<MdAttributeConcreteDAOIF> getAllMdAttributes()
   {
     Set<MdAttributeConcreteDAOIF> set = new HashSet<MdAttributeConcreteDAOIF>();

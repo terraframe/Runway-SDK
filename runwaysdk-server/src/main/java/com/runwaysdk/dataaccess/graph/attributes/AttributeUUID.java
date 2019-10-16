@@ -1,24 +1,26 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import com.runwaysdk.AttributeCharacterParseException;
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import java.util.UUID;
+
+import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.session.Session;
 
-public class AttributeCharacter extends Attribute
+public class AttributeUUID extends Attribute
 {
 
   /**
    * 
    */
-  private static final long serialVersionUID = 356523685120439629L;
+  private static final long serialVersionUID = 7368938382761174978L;
 
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
    */
-  protected AttributeCharacter(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
+  protected AttributeUUID(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
   {
     super(mdAttributeDAOIF, definingGraphClass);
   }
@@ -26,7 +28,7 @@ public class AttributeCharacter extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeCharacter(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeUUID(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }
@@ -36,27 +38,26 @@ public class AttributeCharacter extends Attribute
    * by a concrete attribute, this object is returned.  If it is a virtual attribute, then the 
    * concrete attribute it references is returned.
    * 
-   * @return {@link MdAttributeCharacterDAOIF} that defines the this attribute
+   * @return {@link MdAttributeUUIDDAOIF} that defines the this attribute
    */
-  public MdAttributeCharacterDAOIF getMdAttributeConcrete()
+  public MdAttributeUUIDDAOIF getMdAttributeConcrete()
   {
-    return (MdAttributeCharacterDAOIF)super.getMdAttributeConcrete();
+    return (MdAttributeUUIDDAOIF)super.getMdAttributeConcrete();
   }
+  
 
   /**
    * @see Attribute#validateRequired(Object, MdAttributeDAOIF)
    * 
    * <br>
-   * <b>Precondition: </b> value is of type String 
+   * <b>Precondition: </b> value is of type UUID 
    * <br>
    *
    */
   public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
-  {
-    String stringValue = (String)valueToValidate;
-    
+  {    
     //  make sure a value is provided if a value is required
-    if ( mdAttributeIF.isRequired() && stringValue.trim().equals(""))
+    if ( mdAttributeIF.isRequired() && valueToValidate == null)
     {
       String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType()
           + "] requires a value";
@@ -64,8 +65,8 @@ public class AttributeCharacter extends Attribute
         new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
       problem.throwIt();
     }
-  } 
-
+  }
+  
   /**
    * @see Attribute#validate(Object)
    *
@@ -73,19 +74,16 @@ public class AttributeCharacter extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeCharacterDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+    MdAttributeUUIDDAOIF mdAttributeIF = this.getMdAttributeConcrete();
     
     // First verify that the object is of the correct type.
-    if (valueToValidate != null && !(valueToValidate instanceof String))
+    if (valueToValidate != null && !(valueToValidate instanceof UUID))
     {
-      String devMessage = "Value is not a "+String.class.getName();
-      throw new AttributeCharacterParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      String devMessage = "Value is not a "+UUID.class.getName();
+      throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
     }
     
     super.validate(valueToValidate);
-    
-    String stringValue = (String)valueToValidate;
-    
-    com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter.validateLength(this, stringValue, mdAttributeIF);
   }
+
 }

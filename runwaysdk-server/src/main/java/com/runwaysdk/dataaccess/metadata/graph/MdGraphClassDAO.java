@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -99,6 +100,19 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
     return (List<MdGraphClassDAOIF>) super.getSuperClasses();
   }
   
+  /**
+   * Returns a list of <code>MdAttributeDAOIF</code> objects that this
+   * <code>MdClassDAOIF</code> defines.
+   * 
+   * @return an List of <code>MdAttributeDAOIF</code> objects that this
+   *         <code>MdClassDAOIF</code> defines.
+   */
+  @SuppressWarnings("unchecked")
+  public List<? extends MdAttributeConcreteDAOIF> definesAttributes()
+  {
+    return (List<? extends MdAttributeConcreteDAOIF>)super.definesAttributes();
+  }
+  
   
   /**
    * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given type.
@@ -114,7 +128,7 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
    * @param graphClassType
    * @return {@link MdGraphClassDAOIF} instance of the metadata for the given type.
    */
-  public static MdGraphClassDAOIF getMdMdGraphClassDAO(String transientType)
+  public static MdGraphClassDAOIF getMdGraphClassDAO(String transientType)
   {
     return ObjectCache.getMdGraphClassDAO(transientType);
   }

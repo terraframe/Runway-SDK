@@ -82,6 +82,13 @@ public interface MdGraphClassDAOIF extends MdClassDAOIF
   public List<? extends MdGraphClassDAOIF> getSuperClasses();
   
   /**
+   * Returns a sorted list of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
+   *
+   * @return an List of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
+   */
+  public List<? extends MdAttributeConcreteDAOIF> definesAttributes();
+  
+  /**
    *Returns the {@link MdAttributeDAOIF} that defines the given attribute for the this entity.  This method
    * only works if the attribute is explicitly defined by the this.  In other words, it
    * will return null if the attribute exits for the given entity, but is inherited from a 

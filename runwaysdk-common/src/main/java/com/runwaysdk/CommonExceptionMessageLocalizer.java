@@ -181,6 +181,22 @@ public class CommonExceptionMessageLocalizer
    *          Name of the attribute or parameters
    * @param value
    *          Value being parsed
+   *
+   * @return
+   */
+  public static String uuidParseException(Locale locale, String name, String value)
+  {
+    return LocalizationFacade.getMessage(locale, "AttributeUUIDParseException", "The value [{0}] on attribute [{1}] does not represent a valid UUID.", value, name);
+  }
+  
+  /**
+   * Gets the localized message for an error thrown when parsing character
+   * attributes or parameters from a request.
+   *
+   * @param name
+   *          Name of the attribute or parameters
+   * @param value
+   *          Value being parsed
    * @param type
    *          TODO
    *

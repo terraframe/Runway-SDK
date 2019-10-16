@@ -1,33 +1,14 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk;
 
-
-public class AttributeCharacterParseException extends AttributeParseException
+public class AttributeUUIDParseException extends AttributeParseException
 {
   /**
    * 
    */
-  private static final long serialVersionUID = 1198277845667552633L;
+  private static final long serialVersionUID = -6949542477209859629L;
 
   /**
-   * Constructs a new <code>AttributeCharacterParseException</code> with the specified developer message
+   * Constructs a new <code>AttributeUUIDParseException</code> with the specified developer message
    * and a default business message. Leaving the default business message is
    * discouraged, as it provides no context information for end users.
    * 
@@ -39,7 +20,7 @@ public class AttributeCharacterParseException extends AttributeParseException
    * @param attributeDisplayLabel
    * @param invalidValue
    */
-  public AttributeCharacterParseException(String devMessage, String attributeDisplayLabel, String invalidValue)
+  public AttributeUUIDParseException(String devMessage, String attributeDisplayLabel, String invalidValue)
   {
     super(devMessage, attributeDisplayLabel, invalidValue);
   }
@@ -64,7 +45,7 @@ public class AttributeCharacterParseException extends AttributeParseException
    * @param attributeDisplayLabel
    * @param invalidValue
    */
-  public AttributeCharacterParseException(String devMessage, Throwable cause, String attributeDisplayLabel, String invalidValue)
+  public AttributeUUIDParseException(String devMessage, Throwable cause, String attributeDisplayLabel, String invalidValue)
   {
     super(devMessage, cause, attributeDisplayLabel, invalidValue);
   }
@@ -82,7 +63,7 @@ public class AttributeCharacterParseException extends AttributeParseException
    * @param attributeDisplayLabel
    * @param invalidValue
    */
-  public AttributeCharacterParseException(Throwable cause, String attributeDisplayLabel, String invalidValue)
+  public AttributeUUIDParseException(Throwable cause, String attributeDisplayLabel, String invalidValue)
   {
     super(cause, attributeDisplayLabel, invalidValue);
   }
@@ -94,6 +75,6 @@ public class AttributeCharacterParseException extends AttributeParseException
    */
   public String getLocalizedMessage()
   { 
-    return CommonExceptionMessageLocalizer.characterParseException(this.getLocale(), this.getAttributeDisplayLabel(), this.getInvalidValue());
+    return CommonExceptionMessageLocalizer.uuidParseException(this.getLocale(), this.getAttributeDisplayLabel(), this.getInvalidValue());
   }
 }

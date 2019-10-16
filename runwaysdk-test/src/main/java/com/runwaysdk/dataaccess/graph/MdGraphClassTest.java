@@ -33,7 +33,6 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
-import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
@@ -128,16 +127,14 @@ public class MdGraphClassTest
     boolean isRequired = GraphDBService.getInstance().isAttributeRequired(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("The attribute was supposed to be required", true, isRequired);
     
-// Heads up: clean up   
-//    AttributeEnumerationIF attrEnum = (AttributeEnumerationIF)mdVertexDAO.definesAttribute(ComponentInfo.OID).getAttributeIF((MdAttributeCharacterInfo.INDEX_TYPE));
-//    
-//    System.out.println("\n\nSet Index: "+attrEnum.dereference()[0].getOid());
-//    System.out.println("Unique Index: "+IndexTypes.UNIQUE_INDEX.getOid());
-//    System.out.println("No Index: "+IndexTypes.NO_INDEX.getOid());
-    
     IndexTypes indexType = GraphDBService.getInstance().getIndexType(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("The wrong type of index is defined", IndexTypes.UNIQUE_INDEX, indexType);
 
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(VERTEX_CLASS_1);
+
+// Print the attributes. This will be moved into its own test.
+vertexDAO.printAttributes();
+    
     mdVertexDAO.delete();
     
     classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);

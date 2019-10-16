@@ -79,7 +79,7 @@ public interface MdVertexDAOIF extends MdGraphClassDAOIF
    * 
    * @return a list of {@link MdVertexDAOIF} instances that are parents of this class.
    */
-  public List<? extends MdVertexDAOIF> getSuperClasses();
+  public List<MdVertexDAOIF> getSuperClasses();
   
   /**
     *Returns the {@link MdAttributeDAOIF}  that defines the given attribute for the this entity.  This method
