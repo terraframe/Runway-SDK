@@ -146,9 +146,9 @@ public class MdGraphClassTest
 
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(VERTEX_CLASS_1);
 
-// Print the attributes. This will be moved into its own test.
-vertexDAO.printAttributes();
-    
+    // Print the attributes. This will be moved into its own test.
+    vertexDAO.printAttributes();
+
     mdVertexDAO.delete();
 
     classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
@@ -544,12 +544,7 @@ vertexDAO.printAttributes();
 
   private static MdVertexDAO createVertexClass(String vertexName)
   {
-    MdVertexDAO mdVertexDAO = MdVertexDAO.newInstance();
-    mdVertexDAO.setValue(MdVertexInfo.NAME, vertexName);
-    mdVertexDAO.setValue(MdVertexInfo.PACKAGE, TEST_PACKAGE);
-    mdVertexDAO.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Vertex Class");
-    mdVertexDAO.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdVertexDAO.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
     mdVertexDAO.apply();
 
     return mdVertexDAO;
@@ -557,15 +552,7 @@ vertexDAO.printAttributes();
 
   private static MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)
   {
-    MdEdgeDAO mdEdgeDAO = MdEdgeDAO.newInstance();
-    mdEdgeDAO.setValue(MdEdgeInfo.NAME, edgeName);
-    mdEdgeDAO.setValue(MdEdgeInfo.PACKAGE, TEST_PACKAGE);
-    mdEdgeDAO.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Vertex Class");
-
-    mdEdgeDAO.setValue(MdEdgeInfo.PARENT_MD_VERTEX, parentMdEdgeOid);
-    mdEdgeDAO.setValue(MdEdgeInfo.CHILD_MD_VERTEX, childMdEdgeOid);
-
-    mdEdgeDAO.setValue(MdEdgeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    MdEdgeDAO mdEdgeDAO = TestFixtureFactory.createMdEdge(parentMdEdgeOid, childMdEdgeOid, edgeName);
     mdEdgeDAO.apply();
 
     return mdEdgeDAO;

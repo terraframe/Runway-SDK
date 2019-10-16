@@ -1702,13 +1702,18 @@ public class TestFixtureFactory
 
   public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child, String name)
   {
-    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+    return createMdEdge(parent.getOid(), child.getOid(), name);
+  }
+
+  public static MdEdgeDAO createMdEdge(String parentOid, String childOid, String name)
+  {
+    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance(); 
     mdEdge.setValue(MdEdgeInfo.NAME, name);
     mdEdge.setValue(MdEdgeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdEdge Set Test");
     mdEdge.setStructValue(MdEdgeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdEdge Attributes Test");
-    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, parent.getOid());
-    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, child.getOid());
+    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, parentOid);
+    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, childOid);
 
     return mdEdge;
   }
@@ -2040,5 +2045,4 @@ public class TestFixtureFactory
       }
     }
   }
-
 }
