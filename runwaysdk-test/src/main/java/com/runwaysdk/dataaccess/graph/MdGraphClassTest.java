@@ -51,6 +51,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
 import com.runwaysdk.session.Request;
 
 public class MdGraphClassTest
@@ -338,15 +344,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeLongDAO mdAttribute = TestFixtureFactory.addLongAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateFloatAttrMdVertex()
@@ -354,15 +360,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeFloatDAO mdAttribute = TestFixtureFactory.addFloatAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateDoubleAttrMdVertex()
@@ -370,15 +376,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeDoubleDAO mdAttribute = TestFixtureFactory.addDoubleAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateBooleanAttrMdVertex()
@@ -386,15 +392,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeBooleanDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateDateAttrMdVertex()
@@ -402,15 +408,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeDateDAO mdAttribute = TestFixtureFactory.addDateAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateDateTimeAttrMdVertex()
@@ -418,15 +424,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeDateTimeDAO mdAttribute = TestFixtureFactory.addDateTimeAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateTimeAttrMdVertex()
@@ -434,15 +440,111 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeTimeDAO mdAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
+  @Request
+  @Test
+  public void testCreatePointAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributePointDAO mdAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreatePolygonAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributePolygonDAO mdAttribute = TestFixtureFactory.addPolygonAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreateLineStringAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeLineStringDAO mdAttribute = TestFixtureFactory.addLineStringAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreateMultiPointAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeMultiPointDAO mdAttribute = TestFixtureFactory.addMultiPointAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreateMultiPolygonAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeMultiPolygonDAO mdAttribute = TestFixtureFactory.addMultiPolygonAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreateMultiLineStringAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeMultiLineStringDAO mdAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
   private static MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = MdVertexDAO.newInstance();

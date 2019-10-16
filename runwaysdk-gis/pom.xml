@@ -36,7 +36,6 @@
     <module>runwaysdk-gis-common</module>
     <module>runwaysdk-gis-server</module>
     <module>runwaysdk-gis-web</module>
-    <module>runwaysdk-gis-test</module>
   </modules>
 
   <scm>

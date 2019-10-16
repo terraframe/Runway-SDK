@@ -18,9 +18,6 @@
  */
 package com.runwaysdk;
 
-import java.util.UUID;
-
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -67,7 +64,7 @@ public class Sandbox
 //System.out.println(uuid2.getMostSignificantBits()+" "+uuid2.getLeastSignificantBits());
     
     
-    Versioning.run(new String[] { "/Users/nathan/git/Runway-SDK/runwaysdk-test/src/main/domain/", XMLConstants.VERSION_XSD });
+    Versioning.run(new String[] { "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain", XMLConstants.VERSION_XSD });
     
 //    testCreateVertexClass();
 //    testDeleteVertexClass();

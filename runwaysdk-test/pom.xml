@@ -52,12 +52,12 @@
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-client</artifactId>
+      <artifactId>runwaysdk-gis-client</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-server</artifactId>
+      <artifactId>runwaysdk-gis-server</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

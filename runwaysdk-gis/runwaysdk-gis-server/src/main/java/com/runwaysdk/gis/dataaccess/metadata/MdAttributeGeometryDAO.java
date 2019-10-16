@@ -29,9 +29,9 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_S;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_T;
-import com.runwaysdk.dataaccess.metadata.graph.MdAttributeConcrete_G;
 import com.runwaysdk.gis.constants.MdAttributeGeometryInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
+import com.runwaysdk.gis.dataaccess.metadata.graph.MdAttributeGeometry_G;
 import com.runwaysdk.system.gis.metadata.InvalidDimensionException;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -95,7 +95,7 @@ public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO impl
     }
     else if (this.definedByClass() instanceof MdGraphClassDAOIF)
     {
-      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_G(this));
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeGeometry_G(this));
     }    
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {

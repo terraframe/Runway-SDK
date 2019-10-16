@@ -21,8 +21,6 @@ package com.runwaysdk.query;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.runwaysdk.query.function.AggregateFunctionTestSuite;
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
 //  ParentQueryTestSuite.class,
