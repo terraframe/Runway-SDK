@@ -52,10 +52,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 public class AttributeValidationTest
 {
   private static MdBusinessDAO mdBusiness;

@@ -22,7 +22,7 @@ public class AttributeCharacter extends Attribute
   {
     super(mdAttributeDAOIF, definingGraphClass);
   }
-  
+
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */

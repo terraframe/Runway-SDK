@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
@@ -46,6 +48,7 @@ import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -103,6 +106,8 @@ import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AndFieldConditionDAOIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -124,6 +129,7 @@ import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -138,6 +144,7 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.MdWebBooleanDAOIF;
@@ -223,6 +230,8 @@ import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
@@ -316,6 +325,18 @@ public class SAXParseTest
   public static final String   ENUM_CLASS                  = "test.xmlclasses.EnumClassTest";
 
   public static final String[] classNames                  = { RELATIONSHIP, RELATIONSHIP2, FILTER, FILTER2, CLASS, CLASS2, CLASS3, ENUM_CLASS };
+
+  @BeforeClass
+  public static void classSetup()
+  {
+    LocalProperties.setSkipCodeGenAndCompile(true);
+  }
+
+  @AfterClass
+  public static void classTearDown()
+  {
+    LocalProperties.setSkipCodeGenAndCompile(false);
+  }
 
   /**
    * Delete all MetaData objects which were created in the class
@@ -3790,7 +3811,7 @@ public class SAXParseTest
   }
 
   @Request
-   @Test
+  @Test
   public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5012,7 +5033,7 @@ public class SAXParseTest
    * on setting instance/instance_value tags
    */
   @Request
-   @Test
+  @Test
   public void testUpdateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
@@ -6644,6 +6665,107 @@ public class SAXParseTest
     String actualType = ( (AttributeEnumerationIF) mdTermRelationshipIF.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getOid();
 
     Assert.assertEquals(expectedType, actualType);
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  @Request
+  @Test
+  public void testCreateMdVertex()
+  {
+    // Create test MdVertex
+    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
+    mdVertex1.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    mdVertex1.setValue(MdVertexInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdVertex1.setValue(MdVertexInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.apply();
+
+    TestFixtureFactory.addBooleanAttribute(mdVertex1).apply();
+
+    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
+    mdVertex2.setValue(MdVertexInfo.SUPER_MD_VERTEX, mdVertex1.getOid());
+    mdVertex2.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdVertex2.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdVertex1, mdVertex2 });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdVertex2);
+    TestFixtureFactory.delete(mdVertex1);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdVertexDAOIF mdVertex1IF = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
+    MdVertexDAOIF mdVertex2IF = MdVertexDAO.getMdVertexDAO(mdVertex2.definesType());
+
+    MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+
+    Assert.assertEquals(mdVertex1IF.getStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdVertex Set Test");
+    Assert.assertEquals(mdVertex1IF.getStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdVertex Attributes Test");
+    Assert.assertEquals(mdVertex1IF.getValue(MdVertexInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdVertex1IF.getValue(MdVertexInfo.PUBLISH));
+
+    // Change to false when cascading delete is implemented
+    Assert.assertEquals(mdVertex1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+
+    // Ensure inheritance is linking to the correct super class
+    Assert.assertEquals(mdVertex2IF.getValue(MdVertexInfo.SUPER_MD_VERTEX), mdVertex1IF.getOid());
+
+    // Ensure the attributes are linked to the correct MdVertex object
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdVertex1IF.getOid());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  @Request
+  @Test
+  public void testCreateMdEdge()
+  {
+    // Create test MdVertex
+    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
+    mdVertex1.apply();
+
+    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
+    mdVertex2.apply();
+
+    MdEdgeDAO mdEdge = TestFixtureFactory.createMdEdge(mdVertex1, mdVertex2);
+    mdEdge.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdVertex1, mdVertex2, mdEdge });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdEdge);
+    TestFixtureFactory.delete(mdVertex2);
+    TestFixtureFactory.delete(mdVertex1);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdEdgeDAOIF mdEdgeIF = MdEdgeDAO.getMdEdgeDAO(mdEdge.definesType());
+
+    Assert.assertEquals(mdEdgeIF.getStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdEdge Set Test");
+    Assert.assertEquals(mdEdgeIF.getStructValue(MdEdgeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdEdge Attributes Test");
+
+    String pOid = mdEdgeIF.getValue(MdEdgeInfo.PARENT_MD_VERTEX);
+    String cOid = mdEdgeIF.getValue(MdEdgeInfo.CHILD_MD_VERTEX);
+
+    MdVertexDAOIF parent = MdVertexDAO.get(pOid);
+    MdVertexDAOIF child = MdVertexDAO.get(cOid);
+
+    Assert.assertEquals(parent.definesType(), mdVertex1.definesType());
+    Assert.assertEquals(child.definesType(), mdVertex2.definesType());
   }
 
   /**

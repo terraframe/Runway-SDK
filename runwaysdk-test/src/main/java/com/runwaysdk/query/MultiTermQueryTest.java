@@ -24,13 +24,8 @@ package com.runwaysdk.query;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.session.Request;
-
-import junit.extensions.TestSetup;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 
 public class MultiTermQueryTest extends AbstractMultiReferenceQueryTest
 {

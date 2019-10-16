@@ -22,12 +22,17 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteStrategy;
 
-public abstract class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
+public class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
 {
   /**
    * 
    */
   private static final long serialVersionUID = 2659134669811043650L;
+  
+  /**
+   * The database vendor formated column datatype.
+   */
+  protected String dbColumnType;
 
   /**
    * @param {@link MdAttributeConcreteDAO}
@@ -35,6 +40,8 @@ public abstract class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
   public MdAttributeConcrete_G(MdAttributeConcreteDAO mdAttribute)
   {
     super(mdAttribute);
+     
+    this.dbColumnType = GraphDBService.getInstance().getDbColumnType(mdAttribute);
   }
   
   /**
@@ -133,17 +140,6 @@ public abstract class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
     this.nonMdEntityValidate();
   }
   
-  /**
-   * Adds the attribute to the graph database
-   *
-   */
-  protected abstract void createDbAttribute();
-  
-  /**
-   * Drops the attribute from the graph database.
-   *
-   */
-  protected abstract void dropDbAttribute();
   
   /**
    * Modify the index on the attribute.
@@ -205,6 +201,47 @@ public abstract class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
  
     this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.INDEX_NAME).setValue(indexName);
   }  
+  
+  /**
+   * Adds the attribute to the graph database
+   *
+   */
+  protected void createDbAttribute()
+  {
+    String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+    String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
+    boolean required = ( (AttributeBooleanIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED) ).getBooleanValue();
+
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+
+    GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
+    graphCommand.doIt();
+  }
+
+  /**
+   * Drops the attribute from the graph database
+   *
+   */
+  protected void dropDbAttribute()
+  {
+    String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+    String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
+    boolean required = ( (AttributeBooleanIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED) ).getBooleanValue();
+
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
+
+    GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
+    graphCommand.doIt();
+  }
+    
 
   /**
    * Modify if the attribute is required or not.
