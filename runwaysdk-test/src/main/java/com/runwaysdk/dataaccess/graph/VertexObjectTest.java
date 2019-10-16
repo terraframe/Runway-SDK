@@ -33,7 +33,6 @@ public class VertexObjectTest
 
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-      // Print the attributes. This will be moved into its own test.
       AttributeIF test = vertexDAO.getAttributeIF(mdCharacterAttribute.definesAttribute());
 
       Assert.assertNotNull(test);
@@ -58,7 +57,6 @@ public class VertexObjectTest
 
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-      // Print the attributes. This will be moved into its own test.
       AttributeIF test = vertexDAO.getAttributeIF(mdIntegerAttribute.definesAttribute());
 
       Assert.assertNotNull(test);
@@ -83,7 +81,6 @@ public class VertexObjectTest
 
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-      // Print the attributes. This will be moved into its own test.
       AttributeIF test = vertexDAO.getAttributeIF(mdLongAttribute.definesAttribute());
 
       Assert.assertNotNull(test);
@@ -108,7 +105,6 @@ public class VertexObjectTest
 
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-      // Print the attributes. This will be moved into its own test.
       AttributeIF test = vertexDAO.getAttributeIF(mdFloatAttribute.definesAttribute());
 
       Assert.assertNotNull(test);
@@ -125,17 +121,16 @@ public class VertexObjectTest
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
-    
+
     try
     {
       MdAttributeDoubleDAO mdDoubleAttribute = TestFixtureFactory.addDoubleAttribute(mdVertexDAO);
       mdDoubleAttribute.apply();
-      
+
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-      
-      // Print the attributes. This will be moved into its own test.
+
       AttributeIF test = vertexDAO.getAttributeIF(mdDoubleAttribute.definesAttribute());
-      
+
       Assert.assertNotNull(test);
     }
     finally
@@ -143,24 +138,23 @@ public class VertexObjectTest
       mdVertexDAO.delete();
     }
   }
-  
+
   @Request
   @Test
   public void testBooleanAttribute()
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
-    
+
     try
     {
       MdAttributeBooleanDAO mdBooleanAttribute = TestFixtureFactory.addBooleanAttribute(mdVertexDAO);
       mdBooleanAttribute.apply();
-      
+
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-      
-      // Print the attributes. This will be moved into its own test.
+
       AttributeIF test = vertexDAO.getAttributeIF(mdBooleanAttribute.definesAttribute());
-      
+
       Assert.assertNotNull(test);
     }
     finally
@@ -168,24 +162,23 @@ public class VertexObjectTest
       mdVertexDAO.delete();
     }
   }
-  
+
   @Request
   @Test
   public void testDateAttribute()
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
-    
+
     try
     {
       MdAttributeDateDAO mdDateAttribute = TestFixtureFactory.addDateAttribute(mdVertexDAO);
       mdDateAttribute.apply();
-      
+
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-      
-      // Print the attributes. This will be moved into its own test.
+
       AttributeIF test = vertexDAO.getAttributeIF(mdDateAttribute.definesAttribute());
-      
+
       Assert.assertNotNull(test);
     }
     finally
@@ -193,24 +186,23 @@ public class VertexObjectTest
       mdVertexDAO.delete();
     }
   }
-  
+
   @Request
   @Test
   public void testDateTimeAttribute()
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
-    
+
     try
     {
       MdAttributeDateTimeDAO mdDateTimeAttribute = TestFixtureFactory.addDateTimeAttribute(mdVertexDAO);
       mdDateTimeAttribute.apply();
-      
+
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-      
-      // Print the attributes. This will be moved into its own test.
+
       AttributeIF test = vertexDAO.getAttributeIF(mdDateTimeAttribute.definesAttribute());
-      
+
       Assert.assertNotNull(test);
     }
     finally
@@ -218,24 +210,23 @@ public class VertexObjectTest
       mdVertexDAO.delete();
     }
   }
-  
+
   @Request
   @Test
   public void testTimeAttribute()
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
-    
+
     try
     {
       MdAttributeTimeDAO mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
       mdTimeAttribute.apply();
-      
+
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-      
-      // Print the attributes. This will be moved into its own test.
+
       AttributeIF test = vertexDAO.getAttributeIF(mdTimeAttribute.definesAttribute());
-      
+
       Assert.assertNotNull(test);
     }
     finally
@@ -243,5 +234,5 @@ public class VertexObjectTest
       mdVertexDAO.delete();
     }
   }
-  
+
 }
