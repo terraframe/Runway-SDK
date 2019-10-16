@@ -220,7 +220,7 @@ public abstract class Attribute implements AttributeIF
   @Override
   public Object getObjectValue()
   {
-    return this.getValue();
+    return this.value;
   }
   
   /**

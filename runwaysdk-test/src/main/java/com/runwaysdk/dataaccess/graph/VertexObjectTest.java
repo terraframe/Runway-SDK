@@ -91,118 +91,156 @@ public class VertexObjectTest
   @Test
   public void testCharacterAttribute()
   {
+    String attributeName = mdCharacterAttribute.definesAttribute();
+
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdCharacterAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdCharacterAttribute.definesAttribute(), "Test Value");
+    String value = "Test Value";
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testIntegerAttribute()
   {
+    String attributeName = mdIntegerAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdIntegerAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdIntegerAttribute.definesAttribute(), new Integer(5));
+    Integer value = new Integer(5);
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testLongAttribute()
   {
+    String attributeName = mdLongAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdLongAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdLongAttribute.definesAttribute(), new Long(5));
+    Long value = new Long(5);
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testFloatAttribute()
   {
+    String attributeName = mdFloatAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdFloatAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdFloatAttribute.definesAttribute(), new Float(5F));
+    Float value = new Float(5F);
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testDoubleAttribute()
   {
+    String attributeName = mdDoubleAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdDoubleAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdDoubleAttribute.definesAttribute(), new Double(5D));
+    Double value = new Double(5D);
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testBooleanAttribute()
   {
+    String attributeName = mdBooleanAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdBooleanAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdBooleanAttribute.definesAttribute(), Boolean.TRUE);
+    Boolean value = Boolean.TRUE;
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testDateAttribute()
   {
+    String attributeName = mdDateAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdDateAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdDateAttribute.definesAttribute(), new Date());
+    Date value = new Date();
+
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testDateTimeAttribute()
   {
-
+    String attributeName = mdDateTimeAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdDateTimeAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdDateTimeAttribute.definesAttribute(), new Date());
+    Date value = new Date();
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
   @Test
   public void testTimeAttribute()
   {
+    String attributeName = mdTimeAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(mdTimeAttribute.definesAttribute());
+    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
 
     Assert.assertNotNull(test);
 
-    vertexDAO.setValue(mdTimeAttribute.definesAttribute(), new Date());
+    Date value = new Date();
+    vertexDAO.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
   }
 
   @Request
