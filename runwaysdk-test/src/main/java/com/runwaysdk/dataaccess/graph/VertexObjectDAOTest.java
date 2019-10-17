@@ -150,15 +150,28 @@ public class VertexObjectDAOTest
 
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    AttributeIF test = vertexDAO.getAttributeIF(attributeName);
-
-    Assert.assertNotNull(test);
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
     String value = "Test Value";
 
     vertexDAO.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+
+    try
+    {
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
   }
 
   @Request

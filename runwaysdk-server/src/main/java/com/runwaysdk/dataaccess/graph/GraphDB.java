@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public interface GraphDB
@@ -266,4 +267,36 @@ public interface GraphDB
    * @return
    */
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
+
+  /**
+   * Inserts a new object
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void insert(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  /**
+   * Update an existing dao
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void update(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  /**
+   * Delete an existing dao
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void delete(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertexDAOIF, String oid);
 }

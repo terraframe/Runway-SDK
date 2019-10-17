@@ -103,4 +103,11 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
     return vertexObjectDAO;
   }
 
+  public static VertexObjectDAOIF get(MdVertexDAO mdVertexDAO, String oid)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().get(request, mdVertexDAO, oid);
+  }
+
 }

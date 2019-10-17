@@ -26,7 +26,7 @@ public class AttributeBoolean extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeBoolean(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeBoolean(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Boolean value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

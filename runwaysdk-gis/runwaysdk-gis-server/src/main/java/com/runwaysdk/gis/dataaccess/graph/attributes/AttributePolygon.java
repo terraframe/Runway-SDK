@@ -28,7 +28,7 @@ public class AttributePolygon extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributePolygon(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributePolygon(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Polygon value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

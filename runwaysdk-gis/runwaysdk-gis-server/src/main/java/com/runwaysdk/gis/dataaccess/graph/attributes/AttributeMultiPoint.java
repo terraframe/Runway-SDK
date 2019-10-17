@@ -28,7 +28,7 @@ public class AttributeMultiPoint extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeMultiPoint(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeMultiPoint(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, MultiPoint value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

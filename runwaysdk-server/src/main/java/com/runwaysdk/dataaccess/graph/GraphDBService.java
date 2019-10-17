@@ -5,6 +5,7 @@ import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
@@ -231,6 +232,26 @@ public class GraphDBService
   public String getDbColumnType(MdAttributeConcreteDAO mdAttribute)
   {
     return this.graphDB.getDbColumnType(mdAttribute);
+  }
+
+  public void insert(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO)
+  {
+    this.graphDB.insert(graphRequest, graphObjectDAO);
+  }
+
+  public void update(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO)
+  {
+    this.graphDB.update(graphRequest, graphObjectDAO);
+  }
+
+  public void delete(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO)
+  {
+    this.graphDB.delete(graphRequest, graphObjectDAO);
+  }
+
+  public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertex, String oid)
+  {
+    return this.graphDB.get(graphRequest, mdVertex, oid);
   }
 
 }

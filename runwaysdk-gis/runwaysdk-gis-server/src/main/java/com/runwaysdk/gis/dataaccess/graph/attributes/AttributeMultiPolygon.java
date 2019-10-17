@@ -28,7 +28,7 @@ public class AttributeMultiPolygon extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeMultiPolygon(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeMultiPolygon(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, MultiPolygon value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

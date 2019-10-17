@@ -28,7 +28,7 @@ public class AttributeMultiLineString extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeMultiLineString(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeMultiLineString(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, MultiLineString value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }
