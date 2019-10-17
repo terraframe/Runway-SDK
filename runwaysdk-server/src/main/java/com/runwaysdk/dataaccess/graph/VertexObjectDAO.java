@@ -10,7 +10,7 @@ import com.runwaysdk.dataaccess.database.AbstractInstantiationException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
-public class VertexObjectDAO extends GraphObjectDAO
+public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 {
   /**
    * 
@@ -26,7 +26,8 @@ public class VertexObjectDAO extends GraphObjectDAO
   }
 
   /**
-   * Constructs a {@link VertexObjectDAO} from the given hashtable of Attributes.
+   * Constructs a {@link VertexObjectDAO} from the given hashtable of
+   * Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -39,31 +40,33 @@ public class VertexObjectDAO extends GraphObjectDAO
   {
     super(attributeMap, mdVertexDAOIF);
   }
-  
+
   /**
-   * Returns a {@link MdVertexDAOIF}  that defines this Component's class.
+   * Returns a {@link MdVertexDAOIF} that defines this Component's class.
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    *
-   * @return a {@link MdVertexDAOIF}   that defines this Component's class.
+   * @return a {@link MdVertexDAOIF} that defines this Component's class.
    */
   @Override
   public MdVertexDAOIF getMdClassDAO()
   {
-    return (MdVertexDAOIF)super.getMdClassDAO();
+    return (MdVertexDAOIF) super.getMdClassDAO();
   }
-  
+
   public static VertexObjectDAO newInstance(String vertexType)
   {
     // get the meta data for the given class
     MdVertexDAOIF mdVertexDAOIF = MdVertexDAO.getMdVertexDAO(vertexType);
-    
+
     return newInstance(mdVertexDAOIF);
   }
-  
+
   /**
-   * Returns a new {@link VertexObjectDAO} instance of the given class name. Default values
-   * are assigned attributes if specified by the metadata.
+   * Returns a new {@link VertexObjectDAO} instance of the given class name.
+   * Default values are assigned attributes if specified by the metadata.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
@@ -71,7 +74,7 @@ public class VertexObjectDAO extends GraphObjectDAO
    * 
    * @param mdVertexDAOIF
    *          Class name of the new BusinessDAO to instantiate
-   * @return new  {@link VertexObjectDAO} of the given type
+   * @return new {@link VertexObjectDAO} of the given type
    * @throws DataAccessException
    *           if the given class name is abstract
    * @throws DataAccessException
@@ -84,20 +87,20 @@ public class VertexObjectDAO extends GraphObjectDAO
       String errMsg = "Class [" + mdVertexDAOIF.definesType() + "] is abstract and cannot be instantiated";
       throw new AbstractInstantiationException(errMsg, mdVertexDAOIF);
     }
-    
+
     Hashtable<String, Attribute> attributeMap = new Hashtable<String, Attribute>();
-    
+
     // get list of all classes in inheritance relationship
     List<MdVertexDAOIF> superMdVertexList = mdVertexDAOIF.getSuperClasses();
     superMdVertexList.forEach(md -> attributeMap.putAll(GraphObjectDAO.createRecordsForEntity(md)));
-    
+
     VertexObjectDAO vertexObjectDAO = new VertexObjectDAO(attributeMap, mdVertexDAOIF);
-    
+
     attributeMap.values().forEach(a -> a.setContainingComponent(vertexObjectDAO));
-    
+
     vertexObjectDAO.setIsNew(true);
-    
+
     return vertexObjectDAO;
   }
-  
+
 }

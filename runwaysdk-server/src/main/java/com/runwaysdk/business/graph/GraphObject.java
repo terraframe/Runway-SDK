@@ -7,7 +7,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
-import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
 
@@ -49,7 +48,7 @@ public abstract class GraphObject
    * 
    * @return the GraphObjectDAO
    */
-  GraphObjectDAOIF getGraphObjectDAO()
+  GraphObjectDAO getGraphObjectDAO()
   {
     return graphObjectDAO;
   }

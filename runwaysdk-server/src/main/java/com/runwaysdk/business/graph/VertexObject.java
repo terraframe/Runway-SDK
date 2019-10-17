@@ -1,52 +1,26 @@
 package com.runwaysdk.business.graph;
 
-import com.runwaysdk.business.Entity;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 
 public class VertexObject extends GraphObject
 {
 
-  /**
-   * Constructs a new, typesafe VertexObject object. Creates a new DAO of type
-   * {@link Entity#getDeclaredType()}, which, through polymorphism, will ensure
-   * that the core type and the java type are the same.
-   */
   public VertexObject()
   {
     super();
     setGraphObjectDAO(VertexObjectDAO.newInstance(getDeclaredType()));
   }
 
-  /**
-   * Creates a new VertexObject object that may not be typesafe. The DAO the new
-   * object represents will be of the specified type, but if this constructor
-   * has been super()d into, the concrete java type of the constructed object
-   * will be unknown.
-   * 
-   * To guarantee that the java type and DAO type correspond correctly, use
-   * {@link VertexObject#VertexObject()}, which uses polymorphism instead of a
-   * paramater.
-   * 
-   * @param type
-   *          The type of the DAO that this VertexObject object will represent
-   */
   public VertexObject(String type)
   {
     super();
     setGraphObjectDAO(VertexObjectDAO.newInstance(type));
   }
 
-  /**
-   * Default visibilty only, this constructor is used to create a VertexObject
-   * for a VertexObjectDAO that is already in the database. All attribute values
-   * are pulled from the VertexObjectDAO parameter.
-   * 
-   * @param buisnessDAO
-   */
-  VertexObject(VertexObjectDAO businessDAO)
+  VertexObject(VertexObjectDAO vertexDAO)
   {
     super();
-    setGraphObjectDAO(businessDAO);
+    setGraphObjectDAO(vertexDAO);
   }
 
   @Override

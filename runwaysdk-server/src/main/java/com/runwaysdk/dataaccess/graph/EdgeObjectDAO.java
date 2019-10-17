@@ -10,7 +10,7 @@ import com.runwaysdk.dataaccess.database.AbstractInstantiationException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 
-public class EdgeObjectDAO extends GraphObjectDAO
+public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
 {
   /**
    * 
