@@ -24,7 +24,7 @@ import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.session.Request;
 
-public class EdgeObjectTest
+public class EdgeObjectDAOTest
 {
   private static MdVertexDAO             mdParentDAO;
 

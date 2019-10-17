@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.runwaysdk.AttributeCharacterParseException;
 import com.runwaysdk.AttributeIntegerParseException;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -37,7 +38,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class VertexObjectTest
+public class VertexObjectDAOTest
 {
   private static MdVertexDAO                   mdVertexDAO;
 
@@ -75,6 +76,8 @@ public class VertexObjectTest
   @BeforeClass
   public static void classSetup()
   {
+    LocalProperties.setSkipCodeGenAndCompile(true);
+
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
 
@@ -129,6 +132,8 @@ public class VertexObjectTest
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdVertexDAO);
+
+    LocalProperties.setSkipCodeGenAndCompile(false);
   }
 
   @Request
