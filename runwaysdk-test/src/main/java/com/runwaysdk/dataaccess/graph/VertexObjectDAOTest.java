@@ -22,6 +22,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.gis.AttributeLineStringParseException;
+import com.runwaysdk.gis.AttributeMultiLineStringParseException;
+import com.runwaysdk.gis.AttributeMultiPointParseException;
+import com.runwaysdk.gis.AttributeMultiPolygonParseException;
+import com.runwaysdk.gis.AttributePointParseException;
+import com.runwaysdk.gis.AttributePolygonParseException;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
@@ -486,4 +492,59 @@ public class VertexObjectDAOTest
 
     vertexDAO.setValue(mdTimeAttribute.definesAttribute(), "Test Value");
   }
+
+  @Request
+  @Test(expected = AttributePointParseException.class)
+  public void testBadPointAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdPointAttribute.definesAttribute(), "Test Value");
+  }
+
+  @Request
+  @Test(expected = AttributePolygonParseException.class)
+  public void testBadPolygonAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdPolygonAttribute.definesAttribute(), "Test Value");
+  }
+
+  @Request
+  @Test(expected = AttributeLineStringParseException.class)
+  public void testBadLineStringAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdLineStringAttribute.definesAttribute(), "Test Value");
+  }
+
+  @Request
+  @Test(expected = AttributeMultiPointParseException.class)
+  public void testBadMultiPointAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdMultiPointAttribute.definesAttribute(), "Test Value");
+  }
+
+  @Request
+  @Test(expected = AttributeMultiPolygonParseException.class)
+  public void testBadMultiPolygonAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdMultiPolygonAttribute.definesAttribute(), "Test Value");
+  }
+
+  @Request
+  @Test(expected = AttributeMultiLineStringParseException.class)
+  public void testBadMultiLineStringAttribute()
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(mdMultiLineStringAttribute.definesAttribute(), "Test Value");
+  }
+
 }
