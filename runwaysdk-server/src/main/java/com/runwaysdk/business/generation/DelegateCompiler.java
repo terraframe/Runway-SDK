@@ -55,7 +55,7 @@ public class DelegateCompiler extends AbstractCompiler
   }
 
   @Override
-  protected void compile(Collection<? extends MdTypeDAOIF> types)
+  public void compile(Collection<? extends MdTypeDAOIF> types)
   {
     // No need to go further if there is nothing to compile
     if (types.size() == 0)

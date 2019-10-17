@@ -421,7 +421,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttributeHash to generate an equals method for
    */
-  private void addEquals(MdAttributeDAOIF m)
+  protected void addEquals(MdAttributeDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -439,7 +439,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addGetter(MdAttributeDAOIF m)
+  protected void addGetter(MdAttributeDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -457,7 +457,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addReferenceGetter(MdAttributeDAOIF m)
+  protected void addReferenceGetter(MdAttributeDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -498,7 +498,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addSetter(MdAttributeDAOIF m)
+  protected void addSetter(MdAttributeDAOIF m)
   {
     // do not generate a setter for a system attribute.
     if (m.isSystem())
@@ -529,7 +529,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addReferenceSetter(MdAttributeDAOIF m)
+  protected void addReferenceSetter(MdAttributeDAOIF m)
   {
     // do not generate a setter for a system attribute.
     if (m.isSystem())
@@ -560,7 +560,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addValidator(MdAttributeDAOIF m)
+  protected void addValidator(MdAttributeDAOIF m)
   {
     VisibilityModifier setterVisibility = m.getSetterVisibility();
 
