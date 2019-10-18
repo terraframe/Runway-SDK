@@ -1,10 +1,12 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -252,6 +254,26 @@ public class GraphDBService
   public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertex, String oid)
   {
     return this.graphDB.get(graphRequest, mdVertex, oid);
+  }
+
+  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    this.graphDB.addEdge(request, parent, child, mdEdge);
+  }
+
+  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    this.graphDB.removeEdge(request, parent, child, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAO vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.graphDB.getChildren(request, vertexDAO, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAO vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.graphDB.getParents(request, vertexDAO, mdEdge);
   }
 
 }

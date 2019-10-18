@@ -1,6 +1,10 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -15,6 +19,8 @@ import com.orientechnologies.orient.core.index.OIndex;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.record.ODirection;
+import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.record.impl.ODocument;
@@ -23,6 +29,7 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
 import com.orientechnologies.spatial.shape.OShapeType;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
@@ -35,6 +42,7 @@ import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -722,46 +730,122 @@ public class OrientDBImpl implements GraphDB
     {
       if (rs.hasNext())
       {
-        OResult row = rs.next();
+        OVertex row = (OVertex) rs.next().toElement();
 
-        VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAOIF);
-
-        Attribute[] attributes = vertexDAO.getAttributeArray();
-
-        for (Attribute attribute : attributes)
-        {
-          MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
-          String columnName = mdAttribute.getColumnName();
-          Object value = row.getProperty(columnName);
-
-          if (value != null)
-          {
-            if (mdAttribute instanceof MdAttributeGeometryDAOIF)
-            {
-              OResult result = (OResult) value;
-              ODocument doc = result.toElement().getRecord();
-
-              Shape shape = OShapeFactory.INSTANCE.fromDoc(doc);
-              Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
-
-              attribute.setValueInternal(geometry);
-            }
-            else
-            {
-              attribute.setValueInternal(value);
-            }
-          }
-        }
-
-        vertexDAO.setIsNew(false);
-        vertexDAO.setRID(row.getIdentity().get());
-
-        return vertexDAO;
+        return this.buildDAO(mdVertexDAOIF, row);
       }
 
     }
 
     return null;
+  }
+
+  @Override
+  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
+
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+    OVertex pVertex = db.load((ORID) parent.getRID());
+    OVertex cVertex = db.load((ORID) child.getRID());
+
+    OEdge edge = pVertex.addEdge(cVertex, edgeClass);
+    edge.setProperty("oid", UUID.randomUUID().toString());
+    edge.save();
+  }
+
+  @Override
+  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    String statement = "DELETE EDGE FROM :parent TO :child WHERE @class = :class";
+
+    String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
+
+    Map<String, Object> args = new TreeMap<String, Object>();
+    args.put("parent", parent.getRID());
+    args.put("child", child.getRID());
+    args.put("class", edgeClass);
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+
+    try (OResultSet result = db.execute("sql", statement, args))
+    {
+    }
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.getVertices(request, vertexDAO, ODirection.OUT, mdEdge);
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.getVertices(request, vertexDAO, ODirection.IN, mdEdge);
+  }
+  
+  private List<VertexObjectDAOIF> getVertices(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
+  {
+    String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
+    MdVertexDAOIF mdVertex = direction.equals(ODirection.OUT) ? mdEdge.getParentMdVertex() : mdEdge.getChildMdVertex();
+
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+    OVertex vertex = db.load((ORID) vertexDAO.getRID());
+
+    Iterable<OVertex> targets = vertex.getVertices(direction, edgeClass);
+
+    LinkedList<VertexObjectDAOIF> list = new LinkedList<VertexObjectDAOIF>();
+
+    for (OVertex target : targets)
+    {
+      list.add(this.buildDAO(mdVertex, target));
+    }
+
+    return list;
+  }
+
+  protected VertexObjectDAOIF buildDAO(MdVertexDAOIF mdVertexDAOIF, OVertex vertex)
+  {
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAOIF);
+
+    Attribute[] attributes = vertexDAO.getAttributeArray();
+
+    for (Attribute attribute : attributes)
+    {
+      MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
+      String columnName = mdAttribute.getColumnName();
+      Object value = vertex.getProperty(columnName);
+
+      if (value != null)
+      {
+        if (mdAttribute instanceof MdAttributeGeometryDAOIF)
+        {
+          OResult result = (OResult) value;
+          ODocument doc = result.toElement().getRecord();
+
+          Shape shape = OShapeFactory.INSTANCE.fromDoc(doc);
+          Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+
+          attribute.setValueInternal(geometry);
+        }
+        else
+        {
+          attribute.setValueInternal(value);
+        }
+      }
+    }
+
+    vertexDAO.setIsNew(false);
+    vertexDAO.setRID(vertex.getIdentity());
+
+    return vertexDAO;
   }
 
   protected void populateVertex(GraphObjectDAO graphObjectDAO, OVertex vertex)

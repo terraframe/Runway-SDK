@@ -1,7 +1,11 @@
 package com.runwaysdk.dataaccess.graph;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 
 /**
@@ -279,5 +283,27 @@ public class GraphDBBalk implements GraphDB
   public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertexDAOIF, String oid)
   {
     return null;
+  }
+
+  @Override
+  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+  }
+
+  @Override
+  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<VertexObjectDAOIF>();
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<VertexObjectDAOIF>();
   }
 }

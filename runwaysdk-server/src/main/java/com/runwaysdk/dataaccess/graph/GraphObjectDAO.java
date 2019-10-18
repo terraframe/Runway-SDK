@@ -550,16 +550,12 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     if (mdAttribute instanceof MdAttributeUUIDDAOIF)
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
-      attribute.setValueInternal(UUID.randomUUID());
+      attribute.setValueInternal(UUID.randomUUID().toString());
     }
     else
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
-
-      if (attrDefaultValue != null && attrDefaultValue.length() > 0)
-      {
-        attribute.setValueInternal(attrDefaultValue);
-      }
+//      attribute.setValueInternal(attrDefaultValue);
     }
     return attribute;
   }

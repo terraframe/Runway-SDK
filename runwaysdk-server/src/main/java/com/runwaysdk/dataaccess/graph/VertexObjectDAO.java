@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.database.AbstractInstantiationException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
 public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
@@ -54,6 +56,90 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
   public MdVertexDAOIF getMdClassDAO()
   {
     return (MdVertexDAOIF) super.getMdClassDAO();
+  }
+
+  public void addChild(VertexObjectDAOIF child, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.addChild(child, mdEdge);
+  }
+
+  public void addChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().addEdge(request, this, child, mdEdge);
+  }
+
+  public void removeChild(VertexObjectDAOIF child, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.removeChild(child, mdEdge);
+  }
+
+  public void removeChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().removeEdge(request, this, child, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getChildren(String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    return this.getChildren(mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getChildren(MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().getChildren(request, this, mdEdge);
+  }
+
+  public void addParent(VertexObjectDAOIF parent, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.addParent(parent, mdEdge);
+  }
+
+  public void addParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().addEdge(request, parent, this, mdEdge);
+  }
+
+  public void removeParent(VertexObjectDAOIF parent, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.removeParent(parent, mdEdge);
+  }
+
+  public void removeParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().removeEdge(request, parent, this, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getParents(String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    return this.getParents(mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getParents(MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().getParents(request, this, mdEdge);
   }
 
   public static VertexObjectDAO newInstance(String vertexType)

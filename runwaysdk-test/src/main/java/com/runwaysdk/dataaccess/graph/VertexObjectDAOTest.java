@@ -2,7 +2,6 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
