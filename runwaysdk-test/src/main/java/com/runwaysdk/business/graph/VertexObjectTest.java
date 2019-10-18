@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -79,6 +80,7 @@ public class VertexObjectTest
     LocalProperties.setSkipCodeGenAndCompile(true);
 
     mdVertexDAO = TestFixtureFactory.createMdVertex();
+    mdVertexDAO.setValue(MdVertexInfo.GENERATE_SOURCE, Boolean.FALSE.toString());
     mdVertexDAO.apply();
 
     mdCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdVertexDAO);

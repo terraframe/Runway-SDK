@@ -1,8 +1,12 @@
 package com.runwaysdk.business.graph;
 
+import java.lang.reflect.Constructor;
+
+import com.runwaysdk.business.ClassLoaderException;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 
 public class VertexObject extends GraphObject
 {
@@ -37,53 +41,37 @@ public class VertexObject extends GraphObject
 
     if (dao != null)
     {
-      return new VertexObject((VertexObjectDAO) dao);
+      if (mdVertexDAO.isGenerateSource())
+      {
+        return instantiate((VertexObjectDAO) dao);
+      }
+      else
+      {
+        return new VertexObject((VertexObjectDAO) dao);
+      }
     }
 
     return null;
   }
 
-  // /**
-  // * Using reflection, get returns an object of the specified type with the
-  // * specified oid from the database. The returned VertexObject is typesafe,
-  // * meaning that its actual type is that specified by the type parameter.
-  // *
-  // * @param oid
-  // * OID of the instance to get
-  // * @return Typesafe VertexObject representing the oid in the database
-  // */
-  // public static VertexObject get(String oid)
-  // {
-  // // An empty string likely indicates the value was never set in the
-  // database.
-  // if (oid == null || oid.length() == 0)
-  // {
-  // String errMsg = "Object with oid [" + oid + "] is not defined by a [" +
-  // MdEntityInfo.CLASS + "]";
-  //
-  // throw new InvalidIdException(errMsg, oid);
-  // }
-  //
-  // VertexObject reflected = instantiate(VertexObjectDAO.get(oid));
-  //
-  // return reflected;
-  // }
-  //
-  // /**
-  // * Using reflection, get returns an object of the specified type with the
-  // * specified key from the database. The returned VertexObject is typesafe,
-  // * meaning that its actual type is that specified by the type parameter.
-  // *
-  // * @param type
-  // * type of the instance to get
-  // * @param key
-  // * key of the instance to get
-  // * @return Typesafe VertexObject representing the oid in the database
-  // */
-  // public static VertexObject get(String type, String key)
-  // {
-  // VertexObject reflected = instantiate(VertexObjectDAO.get(type, key));
-  //
-  // return reflected;
-  // }
+  private static VertexObject instantiate(VertexObjectDAO vertexDAO)
+  {
+    VertexObject object;
+
+    try
+    {
+      Class<?> clazz = LoaderDecorator.load(vertexDAO.getType());
+
+      Constructor<?> con = clazz.getConstructor();
+      object = (VertexObject) con.newInstance();
+      object.setGraphObjectDAO(vertexDAO);
+    }
+    catch (Exception e)
+    {
+      throw new ClassLoaderException(vertexDAO.getMdClassDAO(), e);
+    }
+
+    return object;
+  }
+
 }
