@@ -24,6 +24,7 @@ import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.record.impl.ODocument;
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
@@ -760,20 +761,25 @@ public class OrientDBImpl implements GraphDB
   public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
   {
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
-
-    String statement = "DELETE EDGE FROM :parent TO :child WHERE @class = :class";
-
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
-
-    Map<String, Object> args = new TreeMap<String, Object>();
-    args.put("parent", parent.getRID());
-    args.put("child", child.getRID());
-    args.put("class", edgeClass);
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
 
-    try (OResultSet result = db.execute("sql", statement, args))
+    // String statement = "DELETE EDGE " + edgeClass + " FROM ? TO ?";
+    // db.command(statement, parent.getRID(), child.getRID());
+
+    OVertex vertex = db.load((ORID) parent.getRID());
+
+    Iterable<OEdge> edges = vertex.getEdges(ODirection.OUT, edgeClass);
+
+    for (OEdge edge : edges)
     {
+      OVertex to = edge.getTo();
+
+      if (to.getIdentity().equals(child.getRID()))
+      {
+        edge.delete();
+      }
     }
   }
 
@@ -788,7 +794,7 @@ public class OrientDBImpl implements GraphDB
   {
     return this.getVertices(request, vertexDAO, ODirection.IN, mdEdge);
   }
-  
+
   private List<VertexObjectDAOIF> getVertices(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
   {
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
