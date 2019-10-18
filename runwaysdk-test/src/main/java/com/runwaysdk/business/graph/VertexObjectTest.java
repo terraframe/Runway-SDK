@@ -1,5 +1,6 @@
 package com.runwaysdk.business.graph;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.AfterClass;
@@ -8,6 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeDateInfo;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -95,6 +100,7 @@ public class VertexObjectTest
     mdBooleanAttribute.apply();
 
     mdDateAttribute = TestFixtureFactory.addDateAttribute(mdVertexDAO);
+    mdDateAttribute.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdDateAttribute.apply();
 
     mdDateTimeAttribute = TestFixtureFactory.addDateTimeAttribute(mdVertexDAO);
@@ -137,13 +143,41 @@ public class VertexObjectTest
   {
     String attributeName = mdCharacterAttribute.definesAttribute();
 
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     String value = "Test Value";
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      // Test create
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = "Updated Value";
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -151,12 +185,40 @@ public class VertexObjectTest
   public void testIntegerAttribute()
   {
     String attributeName = mdIntegerAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Integer value = new Integer(5);
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      // Test create
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Integer(10);
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -164,12 +226,39 @@ public class VertexObjectTest
   public void testLongAttribute()
   {
     String attributeName = mdLongAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Long value = new Long(5);
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Long(10);
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -177,12 +266,39 @@ public class VertexObjectTest
   public void testFloatAttribute()
   {
     String attributeName = mdFloatAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Float value = new Float(5F);
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Float(10F);
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -190,12 +306,39 @@ public class VertexObjectTest
   public void testDoubleAttribute()
   {
     String attributeName = mdDoubleAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Double value = new Double(5D);
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Double(10D);
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -203,12 +346,39 @@ public class VertexObjectTest
   public void testBooleanAttribute()
   {
     String attributeName = mdBooleanAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Boolean value = Boolean.TRUE;
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = Boolean.FALSE;
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -216,13 +386,45 @@ public class VertexObjectTest
   public void testDateAttribute()
   {
     String attributeName = mdDateAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
-    Date value = new Date();
+    Calendar cal = TestFixtureFactory.getDate();
 
-    vertexObject.setValue(attributeName, value);
+    Date value = cal.getTime();
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    vertex.setValue(attributeName, value);
+
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      cal = TestFixtureFactory.getDate();
+      cal.set(Calendar.DAY_OF_MONTH, 1);
+
+      value = cal.getTime();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -230,12 +432,39 @@ public class VertexObjectTest
   public void testDateTimeAttribute()
   {
     String attributeName = mdDateTimeAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Date value = new Date();
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Date();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -243,12 +472,39 @@ public class VertexObjectTest
   public void testTimeAttribute()
   {
     String attributeName = mdTimeAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Date value = new Date();
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = new Date();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -256,13 +512,40 @@ public class VertexObjectTest
   public void testPointAttribute()
   {
     String attributeName = mdPointAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Point value = TestFixtureFactory.getPoint();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = TestFixtureFactory.getPoint2();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -270,13 +553,40 @@ public class VertexObjectTest
   public void testPolygonAttribute()
   {
     String attributeName = mdPolygonAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     Polygon value = TestFixtureFactory.getPolygon();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+
+      // Test update
+      value = TestFixtureFactory.getPolygon2();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -284,13 +594,30 @@ public class VertexObjectTest
   public void testLineStringAttribute()
   {
     String attributeName = mdLineStringAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     LineString value = TestFixtureFactory.getLineString();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -298,13 +625,30 @@ public class VertexObjectTest
   public void testMultiPointAttribute()
   {
     String attributeName = mdMultiPointAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     MultiPoint value = TestFixtureFactory.getMultiPoint();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -312,13 +656,30 @@ public class VertexObjectTest
   public void testMultiPolygonAttribute()
   {
     String attributeName = mdMultiPolygonAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     MultiPolygon value = TestFixtureFactory.getMultiPolygon();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
@@ -326,12 +687,30 @@ public class VertexObjectTest
   public void testMultiLineStringAttribute()
   {
     String attributeName = mdMultiLineStringAttribute.definesAttribute();
-    VertexObject vertexObject = new VertexObject(mdVertexDAO.definesType());
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     MultiLineString value = TestFixtureFactory.getMultiLineString();
 
-    vertexObject.setValue(attributeName, value);
+    vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertexObject.getObjectValue(attributeName));
+    Assert.assertEquals(value, vertex.getValue(attributeName));
+
+    try
+    {
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
+
 }

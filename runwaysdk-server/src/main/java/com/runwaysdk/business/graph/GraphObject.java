@@ -63,30 +63,6 @@ public abstract class GraphObject
   }
 
   /**
-   * Indicates whether the delete method has completed execution and the object
-   * has been deleted;
-   */
-  public boolean isDeleted()
-  {
-    // return graphObjectDAO.isDeleted();
-    return false;
-  }
-
-  /**
-   * Indicates if this instance has been applied to the db. Note that an
-   * instance can be both new and applied to the db at the same time, if a
-   * transaction method calls {@link #apply()} then continues with more logic.
-   * 
-   * @return
-   */
-  public boolean isAppliedToDB()
-  {
-    // return graphObjectDAO.isAppliedToDB();
-
-    return false;
-  }
-
-  /**
    * Returns a MdClassIF that defines this Component's class.
    * 
    * <br/>
@@ -150,25 +126,12 @@ public abstract class GraphObject
   }
 
   /**
-   * A generic, type-unsafe getter that takes the attribute name as a String,
-   * and returns the value as a String
-   * 
-   * @param name
-   *          String name of the desired attribute
-   * @return String representation of the value
-   */
-  public String getValue(String name)
-  {
-    return this.graphObjectDAO.getValue(name);
-  }
-
-  /**
    * Some attributes store objects instead of strings.
    * 
    * @param name
    * @return object stored on the attribute.
    */
-  public Object getObjectValue(String name)
+  public Object getValue(String name)
   {
     return this.graphObjectDAO.getObjectValue(name);
   }
@@ -191,27 +154,6 @@ public abstract class GraphObject
   public void validateAttribute(String name)
   {
     this.graphObjectDAO.validateAttribute(name);
-  }
-
-  /**
-   * A generic, type-unsafe setter that takes the attribute name a and value as
-   * Strings
-   * 
-   * @param name
-   *          String name of the attribute
-   * @param value
-   *          String representation of the value
-   */
-  public void setValue(String name, String _value)
-  {
-    String value = "";
-
-    if (_value != null)
-    {
-      value = _value;
-    }
-
-    graphObjectDAO.setValue(name, value);
   }
 
   /**
@@ -301,7 +243,7 @@ public abstract class GraphObject
    */
   public void delete()
   {
-    // graphObjectDAO.delete(true);
+    graphObjectDAO.delete();
   }
 
   /**

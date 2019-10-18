@@ -1,6 +1,8 @@
 package com.runwaysdk.business.graph;
 
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
 public class VertexObject extends GraphObject
 {
@@ -27,6 +29,13 @@ public class VertexObject extends GraphObject
   protected String getDeclaredType()
   {
     return VertexObject.class.getName();
+  }
+
+  public static VertexObject get(MdVertexDAO mdVertexDAO, String oid)
+  {
+    VertexObjectDAOIF dao = VertexObjectDAO.get(mdVertexDAO, oid);
+
+    return new VertexObject((VertexObjectDAO) dao);
   }
 
   // /**

@@ -833,8 +833,7 @@ public class OrientDBImpl implements GraphDB
       {
         if (mdAttribute instanceof MdAttributeGeometryDAOIF)
         {
-          OResult result = (OResult) value;
-          ODocument doc = result.toElement().getRecord();
+          ODocument doc = (ODocument) value;
 
           Shape shape = OShapeFactory.INSTANCE.fromDoc(doc);
           Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
