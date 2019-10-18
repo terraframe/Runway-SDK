@@ -47,6 +47,8 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    */
   private boolean                  isNew = false;
   
+  private boolean                  isAppliedToDB = false;
+  
   private MdGraphClassDAOIF        mdGraphClassDAOIF;
   
   /**
@@ -167,6 +169,28 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   public void setTypeName(String graphType)
   {
     this.componentType = graphType;
+  }
+  
+  /**
+   * Returns true if this instance has been written to the database. It does not
+   * indicate if it has been committed to the database.
+   * 
+   * @return true if this instance has been written to the database. It does not
+   *         indicate if it has been committed to the database.
+   */
+  public boolean isAppliedToDB()
+  {
+    return this.isAppliedToDB;
+  }
+
+  /**
+   * If true then this instance has been written to the database.
+   * 
+   * @param appliedToDB
+   */
+  public void setAppliedToDB(boolean appliedToDB)
+  {
+    this.isAppliedToDB = appliedToDB;
   }
   
   /**

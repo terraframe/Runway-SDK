@@ -1,0 +1,17 @@
+<Runway xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/datatype_gis.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <delete>
+  </delete>
+  <create>
+    <mdBusiness generateSource="true" cacheSize="0" removable="true" publish="true" name="temporary.junit.test.gis.SaxTestClass" description="SaxTestClass" label="SaxTestClass" extendable="true" isAbstract="false" table="sax_test_class" cacheAlgorithm="nothing">
+      <attributes>
+        <multipoint immutable="false" indexType="no index" removable="false" name="testMultiPoint" column="test_multi_point" getterVisibility="public" description="Test MultiPoint" setterVisibility="public" label="Test MultiPoint" dimension="2" required="false" srid="4326" />
+      </attributes>
+    </mdBusiness>
+  </create>
+  <createOrUpdate>
+  </createOrUpdate>
+  <update>
+  </update>
+  <permissions>
+  </permissions>
+</Runway>

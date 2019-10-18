@@ -96,6 +96,7 @@ public class VertexObjectDAO extends GraphObjectDAO
     attributeMap.values().forEach(a -> a.setContainingComponent(vertexObjectDAO));
     
     vertexObjectDAO.setIsNew(true);
+    vertexObjectDAO.setAppliedToDB(false);
     
     return vertexObjectDAO;
   }
