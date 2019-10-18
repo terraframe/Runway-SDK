@@ -35,7 +35,12 @@ public class VertexObject extends GraphObject
   {
     VertexObjectDAOIF dao = VertexObjectDAO.get(mdVertexDAO, oid);
 
-    return new VertexObject((VertexObjectDAO) dao);
+    if (dao != null)
+    {
+      return new VertexObject((VertexObjectDAO) dao);
+    }
+
+    return null;
   }
 
   // /**
